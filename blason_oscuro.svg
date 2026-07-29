@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 170">
+  <g transform="translate(14,10) scale(0.62)">
+    <polygon points="220,120 170,207 70,207 20,120 70,33 170,33" fill="none" stroke="#3dbf7f" stroke-width="11" stroke-linejoin="round"/>
+    <polygon points="168,148 120,175 72,148 72,92 120,65 168,92" fill="none" stroke="#4a8fe8" stroke-width="8.5" stroke-linejoin="round"/>
+    <circle cx="120" cy="120" r="12" fill="#3dbf7f"/>
+  </g>
+  <text x="178" y="92" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="bold" letter-spacing="3" fill="#e8eaf0">Salufolio</text>
+  <text x="181" y="126" font-family="Georgia, serif" font-size="17" font-style="italic" letter-spacing="1" fill="#9fb3a8">el expediente que se explica solo</text>
+</svg>

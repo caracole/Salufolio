@@ -1,0 +1,56 @@
+Salufolio — REPUBLICACIÓN LIMPIA · 29/07/2026
+═════════════════════════════════════════════
+Todo desde el navegador. Ningún comando, ningún riesgo de apagón:
+cada paso en GitHub es atómico — o se hace entero, o no se hace.
+
+POR QUÉ
+  El historial público del depósito conservaba todavía un fichero de
+  expediente real (Pacientes/…REAL.mf). Retirarlo del árbol no basta:
+  git nunca borra nada. La única cura cierta es una historia nueva.
+
+ANTES DE EMPEZAR
+  No borre la copia de seguridad del Acer:
+  /home/pierre/Escritorio/CLAUDE/MediFolio_github_COPIA_29julio
+  Guarda TODA la historia antigua, con su .git. Es la red.
+
+① BORRAR EL DEPÓSITO
+   github.com/caracole/Salufolio → Settings
+   → abajo del todo, Danger Zone → Delete this repository
+   → escribir el nombre para confirmar.
+
+② CREARLO DE NUEVO
+   github.com → New repository
+   Nombre : Salufolio      Público      SIN README, SIN licencia
+   (se sube todo en el paso siguiente)
+
+③ SUBIR ESTA CARPETA
+   En la página del depósito vacío : "uploading an existing file"
+   → arrastrar TODO el contenido de esta carpeta, docs/ incluido
+   → Commit changes
+
+④ VOLVER A ENCENDER LAS PÁGINAS
+   Settings → Pages → Source : main / (root) → Save
+   caracole.github.io/Salufolio vuelve en un minuto.
+
+⑤ ZENODO (cuando quiera el DOI)
+   zenodo.org → Settings → GitHub → poner caracole/Salufolio en ON
+   luego, en GitHub : Releases → Draft a new release
+     Etiqueta : v2026.7.29.12
+     Título   : Salufolio 2026.7.29.12 — Protocolo móvil multipaciente
+     Publish release
+   Zenodo archiva y acuña el DOI en unos minutos.
+
+QUÉ CONTIENE ESTA CARPETA
+  index.html, blason_*.svg, README.md       la vitrina, intacta
+  Salufolio.html                            el expediente
+  Salufolio_Protocolo_movil.html            el Protocolo v2026.7.29.12-SAT
+  Salufolio_Protocolo_Manual.md             su manual (el README ya lo llamaba)
+  docs/                                     académico trilingüe, documentación, manual
+  LICENSE                                   GPL-3.0 completa (faltaba)
+  CITATION.cff, .zenodo.json                metadatos que Zenodo lee
+  ALINEACION_CMDIC.md, MODULES.md           conservados
+
+NO SE HAN INCLUIDO (dígamelo si los quiere de vuelta)
+  MediFolio.html, MediFolio_Protocolo.html, MediFolio_Protocolo/
+  — ficheros de la época anterior al rebautizo, que el README ya no cita.
+  Siguen en la copia de seguridad del Acer.

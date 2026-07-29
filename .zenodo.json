@@ -1,0 +1,20 @@
+{
+  "title": "Salufolio — expediente m\u00e9dico longitudinal local-first, y su Protocolo m\u00f3vil",
+  "description": "<p><strong>Salufolio</strong> es un expediente m\u00e9dico longitudinal local-first: un archivo HTML, sin servidor y sin nube, que re\u00fane una historia cl\u00ednica dispersa entre sistemas de salud que no se hablan y devuelve el expediente a quien le pertenece \u2014 el paciente y su cuidador.</p><p>El <strong>Protocolo m\u00f3vil</strong> es su componente de cabecera: un instrumento aut\u00f3nomo que se abre en el tel\u00e9fono situado junto a la cama y registra en un toque lo que acaba de ocurrir \u2014 tomas, constantes, hidrataci\u00f3n, registros del cuerpo, sesiones de ox\u00edgeno, episodios de urgencia y observaciones libres. Varios pacientes de una misma casa se guardan en casilleros separados. Los datos permanecen en el aparato del cuidador y viajan, cuando este lo decide, por la red dom\u00e9stica hacia el expediente.</p><p>El dep\u00f3sito incluye adem\u00e1s tres documentos: un documento acad\u00e9mico triling\u00fce (espa\u00f1ol, franc\u00e9s, ingl\u00e9s), una documentaci\u00f3n t\u00e9cnica y un manual de uso ilustrado.</p><p>Interfaz en espa\u00f1ol, valenciano, franc\u00e9s e ingl\u00e9s.</p>",
+  "upload_type": "software",
+  "license": "GPL-3.0-or-later",
+  "access_right": "open",
+  "language": "spa",
+  "creators": [
+    { "name": "Giraud, Pierre-Henri", "affiliation": "Les Useres, Castell\u00f3n, Espa\u00f1a" }
+  ],
+  "keywords": [
+    "expediente m\u00e9dico personal", "local-first", "soberan\u00eda del dato",
+    "cuidados domiciliarios", "cuidador informal", "registro a pie de cama",
+    "ergonom\u00eda del cuidado", "software libre", "personal health record", "home care"
+  ],
+  "related_identifiers": [
+    { "identifier": "https://salufolio.com", "relation": "isPartOf", "scheme": "url" },
+    { "identifier": "https://caracole.github.io/Salufolio", "relation": "isDocumentedBy", "scheme": "url" }
+  ]
+}

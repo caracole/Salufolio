@@ -1,0 +1,2719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
+<meta name="theme-color" content="#1e7a46">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0f1420">
+<title>Salufolio Protocolo</title>
+<style>
+:root{
+  --bg:#0f1420; --surface:#1a2130; --surface2:#232c40; --border:#2a3348;
+  --text:#e8ecf4; --muted:#8b94a8; --ok:#3fb950; --accent:#4f8ff7;
+  --warn:#d99922; --bad:#f85149; --radius:14px;
+}
+html[data-theme="light"]{
+  --bg:#eef1f6; --surface:#ffffff; --surface2:#e6eaf2; --border:#c8d1e0;
+  --text:#1b2330; --muted:#5b6577;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-size:18px}
+body{padding-top:128px;padding-bottom:84px;min-height:100vh}
+.mono{font-family:'IBM Plex Mono',Menlo,monospace}
+
+/* ── en-tête ── */
+header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bg);
+  border-bottom:1px solid var(--border);padding:8px 14px 8px}
+.ctrls{display:flex;gap:7px;justify-content:flex-end;margin-bottom:4px}
+.hbtn{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  min-width:40px;height:40px;font-size:17px;cursor:pointer;color:var(--text);padding:0 8px;font-weight:700}
+/* ── dialogues maison (adieu prompt/confirm agressifs) ── */
+.dlg-ov{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);display:flex;
+  align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
+.dlg{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:20px;width:100%;max-width:400px;box-shadow:0 14px 44px rgba(0,0,0,.5)}
+.dlg h3{margin:0 0 14px;font-size:18px}
+.dlg label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+.dlg input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+  color:var(--text);font-size:20px;padding:12px}
+.dlg .dbtns{display:flex;gap:10px;margin-top:18px}
+.dlg .dbtns button{flex:1;border-radius:12px;font-size:17px;font-weight:700;padding:14px;cursor:pointer}
+.dlg .dok{background:var(--accent);border:none;color:#fff}
+.dlg .dcan{background:none;border:2px solid var(--border);color:var(--muted)}
+.aviso{background:rgba(217,153,34,.13);border:1.5px solid var(--warn);border-radius:var(--radius);
+  padding:12px 14px;margin-bottom:14px;font-size:15px}
+.aviso .abtns{display:flex;gap:8px;margin-top:8px}
+.aviso button{flex:1;border-radius:10px;border:1px solid var(--border);background:var(--surface);
+  color:var(--text);font-size:14px;padding:10px;cursor:pointer}
+.aviso button.si{border-color:var(--ok);color:var(--ok);font-weight:700}
+.aviso button.no{border-color:var(--bad);color:var(--bad);font-weight:700}
+.fin{opacity:.55}
+.punt{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px dashed var(--border);
+  border-radius:var(--radius);padding:10px 14px;margin-bottom:8px;font-size:15px}
+header .fecha{font-size:26px;font-weight:700;text-transform:capitalize}
+header .sub{font-size:13px;color:var(--muted);margin-top:2px}
+header .lema{font-size:11px;color:var(--muted);font-style:italic;margin-top:6px;opacity:.8}
+
+/* ── navigation basse (pouce) ── */
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--surface);
+  border-top:1px solid var(--border);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:none;color:var(--muted);font-size:14px;font-weight:600;
+  padding:10px 0 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button .ico{font-size:27px}
+nav button.act{color:var(--accent)}
+nav button.act .ico{transform:scale(1.12)}
+
+main{padding:14px 14px 20px}
+.panel{display:none}.panel.act{display:block}
+h2{font-size:16px;letter-spacing:.5px;color:var(--muted);font-weight:700;
+  text-transform:uppercase;margin:18px 0 10px}
+
+/* ── LA SIGNATURE : pastilles de prises ── */
+.toma{display:flex;align-items:center;gap:14px;width:100%;text-align:left;
+  background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);
+  padding:16px;margin-bottom:12px;cursor:pointer;color:var(--text);font-size:18px;
+  transition:border-color .15s,background .15s}
+.toma .pastilla{width:46px;height:46px;border-radius:50%;border:3px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+  transition:all .15s}
+.toma .info{flex:1;min-width:0}
+.toma .nombre{font-weight:700}
+.toma .detalle{font-size:13px;color:var(--muted);margin-top:2px}
+.toma .hora{font-size:15px;color:var(--muted);white-space:nowrap}
+.toma.hecha{border-color:var(--ok);background:rgba(63,185,80,.08)}
+.toma.hecha .pastilla{border-color:var(--ok);background:var(--ok);color:#fff}
+.toma.hecha .hora{color:var(--ok);font-weight:700}
+
+/* ── constantes : gros pavés numériques ── */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cbox{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px}
+.cbox label{display:block;font-size:16px;color:var(--text);font-weight:600;margin-bottom:6px}
+.cbox input{width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;color:var(--text);font-size:26px;padding:10px;text-align:center;font-weight:700}
+.cbox input:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.cbox .unit{font-size:14px;color:var(--muted);text-align:center;margin-top:4px}
+
+/* ── observations : jetons tactiles ── */
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{background:var(--surface);border:2px solid var(--border);border-radius:24px;
+  color:var(--text);font-size:16px;padding:12px 18px;cursor:pointer}
+.chip.sel{border-color:var(--warn);background:rgba(217,153,34,.14);font-weight:700}
+/* Choix en cours dans la fenêtre : même feu que la chip. On le retouche
+   pour l'éteindre — c'est l'annulation, sans bouton supplémentaire. */
+.btn.sec.op-on{border-color:var(--warn);background:rgba(217,153,34,.18);font-weight:700}
+textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text);font-size:17px;padding:12px;min-height:80px;margin-top:12px}
+
+/* ── boutons génériques ── */
+.btn{display:block;width:100%;background:var(--accent);border:none;border-radius:var(--radius);
+  color:#fff;font-size:19px;font-weight:700;padding:16px;margin-top:14px;cursor:pointer}
+.btn.sec{background:var(--surface);border:2px solid var(--border);color:var(--text);font-weight:600}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.4}
+
+/* ── historial ── */
+.dia{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:12px 14px;margin-bottom:10px}
+.dia .df{font-weight:700;margin-bottom:6px;text-transform:capitalize}
+.dia .linea{font-size:14px;color:var(--muted);padding:3px 0;border-top:1px dashed var(--border)}
+.dia .linea b{color:var(--text)}
+.vacio{color:var(--muted);text-align:center;padding:40px 10px;font-size:15px}
+
+/* ── liste médicaments (Datos) ── */
+.medrow{display:flex;align-items:center;gap:10px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:8px}
+.medrow .mi{flex:1}.medrow .mn{font-weight:700}.medrow .md{font-size:13px;color:var(--muted)}
+.medrow button{background:none;border:none;color:var(--bad);font-size:20px;cursor:pointer;padding:6px}
+input.txt,select.txt{width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;color:var(--text);font-size:17px;padding:12px;margin-bottom:8px}
+.pie{font-size:10px;color:var(--muted);text-align:center;margin-top:26px;line-height:1.5}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;background:var(--ok);
+  color:#fff;font-weight:700;padding:12px 22px;border-radius:24px;z-index:99;
+  box-shadow:0 6px 20px rgba(0,0,0,.5);opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:1}
+.reloj{display:inline-block;animation:gira 1.4s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+/* v23.4 — listes déroulantes lisibles (P-H : « texte blanc/blanc ») :
+   color-scheme aligne les widgets natifs (options, calendriers, pickers)
+   sur le thème actif, et les options héritent des couleurs de la maison. */
+html[data-theme=dark]{color-scheme:dark}
+html[data-theme=light]{color-scheme:light}
+select option{background:var(--surface);color:var(--text)}
+.ropt input{position:absolute;opacity:0;pointer-events:none}
+.ropt span{display:inline-block;padding:6px 12px;border:1px solid var(--border);border-radius:14px;font-size:13px;cursor:pointer;color:var(--muted)}
+.ropt input:checked+span{background:rgba(232,161,60,.22);border-color:#e8a13c;color:var(--text);font-weight:700}
+.popt{background:none;padding:6px 12px;border:1px solid var(--border);border-radius:14px;font-size:13px;cursor:pointer;color:var(--muted);font-family:inherit}
+.popt.flash{background:rgba(232,161,60,.22);border-color:#e8a13c;color:var(--text);font-weight:700}
+/* Bouton allumé : quelque chose a été bu. Gris, personne n'a bu. */
+.popt.on{background:rgba(232,161,60,.22);border-color:#e8a13c;color:var(--text);font-weight:700}
+.dlg{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;width:100%;max-width:420px}
+/* Fenêtre à liste : elle ne dépasse jamais l'écran. La question reste en
+   haut, le bouton reste en bas, et c'est la liste qui défile. */
+.dlg.lista{padding:14px 14px 12px;display:flex;flex-direction:column}
+.dlg.lista .lista-cuerpo{display:flex;flex-direction:column;gap:6px;overflow:auto;flex:1;min-height:0;-webkit-overflow-scrolling:touch}
+.dlg.lista .lista-cuerpo .btn{margin-top:0;padding:11px 12px;font-size:17px}
+.dlg.lista > .btn{margin-top:10px;padding:13px;font-size:18px}
+.dlg.lista .lista-tit{font-size:16px;font-weight:700;margin-bottom:8px;text-align:center}
+.dlg.lista .lista-pie{font-size:11px;color:var(--muted);margin-top:8px;text-align:center}
+.trio-tot{margin-left:auto;font-size:12.5px;color:var(--muted);font-weight:700;white-space:nowrap;text-align:right}
+.matrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin:8px 0}
+.matrow>b{min-width:0}
+.matrow.mat-on{border-color:#3dbf7f;background:rgba(61,191,127,.10)}
+.matctrl{margin-left:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:10px;row-gap:8px}
+.matnum{font-size:22px;min-width:34px;text-align:center}
+.matud{font-size:12px;color:var(--muted)}
+.matinput{width:74px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:20px;font-weight:700;padding:8px;text-align:center}
+.stepper{width:44px;height:44px;font-size:20px;background:none;border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer}
+.btn-sw{background:none;border:1px solid var(--border);border-radius:20px;color:var(--text);font-size:14px;font-weight:700;padding:9px 16px;cursor:pointer;white-space:nowrap}
+.btn-sw.on{border-color:#3dbf7f;background:rgba(61,191,127,.18)}
+/* ═══ BASCULEUR (P-H 28/07) — la réplique de l'interrupteur de l'appareil.
+   Deux faces qui pivotent autour de l'arête centrale : celle qu'on enfonce
+   part en arrière, l'autre ressort. Aucun mot : O et I se lisent dans les
+   quatre langues. La face enfoncée s'allume quand la machine tourne. ═══ */
+.matrow.u112-on{border-color:#d5241a;background:rgba(213,36,26,.09)}
+/* état 1 — la personne est sortie : ce n'est plus l'urgence, c'est
+   l'attente du retour. La couleur le dit sans un mot. */
+.matrow.u112-fuera{border-color:var(--warn);background:rgba(217,153,34,.12)}
+.pac-fila{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:2px}
+.pac-sel{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:10px;
+  font-size:17px;font-weight:800;padding:6px 10px;max-width:62vw;font-family:inherit}
+.pac-btn{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:10px;
+  font-size:16px;padding:6px 10px;cursor:pointer;line-height:1}
+.pac-vacio{font-size:15px;color:var(--muted);font-style:italic}
+/* Le témoin des mesures du jour. Une case vide et une valeur perdue se
+   ressemblent trop : celui-ci montre que la journée a déjà ses mesures,
+   pendant que le formulaire reste neuf pour la suivante. */
+.const-hoy{margin-top:8px}
+.const-hoy .ch-tit{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.const-hoy .ch-lin{font-size:14px;padding:5px 10px;border:1px solid var(--border);border-radius:9px;margin-bottom:5px}
+.const-hoy .ch-lin b{font-variant-numeric:tabular-nums}
+.rocker{position:relative;width:50px;height:52px;flex:none;padding:4px;border:0;
+  border-radius:9px;background:linear-gradient(#4a5057,#23272d);cursor:pointer;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.55),0 2px 5px rgba(0,0,0,.35);
+  -webkit-tap-highlight-color:transparent;perspective:120px}
+.rocker .fa{position:absolute;left:4px;right:4px;height:21px;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font:700 12px/1 system-ui,sans-serif;letter-spacing:.5px;color:#c8cdd4;
+  background:linear-gradient(#e9edf2,#b9c0c9);text-shadow:none;
+  transition:transform .14s ease,filter .14s ease,background .14s ease,box-shadow .14s ease}
+.rocker .fa-o{top:4px;transform-origin:bottom center}
+.rocker .fa-i{bottom:4px;transform-origin:top center}
+/* repos : O ressorti, I enfoncé */
+.rocker .fa-o{transform:rotateX(14deg);color:#33383f;box-shadow:0 1px 2px rgba(0,0,0,.35)}
+.rocker .fa-i{transform:rotateX(-30deg);filter:brightness(.62);color:#4a4f56}
+/* en marche : I ressorti et allumé, O enfoncé */
+.rocker.on .fa-o{transform:rotateX(-30deg);filter:brightness(.62);color:#4a4f56;box-shadow:none}
+.rocker.on .fa-i{transform:rotateX(14deg);filter:none;
+  background:linear-gradient(#ff6a5a,#d5241a);color:#fff3f1;
+  box-shadow:0 1px 2px rgba(0,0,0,.35),0 0 12px rgba(255,60,40,.75)}
+.rocker:active{box-shadow:inset 0 0 0 1px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.35)}
+.hbtn2{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:16px;padding:6px 9px;cursor:pointer}
+.acc{border:1px solid var(--border);border-radius:12px;margin:10px 0;overflow:hidden;background:var(--surface)}
+.acc summary{list-style:none;cursor:pointer;padding:13px 14px;font-weight:700;font-size:16px;display:flex;align-items:center}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:'▸';margin-left:auto;color:var(--muted);transition:transform .2s}
+.acc[open] summary::after{transform:rotate(90deg)}
+.accb{padding:2px 14px 14px}
+.nota-campo{font-size:12px;color:var(--muted);margin:2px 0 4px;line-height:1.4}
+input:focus,textarea:focus,select:focus{background:rgba(232,161,60,.14)!important;outline:1px solid rgba(232,161,60,.5)}
+</style>
+</head>
+<body>
+
+<header>
+  <svg id="hdr-logo" viewBox="0 0 240 240" width="44" height="44" style="position:absolute;left:12px;top:10px;opacity:.95"><line x1="120" y1="178" x2="4" y2="124" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><line x1="120" y1="178" x2="24" y2="94" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><line x1="120" y1="178" x2="51" y2="70" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><line x1="120" y1="178" x2="84" y2="55" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><line x1="120" y1="178" x2="120" y2="50" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><line x1="120" y1="178" x2="156" y2="55" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><line x1="120" y1="178" x2="189" y2="70" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><line x1="120" y1="178" x2="216" y2="94" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><line x1="120" y1="178" x2="236" y2="124" stroke="#e8a13c" stroke-width="9" stroke-linecap="round"/><path d="M4,124 Q2,101 24,94 Q28,71 51,70 Q62,50 84,55 Q100,39 120,50 Q140,39 156,55 Q178,50 189,70 Q212,71 216,94 Q238,101 236,124 " fill="none" stroke="#e8a13c" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><path d="M100,178 h40 l-7,16 h-26 z" fill="#e8a13c"/></svg>
+  <span id="pc-antena" onclick="sondearPc(true)" title="Salufolio en el PC" style="position:absolute;left:56px;top:22px;font-size:16px;display:none;cursor:pointer;padding:3px 7px;border-radius:12px;border:1px solid var(--border);background:var(--surface)">📡</span>
+  <div class="ctrls">
+    <button class="hbtn" id="btn-theme" onclick="toggleTheme()">🌙</button>
+    <button class="hbtn" id="btn-lang" onclick="cycleLang()">ES</button>
+    <button class="hbtn" onclick="zoomMas(-1)">A−</button>
+    <button class="hbtn" onclick="zoomMas(1)">A＋</button>
+    <button class="hbtn" onclick="verAyuda()">❓</button>
+    <button class="hbtn" id="btn-panal" onclick="location.href='index.html'" style="display:none" title="Volver al panal">🐝</button>
+  </div>
+  <div class="fecha" id="hdr-fecha" style="font-size:19px"></div>
+  <div id="hdr-patient" style="font-size:19px;font-weight:800;color:var(--text);margin-top:2px"></div>
+  <div class="sub" id="hdr-sub" style="font-size:10px;opacity:.75">Salufolio Protocolo</div>
+</header>
+
+<main>
+  <!-- ═══ HOY : les prises ═══ -->
+  <section id="p-hoy" class="panel act">
+    <div id="avisos"></div>
+    <!-- Corriger un jour passé (P-H 16/07) : on recule, on répare, on revient -->
+    <div id="dia-nav" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:2px 0 10px">
+      <button class="btn sec" onclick="diaMas(-1)" style="padding:6px 14px;font-size:17px;min-width:44px">◀</button>
+      <span id="dia-etiqueta" onclick="abrirSelectorDia()" style="font-size:15px;font-weight:700;min-width:120px;text-align:center;cursor:pointer;text-decoration:underline dotted 1px"></span>
+      <input type="date" id="dia-fecha" onchange="irADia(this.value)" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
+      <button class="btn sec" onclick="diaMas(1)" id="dia-siguiente" style="padding:6px 14px;font-size:17px;min-width:44px">▶</button>
+    </div>
+    <div id="dia-aviso" style="display:none;background:var(--warn);color:#1a1200;border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:13.5px;font-weight:700;text-align:center">
+      ✎ <span id="dia-aviso-txt"></span> — <span style="text-decoration:underline;cursor:pointer" onclick="volverHoy()">volver a hoy</span>
+    </div>
+    <h2 id="i-thoy"></h2>
+    <div id="tomas-lista"></div>
+    <div id="puntuales"></div>
+    <h2 id="i-tmat"></h2>
+    <div id="material"></div>
+    <div id="u112"></div>
+    <button class="btn sec" onclick="tomaPuntual()" id="i-bpunt"></button>
+    <button class="btn sec" onclick="irPauta()" style="margin-top:8px">✏️ <span id="i-bpauta"></span></button>
+  </section>
+
+  <!-- ═══ CONSTANTES ═══ -->
+  <section id="p-const" class="panel">
+    <h2 id="i-tconst"></h2>
+    <div class="cgrid">
+      <div class="cbox"><label id="i-ctas"></label><input id="c-tas" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></div>
+      <div class="cbox"><label id="i-ctad"></label><input id="c-tad" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></div>
+      <div class="cbox"><label id="i-cfc"></label><input id="c-fc" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">lpm</div></div>
+      <div class="cbox"><label id="i-cspo2"></label><input id="c-spo2" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">%</div></div>
+      <div class="cbox"><label id="i-cpeso"></label><input id="c-peso" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><div class="unit">kg</div></div>
+      <div class="cbox"><label id="i-ctemp"></label><input id="c-temp" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><div class="unit">°C</div></div>
+      <div class="cbox" style="grid-column:1/-1"><label id="i-lhmed"></label><div style="display:flex;gap:6px;align-items:center"><input id="c-hora" autocomplete="off" type="text" inputmode="numeric" placeholder="hh:mm" maxlength="5" style="font-size:20px;flex:1"><button type="button" class="hbtn2" onclick="reloj('c-hora')">🕐</button></div></div>
+    </div>
+    <div id="const-estado" style="font-size:12.5px;color:var(--muted);min-height:18px;margin-top:6px;text-align:center"></div>
+    <div id="const-hoy" class="const-hoy"></div>
+  </section>
+
+  <!-- ═══ NOTAS / OBSERVACIONES ═══ -->
+  <section id="p-notas" class="panel">
+    <h2 id="i-tnotas"></h2>
+    <div class="chips" id="chips"></div>
+    <!-- v23.1 ⑧ (P-H) : el cuerpo entero — hidratación y eliminación -->
+    <div style="border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin:10px 0">
+      <div style="display:flex;flex-wrap:wrap;row-gap:6px;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:17px">💧</span><b id="i-lhid">Hidratación</b>
+        <span style="flex:1;display:flex;gap:6px;flex-wrap:wrap"><button class="popt" id="hid-btn" onclick="pedirBebida()"></button></span></div>
+      <div style="display:flex;flex-wrap:wrap;row-gap:6px;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:17px">🩹</span><b id="i-lpanal"></b>
+        <span style="flex:1;display:flex;gap:6px;flex-wrap:wrap"><button class="popt" id="panal-btn" onclick="regPanal()"></button></span></div>
+      <div style="display:flex;flex-wrap:wrap;row-gap:6px;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:17px">🚽</span><b id="i-ldep">Deposición</b>
+        <span style="flex:1;display:flex;gap:6px;flex-wrap:wrap"><button class="popt" id="i-dnorm" onclick="regDep(this,'normal')">normal</button><button class="popt" id="i-ddura" onclick="regDep(this,'dura')">dura</button><button class="popt" id="i-dliq" onclick="regDep(this,'líquida')">líquida</button></span><span id="dep-total" class="trio-tot"></span></div>
+      <div style="display:flex;flex-wrap:wrap;row-gap:6px;align-items:center;gap:8px"><span style="font-size:17px">💦</span><b id="i-lmic">Micción</b>
+        <span style="flex:1;display:flex;gap:6px;flex-wrap:wrap"><button class="popt" id="i-mnorm" onclick="regMic(this,'normal')">normal</button><button class="popt" id="i-mesc" onclick="regMic(this,'escasa')">escasa</button><button class="popt" id="i-mfrec" onclick="regMic(this,'frecuente')">frecuente</button></span><span id="mic-total" class="trio-tot"></span></div>
+
+    </div>
+    <textarea id="nota-libre" autocomplete="off" placeholder="Nota libre (opcional)…"></textarea>
+    <div style="margin-top:10px"><button type="button" class="btn sec" style="width:100%" onclick="pedirCorrigeHora()">🕐 <span id="i-bcorr"></span></button></div>
+    <div id="obs-estado" style="font-size:12.5px;color:var(--muted);min-height:18px;margin-top:6px;text-align:center"></div>
+  </section>
+
+  <!-- ═══ DATOS : historial + export + config ═══ -->
+  <section id="p-datos" class="panel">
+    <div id="instalar-wrap" style="display:none;margin-bottom:14px">
+      <button class="btn" style="width:100%;font-size:15px;padding:12px" onclick="location.href='/protocolo/instalar'">⬇ <span id="i-binst"></span></button>
+      <div style="font-size:10.5px;color:var(--muted);margin-top:4px" id="i-binst-nota"></div>
+    </div>
+    <!-- v23.17 : L'ACCORDÉON — la page respire, un chapitre à la fois (P-H : « LOURD ») -->
+    <details class="acc" id="acc-pac"><summary><span id="i-tpac2"></span></summary><div class="accb">
+      <input class="txt" id="cfg-patient2" autocomplete="off" placeholder="Nombre / etiqueta" onchange="setPatient(this.value)">
+      <div class="nota-campo" id="i-lsip"></div>
+      <input class="txt" id="cfg-sip" autocomplete="off" inputmode="numeric" placeholder="SIP" onchange="setSip(this.value)">
+    </div></details>
+    <details class="acc" id="acc-meds"><summary><span id="i-tmeds"></span></summary><div class="accb">
+      <div id="meds-lista"></div>
+      <button class="btn sec" onclick="nmToggle()" id="i-baddmed"></button>
+      <div id="nm-form" style="display:none">
+        <input class="txt" id="nm-nombre" placeholder="Nombre (ej. Paracetamol)">
+        <input class="txt" id="nm-dosis" placeholder="Dosis (ej. 20 mg)">
+        <div class="nota-campo" id="i-lfin"></div>
+        <input class="txt" id="nm-hasta" type="date">
+        <select class="txt" id="nm-momento">
+          <option value="desayuno">Desayuno</option><option value="comida">Comida</option>
+          <option value="cena">Cena</option><option value="noche">Noche</option>
+          <option value="demanda">A demanda</option>
+        </select>
+        <button class="btn" onclick="agregarMed()">✓ Añadir</button>
+      </div>
+    </div></details>
+    <details class="acc" id="acc-avisos"><summary><span id="i-avisos"></span></summary><div class="accb">
+      <button class="hbtn" id="btn-avisos" onclick="toggleAvisos()" style="width:100%;padding:12px 16px;font-size:17px;font-weight:700;height:auto"></button>
+      <div class="nota-campo" style="text-align:center;margin-top:4px" id="i-avisos-nota"></div>
+      <div id="avisos-horas" class="cgrid" style="grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:8px"></div>
+    </div></details>
+    <details class="acc" id="acc-hist"><summary><span id="i-thist"></span></summary><div class="accb">
+      <div id="historial"></div>
+    </div></details>
+    <details class="acc" id="acc-comp"><summary><span id="i-tcomp"></span></summary><div class="accb">
+      <button class="btn" onclick="exportarJSON()" id="i-bdesc"></button>
+      <button class="btn sec" id="i-brest" onclick="var f=document.getElementById('rest-file');if(f)f.click()"></button>
+      <input type="file" id="rest-file" accept=".json,application/json" style="display:none" onchange="if(this.files[0])restaurarArchivo(this.files[0]);this.value=''">
+      <button class="btn sec" onclick="compartir()" id="i-bcomp"></button>
+      <button class="btn" onclick="enviarSalufolio()" id="i-benv"></button>
+      <div class="nota-campo" style="margin-top:8px" id="i-lpc"></div>
+      <input class="txt" id="cfg-pc" autocomplete="off" placeholder="http://192.168.1.20:7777" onchange="setPc(this.value);sondearPc()" style="margin-top:4px">
+      <div id="pc-estado" style="font-size:12px;margin-top:6px;min-height:16px;color:var(--muted)"></div>
+      <div class="nota-campo" style="margin-top:6px"><span id="i-expnota"></span></div>
+    </div></details>
+    <details class="acc" id="acc-fb"><summary><span id="i-tfb"></span></summary><div class="accb">
+      <div id="fb-caritas" style="font-size:26px;display:flex;gap:14px;justify-content:center;margin:4px 0 10px">
+        <span style="cursor:pointer;opacity:.4" onclick="fbCarita(this)">😡</span><span style="cursor:pointer;opacity:.4" onclick="fbCarita(this)">😞</span><span style="cursor:pointer;opacity:.4" onclick="fbCarita(this)">😐</span><span style="cursor:pointer;opacity:.4" onclick="fbCarita(this)">😊</span><span style="cursor:pointer;opacity:.4" onclick="fbCarita(this)">🤩</span>
+      </div>
+      <textarea id="fb-texto" class="txt" oninput="fbBoton()" placeholder="…" style="height:74px"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn sec" id="fb-anular" style="flex:1;display:none" onclick="fbAnular()"><span id="i-fbanul"></span></button>
+        <button class="btn" id="fb-env" style="flex:2;display:none" onclick="fbGuardarConCarita(this)"><span id="i-fbenv"></span></button>
+      </div>
+      <button class="hbtn2" style="width:100%;margin-top:10px;font-size:12px" onclick="mfpFbDescargar()">⬇ comentarios</button>
+    </div></details>
+    <div class="pie">
+      Salufolio Protocolo <span id="ver" class="mono"></span><br>
+      © Pierre-Henri Giraud, con la colaboración de Claude (Anthropic) — MediFolio@proton.me<br>
+      <span id="i-dispsolo"></span>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button id="nav-hoy" class="act" onclick="ir('hoy')"><span class="ico">💊</span><span id="i-nhoy"></span></button>
+  <button id="nav-const" onclick="ir('const')"><span class="ico">🩺</span><span id="i-nconst"></span></button>
+  <button id="nav-notas" onclick="ir('notas')"><span class="ico">📝</span><span id="i-nnotas"></span></button>
+  <button id="nav-datos" onclick="ir('datos')"><span class="ico">📦</span><span id="i-ndatos"></span></button>
+</nav>
+<button id="subir" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;right:14px;bottom:96px;z-index:70;width:52px;height:52px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:22px;box-shadow:0 6px 18px rgba(0,0,0,.4);cursor:pointer">⬆</button>
+<div class="toast" id="toast"></div>
+
+<script>
+/* v23.7-diag — LE MORT PARLE : toute erreur d'exécution s'affiche en
+   bannière rouge sur l'écran (autopsie sans F12, doctrine NIET). */
+window.onerror = function (msg, src, line, col) {
+  try {
+    var d = document.getElementById('diag-err');
+    if (!d) {
+      d = document.createElement('div');
+      d.id = 'diag-err';
+      d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#8b1a1a;color:#fff;font:13px/1.5 monospace;padding:10px 14px;white-space:pre-wrap;word-break:break-all';
+      document.body ? document.body.appendChild(d) : document.documentElement.appendChild(d);
+    }
+    d.textContent += '💥 ' + msg + '\n   línea ' + line + ':' + col + '\n';
+  } catch (e) {}
+  return false;
+};
+/* ════════════════════════════════════════════════════════════════
+   Salufolio Protocolo (móvil) — suivi quotidien monofichier hors-ligne
+   Données locales (localStorage, clés mfp_*) ; export JSON compatible
+   avec l'écosystème Salufolio (import à venir côté Salufolio).
+════════════════════════════════════════════════════════════════ */
+/* Adresse du PC injectée par le serveur au téléchargement (« Instalar en
+   este teléfono ») — l'app locale naît déjà configurée. */
+const MFP_PC_DEF = '';
+const MFP_VERSION = '2026.7.29.12-SAT';
+/* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
+   en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
+const IDIOMAS = {
+  es: {
+    sw_ini:"Iniciar",
+    sw_fin:"Parar",
+    zona_tit:"¿Dónde?",caida_cabeza:"En la cabeza",caida_cadera:"En la cadera",caida_nalgas:"En las nalgas",caida_singolpe:"Sin golpe",
+    zona_gen:"General",
+    cab_frontal:"Frontal",
+    cab_nuca:"Nuca",
+    esp_alta:"Zona alta",
+    esp_baja:"Zona baja (lumbar)",
+    lado_ambos:"Ambos",
+    lado_ambas:"Ambas",
+    grado_tit:"¿Cuándo?",
+    grd_comidas:"Tras las comidas",
+    grd_diaosc:"Todo el día",
+    come_tit:"¿Cómo comió?",
+    come_media:"Deja media ración",
+    come_rechaza:"Rechaza alimentos",
+    come_insiste:"Come si se insiste",
+    b_pauta:"Medicamentos y pauta",
+    l_hid:"Hidratación",
+    l_dep:"Deposición",
+    pac_anadir:"Añadir paciente",
+    pac_borrar:"Borrar paciente",
+    pac_ninguno:"Ningún paciente",
+    pac_nombre:"Nombre",
+    pac_nuevo:"✚ Paciente nuevo",
+    pac_primero:"Primer paciente",
+    pac_borrar_q:"¿Borrar este paciente?",
+    pac_borrar_av:"días registrados se perderán.", pac_borrar_av_1:"día registrado se perderá.",
+    pac_exp_borrar:"⬇ Exportar y borrar",
+    pac_solo_borrar:"Borrar sin exportar",
+    ocup_tit:"¿Ocupaciones?",
+    ocup_nada:"Nada",
+    ocup_camina:"Caminar",
+    ocup_siesta:"Siesta",
+    ocup_lee:"Lectura",
+    ocup_escribe:"Escritura",
+    ocup_dibuja:"Dibujo",
+    ocup_tv:"Televisión",
+    ocup_habla:"Conversación",
+    b_corr:"Corregir una hora…",
+    corr_tit:"¿Qué hora corregir?",
+    corr_nada:"Hoy no hay nada anotado todavía.",
+    u112_lleg:"Llegada",
+    beb_agua:"Agua",
+    beb_cafe:"Café",
+    beb_zumo:"Zumo de fruta",
+    beb_te:"Té",
+    pop_hora:"La hora se guarda sola.",
+    u112_tit:"Urgencias 112",
+    u112_llam:"Llamada",
+    u112_sal:"Salida",
+    u112_reg:"Regreso",
+    l_panal:"Cambio de pañal",
+    chip_anul:"Anulado",
+    /* deux formes déclarées ; le nombre choisit, il ne fabrique pas */
+    dep_normal:"Normales", dep_normal_1:"Normal",
+    dep_dura:"Duras", dep_dura_1:"Dura",
+    dep_liq:"Líquidas", dep_liq_1:"Líquida",
+    mic_normal:"Normales", mic_normal_1:"Normal",
+    mic_escasa:"Escasas", mic_escasa_1:"Escasa",
+    mic_frec:"Frecuentes", mic_frec_1:"Frecuente",
+    b_panal:"pañales", b_panal_1:"pañal",
+    ph_vasos:"vasos", ph_vasos_1:"vaso",
+    ph_vasos:"vasos", tri_hoy:"hoy:", tri_ult:"últ.", ev_otra:"¿otra hora?",
+    l_mic:"Micción",
+    trio_hint:"Cada ＋ registra al instante, con la hora de ahora (corríjala luego en Datos si hace falta).",
+    t_fb:"💬 Comentario",
+    b_fbenv:"Enviar",
+    b_fbanul:"Anular",
+    b_restaurar:"📂 Restaurar copia",
+    disp_solo:"Los datos viven en este dispositivo.",
+    pc_off:"⚪ Sin conexión.<br>Si Salufolio no responde : comprobar que esté abierto en el ordenador, que el teléfono use el mismo WiFi, y la dirección de abajo.",
+    pc_on:"🟢 Salufolio responde en el ordenador — puede enviar.",
+    lado_tit:"¿Qué lado?",
+    lado_izq:"Izquierdo",
+    lado_der:"Derecho",
+    ay_tit:"❓ Cómo se usa",
+    ay_hoy:"<b>💊 Hoy</b> — toque cada medicamento cuando se tome : queda registrado con la hora. ¿Se registró tarde? <b>Toque la hora</b> para corregirla. Un toque de más se anula tocando otra vez. «Toma puntual» registra una toma fuera de la lista ; si el medicamento está « a demanda », se elige de un toque.",
+    ay_const:"<b>🩺 Constantes</b> — rellene solo lo medido ; la hora se puede corregir. Se guarda solo.",
+    ay_notas:"<b>📝 Notas</b> — toque lo observado (hidratación, deposición, micción) : queda anotado con la hora, y el resumen del día aparece a la derecha. Son las preguntas del <i>informe para la consulta</i>.",
+    ay_datos:"<b>📦 Datos</b> — paciente y pauta, historial, y la salida : <b>⬇️</b> guardar o <b>📡</b> enviar una copia al ordenador (Salufolio la importará), y <b>📂 Restaurar</b> una copia en un teléfono nuevo.",
+    ay_ayer:"<b>Si ayer quedó una toma sin registrar</b>, la app lo pregunta al abrir. Ante dudas sobre una dosis, consulte el prospecto o al médico — la app registra, no aconseja.",
+    ay_disp:"Los datos viven en este dispositivo.",
+    ay_ok:"Entendido", hoy:'Hoy', consts:'Constantes', notas:'Notas', datos:'Datos',
+    t_hoy:'Medicación de hoy — toque cuando se tome · toque la hora para corregirla',
+    t_const:'Constantes — deje vacío lo no medido', t_notas:'¿Qué se observa hoy? — toque lo que aplique',
+    t_hist:'Últimos 7 días', t_comp:'Guardar y compartir', t_meds:'Medicamentos configurados', t_pac:'Paciente',
+    b_gconst:'💾 Guardar constantes', b_gobs:'💾 Guardar observación', b_punt:'➕ Registrar toma puntual…',
+    b_desc:'⬇️ Guardar copia de los datos', b_copi:'📋 Copiar datos', b_comp:'📤 Compartir…', b_addmed:'➕ Añadir medicamento',
+    hora_med:'Hora de la medición (corregible)', hora_obs:'Hora de la observación (corregible)',
+    fin_trat:'Fin del tratamiento (opcional)', nota_ph:'Nota libre (opcional)…',
+    ayer_sin:'Ayer quedó sin registrar', si_tomo:'✓ Sí se tomó…', no_tomo:'✗ No se tomó',
+    duda:'Ante dudas sobre una dosis olvidada, consulte el prospecto o al médico.',
+    pendiente:'pendiente', quedan:'quedan', dia:'día', dias:'días', hasta:'hasta',
+    fin_lista:'Tratamientos finalizados — revisar con el médico', finalizo:'finalizó el', feedback:'✉️ Enviar un comentario', fb_sujeto:'Protocolo móvil — comentario',
+    d_punt:'Toma puntual', d_med:'Medicamento (ej. Paracetamol 650 mg)', d_hora:'Hora (HH:MM)',
+    d_hora_ayer:'¿A qué hora se tomó ayer?', d_corr:'Corregir hora de la toma', d_quitar:'¿Quitar de la lista?',
+    d_ok:'Aceptar', d_can:'Cancelar', omitida:'omitida', puntual:'puntual',
+    exp_nota:'La copia guardada (⬇️) o enviada (📡) es la que Salufolio importará en el ordenador.',
+    b_env:'📡 Enviar a Salufolio', pc_label:'Dirección de Salufolio en el PC (opcional, ej. http://192.168.1.20:7777)',
+    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono (app local, sin PC)', inst_nota:'Descarga la app ya configurada. Ábrala desde Descargas — funciona siempre, aunque el ordenador esté apagado. 📡 enviará cuando el PC esté encendido.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂', c_peso:'Peso', c_temp:'Temperatura', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria, opcional)', env_ok:'✓ Recibido en el ordenador', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
+  va: {
+    sw_ini:"Iniciar",
+    sw_fin:"Parar",
+    zona_tit:"On?",caida_cabeza:"Al cap",caida_cadera:"Al maluc",caida_nalgas:"A les natges",caida_singolpe:"Sense colp",
+    zona_gen:"General",
+    cab_frontal:"Frontal",
+    cab_nuca:"Clatell",
+    esp_alta:"Zona alta",
+    esp_baja:"Zona baixa (lumbar)",
+    lado_ambos:"Tots dos",
+    lado_ambas:"Totes dues",
+    grado_tit:"Quan?",
+    grd_comidas:"Després de menjar",
+    grd_diaosc:"Tot el dia",
+    come_tit:"Com ha menjat?",
+    come_media:"Deixa mitja ració",
+    come_rechaza:"Rebutja el menjar",
+    come_insiste:"Menja si s’insisteix",
+    b_pauta:"Medicaments i pauta",
+    l_hid:"Hidratació",
+    l_dep:"Deposició",
+    pac_anadir:"Afegir pacient",
+    pac_borrar:"Esborrar pacient",
+    pac_ninguno:"Cap pacient",
+    pac_nombre:"Nom",
+    pac_nuevo:"✚ Pacient nou",
+    pac_primero:"Primer pacient",
+    pac_borrar_q:"Esborrar aquest pacient?",
+    pac_borrar_av:"dies registrats es perdran.", pac_borrar_av_1:"dia registrat es perdrà.",
+    pac_exp_borrar:"⬇ Exportar i esborrar",
+    pac_solo_borrar:"Esborrar sense exportar",
+    ocup_tit:"Ocupacions?",
+    ocup_nada:"Res",
+    ocup_camina:"Caminar",
+    ocup_siesta:"Migdiada",
+    ocup_lee:"Lectura",
+    ocup_escribe:"Escriptura",
+    ocup_dibuja:"Dibuix",
+    ocup_tv:"Televisió",
+    ocup_habla:"Conversa",
+    b_corr:"Corregir una hora…",
+    corr_tit:"Quina hora corregir?",
+    corr_nada:"Hui encara no hi ha res anotat.",
+    u112_lleg:"Arribada",
+    beb_agua:"Aigua",
+    beb_cafe:"Café",
+    beb_zumo:"Suc de fruita",
+    beb_te:"Te",
+    pop_hora:"L’hora es guarda sola.",
+    u112_tit:"Urgències 112",
+    u112_llam:"Trucada",
+    u112_sal:"Eixida",
+    u112_reg:"Tornada",
+    l_panal:"Canvi de bolquer",
+    chip_anul:"Anul·lat",
+    /* deux formes déclarées ; le nombre choisit, il ne fabrique pas */
+    dep_normal:"Normals", dep_normal_1:"Normal",
+    dep_dura:"Dures", dep_dura_1:"Dura",
+    dep_liq:"Líquides", dep_liq_1:"Líquida",
+    mic_normal:"Normals", mic_normal_1:"Normal",
+    mic_escasa:"Escasses", mic_escasa_1:"Escassa",
+    mic_frec:"Freqüents", mic_frec_1:"Freqüent",
+    b_panal:"bolquers", b_panal_1:"bolquer",
+    ph_vasos:"gots", ph_vasos_1:"got",
+    tri_hoy:"hui:", tri_ult:"últ.", ev_otra:"una altra hora?",
+    l_mic:"Micció",
+    trio_hint:"Cada ＋ registra a l’instant, amb l’hora d’ara (corregiu-la després a Dades si cal).",
+    t_fb:"💬 Comentari",
+    b_fbenv:"Enviar",
+    b_fbanul:"Anul·lar",
+    b_restaurar:"📂 Restaurar còpia",
+    disp_solo:"Les dades viuen en este dispositiu.",
+    pc_off:"⚪ Sense connexió.<br>Si Salufolio no respon : comproveu que estiga obert a l’ordinador, que el telèfon use el mateix WiFi, i l’adreça de baix.",
+    pc_on:"🟢 Salufolio respon a l’ordinador — podeu enviar.",
+    lado_tit:"Quin costat?",
+    lado_izq:"Esquerre",
+    lado_der:"Dret",
+    ay_tit:"❓ Com es fa servir",
+    ay_hoy:"<b>💊 Hui</b> — toqueu cada medicament quan es prenga : queda registrat amb l’hora. Registrat tard? <b>Toqueu l’hora</b> per corregir-la. Un toc de més s’anul·la tocant una altra vegada. «Presa puntual» registra una presa fora de la llista ; si el medicament és « a demanda », es tria amb un toc.",
+    ay_const:"<b>🩺 Constants</b> — ompliu només el mesurat ; l’hora es pot corregir. Es guarda sol.",
+    ay_notas:"<b>📝 Notes</b> — toqueu l’observat (hidratació, deposició, micció) : queda anotat amb l’hora, i el resum del dia apareix a la dreta. Són les preguntes de l’<i>informe per a la consulta</i>.",
+    ay_datos:"<b>📦 Dades</b> — pacient i pauta, historial, i l’eixida : <b>⬇️</b> guardar o <b>📡</b> enviar una còpia a l’ordinador (Salufolio la importarà), i <b>📂 Restaurar</b> una còpia en un telèfon nou.",
+    ay_ayer:"<b>Si ahir va quedar una presa sense registrar</b>, l’app ho pregunta en obrir. Davant dubtes sobre una dosi, consulteu el prospecte o el metge — l’app registra, no aconsella.",
+    ay_disp:"Les dades viuen en este dispositiu.",
+    ay_ok:"Entesos", hoy:'Hui', consts:'Constants', notas:'Notes', datos:'Dades',
+    t_hoy:'Medicació de hui — toque quan es prenga · toque l\'hora per a corregir-la',
+    t_const:'Constants — deixe buit el que no s\'haja mesurat', t_notas:'Què s\'observa hui? — toque el que aplique',
+    t_hist:'Últims 7 dies', t_comp:'Guardar i compartir', t_meds:'Medicaments configurats', t_pac:'Pacient',
+    b_gconst:'💾 Guardar constants', b_gobs:'💾 Guardar observació', b_punt:'➕ Registrar presa puntual…',
+    b_desc:'⬇️ Guardar còpia de les dades', b_copi:'📋 Copiar dades', b_comp:'📤 Compartir…', b_addmed:'➕ Afegir medicament',
+    hora_med:'Hora de la mesura (corregible)', hora_obs:'Hora de l\'observació (corregible)',
+    fin_trat:'Fi del tractament (opcional)', nota_ph:'Nota lliure (opcional)…',
+    ayer_sin:'Ahir va quedar sense registrar', si_tomo:'✓ Sí es va prendre…', no_tomo:'✗ No es va prendre',
+    duda:'Davant dubtes sobre una dosi oblidada, consulte el prospecte o el metge.',
+    pendiente:'pendent', quedan:'queden', dia:'dia', dias:'dies', hasta:'fins',
+    fin_lista:'Tractaments finalitzats — revisar amb el metge', finalizo:'va finalitzar el', feedback:'✉️ Enviar un comentari', fb_sujeto:'Protocolo mòbil — comentari',
+    d_punt:'Presa puntual', d_med:'Medicament (ex. Paracetamol 650 mg)', d_hora:'Hora (HH:MM)',
+    d_hora_ayer:'A quina hora es va prendre ahir?', d_corr:'Corregir l\'hora de la presa', d_quitar:'Llevar de la llista?',
+    d_ok:'Acceptar', d_can:'Cancel·lar', omitida:'omesa', puntual:'puntual',
+    exp_nota:'Per a passar les dades a Salufolio : guarde una còpia o envie-la a l\'ordinador.',
+    b_env:'📡 Enviar a Salufolio', pc_label:'Adreça de Salufolio a l\'ordinador (opcional)',
+    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon (app local, sense PC)', inst_nota:'Descarrega l\'app ja configurada. Obriu-la des de Baixades — funciona sempre, encara que l\'ordinador estiga apagat.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂', c_peso:'Pes', c_temp:'Temperatura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària, opcional)', env_ok:'✓ Rebut a l\'ordinador', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
+  fr: {
+    sw_ini:"Démarrer",
+    sw_fin:"Arrêter",
+    zona_tit:"Où ?",caida_cabeza:"À la tête",caida_cadera:"À la hanche",caida_nalgas:"Sur les fesses",caida_singolpe:"Sans choc",
+    zona_gen:"Général",
+    cab_frontal:"Frontal",
+    cab_nuca:"Nuque",
+    esp_alta:"Haut du dos",
+    esp_baja:"Bas du dos (lombaire)",
+    lado_ambos:"Les deux",
+    lado_ambas:"Les deux",
+    grado_tit:"Quand ?",
+    grd_comidas:"Après les repas",
+    grd_diaosc:"Toute la journée",
+    come_tit:"Comment a-t-il mangé ?",
+    come_media:"Laisse la moitié",
+    come_rechaza:"Refuse de manger",
+    come_insiste:"Mange si on insiste",
+    b_pauta:"Médicaments et posologie",
+    l_hid:"Hydratation",
+    l_dep:"Selles",
+    pac_anadir:"Ajouter un patient",
+    pac_borrar:"Supprimer le patient",
+    pac_ninguno:"Aucun patient",
+    pac_nombre:"Nom",
+    pac_nuevo:"✚ Nouveau patient",
+    pac_primero:"Premier patient",
+    pac_borrar_q:"Supprimer ce patient ?",
+    pac_borrar_av:"jours enregistrés seront perdus.", pac_borrar_av_1:"jour enregistré sera perdu.",
+    pac_exp_borrar:"⬇ Exporter puis supprimer",
+    pac_solo_borrar:"Supprimer sans exporter",
+    ocup_tit:"Occupations ?",
+    ocup_nada:"Rien",
+    ocup_camina:"Marche",
+    ocup_siesta:"Sieste",
+    ocup_lee:"Lecture",
+    ocup_escribe:"Écriture",
+    ocup_dibuja:"Dessin",
+    ocup_tv:"Télévision",
+    ocup_habla:"Conversation",
+    b_corr:"Corriger une heure…",
+    corr_tit:"Quelle heure corriger ?",
+    corr_nada:"Rien de noté aujourd’hui pour l’instant.",
+    u112_lleg:"Arrivée",
+    beb_agua:"Eau",
+    beb_cafe:"Café",
+    beb_zumo:"Jus de fruit",
+    beb_te:"Thé",
+    pop_hora:"L’heure s’enregistre toute seule.",
+    u112_tit:"Urgences 112",
+    u112_llam:"Appel",
+    u112_sal:"Départ",
+    u112_reg:"Retour",
+    l_panal:"Changement de couche",
+    chip_anul:"Annulé",
+    /* deux formes déclarées ; le nombre choisit, il ne fabrique pas */
+    dep_normal:"Normales", dep_normal_1:"Normale",
+    dep_dura:"Dures", dep_dura_1:"Dure",
+    dep_liq:"Liquides", dep_liq_1:"Liquide",
+    mic_normal:"Normales", mic_normal_1:"Normale",
+    mic_escasa:"Peu abondantes", mic_escasa_1:"Peu abondante",
+    mic_frec:"Fréquentes", mic_frec_1:"Fréquente",
+    b_panal:"couches", b_panal_1:"couche",
+    ph_vasos:"verres", ph_vasos_1:"verre",
+    tri_hoy:"auj. :", tri_ult:"dern.", ev_otra:"une autre heure ?",
+    l_mic:"Urine",
+    trio_hint:"Chaque ＋ enregistre à l’instant, à l’heure actuelle (corrigez-la ensuite dans Données si besoin).",
+    t_fb:"💬 Commentaire",
+    b_fbenv:"Envoyer",
+    b_fbanul:"Annuler",
+    b_restaurar:"📂 Restaurer une copie",
+    disp_solo:"Les données vivent sur cet appareil.",
+    pc_off:"⚪ Pas de connexion.<br>Si Salufolio ne répond pas : vérifiez qu’il est ouvert sur l’ordinateur, que le téléphone est sur le même WiFi, et l’adresse ci-dessous.",
+    pc_on:"🟢 Salufolio répond sur l’ordinateur — vous pouvez envoyer.",
+    lado_tit:"Quel côté ?",
+    lado_izq:"Gauche",
+    lado_der:"Droite",
+    ay_tit:"❓ Comment ça marche",
+    ay_hoy:"<b>💊 Aujourd'hui</b> — touchez chaque médicament dès qu'il est pris : enregistré avec l'heure. Enregistré en retard ? <b>Touchez l'heure</b> pour la corriger. Un toque de trop s'annule en touchant à nouveau. « Prise ponctuelle » enregistre une prise hors liste ; si le médicament est « à la demande », il se choisit d'un toque.",
+    ay_const:"<b>🩺 Constantes</b> — ne remplissez que le mesuré ; l'heure est corrigeable. Enregistré tout seul.",
+    ay_notas:"<b>📝 Notes</b> — touchez l'observé (hydratation, selles, urine) : noté avec l'heure, le résumé du jour s'affiche à droite. Ce sont les questions du <i>compte-rendu pour la consultation</i>.",
+    ay_datos:"<b>📦 Données</b> — patient et posologie, historique, et la sortie : <b>⬇️</b> enregistrer ou <b>📡</b> envoyer une copie vers l'ordinateur (Salufolio l'importera), et <b>📂 Restaurer</b> une copie sur un nouveau téléphone.",
+    ay_ayer:"<b>Si une prise d'hier est restée non enregistrée</b>, l'app le demande à l'ouverture. En cas de doute sur une dose, consultez la notice ou le médecin — l'app enregistre, elle ne conseille pas.",
+    ay_disp:"Les données vivent sur cet appareil.",
+    ay_ok:"Compris", hoy:'Aujourd\'hui', consts:'Constantes', notas:'Notes', datos:'Données',
+    t_hoy:'Médication du jour — touchez à la prise · touchez l\'heure pour la corriger',
+    t_const:'Constantes — laissez vide ce qui n\'est pas mesuré', t_notas:'Qu\'observe-t-on aujourd\'hui ? — touchez ce qui s\'applique',
+    t_hist:'7 derniers jours', t_comp:'Sauvegarder et partager', t_meds:'Médicaments configurés', t_pac:'Patient',
+    b_gconst:'💾 Enregistrer les constantes', b_gobs:'💾 Enregistrer l\'observation', b_punt:'➕ Prise ponctuelle…',
+    b_desc:'⬇️ Enregistrer une copie des données', b_copi:'📋 Copier', b_comp:'📤 Partager…', b_addmed:'➕ Ajouter un médicament',
+    hora_med:'Heure de la mesure (corrigible)', hora_obs:'Heure de l\'observation (corrigible)',
+    fin_trat:'Fin du traitement (optionnel)', nota_ph:'Note libre (optionnelle)…',
+    ayer_sin:'Hier est resté sans enregistrement', si_tomo:'✓ Oui, pris à…', no_tomo:'✗ Non pris',
+    duda:'En cas de doute sur une dose oubliée, consultez la notice ou le médecin.',
+    pendiente:'en attente', quedan:'reste', dia:'jour', dias:'jours', hasta:'jusqu\'au',
+    fin_lista:'Traitements terminés — à revoir avec le médecin', finalizo:'terminé le', feedback:'✉️ Envoyer un commentaire', fb_sujeto:'Protocolo mobile — commentaire',
+    d_punt:'Prise ponctuelle', d_med:'Médicament (ex. Paracétamol 650 mg)', d_hora:'Heure (HH:MM)',
+    d_hora_ayer:'À quelle heure hier ?', d_corr:'Corriger l\'heure de la prise', d_quitar:'Retirer de la liste ?',
+    d_ok:'Valider', d_can:'Annuler', omitida:'omise', puntual:'ponctuelle',
+    exp_nota:'Pour passer les données à Salufolio : enregistrez une copie ou envoyez-la vers l\'ordinateur.',
+    b_env:'📡 Envoyer à Salufolio', pc_label:'Adresse de Salufolio sur le PC (optionnel)',
+    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone (app locale, sans PC)', inst_nota:'Télécharge l\'app déjà configurée. Ouvrez-la depuis Téléchargements — elle marche toujours, même ordinateur éteint. 📡 enverra quand le PC sera allumé.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂', c_peso:'Poids', c_temp:'Température', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire, optionnel)', env_ok:'✓ Reçu sur l\'ordinateur', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
+  en: {
+    sw_ini:"Start",
+    sw_fin:"Stop",
+    zona_tit:"Where?",caida_cabeza:"Head",caida_cadera:"Hip",caida_nalgas:"Buttocks",caida_singolpe:"No impact",
+    zona_gen:"General",
+    cab_frontal:"Frontal",
+    cab_nuca:"Nape",
+    esp_alta:"Upper back",
+    esp_baja:"Lower back",
+    lado_ambos:"Both",
+    lado_ambas:"Both",
+    grado_tit:"When?",
+    grd_comidas:"After meals",
+    grd_diaosc:"All day",
+    come_tit:"How did they eat?",
+    come_media:"Leaves half",
+    come_rechaza:"Refuses food",
+    come_insiste:"Eats if urged",
+    b_pauta:"Medicines & schedule",
+    l_hid:"Hydration",
+    l_dep:"Stool",
+    pac_anadir:"Add patient",
+    pac_borrar:"Delete patient",
+    pac_ninguno:"No patient",
+    pac_nombre:"Name",
+    pac_nuevo:"✚ New patient",
+    pac_primero:"First patient",
+    pac_borrar_q:"Delete this patient?",
+    pac_borrar_av:"recorded days will be lost.", pac_borrar_av_1:"recorded day will be lost.",
+    pac_exp_borrar:"⬇ Export then delete",
+    pac_solo_borrar:"Delete without exporting",
+    ocup_tit:"Activities?",
+    ocup_nada:"Nothing",
+    ocup_camina:"Walk",
+    ocup_siesta:"Nap",
+    ocup_lee:"Reading",
+    ocup_escribe:"Writing",
+    ocup_dibuja:"Drawing",
+    ocup_tv:"Television",
+    ocup_habla:"Talking",
+    b_corr:"Fix a time…",
+    corr_tit:"Which time to fix?",
+    corr_nada:"Nothing logged today yet.",
+    u112_lleg:"Arrival",
+    beb_agua:"Water",
+    beb_cafe:"Coffee",
+    beb_zumo:"Fruit juice",
+    beb_te:"Tea",
+    pop_hora:"The time is saved for you.",
+    u112_tit:"Emergency 112",
+    u112_llam:"Call",
+    u112_sal:"Left",
+    u112_reg:"Back",
+    l_panal:"Nappy change",
+    chip_anul:"Cancelled",
+    /* deux formes déclarées ; le nombre choisit, il ne fabrique pas */
+    dep_normal:"Normal", dep_normal_1:"Normal",
+    dep_dura:"Hard", dep_dura_1:"Hard",
+    dep_liq:"Loose", dep_liq_1:"Loose",
+    mic_normal:"Normal", mic_normal_1:"Normal",
+    mic_escasa:"Scant", mic_escasa_1:"Scant",
+    mic_frec:"Frequent", mic_frec_1:"Frequent",
+    b_panal:"nappies", b_panal_1:"nappy",
+    ph_vasos:"glasses", ph_vasos_1:"glass",
+    tri_hoy:"today:", tri_ult:"last", ev_otra:"another time?",
+    l_mic:"Urine",
+    trio_hint:"Each ＋ logs instantly, at the current time (fix it later in Data if needed).",
+    t_fb:"💬 Comment",
+    b_fbenv:"Send",
+    b_fbanul:"Cancel",
+    b_restaurar:"📂 Restore a copy",
+    disp_solo:"Data lives on this device.",
+    pc_off:"⚪ No connection.<br>If Salufolio does not respond: check it is open on the computer, that the phone uses the same WiFi, and the address below.",
+    pc_on:"🟢 Salufolio responds on the computer — you can send.",
+    lado_tit:"Which side?",
+    lado_izq:"Left",
+    lado_der:"Right",
+    ay_tit:"❓ How to use it",
+    ay_hoy:"<b>💊 Today</b> — tap each medicine once taken: logged with the time. Logged late? <b>Tap the time</b> to fix it. An extra tap cancels by tapping again. “As-needed dose” logs an intake outside the list; if the medicine is “on demand”, pick it with one tap.",
+    ay_const:"<b>🩺 Vitals</b> — fill only what was measured; the time can be corrected. Saved on its own.",
+    ay_notas:"<b>📝 Notes</b> — tap what you observe (hydration, stool, urine): logged with the time, the day’s summary shows on the right. These are the questions of the <i>report for the consultation</i>.",
+    ay_datos:"<b>📦 Data</b> — patient and schedule, history, and output: <b>⬇️</b> save or <b>📡</b> send a copy to the computer (Salufolio will import it), and <b>📂 Restore</b> a copy on a new phone.",
+    ay_ayer:"<b>If a dose from yesterday went unlogged</b>, the app asks on opening. If unsure about a dose, check the leaflet or the doctor — the app records, it does not advise.",
+    ay_disp:"Data lives on this device.",
+    ay_ok:"Got it", hoy:'Today', consts:'Vitals', notas:'Notes', datos:'Data',
+    t_hoy:'Today\'s medication — tap when taken · tap the time to correct it',
+    t_const:'Vitals — leave blank what was not measured', t_notas:'What is observed today? — tap what applies',
+    t_hist:'Last 7 days', t_comp:'Save and share', t_meds:'Configured medications', t_pac:'Patient',
+    b_gconst:'💾 Save vitals', b_gobs:'💾 Save observation', b_punt:'➕ One-off dose…',
+    b_desc:'⬇️ Save a copy of the data', b_copi:'📋 Copy', b_comp:'📤 Share…', b_addmed:'➕ Add medication',
+    hora_med:'Time of measurement (editable)', hora_obs:'Time of observation (editable)',
+    fin_trat:'End of treatment (optional)', nota_ph:'Free note (optional)…',
+    ayer_sin:'Yesterday was left unrecorded', si_tomo:'✓ Yes, taken at…', no_tomo:'✗ Not taken',
+    duda:'If in doubt about a missed dose, check the leaflet or ask the doctor.',
+    pendiente:'pending', quedan:'left', dia:'day', dias:'days', hasta:'until',
+    fin_lista:'Finished treatments — review with the doctor', finalizo:'ended on', feedback:'✉️ Send feedback', fb_sujeto:'Protocolo mobile — feedback',
+    d_punt:'One-off dose', d_med:'Medication (e.g. Paracetamol 650 mg)', d_hora:'Time (HH:MM)',
+    d_hora_ayer:'At what time yesterday?', d_corr:'Correct dose time', d_quitar:'Remove from list?',
+    d_ok:'OK', d_can:'Cancel', omitida:'missed', puntual:'one-off',
+    exp_nota:'To move data into Salufolio: save a copy or send it to the computer.',
+    b_env:'📡 Send to Salufolio', pc_label:'Salufolio address on the PC (optional)',
+    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation', c_peso:'Weight', c_temp:'Temperature', env_wait:'⏳ Sending…', sip_label:'SIP (health card, optional)', env_ok:'✓ Received on the computer', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
+};
+const LANGS = ['es','va','fr','en'];
+function getLang() { return lsGet('mfp_lang', 'es'); }
+function t(k) { return (IDIOMAS[getLang()] || IDIOMAS.es)[k] || IDIOMAS.es[k] || k; }
+function cycleLang() {
+  const i = LANGS.indexOf(getLang());
+  lsSet('mfp_lang', LANGS[(i + 1) % LANGS.length]);
+  render(); renderDatos();
+}
+const LOCALES = { es:'es-ES', va:'ca-ES-valencia', fr:'fr-FR', en:'en-GB' };
+const SENYERA = '<svg viewBox="0 0 30 20" width="26" height="17" style="vertical-align:middle;border-radius:2px">' +
+  '<rect width="30" height="20" fill="#FFDF00"/>' +
+  '<rect y="2.2" width="30" height="2.2" fill="#D81126"/><rect y="6.7" width="30" height="2.2" fill="#D81126"/>' +
+  '<rect y="11.1" width="30" height="2.2" fill="#D81126"/><rect y="15.6" width="30" height="2.2" fill="#D81126"/>' +
+  '<rect width="8.5" height="20" fill="#0F47AF"/>' +
+  '<rect x="8.5" width="3.2" height="20" fill="#D81126"/>' +
+  '<circle cx="10.1" cy="4" r="1" fill="#fff"/><circle cx="10.1" cy="10" r="1" fill="#fff"/><circle cx="10.1" cy="16" r="1" fill="#fff"/>' +
+  '<path d="M2 4 L4.2 2.5 L6.4 4 L4.2 5.5 Z" fill="#FFDF00"/><path d="M2 9 L4.2 7.5 L6.4 9 L4.2 10.5 Z" fill="#FFDF00"/><path d="M2 14 L4.2 12.5 L6.4 14 L4.2 15.5 Z" fill="#FFDF00"/>' +
+  '</svg>';
+const BANDERAS = { es:'🇪🇸', va:SENYERA, fr:'🇫🇷', en:'🇬🇧' };   /* Senyera dessinée en SVG — on ne remplace pas un drapeau par une orange */
+
+/* ── taille des caractères ── */
+function zoomMas(sens) {
+  let z = lsGet('mfp_zoom', 1.25) + sens * 0.08;
+  z = Math.min(1.4, Math.max(0.8, Math.round(z * 100) / 100));
+  lsSet('mfp_zoom', z); aplicarZoom();
+}
+function aplicarZoom() { document.body.style.zoom = lsGet('mfp_zoom', 1.25); }
+
+/* ── dialogues maison, suaves ── */
+function dlg(titulo, campos, onOk) {
+  const ov = document.createElement('div'); ov.className = 'dlg-ov';
+  ov.innerHTML = '<div class="dlg"><h3>' + titulo + '</h3>' +
+    campos.map((c, i) => '<label>' + c.label + '</label><input id="dlg-c' + i + '" type="' + (c.tipo || 'text') + '" value="' + (c.valor || '') + '">').join('') +
+    '<div class="dbtns"><button class="dcan">' + t('d_can') + '</button><button class="dok">' + t('d_ok') + '</button></div></div>';
+  ov.querySelector('.dcan').onclick = () => ov.remove();
+  ov.querySelector('.dok').onclick = () => {
+    const vals = campos.map((c, i) => ov.querySelector('#dlg-c' + i).value);
+    ov.remove(); onOk(vals);
+  };
+  ov.onclick = e => { if (e.target === ov) ov.remove(); };
+  document.body.appendChild(ov);
+  const prem = ov.querySelector('input'); if (prem && !prem.value) prem.focus();
+}
+function dlgConfirm(titulo, onOk) {
+  const ov = document.createElement('div'); ov.className = 'dlg-ov';
+  ov.innerHTML = '<div class="dlg"><h3>' + titulo + '</h3>' +
+    '<div class="dbtns"><button class="dcan">' + t('d_can') + '</button><button class="dok">' + t('d_ok') + '</button></div></div>';
+  ov.querySelector('.dcan').onclick = () => ov.remove();
+  ov.querySelector('.dok').onclick = () => { ov.remove(); onOk(); };
+  ov.onclick = e => { if (e.target === ov) ov.remove(); };
+  document.body.appendChild(ov);
+}
+const MOMENTOS = { desayuno:'🌅 Desayuno', comida:'☀️ Comida', cena:'🌇 Cena', noche:'🌙 Noche', demanda:'✚ A demanda' };
+const CHIP_TIPOS = [
+  'Somnolencia','Se duerme en conversación','Alimentación','Ocupación',
+  'Dolor cabeza','Dolor espalda','Dolor muslo','Dolor pierna','Dolor rodilla','Dolor tobillo','Dolor manos','Hinchazón piernas',
+  'Caída','Agitación / inquietud','Buen día ✨'
+];
+/* v24.5 — les chips sont STOCKÉS en espagnol (identifiant stable pour le .mf
+   et Salufolio) ; seul l'AFFICHAGE se traduit, via cette table par langue. */
+const CHIP_IDIOMAS = {
+  va: { 'Somnolencia tras comidas':'Somnolència després de menjar','Somnolencia todo el día':'Somnolència tot el dia','Se duerme en conversación':'S’adorm parlant','Somnolencia':"Somnolència",'Alimentación':"Alimentació",'Deja media ración':'Deixa mitja ració','Rechaza alimentos':'Rebutja el menjar','Come solo si se insiste':'Menja només si s’insisteix','Dolor tobillo':'Dolor turmell','Dolor muslo':"Dolor cuixa",'Dolor muslo izquierdo':"Dolor cuixa esquerra",'Dolor muslo derecho':"Dolor cuixa dreta",'Dolor muslos':"Dolor a les cuixes",'Dolor piernas':"Dolor a les cames",'Dolor rodillas':"Dolor als genolls",'Dolor tobillos':"Dolor als turmells",'Dolor manos':"Dolor a les mans",'Dolor mano izquierda':"Dolor mà esquerra",'Dolor mano derecha':"Dolor mà dreta",'Piernas hinchadas':"Cames inflades",'Pierna izquierda hinchada':"Cama esquerra inflada",'Pierna derecha hinchada':"Cama dreta inflada",'Dolor cabeza':"Mal de cap",'Dolor espalda':"Mal d’esquena",'Dolor cabeza frontal':"Mal de cap frontal",'Dolor cabeza nuca':"Mal de cap (clatell)",'Dolor cabeza general':"Mal de cap general",'Dolor espalda zona alta':"Mal d’esquena (alta)",'Dolor espalda zona baja':"Mal d’esquena (lumbar)",'Dolor espalda general':"Mal d’esquena general",'Dolor muslo':"Dolor cuixa",'Dolor muslo izquierdo':"Dolor cuixa esquerra",'Dolor muslo derecho':"Dolor cuixa dreta",'Dolor muslo ambos':"Dolor a les dos cuixes",'Dolor pierna ambos':"Dolor a les dos cames",'Dolor rodilla ambos':"Dolor als dos genolls",'Dolor tobillo ambos':"Dolor als dos turmells",'Hinchazón piernas pierna izquierda':"Cama esquerra inflada",'Hinchazón piernas pierna derecha':"Cama dreta inflada",'Hinchazón piernas ambas':"Les dos cames inflades",'Dolor pierna':"Dolor cama",'Dolor rodilla':"Dolor genoll",'Dolor pierna izquierdo':"Dolor cama esquerra",'Dolor pierna derecho':"Dolor cama dreta",'Dolor rodilla izquierdo':"Dolor genoll esquerre",'Dolor rodilla derecho':"Dolor genoll dret",'Dolor tobillo izquierdo':"Dolor turmell esquerre",'Dolor tobillo derecho':"Dolor turmell dret",'Hinchazón piernas':'Inflor de cames','Dolor pierna izquierda':"Dolor cama esquerra",'Dolor pierna derecha':"Dolor cama dreta",'Dolor rodilla izquierda':"Dolor genoll esquerre",'Dolor rodilla derecha':"Dolor genoll dret",'Caída con golpe en la cabeza':"Caiguda amb colp al cap",'Caída con golpe en la cadera':"Caiguda amb colp al maluc",'Caída sobre las nalgas':"Caiguda sobre les natges",'Caída sin golpe':"Caiguda sense colp",'Ocupación':"Ocupació",'Sin actividad':"Sense activitat",'Camina':"Camina",'Siesta':"Migdiada",'Lee':"Llig",'Escribe':"Escriu",'Dibuja':"Dibuixa",'Ve la televisión':"Veu la televisió",'Conversa':"Conversa",'Caída':'Caiguda','Agitación / inquietud':'Agitació / inquietud','Buen día ✨':'Bon dia ✨' },
+  fr: { 'Somnolencia tras comidas':'Somnolence après les repas','Somnolencia todo el día':'Somnolence toute la journée','Se duerme en conversación':'S’endort en parlant','Somnolencia':"Somnolence",'Alimentación':"Alimentation",'Deja media ración':'Laisse la moitié','Rechaza alimentos':'Refuse de manger','Come solo si se insiste':'Mange seulement si on insiste','Dolor tobillo':'Douleur cheville','Dolor muslo':"Douleur cuisse",'Dolor muslo izquierdo':"Douleur cuisse gauche",'Dolor muslo derecho':"Douleur cuisse droite",'Dolor muslos':"Douleur cuisses",'Dolor piernas':"Douleur jambes",'Dolor rodillas':"Douleur genoux",'Dolor tobillos':"Douleur chevilles",'Dolor manos':"Douleur mains",'Dolor mano izquierda':"Douleur main gauche",'Dolor mano derecha':"Douleur main droite",'Piernas hinchadas':"Jambes enflées",'Pierna izquierda hinchada':"Jambe gauche enflée",'Pierna derecha hinchada':"Jambe droite enflée",'Dolor cabeza':"Mal de tête",'Dolor espalda':"Mal de dos",'Dolor cabeza frontal':"Mal de tête frontal",'Dolor cabeza nuca':"Mal de tête (nuque)",'Dolor cabeza general':"Mal de tête général",'Dolor espalda zona alta':"Mal de dos (haut)",'Dolor espalda zona baja':"Mal de dos (lombaire)",'Dolor espalda general':"Mal de dos général",'Dolor muslo':"Douleur cuisse",'Dolor muslo izquierdo':"Douleur cuisse gauche",'Dolor muslo derecho':"Douleur cuisse droite",'Dolor muslo ambos':"Douleur aux deux cuisses",'Dolor pierna ambos':"Douleur aux deux jambes",'Dolor rodilla ambos':"Douleur aux deux genoux",'Dolor tobillo ambos':"Douleur aux deux chevilles",'Hinchazón piernas pierna izquierda':"Jambe gauche enflée",'Hinchazón piernas pierna derecha':"Jambe droite enflée",'Hinchazón piernas ambas':"Les deux jambes enflées",'Dolor pierna':"Douleur jambe",'Dolor rodilla':"Douleur genou",'Dolor pierna izquierdo':"Douleur jambe gauche",'Dolor pierna derecho':"Douleur jambe droite",'Dolor rodilla izquierdo':"Douleur genou gauche",'Dolor rodilla derecho':"Douleur genou droit",'Dolor tobillo izquierdo':"Douleur cheville gauche",'Dolor tobillo derecho':"Douleur cheville droite",'Hinchazón piernas':'Jambes enflées','Dolor pierna izquierda':"Douleur jambe gauche",'Dolor pierna derecha':"Douleur jambe droite",'Dolor rodilla izquierda':"Douleur genou gauche",'Dolor rodilla derecha':"Douleur genou droit",'Caída con golpe en la cabeza':"Chute avec choc à la tête",'Caída con golpe en la cadera':"Chute avec choc à la hanche",'Caída sobre las nalgas':"Chute sur les fesses",'Caída sin golpe':"Chute sans choc",'Ocupación':"Occupation",'Sin actividad':"Aucune activité",'Camina':"Marche",'Siesta':"Sieste",'Lee':"Lecture",'Escribe':"Écriture",'Dibuja':"Dessin",'Ve la televisión':"Télévision",'Conversa':"Conversation",'Caída':'Chute','Agitación / inquietud':'Agitation / anxiété','Buen día ✨':'Bonne journée ✨' },
+  en: { 'Somnolencia tras comidas':'Drowsy after meals','Somnolencia todo el día':'Drowsy all day','Se duerme en conversación':'Falls asleep mid-talk','Somnolencia':"Drowsiness",'Alimentación':"Eating",'Deja media ración':'Leaves half the meal','Rechaza alimentos':'Refuses food','Come solo si se insiste':'Eats only if urged','Dolor tobillo':'Ankle pain','Dolor muslo':"Thigh pain",'Dolor muslo izquierdo':"Left thigh pain",'Dolor muslo derecho':"Right thigh pain",'Dolor muslos':"Thigh pain (both)",'Dolor piernas':"Leg pain (both)",'Dolor rodillas':"Knee pain (both)",'Dolor tobillos':"Ankle pain (both)",'Dolor manos':"Hand pain (both)",'Dolor mano izquierda':"Left hand pain",'Dolor mano derecha':"Right hand pain",'Piernas hinchadas':"Swollen legs (both)",'Pierna izquierda hinchada':"Left leg swollen",'Pierna derecha hinchada':"Right leg swollen",'Dolor cabeza':"Headache",'Dolor espalda':"Back pain",'Dolor cabeza frontal':"Frontal headache",'Dolor cabeza nuca':"Headache (nape)",'Dolor cabeza general':"General headache",'Dolor espalda zona alta':"Upper back pain",'Dolor espalda zona baja':"Lower back pain",'Dolor espalda general':"General back pain",'Dolor muslo':"Thigh pain",'Dolor muslo izquierdo':"Left thigh pain",'Dolor muslo derecho':"Right thigh pain",'Dolor muslo ambos':"Both thighs pain",'Dolor pierna ambos':"Both legs pain",'Dolor rodilla ambos':"Both knees pain",'Dolor tobillo ambos':"Both ankles pain",'Hinchazón piernas pierna izquierda':"Left leg swollen",'Hinchazón piernas pierna derecha':"Right leg swollen",'Hinchazón piernas ambas':"Both legs swollen",'Dolor pierna':"Leg pain",'Dolor rodilla':"Knee pain",'Dolor pierna izquierdo':"Left leg pain",'Dolor pierna derecho':"Right leg pain",'Dolor rodilla izquierdo':"Left knee pain",'Dolor rodilla derecho':"Right knee pain",'Dolor tobillo izquierdo':"Left ankle pain",'Dolor tobillo derecho':"Right ankle pain",'Hinchazón piernas':'Swollen legs','Dolor pierna izquierda':"Left leg pain",'Dolor pierna derecha':"Right leg pain",'Dolor rodilla izquierda':"Left knee pain",'Dolor rodilla derecha':"Right knee pain",'Caída con golpe en la cabeza':"Fall, head impact",'Caída con golpe en la cadera':"Fall, hip impact",'Caída sobre las nalgas':"Fall onto buttocks",'Caída sin golpe':"Fall, no impact",'Ocupación':"Activity",'Sin actividad':"No activity",'Camina':"Walks",'Siesta':"Nap",'Lee':"Reads",'Escribe':"Writes",'Dibuja':"Draws",'Ve la televisión':"Watches TV",'Conversa':"Talks",'Caída':'Fall','Agitación / inquietud':'Restlessness','Buen día ✨':'Good day ✨' }
+};
+function chipLabel(c) { const L = getLang(); return (CHIP_IDIOMAS[L] && CHIP_IDIOMAS[L][c]) || c; }
+
+/* ── stockage ── */
+/* ═══ PLUSIEURS PATIENTS SOUS UN SEUL TOIT (P-H 28/07) ═══
+   Ce qui suit appartient au PATIENT : chacun a son casier, préfixé par son
+   identifiant. Le reste — langue, zoom, thème, adresse du PC, commentaires —
+   demeure au cuidador et reste commun. Une table, pas des conditions
+   éparpillées : lsGet et lsSet sont les deux seules portes du stockage, et
+   c'est là, en un seul endroit, que le préfixe se pose. */
+const CLAVES_PACIENTE = ['mfp_patient','mfp_sip','mfp_meds','mfp_tomas','mfp_puntuales',
+  'mfp_obs','mfp_constantes','mfp_material','mfp_material_cfg','mfp_asist',
+  'mfp_avisos','mfp_horas','mfp_inicio'];
+function getPacientes() { try { return JSON.parse(localStorage.getItem('mfp_pacientes')) || []; } catch { return []; } }
+function setPacientes(l) { localStorage.setItem('mfp_pacientes', JSON.stringify(l)); }
+/* Le patient actif appartient à L'ONGLET, pas au navigateur. Sans cela,
+   deux onglets ouverts se marchent dessus : celui qui croit soigner Mamá
+   écrit chez Papá dès que l'autre a changé de patient — vérifié, et c'est
+   une faute clinique. sessionStorage est justement cloisonné par onglet et
+   survit au rechargement ; localStorage ne garde que le DERNIER choix, pour
+   qu'un onglet neuf s'ouvre là où l'on s'est arrêté. */
+let _activoSesion = null;
+function getActivo() {
+  if (_activoSesion) return _activoSesion;
+  let v = null;
+  try { v = JSON.parse(sessionStorage.getItem('mfp_activo')); } catch (e) {}
+  if (!v) { try { v = JSON.parse(localStorage.getItem('mfp_activo')); } catch (e) {} }
+  _activoSesion = v || null;
+  return _activoSesion;
+}
+function setActivo(id) {
+  _activoSesion = id;
+  try { sessionStorage.setItem('mfp_activo', JSON.stringify(id)); } catch (e) {}
+  localStorage.setItem('mfp_activo', JSON.stringify(id));
+}
+function olvidarActivo() {
+  _activoSesion = null;
+  try { sessionStorage.removeItem('mfp_activo'); } catch (e) {}
+  localStorage.removeItem('mfp_activo');
+}
+function _k(k) {
+  const a = getActivo();
+  return (a && CLAVES_PACIENTE.indexOf(k) >= 0) ? ('mfp_' + a + '_' + k.slice(4)) : k;
+}
+function lsGet(k, def) { try { const v = JSON.parse(localStorage.getItem(_k(k))); return v === null || v === undefined ? def : v; } catch { return def; } }
+function lsSet(k, v) { localStorage.setItem(_k(k), JSON.stringify(v)); }
+
+/* Un identifiant lisible, tiré du nom, et unique dans la maison. */
+function _idPaciente(nom) {
+  const base = (nom || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '').slice(0, 10) || 'pac';
+  const usados = getPacientes().map(p => p.id);
+  let id = base, i = 2;
+  while (usados.indexOf(id) >= 0) { id = base + i; i++; }
+  return id;
+}
+/* Migration douce : un dossier d'avant la liste devient le patient n° 1,
+   et ses affaires passent dans son casier. Rien n'est perdu, rien à
+   ressaisir. Ne s'exécute qu'une fois. */
+function migrarPacientes() {
+  if (localStorage.getItem('mfp_pacientes')) return;
+  let nom = null, sip = '';
+  try { nom = JSON.parse(localStorage.getItem('mfp_patient')); } catch {}
+  try { sip = JSON.parse(localStorage.getItem('mfp_sip')) || ''; } catch {}
+  if (!nom) { setPacientes([]); return; }
+  const id = _idPaciente(nom);
+  CLAVES_PACIENTE.forEach(k => {
+    const v = localStorage.getItem(k);
+    if (v !== null) { localStorage.setItem('mfp_' + id + '_' + k.slice(4), v); localStorage.removeItem(k); }
+  });
+  setPacientes([{ id: id, nombre: nom, sip: sip }]); setActivo(id);
+}
+migrarPacientes();
+function hoyKey() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+
+/* ── CORRIGER UN JOUR PASSÉ (P-H 16/07 : « je n'ai pas pu corriger en cas
+   d'erreur ») — le jour ACTIF est aujourd'hui par défaut ; on peut reculer
+   jusqu'à 7 jours pour réparer un oubli ou une erreur de doigt. Les avisos,
+   eux, restent toujours sur aujourd'hui. ── */
+let _diaActivo = null;
+function diaKey() { return _diaActivo || hoyKey(); }
+function esHoy() { return diaKey() === hoyKey(); }
+function diaMas(n) {
+  const d = new Date(diaKey() + 'T12:00:00');
+  d.setDate(d.getDate() + n);
+  const k = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  const hoy = hoyKey();
+  if (k > hoy) return;                                   /* pas de futur */
+  const limite = new Date(); limite.setDate(limite.getDate() - 60);
+  if (new Date(k + 'T12:00:00') < limite) return;        /* 7 jours en arrière */
+  _diaActivo = (k === hoy) ? null : k;
+  renderTomas(); renderPuntuales(); renderMaterial && renderMaterial();
+}
+/* P-H 19/07 : pas de mail (ça coince) — le commentaire se GARDE en local,
+   on l'exploitera plus tard. Même philosophie que l'app de bureau. */
+function mfpFeedback() { verAyuda(); }   /* le bouton config ouvre le même ❓ (P-H : comme Info express) */
+/* v23.12 ② — caritas de calificación + botón solo si hay texto (« ne pas tenter le diable ») */
+let _fbCar = null;
+function fbCarita(el) {
+  _fbCar = el.textContent;
+  [...el.parentNode.children].forEach(s => s.style.opacity = (s === el ? '1' : '.4'));
+  fbBoton();
+}
+function fbBoton() {
+  /* v23.19 (P-H) : « un sourire, c'est aussi un commentaire » */
+  const tx = document.getElementById('fb-texto');
+  const hay = (tx && tx.value.trim()) || _fbCar;
+  const b = document.getElementById('fb-env'); if (b) b.style.display = hay ? '' : 'none';
+  const a = document.getElementById('fb-anular'); if (a) a.style.display = hay ? '' : 'none';
+}
+function fbAnular() {
+  const tx = document.getElementById('fb-texto'); if (tx) tx.value = '';
+  _fbCar = null;
+  const cs = document.getElementById('fb-caritas'); if (cs) [...cs.children].forEach(s => s.style.opacity = '.4');
+  fbBoton();
+}
+function fbGuardarConCarita(btn) {
+  const tx = document.getElementById('fb-texto');
+  if (_fbCar && tx && tx.value.indexOf(_fbCar) !== 0) tx.value = (_fbCar + ' ' + tx.value).trim();
+  mfpFbGuardar(btn);
+  fbAnular();
+}
+function mfpFbDescargar() {
+  let lista = [];
+  try { lista = JSON.parse(localStorage.getItem('mfp_feedback') || '[]'); } catch (e) {}
+  const blob = new Blob([JSON.stringify(lista, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Protocolo_comentarios_' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function mfpFbGuardar(btn) {
+  const ta = document.getElementById('fb-texto');
+  const texto = (ta && ta.value || '').trim();
+  if (!texto) return;
+  let lista = [];
+  try { lista = JSON.parse(localStorage.getItem('mfp_feedback') || '[]'); } catch (e) {}
+  lista.push({ fecha: new Date().toISOString(), version: MFP_VERSION, texto: texto });
+  localStorage.setItem('mfp_feedback', JSON.stringify(lista));
+  btn.textContent = '💾 OK (' + lista.length + ')';
+  ta.value = '';
+}
+/* 🐝 : visible seulement sur le web (le panal y vit à côté) — les origines
+   locales (127.x, 10.x…) gardent leur navigation propre. */
+window.addEventListener('load', function() {
+  const local = /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.|localhost$)/.test(location.hostname);
+  const bp = document.getElementById('btn-panal');
+  if (bp && !local && location.protocol.indexOf('http') === 0) bp.style.display = '';
+});
+function volverHoy() { _diaActivo = null; renderTomas(); renderPuntuales(); renderMaterial && renderMaterial(); }
+/* P-H 19/07 : le cadre porte un vrai sélecteur de date, par défaut AUJOURD'HUI —
+   toc sur l'étiquette → calendrier natif → saut direct (mêmes gardes que les flèches). */
+function abrirSelectorDia() {
+  const inp = document.getElementById('dia-fecha');
+  if (!inp) return;
+  inp.value = diaKey();
+  const hoy = hoyKey();
+  const limite = new Date(); limite.setDate(limite.getDate() - 60);
+  inp.max = hoy;
+  inp.min = limite.getFullYear() + '-' + String(limite.getMonth()+1).padStart(2,'0') + '-' + String(limite.getDate()).padStart(2,'0');
+  if (inp.showPicker) { try { inp.showPicker(); return; } catch (e) {} }
+  inp.style.pointerEvents = 'auto'; inp.focus(); inp.click();
+}
+function irADia(k) {
+  if (!k) return;
+  const hoy = hoyKey();
+  if (k > hoy) return;
+  const limite = new Date(); limite.setDate(limite.getDate() - 60);
+  if (new Date(k + 'T12:00:00') < limite) return;
+  _diaActivo = (k === hoy) ? null : k;
+  renderTomas(); renderPuntuales(); renderMaterial && renderMaterial();
+}
+function fmtDiaCorto(k) {
+  const d = new Date(k + 'T12:00:00');
+  return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
+}
+/* Poser l'heure par le bouton 🕐 est un changement d'état comme un autre :
+   il doit s'enregistrer. Un champ rempli par le programme n'émet pas
+   « input », on le déclenche donc à la main. */
+function _avisaCambio(id) {
+  const e = document.getElementById(id); if (!e) return;
+  try { e.dispatchEvent(new Event('input', { bubbles: true })); } catch (err) {}
+}
+function reloj(id) {
+  const e = document.getElementById(id); if (!e) return;
+  setTimeout(() => _avisaCambio(id), 0);
+  const tmp = document.createElement('input'); tmp.type = 'time';
+  tmp.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+  tmp.value = horaValide(e.value) || ahora();
+  document.body.appendChild(tmp);
+  tmp.onchange = () => { e.value = tmp.value; tmp.remove(); };
+  if (tmp.showPicker) { try { tmp.showPicker(); return; } catch (err) {} }
+  tmp.remove();
+}
+function ahora() { const d = new Date(); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
+
+function getMeds() {
+  /* v23.1 : plus de pauta d'exemple préchargée — la liste naît vide,
+     chacun saisit la sienne dans Datos (or de l'audit). */
+  return lsGet('mfp_meds', []);
+}
+function getTomas() { return lsGet('mfp_tomas', {}); }
+function getConstantes() { return lsGet('mfp_constantes', []); }
+function getObs() { return lsGet('mfp_obs', []); }
+/* Le nom et le SIP d'un patient vivent DANS LA LISTE, et nulle part
+   ailleurs. Ils étaient écrits à deux endroits, la liste et le casier :
+   deux copies de la même chose, donc deux vérités dès que l'une bougeait.
+   La liste fait foi ; le casier n'en garde qu'un écho, pour les anciennes
+   installations. */
+function getPatient() {
+  const a = getActivo();
+  if (a) { const p = getPacientes().filter(x => x.id === a)[0]; if (p && p.nombre) return p.nombre; }
+  return lsGet('mfp_patient', 'JMD0000 — Demo');
+}
+function renombrarActivo(nom, sip) {
+  const a = getActivo();
+  if (nom !== null) lsSet('mfp_patient', (nom || '').trim());
+  if (sip !== null) lsSet('mfp_sip', (sip || '').trim());
+  if (!a) return;
+  const l = getPacientes();
+  l.forEach(p => {
+    if (p.id !== a) return;
+    if (nom !== null) p.nombre = (nom || '').trim();
+    if (sip !== null) p.sip = (sip || '').trim();
+  });
+  setPacientes(l);
+  if (typeof renderPacientes === 'function') renderPacientes();
+}
+function getPuntuales() { return lsGet('mfp_puntuales', []); }
+function horaValide(s) { const m = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec((s||'').trim()); return m ? String(m[1]).padStart(2,'0') + ':' + m[2] : null; }
+
+/* ── thème jour/nuit ── */
+function aplicarTheme() {
+  const t = lsGet('mfp_theme', 'dark');
+  document.documentElement.setAttribute('data-theme', t);
+  const b = document.getElementById('btn-theme'); if (b) b.textContent = t === 'dark' ? '🌙' : '☀️';
+}
+function toggleTheme() { lsSet('mfp_theme', lsGet('mfp_theme','dark') === 'dark' ? 'light' : 'dark'); aplicarTheme(); }
+
+/* ── aide / mode d'emploi ── */
+function verAyuda() {
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px';
+  ov.innerHTML = '<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;max-height:88vh;overflow-y:auto;padding:20px;max-width:520px;font-size:15px;line-height:1.55">' +
+    '<div style="font-size:20px;font-weight:700;margin-bottom:10px">' + t('ay_tit') + '</div>' +
+    '<p>' + t('ay_hoy') + '</p><p>' + t('ay_const') + '</p><p>' + t('ay_notas') + '</p>' +
+    '<p>' + t('ay_datos') + '</p><p>' + t('ay_ayer') + '</p>' +
+    '<p style="color:var(--muted);font-size:12px">' + t('ay_disp') + '</p>' +
+    '<div style="font-size:11px;color:var(--muted);margin-top:12px">Producto en desarrollo — v' + MFP_VERSION + '</div>' +
+    '<button class="btn" style="margin-top:10px" onclick="this.closest(\'div\').parentNode.remove()">' + t('ay_ok') + '</button></div>';
+  ov.onclick = e => { if (e.target === ov) ov.remove(); };
+  document.body.appendChild(ov);
+}
+
+/* ── corriger l'heure d'une prise ── */
+function editarHora(medId) {
+  const tomas = getTomas(); const k = diaKey();
+  const act = (tomas[k] || {})[medId]; if (!act) return;
+  dlg(t('d_corr'), [{ label: t('d_hora'), tipo: 'time', valor: act }], vals => {
+    const nv = horaValide(vals[0]); if (!nv) { toast('⚠ ' + t('d_hora')); return; }
+    tomas[k][medId] = nv; lsSet('mfp_tomas', tomas); renderTomas(); toast('✓ ' + nv);
+  });
+}
+
+/* ── prise ponctuelle hors liste ── */
+let _tpOv = null, _tpDem = [];
+function tomaPuntual() {
+  /* v24.2 (P-H) : les médicaments « a demanda » vivent dans la liste —
+     la prise puntual se choisit d'un toque au lieu de se retaper. */
+  const dem = getMeds().filter(m => m.momento === 'demanda' && medActivo(m, diaKey()));
+  if (!dem.length) { tomaPuntualLibre(); return; }
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg"><div style="font-size:17px;font-weight:700;margin-bottom:10px">' + t('d_punt') + '</div>' +
+    dem.map((m, i) => '<button class="btn sec" style="width:100%;margin-top:6px" onclick="tomaPuntualMed(' + i + ')">' + m.nombre + (m.dosis ? ' · ' + m.dosis : '') + '</button>').join('') +
+    '<button class="hbtn2" style="width:100%;margin-top:10px;font-size:12px" id="tp-otro">otro…</button>' +
+    '<button class="btn sec" style="width:100%;margin-top:8px" id="tp-can">' + t('d_can') + '</button></div>';
+  document.body.appendChild(ov); _tpOv = ov; _tpDem = dem;
+  ov.querySelector('#tp-can').onclick = () => ov.remove();
+  ov.querySelector('#tp-otro').onclick = () => { ov.remove(); tomaPuntualLibre(); };
+}
+function tomaPuntualMed(i) {
+  const m = _tpDem[i]; if (_tpOv) { _tpOv.remove(); _tpOv = null; }
+  if (!m) return;
+  /* v24.3 (P-H) : la posologie voyage avec le médicament */
+  const etiq = m.nombre + (m.dosis ? ' · ' + m.dosis : '');
+  const pu = getPuntuales(); pu.push({ fecha: diaKey(), hora: ahora(), nombre: etiq });
+  lsSet('mfp_puntuales', pu); renderPuntuales(); toast('✓ ' + etiq + ' · ' + ahora());
+}
+function tomaPuntualLibre() {
+  dlg(t('d_punt'), [
+    { label: t('d_med'), tipo: 'text', valor: '' },
+    { label: t('d_hora'), tipo: 'time', valor: ahora() }
+  ], vals => {
+    const nombre = (vals[0] || '').trim(); const hora = horaValide(vals[1]);
+    if (!nombre || !hora) { toast('⚠'); return; }
+    const p = getPuntuales(); p.push({ fecha: diaKey(), hora: hora, nombre: nombre });
+    lsSet('mfp_puntuales', p); renderPuntuales(); toast('✓ ' + nombre + ' · ' + hora);
+  });
+}
+function quitarPuntual(i) {
+  const p = getPuntuales(); p.splice(i, 1); lsSet('mfp_puntuales', p); renderPuntuales();
+}
+function renderPuntuales() {
+  const hoy = diaKey();          /* suit le jour que l'on corrige */
+  const el = document.getElementById('puntuales'); if (!el) return;
+  const lignes = getPuntuales().map((x, i) => ({ x, i })).filter(o => o.x.fecha === hoy);
+  el.innerHTML = lignes.map(o =>
+    '<div class="punt">💊 <b>' + o.x.nombre + '</b> a las ' + o.x.hora +
+    '<button style="margin-left:auto;background:none;border:none;color:var(--bad);font-size:18px;cursor:pointer" onclick="quitarPuntual(' + o.i + ')">✕</button></div>').join('');
+}
+
+/* ── oublis de la veille ── */
+function ayerKey() { const d = new Date(); d.setDate(d.getDate() - 1);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function medActivo(m, fecha) { return !m.hasta || fecha <= m.hasta; }
+function renderAvisos() {
+  const el = document.getElementById('avisos'); if (!el) return;
+  const ayer = ayerKey();
+  /* garde du premier jour : pas de reproches pour la veille de l'installation */
+  const inicio = lsGet('mfp_inicio', null);
+  if (!inicio || ayer < inicio) { el.innerHTML = ''; return; }
+  const tomas = getTomas()[ayer] || {};
+  const oublies = getMeds().filter(m => medActivo(m, ayer) && !tomas[m.id]);
+  el.innerHTML = oublies.map(m =>
+    '<div class="aviso">⚠ ' + t('ayer_sin') + ' : <b>' + m.nombre + '</b> (' + m.dosis + ')' +
+    '<div class="abtns">' +
+    '<button class="si" onclick="olvidoTomada(\'' + m.id + '\')">' + t('si_tomo') + '</button>' +
+    '<button class="no" onclick="olvidoOmitida(\'' + m.id + '\')">' + t('no_tomo') + '</button></div>' +
+    '<div style="font-size:11px;color:var(--muted);margin-top:6px">' + t('duda') + '</div></div>').join('');
+}
+function olvidoTomada(medId) {
+  dlg(t('d_hora_ayer'), [{ label: t('d_hora'), tipo: 'time', valor: '' }], vals => {
+    const hora = horaValide(vals[0]); if (!hora) { toast('⚠ ' + t('d_hora')); return; }
+    const tomas = getTomas(); const k = ayerKey();
+    if (!tomas[k]) tomas[k] = {};
+    tomas[k][medId] = hora; lsSet('mfp_tomas', tomas); renderAvisos(); toast('✓ ' + hora);
+  });
+}
+function olvidoOmitida(medId) {
+  const tomas = getTomas(); const k = ayerKey();
+  if (!tomas[k]) tomas[k] = {};
+  tomas[k][medId] = 'omitida'; lsSet('mfp_tomas', tomas); renderAvisos(); toast('Anotado : omitida');
+}
+
+/* ── MATERIAL / DISPOSITIVOS (P-H 15/07) : l'oxygène et les Incopack ne sont
+   pas des prises — compteur quotidien (pañales) et valeur (débit O₂ L/min). ── */
+const MATERIAL_DEF = [
+  { id: 'oxigeno',  nombre: 'Oxígeno',            tipo: 'interruptor', icono: '💨' }
+];
+function getMaterialCfg() {
+  const cfg = lsGet('mfp_material_cfg', MATERIAL_DEF);
+  /* v24.13 — migration douce : un oxígeno mémorisé en ancien type (valor L/min)
+     devient interruptor, pour que le switch apparaisse sans vider les données. */
+  let cambiado = false;
+  cfg.forEach(d => { if (d.id === 'oxigeno' && d.tipo !== 'interruptor') { d.tipo = 'interruptor'; d.icono = '💨'; delete d.unidad; cambiado = true; } });
+  /* 28/07 (P-H : « on supprime Incopack dans Hoy, ça simplifie ») : la ligne
+     s'en va des appareils déclarés. Les comptes déjà écrits dans mfp_material
+     restent où ils sont — on retire l'affichage, pas l'histoire. */
+  for (let i = cfg.length - 1; i >= 0; i--) if (cfg[i].id === 'incopack') { cfg.splice(i, 1); cambiado = true; }
+  if (cambiado) lsSet('mfp_material_cfg', cfg);
+  return cfg;
+}
+function getMaterial() { return lsGet('mfp_material', {}); }
+function matHoy() { const m = getMaterial(); return m[diaKey()] || {}; }
+function matSet(id, val) {
+  const m = getMaterial(); const k = diaKey();
+  if (!m[k]) m[k] = {};
+  if (val === null || val === '' || val === 0) delete m[k][id]; else m[k][id] = val;
+  lsSet('mfp_material', m); renderMaterial();
+}
+function matMas(id, sens) {
+  const n = Math.max(0, (parseInt(matHoy()[id]) || 0) + sens);
+  matSet(id, n || null);
+  if (sens > 0) toast('✓ ' + n);
+}
+function matValor(id, v) {
+  const x = parseFloat(String(v).replace(',', '.'));
+  matSet(id, isNaN(x) ? null : x);
+}
+function renderMaterial() {
+  const el = document.getElementById('material'); if (!el) return;
+  const hoy = matHoy();
+  el.innerHTML = getMaterialCfg().map(function(d) {
+    if (d.tipo === 'interruptor') return _matInterruptor(d);
+    if (d.tipo === 'contador') {
+      const n = parseInt(hoy[d.id]) || 0;
+      return '<div class="matrow">🩹 <b>' + d.nombre + '</b>' +
+        '<span class="matctrl">' +
+        '<button class="stepper" onclick="matMas(\'' + d.id + '\',-1)">−</button>' +
+        '<b class="matnum">' + n + '</b>' +
+        '<button class="stepper" onclick="matMas(\'' + d.id + '\',1)">+</button>' +
+        '<span class="matud">' + d.unidad + '</span></span></div>';
+    }
+    const v = hoy[d.id] !== undefined ? hoy[d.id] : '';
+    return '<div class="matrow">🩹 <b>' + d.nombre + '</b>' +
+      '<span class="matctrl">' +
+      '<input type="number" inputmode="decimal" step="0.5" value="' + v + '" placeholder="—" ' +
+      'onchange="matValor(\'' + d.id + '\', this.value)" class="matinput">' +
+      '<span class="matud">' + d.unidad + '</span></span></div>';
+  }).join('');
+}
+/* ═══ v2026.7.24.11 — INTERRUPTEUR (P-H : « la réplique de la réalité ») :
+   un toque = inicio, un toque = fin ; session en cours = inicio sans fin
+   (formato 2). Total du jour affiché comme témoin, comme l'hydratation. ═══ */
+function _matSesiones(id) { const m = getMaterial(); m._uso = m._uso || {}; m._uso[id] = m._uso[id] || {}; return m; }
+function matUsoHoy(id) { const m = getMaterial(); return ((m._uso || {})[id] || {})[diaKey()] || []; }
+function _matInterruptor(d) {
+  const ses = matUsoHoy(d.id);
+  const abierta = ses.length && !ses[ses.length - 1].fin;
+  let mins = 0, cerradas = 0;
+  ses.forEach(s => { if (s.inicio && s.fin) { mins += _minEntre(s.inicio, s.fin); cerradas++; } });
+  const resumen = cerradas ? (cerradas + '× · ' + _fmtDur(mins) + (abierta ? ' + en curso' : '')) : (abierta ? 'en curso desde ' + ses[ses.length-1].inicio : '');
+  const lpm = matLitros(d.id);
+  return '<div class="matrow ' + (abierta ? 'mat-on' : '') + '">' + (d.icono || '💨') + ' <b>' + d.nombre + '</b>' +
+    '<span class="matctrl">' +
+    '<span class="trio-tot">' + resumen + '</span>' +
+    '<input type="number" inputmode="decimal" step="0.5" min="0" value="' + lpm + '" oninput="matSetLitros(\'' + d.id + '\', this.value)" onchange="matSetLitros(\'' + d.id + '\', this.value)" class="matinput" style="width:58px" title="L/min">' +
+    '<span class="matud">L/min</span>' +
+    '<button type="button" class="rocker ' + (abierta ? 'on' : '') + '" onclick="matToggle(\'' + d.id + '\')"' +
+      ' aria-pressed="' + (abierta ? 'true' : 'false') + '"' +
+      ' title="' + (abierta ? t('sw_fin') : t('sw_ini')) + '"' +
+      ' aria-label="' + d.nombre + ' — ' + (abierta ? t('sw_fin') : t('sw_ini')) + '">' +
+      '<span class="fa fa-o">O</span><span class="fa fa-i">I</span></button>' +
+    '</span></div>';
+}
+/* v24.14 (P-H) : réglage litres — défaut 2, modifiable pendant ou après la marche,
+   SANS question. Si on change EN MARCHE, on horodate le changement dans la session. */
+function matLitros(id) {
+  const m = getMaterial(); const g = (m._litros || {})[id];
+  return (g === undefined || g === null || g === '') ? 2 : g;
+}
+function matSetLitros(id, v) {
+  const val = parseFloat(String(v).replace(',', '.'));
+  const lpm = isNaN(val) ? 2 : val;
+  const m = getMaterial(); m._litros = m._litros || {}; m._litros[id] = lpm;
+  /* si une session est en cours, on grave le changement horodaté */
+  const dia = diaKey(); const arr = ((m._uso || {})[id] || {})[dia] || [];
+  if (arr.length && !arr[arr.length - 1].fin) {
+    const s = arr[arr.length - 1];
+    s.litros = s.litros || [{ hora: s.inicio, lpm: lpm }];
+    if (s.litros[s.litros.length - 1].lpm !== lpm) s.litros.push({ hora: ahora(), lpm: lpm });
+    toast('💨 ' + lpm + ' L/min · ' + ahora());
+  }
+  lsSet('mfp_material', m); renderMaterial();
+}
+function _minEntre(hi, hf) { const a = hi.split(':'), b = hf.split(':'); return (b[0]*60 + (+b[1])) - (a[0]*60 + (+a[1])); }
+function _fmtDur(m) { if (m < 0) m += 1440; const h = Math.floor(m/60), mm = m%60; return (h ? h + ' h ' : '') + (mm ? mm + ' min' : (h ? '' : '0 min')); }
+function matToggle(id) {
+  const m = _matSesiones(id); const dia = diaKey();
+  const arr = m._uso[id][dia] = m._uso[id][dia] || [];
+  const abierta = arr.length && !arr[arr.length - 1].fin;
+  if (abierta) { arr[arr.length - 1].fin = ahora(); toast('⏸ ' + ahora()); }
+  else { const l = matLitros(id); arr.push({ inicio: ahora(), litros: [{ hora: ahora(), lpm: l }] }); toast('▶ ' + ahora() + ' · ' + l + ' L/min'); }
+  lsSet('mfp_material', m); renderMaterial();
+}
+
+/* ── AVISOS SONOROS (P-H 15/07) : carillon + vibration à l'heure du momento,
+   SEULEMENT si des prises y restent en attente ; répété toutes les 10 min,
+   3 fois max par momento et par jour. Limite assumée : l'app doit être
+   ouverte — le réveil du téléphone reste le filet de sécurité. ── */
+const HORAS_DEF = { desayuno: '08:30', comida: '14:00', cena: '21:00', noche: '23:00' };
+function getAvisosOn() { return lsGet('mfp_avisos', false); }
+function toggleAvisos() {
+  lsSet('mfp_avisos', !getAvisosOn());
+  if (getAvisosOn()) { desbloquearAudio(); beep(); }
+  render(); renderDatos();
+}
+function getHoras() { return Object.assign({}, HORAS_DEF, lsGet('mfp_horas', {})); }
+function setHora(mom, v) {
+  const hs = getHoras(); if (horaValide(v)) { hs[mom] = horaValide(v); lsSet('mfp_horas', hs); }
+}
+let _audioCtx = null;
+function desbloquearAudio() {
+  try { if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (_audioCtx.state === 'suspended') _audioCtx.resume(); } catch (e) {}
+}
+function beep() {
+  try {
+    desbloquearAudio(); if (!_audioCtx) return;
+    [[660, 0], [880, 0.22], [660, 0.44]].forEach(function(nota) {
+      const o = _audioCtx.createOscillator(), g = _audioCtx.createGain();
+      o.connect(g); g.connect(_audioCtx.destination);
+      o.frequency.value = nota[0]; o.type = 'sine';
+      const t0 = _audioCtx.currentTime + nota[1];
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.4, t0 + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.20);
+      o.start(t0); o.stop(t0 + 0.22);
+    });
+  } catch (e) {}
+  try { if (navigator.vibrate) navigator.vibrate([220, 120, 220]); } catch (e) {}
+}
+function pendientesMomento(mom) {
+  const tomas = getTomas()[hoyKey()] || {};
+  return getMeds().filter(function(m) {
+    return m.momento === mom && medActivo(m, hoyKey()) && !tomas[m.id];
+  });
+}
+function checkAvisos(ahoraHM) {
+  if (!getAvisosOn()) return null;
+  const hs = getHoras(); const hoy = hoyKey();
+  const beeps = lsGet('mfp_beeps', {}); const bj = beeps[hoy] = beeps[hoy] || {};
+  const min = s => parseInt(s.slice(0,2)) * 60 + parseInt(s.slice(3));
+  for (const mom of Object.keys(hs)) {
+    if (ahoraHM < hs[mom]) continue;
+    /* fenêtre de 2 h : passé ce délai, silence — l'oubli devient l'affaire
+       du bandeau ⚠ du lendemain, pas d'une sonnerie à contretemps */
+    if (min(ahoraHM) - min(hs[mom]) > 120) continue;
+    const pend = pendientesMomento(mom);
+    if (!pend.length) continue;
+    const reg = bj[mom] || { n: 0, ult: '00:00' };
+    if (reg.n >= 3) continue;
+    const dif = min(ahoraHM) - min(reg.ult);
+    if (reg.n > 0 && dif < 10) continue;
+    bj[mom] = { n: reg.n + 1, ult: ahoraHM };
+    lsSet('mfp_beeps', beeps);
+    return { mom: mom, meds: pend.map(function(m) { return m.nombre; }) };
+  }
+  return null;
+}
+setInterval(function() {
+  const avi = checkAvisos(ahora());
+  if (avi) { beep(); toast('💊 ' + (MOMENTOS[avi.mom] || avi.mom) + ' : ' + avi.meds.join(', ')); }
+}, 30000);
+document.addEventListener('touchstart', desbloquearAudio, { once: true });
+document.addEventListener('click', desbloquearAudio, { once: true });
+
+/* ── pont Wi-Fi vers Salufolio (modular_server v1.5, POST /api/protocolo) ── */
+function getPc() { return ((lsGet('mfp_pc', '') || MFP_PC_DEF) || '').replace(/\/+$/, ''); }
+function setPc(v) { lsSet('mfp_pc', (v || '').trim()); render(); }
+function baseSalufolio() {
+  if (location.protocol.indexOf('http') === 0) return '';   /* servi par le PC : même origine */
+  return getPc();                                            /* file:// : adresse configurée */
+}
+/* v23.14 — LA SONDE (P-H : « éviter la tentation de cliquer ») :
+   on tâte le serveur avant de proposer l'envoi ; bouton éteint + explication
+   quand Salufolio ne répond pas ; message « pourquoi et que faire » à l'échec. */
+let _pcVivo = null;
+function nmToggle() { const f = document.getElementById('nm-form'); if (f) f.style.display = f.style.display === 'none' ? '' : 'none'; }
+async function sondearPc(manual) {
+  const base = baseSalufolio ? baseSalufolio() : getPc();
+  const be = document.getElementById('i-benv'), st = document.getElementById('pc-estado');
+  if (!base) { if (st) st.textContent = ''; return; }
+  try {
+    const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 2500);
+    await fetch(base + '/', { mode: 'no-cors', cache: 'no-store', signal: ctl.signal });
+    clearTimeout(to); _pcVivo = true;
+  } catch (e) { _pcVivo = false; }
+  if (st) st.innerHTML = _pcVivo
+    ? t('pc_on')
+    : t('pc_off');
+  if (be) { be.disabled = false; be.style.opacity = ''; be.style.display = ''; }  /* satellite : toujours actif */
+  pintarAntena(base);
+  if (manual === true) toast(_pcVivo ? '🟢 Salufolio conectado' : '⚪ sin conexión con el PC');
+}
+/* v23.15 — l'antenne du pèlerin (P-H) : 📡 en couleur = serveur accessible,
+   grisée = silence ; un toque = re-sonder. Visible de partout, près de la concha. */
+function pintarAntena(base) {
+  /* v24.15 (P-H : « grise sur blanc, invisible ») — pastille toujours lisible :
+     verte pleine = conectado, contour rouge = sin conexión ; jamais fantôme. */
+  const a = document.getElementById('pc-antena'); if (!a) return;
+  if (!base) { a.style.display = 'none'; return; }
+  a.style.display = '';
+  a.style.opacity = '1'; a.style.filter = '';
+  if (_pcVivo) {
+    a.style.background = '#1e7a46'; a.style.borderColor = '#3dbf7f';
+    a.title = 'Salufolio en el PC: conectado';
+  } else {
+    a.style.background = 'var(--surface)'; a.style.borderColor = '#d9534f';
+    a.title = 'Salufolio en el PC: sin conexión — toque para comprobar';
+  }
+}
+async function enviarSalufolio() {
+  /* ═══ ESSAI SATÉLITE (P-H) — « on envoie et point final » : fetch no-cors,
+     on N'ATTEND PAS de réponse (comme un formulaire) → autorisé même en local
+     file://. La confirmation se fait côté serveur (protocolo-entrada). ═══ */
+  const base = baseSalufolio();
+  if (!base) { toast(t('env_err') + ' — dirección?'); return; }
+  const be = document.getElementById('i-benv');
+  const avant = be ? be.textContent : '';
+  if (be) { be.disabled = true; be.innerHTML = '<span class="reloj">⏳</span>'; }
+  const st = document.getElementById('pc-estado');
+  try {
+    await fetch(base + '/api/protocolo', {
+      method: 'POST',
+      mode: 'no-cors',                       /* le satellite part sans réponse à lire */
+      headers: { 'Content-Type': 'text/plain' },  /* text/plain = pas de preflight */
+      body: JSON.stringify(payloadExport())
+    });
+    /* no-cors : on ne peut PAS lire r.ok ni r.json — on suppose parti */
+    toast('🛰️ ' + t('env_ok'));
+    if (st) st.innerHTML = '🛰️ Enviado al ordenador. Compruébelo en Salufolio (carpeta protocolo-entrada).';
+  } catch (e) {
+    toast(t('env_err'));
+    if (st) st.innerHTML = '❌ No salió.<br>Compruebe que Salufolio esté abierto en el ordenador y que el teléfono use el mismo WiFi.';
+  }
+  finally { if (be) { be.disabled = false; be.textContent = avant || t('b_env'); } }
+}
+
+/* ── flèche de remontée : le défilement devient visible ── */
+window.addEventListener('scroll', function() {
+  const b = document.getElementById('subir');
+  if (b) b.style.display = window.scrollY > 240 ? '' : 'none';
+});
+
+/* ── partage mobile (Web Share) ── */
+async function compartir() {
+  const json = JSON.stringify(payloadExport(), null, 2);
+  try {
+    const file = new File([json], 'MFProtocolo_export.json', { type: 'application/json' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: 'Salufolio Protocolo' }); return;
+    }
+    if (navigator.share) { await navigator.share({ title: 'Salufolio Protocolo', text: json }); return; }
+    throw 0;
+  } catch (e) { if (e && e.name === 'AbortError') return; toast('Compartir no disponible — use ⬇️ Descargar'); }
+}
+function setPatient(v) { renombrarActivo(v, null); render(); }
+function getSip() {
+  const a = getActivo();
+  if (a) { const p = getPacientes().filter(x => x.id === a)[0]; if (p) return p.sip || ''; }
+  return lsGet('mfp_sip', '');
+}
+function setSip(v) { renombrarActivo(null, v); }
+
+/* ── navigation ── */
+/* v23.2 — bienvenida de primera apertura (P-H : « une page d'accueil la
+   première fois ? ») : trois pasos y a trabajar. */
+function bienvenida() {
+  if (localStorage.getItem('mfp_bienv2')) return;
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:98;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div style="position:relative;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px 22px;max-width:440px;font-size:15px;line-height:1.6;text-align:center">' +
+    '<button id="bv-x" title="No volver a mostrar" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:4px 8px">✕</button>' +
+    /* LES ARMES DE LA MAISON — hexagone vert, concha d'or. Écrit sans
+       double échappement : les guillemets HTML n'ont rien à fuir dans une
+       chaîne délimitée par des apostrophes. */
+    '<svg viewBox="0 0 240 240" width="96" height="96" style="display:block;margin:0 auto 8px">' +
+    '<polygon points="224,120 172,210 68,210 16,120 68,30 172,30" fill="none" stroke="#3dbf7f" stroke-width="10" stroke-linejoin="round"/>' +
+    '<line x1="120" y1="172" x2="33" y2="131" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<line x1="120" y1="172" x2="48" y2="109" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<line x1="120" y1="172" x2="68" y2="91" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<line x1="120" y1="172" x2="93" y2="80" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<line x1="120" y1="172" x2="120" y2="76" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<line x1="120" y1="172" x2="147" y2="80" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<line x1="120" y1="172" x2="172" y2="91" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<line x1="120" y1="172" x2="192" y2="109" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<line x1="120" y1="172" x2="207" y2="131" stroke="#e8a13c" stroke-width="7" stroke-linecap="round"/>' +
+    '<path d="M33,131 Q30,113 48,109 Q50,90 68,91 Q75,74 93,80 Q105,65 120,76 Q135,65 147,80 Q165,74 172,91 Q190,90 192,109 Q210,113 207,131" fill="none" stroke="#e8a13c" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>' +
+    '<path d="M100,172 h40 l-7,15 h-26 z" fill="#e8a13c"/>' +
+    '</svg>' +
+    '<div style="font-size:24px;font-weight:800">Salu<i>folio</i> Protocolo</div>' +
+    '<div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">el cuaderno del cuidador · v' + MFP_VERSION + '</div>' +
+    '<p style="margin:8px 0;text-align:left"><b>Salufolio</b> es la casa del expediente médico personal: sus datos de salud, en su propia máquina, sin nube y sin cuentas. Este <b>Protocolo</b> es el cuaderno del cuidador: tomas, constantes y observaciones del día a día — y el informe para la consulta se prepara solo.</p>' +
+    '<p style="margin:6px 0 12px;font-size:11.5px;color:var(--muted);font-style:italic;text-align:left">Del latín <i>Salus</i>, la diosa de la salud, y <i>folium</i>: el folio de la salud.</p>' +
+    '<p style="margin:6px 0;font-size:13px;text-align:left">1️⃣ <b>📦 Datos</b> — el paciente y su pauta (➕ / ✏️) · 2️⃣ <b>💊 Hoy</b> — toque cada toma (◀ días pasados) · 3️⃣ <b>🩺 Constantes · 📝 Notas</b> — al momento.</p>' +
+    '<button class="btn" style="width:100%;margin-top:12px" id="bv-ok">Entendido</button></div>';
+  document.body.appendChild(ov);
+  const cerrar = () => { localStorage.setItem('mfp_bienv2', JSON.stringify('1')); ov.remove(); arranqueInicial(); };
+  ov.querySelector('#bv-ok').onclick = cerrar;
+  ov.querySelector('#bv-x').onclick = cerrar;
+}
+/* La liste des patients vit sous la date, là où s'affichait le SIP.
+   Choisir un nom rafraîchit tout l'écran ; ＋ ajoute ; 🗑 n'apparaît que
+   lorsqu'un patient est là, et demande confirmation. */
+/* Tout s'enregistre à l'instant du geste — sauf la note libre, qui attend
+   sept dixièmes de seconde pour ne pas écrire à chaque lettre. C'est la
+   seule chose qui puisse être en l'air quand on change de patient : on la
+   pose avant de partir. (P-H, 28/07 : « il faut sauvegarder les données du
+   patient courant avant ».) */
+function renderPacientes() {
+  const el = document.getElementById('hdr-patient'); if (!el) return;
+  const lista = getPacientes(), act = getActivo();
+  el.innerHTML = '<div class="pac-fila">' +
+    (lista.length
+      ? '<select class="pac-sel" id="pac-sel">' + lista.map(p =>
+          '<option value="' + p.id + '"' + (p.id === act ? ' selected' : '') + '>' +
+          p.nombre + (p.sip ? ' · ' + p.sip : '') + '</option>').join('') + '</select>'
+      : '<span class="pac-vacio">' + t('pac_ninguno') + '</span>') +
+    '<button class="pac-btn" id="pac-mas" title="' + t('pac_anadir') + '">＋</button>' +
+    (lista.length ? '<button class="pac-btn" id="pac-del" title="' + t('pac_borrar') + '">🗑</button>' : '') +
+    '</div>';
+  const sel = document.getElementById('pac-sel');
+  if (sel) sel.onchange = () => cambiarPaciente(sel.value);
+  document.getElementById('pac-mas').onclick = () => pacienteNuevo(false);
+  const del = document.getElementById('pac-del'); if (del) del.onclick = pacienteBorrar;
+}
+function pacienteNuevo(primero) {
+  guardarActual();
+  dlg(primero ? t('pac_primero') : t('pac_nuevo'), [
+    { label: t('pac_nombre'), tipo: 'text', valor: '' },
+    { label: 'SIP', tipo: 'text', valor: '' }
+  ], vals => {
+    const nom = (vals[0] || '').trim(); if (!nom) return;
+    const sip = (vals[1] || '').trim();
+    const id = _idPaciente(nom);
+    const l = getPacientes(); l.push({ id: id, nombre: nom, sip: sip });
+    setPacientes(l); setActivo(id);
+    lsSet('mfp_patient', nom); lsSet('mfp_sip', sip);
+    restaurarCampos(); render(); renderDatos(); renderPacientes();
+  });
+}
+function _diasDelPaciente() {
+  const dias = {};
+  Object.keys(getTomas() || {}).forEach(d => dias[d] = 1);
+  (getObs() || []).forEach(o => { if (o && o.fecha) dias[o.fecha] = 1; });
+  return Object.keys(dias).length;
+}
+function _borrarCasillero(id) {
+  const fuera = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.indexOf('mfp_' + id + '_') === 0) fuera.push(k);
+  }
+  fuera.forEach(k => localStorage.removeItem(k));
+}
+function pacienteBorrar() {
+  const act = getActivo(), lista = getPacientes();
+  const p = lista.filter(x => x.id === act)[0]; if (!p) return;
+  const dias = _diasDelPaciente();
+  const hazlo = () => {
+    _borrarCasillero(act);
+    const resto = lista.filter(x => x.id !== act);
+    setPacientes(resto);
+    if (resto.length) setActivo(resto[0].id); else olvidarActivo();
+    restaurarCampos(); render(); renderDatos(); renderPacientes();
+  };
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:96;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg" style="text-align:center">' +
+    '<div style="font-size:18px;font-weight:800;margin-bottom:6px">🗑 ' + t('pac_borrar_q') + '</div>' +
+    '<div style="font-size:17px;font-weight:700;margin-bottom:4px">' + p.nombre + (p.sip ? ' · ' + p.sip : '') + '</div>' +
+    '<div style="font-size:13px;color:var(--muted);margin-bottom:12px">' + dias + ' ' + t(dias === 1 ? 'pac_borrar_av_1' : 'pac_borrar_av') + '</div>' +
+    '<button class="btn" id="pb-exp">' + t('pac_exp_borrar') + '</button>' +
+    '<button class="btn sec" style="margin-top:8px" id="pb-si">' + t('pac_solo_borrar') + '</button>' +
+    '<button class="hbtn2" style="width:100%;margin-top:10px;font-size:13px" id="pb-no">' + t('d_can') + '</button></div>';
+  document.body.appendChild(ov);
+  ov.querySelector('#pb-no').onclick = () => ov.remove();
+  ov.querySelector('#pb-si').onclick = () => { ov.remove(); hazlo(); };
+  ov.querySelector('#pb-exp').onclick = () => { ov.remove(); exportarJSON(); setTimeout(hazlo, 900); };
+  ov.onclick = e => { if (e.target === ov) ov.remove(); };
+}
+/* Application vide : on demande un patient avant toute chose.
+   render() est rappelé après le sondage du PC, donc une seule fois par
+   ouverture : sans ce garde, la question se posait deux fois. */
+let _arranqueHecho = false;
+function arranqueInicial() {
+  if (_arranqueHecho) return; _arranqueHecho = true;
+  if (!getPacientes().length) { pacienteNuevo(true); return; }
+  asistente();
+}
+function irPauta() {
+  ir('datos');
+  const a = document.getElementById('acc-meds'); if (a) a.open = true;
+  setTimeout(() => { const e = document.getElementById('meds-lista'); if (e) e.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 120);
+}
+function ir(p) {
+  /* Naviguer ne ferme plus rien : la fiche du jour reste ouverte, et l'on
+     revient dessus au lieu d'en ouvrir une neuve à chaque passage. */
+  if (p === 'datos') setTimeout(sondearPc, 50);
+  if (p === 'notas') setTimeout(trioTotales, 30);
+  if (p === 'const') setTimeout(pintaConstHoy, 30);
+  document.querySelectorAll('.panel').forEach(x => x.classList.remove('act'));
+  document.querySelectorAll('nav button').forEach(x => x.classList.remove('act'));
+  document.getElementById('p-' + p).classList.add('act');
+  document.getElementById('nav-' + p).classList.add('act');
+  if (p === 'datos') renderDatos();
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), 1800);
+}
+
+/* ── HOY : les prises ── */
+function toggleToma(medId) {
+  const tomas = getTomas(); const k = diaKey();
+  if (!tomas[k]) tomas[k] = {};
+  if (tomas[k][medId]) { delete tomas[k][medId]; }         /* dé-cocher = erreur de doigt */
+  else {
+    /* Aujourd'hui : l'heure qu'il est. Un jour passé : l'heure prévue du
+       créneau (dire « 17:19 » pour une prise du coucher serait un mensonge).
+       Dans les deux cas, ✎ permet de corriger l'heure. */
+    if (esHoy()) { tomas[k][medId] = ahora(); }
+    else {
+      const med = getMeds().find(function(m) { return m.id === medId; });
+      const hs = (typeof getHoras === 'function') ? getHoras() : {};
+      tomas[k][medId] = (med && hs[med.momento]) || ahora();
+    }
+  }
+  lsSet('mfp_tomas', tomas);
+  renderTomas();
+  if (tomas[k][medId]) toast('✓ Registrado a las ' + tomas[k][medId]);
+}
+function renderDiaNav() {
+  const th = document.getElementById('i-thoy');
+  if (th && !esHoy()) th.textContent = '✎ Medicación del ' + fmtDiaCorto(diaKey()) + ' — corrigiendo';
+  else if (th && typeof t === 'function') th.textContent = t('t_hoy');
+  const et = document.getElementById('dia-etiqueta');
+  const av = document.getElementById('dia-aviso'), tx = document.getElementById('dia-aviso-txt');
+  const sig = document.getElementById('dia-siguiente');
+  if (!et) return;
+  et.textContent = esHoy() ? fmtDiaCorto(diaKey()) + ' · hoy' : fmtDiaCorto(diaKey());
+  if (av) av.style.display = esHoy() ? 'none' : 'block';
+  if (tx) tx.textContent = 'Está corrigiendo el ' + fmtDiaCorto(diaKey());
+  if (sig) sig.style.opacity = esHoy() ? '.3' : '1';
+}
+function renderTomas() {
+  renderDiaNav();
+  const meds = getMeds(); const tomas = getTomas()[diaKey()] || {};
+  const orden = ['desayuno','comida','cena','noche'];
+  const el = document.getElementById('tomas-lista');
+  if (!meds.length) { el.innerHTML = '<div class="vacio">Añada los medicamentos en la pestaña Datos.</div>'; return; }
+  let html = '';
+  const hoy = diaKey();
+  orden.forEach(m => {
+    const grupo = meds.filter(x => x.momento === m && medActivo(x, hoy));
+    if (!grupo.length) return;
+    html += '<h2>' + MOMENTOS[m] + '</h2>';
+    grupo.forEach(x => {
+      const hecha = tomas[x.id];
+      let duracion = '';
+      if (x.hasta) {
+        const dias = Math.round((new Date(x.hasta) - new Date(hoy)) / 86400000);
+        const uj = dias === 1 ? t('dia') : t('dias');
+        duracion = ' · ' + t('hasta') + ' ' + x.hasta.slice(8,10) + '/' + x.hasta.slice(5,7) +
+          (dias <= 3 ? ' <b style="color:var(--warn)">(' + t('quedan') + ' ' + dias + ' ' + uj + ')</b>' : ' (' + t('quedan') + ' ' + dias + ' ' + uj + ')');
+      }
+      html += '<button class="toma' + (hecha ? ' hecha' : '') + '" onclick="toggleToma(\'' + x.id + '\')">' +
+        '<span class="pastilla">' + (hecha ? '✓' : '💊') + '</span>' +
+        '<span class="info"><div class="nombre">' + x.nombre + '</div>' +
+        '<div class="detalle">' + x.dosis + duracion + '</div></span>' +
+        '<span class="hora"' + (hecha ? ' onclick="event.stopPropagation();editarHora(\'' + x.id + '\')" title="Corregir hora"' : '') + '>' + (hecha ? hecha + ' ✎' : t('pendiente')) + '</span></button>';
+    });
+  });
+  /* Les traitements terminés ne s'affichent plus dans la vue du jour
+     (P-H 18/07) — ils restent dans les données et dans Datos. */
+  el.innerHTML = html;
+  renderPuntuales(); renderAvisos();
+}
+
+/* ── CONSTANTES ── */
+/* ═══ v23.12 — DOCTRINE P-H : « l'utilisateur ne doit pas se préoccuper,
+   c'est le programme qui s'en charge » — MORT AUX GUARDAR.
+   Modèle : une FICHE-BROUILLON par visite de l'onglet ; chaque champ
+   modifié est gravé aussitôt (upsert) ; quitter l'onglet clôt la fiche
+   (champs nettoyés) ; revenir = nouvelle fiche. Témoin « ✓ guardado ». ═══ */
+let _cDraft = null;
+function upsertConst() {
+  const v = id => { const x = document.getElementById(id).value; return x === '' ? null : parseFloat(x); };
+  const hEl = document.getElementById('c-hora');
+  const vals = { ta_sis: v('c-tas'), ta_dia: v('c-tad'), fc: v('c-fc'), spo2: v('c-spo2'), peso: v('c-peso'), temp: v('c-temp') };
+  const cs = getConstantes();
+  if (Object.values(vals).every(x => x === null)) {
+    if (_cDraft !== null && cs[_cDraft]) { cs.splice(_cDraft, 1); lsSet('mfp_constantes', cs); }
+    _cDraft = null; estadoConst(''); return;
+  }
+  const horaPrev = (_cDraft !== null && cs[_cDraft]) ? cs[_cDraft].hora : null;
+  const rec = Object.assign({ fecha: diaKey(), hora: (hEl && horaValide(hEl.value)) || horaPrev || ahora() }, vals);
+  if (_cDraft === null || !cs[_cDraft]) { cs.push(rec); _cDraft = cs.length - 1; }
+  else cs[_cDraft] = rec;
+  lsSet('mfp_constantes', cs); estadoConst('✓ guardado · ' + rec.hora);
+}
+function estadoConst(s) {
+  const e = document.getElementById('const-estado'); if (e) e.textContent = s;
+  pintaConstHoy();
+}
+/* Une mesure en une ligne, sans étiquettes : les unités se lisent seules
+   dans les quatre langues. */
+function _resumenConst(c) {
+  const p = [];
+  if (c.ta_sis != null || c.ta_dia != null)
+    p.push((c.ta_sis != null ? c.ta_sis : '—') + '/' + (c.ta_dia != null ? c.ta_dia : '—') + ' mmHg');
+  if (c.fc != null) p.push(c.fc + ' lpm');
+  if (c.spo2 != null) p.push(c.spo2 + ' %');
+  if (c.peso != null) p.push(c.peso + ' kg');
+  if (c.temp != null) p.push(c.temp + ' °C');
+  return p.join(' · ');
+}
+function pintaConstHoy() {
+  const el = document.getElementById('const-hoy'); if (!el) return;
+  const hoy = getConstantes().filter(c => c && c.fecha === diaKey());
+  if (!hoy.length) { el.innerHTML = ''; return; }
+  el.innerHTML = '<div class="ch-tit">' + t('tri_hoy') + '</div>' +
+    hoy.map(c => '<div class="ch-lin"><b>' + (c.hora || '--:--') + '</b> · ' + _resumenConst(c) + '</div>').join('');
+}
+/* ═══ UNE SEULE ÉCOUTE POUR TOUTE LA MAISON (forme proposée par P-H,
+   29/07) ═══ Plutôt que de brancher un écouteur sur chaque champ — qu'on
+   oubliera le jour où l'on en ajoutera un —, une seule écoute déléguée sur
+   le document, et une TABLE qui dit ce que chaque champ doit faire.
+   Ajouter un champ demain, c'est ajouter une ligne.
+
+   « input » et non « change » : « change » n'arrive qu'à la sortie du
+   champ, donc rien n'est écrit tant que le doigt y est. Les deux sont
+   écoutés — « change » rattrape les listes déroulantes et les sélecteurs
+   de date sur les navigateurs qui n'émettent pas « input ». Les fonctions
+   appelées sont des upsert : écrire cent fois ne crée pas cent fiches. */
+const CAMPOS_GUARDA = {
+  'c-tas': () => upsertConst(), 'c-tad': () => upsertConst(), 'c-fc': () => upsertConst(),
+  'c-spo2': () => upsertConst(), 'c-peso': () => upsertConst(), 'c-temp': () => upsertConst(),
+  'c-hora': () => upsertConst(),
+  'nota-libre': () => upsertObs(),
+  'cfg-patient2': e => renombrarActivo(e.value, null),
+  'cfg-sip': e => renombrarActivo(null, e.value),
+  'cfg-pc': e => setPc(e.value)
+};
+function ponerEscuchaUnica() {
+  const guarda = ev => {
+    const t = ev.target;
+    if (!t || !t.id) return;
+    const f = CAMPOS_GUARDA[t.id];
+    if (!f) return;
+    /* Ne jamais avaler une erreur : un enregistrement qui échoue en silence
+       est pire qu'un enregistrement qui manque, car on le croit fait. */
+    try { f(t); }
+    catch (err) {
+      if (window.console) console.error('Protocolo — échec d\'enregistrement sur ' + t.id, err);
+      const e2 = document.getElementById('const-estado');
+      if (e2 && t.id.indexOf('c-') === 0) e2.textContent = '⚠ ' + (err && err.message ? err.message : 'error');
+    }
+  };
+  document.addEventListener('input', guarda, true);
+  document.addEventListener('change', guarda, true);
+}
+/* ═══════════════════════════════════════════════════════════════════
+   LE MÉCANISME (maquette du 29/07, porté mot pour mot).
+   ① poser ce qui est à l'écran · ② changer de casier · ③ relire et repeindre
+   Aucun rechargement de page.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ① Poser. Tout est déjà écrit à la frappe : ceci ne rattrape que ce qui
+   serait encore sous le doigt. */
+function guardarActual() {
+  try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {}
+  try { upsertConst(); } catch (e) {}
+  try { upsertObs(); } catch (e) {}
+}
+
+/* ③ Relire le casier du patient courant et repeindre les champs. C'est ce
+   qui manquait : le programme n'avait jamais eu d'étape de RESTAURATION,
+   il s'en remettait au rechargement de la page. */
+function restaurarCampos() {
+  /* — les constantes : la fiche du jour, si elle existe — */
+  const cs = getConstantes();
+  let idx = -1;
+  for (let i = cs.length - 1; i >= 0; i--) if (cs[i] && cs[i].fecha === diaKey()) { idx = i; break; }
+  const c = idx >= 0 ? cs[idx] : null;
+  const pon = (id, v) => { const e = document.getElementById(id); if (e) e.value = (v === null || v === undefined) ? '' : v; };
+  pon('c-tas', c && c.ta_sis); pon('c-tad', c && c.ta_dia); pon('c-fc', c && c.fc);
+  pon('c-spo2', c && c.spo2); pon('c-peso', c && c.peso); pon('c-temp', c && c.temp);
+  pon('c-hora', c && c.hora);
+  _cDraft = idx >= 0 ? idx : null;
+  estadoConst(c ? '✓ guardado · ' + c.hora : '');
+
+  /* — la note libre : le brouillon du jour, reconnu à sa marque — */
+  const obs = getObs();
+  let oi = -1;
+  for (let i = obs.length - 1; i >= 0; i--) {
+    const o = obs[i];
+    if (o && o.fecha === diaKey() && o.libre) { oi = i; break; }
+  }
+  const nl = document.getElementById('nota-libre');
+  if (nl) nl.value = oi >= 0 ? (obs[oi].nota || '') : '';
+  _oDraft = oi >= 0 ? oi : null;
+  estadoObs(oi >= 0 ? '✓ guardado · ' + obs[oi].hora : '');
+
+  if (typeof pintaConstHoy === 'function') pintaConstHoy();
+}
+
+/* La bascule elle-même. */
+function cambiarPaciente(id) {
+  guardarActual();
+  setActivo(id);
+  restaurarCampos();
+  render(); renderDatos();
+  if (typeof renderPacientes === 'function') renderPacientes();
+}
+function cerrarConstDraft() {
+  pintaConstHoy();
+  if (_cDraft === null) return;
+  ['c-tas','c-tad','c-fc','c-spo2','c-peso','c-temp','c-hora'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+  _cDraft = null; estadoConst('');
+}
+function _legacyGuardarConstantes() {
+  const v = id => { const x = document.getElementById(id).value; return x === '' ? null : parseFloat(x); };
+  const hEl = document.getElementById('c-hora');
+  const c = { fecha: diaKey(), hora: (hEl && horaValide(hEl.value)) || ahora(), ta_sis: v('c-tas'), ta_dia: v('c-tad'),
+              fc: v('c-fc'), spo2: v('c-spo2'), peso: v('c-peso'), temp: v('c-temp') };
+  if ([c.ta_sis,c.ta_dia,c.fc,c.spo2,c.peso,c.temp].every(x => x === null)) { toast('Nada que guardar'); return; }
+  const cs = getConstantes(); cs.push(c); lsSet('mfp_constantes', cs);
+  ['c-tas','c-tad','c-fc','c-spo2','c-peso','c-temp'].forEach(id => document.getElementById(id).value = '');
+  toast('✓ Constantes guardadas ' + c.hora);
+}
+
+/* ── NOTAS ── */
+let _chipsSel = new Set();
+function renderChips() {
+  _refrescarChipUlt();
+  document.getElementById('chips').innerHTML = CHIP_TIPOS.map((c, i) => {
+    const opc = CHIP_OPC[c];
+    const marcada = _chipsSel.has(i) || (opc && _chipUlt[c]);
+    const txt = (opc && _chipUlt[c]) ? _chipUlt[c] : chipLabel(c);
+    return '<button class="chip' + (marcada ? ' sel' : '') + '" onclick="toggleChip(' + i + ')">' + txt + '</button>';
+  }).join('');
+}
+/* ═══ v2026.7.24.8 — MOTIF « CHIP À CHOIX » (idée P-H) : certaines chips
+   ouvrent un choix (côté ou grado) ; la sélection se grave ET s'inscrit dans
+   le libellé du bouton, avec fond miel — on voit du concret, l'écran s'allège.
+   Clé stockée = espagnol stable ; sufijo espagnol aussi (Babel dehors). ═══ */
+/* Toute forme est DÉCLARÉE (3e élément) : plus aucune composition
+   « base + suffixe ». C'est ce calcul qui produisait « Dolor pierna
+   izquierdo » — masculin sur un mot féminin. */
+const CHIP_OPC = {
+  'Dolor cabeza':  { tit:'zona_tit', op:[['frontal','cab_frontal','Dolor cabeza frontal'],['nuca','cab_nuca','Dolor cabeza nuca'],['general','zona_gen','Dolor cabeza general']] },
+  'Dolor espalda': { tit:'zona_tit', op:[['zona alta','esp_alta','Dolor espalda zona alta'],['zona baja','esp_baja','Dolor espalda zona baja'],['general','zona_gen','Dolor espalda general']] },
+  'Dolor muslo':   { tit:'lado_tit',  op:[['izquierdo','lado_izq','Dolor muslo izquierdo'],['ambos','lado_ambos','Dolor muslos'],['derecho','lado_der','Dolor muslo derecho']] },
+  'Dolor pierna':  { tit:'lado_tit',  op:[['izquierdo','lado_izq','Dolor pierna izquierda'],['ambos','lado_ambos','Dolor piernas'],['derecho','lado_der','Dolor pierna derecha']] },
+  'Dolor rodilla': { tit:'lado_tit',  op:[['izquierdo','lado_izq','Dolor rodilla izquierda'],['ambos','lado_ambos','Dolor rodillas'],['derecho','lado_der','Dolor rodilla derecha']] },
+  'Dolor tobillo': { tit:'lado_tit',  op:[['izquierdo','lado_izq','Dolor tobillo izquierdo'],['ambos','lado_ambos','Dolor tobillos'],['derecho','lado_der','Dolor tobillo derecho']] },
+  'Dolor manos':   { tit:'lado_tit',  op:[['izquierda','lado_izq','Dolor mano izquierda'],['ambas','lado_ambas','Dolor manos'],['derecha','lado_der','Dolor mano derecha']] },
+  'Hinchazón piernas': { tit:'lado_tit', op:[['pierna izquierda','lado_izq','Pierna izquierda hinchada'],['ambas','lado_ambas','Piernas hinchadas'],['pierna derecha','lado_der','Pierna derecha hinchada']] },
+  'Somnolencia':   { tit:'grado_tit', op:[['tras comidas','grd_comidas','Somnolencia tras comidas'],['todo el día','grd_diaosc','Somnolencia todo el día']] },
+  'Caída':         { tit:'zona_tit',  op:[['golpe en la cabeza','caida_cabeza','Caída con golpe en la cabeza'],['golpe en la cadera','caida_cadera','Caída con golpe en la cadera'],['golpe en las nalgas','caida_nalgas','Caída sobre las nalgas'],['sin golpe','caida_singolpe','Caída sin golpe']] },
+  /* À CHOIX MULTIPLE : une journée peut contenir plusieurs occupations.
+     « Nada » est exclusif — il chasse le reste, et le reste le chasse. */
+  'Ocupación':     { tit:'ocup_tit', multi:true, excl:[0], op:[
+      ['nada','ocup_nada','Sin actividad'], ['caminar','ocup_camina','Camina'],
+      ['siesta','ocup_siesta','Siesta'], ['lectura','ocup_lee','Lee'],
+      ['escritura','ocup_escribe','Escribe'], ['dibujo','ocup_dibuja','Dibuja'],
+      ['televisión','ocup_tv','Ve la televisión'], ['conversación','ocup_habla','Conversa']] },
+  'Alimentación':  { tit:'come_tit',  op:[['deja media ración','come_media','Deja media ración'],['rechaza alimentos','come_rechaza','Rechaza alimentos'],['come si se insiste','come_insiste','Come solo si se insiste']] }
+};
+/* dernier choix affiché par chip (mémoire d'écran du jour) */
+let _chipUlt = {};
+function toggleChip(i) {
+  const c = CHIP_TIPOS[i];
+  if (CHIP_OPC[c]) { pedirOpcion(i, c); return; }
+  _chipsSel.has(i) ? _chipsSel.delete(i) : _chipsSel.add(i); renderChips(); upsertObs();
+}
+/* Les étiquettes possibles d'une famille : forme complète si elle est
+   déclarée, sinon « base + suffixe ». Mêmes règles qu'à l'écriture. */
+/* Chaque étiquette connue porte le NUMÉRO DE L'OPTION à laquelle elle
+   correspond — sans quoi une ancienne étiquette allumerait le mauvais
+   bouton. Lavoisier : les étiquettes composées d'autrefois restent
+   reconnues, pour que les observations déjà écrites s'allument encore. */
+function _chipEtiquetas(c) {
+  const cfg = CHIP_OPC[c]; if (!cfg) return [];
+  const l = [];
+  cfg.op.forEach((o, k) => {
+    if (o[2]) l.push({ etiq: o[2], k: k });
+    const viejo = c + ' ' + o[0];
+    if (!l.some(x => x.etiq === viejo)) l.push({ etiq: viejo, k: k });
+  });
+  return l;
+}
+/* Ce que la journée dit déjà de cette famille : la dernière observation
+   qui lui appartient, ou rien. */
+function _chipHoy(c) {
+  const et = _chipEtiquetas(c); if (!et.length) return null;
+  const obs = getObs();
+  for (let n = obs.length - 1; n >= 0; n--) {
+    const o = obs[n];
+    if (!o || o.fecha !== diaKey() || !o.tipos) continue;
+    const m = et.filter(x => x.etiq === o.tipos[0])[0];
+    if (m) return { idx: n, etiq: o.tipos[0], k: m.k };
+  }
+  return null;
+}
+/* L'état allumé se RELIT dans les données : il survit au rechargement et
+   se vide tout seul au changement de jour. */
+function _refrescarChipUlt() {
+  _chipUlt = {};
+  Object.keys(CHIP_OPC).forEach(c => {
+    if (CHIP_OPC[c].multi) {
+      const puestas = CHIP_OPC[c].op
+        .map((o, k) => _obsHoyIdx(_etiqDe(c, k)) >= 0 ? chipLabel(_etiqDe(c, k)) : '')
+        .filter(Boolean);
+      if (puestas.length) _chipUlt[c] = puestas.join(', ');
+      return;
+    }
+    const h = _chipHoy(c); if (!h) return;
+    /* La chip porte l'état résultant, pas « base · qualificatif ». */
+    _chipUlt[c] = chipLabel(h.etiq);
+  });
+}
+/* Retire une observation en gardant l'index du brouillon cohérent. */
+function _quitarObs(idx) {
+  const obs = getObs();
+  if (!obs[idx]) return;
+  obs.splice(idx, 1); lsSet('mfp_obs', obs);
+  if (typeof _oDraft === 'number') {
+    if (_oDraft === idx) _oDraft = null;
+    else if (_oDraft > idx) _oDraft--;
+  }
+}
+/* Le corps de la page est agrandi (mfp_zoom, 1,25 par défaut) : à
+   l'intérieur, 100vh vaut davantage que l'écran, et le bouton du bas se
+   retrouvait tronqué. On borne donc la fenêtre en pixels réels divisés
+   par le facteur d'agrandissement. */
+function ajustaLista(ov) {
+  const d = ov.querySelector('.dlg.lista'); if (!d) return;
+  const z = parseFloat(lsGet('mfp_zoom', 1.25)) || 1;
+  d.style.maxHeight = Math.floor((window.innerHeight - 20) / z) + 'px';
+}
+function _etiqDe(c, k) { const o = CHIP_OPC[c].op[k]; return o[2] ? o[2] : (c + ' ' + o[0]); }
+function _obsHoyIdx(et) {
+  const obs = getObs();
+  for (let n = obs.length - 1; n >= 0; n--) {
+    const o = obs[n];
+    if (o && o.fecha === diaKey() && o.tipos && o.tipos[0] === et) return n;
+  }
+  return -1;
+}
+/* Fenêtre à choix multiple : chaque toucher pose ou retire, et la fenêtre
+   reste ouverte tant qu'on a des choses à dire. Rien à valider. */
+function pedirVarias(i, c) {
+  const cfg = CHIP_OPC[c];
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg lista">' +
+    '<div class="lista-tit">' + chipLabel(c) + ' — ' + t(cfg.tit) + '</div>' +
+    '<div class="lista-cuerpo">' +
+    cfg.op.map((o, k) => '<button class="btn sec" data-k="' + k + '">' + t(o[1]) + '</button>').join('') +
+    '</div><button class="btn" data-fin="1">' + t('d_ok') + '</button>' +
+    '<div class="lista-pie">' + t('pop_hora') + '</div></div>';
+  document.body.appendChild(ov);
+  const pinta = () => {
+    ov.querySelectorAll('button[data-k]').forEach(b => {
+      b.className = 'btn sec' + (_obsHoyIdx(_etiqDe(c, +b.dataset.k)) >= 0 ? ' op-on' : '');
+    });
+    renderChips();
+  };
+  ov.querySelectorAll('button[data-k]').forEach(b => b.onclick = () => {
+    const k = +b.dataset.k, et = _etiqDe(c, k), idx = _obsHoyIdx(et);
+    if (idx >= 0) _quitarObs(idx);
+    else {
+      const excl = cfg.excl || [];
+      /* l'exclusif chasse tout ; tout chasse l'exclusif */
+      const aQuitar = excl.indexOf(k) >= 0 ? cfg.op.map((_, j) => j).filter(j => j !== k) : excl;
+      aQuitar.forEach(j => { const q = _obsHoyIdx(_etiqDe(c, j)); if (q >= 0) _quitarObs(q); });
+      const obs = getObs();
+      obs.push({ fecha: diaKey(), hora: ahora(), tipos: [et], nota: null });
+      lsSet('mfp_obs', obs);
+    }
+    pinta();
+  });
+  ov.querySelector('button[data-fin]').onclick = () => ov.remove();
+  ov.onclick = e => { if (e.target === ov) ov.remove(); };
+  ajustaLista(ov); pinta();
+}
+function pedirOpcion(i, c) {
+  const cfg = CHIP_OPC[c];
+  if (cfg.multi) return pedirVarias(i, c);
+  const actual = _chipHoy(c);
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg" style="text-align:center"><div style="font-size:17px;font-weight:700;margin-bottom:12px">' + chipLabel(c) + ' — ' + t(cfg.tit) + '</div>' +
+    '<div style="display:flex;flex-direction:column;gap:8px">' +
+    cfg.op.map((o, k) => '<button class="btn sec' + (actual && actual.k === k ? ' op-on' : '') +
+      '" data-k="' + k + '">' + t(o[1]) + '</button>').join('') + '</div>' +
+    '<div class="lista-pie">' + t('pop_hora') + '</div></div>';
+  document.body.appendChild(ov);
+  ov.querySelectorAll('button[data-k]').forEach(b => b.onclick = () => {
+    const k = +b.dataset.k, o = cfg.op[k]; ov.remove();
+    /* o[2] = clave de FORMA COMPLETA (ej. plural « Dolor piernas ») : reemplaza
+       « base + sufijo ». Si no, se compone « base sufijoES » (compat). */
+    const etiqES = o[2] ? o[2] : (c + ' ' + o[0]);
+    const muestra = chipLabel(etiqES);
+    /* ① on retouche le choix allumé : on l'éteint, et c'est tout. */
+    if (actual && actual.k === k) {
+      _quitarObs(actual.idx);
+      renderChips(); trioTotales && trioTotales();
+      toast('✗ ' + chipLabel(c) + ' · ' + t('chip_anul'));
+      return;
+    }
+    /* ② on change d'avis : la journée n'en garde qu'un, on REMPLACE. */
+    if (actual) _quitarObs(actual.idx);
+    const obs = getObs();
+    obs.push({ fecha: diaKey(), hora: ahora(), tipos: [etiqES], nota: null });
+    lsSet('mfp_obs', obs);
+    renderChips(); trioTotales && trioTotales();
+    toast('✓ ' + muestra + ' · ' + ahora());
+  });
+  ov.onclick = e => { if (e.target === ov) ov.remove(); };
+}
+/* ═══ URGENCIAS 112 (P-H 28/07) — trois moments dans l'ordre : l'appel, le
+   départ, le retour. Ce ne sont pas des données d'un genre nouveau : ce sont
+   trois observations horodatées comme les autres, donc l'heure se corrige
+   par le même message toquable. Quand les trois sont notés, le bouton
+   disparaît — il n'y a plus rien à faire. ═══ */
+const U112 = [
+  { et: 'Llamada a Urgencias 112',  k: 'u112_llam', ico: '📞' },
+  { et: 'Llegada de la asistencia', k: 'u112_lleg', ico: '🚑' },
+  { et: 'Salida del domicilio',     k: 'u112_sal',  ico: '🚪', alt: 'Salida en ambulancia' },
+  { et: 'Regreso a casa',           k: 'u112_reg',  ico: '🏠' }
+];
+/* L'épisode ne tient pas dans une journée : on peut rentrer le soir même ou
+   quinze jours plus tard. On repart donc du DERNIER APPEL, quelle qu'en soit
+   la date, et l'épisode reste ouvert jusqu'au retour. */
+function _u112Episodio() {
+  const orden = getObs()
+    .filter(o => o && o.fecha && o.tipos && o.tipos.length)
+    .slice().sort((a, b) => (a.fecha + ' ' + (a.hora || '')).localeCompare(b.fecha + ' ' + (b.hora || '')));
+  let ep = null;
+  orden.forEach(o => {
+    const et = String(o.tipos[0]).replace(/^[^ ]+ /, '');
+    let k = -1;
+    U112.forEach((p, i) => { if (et === p.et || et === p.alt) k = i; });
+    if (k === 0) ep = [null, null, null, null];
+    if (k >= 0 && ep) ep[k] = { fecha: o.fecha, hora: o.hora };
+  });
+  return ep;
+}
+function renderU112() {
+  const el = document.getElementById('u112'); if (!el) return;
+  const ep = _u112Episodio();
+  let hechos = 0;
+  if (ep) for (let i = 0; i < 4; i++) if (ep[i]) hechos = i + 1;
+  const abierto = !!ep && hechos < 4;
+  const hoy = diaKey();
+  /* La date ne s'écrit que lorsqu'elle change : rien pour un épisode
+     d'aujourd'hui, une seule fois en tête pour un épisode passé, et de
+     nouveau si un temps tombe un autre jour. Elle parle quand elle a
+     quelque chose à dire. */
+  let ultimaF = null;
+  const testigo = !ep ? '' : U112.map((p, i) => {
+    if (!ep[i]) return '';
+    const cambia = ultimaF === null ? (ep[i].fecha !== hoy) : (ep[i].fecha !== ultimaF);
+    ultimaF = ep[i].fecha;
+    const f = cambia ? (ep[i].fecha.slice(8, 10) + '/' + ep[i].fecha.slice(5, 7) + ' ') : '';
+    return '<span style="font-size:17px">' + p.ico + '</span> ' + f + ep[i].hora;
+  }).filter(Boolean).join(' · ');
+  const sig = abierto ? hechos : 0;     /* épisode clos → un nouvel appel */
+  /* Deux états, comme P-H les décrit : tant que la personne est à la maison
+     c'est l'urgence (rouge) ; dès qu'elle est sortie, il ne reste que le
+     retour, qui peut venir le soir même ou quinze jours plus tard (miel). */
+  const fuera = abierto && hechos >= 3;
+  const clase = fuera ? ' u112-fuera' : (abierto ? ' u112-on' : '');
+  el.innerHTML = '<div class="matrow' + clase + '">🚑 <b>' + t('u112_tit') + '</b>' +
+    '<span class="matctrl"><span class="trio-tot">' + testigo + '</span>' +
+    '<button class="btn-sw" onclick="u112Paso(' + sig + ')">' + t(U112[sig].k) + '</button>' +
+    '</span></div>';
+}
+function u112Paso(i) { regEventoA('🚑 ' + U112[i].et, null); renderU112(); }
+/* v23.1 ⑧ — registros del cuerpo : un toque, gravé, signé de l'heure */
+function regRapida(tipo, detalle) {
+  const obs = getObs();
+  obs.push({ fecha: diaKey(), hora: ahora(), tipos: [tipo], nota: detalle || null });
+  lsSet('mfp_obs', obs); toast('✓ ' + tipo + (detalle ? ' — ' + detalle : ''));
+}
+/* Ce qu'on boit se déclare, comme tout le reste. La note stockée reste
+   espagnole : c'est l'identifiant, pas l'affichage. */
+const BEBIDAS = [ { id:'agua', k:'beb_agua' }, { id:'café', k:'beb_cafe' },
+                  { id:'zumo de fruta', k:'beb_zumo' }, { id:'té', k:'beb_te' } ];
+function pedirBebida() {
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg lista">' +
+    '<div class="lista-tit">💧 ' + t('l_hid') + '</div>' +
+    '<div class="lista-cuerpo">' +
+    BEBIDAS.map((b, k) => '<button class="btn sec" data-b="' + k + '"></button>').join('') +
+    '</div><button class="btn" data-fin="1">' + t('d_ok') + '</button>' +
+    '<div class="lista-pie">' + t('pop_hora') + '</div></div>';
+  document.body.appendChild(ov);
+  /* La fenêtre se souvient : « 1 agua, 2 zumo » — on voit ce qui a déjà
+     été bu avant d'ajouter, et on reste dedans pour servir deux fois. */
+  const pinta = () => {
+    ov.querySelectorAll('button[data-b]').forEach(btn => {
+      const b = BEBIDAS[+btn.dataset.b];
+      const c = _cuentaHoy(o => String(o.tipos && o.tipos[0]).indexOf('Hidratación') >= 0 && o.nota === b.id);
+      btn.textContent = (c ? c + ' ' : '') + t(b.k);
+      btn.className = 'btn sec' + (c ? ' op-on' : '');
+    });
+    hidTotal();
+  };
+  ov.querySelectorAll('button[data-b]').forEach(btn => btn.onclick = () => {
+    const b = BEBIDAS[+btn.dataset.b];
+    const obs = getObs();
+    obs.push({ fecha: diaKey(), hora: ahora(), tipos: ['💧 Hidratación'], cant: 1, nota: b.id });
+    lsSet('mfp_obs', obs); pinta();
+  });
+  ov.querySelector('button[data-fin]').onclick = () => ov.remove();
+  ov.onclick = e => { if (e.target === ov) ov.remove(); };
+  ajustaLista(ov); pinta();
+}
+/* v2026.7.28.8 (P-H) — le compte du jour s'écrit DEVANT le choix : « 1 Normal »,
+   « 2 Dura », « 1 pañal ». Plus de témoin d'heure : elle est mémorisée, cela
+   suffit ; on la corrige dans Datos si besoin. */
+function _cuentaHoy(pred) {
+  return getObs().filter(o => o && o.fecha === diaKey() && pred(o)).length;
+}
+function pintaConteos() {
+  /* 1 → forme du singulier, 0 et plus de 1 → forme du pluriel. Les deux
+     sont écrites dans la table ; le nombre ne fait que choisir. */
+  const put = (id, clave, c) => {
+    const e = document.getElementById(id); if (!e) return;
+    e.textContent = (c ? c + ' ' : '') + t(c === 1 ? clave + '_1' : clave);
+  };
+  const dep = v => o => String(o.tipos && o.tipos[0]).indexOf('Deposición') >= 0 && o.nota === 'aspecto ' + v;
+  const mic = v => o => String(o.tipos && o.tipos[0]).indexOf('Micción') >= 0 && o.nota === v;
+  put('i-dnorm', 'dep_normal', _cuentaHoy(dep('normal')));
+  put('i-ddura', 'dep_dura',   _cuentaHoy(dep('dura')));
+  put('i-dliq',  'dep_liq',    _cuentaHoy(dep('líquida')));
+  put('i-mnorm', 'mic_normal', _cuentaHoy(mic('normal')));
+  put('i-mesc',  'mic_escasa', _cuentaHoy(mic('escasa')));
+  put('i-mfrec', 'mic_frec',   _cuentaHoy(mic('frecuente')));
+  const np = _cuentaHoy(o => String(o.tipos && o.tipos[0]).indexOf('Cambio de pañal') >= 0);
+  put('panal-btn', 'b_panal', np);
+  const pb = document.getElementById('panal-btn'); if (pb) pb.className = 'popt' + (np ? ' on' : '');
+}
+function trioTotales() {
+  hidTotal(); pintaConteos();
+  if (typeof renderU112 === 'function') renderU112();
+}
+function hidTotal() {
+  const el = document.getElementById('hid-btn'); if (!el) return;
+  const tot = getObs().filter(o => o.fecha === diaKey() && o.tipos && String(o.tipos[0] || '').indexOf('Hidratación') >= 0)
+    .reduce((s, o) => s + (o.cant || 0), 0);
+  el.textContent = (tot ? tot + ' ' : '') + t(tot === 1 ? 'ph_vasos_1' : 'ph_vasos');
+  el.className = 'popt' + (tot ? ' on' : '');
+}
+/* v23.18 — OPTION A choisie par P-H (« ne pas asservir ») : GRAVÉ D'ABORD
+   (un toque, hora = ahora), CORRIGEABLE ENSUITE — le toast reste toquable
+   4 secondes pour ajuster l'heure ; chaque toque = un événement de plus. */
+/* Affichage seul : la nota reste en espagnol dans mfp_obs (identifiant
+   stable). detLabel ne sert qu'à montrer, jamais à stocker. */
+const DET_IDIOMAS = { 'dura':'dep_dura', 'líquida':'dep_liq',
+                   'escasa':'mic_escasa', 'frecuente':'mic_frec' };
+const TIPO_IDIOMAS = { 'Deposición':'l_dep', 'Micción':'l_mic', 'Hidratación':'l_hid',
+  'Cambio de pañal':'l_panal', 'Llamada a Urgencias 112':'u112_llam',
+  'Llegada de la asistencia':'u112_lleg', 'Salida del domicilio':'u112_sal',
+  'Salida en ambulancia':'u112_sal', 'Regreso a casa':'u112_reg' };
+function tipoLabel(tipo) {
+  const sin = String(tipo || '').replace(/^[^ ]+ /, '');   /* on ôte l'émoji */
+  const k = TIPO_IDIOMAS[sin]; return k ? t(k) : sin;
+}
+function detLabel(v, esDep) {
+  const x = String(v || '').trim();
+  if (x === 'normal') return t(esDep ? 'dep_normal' : 'mic_normal');
+  const k = DET_IDIOMAS[x]; return k ? t(k) : v;
+}
+function regEventoA(tipo, detalle, callado) {
+  const obs = getObs(); const h = ahora();
+  obs.push({ fecha: diaKey(), hora: h, tipos: [tipo], nota: detalle || null });
+  lsSet('mfp_obs', obs);
+  /* P-H 28/07 : « l'heure est mémorisée, c'est suffisant » — le message du
+     bas disparaît pour le trio ; le nombre du jour s'écrit sur le bouton. */
+  if (!callado) toastEv('✓ ' + tipoLabel(tipo) + (detalle ? ' (' + detLabel(detalle.replace('aspecto ', ''), detalle.indexOf('aspecto ') === 0) + ')' : '') + ' · ' + h + '  — ' + t('ev_otra'), obs.length - 1);
+  trioTotales();
+}
+let _tEvTimer = null;
+function toastEv(msg, idx) {
+  let d = document.getElementById('toast-ev');
+  if (!d) {
+    d = document.createElement('div'); d.id = 'toast-ev';
+    d.style.cssText = 'position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:80;background:var(--surface);color:var(--text);border:1px solid #e8a13c;border-radius:20px;padding:9px 16px;font-size:13.5px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4);max-width:88vw;text-align:center';
+    document.body.appendChild(d);
+  }
+  d.textContent = msg; d.style.display = '';
+  d.onclick = () => { d.style.display = 'none'; corregirHoraEv(idx); };
+  clearTimeout(_tEvTimer); _tEvTimer = setTimeout(() => { d.style.display = 'none'; }, 4000);
+}
+/* Le nom lisible d'une observation : préfixe émoji + nom traduit pour les
+   registres du corps, forme complète déclarée pour les chips. */
+function obsLabel(t0) {
+  const s = String(t0 || ''), i = s.indexOf(' ');
+  if (i > 0 && s.charCodeAt(0) > 0x2000) {
+    const resto = s.slice(i + 1), k = TIPO_IDIOMAS[resto];
+    return s.slice(0, i) + ' ' + (k ? t(k) : resto);
+  }
+  return chipLabel(s);
+}
+/* On note d'abord, on corrige ensuite : plutôt qu'un champ à remplir
+   d'avance, la liste de ce qui a été noté aujourd'hui. */
+function pedirCorrigeHora() {
+  const obs = getObs();
+  const hoy = [];
+  obs.forEach((o, n) => { if (o && o.fecha === diaKey() && o.tipos && o.tipos.length) hoy.push({ o: o, n: n }); });
+  hoy.reverse();
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg lista">' +
+    '<div class="lista-tit">🕐 ' + t('corr_tit') + '</div>' +
+    (hoy.length
+      ? '<div class="lista-cuerpo">' +
+        hoy.map(x => '<button class="btn sec" data-n="' + x.n + '" style="text-align:left">' +
+          '<b>' + (x.o.hora || '--:--') + '</b> · ' + obsLabel(x.o.tipos[0]) + '</button>').join('') + '</div>'
+      : '<div style="font-size:13px;color:var(--muted);text-align:center;padding:8px 0">' + t('corr_nada') + '</div>') +
+    '<button class="btn" data-fin="1">' + t('d_can') + '</button></div>';
+  document.body.appendChild(ov);
+  ajustaLista(ov);
+  ov.querySelectorAll('button[data-n]').forEach(b => b.onclick = () => { ov.remove(); corregirHoraEv(+b.dataset.n); });
+  ov.querySelector('button[data-fin]').onclick = () => ov.remove();
+  ov.onclick = e => { if (e.target === ov) ov.remove(); };
+}
+function corregirHoraEv(idx) {
+  const obs = getObs(); const e = obs[idx]; if (!e) return;
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg">' +
+    '<div style="font-size:17px;font-weight:700;margin-bottom:10px">🕐 ' + (e.tipos && e.tipos[0] ? obsLabel(e.tipos[0]) : '') + '</div>' +
+    '<label class="nota-campo">' + t('d_hora') + '</label>' +
+    '<div style="display:flex;gap:6px;align-items:center;margin-top:4px">' +
+    '<input class="txt" id="ev-hora" type="text" inputmode="numeric" placeholder="hh:mm" maxlength="5" value="' + e.hora + '" style="flex:1">' +
+    '<button type="button" class="hbtn2" onclick="reloj(\'ev-hora\')">🕐</button></div>' +
+    '<div style="display:flex;gap:10px;margin-top:14px"><button class="btn sec" id="ev-can" style="flex:1">' + t('d_can') + '</button>' +
+    '<button class="btn" id="ev-ok" style="flex:1">' + t('d_ok') + '</button></div></div>';
+  document.body.appendChild(ov);
+  ov.querySelector('#ev-can').onclick = () => ov.remove();
+  ov.querySelector('#ev-ok').onclick = () => {
+    const h = horaValide(document.getElementById('ev-hora').value) || e.hora;
+    e.hora = h; lsSet('mfp_obs', obs); ov.remove(); toast('✓ ' + h);
+    trioTotales(); if (typeof renderChips === 'function') renderChips();
+  };
+}
+function regDep(el, v) { regEventoA('🚽 Deposición', 'aspecto ' + v, true); }
+function regMic(el, v) { regEventoA('💦 Micción', v, true); }
+/* Une couche se change souvent dans la foulée d'une selle ou d'une miction :
+   le bouton vit donc sur ces deux lignes, mais n'écrit qu'UNE seule chose. */
+function regPanal() { regEventoA('🩹 Cambio de pañal', null, true); }
+
+let _oDraft = null;
+function upsertObs() {
+  const nEl = document.getElementById('nota-libre'), oEl = document.getElementById('o-hora');
+  const nota = (nEl ? nEl.value : '').trim();
+  const obs = getObs();
+  if (!_chipsSel.size && !nota) {
+    if (_oDraft !== null && obs[_oDraft]) { obs.splice(_oDraft, 1); lsSet('mfp_obs', obs); }
+    _oDraft = null; estadoObs(''); return;
+  }
+  const horaPrev = (_oDraft !== null && obs[_oDraft]) ? obs[_oDraft].hora : null;
+  const rec = { fecha: diaKey(), hora: (oEl && horaValide(oEl.value)) || horaPrev || ahora(),
+                tipos: [..._chipsSel].map(i => CHIP_TIPOS[i]), nota: nota || null, libre: true };
+  if (_oDraft === null || !obs[_oDraft]) { obs.push(rec); _oDraft = obs.length - 1; }
+  else obs[_oDraft] = rec;
+  lsSet('mfp_obs', obs); estadoObs('✓ guardado · ' + rec.hora);
+}
+function estadoObs(s) { const e = document.getElementById('obs-estado'); if (e) e.textContent = s; }
+function cerrarObsDraft() {
+  if (_oDraft === null && !_chipsSel.size) return;
+  _chipsSel = new Set(); if (typeof renderChips === 'function') renderChips();
+  const n = document.getElementById('nota-libre'); if (n) n.value = '';
+  const o = document.getElementById('o-hora'); if (o) o.value = '';
+  _oDraft = null; estadoObs('');
+}
+function _legacyGuardarObs() {
+  const nota = document.getElementById('nota-libre').value.trim();
+  if (!_chipsSel.size && !nota) { toast('Nada que guardar'); return; }
+  const obs = getObs();
+  const oEl = document.getElementById('o-hora');
+  obs.push({ fecha: diaKey(), hora: (oEl && horaValide(oEl.value)) || ahora(), tipos: [..._chipsSel].map(i => CHIP_TIPOS[i]), nota: nota || null });
+  lsSet('mfp_obs', obs);
+  _chipsSel = new Set(); document.getElementById('nota-libre').value = '';
+  renderChips(); toast('✓ Observación guardada');
+}
+
+/* ── DATOS : historial, export, config ── */
+function renderDatos() {
+  /* historial 7 jours */
+  const dias = {};
+  const tomas = getTomas(); const meds = getMeds();
+  const nomMed = id => { const m = meds.find(x => x.id === id); return m ? m.nombre : id; };
+  Object.keys(tomas).forEach(d => {
+    Object.entries(tomas[d]).forEach(([id, h]) => {
+      (dias[d] = dias[d] || []).push(h === 'omitida'
+        ? '💊 <b>' + nomMed(id) + '</b> — <b style="color:var(--bad)">' + t('omitida') + '</b>'
+        : '💊 <b>' + nomMed(id) + '</b> · ' + h);
+    });
+  });
+  getPuntuales().forEach(p => {
+    (dias[p.fecha] = dias[p.fecha] || []).push('💊 <b>' + p.nombre + '</b> (' + t('puntual') + ') · ' + p.hora);
+  });
+  const matCfg = getMaterialCfg();
+  Object.entries(getMaterial()).forEach(function([d, vals]) {
+    Object.entries(vals).forEach(function([id, v]) {
+      const cfg = matCfg.find(x => x.id === id) || { nombre: id, unidad: '' };
+      (dias[d] = dias[d] || []).push('🩹 <b>' + cfg.nombre + '</b> : ' + v + ' ' + cfg.unidad);
+    });
+  });
+  getConstantes().forEach(c => {
+    const partes = [];
+    if (c.ta_sis !== null && c.ta_sis !== undefined) partes.push('TA ' + c.ta_sis + '/' + c.ta_dia);
+    if (c.fc) partes.push(c.fc + ' lpm'); if (c.spo2) partes.push('SpO₂ ' + c.spo2 + '%');
+    if (c.peso) partes.push(c.peso + ' kg'); if (c.temp) partes.push(c.temp + ' °C');
+    if (partes.length) (dias[c.fecha] = dias[c.fecha] || []).push('🩺 <b>' + partes.join(' · ') + '</b> (' + c.hora + ')');
+  });
+  getObs().forEach(o => {
+    (dias[o.fecha] = dias[o.fecha] || []).push('📝 ' + [...(o.tipos || []), o.nota].filter(Boolean).map(x => '<b>' + x + '</b>').join(' · ') + ' (' + o.hora + ')');
+  });
+  const fechas = Object.keys(dias).sort().reverse().slice(0, 7);
+  document.getElementById('historial').innerHTML = fechas.length
+    ? fechas.map(d => '<div class="dia"><div class="df">' + fmtFecha(d) + '</div>' +
+        dias[d].map(l => '<div class="linea">' + l + '</div>').join('') + '</div>').join('')
+    : '<div class="vacio">Todavía sin registros — empiece por la pestaña Hoy.</div>';
+  /* meds config */
+  document.getElementById('meds-lista').innerHTML = getMeds().map((m, i) =>
+    '<div class="medrow"><span class="mi"><div class="mn">' + m.nombre + '</div>' +
+    '<div class="md">' + m.dosis + ' · ' + (MOMENTOS[m.momento] || m.momento) + (m.hasta ? ' · hasta ' + m.hasta : '') + '</div></span>' +
+    '<button onclick="editarMed(' + i + ')" title="Editar" style="margin-right:6px">✏️</button>' +
+    '<button onclick="quitarMed(' + i + ')" title="Quitar">🗑</button></div>').join('') ||
+    '<div class="vacio">Sin medicamentos configurados.</div>';
+  const cp2 = document.getElementById('cfg-patient2'); if (cp2) cp2.value = getPatient();
+  const iw = document.getElementById('instalar-wrap');
+  /* P-H 19/07 (404 sur le site public) : le bouton ⬇ instalar est un service
+     du PONT local — il ne vit que sur les origines locales. Sur le web,
+     « instalar » = Añadir a pantalla de inicio, rien à télécharger. */
+  const esLocal = /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.|localhost$)/.test(location.hostname);
+  if (iw) iw.style.display = (location.protocol.indexOf('http') === 0 && esLocal) ? '' : 'none';
+  const ba = document.getElementById('btn-avisos');
+  if (ba) ba.textContent = getAvisosOn() ? '🔔 ' + t('av_on') : '🔕 ' + t('av_off');
+  const ah = document.getElementById('avisos-horas');
+  if (ah) {
+    const hs = getHoras();
+    ah.innerHTML = Object.keys(HORAS_DEF).map(function(mom) {
+      return '<div class="cbox" style="padding:8px"><label style="font-size:12px">' + (MOMENTOS[mom] || mom) + '</label>' +
+        '<input type="time" value="' + hs[mom] + '" onchange="setHora(\'' + mom + '\', this.value)" style="font-size:15px;padding:6px"></div>';
+    }).join('');
+    ah.style.display = getAvisosOn() ? '' : 'none';
+  }
+  const cs = document.getElementById('cfg-sip'); if (cs) cs.value = getSip();
+}
+function agregarMed() {
+  const n = document.getElementById('nm-nombre').value.trim();
+  const d = document.getElementById('nm-dosis').value.trim();
+  const m = document.getElementById('nm-momento').value;
+  if (!n) { toast('Falta el nombre'); return; }
+  const meds = getMeds();
+  const hasta = (document.getElementById('nm-hasta') || {}).value || null;
+  meds.push({ id: n.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now() % 1000, nombre: n, dosis: d, momento: m, hasta: hasta });
+  if (document.getElementById('nm-hasta')) document.getElementById('nm-hasta').value = '';
+  lsSet('mfp_meds', meds);
+  document.getElementById('nm-nombre').value = ''; document.getElementById('nm-dosis').value = '';
+  renderDatos(); renderTomas(); toast('✓ ' + n + ' añadido');
+}
+function editarMed(i) {
+  const meds = getMeds(); const m = meds[i]; if (!m) return;
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
+  const opts = Object.keys(MOMENTOS).map(k => '<option value="' + k + '"' + (m.momento === k ? ' selected' : '') + '>' + MOMENTOS[k] + '</option>').join('');
+  ov.innerHTML = '<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;width:100%;max-width:420px">' +
+    '<div style="font-size:17px;font-weight:700;margin-bottom:10px">✏ ' + m.nombre + '</div>' +
+    '<input class="txt" id="em-nombre" value="' + (m.nombre || '').replace(/"/g, '&quot;') + '">' +
+    '<input class="txt" id="em-dosis" value="' + (m.dosis || '').replace(/"/g, '&quot;') + '" placeholder="Dosis" style="margin-top:8px">' +
+    '<select class="txt" id="em-momento" style="margin-top:8px">' + opts + '</select>' +
+    '<input class="txt" id="em-hasta" type="date" value="' + (m.hasta || '') + '" style="margin-top:8px">' +
+    '<div style="display:flex;gap:10px;margin-top:14px"><button class="btn sec" id="em-can" style="flex:1">' + t('d_can') + '</button>' +
+    '<button class="btn" id="em-ok" style="flex:1">' + t('d_ok') + '</button></div></div>';
+  document.body.appendChild(ov);
+  ov.querySelector('#em-can').onclick = () => ov.remove();
+  ov.querySelector('#em-ok').onclick = () => {
+    m.nombre = ov.querySelector('#em-nombre').value.trim() || m.nombre;
+    m.dosis = ov.querySelector('#em-dosis').value.trim();
+    m.momento = ov.querySelector('#em-momento').value;
+    m.hasta = ov.querySelector('#em-hasta').value || null;
+    lsSet('mfp_meds', meds); ov.remove(); renderDatos(); renderTomas(); toast('✓ ' + m.nombre);
+  };
+}
+function quitarMed(i) {
+  const meds = getMeds();
+  dlgConfirm(t('d_quitar') + ' — ' + meds[i].nombre, () => {
+    meds.splice(i, 1); lsSet('mfp_meds', meds); renderDatos(); renderTomas();
+  });
+}
+
+/* ── export : le pont vers Salufolio ── */
+/* ═══ v2026.7.24.1 — FORMATO 2 (scellé par P-H) : le jour en clé partout,
+   l'absence est le silence (jamais de null ni de clé vide), tomas unifiée
+   (momento = régulière, med = puntual), material avec sessions inicio/fin. ═══ */
+function _f2limpio(e) {
+  const o = {};
+  Object.keys(e).forEach(k => {
+    if (k === 'fecha') return;
+    const v = e[k];
+    if (v === null || v === undefined || v === '') return;
+    if (Array.isArray(v) && !v.length) return;
+    o[k] = v;
+  });
+  return o;
+}
+function _f2agrupa(arr) {
+  const g = {};
+  (arr || []).forEach(e => { if (!e || !e.fecha) return; (g[e.fecha] = g[e.fecha] || []).push(_f2limpio(e)); });
+  return g;
+}
+function payloadExport() {
+  const tomasF2 = {};
+  const tm = getTomas();
+  Object.keys(tm).forEach(dia => Object.keys(tm[dia] || {}).forEach(mom => {
+    const h = tm[dia][mom]; if (!h) return;
+    (tomasF2[dia] = tomasF2[dia] || []).push({ momento: mom, hora: h });
+  }));
+  getPuntuales().forEach(pu => {
+    if (!pu || !pu.fecha) return;
+    (tomasF2[pu.fecha] = tomasF2[pu.fecha] || []).push({ med: pu.nombre, hora: pu.hora });
+  });
+  const pac = { nombre: getPatient() }; if (getSip()) pac.sip = getSip();
+  return {
+    formato: 2,
+    version: 'Salufolio-Protocolo-' + MFP_VERSION,
+    exportado: new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' }),
+    paciente: pac,
+    medicamentos: getMeds().map(m => {
+      const o = { nombre: m.nombre, dosis: m.dosis };
+      if (m.momento === 'demanda') o.puntual = true; else o.momento = m.momento;
+      if (m.hasta) o.hasta = m.hasta;
+      return o;
+    }),
+    tomas: tomasF2,
+    material: (function(){
+      const m = getMaterial(), out = {};
+      Object.keys(m).forEach(k => { if (k !== '_uso' && m[k] !== null && m[k] !== undefined && m[k] !== '') out[k] = m[k]; });
+      if (m._uso) { const u = {}; Object.keys(m._uso).forEach(id => { const dias = {}; Object.keys(m._uso[id]).forEach(f => { if ((m._uso[id][f]||[]).length) dias[f] = m._uso[id][f]; }); if (Object.keys(dias).length) u[id] = dias; }); if (Object.keys(u).length) out.uso = u; }
+      return out;
+    })(),
+    material_config: getMaterialCfg(),
+    constantes: _f2agrupa(getConstantes()),
+    observaciones: _f2agrupa(getObs())
+  };
+}
+/* ═══ RESTAURAR — lit le formato 2 et tolère le 1 (Lavoisier : rien ne se perd) ═══ */
+function _nn(v) { return v === undefined ? null : v; }
+function restaurarDesdeObj(d) {
+  const F2 = d && d.formato === 2;
+  const nom = F2 ? (d.paciente && d.paciente.nombre) : d.patient_label;
+  const sip = F2 ? (d.paciente && d.paciente.sip) : d.patient_sip;
+  renombrarActivo(nom || null, sip || '');
+  const medsIn = (F2 ? d.medicamentos : d.medicamentos_config) || [];
+  lsSet('mfp_meds', medsIn.map((m, i) => ({
+    id: m.id || ('med' + Date.now() + '_' + i),
+    nombre: m.nombre, dosis: m.dosis || '',
+    momento: m.puntual ? 'demanda' : (m.momento || 'desayuno'),
+    hasta: m.hasta || null
+  })));
+  if (d.material) {
+    const mat = Object.assign({}, d.material);
+    if (mat.uso) { mat._uso = mat.uso; delete mat.uso; }
+    lsSet('mfp_material', mat);
+  }
+  if (d.material_config) lsSet('mfp_material_cfg', d.material_config);
+  if (F2) {
+    const tm = {}, pun = [];
+    Object.keys(d.tomas || {}).forEach(f => (d.tomas[f] || []).forEach(e => {
+      if (e.momento) { (tm[f] = tm[f] || {})[e.momento] = e.hora || null; }
+      else if (e.med) pun.push({ fecha: f, hora: e.hora, nombre: e.med });
+    }));
+    lsSet('mfp_tomas', tm); lsSet('mfp_puntuales', pun);
+    const cs = [];
+    Object.keys(d.constantes || {}).forEach(f => (d.constantes[f] || []).forEach(c => cs.push({
+      fecha: f, hora: c.hora || null, ta_sis: _nn(c.ta_sis), ta_dia: _nn(c.ta_dia),
+      fc: _nn(c.fc), spo2: _nn(c.spo2), peso: _nn(c.peso), temp: _nn(c.temp)
+    })));
+    lsSet('mfp_constantes', cs);
+    const ob = [];
+    Object.keys(d.observaciones || {}).forEach(f => (d.observaciones[f] || []).forEach(o => {
+      const e = { fecha: f, hora: o.hora || null, tipos: o.tipos || [], nota: o.nota || null };
+      if (o.cant !== undefined) e.cant = o.cant;
+      ob.push(e);
+    }));
+    lsSet('mfp_obs', ob);
+  } else {
+    if (d.tomas) lsSet('mfp_tomas', d.tomas);
+    if (d.tomas_puntuales) lsSet('mfp_puntuales', d.tomas_puntuales);
+    if (d.constantes) lsSet('mfp_constantes', d.constantes);
+    if (d.observaciones) lsSet('mfp_obs', d.observaciones);
+  }
+}
+function confirmar(titulo, msg, si) {
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:96;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg"><div style="font-size:17px;font-weight:700;margin-bottom:10px">' + titulo + '</div>' +
+    '<p style="font-size:14px;line-height:1.5;white-space:pre-line;margin:0">' + msg + '</p>' +
+    '<div style="display:flex;gap:10px;margin-top:14px"><button class="btn sec" id="cf-no" style="flex:1">' + t('d_can') + '</button>' +
+    '<button class="btn" id="cf-si" style="flex:1">' + t('d_ok') + '</button></div></div>';
+  document.body.appendChild(ov);
+  ov.querySelector('#cf-no').onclick = () => ov.remove();
+  ov.querySelector('#cf-si').onclick = () => { ov.remove(); si(); };
+}
+function restaurarArchivo(file) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result);
+      const nom = (d.formato === 2 ? (d.paciente && d.paciente.nombre) : d.patient_label) || '(sin nombre)';
+      confirmar('📂 Restaurar', 'Se cargarán los datos de « ' + nom + ' »' + (d.exportado ? '\n(guardados el ' + d.exportado + ')' : '') + '.\nSustituirán lo que haya en este dispositivo.', () => {
+        restaurarDesdeObj(d);
+        localStorage.setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
+        toast('✓ restaurado — recargando…');
+        setTimeout(() => location.reload(), 700);
+      });
+    } catch (e) { toast('⚠ archivo no válido'); }
+  };
+  r.readAsText(file);
+}
+/* ═══ ASISTENTE DE PRIMER ARRANQUE (dessiné par P-H) ═══ */
+function asistente() {
+  if (lsGet('mfp_asist', null)) return;
+  if (getMeds().length) { lsSet('mfp_asist', '1'); return; }
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:94;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:18px';
+  ov.innerHTML = '<div class="dlg" style="text-align:center">' +
+    '<div style="font-size:19px;font-weight:800;margin-bottom:4px">Primer paso</div>' +
+    '<p class="nota-campo" style="font-size:13px;margin-bottom:6px">¿Cómo empezamos?</p>' +
+    '<button class="btn" style="width:100%;margin-top:6px" id="as-rest">📂 Restaurar una copia guardada</button>' +
+    '<button class="btn sec" style="width:100%;margin-top:8px" id="as-nuevo">✚ Paciente nuevo</button>' +
+    '<button class="hbtn2" style="width:100%;margin-top:10px;font-size:12px" id="as-luego">Más tarde</button></div>';
+  document.body.appendChild(ov);
+  const fin = () => { lsSet('mfp_asist', '1'); ov.remove(); };
+  ov.querySelector('#as-luego').onclick = fin;
+  ov.querySelector('#as-rest').onclick = () => { fin(); const f = document.getElementById('rest-file'); if (f) f.click(); };
+  ov.querySelector('#as-nuevo').onclick = () => { fin(); pacienteNuevo(false); };
+}
+function asistenteNuevo() {
+  dlg('✚ Paciente nuevo', [
+    { label: 'Nombre', tipo: 'text', valor: '' },
+    { label: 'SIP (opcional)', tipo: 'text', valor: '' }
+  ], vals => {
+    const n = (vals[0] || '').trim();
+    if (n && !getPacientes().length) {   /* pas de liste encore : on l'ouvre */
+      const id = _idPaciente(n);
+      setPacientes([{ id: id, nombre: n, sip: (vals[1] || '').trim() }]); setActivo(id);
+    }
+    renombrarActivo(n || null, (vals[1] || '').trim());
+    if (typeof renderPacientes === 'function') renderPacientes();
+    const c2 = document.getElementById('cfg-patient2'); if (c2) c2.value = getPatient();
+    const cS = document.getElementById('cfg-sip'); if (cS) cS.value = getSip();
+    toast('✓ ' + getPatient() + ' — ahora, su pauta');
+    irPauta();
+  });
+}
+function exportarJSON() {
+  const d = new Date();
+  const stamp = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0') +
+    '_' + String(d.getHours()).padStart(2,'0') + 'h' + String(d.getMinutes()).padStart(2,'0');
+  const blob = new Blob([JSON.stringify(payloadExport(), null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'MFProtocolo_' + getPatient().split(' ')[0].replace(/[^A-Za-z0-9]/g, '') + '_v' + stamp + '.json';
+  a.click();
+  toast('✓ JSON descargado');
+}
+function copiarJSON() {
+  navigator.clipboard.writeText(JSON.stringify(payloadExport(), null, 2))
+    .then(() => toast('✓ Copiado al portapapeles'))
+    .catch(() => toast('⚠ Copia no disponible'));
+}
+
+/* ── rendu général ── */
+function fmtFecha(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+function aplicarIdiomas() {
+  const M = { 'i-thoy':'t_hoy','i-tconst':'t_const','i-tnotas':'t_notas','i-thist':'t_hist',
+    'i-tcomp':'t_comp','i-tmeds':'t_meds','i-tpac':'t_pac','i-bgconst':'b_gconst','i-bgobs':'b_gobs',
+    'i-bpunt':'b_punt','i-bdesc':'b_desc','i-bcopi':'b_copi','i-bcomp':'b_comp','i-baddmed':'b_addmed',
+    'i-lhmed':'hora_med','i-bcorr':'b_corr','i-lfin':'fin_trat',
+    'i-nhoy':'hoy','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-lsip':'sip_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-brest':'b_restaurar','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp',
+    'i-dnorm':'dep_normal','i-ddura':'dep_dura','i-dliq':'dep_liq',
+    'i-mnorm':'mic_normal','i-mesc':'mic_escasa','i-mfrec':'mic_frec',
+    'i-lpanal':'l_panal' };
+  Object.entries(M).forEach(([id, k]) => { const e = document.getElementById(id); if (e) e.textContent = t(k); });
+  const nl = document.getElementById('nota-libre'); if (nl) nl.placeholder = t('nota_ph');
+  hidTotal(); pintaConteos();
+  if (typeof renderU112 === 'function') renderU112();
+  const bl = document.getElementById('btn-lang'); if (bl) { bl.innerHTML = BANDERAS[getLang()] || getLang().toUpperCase(); bl.title = getLang().toUpperCase(); }
+}
+async function sincronizarPaciente() {
+  /* Le patient vient de Salufolio (P-H 15/07) : le PC publie label+SIP via
+     /api/paciente, l'app les adopte. Modifiable ensuite dans Datos. */
+  const base = baseSalufolio();
+  if (base === null || (base === '' && location.protocol.indexOf('http') !== 0)) return;
+  try {
+    const r = await fetch(base + '/api/paciente');
+    const p = await r.json();
+    /* Le PC ne renomme plus personne : c'est le Protocolo qui tient la
+       liste des patients de la maison. On n'adopte l'étiquette du dossier
+       que si la maison est encore vide — au tout premier branchement. */
+    if (!getPacientes().length) {
+      if (p && p.label) lsSet('mfp_patient', p.label);
+      if (p && p.sip) lsSet('mfp_sip', String(p.sip));
+      if (p && (p.label || p.sip)) render();
+    }
+  } catch (e) { /* serveur muet : on garde le patient local */ }
+}
+function render() {
+  if (!lsGet('mfp_inicio', null)) lsSet('mfp_inicio', hoyKey());
+  const hs = document.getElementById('hdr-sub'); if (hs) hs.textContent = 'Salufolio Protocolo · v' + MFP_VERSION;
+  restaurarCampos();
+  trioTotales(); pintaConstHoy(); bienvenida();
+  /* ═══ DOCTRINE (P-H, 29/07) : « changement d'état d'un paramètre, on doit
+     OBLIGATOIREMENT enregistrer — pas de confirmation ». « change » n'arrive
+     qu'à la sortie du champ : tant que le doigt y est encore, rien n'est
+     écrit, et si l'écran bascule avant, la valeur s'évapore. On écoute donc
+     « input », qui arrive à chaque frappe. Les deux fonctions sont des
+     upsert : écrire cent fois ne crée pas cent fiches. ═══ */
+  if (!window._escuchasPuestas) {
+    window._escuchasPuestas = true;
+    ponerEscuchaUnica();
+  }
+  const _oh = document.getElementById('o-hora'); if (_oh) _oh.addEventListener('change', upsertObs);
+  setTimeout(sondearPc, 400);
+  document.querySelectorAll('details.acc').forEach(d => d.addEventListener('toggle', () => {
+    if (d.open) document.querySelectorAll('details.acc[open]').forEach(o => { if (o !== d) o.open = false; });
+  }));
+  if (localStorage.getItem('mfp_bienv2')) setTimeout(arranqueInicial, 350);
+  /* devise P-H : la table se remplit toute seule — servie par le PC, l'app
+     mémorise son adresse pour les ouvertures locales futures */
+  if (location.protocol.indexOf('http') === 0 && location.origin) lsSet('mfp_pc', location.origin);
+  document.getElementById('hdr-fecha').textContent =
+    new Date().toLocaleDateString(LOCALES[getLang()] || 'es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const sipTxt = getSip() ? '  ·  SIP ' + getSip() : '';
+  renderPacientes();
+  document.getElementById('ver').textContent = 'v' + MFP_VERSION;
+  aplicarTheme(); aplicarZoom(); aplicarIdiomas();
+  const ch = document.getElementById('c-hora'); if (ch) ch.value = ahora();
+  const oh = document.getElementById('o-hora'); if (oh) oh.value = ahora();
+  const bc = document.getElementById('i-bcomp');
+  if (bc) bc.style.display = (navigator.share ? '' : 'none');
+  const be = document.getElementById('i-benv');
+  if (be) { be.textContent = t('b_env'); be.style.display = (location.protocol.indexOf('http') === 0 || getPc()) ? '' : 'none'; }
+  const lp = document.getElementById('i-lpc'); if (lp) lp.textContent = t('pc_label');
+  const cp = document.getElementById('cfg-pc'); if (cp && !cp.value) cp.value = getPc();
+  renderTomas(); renderChips(); renderMaterial();
+}
+render();
+sincronizarPaciente();
+/* la touche Entrée/→ du clavier mobile FERME le clavier (P-H : SIP) */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.target && e.target.tagName === 'INPUT') e.target.blur();
+});
+/* minuit : la liste du jour se rafraîchit si l'app reste ouverte */
+setInterval(() => { const f = document.getElementById('hdr-fecha').textContent;
+  const n = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  if (f !== n) render(); }, 60000);
+</script>
+</body>
+</html>

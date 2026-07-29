@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+title: "Salufolio — expediente médico longitudinal local-first"
+message: "Si utiliza este programa, cítelo como se indica."
+type: software
+authors:
+  - family-names: Giraud
+    given-names: Pierre-Henri
+    city: Les Useres
+    region: Castellón
+    country: ES
+repository-code: "https://github.com/caracole/Salufolio"
+url: "https://salufolio.com"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.19973451
+    description: "DOI de concepto — apunta siempre a la versión más reciente"
+abstract: >-
+  Expediente médico longitudinal local-first: un archivo HTML, sin servidor y
+  sin nube, que reúne diez años de historia clínica dispersa entre sistemas de
+  salud que no se hablan, y devuelve el expediente a quien le pertenece — el
+  paciente y su cuidador. Incluye el Protocolo móvil, cuaderno del cuidador a
+  pie de cama: tomas, constantes, hidratación, registros del cuerpo, sesiones de
+  oxígeno, episodios de urgencia y observaciones, con varios pacientes en
+  casilleros separados, sincronizado por la red doméstica. Interfaz en español,
+  valenciano, francés e inglés.
+keywords:
+  - expediente médico personal
+  - local-first
+  - soberanía del dato
+  - cuidados domiciliarios
+  - cuidador informal
+  - registro a pie de cama
+  - personal health record
+  - free software
+license: GPL-3.0-or-later
+version: "2026.7.29.12"
+date-released: "2026-07-29"

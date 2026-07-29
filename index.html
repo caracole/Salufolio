@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'><polygon points='220,120 170,207 70,207 20,120 70,33 170,33' fill='none' stroke='%232a9d5f' stroke-width='17' stroke-linejoin='round'/><polygon points='168,92 168,148 120,176 72,148 72,92 120,64' fill='none' stroke='%234a8fe8' stroke-width='14' stroke-linejoin='round'/><circle cx='120' cy='120' r='16' fill='%232a9d5f'/></svg>">
+<title>Salufolio — El panal</title>
+<style>
+:root{--bg:#0e1117;--surface:#161b27;--text:#e8eaf0;--muted:#7a8499;--accent:#4a8fe8;--serif:Georgia,serif;--sans:system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,rgba(74,143,232,.04) 0%,transparent 70%);pointer-events:none}
+body.light{--bg:#f5f0e8;--surface:#fffdf7;--text:#111118;--muted:#555;--accent:#1a5fa8}
+body.light .popup-frame{background:rgba(255,253,247,.92)}
+body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.top{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:8px;padding:6px 16px;background:var(--bg)}  /* même fond que le panal, jour et nuit, SANS trait horizontal (P-H 22/07) */
+.top-logo{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--muted);margin-right:auto}.top-logo i{color:var(--accent);font-style:italic}
+.top-btn{padding:3px 7px;border-radius:5px;border:1px solid rgba(74,143,232,.2);background:transparent;color:var(--text);cursor:pointer;font-size:14px}
+.hive-wrap{position:fixed;left:0;right:0;top:44px;bottom:54px;overflow:hidden}   /* hublot fixe : le zoom se rogne symétriquement, le centre ne dérive JAMAIS (P-H 17/07) */
+.hive{position:absolute;left:50%;top:50%;transform-origin:center center}
+.hex{position:absolute;cursor:pointer;transition:all .3s}
+.hex:hover{transform:scale(1.08);z-index:10}
+.hex-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+.hex-ico{margin-bottom:3px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.hex-lbl{font-family:var(--serif);font-weight:600;color:var(--text);text-align:center;line-height:1.3;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.hex-sub{color:var(--muted)}
+/* Popup */
+.pov{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0);display:none;align-items:center;justify-content:center;padding:10px;transition:background .5s}
+.pov.show{display:flex;background:rgba(0,0,0,.88)}
+.popup{transform:scale(0);opacity:0;transition:transform 2s cubic-bezier(.25,1,.5,1),opacity 1.2s}
+.pov.show .popup{transform:scale(1);opacity:1}
+.popup{position:relative}
+.popup svg.popup-svg{position:absolute;inset:0;width:100%;height:100%}
+.popup-title{position:absolute;top:6%;left:30%;right:30%;display:flex;align-items:center;justify-content:center;z-index:3;font-family:var(--serif);font-size:26px;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.popup-frame{position:absolute;top:25%;left:12.5%;right:12.5%;bottom:25%;background:transparent;border:none;overflow-y:auto;z-index:2;padding:16px 20px;text-align:center;scrollbar-width:none;backdrop-filter:blur(4px)}
+.popup-frame::-webkit-scrollbar{display:none}   /* pas d'ascenseur : la molette déroule (P-H 17/07) */
+.scroll-hint{position:absolute;bottom:16%;left:50%;transform:translateX(-50%);z-index:4;font-size:22px;color:var(--accent);opacity:0;pointer-events:none;transition:opacity .4s;animation:hintPulse 1.6s ease-in-out infinite}
+.scroll-hint.show{opacity:.8}
+@keyframes hintPulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+.popup-frame h3{color:var(--text);margin:14px 0 6px;font-family:var(--serif);font-size:20px}
+.popup-frame p{margin-bottom:12px;color:var(--muted);font-size:16px;line-height:1.8}
+.bee-swap{position:absolute;transform:translate(-50%,-50%);font-size:29px;cursor:pointer;z-index:60;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s;opacity:.7}
+.bee-swap:hover{opacity:1;transform:translate(-50%,-50%) scale(1.28)}
+.vertex-hs{position:absolute;width:46px;height:46px;margin-left:-23px;margin-top:-23px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s;opacity:.45;background:transparent;border:1.5px solid transparent}   /* au repos : l'icône seule, diffuse (P-H 17/07) */
+.v-lab{position:absolute;top:106%;left:50%;transform:translateX(-50%);font-size:10px;color:var(--text);white-space:nowrap;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px;display:none}
+.vertex-hs:hover .v-lab{display:block}
+.vertex-hs:hover{opacity:1;transform:scale(1.22);background:rgba(0,0,0,.5);border-color:rgba(255,255,255,.5);backdrop-filter:blur(2px)}   /* le cercle naît sous la souris */
+.vertex-hs .v-ico{transition:all .3s}.vertex-hs:hover .v-ico{filter:drop-shadow(0 0 8px rgba(74,143,232,.8))}
+.sr{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0;justify-content:center}
+.si{text-align:center;flex:1;min-width:60px;padding:10px;background:rgba(74,143,232,.04);border-radius:8px}
+.sn{font-family:var(--serif);font-size:32px;font-weight:700;color:#e8a44a;display:block}
+.slab{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.devise{position:fixed;bottom:12px;text-align:center;font-family:var(--serif);font-size:13px;font-style:italic;color:var(--muted);opacity:.5}
+.devise span{display:block;font-size:10px;margin-top:2px;font-style:normal;color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.7.23e</span></div><button class="top-btn" id="plang-actual" onclick="pCycleLang()" title="Idioma / Llengua / Langue / Language" style="font-weight:800;font-size:13px;letter-spacing:1px">🇪🇸 ES</button><button class="top-btn" onclick="if(document.fullscreenElement){document.exitFullscreen()}else{document.documentElement.requestFullscreen().catch(function(){})}" title="Pantalla completa (F11 para salir)">⛶</button><button class="top-btn" onclick="document.body.classList.toggle('light')">☀️</button></div>
+<div class="hive-wrap"><div class="hive" id="hive"></div></div>
+<div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.19973451" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.19973451</a></span></div>
+<div class="pov" id="pov" onclick="if(event.target===this)cP()">
+  <div class="popup" id="popup"><svg class="popup-svg" id="popup-svg"></svg><div class="popup-title" id="pop-title"></div><div id="vertex-hotspots"></div><div class="popup-frame" id="pop-body"></div><div class="scroll-hint" id="scroll-hint">⌄</div></div>
+</div>
+<script>
+/* ══ PolygoneReg ══ */
+class PolygoneReg{
+  constructor(n,R,rot){this.n=n;this.R=R;this.a=2*R*Math.sin(Math.PI/n);this.r=R*Math.cos(Math.PI/n);this.rotation=rot||0}
+  vertices(cx,cy){var p=[],r=this.rotation*Math.PI/180;for(var i=0;i<this.n;i++){var a=2*Math.PI*i/this.n+r;p.push({x:cx+this.R*Math.cos(a),y:cy+this.R*Math.sin(a)})}return p}
+  svgPoints(cx,cy){return this.vertices(cx,cy).map(function(p){return(Math.round(p.x*10)/10)+','+(Math.round(p.y*10)/10)}).join(' ')}
+  static fit(aW,aH,n,rot){var t=new PolygoneReg(n,100,rot),v=t.vertices(0,0),xs=v.map(function(p){return p.x}),ys=v.map(function(p){return p.y});var tw=Math.max.apply(null,xs)-Math.min.apply(null,xs),th=Math.max.apply(null,ys)-Math.min.apply(null,ys);return new PolygoneReg(n,100*Math.min(aW/tw,aH/th),rot)}
+}
+class Hexagon extends PolygoneReg{
+  constructor(R,o){super(6,R,o==='flat'?0:-90);this.orientation=o||'pointy'}
+  static fit(aW,aH,o){return new Hexagon(PolygoneReg.fit(aW,aH,6,o==='flat'?0:-90).R,o)}
+}
+
+/* ══ SVG artistique ══ */
+function hexSVG(R,cx,cy,color,orient,id){
+  var hex=new Hexagon(R,orient),pts=hex.svgPoints(cx,cy),g='g_'+id,gl='gl_'+id;
+  var s='<defs><radialGradient id="'+g+'" cx="50%" cy="40%" r="65%"><stop offset="0%" stop-color="'+color+'" stop-opacity=".3"/><stop offset="100%" stop-color="'+color+'" stop-opacity=".06"/></radialGradient>';
+  s+='<filter id="'+gl+'"><feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+  s+='<polygon points="'+pts+'" fill="rgba(0,0,0,.25)" transform="translate(1.5,2.5)"/>';
+  s+='<polygon points="'+pts+'" fill="url(#'+g+')" stroke="'+color+'" stroke-width="1.8" filter="url(#'+gl+')"/>';
+  var v=hex.vertices(cx,cy);
+  s+='<polygon points="'+v.slice(0,3).concat([{x:cx,y:cy}]).map(function(p){return Math.round(p.x)+','+Math.round(p.y)}).join(' ')+'" fill="rgba(255,255,255,.03)"/>';
+  var inn=new Hexagon(R*.91,orient);
+  s+='<polygon points="'+inn.svgPoints(cx,cy)+'" fill="none" stroke="'+color+'" stroke-width=".4" opacity=".25"/>';
+  return s;
+}
+
+/* ══ Données ══ */
+var CELLS=[
+  /* Rangée 0 */
+  {id:'proto',icon:'📱',label:'Protocolo',sub:'el día a día',color:'#4a8fe8',content:'<h3>La aplicación del móvil</h3><p>Tomas, medidas y notas del día, junto a la cama. Funciona <strong>sin conexión y sin PC</strong> — cuando el ordenador se enciende, los datos suben solos por el Pont WiFi.</p><p>✔ Tomas · 📊 Constantes · ✎ Corrección de días pasados · 📦 Material</p><p><a href="Salufolio_Protocolo_movil.html" style="color:var(--accent);font-weight:700;font-size:16px">→ Abrir Protocolo</a></p>'},
+  {id:'express',icon:'⚡',label:'Informe express',sub:'Para el médico',color:'#4ae86a',action:function(){location.href='Salufolio.html?tour=0&express=1'}},   /* l'écran du toubib en UN geste (P-H 19/07) — l'Extractor a déménagé au Taller */
+  /* Rangée 1 */
+  {id:'auditoria',icon:'🔍',label:'Auditoría',sub:'coherencia clínica',color:'#e84a4a',content:'<h3>El juez de paz del expediente</h3><p>Señala lo que no cuadra: <strong>diagnósticos sin soporte analítico</strong>, valores imposibles, identificadores en colisión, antecedentes fósiles, material listado como fármaco.</p><p>✔ Conforme · ✏️ Corregir · 📄 Ver el documento</p><p><strong>La auditoría señala; el juicio es humano.</strong></p>'},
+  {id:'home',icon:'🩺',label:'Salufolio',sub:'Acceder',color:'#2a9d5f',action:function(){location.href='Salufolio.html?tour=0'}},   /* accès direct — la visite ne s'impose plus (P-H 17/07) */
+  {id:'farmaco',icon:'💊',label:'Farmacovigilancia',sub:'en construcción',color:'#8a4ae8',content:'<h3>En el taller 🚧</h3><p>Principio activo y código ATC vía la <strong>API pública CIMA/AEMPS</strong>: marca ↔ genérico, duplicidades de principio activo, interacciones.</p><p>El material (oxígeno, absorbentes) queda fuera: no son medicamentos.</p>'},
+  /* Rangée 2 */
+  {id:'ensayo',icon:'🧪',label:'Ensayo clínico',sub:'GCP · ICH E6',color:'#4ac8e8',content:'<h3>Salufolio para la investigación</h3><p>Visitas, eventos adversos, reportador y sello de tiempo: el módulo que abre el expediente a <strong>los ensayos clínicos</strong> — el uso que más piden los profesionales.</p>'},
+  {id:'builder',icon:'🧱',label:'ModularBuilder',sub:'el taller',color:'#d4c44a',content:'<h3>Donde se fabrica todo</h3><p><strong>79 módulos</strong> ensamblados en un archivo único: build, split, punto fijo, empaquetado.</p><p>Herramienta universal — no depende de Salufolio; Salufolio depende de ella.</p><p>📥 <strong>Extractor</strong> — del papel al dato: lee los PDF y los convierte en valores fechados con su fuente; las extracciones se guardan (♻️ el mismo documento nunca se paga dos veces). <em>Salufolio no inventa nada.</em></p>'}
+];
+
+var ACTIVE=CELLS;   /* l'essaim actif — cellClick/openP/navP lisent TOUJOURS celui-ci */
+
+/* ══ TRILINGÜE (P-H 19/07 : « pas de sélection de langue ») — ES natif,
+   FR/EN par surcharge. Clé = label espagnol de l'alvéole. ══ */
+var PLANG = localStorage.getItem('panal_lang') || (function(){
+  try { var n=(navigator.language||'es').slice(0,2); return ['es','ca','fr','en'].indexOf(n)>=0?n:'es'; } catch(e){ return 'es'; }
+})();
+var PTR = {
+ ca: {
+  'Protocolo':{sub:'el dia a dia'},
+  'Informe express':{sub:'Per al metge'},
+  'Auditoría':{sub:'coherència clínica',content:'<h3>El jutge de pau de l\'expedient</h3><p>Assenyala el que no quadra: <strong>diagnòstics sense suport analític</strong>, valors impossibles, identificadors en col·lisió, antecedents fòssils, material llistat com a fàrmac.</p><p>✔ Conforme · ✏️ Corregir · 📄 Veure el document</p><p><strong>L\'auditoria assenyala; el judici és humà.</strong></p>'},
+  'Salufolio':{sub:'Accedir'},
+  'Farmacovigilancia':{sub:'en construcció',content:'<h3>Al taller 🚧</h3><p>Principi actiu i codi ATC via l\'<strong>API pública CIMA/AEMPS</strong>: marca ↔ genèric, duplicitats de principi actiu, interaccions.</p><p>El material (oxigen, absorbents) queda fora: no són medicaments.</p>'},
+  'Ensayo clínico':{sub:'GCP · ICH E6',content:'<h3>Salufolio per a la recerca</h3><p>Visites, esdeveniments adversos, reportador i segell de temps: el mòdul que obri l\'expedient als <strong>assajos clínics</strong> — l\'ús que més demanen els professionals.</p>'},
+  'ModularBuilder':{sub:'el taller',content:'<h3>On es fabrica tot</h3><p><strong>79 mòduls</strong> assemblats en un arxiu únic: build, split, punt fix, empaquetat.</p><p>Eina universal — no depén de Salufolio; Salufolio depén d\'ella.</p><p>📥 <strong>Extractor</strong> — del paper a la dada: llig els PDF i els converteix en valors datats amb la seua font; les extraccions es guarden (♻️ el mateix document mai es paga dues vegades). <em>Salufolio no inventa res.</em></p>'},
+  'Paciente':{sub:'El seu historial'},
+  'Profesional':{sub:'Vista completa'},
+  'Cuidador':{sub:'Protocolo'},
+  'Visita guiada':{sub:'22 etapes'},
+  'Saber más':{sub:'En xifres'},
+  'Contacto':{sub:'MediFolio@proton.me'}
+ },
+ fr: {
+  'Protocolo':{sub:'le quotidien'},
+  'Informe express':{sub:'Pour le médecin'},
+  'Auditoría':{sub:'cohérence clinique',content:'<h3>Le juge de paix du dossier</h3><p>Signale ce qui ne colle pas : <strong>diagnostics sans support analytique</strong>, valeurs impossibles, identifiants en collision, antécédents fossiles, matériel listé comme médicament.</p><p>✔ Conforme · ✏️ Corriger · 📄 Voir le document</p><p><strong>L\'audit signale ; le jugement est humain.</strong></p>'},
+  'Salufolio':{sub:'Accéder'},
+  'Farmacovigilancia':{sub:'en construction',content:'<h3>À l\'atelier 🚧</h3><p>Principe actif et code ATC via l\'<strong>API publique CIMA/AEMPS</strong> : marque ↔ générique, doublons de principe actif, interactions.</p><p>Le matériel (oxygène, absorbants) reste dehors : ce ne sont pas des médicaments.</p>'},
+  'Ensayo clínico':{sub:'GCP · ICH E6',content:'<h3>Salufolio pour la recherche</h3><p>Visites, événements indésirables, rapporteur et horodatage : le module qui ouvre le dossier aux <strong>essais cliniques</strong> — l\'usage que les professionnels demandent le plus.</p>'},
+  'ModularBuilder':{sub:'l\'atelier',content:'<h3>Où tout se fabrique</h3><p><strong>79 modules</strong> assemblés en un fichier unique : build, split, point fixe, empaquetage.</p><p>Outil universel — il ne dépend pas de Salufolio ; Salufolio dépend de lui.</p><p>📥 <strong>Extractor</strong> — du papier à la donnée : lit les PDF et les convertit en valeurs datées avec leur source ; les extractions sont mémorisées (♻️ le même document ne se paie jamais deux fois). <em>Salufolio n\'invente rien.</em></p>'},
+  'Paciente':{sub:'Son historique'},
+  'Profesional':{sub:'Vue complète'},
+  'Cuidador':{sub:'Protocolo'},
+  'Visita guiada':{sub:'22 étapes'},
+  'Saber más':{sub:'En chiffres'},
+  'Contacto':{sub:'MediFolio@proton.me'}
+ },
+ en: {
+  'Protocolo':{sub:'day to day'},
+  'Informe express':{sub:'For the doctor'},
+  'Auditoría':{sub:'clinical coherence',content:'<h3>The record\'s justice of the peace</h3><p>Flags what does not add up: <strong>diagnoses without analytical support</strong>, impossible values, colliding identifiers, fossil antecedents, supplies listed as drugs.</p><p>✔ Compliant · ✏️ Fix · 📄 View the document</p><p><strong>The audit flags; the judgment is human.</strong></p>'},
+  'Salufolio':{sub:'Enter'},
+  'Farmacovigilancia':{sub:'under construction',content:'<h3>In the workshop 🚧</h3><p>Active ingredient and ATC code via the <strong>public CIMA/AEMPS API</strong>: brand ↔ generic, duplicate active ingredients, interactions.</p><p>Supplies (oxygen, absorbents) stay out: they are not drugs.</p>'},
+  'Ensayo clínico':{sub:'GCP · ICH E6',content:'<h3>Salufolio for research</h3><p>Visits, adverse events, reporter and timestamping: the module that opens the record to <strong>clinical trials</strong> — the use professionals request most.</p>'},
+  'ModularBuilder':{sub:'the workshop',content:'<h3>Where everything is built</h3><p><strong>79 modules</strong> assembled into a single file: build, split, fixed point, packaging.</p><p>Universal tool — it does not depend on Salufolio; Salufolio depends on it.</p><p>📥 <strong>Extractor</strong> — from paper to data: reads PDFs and turns them into dated values with their source; extractions are cached (♻️ the same document is never paid twice). <em>Salufolio invents nothing.</em></p>'},
+  'Paciente':{sub:'Their history'},
+  'Profesional':{sub:'Full view'},
+  'Cuidador':{sub:'Protocolo'},
+  'Visita guiada':{sub:'22 steps'},
+  'Saber más':{sub:'In numbers'},
+  'Contacto':{sub:'MediFolio@proton.me'}
+ }
+};
+/* ══ CONTACTO = formulaire local (P-H 19/07 : « le mailto ne fonctionne pas
+   de manière satisfaisante — popup feedback, on garde les données, et un
+   fichier JSON, mieux ») : le commentaire se GARDE dans ce navigateur
+   (mt_feedback, partagé avec l'app — même origine) et se TÉLÉCHARGE en
+   .json pour l'envoyer par le canal qu'on voudra. ══ */
+var PFBL = {
+ es: { intro:'Deje su comentario o sugerencia — se guarda en este navegador. Cuando quiera, descárguelos en un archivo .json y envíelos por el canal que prefiera.', guardar:'💾 Guardar', desc:'⬇ Descargar comentarios (.json)', n:'comentario(s) guardado(s)', ok:'💾 Guardado' },
+ ca: { intro:'Deixe el seu comentari o suggeriment — es guarda en este navegador. Quan vullga, descarregue\'ls en un arxiu .json i envie\'ls pel canal que preferisca.', guardar:'💾 Guardar', desc:'⬇ Descarregar comentaris (.json)', n:'comentari(s) guardat(s)', ok:'💾 Guardat' },
+ fr: { intro:'Laissez votre commentaire ou suggestion — il se garde dans ce navigateur. Quand vous voudrez, téléchargez-les en .json et envoyez-les par le canal de votre choix.', guardar:'💾 Enregistrer', desc:'⬇ Télécharger les commentaires (.json)', n:'commentaire(s) enregistré(s)', ok:'💾 Enregistré' },
+ en: { intro:'Leave your comment or suggestion — it stays in this browser. Whenever you wish, download them as a .json file and send them through any channel.', guardar:'💾 Save', desc:'⬇ Download comments (.json)', n:'comment(s) saved', ok:'💾 Saved' }
+};
+function pFbLista(){ try { return JSON.parse(localStorage.getItem('mt_feedback')||'[]'); } catch(e){ return []; } }
+function pFbHTML(){
+  var L = PFBL[PLANG] || PFBL.es;
+  return '<h3>📧 Contacto</h3><p style="font-size:13px">' + L.intro + '</p>' +
+    '<textarea id="pfb-texto" style="width:100%;box-sizing:border-box;height:84px;border:1px solid var(--muted);border-radius:8px;padding:8px;font-size:14px;background:rgba(255,255,255,.05);color:var(--text)"></textarea>' +
+    '<div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap">' +
+    '<button onclick="pFbGuardar(this)" style="background:var(--accent);color:#08130c;border:none;border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-weight:700">' + L.guardar + '</button>' +
+    '<button onclick="pFbDescargar()" style="background:transparent;border:1px solid var(--muted);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer">' + L.desc + '</button>' +
+    '<span id="pfb-n" style="font-size:11px;color:var(--muted)">' + pFbLista().length + ' ' + L.n + '</span></div>' +
+    '<p style="font-size:11px;color:var(--muted);margin-top:10px">MediFolio@proton.me</p>';
+}
+function pFbGuardar(btn){
+  var ta = document.getElementById('pfb-texto');
+  var texto = (ta && ta.value || '').trim();
+  if (!texto) return;
+  var lista = pFbLista();
+  lista.push({ fecha:new Date().toISOString(), origen:'panal-contacto', lang:PLANG, texto:texto });
+  localStorage.setItem('mt_feedback', JSON.stringify(lista));
+  ta.value = '';
+  var L = PFBL[PLANG] || PFBL.es;
+  btn.textContent = L.ok + ' (' + lista.length + ')';
+  var n = document.getElementById('pfb-n'); if (n) n.textContent = lista.length + ' ' + L.n;
+}
+function pFbDescargar(){
+  var blob = new Blob([JSON.stringify(pFbLista(), null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Salufolio_comentarios_' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+function ptr(c, champ){
+  if (c.label === 'Contacto' && champ === 'content') return pFbHTML();   /* formulaire vivant, dans la langue du moment */
+  var d = PTR[PLANG]; if(!d || !d[c.label] || !d[c.label][champ]) return c[champ];
+  return d[c.label][champ];
+}
+window.addEventListener('load', function(){
+  var b = document.getElementById('plang-actual');
+  if (b) b.textContent = pLangEtiqueta(PLANG);
+});
+/* v2026.7.22b — DRAPEAUX comme dans Protocolo (demande P-H, 2e rappel !) :
+   le bouton langue montre le drapeau + le code. CA porte le drapeau
+   d'Andorre, convention usuelle pour le catalan/valencià en emoji. */
+function pLangEtiqueta(l){ return ({es:'🇪🇸 ES', ca:'🇦🇩 CA', fr:'🇫🇷 FR', en:'🇬🇧 EN'})[l] || l.toUpperCase(); }
+function pCycleLang(){
+  PLANG = {es:'ca', ca:'fr', fr:'en', en:'es'}[PLANG] || 'es';   /* l'ordre du Protocolo */
+  localStorage.setItem('panal_lang', PLANG);
+  var b = document.getElementById('plang-actual'); if (b) b.textContent = pLangEtiqueta(PLANG);
+  cP(); buildHive();
+}
+
+/* ══ GRILLE homothétique ══ */
+/* ══ HOMOTHÉTIE VRAIE (P-H 17/07 : « en redimensionnant l'écran, on devrait
+   redimensionner homothétiquement l'essaim ») ══
+   La ruche est bâtie UNE seule fois au rayon de référence R0.
+   Redimensionner = UN transform:scale(k) — pas de reconstruction, pas de
+   recalcul : la proportion est préservée par construction (k est LE rapport
+   d'homothétie), le centre reste le centre, le texte suit exactement. */
+var R0=120, _zoom=1;
+/* Découverte de P-H (17/07) officialisée : Maj+molette règle la taille du
+   texte DANS l'alvéole ouverte — et nulle part ailleurs. Gravée dans le code
+   pour marcher pareil sur toute machine ; mémorisée entre les visites. */
+var _txtZoom=parseFloat(localStorage.getItem('panal_txtzoom')||'1');
+function aplicarTxtZoom(){
+  var b=document.getElementById('pop-body');
+  if(b)b.style.zoom=_txtZoom;
+  try{localStorage.setItem('panal_txtzoom',_txtZoom)}catch(e){}
+}
+function fitHive(){
+  var hive=document.getElementById('hive');
+  var S3=Math.sqrt(3);
+  var visW=3*S3*R0, visH=5*R0;              /* dimensions visuelles de référence */
+  var r=hive.parentElement.getBoundingClientRect();   /* le hublot, fixe à l'écran */
+  var k=Math.min((r.height-8)/visH, (r.width-8)/visW)*_zoom;   /* LE rapport d'homothétie */
+  hive.style.transform='translate(-50%,-50%) scale('+k+')';
+  /* le hublot ne bouge pas : l'essaim se dilate en son centre, le débord est
+     rogné pareillement des quatre côtés — l'alvéole centrale reste au centre */
+}
+
+function buildHive(){
+  var el=document.getElementById('hive');
+  el.innerHTML='';
+  var R=R0;                                  /* taille de référence — l'écran n'entre plus ici */
+  var S3=Math.sqrt(3);
+  var sp=1; /* espacement entre centres (1=collés) */
+  var hexW=S3*R, hexH=2*R;
+  var totalW=3*S3*R*sp+S3*R, totalH=5*R*sp;
+  var cx=totalW/2, cy=totalH/2;
+  var positions=[
+    /* Rangée 0: 2 hexagones */
+    {x:cx-S3*R*sp/2, y:cy-1.5*R*sp},
+    {x:cx+S3*R*sp/2, y:cy-1.5*R*sp},
+    /* Rangée 1: 3 hexagones */
+    {x:cx-S3*R*sp,   y:cy},
+    {x:cx,            y:cy},       /* CENTRE */
+    {x:cx+S3*R*sp,   y:cy},
+    /* Rangée 2: 2 hexagones */
+    {x:cx-S3*R*sp/2, y:cy+1.5*R*sp},
+    {x:cx+S3*R*sp/2, y:cy+1.5*R*sp}
+  ];
+  el.style.width=Math.round(totalW)+'px';
+  el.style.height=Math.round(totalH)+'px';
+  fitHive();                                 /* projection homothétique immédiate */
+
+  for(var i=0;i<ACTIVE.length;i++){
+    var c=ACTIVE[i],pos=positions[i];
+    var div=document.createElement('div');
+    div.className='hex'+(i===3?' center':'');
+    div.style.left=Math.round(pos.x-hexW/2)+'px';
+    div.style.top=Math.round(pos.y-hexH/2)+'px';
+    div.style.width=Math.round(hexW)+'px';
+    div.style.height=Math.round(hexH)+'px';
+    div.onclick=(function(idx){return function(){cellClick(idx)}})(i);
+    /* Tailles adaptatives */
+    var icoSize=Math.max(20,Math.round(R/2.5));
+    var lblSize=Math.max(12,Math.round(R/5));
+    var subSize=Math.max(9,Math.round(R/7));
+    if(i===3){icoSize=Math.round(icoSize*1.3);lblSize=Math.round(lblSize*1.3)}
+    var svgContent=hexSVG(R,hexW/2,hexH/2,c.color,'pointy','g'+i);
+    div.innerHTML='<svg viewBox="0 0 '+Math.round(hexW)+' '+Math.round(hexH)+'" style="width:100%;height:100%;position:absolute">'+svgContent+'</svg>'
+      +'<div class="hex-ct"><span class="hex-ico" style="font-size:'+icoSize+'px">'+(c.icon||'')+'</span><span class="hex-lbl" style="font-size:'+lblSize+'px">'+(c.label||'')+'</span><span class="hex-sub" style="font-size:'+subSize+'px">'+(ptr(c,'sub')||'')+'</span></div>';
+    el.appendChild(div);
+  }
+  /* L'ABEILLE (P-H 19/07, spec du triangle isocèle : encoche du bas,
+     b + h/2 → (cx, cy+2R+R/4)) — créée APRÈS les alvéoles et z-index roi :
+     les boîtes rectangulaires des hexagones voisins ne la couvrent plus. */
+  var bee=document.createElement('div');
+  bee.className='bee-swap';
+  bee.textContent='🐝';
+  bee.title='Cambiar de panal';
+  bee.onclick=function(ev){ev.stopPropagation();swapHive();};
+  bee.style.left=Math.round(cx)+'px';
+  bee.style.top=Math.round(cy + 2*R + R/4)+'px';
+  el.appendChild(bee);
+}
+
+/* ══ Zoom molette ══ */
+document.addEventListener('wheel',function(e){
+  var abierto=document.getElementById('pov').classList.contains('show');
+  if(abierto){
+    if(e.shiftKey){                          /* Maj+molette : le texte de l'alvéole */
+      e.preventDefault();
+      var d=e.deltaY||e.deltaX;              /* Maj permute parfois les axes */
+      _txtZoom=Math.max(0.7,Math.min(2,_txtZoom+(d<0?0.08:-0.08)));
+      aplicarTxtZoom();
+    }
+    return;                                  /* molette seule : le contenu défile */
+  }
+  e.preventDefault();
+  _zoom=Math.max(0.5,Math.min(2,_zoom-e.deltaY*0.001));
+  fitHive();                                 /* zoom = même homothétie, autre k */
+},{passive:false});
+
+/* ══ POPUP ══ */
+var _cur=0;
+function cellClick(i){var c=ACTIVE[i];if(c.action){c.action();return}if(c.content)openP(i)}
+function openP(i){
+  /* Animation: origin depuis la position du hex cliqué */
+  var hexEl=document.querySelectorAll('.hex')[i];
+  if(hexEl){
+    var rect=hexEl.getBoundingClientRect();
+    var popup=document.getElementById('popup');
+    popup.style.transformOrigin=Math.round(rect.left+rect.width/2)+'px '+Math.round(rect.top+rect.height/2)+'px';
+    setTimeout(function(){popup.style.transformOrigin='center center'},600);
+  }
+  _cur=i;var c=ACTIVE[i];resizeP(c.color);
+  document.getElementById('pop-title').textContent=(c.icon||'')+' '+(c.label||'');
+  document.getElementById('pop-title').style.color=c.color;
+  document.getElementById('pop-body').innerHTML=ptr(c,'content')||'';
+  document.getElementById('pov').classList.add('show');
+  /* ⌄ seulement si ça déborde — et il s'efface dès qu'on déroule */
+  var body=document.getElementById('pop-body'), hint=document.getElementById('scroll-hint');
+  body.scrollTop=0;
+  setTimeout(function(){hint.classList.toggle('show', body.scrollHeight>body.clientHeight+8)},250);
+  body.onscroll=function(){hint.classList.remove('show')};
+  aplicarTxtZoom();                       /* la taille de texte choisie te suit */
+}
+function resizeP(color){
+  var popup=document.getElementById('popup');
+  var hex=Hexagon.fit(window.innerWidth*.9,window.innerHeight*.82,'flat');
+  var v=hex.vertices(0,0),xs=v.map(function(p){return p.x}),ys=v.map(function(p){return p.y});
+  var w=Math.max.apply(null,xs)-Math.min.apply(null,xs),h=Math.max.apply(null,ys)-Math.min.apply(null,ys);
+  var cx=w/2,cy=h/2;
+  popup.style.width=Math.round(w)+'px';popup.style.height=Math.round(h)+'px';
+  color=color||ACTIVE[_cur].color;
+  document.getElementById('popup-svg').setAttribute('viewBox','0 0 '+Math.round(w)+' '+Math.round(h));
+  document.getElementById('popup-svg').innerHTML=hexSVG(hex.R,cx,cy,color,'flat','pop');
+  /* Hotspots aux 6 sommets */
+  var verts=hex.vertices(cx,cy);
+  /* Table des sommets (P-H 17/07 : « pas tout à fait à mon goût » + « le > pourrait
+     activer un autre essaim ! ») — 4 hotspots nets au lieu de 6 répétés.
+     Indice du sommet (hexágono flat) : 0=derecha 1=abajo-dcha 2=abajo-izq
+     3=izquierda 4=arriba-izq 5=arriba-dcha */
+  var VERTS=[
+    {i:3, ico:'◀',  act:'prev',  lab:'Anterior'},
+    {i:0, ico:'▶',  act:'next',  lab:'Siguiente'},
+    {i:5, ico:'✕',  act:'close', lab:'Cerrar'},
+    {i:1, ico:'🐝', act:'hive',  lab:_isMain?'Ver perfiles':'Ver soluciones'}
+  ];
+  var icoSize=Math.min(26,Math.max(18,Math.round(hex.R/6)));   /* plafonné : l'icône reste dans sa pastille */
+  var hs='';VERTS.forEach(function(vd){var v=verts[vd.i];
+    hs+='<div class="vertex-hs" style="left:'+Math.round(v.x/w*100)+'%;top:'+Math.round(v.y/h*100)+'%" onclick="hsA(\''+vd.act+'\')" title="'+vd.lab+'"><span class="v-ico" style="font-size:'+icoSize+'px">'+vd.ico+'</span><span class="v-lab">'+vd.lab+'</span></div>'});
+  document.getElementById('vertex-hotspots').innerHTML=hs;
+}
+function hsA(a){
+  if(a==='prev'){navP(-1);return}
+  if(a==='next'){navP(1);return}
+  if(a==='hive'){cP();setTimeout(function(){swapHive()},450);return}   /* le popup se referme, l'essaim permute */
+  cP();
+}
+function cP(){
+  var pov=document.getElementById('pov');
+  var popup=document.getElementById('popup');
+  popup.style.transform='scale(0)';
+  popup.style.opacity='0';
+  function onEnd(){
+    pov.classList.remove('show');
+    popup.style.transform='';
+    popup.style.opacity='';
+    popup.removeEventListener('transitionend',onEnd);
+  }
+  popup.addEventListener('transitionend',onEnd);
+  /* Fallback si transitionend ne se déclenche pas */
+  setTimeout(onEnd,2200);
+}
+function navP(d){var n=ACTIVE.length,i=_cur;for(var k=0;k<n;k++){i=(i+d+n)%n;if(ACTIVE[i].content){openP(i);return}}}
+
+/* ══ SUB-HIVE — Même grille, contenu qui change ══ */
+var SUB=[
+  {icon:'🧑',label:'Paciente',sub:'Su historial',color:'#4ae8a4',action:function(){location.href='Salufolio.html?tour=0&perfil=paciente'}},
+  {icon:'👨‍⚕️',label:'Profesional',sub:'Vista completa',color:'#e8e84a',action:function(){location.href='Salufolio.html?tour=0&perfil=medico'}},
+  {icon:'👨‍👩‍👧',label:'Cuidador',sub:'Protocolo',color:'#e84a8a',action:function(){location.href='Salufolio_Protocolo_movil.html'}},
+  {icon:'🩺',label:'Salufolio',sub:'Acceder',color:'#2a9d5f',action:function(){location.href='Salufolio.html?tour=0'}},   /* P-H 19/07 : le stéthoscope ENTRE toujours — dans les deux essaims */
+  {icon:'🎓',label:'Visita guiada',sub:'22 etapas',color:'#4ae8e8',action:function(){location.href='Salufolio.html?tour=1'}},
+  {icon:'📊',label:'Saber más',sub:'En números',color:'#e8a44a',content:'<div class="sr"><div class="si"><span class="sn">10</span><span class="slab">Años</span></div><div class="si"><span class="sn">79</span><span class="slab">Módulos</span></div><div class="si"><span class="sn">510</span><span class="slab">Valores</span></div><div class="si"><span class="sn">36</span><span class="slab">PDF leídos</span></div></div><h3>¿Qué es Salufolio?</h3><p>Expediente médico longitudinal. Un único archivo HTML, sin conexión, sin servidor, sin nube. GNU GPL v3 · DOI 10.5281/zenodo.19973451</p>'},
+  {icon:'📧',label:'Contacto',sub:'MediFolio@proton.me',color:'#8a4ae8',content:'PFB'}
+];
+
+var _isMain=true;
+function swapHive(){
+  var hexEls=document.querySelectorAll('.hex');
+  var target=_isMain?SUB:CELLS;
+  /* Phase 1: gonflement + disparition progressive */
+  hexEls.forEach(function(el){
+    el.style.transition='transform .8s ease, opacity .6s ease';
+    el.style.transform='scale(1.08)';
+    el.style.opacity='0.15';
+  });
+  /* Phase 2: changer le contenu (invisible) */
+  setTimeout(function(){
+    ACTIVE=target;                       /* l'essaim actif change ICI, avec le contenu */
+    var R=R0;
+    var hexW=Math.sqrt(3)*R, hexH=2*R;
+    hexEls.forEach(function(el,i){
+      if(i>=target.length)return;
+      var t=target[i];
+      var icoSize=Math.max(20,Math.round(R/2.5));
+      var lblSize=Math.max(12,Math.round(R/5));
+      var subSize=Math.max(9,Math.round(R/7));
+      if(i===3){icoSize=Math.round(icoSize*1.3);lblSize=Math.round(lblSize*1.3)}
+      el.querySelector('svg').innerHTML=hexSVG(R,hexW/2,hexH/2,t.color,'pointy','g'+i);
+      el.querySelector('.hex-ico').textContent=t.icon;
+      el.querySelector('.hex-ico').style.fontSize=icoSize+'px';
+      el.querySelector('.hex-lbl').textContent=t.label;
+      el.querySelector('.hex-lbl').style.fontSize=lblSize+'px';
+      el.querySelector('.hex-sub').textContent=t.sub;
+      el.querySelector('.hex-sub').style.fontSize=subSize+'px';
+      el.onclick=(function(idx){return function(){cellClick(idx)}})(i);   /* cellClick lit ACTIVE */
+    });
+  },500);
+  /* Phase 3: réapparition progressive + dégonflement */
+  setTimeout(function(){
+    hexEls.forEach(function(el){
+      el.style.transform='scale(1)';
+      el.style.opacity='1';
+    });
+  },600);
+  /* Phase 4: reset */
+  setTimeout(function(){
+    hexEls.forEach(function(el){el.style.transition='all .3s'});
+    _isMain=!_isMain;
+  },1400);
+}
+
+document.addEventListener('keydown',function(e){if(e.key==='Escape')cP();if(e.key==='ArrowLeft')navP(-1);if(e.key==='ArrowRight')navP(1)});
+window.addEventListener('resize',function(){
+  fitHive();                                 /* redimensionner = re-projeter, rien d'autre */
+  if(document.getElementById('pov').classList.contains('show'))resizeP();   /* le popup suit */
+});
+buildHive();
+</script>
+<script>
+/* v2026.7.22 — PLEIN ÉCRAN AU PREMIER GESTE (idée P-H « simuler le bouton ⛶
+   à l'onload ») : l'onload ne PEUT pas — le navigateur exige un vrai geste
+   humain — mais le PREMIER clic (ou touche) de l'utilisateur est un vrai
+   geste : on le moissonne. Armé par ?fs=1, que pose le lanceur du bureau ;
+   le double-clic direct sur le fichier reste en fenêtre normale. */
+if (/[?&]fs=1/.test(location.search)) {
+  (function () {
+    function _fs1() {
+      document.removeEventListener('click', _fs1, true);
+      document.removeEventListener('keydown', _fs1, true);
+      if (!document.fullscreenElement) {
+        try { document.documentElement.requestFullscreen().catch(function () {}); } catch (e) {}
+      }
+    }
+    document.addEventListener('click', _fs1, true);
+    document.addEventListener('keydown', _fs1, true);
+  })();
+}
+</script>
+</body>
+</html>
