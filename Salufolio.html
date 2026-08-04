@@ -2177,11 +2177,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- ===== PANEL PROTOCOLO ASISTIDO ===== -->
 <div id="panel-protocolo" class="panel">
-  <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
-    <button class="btn" onclick="importarUltimoRecibido()" style="font-size:11px;padding:4px 10px" title="El último archivo llegado por 📡 (protocolo-entrada/)">📥 Importar último recibido</button>
-    <button class="btn" onclick="elegirRecibido()" style="font-size:11px;padding:4px 10px" title="Lista de los archivos llegados por 📡">📂 Elegir entre los recibidos…</button>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- BANDEJA DE RECEPCIÓN DEL MÓVIL (P-H 27/07) — reemplaza los    -->
+  <!-- dos botones «último recibido» / «elegir». La lista ES la      -->
+  <!-- explicación : recepción ≠ inserción, tres automatismos.       -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="prx-bandeja">
+    <div class="prx-head">
+      <span class="prx-titulo">📡 Recepción del móvil</span>
+      <span class="prx-antena off" id="prx-antena" onclick="prxAntenaClic()" title="Estado del servidor · clic para arrancar/detener">
+        <span id="prx-ant-ico">⚪</span><span class="prx-ip" id="prx-ant-ip">servidor apagado</span>
+      </span>
+    </div>
+
+    <div id="prx-lista"><!-- filas générées par prxRender() --></div>
+    <div class="prx-vacia" id="prx-vacia">Bandeja vacía. ✨</div>
+
+    <div class="prx-foot">
+      <span class="prx-sw" id="prx-sw-rec" onclick="prxToggle('rec')" title="Los paquetes que llegan se señalan en la lista">
+        <span class="prx-track"><span class="prx-knob"></span></span>
+        <span class="prx-lbl" id="prx-lbl-rec">Recepción manual</span>
+        <span class="prx-i" onclick="event.stopPropagation();prxAyuda('rec')">i</span>
+      </span>
+      <span class="prx-sw" id="prx-sw-ins" onclick="prxToggle('ins')" title="Los paquetes que llegan se insertan solos en el paciente">
+        <span class="prx-track"><span class="prx-knob"></span></span>
+        <span class="prx-lbl" id="prx-lbl-ins">Inserción manual</span>
+        <span class="prx-i" onclick="event.stopPropagation();prxAyuda('ins')">i</span>
+      </span>
+      <span class="prx-link" onclick="prxJournalToggle()">Diario ▸</span>
+    </div>
+    <div class="prx-journal" id="prx-journal"></div>
   </div>
-  <div id="proto-movil-url" style="display:none;text-align:right;font-size:11px;color:var(--muted);margin:-2px 0 8px"></div>
+  <div id="proto-movil-url" style="display:none"></div>
+
 <div class="section-label">📋 Protocolo Asistido — Prescripción y seguimiento</div>
 
   <!-- Onglets Prescripción / Registro -->
@@ -3790,7 +3819,7 @@ const MODULES = [
     icon:'🔬', label:{ es:'Ensayo Clínico',   fr:'Essai Clinique',      en:'Clinical Trial' } },
   { id:'sidebar',     version:'1.0.0',    updated:'2026-04-12',
     icon:'☰',  label:{ es:'Menú lateral',     fr:'Menu latéral',        en:'Sidebar' } },
-  { id:'protocolo',   version:'1.0.8',    updated:'2026-05-19',
+  { id:'protocolo',   version:'1.1.0',    updated:'2026-07-27',
     icon:'📋', label:{ es:'Protocolo Asistido', fr:'Protocole Assisté',   en:'Assisted Protocol' } }
   /* Modules futurs prévus :
   ,{ id:'clinical_tests',version:'1.0.0', updated:'?', icon:'🧪', label:{ es:'Tests clínicos', ... } }
@@ -14912,6 +14941,38 @@ function _xzZ(d) {
 <!-- MB:END modules/informe-express-js.js -->
 <!-- MB:BEGIN modules/core-protocolo-import-js.js -->
 
+<style>
+/* ══ Bandeja de recepción (P-H 27/07) ══ */
+.prx-bandeja{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.prx-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.prx-titulo{font-weight:700;font-size:14px}
+.prx-antena{margin-left:auto;display:flex;align-items:center;gap:7px;cursor:pointer;padding:4px 10px;border-radius:20px;border:1px solid var(--verde-bd,#3dbf7f);background:rgba(61,191,127,.12);font-size:12.5px;font-weight:600;color:var(--verde,#1e7a46)}
+.prx-antena.off{border-color:#c0392b;background:rgba(192,57,43,.08);color:#c0392b}
+.prx-ip{font-family:var(--mono);font-weight:700}
+.prx-fila{display:flex;align-items:center;gap:11px;padding:10px 14px;border-bottom:1px solid var(--border)}
+.prx-fila:last-child{border-bottom:none}
+.prx-fila.hecho{opacity:.6}
+.prx-estrella{width:16px;text-align:center;font-size:14px}
+.prx-info{flex:1;min-width:0}
+.prx-l1{font-weight:600;font-size:13.5px}
+.prx-l1 .prx-fch{font-family:var(--mono)}
+.prx-l2{font-size:12px;color:var(--muted)}
+.prx-badge{font-size:12px;font-weight:600;padding:3px 9px;border-radius:12px;white-space:nowrap;background:rgba(30,122,70,.12);color:var(--verde,#1e7a46)}
+.prx-btn{border:none;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;background:var(--accent);color:#fff}
+.prx-btn:hover{filter:brightness(1.1)}
+.prx-vacia{padding:22px 14px;text-align:center;color:var(--muted);font-size:13px;display:none}
+.prx-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:9px 14px;background:var(--surface2);border-top:1px solid var(--border);font-size:12.5px}
+.prx-sw{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;font-weight:600}
+.prx-track{width:36px;height:20px;border-radius:11px;background:#b8ad93;position:relative;transition:.2s;flex:none}
+.prx-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.prx-sw.on .prx-track{background:var(--verde-bd,#3dbf7f)}
+.prx-sw.on .prx-track .prx-knob{left:18px}
+.prx-i{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;cursor:help}
+.prx-link{margin-left:auto;color:var(--accent);cursor:pointer;font-weight:600}
+.prx-journal{display:none;font-size:12px;color:var(--muted);background:var(--surface2);padding:9px 14px;border-top:1px solid var(--border);line-height:1.6}
+</style>
+
+
 <script>
 /* ================================================================
    IMPORTAR PROTOCOLO MÓVIL — le dernier arc du pont Wi-Fi (15/07)
@@ -15000,7 +15061,67 @@ function procesarProtocoloMovil(p, nomArchivo) {
   }
   _protImportar(p, nomArchivo);
 }
+/* ADAPTATEUR FORMATO 2 (greffe 26/07, Lavoisier : rien ne se perd, tout se convertit) */
+function _protF2Adapta(f2) {
+  if (!f2 || f2.formato !== 2) return f2;
+  var p = { version: f2.version, exportado: f2.exportado };
+  p.patient_label = (f2.paciente || {}).nombre || '';
+  p.patient_sip = (f2.paciente || {}).sip || null;
+  var meds = [];
+  (f2.medicamentos || []).forEach(function(m, i) {
+    meds.push({ id: 'f2m' + i, nombre: m.nombre, dosis: m.dosis || '',
+      momento: m.puntual ? 'demanda' : (m.momento || 'desayuno') });
+  });
+  p.medicamentos_config = meds;
+  p.tomas = {}; p.tomas_puntuales = [];
+  Object.keys(f2.tomas || {}).forEach(function(d) {
+    (f2.tomas[d] || []).forEach(function(e) {
+      if (e.med) { p.tomas_puntuales.push({ fecha: d, hora: e.hora, nombre: e.med }); return; }
+      if (!e.momento) return;
+      meds.forEach(function(m) {
+        if (m.momento === e.momento) {
+          if (!p.tomas[d]) p.tomas[d] = {};
+          p.tomas[d][m.id] = e.hora;
+        }
+      });
+    });
+  });
+  p.constantes = [];
+  Object.keys(f2.constantes || {}).forEach(function(d) {
+    (f2.constantes[d] || []).forEach(function(c) {
+      var e = { fecha: d }; Object.keys(c).forEach(function(k) { e[k] = c[k]; });
+      p.constantes.push(e);
+    });
+  });
+  p.observaciones = [];
+  Object.keys(f2.observaciones || {}).forEach(function(d) {
+    (f2.observaciones[d] || []).forEach(function(o) {
+      p.observaciones.push({ fecha: d, hora: o.hora || null, tipos: o.tipos || [], nota: o.nota || null });
+    });
+  });
+  p.material = {}; p.material_config = f2.material_config || [];
+  var uso = (f2.material || {}).uso || {};
+  Object.keys(uso).forEach(function(id) {
+    Object.keys(uso[id] || {}).forEach(function(d) {
+      var ses = uso[id][d] || [], mins = 0, n = 0, lpm = [];
+      ses.forEach(function(s) {
+        if (s.inicio && s.fin) {
+          var a = s.inicio.split(':'), b = s.fin.split(':');
+          var m = (+b[0] * 60 + +b[1]) - (+a[0] * 60 + +a[1]); if (m < 0) m += 1440;
+          mins += m; n++;
+        }
+        (s.litros || []).forEach(function(l) { if (lpm.indexOf(l.lpm) < 0) lpm.push(l.lpm); });
+      });
+      var txt = (n ? n + 'x ' + Math.floor(mins / 60) + 'h' + ('0' + (mins % 60)).slice(-2) : 'en curso') +
+        (lpm.length ? ' @' + lpm.join('-') + ' L/min' : '');
+      if (!p.material[d]) p.material[d] = {};
+      p.material[d][id] = txt;
+    });
+  });
+  return p;
+}
 function _protImportar(p, nomArchivo) {
+  p = _protF2Adapta(p);
   const nomMed = {};
   (p.medicamentos_config || []).forEach(m => { nomMed[m.id] = m.nombre + (m.dosis ? ' ' + m.dosis : ''); });
   const momento = {};
@@ -15072,8 +15193,11 @@ function _protImportar(p, nomArchivo) {
   if (nTomas) partes.push(pl(nTomas, 'toma', 'tomas'));
   if (nConst) partes.push(pl(nConst, 'constante', 'constantes'));
   if (nObs) partes.push(pl(nObs, 'observación', 'observaciones'));
-  mfDlg('✓ Protocolo importado', partes.join(' · ') +
-    '<br><span style="color:var(--muted)">Los registros están en la pestaña Registro diario, firmados «Protocolo móvil».</span>', [{ label: 'Perfecto', primario: true }]);
+  if (typeof _prxSilencio === 'undefined' || !_prxSilencio) {
+    mfDlg('✓ Protocolo importado', partes.join(' · ') +
+      '<br><span style="color:var(--muted)">Los registros están en la pestaña Registro diario, firmados «Protocolo móvil».</span>', [{ label: 'Perfecto', primario: true }]);
+  }
+  if (typeof prxSondear === 'function') setTimeout(prxSondear, 200);
 }
 
 /* Affichage de l'adresse móvil (idée P-H 15/07) : Salufolio interroge le
@@ -15208,6 +15332,200 @@ async function protoMostrarIpMovil() {
   }
 }
 setTimeout(protoMostrarIpMovil, 800);
+
+/* ===== COUCHE BANDEJA (P-H 27/07) ===== */
+/* ═══════════════════════════════════════════════════════════════════
+   BANDEJA DE RECEPCIÓN (P-H 27/07) — la file de messagerie du pont.
+   Trois automatismes distincts, chacun DÉCLARANT son état :
+     · Recepción  : manual | auto (vert)  → señala en la lista
+     · Inserción  : manual | auto (vert)  → inserta en el paciente
+   Réglages persistés (localStorage), aussi pilotables depuis Ajustes.
+   La logique métier (_protImportar, procesarProtocoloMovil, garde SIP)
+   n'est pas touchée : la bandeja ne fait qu'orchestrer les appels.
+═══════════════════════════════════════════════════════════════════ */
+const PRX_KEY_REC = 'mt_prx_recepcion_auto';   /* '1' = auto, sinon manual */
+const PRX_KEY_INS = 'mt_prx_insercion_auto';
+const PRX_JOURNAL_KEY = 'mt_prx_journal';       /* diario de recepción/inserción */
+const PRX_SRV = 'http://localhost:7777';
+
+let _prxLista = [];        /* [{archivo, insertado:bool}] dernier en tête */
+let _prxServidor = null;   /* null=inconnu, objet=vivant, false=mort */
+let _prxJournalOpen = false;
+
+function prxRecAuto() { return localStorage.getItem(PRX_KEY_REC) === '1'; }
+function prxInsAuto() { return localStorage.getItem(PRX_KEY_INS) === '1'; }
+function prxJournalLoad() { try { return JSON.parse(localStorage.getItem(PRX_JOURNAL_KEY) || '[]'); } catch (e) { return []; } }
+function prxJournalAdd(linea) {
+  const j = prxJournalLoad();
+  j.unshift({ t: new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' }), l: linea });
+  localStorage.setItem(PRX_JOURNAL_KEY, JSON.stringify(j.slice(0, 200)));
+}
+
+/* fecha d'envío lisible depuis le nom MFProtocolo_XXX_v2026-07-26_19h1402.json */
+function prxFechaEnvio(nom) {
+  const m = (nom || '').match(/_v(\d{4})-(\d{2})-(\d{2})_(\d{2})h(\d{2})/);
+  if (!m) return nom || '';
+  return m[3] + '/' + m[2] + ' · ' + m[4] + ':' + m[5];
+}
+function prxPaciente(nom) {
+  const m = (nom || '').match(/MFProtocolo_([^_]+)_/);
+  return m ? m[1] : '';
+}
+
+/* un paquet est « déjà inséré » si le journal en garde trace */
+function prxYaInsertado(nom) {
+  return prxJournalLoad().some(function (e) { return e.l.indexOf('insertado') === 0 && e.l.indexOf(nom) !== -1; });
+}
+
+/* ── SONDE : état serveur + liste des reçus, toutes les 20 s ── */
+async function prxSondear() {
+  const antena = document.getElementById('prx-antena');
+  const ico = document.getElementById('prx-ant-ico');
+  const ip = document.getElementById('prx-ant-ip');
+  if (!antena) return;
+  try {
+    const ctl = new AbortController(); setTimeout(function () { ctl.abort(); }, 1500);
+    const r = await fetch(PRX_SRV + '/api/ip', { signal: ctl.signal });
+    _prxServidor = await r.json();
+    antena.classList.remove('off');
+    if (ico) ico.textContent = '🟢';
+    if (ip) ip.textContent = (_prxServidor.ip || 'servidor') + ':' + (_prxServidor.port || 7777);
+    /* recepción auto : on rafraîchit la liste */
+    if (prxRecAuto()) await prxCargarLista(true);
+    else await prxCargarLista(false);
+  } catch (e) {
+    _prxServidor = false;
+    antena.classList.add('off');
+    if (ico) ico.textContent = '⚪';
+    if (ip) ip.textContent = 'servidor apagado';
+    prxRender();
+  }
+}
+
+/* charge la liste depuis le serveur ; si auto-insertion, insère les nouveaux */
+async function prxCargarLista(activa) {
+  try {
+    const r = await fetch(PRX_SRV + '/api/protocolo/lista');
+    const d = await r.json();
+    const arch = (d.archivos || []).slice();  /* serveur : dernier en tête déjà */
+    _prxLista = arch.map(function (n) { return { archivo: n, insertado: prxYaInsertado(n) }; });
+    /* inserción auto : insérer en silence tout paquet non encore inséré */
+    if (activa && prxInsAuto()) {
+      for (const it of _prxLista) {
+        if (!it.insertado) { await prxInsertar(it.archivo, true); }
+      }
+    }
+    prxRender();
+  } catch (e) { _prxLista = []; prxRender(); }
+}
+
+/* insère un paquet : lit le fichier, appelle la logique existante, journalise */
+async function prxInsertar(nom, silencioso) {
+  try {
+    const rf = await fetch(PRX_SRV + '/api/protocolo/archivo?n=' + encodeURIComponent(nom));
+    if (!rf.ok) throw 0;
+    const df = await rf.json();
+    /* procesarProtocoloMovil montre un dialogue de succès ; en mode silencieux
+       (auto), on court-circuite vers _protImportar via un drapeau. */
+    _prxSilencio = !!silencioso;
+    procesarProtocoloMovil(df.contenido, df.archivo);
+    _prxSilencio = false;
+    prxJournalAdd('insertado ' + nom + ' (envío ' + prxFechaEnvio(nom) + ')');
+    const it = _prxLista.find(function (x) { return x.archivo === nom; });
+    if (it) it.insertado = true;
+    if (!silencioso) prxRender();
+  } catch (e) {
+    if (!silencioso) mfDlg('Error', 'No se pudo insertar ' + nom, [{ label: 'Cerrar', primario: true }]);
+  }
+}
+let _prxSilencio = false;  /* lu par procesarProtocoloMovil pour taire le dialogue */
+
+/* ── RENDU de la file ── */
+function prxRender() {
+  const lista = document.getElementById('prx-lista');
+  const vacia = document.getElementById('prx-vacia');
+  if (!lista) return;
+  prxPintarSwitches();
+  const pend = _prxLista.filter(function (x) { return !x.insertado; });
+  /* file toujours vide quand les deux autos tournent ET rien en attente */
+  if (!_prxLista.length || (prxInsAuto() && !pend.length)) {
+    lista.innerHTML = '';
+    if (vacia) vacia.style.display = 'block';
+    return;
+  }
+  if (vacia) vacia.style.display = 'none';
+  lista.innerHTML = _prxLista.map(function (it) {
+    const est = it.insertado;
+    const estrella = (it === _prxLista[0] && !est) ? '⭐' : '';
+    const pac = prxPaciente(it.archivo);
+    const der = est
+      ? '<span class="prx-badge ok">✓ ya insertado</span>'
+      : '<button class="prx-btn" onclick="prxInsertarClic(\'' + it.archivo.replace(/'/g, "\\'") + '\')">Insertar</button>';
+    return '<div class="prx-fila' + (est ? ' hecho' : '') + '">' +
+      '<span class="prx-estrella">' + estrella + '</span>' +
+      '<div class="prx-info"><div class="prx-l1"><span class="prx-fch">' + prxFechaEnvio(it.archivo) + '</span>' +
+      (pac ? ' — ' + pac : '') + '</div>' +
+      '<div class="prx-l2">enviado ' + prxFechaEnvio(it.archivo).split(' · ')[1] + '</div></div>' +
+      der + '</div>';
+  }).join('');
+}
+
+function prxInsertarClic(nom) { prxInsertar(nom, false); }
+
+/* ── SWITCHES : déclarent leur état (manual | auto vert) ── */
+function prxPintarSwitches() {
+  const rec = prxRecAuto(), ins = prxInsAuto();
+  const swR = document.getElementById('prx-sw-rec'), swI = document.getElementById('prx-sw-ins');
+  const lR = document.getElementById('prx-lbl-rec'), lI = document.getElementById('prx-lbl-ins');
+  if (swR) swR.classList.toggle('on', rec);
+  if (swI) swI.classList.toggle('on', ins);
+  if (lR) lR.textContent = rec ? 'Recepción auto' : 'Recepción manual';
+  if (lI) lI.textContent = ins ? 'Inserción auto' : 'Inserción manual';
+}
+function prxToggle(cual) {
+  if (cual === 'rec') localStorage.setItem(PRX_KEY_REC, prxRecAuto() ? '0' : '1');
+  else localStorage.setItem(PRX_KEY_INS, prxInsAuto() ? '0' : '1');
+  prxPintarSwitches();
+  prxSondear();  /* applique tout de suite */
+  if (typeof prxSyncAjustes === 'function') prxSyncAjustes();
+}
+function prxAyuda(cual) {
+  if (cual === 'rec')
+    mfDlg('ℹ Recepción', '<b>Recepción automática</b> : los paquetes que llegan del móvil aparecen solos en la lista. No se insertan todavía — usted los ve y decide.<br><br><b>Manual</b> : la lista se actualiza al abrir esta pestaña.', [{ label: 'Entendido', primario: true }]);
+  else
+    mfDlg('ℹ Inserción', '<b>Inserción automática</b> : cada paquete recibido entra solo en el expediente del paciente y se guarda, sin intervención. Con recepción + inserción automáticas, la bandeja queda siempre vacía.<br><br><b>Manual</b> : usted pulsa «Insertar» paquete por paquete.<br><br><span style="color:var(--muted)">Las fechas clínicas que cuentan (medición) viven dentro de cada dato — no la fecha de envío ni la de inserción.</span>', [{ label: 'Entendido', primario: true }]);
+}
+
+/* ── ANTENNE : clic = arrêter/redémarrer (si routes serveur présentes) ── */
+function prxAntenaClic() {
+  if (_prxServidor && _prxServidor.ip) {
+    mfDlg('🛰️ Servidor en marcha',
+      'Dirección : <b style="user-select:all">' + (_prxServidor.movil || (_prxServidor.ip + ':' + _prxServidor.port)) + '</b>' +
+      '<br><br><span style="color:var(--muted)">Para detenerlo, ciérrelo en su consola (Ctrl-C) o desde el panel.</span>',
+      [{ label: 'Cerrar', primario: true }]);
+  } else {
+    let ruta = 'RUTA/A/Salufolio';
+    if (location.protocol === 'file:') ruta = decodeURIComponent(location.pathname).replace(/\/[^/]*$/, '').replace(/\/app$/, '');
+    mfDlg('🛰️ Servidor apagado', 'Para arrancarlo, en una consola:<br><b style="user-select:all;font-family:var(--mono);font-size:11.5px">bash ' + ruta + '/arranque.sh</b>', [{ label: 'Cerrar', primario: true }]);
+  }
+}
+
+/* ── JOURNAL ── */
+function prxJournalToggle() {
+  _prxJournalOpen = !_prxJournalOpen;
+  const j = document.getElementById('prx-journal');
+  if (!j) return;
+  if (!_prxJournalOpen) { j.style.display = 'none'; return; }
+  const lignes = prxJournalLoad();
+  j.innerHTML = '<b>Diario de recepción</b><br>' +
+    (lignes.length ? lignes.slice(0, 40).map(function (e) { return e.t + ' · ' + e.l; }).join('<br>') : '<span style="color:var(--muted)">(vacío)</span>');
+  j.style.display = 'block';
+}
+
+/* démarrage : sonde tout de suite puis toutes les 20 s */
+setTimeout(prxSondear, 700);
+setInterval(prxSondear, 20000);
+
 </script>
 <!-- MB:END modules/core-protocolo-import-js.js -->
 <!-- MB:BEGIN modules/auditoria-js.js -->
@@ -17210,7 +17528,7 @@ function sendTourFeedback() {
   /* Truncate si trop long pour mailto */
   if (body.length > 8000) body = body.slice(0, 7900) + '\n\n[...truncated]';
 
-  const mailto = 'mailto:' + APP_CONTACTO  /* v2026.7.23.5 : adresse en TABLE (core-modules-data), plus jamais en dur */
+  const mailto = 'mailto:' + APP_CONTACTO  /* v2026.7.27.1 : adresse en TABLE (core-modules-data), plus jamais en dur */
     + '?subject=' + encodeURIComponent(subject)
     + '&body=' + encodeURIComponent(body);
 
