@@ -11,7 +11,7 @@
 <title>Salufolio Protocolo</title>
 <style>
 :root{
-  --bg:#0f1420; --surface:#1a2130; --surface2:#232c40; --border:#2a3348;
+  --bg:#141b2b; --surface:#212a3d; --surface2:#2c3750; --border:#3d4a66;
   --text:#e8ecf4; --muted:#8b94a8; --ok:#3fb950; --accent:#4f8ff7;
   --warn:#d99922; --bad:#f85149; --radius:14px;
 }
@@ -20,18 +20,52 @@ html[data-theme="light"]{
   --text:#1b2330; --muted:#5b6577;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar,.dlg::-webkit-scrollbar,
+.lista-cuerpo::-webkit-scrollbar,.bv-cuerpo::-webkit-scrollbar{width:0;height:0}
+body,.dlg,.lista-cuerpo,.bv-cuerpo{scrollbar-width:none}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
   font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-size:18px}
-body{padding-top:128px;padding-bottom:84px;min-height:100vh}
+body{padding-top:112px;padding-bottom:150px;min-height:100vh}
 .mono{font-family:'IBM Plex Mono',Menlo,monospace}
 
 /* ── en-tête ── */
 header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bg);
-  border-bottom:1px solid var(--border);padding:8px 14px 8px}
-.ctrls{display:flex;gap:7px;justify-content:flex-end;margin-bottom:4px}
+  border-bottom:1px solid var(--border);padding:6px 8px 6px}
+/* Les boutons du haut : MÊME LARGEUR pour tous (P-H, 16/08), et le vide entre
+   eux resserré — c'est la marge qui rend la police, pas la lisibilité. */
+.ctrls{display:flex;gap:3px;justify-content:flex-end;margin-bottom:2px;flex-wrap:nowrap}
 .hbtn{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  min-width:40px;height:40px;font-size:17px;cursor:pointer;color:var(--text);padding:0 8px;font-weight:700}
+  width:34px;min-width:34px;height:32px;font-size:15px;cursor:pointer;color:var(--text);padding:0;font-weight:700;flex:0 0 34px}
 /* ── dialogues maison (adieu prompt/confirm agressifs) ── */
+/* ═══ LE CALENDRIER MAISON (P-H, 17/08) ═══ Le sélecteur natif nous a lâchés
+   deux fois : sous le transform du banc, puis collé au bas du pied où il
+   s'ouvrait hors de l'écran. Celui-ci est dessiné par l'app, donc il s'ouvre
+   où l'on veut, partout pareil. Sept colonnes en 1fr — la semaine est une
+   structure, on ne la replie pas — et 44 px minimum pour le pouce. Aucune
+   media query : le mfp_zoom fausse les seuils, 1fr n'a pas ce défaut. */
+.cal{width:100%;border-collapse:collapse;table-layout:fixed}
+.cal th{font-size:11px;font-weight:700;color:var(--muted);padding:4px 0;text-transform:uppercase}
+.cal td{padding:1px;text-align:center}
+.cal td button{width:100%;min-height:44px;background:var(--surface);color:var(--text);
+  border:1px solid var(--border);border-radius:8px;font-size:15px;font-weight:700;
+  font-family:inherit;cursor:pointer;padding:0;position:relative}
+.cal td button.hoy{border-color:var(--accent);border-width:2px}
+.cal td button.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.cal td button.med::before,.cal td button.con::after{content:'';position:absolute;
+  top:4px;width:9px;height:9px;border-radius:50%;box-sizing:border-box}
+.cal td button.med::before{left:4px;background:#f2c230}          /* les prises */
+.cal td button.con::after{right:4px;background:var(--ok)}        /* ce qu'on a noté */
+/* Creux = commencé mais incomplet : la forme le dit, pas la couleur. */
+.cal td button.medinc::before{background:transparent;border:2.5px solid #f2c230}
+.cal td button.notinc::after{background:transparent;border:2.5px solid var(--ok)}
+.cal td button.sel.med::before,.cal td button.sel.con::after{background:#fff;border-color:#fff}
+.cal td button.sel.medinc::before,.cal td button.sel.notinc::after{background:transparent}
+.cal td span{display:block;min-height:44px;line-height:44px;font-size:15px;color:var(--border)}
+.cal-mes{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cal-mes b{flex:1;text-align:center;font-size:15px}
+.cal-mes button{flex:0 0 44px;min-height:38px;background:var(--surface);color:var(--text);
+  border:1px solid var(--border);border-radius:8px;font-size:16px;cursor:pointer;font-family:inherit}
 .dlg-ov{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);display:flex;
   align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
 .dlg{background:var(--surface);border:1px solid var(--border);border-radius:16px;
@@ -54,13 +88,45 @@ header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bg);
 .fin{opacity:.55}
 .punt{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px dashed var(--border);
   border-radius:var(--radius);padding:10px 14px;margin-bottom:8px;font-size:15px}
-header .fecha{font-size:26px;font-weight:700;text-transform:capitalize}
+/* Le logo est posé en absolu à gauche : la ligne de la date lui laisse
+   sa place au lieu de passer dessous (P-H, 17/08). */
+.marcas{display:flex;gap:3px;align-items:center;flex-shrink:0}
+.mq{font-size:15px;opacity:.32;line-height:1}
+.mq.ok{opacity:1}
+.dose-dlg{color:var(--muted);font-size:13px;margin:-4px 0 10px}
+.basc{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  background:var(--surface2);border:1px solid var(--border);color:var(--text);
+  border-radius:10px;padding:11px 13px;font-size:14.5px;margin-bottom:7px;
+  font-family:inherit;cursor:pointer;min-height:46px}
+.basc.on{background:var(--ok);border-color:var(--ok);color:#fff;font-weight:700}
+.basc .sw{font-size:17px}
+.basc .quita{background:none;border:none;color:var(--bad);font-size:16px;cursor:pointer;padding:0 4px}
+.mchips{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.mchip{background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+  border-radius:16px;padding:7px 11px;font-size:13px;cursor:pointer;font-family:inherit;min-height:38px}
+.mchip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+input.dudoso{border-color:var(--warn) !important;box-shadow:0 0 0 2px rgba(217,153,34,.25)}
+header .fecha{font-size:26px;font-weight:700;text-transform:capitalize;padding-left:46px;text-align:center}
 header .sub{font-size:13px;color:var(--muted);margin-top:2px}
 header .lema{font-size:11px;color:var(--muted);font-style:italic;margin-top:6px;opacity:.8}
 
 /* ── navigation basse (pouce) ── */
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--surface);
-  border-top:1px solid var(--border);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+/* ═══ LE PIED (P-H, 16/08) ═══ Trois bandes empilées, toujours sous le pouce :
+   l'heure, le jour, la navigation. Le bandeau des jours qui vivait en haut de
+   chaque écran a disparu — une rangée rendue à tous les écrans. */
+#pie{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);
+  border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
+#barra-hora{display:flex;align-items:center;gap:8px;padding:5px 10px;border-bottom:1px solid var(--border)}
+#barra-hora label{font-size:12px;color:var(--muted);font-weight:700;flex:1 1 auto;min-width:0}
+#barra-hora input{font-size:19px;font-weight:700;flex:0 0 88px;text-align:center;
+  background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:9px;padding:4px 0;font-family:inherit}
+#barra-quando{display:flex;align-items:stretch;gap:6px;padding:5px 8px;border-bottom:1px solid var(--border)}
+#barra-quando button{background:var(--bg);color:var(--text);border:1px solid var(--border);
+  border-radius:9px;flex:0 0 44px;font-size:17px;cursor:pointer;font-family:inherit}
+#dia-etiqueta{flex:1 1 auto;display:flex;align-items:center;justify-content:center;text-align:center;
+  font-size:15px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);
+  border-radius:9px;background:var(--bg);padding:6px 4px;min-width:0}
+nav{display:flex;background:var(--surface)}
 nav button{flex:1;background:none;border:none;color:var(--muted);font-size:14px;font-weight:600;
   padding:10px 0 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
 nav button .ico{font-size:27px}
@@ -182,11 +248,13 @@ select option{background:var(--surface);color:var(--text)}
 /* état 1 — la personne est sortie : ce n'est plus l'urgence, c'est
    l'attente du retour. La couleur le dit sans un mot. */
 .matrow.u112-fuera{border-color:var(--warn);background:rgba(217,153,34,.12)}
-.pac-fila{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:2px}
+.pac-fila{display:flex;gap:4px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin-top:1px}
 .pac-sel{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:10px;
-  font-size:17px;font-weight:800;padding:6px 10px;max-width:62vw;font-family:inherit}
+  font-size:15px;font-weight:800;padding:0 6px;height:32px;box-sizing:border-box;max-width:60vw;font-family:inherit}
 .pac-btn{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:10px;
-  font-size:16px;padding:6px 10px;cursor:pointer;line-height:1}
+  font-size:16px;padding:0 8px;height:32px;box-sizing:border-box;cursor:pointer;line-height:1}
+/* Le ＋ est le geste le plus fréquent de l'installation : il se voit. */
+#pac-mas{font-size:21px;font-weight:700;padding:0 11px}
 .pac-vacio{font-size:15px;color:var(--muted);font-style:italic}
 /* Le témoin des mesures du jour. Une case vide et une valeur perdue se
    ressemblent trop : celui-ci montre que la journée a déjà ses mesures,
@@ -303,8 +371,8 @@ body.sin-paciente #nav-res { opacity: .35; }
     <button class="hbtn" onclick="verAyuda()">❓</button>
     <button class="hbtn" id="btn-panal" onclick="location.href='index.html'" style="display:none" title="Volver al panal">🐝</button>
   </div>
-  <div class="fecha" id="hdr-fecha" style="font-size:19px"></div>
-  <div id="hdr-patient" style="font-size:19px;font-weight:800;color:var(--text);margin-top:2px"></div>
+  <div class="fecha" id="hdr-fecha" style="font-size:15px"></div>
+  <div id="hdr-patient" style="font-size:17px;font-weight:800;color:var(--text);margin-top:1px"></div>
   <div class="sub" id="hdr-sub" style="font-size:10px;opacity:.75">Salufolio Protocolo</div>
 </header>
 
@@ -312,13 +380,6 @@ body.sin-paciente #nav-res { opacity: .35; }
   <!-- ═══ HOY : les prises ═══ -->
   <section id="p-hoy" class="panel act">
     <div id="avisos"></div>
-    <!-- Corriger un jour passé (P-H 16/07) : on recule, on répare, on revient -->
-    <div id="dia-nav" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:2px 0 10px">
-      <button class="btn sec" onclick="diaMas(-1)" style="padding:6px 14px;font-size:17px;min-width:44px">◀</button>
-      <span id="dia-etiqueta" onclick="abrirSelectorDia()" style="font-size:15px;font-weight:700;min-width:120px;text-align:center;cursor:pointer;text-decoration:underline dotted 1px"></span>
-      <input type="date" id="dia-fecha" onchange="irADia(this.value)" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
-      <button class="btn sec" onclick="diaMas(1)" id="dia-siguiente" style="padding:6px 14px;font-size:17px;min-width:44px">▶</button>
-    </div>
     <div id="dia-aviso" style="display:none;background:var(--warn);color:#1a1200;border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:13.5px;font-weight:700;text-align:center">
       ✎ <span id="dia-aviso-txt"></span> — <span style="text-decoration:underline;cursor:pointer" onclick="volverHoy()">volver a hoy</span>
     </div>
@@ -345,7 +406,7 @@ body.sin-paciente #nav-res { opacity: .35; }
            qu'on la voie tout de suite sans faire défiler l'écran ». Elle
            identifie la mesure : on la voit — et souvent on la corrige —
            AVANT de saisir les chiffres. -->
-      <div class="cbox" style="grid-column:1/-1"><label id="i-lhmed"></label><div style="display:flex;gap:6px;align-items:center"><input id="c-hora" autocomplete="off" type="text" inputmode="numeric" placeholder="hh:mm" maxlength="5" style="font-size:20px;flex:1"><button type="button" class="hbtn2" onclick="reloj('c-hora')">🕐</button></div></div>
+      
       <div class="cbox"><label id="i-ctas"></label><input id="c-tas" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></div>
       <div class="cbox"><label id="i-ctad"></label><input id="c-tad" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></div>
       <div class="cbox"><label id="i-cfc"></label><input id="c-fc" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">lpm</div></div>
@@ -361,6 +422,9 @@ body.sin-paciente #nav-res { opacity: .35; }
   <!-- ═══ NOTAS / OBSERVACIONES ═══ -->
   <section id="p-notas" class="panel">
     <h2 id="i-tnotas"></h2>
+    <!-- P-H, 15/08 : « positionné de la même manière que dans les constantes »
+         — donc EN TÊTE, comme l'heure de la mesure qu'il y avait placée le
+         31/07 : on dit d'abord QUAND, on observe ensuite. -->
     <div class="chips" id="chips"></div>
     <!-- v23.1 ⑧ (P-H) : el cuerpo entero — hidratación y eliminación -->
     <div style="border:1px solid var(--border);border-radius:12px;padding:6px 8px;margin:10px 0">
@@ -373,7 +437,6 @@ body.sin-paciente #nav-res { opacity: .35; }
       <div class="reg-fila" onclick="pedirRegistro('miccion')"><span class="reg-ico">💦</span><b id="i-lmic"></b><span class="reg-res" id="mic-res"></span><span class="reg-abre">›</span></div>
     </div>
     <textarea id="nota-libre" autocomplete="off" placeholder="Nota libre (opcional)…"></textarea>
-    <div style="margin-top:10px"><button type="button" class="btn sec" style="width:100%" onclick="pedirCorrigeHora()">🕐 <span id="i-bcorr"></span></button></div>
     <div id="obs-estado" style="font-size:12.5px;color:var(--muted);min-height:18px;margin-top:6px;text-align:center"></div>
   </section>
 
@@ -395,12 +458,9 @@ body.sin-paciente #nav-res { opacity: .35; }
         <input class="txt" id="nm-nombre" placeholder="Nombre (ej. Paracetamol)">
         <input class="txt" id="nm-dosis" placeholder="Dosis (ej. 20 mg)">
         <div class="nota-campo" id="i-lfin"></div>
-        <input class="txt" id="nm-hasta" type="date">
-        <select class="txt" id="nm-momento" onchange="pintaFrec('nm')">
-          <option value="desayuno">Desayuno</option><option value="comida">Comida</option>
-          <option value="cena">Cena</option><option value="noche">Noche</option>
-          <option value="demanda">A demanda</option>
-        </select>
+        <input class="txt" id="nm-hasta" type="text" readonly onclick="pedirFecha(this)" placeholder="—" style="cursor:pointer">
+        <div class="mchips" id="nm-moms"></div>
+        <input type="hidden" id="nm-momento" value="desayuno">
         <div id="nm-frec-caja">
           <div class="nota-campo" id="i-lfrec"></div>
           <select class="txt" id="nm-frec" onchange="pintaFrec('nm')"></select>
@@ -413,7 +473,7 @@ body.sin-paciente #nav-res { opacity: .35; }
     <details class="acc" id="acc-avisos"><summary><span id="i-avisos"></span></summary><div class="accb">
       <button class="hbtn" id="btn-avisos" onclick="toggleAvisos()" style="width:100%;padding:12px 16px;font-size:17px;font-weight:700;height:auto"></button>
       <div class="nota-campo" style="text-align:center;margin-top:4px" id="i-avisos-nota"></div>
-      <div id="avisos-horas" class="cgrid" style="grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:8px"></div>
+      <div id="avisos-horas" class="cgrid" style="grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"></div>
     </div></details>
     <details class="acc" id="acc-hist"><summary><span id="i-thist"></span></summary><div class="accb">
       <div id="historial"></div>
@@ -456,6 +516,14 @@ body.sin-paciente #nav-res { opacity: .35; }
   </section>
 </main>
 
+<div id="pie">
+  <div id="barra-hora"><label id="i-lhora"></label><input id="b-hora" autocomplete="off" type="text" inputmode="numeric" placeholder="hh:mm" maxlength="5"></div>
+  <div id="barra-quando">
+    <button onclick="diaMas(-1)">◀</button>
+    <span id="dia-etiqueta" onclick="abrirSelectorDia()"></span>
+    <button onclick="diaMas(1)" id="dia-siguiente">▶</button>
+    <button onclick="volverHoy()" id="dia-hoy" style="display:none;flex:0 0 auto;padding:0 10px;font-size:13px;font-weight:700"></button>
+  </div>
 <nav>
   <button id="nav-hoy" class="act" onclick="ir('hoy')"><span class="ico">💊</span><span id="i-nhoy"></span></button>
   <button id="nav-const" onclick="ir('const')"><span class="ico">🩺</span><span id="i-nconst"></span></button>
@@ -467,6 +535,7 @@ body.sin-paciente #nav-res { opacity: .35; }
        pas un écran de plus mais une SORTIE — d'où le trait qui le sépare. -->
   <button id="nav-res" onclick="pedirResumen()" style="border-left:1px solid var(--border)"><span class="ico">📄</span><span id="i-nres"></span></button>
 </nav>
+</div>
 <button id="subir" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;right:14px;bottom:96px;z-index:70;width:52px;height:52px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:22px;box-shadow:0 6px 18px rgba(0,0,0,.4);cursor:pointer">⬆</button>
 <div class="toast" id="toast"></div>
 
@@ -494,7 +563,7 @@ window.onerror = function (msg, src, line, col) {
 /* Adresse du PC injectée par le serveur au téléchargement (« Instalar en
    este teléfono ») — l'app locale naît déjà configurée. */
 const MFP_PC_DEF = '';
-const MFP_VERSION = '2026.8.1.24-SAT';
+const MFP_VERSION = '2026.8.17.47-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -576,6 +645,7 @@ const IDIOMAS = {
     come_pedido:"Ha pedido comer",
     come_bien:"Ha comido bien",
     mat_oxigeno:"Oxígeno",
+    mj_desayuno:"Desayuno", mj_almuerzo:"Almuerzo", mj_comida:"Comida", mj_merienda:"Merienda", mj_cena:"Cena", mj_noche:"Noche", mj_demanda:"A demanda", mom_falta:"Elija al menos un momento.", sin_mem:"Sin memoria en este modo : nada se guardará.", sin_tomas:"Ninguna toma anotada hoy.",
     rev_borrar:"Borrar",
     rev_borrar_tit:"Borrar esta observación", rev_borrar_ok:"Sí, borrar", rev_borrada:"Observación borrada", rev_borrar_nota:"Se borra por completo y no se puede deshacer. Hágalo solo si se anotó por error.",
     beb_leche:"Leche", beb_infusion:"Infusión", beb_caldo:"Caldo",
@@ -665,7 +735,7 @@ const IDIOMAS = {
     mic_frec:"Frecuentes", mic_frec_1:"Frecuente",
     b_panal:"pañales", b_panal_1:"pañal",
     ph_vasos:"vasos", ph_vasos_1:"vaso",
-    ph_vasos:"vasos", tri_hoy:"hoy:", tri_ult:"últ.", ev_otra:"¿otra hora?",
+    ph_vasos:"vasos", dia_hoy:"hoy", tri_hoy:"hoy:", tri_ult:"últ.", ev_otra:"¿otra hora?",
     l_mic:"Micción",
     trio_hint:"Cada ＋ registra al instante, con la hora de ahora (corríjala luego en Datos si hace falta).",
     t_fb:"💬 Comentario / sugerencia",
@@ -688,6 +758,10 @@ const IDIOMAS = {
     ay_ok:"Entendido", hoy:'Hoy', consts:'Constantes', notas:'Notas', datos:'Datos',
     t_hoy:'Medicación de hoy — toque cuando se tome · toque la hora para corregirla',
     t_const:'Constantes — deje vacío lo no medido', t_notas:'¿Qué se observa hoy? — toque lo que aplique',
+    th_hoy:'Medicación de hoy', th_dia:'Medicación del', th_fin:' — toque cuando se tome · toque la hora para corregirla',
+    tc_hoy:'Constantes', tc_dia:'Constantes del', tc_fin:' — deje vacío lo no medido',
+    nav_med:'Medicación', dh_obs:'Hora de la observación (corregible)',
+    tn_hoy:'¿Qué se observa hoy', tn_dia:'¿Qué se observó el', tn_fin:'? — toque lo que aplique',
     t_hist:'Días por transmitir', hist_nada:'✓ Todo revisado y transmitido a Salufolio', hist_pie:'Toque un día para revisarlo y enviarlo.', hist_ap:'apuntes', hist_ap_1:'apunte', scan_tit:'Escanear el código QR del ordenador', scan_ayuda:'Apunte la cámara al código QR que muestra el ordenador (qr.sh o el panal de Salufolio).', scan_ok:'✓ Dirección guardada', scan_err:'⚠ Cámara no disponible — escriba la dirección a mano', t_comp:'Guardar y compartir', t_meds:'Medicamentos configurados', t_pac:'Paciente',
     b_gconst:'💾 Guardar constantes', b_gobs:'💾 Guardar observación', b_punt:'➕ Registrar toma puntual…',
     b_desc:'⬇️ Guardar copia de los datos', b_copi:'📋 Copiar datos', b_comp:'📤 Compartir…', b_addmed:'➕ Añadir medicamento',
@@ -781,6 +855,7 @@ const IDIOMAS = {
     come_pedido:"Ha demanat menjar",
     come_bien:"Ha menjat bé",
     mat_oxigeno:"Oxigen",
+    mj_desayuno:"Esmorzar", mj_almuerzo:"Esmorzaret", mj_comida:"Dinar", mj_merienda:"Berenar", mj_cena:"Sopar", mj_noche:"Nit", mom_falta:"Trie almenys un moment.", sin_mem:"Sense memòria en aquest mode : res no es guardarà.", sin_tomas:"Cap presa anotada hui.", mj_demanda:"A demanda",
     rev_borrar:"Esborrar",
     rev_borrar_tit:"Esborrar esta observació", rev_borrar_ok:"Sí, esborrar", rev_borrada:"Observació esborrada", rev_borrar_nota:"S'esborra del tot i no es pot desfer. Feu-ho només si es va anotar per error.",
     beb_leche:"Llet", beb_infusion:"Infusió", beb_caldo:"Brou",
@@ -870,7 +945,7 @@ const IDIOMAS = {
     mic_frec:"Freqüents", mic_frec_1:"Freqüent",
     b_panal:"bolquers", b_panal_1:"bolquer",
     ph_vasos:"gots", ph_vasos_1:"got",
-    tri_hoy:"hui:", tri_ult:"últ.", ev_otra:"una altra hora?",
+    dia_hoy:"hui", tri_hoy:"hui:", tri_ult:"últ.", ev_otra:"una altra hora?",
     l_mic:"Micció",
     trio_hint:"Cada ＋ registra a l’instant, amb l’hora d’ara (corregiu-la després a Dades si cal).",
     t_fb:"💬 Comentari / suggeriment",
@@ -893,6 +968,10 @@ const IDIOMAS = {
     ay_ok:"Entesos", hoy:'Hui', consts:'Constants', notas:'Notes', datos:'Dades',
     t_hoy:'Medicació de hui — toque quan es prenga · toque l\'hora per a corregir-la',
     t_const:'Constants — deixe buit el que no s\'haja mesurat', t_notas:'Què s\'observa hui? — toque el que aplique',
+    th_hoy:'Medicació de hui', th_dia:'Medicació del', th_fin:' — toque quan es prenga · toque l\'hora per a corregir-la',
+    tc_hoy:'Constants', tc_dia:'Constants del', tc_fin:' — deixe buit el que no s\'haja mesurat',
+    nav_med:'Medicació', dh_obs:'Hora de l\'observació (corregible)',
+    tn_hoy:'Què s\'observa hui', tn_dia:'Què es va observar el', tn_fin:'? — toque el que aplique',
     t_hist:'Dies per transmetre', hist_nada:'✓ Tot revisat i transmés a Salufolio', hist_pie:'Toque un dia per a revisar-lo i enviar-lo.', hist_ap:'apunts', hist_ap_1:'apunt', scan_tit:'Escanejar el codi QR de l\'ordinador', scan_ayuda:'Apunte la càmera al codi QR que mostra l\'ordinador (qr.sh o el panal de Salufolio).', scan_ok:'✓ Adreça guardada', scan_err:'⚠ Càmera no disponible — escriga l\'adreça a mà', t_comp:'Guardar i compartir', t_meds:'Medicaments configurats', t_pac:'Pacient',
     b_gconst:'💾 Guardar constants', b_gobs:'💾 Guardar observació', b_punt:'➕ Registrar presa puntual…',
     b_desc:'⬇️ Guardar còpia de les dades', b_copi:'📋 Copiar dades', b_comp:'📤 Compartir…', b_addmed:'➕ Afegir medicament',
@@ -986,6 +1065,7 @@ const IDIOMAS = {
     come_pedido:"A demandé à manger",
     come_bien:"A bien mangé",
     mat_oxigeno:"Oxygène",
+    mj_desayuno:"Petit-déjeuner", mj_almuerzo:"Collation", mj_comida:"Déjeuner", mj_merienda:"Goûter", mj_cena:"Dîner", mj_noche:"Nuit", mom_falta:"Choisissez au moins un moment.", sin_mem:"Sans mémoire dans ce mode : rien ne sera conservé.", sin_tomas:"Aucune prise notée ce jour.", mj_demanda:"À la demande",
     rev_borrar:"Supprimer",
     rev_borrar_tit:"Effacer cette observation", rev_borrar_ok:"Oui, effacer", rev_borrada:"Observation effacée", rev_borrar_nota:"Elle est effacée entièrement et ne peut pas être rétablie. À ne faire que si elle a été notée par erreur.",
     beb_leche:"Lait", beb_infusion:"Infusion", beb_caldo:"Bouillon",
@@ -1075,7 +1155,7 @@ const IDIOMAS = {
     mic_frec:"Fréquentes", mic_frec_1:"Fréquente",
     b_panal:"couches", b_panal_1:"couche",
     ph_vasos:"verres", ph_vasos_1:"verre",
-    tri_hoy:"aujourd’hui :", tri_ult:"dern.", ev_otra:"une autre heure ?",
+    dia_hoy:"aujourd’hui", tri_hoy:"aujourd’hui :", tri_ult:"dern.", ev_otra:"une autre heure ?",
     l_mic:"Urine",
     trio_hint:"Chaque ＋ enregistre à l’instant, à l’heure actuelle (corrigez-la ensuite dans Données si besoin).",
     t_fb:"💬 Commentaire / suggestion",
@@ -1098,6 +1178,10 @@ const IDIOMAS = {
     ay_ok:"Compris", hoy:'Aujourd\'hui', consts:'Constantes', notas:'Notes', datos:'Données',
     t_hoy:'Médication du jour — touchez à la prise · touchez l\'heure pour la corriger',
     t_const:'Constantes — laissez vide ce qui n\'est pas mesuré', t_notas:'Qu\'observe-t-on aujourd\'hui ? — touchez ce qui s\'applique',
+    th_hoy:'Médication du jour', th_dia:'Médication du', th_fin:' — touchez à la prise · touchez l\'heure pour la corriger',
+    tc_hoy:'Constantes', tc_dia:'Constantes du', tc_fin:' — laissez vide ce qui n\'est pas mesuré',
+    nav_med:'Médication', dh_obs:'Heure de l\'observation (corrigible)',
+    tn_hoy:'Qu\'observe-t-on aujourd\'hui', tn_dia:'Qu\'a-t-on observé le', tn_fin:' ? — touchez ce qui s\'applique',
     t_hist:'Jours à transmettre', hist_nada:'✓ Tout est relu et transmis à Salufolio', hist_pie:'Touchez un jour pour le relire et l\'envoyer.', hist_ap:'notes', hist_ap_1:'note', scan_tit:'Scanner le code QR de l\'ordinateur', scan_ayuda:'Visez le code QR affiché par l\'ordinateur (qr.sh ou le panal de Salufolio).', scan_ok:'✓ Adresse enregistrée', scan_err:'⚠ Caméra indisponible — saisissez l\'adresse à la main', t_comp:'Sauvegarder et partager', t_meds:'Médicaments configurés', t_pac:'Patient',
     b_gconst:'💾 Enregistrer les constantes', b_gobs:'💾 Enregistrer l\'observation', b_punt:'➕ Prise ponctuelle…',
     b_desc:'⬇️ Enregistrer une copie des données', b_copi:'📋 Copier', b_comp:'📤 Partager…', b_addmed:'➕ Ajouter un médicament',
@@ -1191,6 +1275,8 @@ const IDIOMAS = {
     come_pedido:"Asked for food",
     come_bien:"Ate well",
     mat_oxigeno:"Oxygen",
+    dia_hoy:"today",
+    mj_desayuno:"Breakfast", mj_almuerzo:"Mid-morning", mj_comida:"Lunch", mj_merienda:"Afternoon snack", mj_cena:"Dinner", mj_noche:"Night", mom_falta:"Choose at least one moment.", sin_mem:"No memory in this mode: nothing will be saved.", sin_tomas:"No dose logged today.", mj_demanda:"As needed",
     rev_borrar:"Delete",
     rev_borrar_tit:"Delete this observation", rev_borrar_ok:"Yes, delete", rev_borrada:"Observation deleted", rev_borrar_nota:"It is deleted entirely and cannot be undone. Do this only if it was recorded by mistake.",
     beb_leche:"Milk", beb_infusion:"Herbal tea", beb_caldo:"Broth",
@@ -1303,6 +1389,10 @@ const IDIOMAS = {
     ay_ok:"Got it", hoy:'Today', consts:'Vitals', notas:'Notes', datos:'Data',
     t_hoy:'Today\'s medication — tap when taken · tap the time to correct it',
     t_const:'Vitals — leave blank what was not measured', t_notas:'What is observed today? — tap what applies',
+    th_hoy:'Today\'s medication', th_dia:'Medication of', th_fin:' — tap when taken · tap the time to correct it',
+    tc_hoy:'Vitals', tc_dia:'Vitals of', tc_fin:' — leave blank what was not measured',
+    nav_med:'Medication', dh_obs:'Time of the observation (editable)',
+    tn_hoy:'What is observed today', tn_dia:'What was observed on', tn_fin:'? — tap what applies',
     t_hist:'Days to transmit', hist_nada:'✓ All reviewed and sent to Salufolio', hist_pie:'Tap a day to review and send it.', hist_ap:'entries', hist_ap_1:'entry', scan_tit:'Scan the computer\'s QR code', scan_ayuda:'Point the camera at the QR code shown by the computer (qr.sh or the Salufolio panal).', scan_ok:'✓ Address saved', scan_err:'⚠ Camera unavailable — type the address by hand', t_comp:'Save and share', t_meds:'Configured medications', t_pac:'Patient',
     b_gconst:'💾 Save vitals', b_gobs:'💾 Save observation', b_punt:'➕ One-off dose…',
     b_desc:'⬇️ Save a copy of the data', b_copi:'📋 Copy', b_comp:'📤 Share…', b_addmed:'➕ Add medication',
@@ -1341,11 +1431,12 @@ const BANDERAS = { es:'🇪🇸', va:SENYERA, fr:'🇫🇷', en:'🇬🇧' };   
 
 /* ── taille des caractères ── */
 function zoomMas(sens) {
-  let z = lsGet('mfp_zoom', 1.25) + sens * 0.08;
+  let z = lsGet('mfp_zoom', 1.33) + sens * 0.08;
   z = Math.min(1.4, Math.max(0.8, Math.round(z * 100) / 100));
   lsSet('mfp_zoom', z); aplicarZoom();
 }
-function aplicarZoom() { document.body.style.zoom = lsGet('mfp_zoom', 1.25); }
+function aplicarZoom() { document.body.style.zoom = lsGet('mfp_zoom', 1.33);
+  if (typeof ajustarPie === 'function') setTimeout(ajustarPie, 60); }
 
 /* ── dialogues maison, suaves ── */
 function dlg(titulo, campos, onOk) {
@@ -1371,7 +1462,50 @@ function dlgConfirm(titulo, onOk) {
   ov.onclick = e => { if (e.target === ov) ov.remove(); };
   document.body.appendChild(ov);
 }
-const MOMENTOS = { desayuno:'🌅 Desayuno', comida:'☀️ Comida', cena:'🌇 Cena', noche:'🌙 Noche', demanda:'✚ A demanda' };
+/* L'icône ne change pas de langue, le mot si. MOMENTOS garde les clés
+   (l'ordre de la journée) ; momNombre() dit le nom dans la langue du foyer. */
+const MOM_ICONO = { desayuno:'🌅', almuerzo:'🥐', comida:'☀️', merienda:'🍵',
+                    cena:'🌇', noche:'🌙', demanda:'✚' };
+const MOMENTOS  = MOM_ICONO;
+function momNombre(id) { return (MOM_ICONO[id] || '') + ' ' + t('mj_' + id); }
+/* ═══ LES MOMENTS D'UNE FICHE (P-H, 17/08) ═══
+   « je ne vais pas m'encombrer avec 2, 3 ou 4 fois le même médicament » :
+   une fiche peut déclarer PLUSIEURS moments. Un seul endroit le dit, et il
+   tolère les deux formes — les anciennes fiches n'ont qu'un `momento`, on
+   ne les convertit pas à l'aveugle, on les lit telles qu'elles sont.
+   `momento` reste tenu à jour (le premier de la liste) pour que tout ce qui
+   ne connaît pas encore les listes continue de fonctionner. */
+function momsDe(m) {
+  if (!m) return [];
+  if (Array.isArray(m.momentos) && m.momentos.length) return m.momentos;
+  return m.momento ? [m.momento] : [];
+}
+var _momsForm = { nm: ['desayuno'], em: [] };
+/* « À la demande » n'est pas un moment : c'est son contraire. Il est donc
+   EXCLUSIF — le choisir efface les autres, en choisir un autre l'efface. */
+function momBascula(pref, id) {
+  var l = _momsForm[pref] || [];
+  var i = l.indexOf(id);
+  if (i >= 0) l.splice(i, 1);
+  else if (id === 'demanda') l = ['demanda'];
+  else { l = l.filter(function (x) { return x !== 'demanda'; }); l.push(id); }
+  var ordre = Object.keys(MOM_ICONO);
+  l.sort(function (a, b) { return ordre.indexOf(a) - ordre.indexOf(b); });
+  _momsForm[pref] = l;
+  pintaMomChips(pref);
+  var cache = document.getElementById(pref + '-momento');
+  if (cache) cache.value = l[0] || '';       /* ce que lisent les anciens */
+  pintaFrec(pref);
+}
+function pintaMomChips(pref) {
+  var c = document.getElementById(pref + '-moms'); if (!c) return;
+  var l = _momsForm[pref] || [];
+  c.innerHTML = Object.keys(MOM_ICONO).map(function (id) {
+    var on = l.indexOf(id) >= 0;
+    return '<button type="button" class="mchip' + (on ? ' on' : '') + '" onclick="momBascula(\'' + pref + '\',\'' + id + '\')">' +
+           momNombre(id) + '</button>';
+  }).join('');
+}
 const CHIP_TIPOS = [
   'Somnolencia','Se duerme en conversación','Alimentación','Ocupación',
   'Dolor cabeza','Dolor espalda','Dolor muslo','Dolor pierna','Dolor rodilla','Dolor tobillo','Dolor manos','Hinchazón piernas',
@@ -1425,8 +1559,41 @@ function chipLabel(c) { const L = getLang(); return (CHIP_IDIOMAS[L] && CHIP_IDI
 const CLAVES_PACIENTE = ['mfp_patient','mfp_sip','mfp_meds','mfp_tomas','mfp_puntuales',
   'mfp_obs','mfp_constantes','mfp_material','mfp_material_cfg','mfp_asist',
   'mfp_avisos','mfp_horas','mfp_inicio'];
-function getPacientes() { try { return JSON.parse(localStorage.getItem('mfp_pacientes')) || []; } catch { return []; } }
-function setPacientes(l) { localStorage.setItem('mfp_pacientes', JSON.stringify(l)); }
+/* ═══ LE GUICHET DU STOCKAGE (17/08) ═══
+   Défaut trouvé par P-H en ouvrant l'app depuis un fichier dans le banc :
+   « SecurityError : Access is denied for this document ». Selon l'origine —
+   un blob, une navigation privée, des cookies bloqués — le navigateur REFUSE
+   l'accès au localStorage, et il ne rend pas null : IL LÈVE. Le programme
+   mourait donc à la première ligne qui y touchait.
+
+   Un carnet local-first n'a pas le droit de mourir parce que l'armoire est
+   fermée. On passe donc TOUS les accès par un guichet unique : s'il n'y a pas
+   d'armoire, il en ouvre une DANS LA MÉMOIRE VIVE — l'app fonctionne, on peut
+   tout regarder, et rien ne survit à la fermeture de l'onglet. Ce qui ne peut
+   pas être conservé n'est pas promis. */
+var _ARMOIRE = null, _SANS_ARMOIRE = false;
+function _arm() {
+  if (_ARMOIRE) return _ARMOIRE;
+  try {
+    window.localStorage.setItem('mfp_essai', '1');
+    window.localStorage.removeItem('mfp_essai');
+    _ARMOIRE = window.localStorage;
+  } catch (e) {
+    _SANS_ARMOIRE = true;
+    var d = {};
+    _ARMOIRE = {
+      getItem: function (k) { return k in d ? d[k] : null; },
+      setItem: function (k, v) { d[k] = String(v); },
+      removeItem: function (k) { delete d[k]; },
+      get length() { return Object.keys(d).length; },
+      key: function (i) { return Object.keys(d)[i]; }
+    };
+  }
+  return _ARMOIRE;
+}
+function sinArmoire() { _arm(); return _SANS_ARMOIRE; }
+function getPacientes() { try { return JSON.parse(_arm().getItem('mfp_pacientes')) || []; } catch (e) { return []; } }
+function setPacientes(l) { _arm().setItem('mfp_pacientes', JSON.stringify(l)); }
 /* Le patient actif appartient à L'ONGLET, pas au navigateur. Sans cela,
    deux onglets ouverts se marchent dessus : celui qui croit soigner Mamá
    écrit chez Papá dès que l'autre a changé de patient — vérifié, et c'est
@@ -1438,32 +1605,32 @@ function getActivo() {
   if (_activoSesion) return _activoSesion;
   let v = null;
   try { v = JSON.parse(sessionStorage.getItem('mfp_activo')); } catch (e) {}
-  if (!v) { try { v = JSON.parse(localStorage.getItem('mfp_activo')); } catch (e) {} }
+  if (!v) { try { v = JSON.parse(_arm().getItem('mfp_activo')); } catch (e) {} }
   _activoSesion = v || null;
   return _activoSesion;
 }
 function setActivo(id) {
   _activoSesion = id;
   try { sessionStorage.setItem('mfp_activo', JSON.stringify(id)); } catch (e) {}
-  localStorage.setItem('mfp_activo', JSON.stringify(id));
+  _arm().setItem('mfp_activo', JSON.stringify(id));
 }
 function olvidarActivo() {
   _activoSesion = null;
   try { sessionStorage.removeItem('mfp_activo'); } catch (e) {}
-  localStorage.removeItem('mfp_activo');
+  _arm().removeItem('mfp_activo');
 }
 function _k(k) {
   const a = getActivo();
   return (a && CLAVES_PACIENTE.indexOf(k) >= 0) ? ('mfp_' + a + '_' + k.slice(4)) : k;
 }
-function lsGet(k, def) { try { const v = JSON.parse(localStorage.getItem(_k(k))); return v === null || v === undefined ? def : v; } catch { return def; } }
+function lsGet(k, def) { try { const v = JSON.parse(_arm().getItem(_k(k))); return v === null || v === undefined ? def : v; } catch { return def; } }
 /* ⑤ Garde-fou : sans patient actif, une donnée de patient partirait dans le
    casier SANS NOM, où elle dormirait à jamais — invisible, jamais exportée,
    jamais envoyée. Le pire des trois destins possibles. L'écran l'empêche
    déjà ; ceci l'empêche pour de bon. */
 function lsSet(k, v) {
   if (CLAVES_PACIENTE.indexOf(k) >= 0 && !getActivo()) return;
-  localStorage.setItem(_k(k), JSON.stringify(v));
+  _arm().setItem(_k(k), JSON.stringify(v));
 }
 
 /* Un identifiant lisible, tiré du nom, et unique dans la maison. */
@@ -1479,15 +1646,15 @@ function _idPaciente(nom) {
    et ses affaires passent dans son casier. Rien n'est perdu, rien à
    ressaisir. Ne s'exécute qu'une fois. */
 function migrarPacientes() {
-  if (localStorage.getItem('mfp_pacientes')) return;
+  if (_arm().getItem('mfp_pacientes')) return;
   let nom = null, sip = '';
-  try { nom = JSON.parse(localStorage.getItem('mfp_patient')); } catch {}
-  try { sip = JSON.parse(localStorage.getItem('mfp_sip')) || ''; } catch {}
+  try { nom = JSON.parse(_arm().getItem('mfp_patient')); } catch {}
+  try { sip = JSON.parse(_arm().getItem('mfp_sip')) || ''; } catch {}
   if (!nom) { setPacientes([]); return; }
   const id = _idPaciente(nom);
   CLAVES_PACIENTE.forEach(k => {
-    const v = localStorage.getItem(k);
-    if (v !== null) { localStorage.setItem('mfp_' + id + '_' + k.slice(4), v); localStorage.removeItem(k); }
+    const v = _arm().getItem(k);
+    if (v !== null) { _arm().setItem('mfp_' + id + '_' + k.slice(4), v); _arm().removeItem(k); }
   });
   setPacientes([{ id: id, nombre: nom, sip: sip }]); setActivo(id);
 }
@@ -1544,7 +1711,7 @@ function fbGuardarConCarita(btn) {
 }
 function mfpFbDescargar() {
   let lista = [];
-  try { lista = JSON.parse(localStorage.getItem('mfp_feedback') || '[]'); } catch (e) {}
+  try { lista = JSON.parse(_arm().getItem('mfp_feedback') || '[]'); } catch (e) {}
   const blob = new Blob([JSON.stringify(lista, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -1556,9 +1723,9 @@ function mfpFbGuardar(btn) {
   const texto = (ta && ta.value || '').trim();
   if (!texto) return;
   let lista = [];
-  try { lista = JSON.parse(localStorage.getItem('mfp_feedback') || '[]'); } catch (e) {}
+  try { lista = JSON.parse(_arm().getItem('mfp_feedback') || '[]'); } catch (e) {}
   lista.push({ fecha: new Date().toISOString(), version: MFP_VERSION, texto: texto });
-  localStorage.setItem('mfp_feedback', JSON.stringify(lista));
+  _arm().setItem('mfp_feedback', JSON.stringify(lista));
   btn.textContent = '💾 OK (' + lista.length + ')';
   ta.value = '';
 }
@@ -1588,8 +1755,11 @@ function repintarDia() {
   if (typeof renderChips === 'function') { _chipsSel = new Set(); _oDraft = null; renderChips(); }
   if (typeof trioTotales === 'function') trioTotales();
   if (typeof pintaConstHoy === 'function') pintaConstHoy();
+  if (typeof recargarConst === 'function') recargarConst();
+  if (typeof pintaTitulosDia === 'function') pintaTitulosDia();
   const nl = document.getElementById('nota-libre'); if (nl) nl.value = '';
-  const oh = document.getElementById('o-hora'); if (oh) oh.value = '';
+  const oh = document.getElementById('b-hora'); if (oh) oh.value = '';
+  if (typeof recargarObs === 'function') recargarObs();
   document.querySelectorAll('.dia-aviso').forEach(function (e) {
     e.textContent = esHoy() ? '' : t('dia_otro');
     e.style.display = esHoy() ? 'none' : '';
@@ -1622,20 +1792,175 @@ function pedirHoraDia(titulo, sugerida, cb) {
 }
 /* P-H 19/07 : le cadre porte un vrai sélecteur de date, par défaut AUJOURD'HUI —
    toc sur l'étiquette → calendrier natif → saut direct (mêmes gardes que les flèches). */
-function abrirSelectorDia() {
-  const inp = document.getElementById('dia-fecha');
-  if (!inp) return;
-  /* ③ Sans patient il n'y a pas de journée à choisir — et un calendrier qui
-     montre des mois grisés est une porte fermée de plus. */
-  if (casaVacia()) return;
-  inp.value = diaKey();
-  const hoy = hoyKey();
-  const limite = new Date(); limite.setDate(limite.getDate() - 60);
-  inp.max = hoy;
-  inp.min = limite.getFullYear() + '-' + String(limite.getMonth()+1).padStart(2,'0') + '-' + String(limite.getDate()).padStart(2,'0');
-  if (inp.showPicker) { try { inp.showPicker(); return; } catch (e) {} }
-  inp.style.pointerEvents = 'auto'; inp.focus(); inp.click();
+/* Deux états, pas un : rien (aucun point) · complet (point bleu) ·
+   ENTAMÉ MAIS INCOMPLET (point ambre) — il y a des données ce jour-là, mais
+   des prises qui étaient dues n'ont pas été notées. C'est l'information dont
+   on a besoin quand on rattrape : où reprendre. */
+/* Bornes de PLAUSIBILITÉ (pas des normes cliniques) : elles attrapent la
+   faute de frappe — un 7 devenu 700, une virgule oubliée. Le champ se
+   signale en ambre et RIEN N'EST REFUSÉ : c'est l'aidant qui sait. */
+const BORNES_SAISIE = {
+  'c-tas': [50, 260], 'c-tad': [25, 170], 'c-fc': [25, 230],
+  'c-spo2': [50, 100], 'c-temp': [30, 43.5], 'c-peso': [15, 250]
+};
+function avisarDudoso(el) {
+  if (!el || !el.id) return;
+  const b = BORNES_SAISIE[el.id]; if (!b) return;
+  const v = parseFloat(String(el.value).replace(',', '.'));
+  const mal = el.value !== '' && (isNaN(v) || v < b[0] || v > b[1]);
+  el.classList.toggle('dudoso', mal);
+  el.title = mal ? (b[0] + ' – ' + b[1]) : '';
 }
+function diaTieneDatos(k) {
+  const tm = getTomas()[k];
+  if (tm && Object.keys(tm).length) return true;
+  if (getConstantes().some(function (c) { return c && c.fecha === k; })) return true;
+  if (getObs().some(function (o) { return o && o.fecha === k; })) return true;
+  return false;
+}
+/* La marque de droite : ce que l'aidant a ÉCRIT ce jour-là — une constante,
+   une observation. Rien n'en est jamais « dû », donc pas d'ambre ici. */
+function diaAnotado(k) {
+  if (getConstantes().some(function (c) { return c && c.fecha === k; })) return true;
+  return getObs().some(function (o) { return o && o.fecha === k; });
+}
+/* P-H, 17/08 : « on a une dette ! je mets la systolique et j'oublie la
+   diastolique ». Il a raison — une mesure commencée n'est pas une mesure.
+   La tension est un COUPLE : l'une sans l'autre ne veut rien dire. */
+function notaIncompleta(k) {
+  return getConstantes().some(function (c) {
+    if (!c || c.fecha !== k) return false;
+    const a = (c.ta_sis !== undefined && c.ta_sis !== null && c.ta_sis !== '');
+    const b = (c.ta_dia !== undefined && c.ta_dia !== null && c.ta_dia !== '');
+    return a !== b;                       /* l'une sans l'autre */
+  });
+}
+function diaIncompleto(k) {
+  const tm = getTomas()[k] || {};
+  const debidos = getMeds().filter(function (m) {
+    return m && m.momento !== 'demanda' && medActivo(m, k) && tocaHoy(m, k);
+  });
+  return debidos.some(function (m) { return !tm[m.id]; });
+}
+/* Les initiales des jours viennent de la langue, pas d'une table à tenir :
+   lundi d'abord, comme ici. */
+function inicialesSemana() {
+  const loc = LOCALES[getLang()] || 'es-ES', out = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(2024, 0, 1 + i);            /* le 1er janvier 2024 est un lundi */
+    out.push(d.toLocaleDateString(loc, { weekday: 'narrow' }).toUpperCase());
+  }
+  return out;
+}
+/* ═══ LE MÊME CALENDRIER POUR CHOISIR UNE DATE DANS UN CHAMP ═══
+   P-H, 17/08 : « fin de traitement, utilise le même calendrier, l'autre std
+   est trop sophistiqué ». Bornes différentes : une fin de traitement est
+   DEVANT nous, pas derrière — d'où l'avenir ouvert et un bouton pour
+   effacer (sans date de fin, le traitement ne s'arrête jamais). */
+function pedirFecha(el) {
+  if (!el) return;
+  const min = new Date(); min.setFullYear(min.getFullYear() - 1);
+  const max = new Date(); max.setFullYear(max.getFullYear() + 3);
+  const iso = function (d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+  const minK = iso(min), maxK = iso(max);
+  let cur = new Date((el.value || hoyKey()) + 'T12:00:00');
+  if (isNaN(cur)) cur = new Date();
+  cur.setDate(1);
+  const ov = document.createElement('div'); ov.className = 'dlg-ov';
+  ov.innerHTML = '<div class="dlg"><div class="cal-mes"><button class="cprev">◀</button><b class="cmes"></b><button class="cnext">▶</button></div>' +
+    '<table class="cal"><thead><tr>' + inicialesSemana().map(function (d) { return '<th>' + d + '</th>'; }).join('') +
+    '</tr></thead><tbody class="ccuerpo"></tbody></table>' +
+    '<div class="dbtns"><button class="dcan">' + t('d_can') + '</button><button class="dbor">✕</button></div></div>';
+  function pinta() {
+    const loc = LOCALES[getLang()] || 'es-ES';
+    ov.querySelector('.cmes').textContent = cur.toLocaleDateString(loc, { month: 'long', year: 'numeric' });
+    const y = cur.getFullYear(), m = cur.getMonth();
+    let decal = (new Date(y, m, 1).getDay() + 6) % 7;
+    const nb = new Date(y, m + 1, 0).getDate();
+    let html = '<tr>', col = 0;
+    for (let i = 0; i < decal; i++) { html += '<td></td>'; col++; }
+    for (let j = 1; j <= nb; j++) {
+      const k = y + '-' + String(m+1).padStart(2,'0') + '-' + String(j).padStart(2,'0');
+      if (k > maxK || k < minK) html += '<td><span>' + j + '</span></td>';
+      else {
+        const cl = (k === hoyKey() ? ' hoy' : '') + (k === el.value ? ' sel' : '');
+        html += '<td><button class="cdia' + cl + '" data-k="' + k + '">' + j + '</button></td>';
+      }
+      col++; if (col === 7) { html += '</tr><tr>'; col = 0; }
+    }
+    while (col > 0 && col < 7) { html += '<td></td>'; col++; }
+    ov.querySelector('.ccuerpo').innerHTML = html + '</tr>';
+    ov.querySelectorAll('.cdia').forEach(function (b) {
+      b.onclick = function () { el.value = b.getAttribute('data-k'); ov.remove(); el.dispatchEvent(new Event('input', { bubbles: true })); };
+    });
+  }
+  ov.querySelector('.cprev').onclick = function () { cur.setMonth(cur.getMonth() - 1); pinta(); };
+  ov.querySelector('.cnext').onclick = function () { cur.setMonth(cur.getMonth() + 1); pinta(); };
+  ov.querySelector('.dcan').onclick = function () { ov.remove(); };
+  ov.querySelector('.dbor').onclick = function () { el.value = ''; ov.remove(); el.dispatchEvent(new Event('input', { bubbles: true })); };
+  ov.onclick = function (e) { if (e.target === ov) ov.remove(); };
+  document.body.appendChild(ov);
+  pinta();
+}
+function abrirSelectorDia() {
+  /* ③ Sans patient il n'y a pas de journée à choisir. */
+  if (casaVacia()) return;
+  const hoy = hoyKey();
+  const lim = new Date(); lim.setDate(lim.getDate() - 60);
+  const minK = lim.getFullYear() + '-' + String(lim.getMonth()+1).padStart(2,'0') + '-' + String(lim.getDate()).padStart(2,'0');
+  let cur = new Date(diaKey() + 'T12:00:00'); cur.setDate(1);
+
+  const ov = document.createElement('div'); ov.className = 'dlg-ov';
+  ov.innerHTML = '<div class="dlg"><div class="cal-mes"><button class="cprev">◀</button><b class="cmes"></b><button class="cnext">▶</button></div>' +
+    '<table class="cal"><thead><tr>' + inicialesSemana().map(function (d) { return '<th>' + d + '</th>'; }).join('') +
+    '</tr></thead><tbody class="ccuerpo"></tbody></table>' +
+    '<div class="dbtns"><button class="dcan">' + t('d_can') + '</button></div></div>';
+
+  function pinta() {
+    const loc = LOCALES[getLang()] || 'es-ES';
+    ov.querySelector('.cmes').textContent =
+      cur.toLocaleDateString(loc, { month: 'long', year: 'numeric' });
+    const y = cur.getFullYear(), m = cur.getMonth();
+    const premier = new Date(y, m, 1);
+    let decal = (premier.getDay() + 6) % 7;          /* la semaine commence lundi */
+    const nb = new Date(y, m + 1, 0).getDate();
+    let html = '', col = 0; html += '<tr>';
+    for (let i = 0; i < decal; i++) { html += '<td></td>'; col++; }
+    for (let j = 1; j <= nb; j++) {
+      const k = y + '-' + String(m+1).padStart(2,'0') + '-' + String(j).padStart(2,'0');
+      /* Hors bornes : pas de bouton du tout — ce qui ne peut pas marcher ne
+         se montre pas ; un chiffre grisé reste une porte fermée. */
+      if (k > hoy || k < minK) html += '<td><span>' + j + '</span></td>';
+      else {
+        const tm = getTomas()[k], conMed = !!(tm && Object.keys(tm).length);
+        const cl = (k === hoy ? ' hoy' : '') + (k === diaKey() ? ' sel' : '') +
+                   (conMed ? ' med' : '') + (conMed && diaIncompleto(k) ? ' medinc' : '') +
+                   (diaAnotado(k) ? ' con' : '') + (diaAnotado(k) && notaIncompleta(k) ? ' notinc' : '');
+        html += '<td><button class="cdia' + cl + '" data-k="' + k + '">' + j + '</button></td>';
+      }
+      col++;
+      if (col === 7) { html += '</tr><tr>'; col = 0; }
+    }
+    while (col > 0 && col < 7) { html += '<td></td>'; col++; }
+    html += '</tr>';
+    ov.querySelector('.ccuerpo').innerHTML = html;
+    ov.querySelectorAll('.cdia').forEach(function (b) {
+      b.onclick = function () { ov.remove(); irADia(b.getAttribute('data-k')); };
+    });
+    /* Un mois entièrement hors bornes ne s'atteint pas. */
+    const finMois = y + '-' + String(m+1).padStart(2,'0') + '-' + String(nb).padStart(2,'0');
+    const debMois = y + '-' + String(m+1).padStart(2,'0') + '-01';
+    ov.querySelector('.cprev').style.visibility = (debMois <= minK) ? 'hidden' : 'visible';
+    ov.querySelector('.cnext').style.visibility = (finMois >= hoy) ? 'hidden' : 'visible';
+  }
+  ov.querySelector('.cprev').onclick = function () { cur.setMonth(cur.getMonth() - 1); pinta(); };
+  ov.querySelector('.cnext').onclick = function () { cur.setMonth(cur.getMonth() + 1); pinta(); };
+  ov.querySelector('.dcan').onclick = function () { ov.remove(); };
+  ov.onclick = function (e) { if (e.target === ov) ov.remove(); };
+  document.body.appendChild(ov);
+  pinta();
+}
+
 function irADia(k) {
   if (!k) return;
   const hoy = hoyKey();
@@ -1648,6 +1973,57 @@ function irADia(k) {
 function fmtDiaCorto(k) {
   const d = new Date(k + 'T12:00:00');
   return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
+}
+function fmtDiaLargo(k) {
+  const d = new Date(k + 'T12:00:00');
+  return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
+}
+/* ═══ LA DATE SE TAPE COMME L'HEURE (P-H, 14/08) ═══
+   « je n'aime pas ce système de faire tourner les aiguilles » : on tape
+   des chiffres, le programme met la forme. 1408 · 140825 · 14082026.
+   Une saisie incomplète ne rend RIEN — donc rien ne bouge tant que la
+   date n'est pas entière : le doigt peut continuer à écrire. */
+function parseFechaLibre(s) {
+  const n = String(s || '').replace(/[^0-9]/g, '');
+  let d, m, a;
+  if (n.length === 4)      { d = +n.slice(0,2); m = +n.slice(2,4); a = new Date().getFullYear(); }
+  else if (n.length === 6) { d = +n.slice(0,2); m = +n.slice(2,4); a = 2000 + (+n.slice(4,6)); }
+  else if (n.length === 8) { d = +n.slice(0,2); m = +n.slice(2,4); a = +n.slice(4,8); }
+  else return null;
+  if (m < 1 || m > 12 || d < 1 || d > 31) return null;
+  const dt = new Date(a, m - 1, d, 12, 0, 0);
+  if (dt.getDate() !== d || dt.getMonth() !== m - 1) return null;   /* 31/02 n'existe pas */
+  /* Quatre chiffres seuls : l'année est celle qui tombe dans le passé. */
+  if (n.length === 4 && dt > new Date()) dt.setFullYear(a - 1);
+  return dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
+}
+function fechaEnRango(k) {
+  if (k > hoyKey()) return false;                        /* pas de futur */
+  const l = new Date(); l.setDate(l.getDate() - 60);
+  const lim = l.getFullYear() + '-' + String(l.getMonth()+1).padStart(2,'0') + '-' + String(l.getDate()).padStart(2,'0');
+  return k >= lim;
+}
+/* ═══ L'EMPREINTE DU PÈLERIN (P-H, 14/08) ═══
+   « le pèlerin qui a marché dans la boue recule d'un pas dans l'empreinte
+   précédente et revient dans la même empreinte qu'il a laissée en avant »
+   — corriger la date ne DÉTRUIT pas la mesure : elle marche avec nous
+   jusqu'au jour qui est le sien. Rien ne se perd (Lavoisier), on a
+   seulement corrigé une adresse. Et le pèlerin n'a pas fait demi-tour :
+   il a corrigé d'où il se tenait, et le bandeau l'a suivi. */
+function constFijaFecha(el) {
+  const k = parseFechaLibre(el && el.value);
+  if (!k) return;                       /* saisie en cours : on ne bouge pas */
+  if (!fechaEnRango(k)) return;
+  if (k === diaKey()) return;
+  const cs = getConstantes();
+  if (_cDraft !== null && cs[_cDraft]) {
+    const rec = cs.splice(_cDraft, 1)[0];   /* la mesure suit sa date… */
+    rec.fecha = k;
+    cs.push(rec);                           /* …et reste la fiche du jour */
+    lsSet('mfp_constantes', cs);
+  }
+  _diaActivo = (k === hoyKey()) ? null : k;
+  repintarDia();                            /* recargarConst() repose les champs */
 }
 /* Poser l'heure par le bouton 🕐 est un changement d'état comme un autre :
    il doit s'enregistrer. Un champ rempli par le programme n'émet pas
@@ -1675,6 +2051,30 @@ function getMeds() {
   return lsGet('mfp_meds', []);
 }
 function getTomas() { return lsGet('mfp_tomas', {}); }
+/* ═══ LA FORME DES PRISES (17/08) ═══
+   Avant : tomas[jour][medId] = "08:12" — une prise par jour, et une heure
+   qui était en réalité celle du GESTE, pas de la prise.
+   Après : { desayuno:true, cena:true } · « à la demande » : { demanda:[...] }
+   Le MOMENT tient lieu d'heure là où l'heure mentait ; l'heure ne subsiste
+   que là où elle veut dire quelque chose.
+   Ces trois fonctions sont le SEUL endroit qui sait lire les deux formes :
+   les anciennes données ne sont pas converties à l'aveugle, elles sont lues
+   telles qu'elles sont (LEÇON DE LA MAQUETTE — sans ça, écran blanc). */
+function tomaObj(tm, med) {
+  const v = tm && tm[med.id];
+  if (!v) return {};
+  if (typeof v === 'string') {
+    const o = {}, mo = momsDe(med)[0] || 'demanda';
+    if (mo === 'demanda') o.demanda = [v]; else o[mo] = true;
+    return o;
+  }
+  return v;
+}
+function tomaHecha(tm, med, mo) { return !!tomaObj(tm, med)[mo]; }
+function tomaAlguna(tm, med) {
+  const o = tomaObj(tm, med);
+  return Object.keys(o).some(function (k) { return k === 'demanda' ? (o[k] || []).length : o[k]; });
+}
 function getConstantes() { return lsGet('mfp_constantes', []); }
 function getObs() { return lsGet('mfp_obs', []); }
 /* Le nom et le SIP d'un patient vivent DANS LA LISTE, et nulle part
@@ -1931,6 +2331,13 @@ function olvidoOmitida(medId) {
 const MATERIAL_DEF = [
   { id: 'oxigeno',  nombre: 'Oxígeno',            tipo: 'interruptor', icono: '💨' }
 ];
+/* Le nom d'un matériel de la maison (Oxígeno) vit dans la table des
+   langues sous mat_<id> ; un matériel ajouté par l'aidant garde le sien. */
+function matNombre(d) {
+  const k = 'mat_' + d.id;
+  const trad = (IDIOMAS[getLang()] || {})[k] || IDIOMAS.es[k];
+  return trad || d.nombre;
+}
 function getMaterialCfg() {
   const cfg = lsGet('mfp_material_cfg', MATERIAL_DEF);
   /* v24.13 — migration douce : un oxígeno mémorisé en ancien type (valor L/min)
@@ -1968,7 +2375,7 @@ function renderMaterial() {
     if (d.tipo === 'interruptor') return _matInterruptor(d);
     if (d.tipo === 'contador') {
       const n = parseInt(hoy[d.id]) || 0;
-      return '<div class="matrow">🩹 <b>' + d.nombre + '</b>' +
+      return '<div class="matrow">🩹 <b>' + matNombre(d) + '</b>' +
         '<span class="matctrl">' +
         '<button class="stepper" onclick="matMas(\'' + d.id + '\',-1)">−</button>' +
         '<b class="matnum">' + n + '</b>' +
@@ -1976,7 +2383,7 @@ function renderMaterial() {
         '<span class="matud">' + d.unidad + '</span></span></div>';
     }
     const v = hoy[d.id] !== undefined ? hoy[d.id] : '';
-    return '<div class="matrow">🩹 <b>' + d.nombre + '</b>' +
+    return '<div class="matrow">🩹 <b>' + matNombre(d) + '</b>' +
       '<span class="matctrl">' +
       '<input type="number" inputmode="decimal" step="0.5" value="' + v + '" placeholder="—" ' +
       'onchange="matValor(\'' + d.id + '\', this.value)" class="matinput">' +
@@ -1999,7 +2406,7 @@ function _matInterruptor(d) {
   ses.forEach(s => { const dd = durSesion(s, diaKey()); if (dd != null) { mins += dd; cerradas++; } });
   const resumen = cerradas ? (cerradas + '× · ' + _fmtDur(mins) + (abierta ? ' + en curso' : '')) : (abierta ? 'en curso desde ' + ((((getMaterial()._uso||{})[d.id]||{})[ab.dia]||[])[ab.i]||{}).inicio + (ayer ? ' (' + fmtDiaCorto(ayer) + ')' : '') : '');
   const lpm = matLitros(d.id);
-  return '<div class="matrow ' + (abierta ? 'mat-on' : '') + '">' + (d.icono || '💨') + ' <b>' + d.nombre + '</b>' +
+  return '<div class="matrow ' + (abierta ? 'mat-on' : '') + '">' + (d.icono || '💨') + ' <b>' + matNombre(d) + '</b>' +
     '<span class="matctrl">' +
     '<span class="trio-tot">' + resumen + '</span>' +
     '<input type="number" inputmode="decimal" step="0.5" min="0" value="' + lpm + '" oninput="matSetLitros(\'' + d.id + '\', this.value)" onchange="matSetLitros(\'' + d.id + '\', this.value)" class="matinput" style="width:58px" title="L/min">' +
@@ -2007,7 +2414,7 @@ function _matInterruptor(d) {
     '<button type="button" class="rocker ' + (abierta ? 'on' : '') + '" onclick="matToggle(\'' + d.id + '\')"' +
       ' aria-pressed="' + (abierta ? 'true' : 'false') + '"' +
       ' title="' + (abierta ? t('sw_fin') : t('sw_ini')) + '"' +
-      ' aria-label="' + d.nombre + ' — ' + (abierta ? t('sw_fin') : t('sw_ini')) + '">' +
+      ' aria-label="' + matNombre(d) + ' — ' + (abierta ? t('sw_fin') : t('sw_ini')) + '">' +
       '<span class="fa fa-o">O</span><span class="fa fa-i">I</span></button>' +
     '</span></div>';
 }
@@ -2071,7 +2478,7 @@ function matToggle(id) {
      c'est aujourd'hui : un appareil s'arrête à onze heures et se note à
      quinze, et une séance n'a aucun correcteur ailleurs. Un toucher de plus,
      et l'heure est toujours vraie. */
-  pedirHoraDia(cfg.nombre + ' — ' + t(ab ? 'mat_fin' : 'mat_inicio'),
+  pedirHoraDia(matNombre(cfg) + ' — ' + t(ab ? 'mat_fin' : 'mat_inicio'),
                esHoy() ? ahora() : '', function (h) {
     const m = _matSesiones(id);
     if (ab) {
@@ -2191,7 +2598,7 @@ function checkAvisos(ahoraHM) {
 }
 setInterval(function() {
   const avi = checkAvisos(ahora());
-  if (avi) { beep(avi.mom); toast('💊 ' + (MOMENTOS[avi.mom] || avi.mom) + ' : ' + avi.meds.join(', ')); }
+  if (avi) { beep(avi.mom); toast('💊 ' + momNombre(avi.mom) + ' : ' + avi.meds.join(', ')); }
 }, 30000);
 document.addEventListener('touchstart', desbloquearAudio, { once: true });
 document.addEventListener('click', desbloquearAudio, { once: true });
@@ -2238,7 +2645,7 @@ function nmToggle() {
   const abrir = (f.style.display === 'none' || !f.style.display);
   f.style.display = abrir ? '' : 'none';
   if (!abrir) return;
-  _encadenarCampos(['nm-nombre', 'nm-dosis', 'nm-momento', 'nm-frec', 'nm-dmes']);
+  _encadenarCampos(['nm-nombre', 'nm-dosis', 'nm-frec', 'nm-dmes']);
   const e = document.getElementById('nm-nombre');
   if (e) setTimeout(function () { try { e.focus(); e.select(); } catch (x) {} }, 60);
 }
@@ -2500,7 +2907,7 @@ function setSip(v) { renombrarActivo(null, v); }
    d'agrandissement : à l'intérieur du corps agrandi, un point d'écran ne vaut
    pas un point de contenu. */
 function pantallaUtil() {
-  const z = parseFloat(lsGet('mfp_zoom', 1.25)) || 1;
+  const z = parseFloat(lsGet('mfp_zoom', 1.33)) || 1;
   const vv = window.visualViewport;
   return { an: Math.round((vv ? vv.width  : window.innerWidth)  / z),
            al: Math.round((vv ? vv.height : window.innerHeight) / z) };
@@ -2568,14 +2975,14 @@ async function instalarLocal(btn) {
    Un toucher rejoue la séquence entière — présentation, puis proposition
    d'installer — sans rien effacer d'autre. */
 function revoirAcogida() {
-  localStorage.removeItem('mfp_bienv2');
-  localStorage.removeItem('mfp_inst_q');
+  _arm().removeItem('mfp_bienv2');
+  _arm().removeItem('mfp_inst_q');
   document.querySelectorAll('.dlg-ov').forEach(function (o) { o.remove(); });
   bienvenida();
 }
 function preguntaInstalar() {
-  if (localStorage.getItem('mfp_inst_q')) { arranqueInicial(); return; }
-  localStorage.setItem('mfp_inst_q', '1');
+  if (_arm().getItem('mfp_inst_q')) { arranqueInicial(); return; }
+  _arm().setItem('mfp_inst_q', '1');
   const ov = document.createElement('div');
   ov.style.cssText = 'position:fixed;inset:0;z-index:97;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px';
   ov.innerHTML = '<div class="dlg lista">' +
@@ -2595,7 +3002,7 @@ function preguntaInstalar() {
   };
 }
 function bienvenida() {
-  if (localStorage.getItem('mfp_bienv2')) return;
+  if (_arm().getItem('mfp_bienv2')) return;
   const ov = document.createElement('div');
   /* Sur un écran étroit, cette fenêtre mesurait 933 points pour un écran de
      800 : le ✕ passait au-dessus du bord et le bouton de validation en
@@ -2624,11 +3031,11 @@ function bienvenida() {
   ajustarBienvenida(ov);
   pintarConexionBienvenida();
   /* l'écran tourne, les barres se rétractent : on remesure */
-  const remedir = () => ajustarBienvenida(ov);
+  const remedir = () => { ajustarBienvenida(ov); ajustarPie(); };
   window.addEventListener('resize', remedir);
   window.addEventListener('orientationchange', remedir);
   if (window.visualViewport) window.visualViewport.addEventListener('resize', remedir);
-  const cerrar = () => { localStorage.setItem('mfp_bienv2', JSON.stringify('1')); ov.remove(); arranqueInicial(); };
+  const cerrar = () => { _arm().setItem('mfp_bienv2', JSON.stringify('1')); ov.remove(); arranqueInicial(); };
   /* P-H, 30/07 : « lorsqu'on quitte l'écran d'accueil, un autre écran demande
      — vous pouvez installer en local, oui ou non ». Une question franche vaut
      mieux qu'un bouton qu'on remarque à peine, et la carte d'accueil reste
@@ -2803,7 +3210,7 @@ function _impPantalla() {
           '<select class="imp-mom" onchange="impMomento(' + k + ',this.value)">' +
             '<option value=""' + (e.momento ? '' : ' selected') + '>' + t('imp_elija') + '</option>' +
             Object.keys(MOMENTOS).map(function (id) {
-              return '<option value="' + id + '"' + (e.momento === id ? ' selected' : '') + '>' + MOMENTOS[id] + '</option>';
+              return '<option value="' + id + '"' + (e.momento === id ? ' selected' : '') + '>' + momNombre(id) + '</option>';
             }).join('') +
           '</select></div>';
       }).join('') : '<div style="color:var(--muted);text-align:center;padding:10px 0">' + t('imp_sinmeds') + '</div>') +
@@ -2875,11 +3282,11 @@ function _diasDelPaciente() {
 }
 function _borrarCasillero(id) {
   const fuera = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
+  for (let i = 0; i < _arm().length; i++) {
+    const k = _arm().key(i);
     if (k && k.indexOf('mfp_' + id + '_') === 0) fuera.push(k);
   }
-  fuera.forEach(k => localStorage.removeItem(k));
+  fuera.forEach(k => _arm().removeItem(k));
 }
 function pacienteBorrar() {
   const act = getActivo(), lista = getPacientes();
@@ -2925,6 +3332,31 @@ function irPauta() {
   const a = document.getElementById('acc-meds'); if (a) a.open = true;
   setTimeout(() => { const e = document.getElementById('meds-lista'); if (e) e.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 120);
 }
+/* Quel écran est ouvert — la barre de l'heure a besoin de le savoir. */
+function pantallaActiva() {
+  const a = document.querySelector('.panel.act');
+  return a ? a.id.replace(/^p-/, '') : '';
+}
+/* L'HEURE APPARTIENT À LA FICHE, PAS AU JOUR : elle n'a de sens que là où
+   l'on écrit une mesure ou une observation. Sur Medicación chaque prise
+   porte la sienne — une heure commune y serait un mensonge : la bande se
+   retire. Ce qui ne peut pas marcher ne se montre pas. */
+function pintaBarraHora() {
+  const b = document.getElementById('barra-hora'); if (!b) return;
+  const p = pantallaActiva(), on = (p === 'const' || p === 'notas');
+  b.style.display = on ? 'flex' : 'none';
+  const l = document.getElementById('i-lhora');
+  if (l && on) l.textContent = t(p === 'const' ? 'hora_med' : 'dh_obs');
+  if (on) { if (p === 'const') recargarConst(); else recargarObs(); }
+  ajustarPie();
+}
+/* Les hauteurs du pied et de l'en-tête changent avec le zoom et la langue :
+   on les MESURE au lieu de les supposer (le mfp_zoom fausse tout le reste). */
+function ajustarPie() {
+  const pie = document.getElementById('pie'), hd = document.querySelector('header');
+  if (pie) document.body.style.paddingBottom = (pie.offsetHeight + 6) + 'px';
+  if (hd) document.body.style.paddingTop = (hd.offsetHeight + 6) + 'px';
+}
 function ir(p) {
   /* Naviguer ne ferme plus rien : la fiche du jour reste ouverte, et l'on
      revient dessus au lieu d'en ouvrir une neuve à chaque passage. */
@@ -2936,6 +3368,7 @@ function ir(p) {
   document.getElementById('p-' + p).classList.add('act');
   document.getElementById('nav-' + p).classList.add('act');
   if (p === 'datos') renderDatos();
+  pintaBarraHora();
 }
 function toast(msg) {
   const t = document.getElementById('toast');
@@ -2967,47 +3400,122 @@ function renderDiaNav() {
   const th = document.getElementById('i-thoy');
   if (th && !esHoy()) th.textContent = '✎ Medicación del ' + fmtDiaCorto(diaKey()) + ' — corrigiendo';
   else if (th && typeof t === 'function') th.textContent = t('t_hoy');
-  const et = document.getElementById('dia-etiqueta');
+  const et = document.getElementById('dia-etiqueta');  /* le jour se dit dans la langue de la maison */
   const av = document.getElementById('dia-aviso'), tx = document.getElementById('dia-aviso-txt');
   const sig = document.getElementById('dia-siguiente');
   if (!et) return;
-  et.textContent = esHoy() ? fmtDiaCorto(diaKey()) + ' · hoy' : fmtDiaCorto(diaKey());
+  et.textContent = fmtFechaLarga(diaKey()) + (esHoy() ? ' · ' + t('dia_hoy') : '');
   if (av) av.style.display = esHoy() ? 'none' : 'block';
   if (tx) tx.textContent = 'Está corrigiendo el ' + fmtDiaCorto(diaKey());
   if (sig) sig.style.opacity = esHoy() ? '.3' : '1';
+  /* Le retour au jour même n'a rien à faire quand on y est déjà. */
+  const bh = document.getElementById('dia-hoy');
+  if (bh) { bh.style.display = esHoy() ? 'none' : 'block'; bh.textContent = t('dia_hoy'); }
 }
+/* ═══ LA JOURNÉE (P-H, 17/08, option 1) ═══
+   « il faut cliquer sur le médicament et il t'affiche les moments ».
+   UNE LIGNE PAR MÉDICAMENT — jamais le même nom deux ou trois fois. La ligne
+   INFORME (les marques disent où l'on en est, d'un coup d'œil), la fenêtre
+   AGIT. La ligne garde ainsi UNE SEULE HAUTEUR même à cinq moments : à
+   360 px avec le zoom, des cases posées dans la ligne se replieraient en pavé. */
 function renderTomas() {
   renderDiaNav();
-  const meds = getMeds(); const tomas = getTomas()[diaKey()] || {};
-  const orden = ['desayuno','comida','cena','noche'];
+  const meds = getMeds(), tomas = getTomas()[diaKey()] || {}, hoy = diaKey();
   const el = document.getElementById('tomas-lista');
   if (!meds.length) { el.innerHTML = '<div class="vacio">Añada los medicamentos en la pestaña Datos.</div>'; return; }
   let html = '';
-  const hoy = diaKey();
-  orden.forEach(m => {
-    const grupo = meds.filter(x => x.momento === m && medActivo(x, hoy) && tocaHoy(x, hoy));
-    if (!grupo.length) return;
-    html += '<h2>' + MOMENTOS[m] + '</h2>';
-    grupo.forEach(x => {
-      const hecha = tomas[x.id];
-      let duracion = '';
-      if (x.hasta) {
-        const dias = Math.round((new Date(x.hasta) - new Date(hoy)) / 86400000);
-        const uj = dias === 1 ? t('dia') : t('dias');
-        duracion = ' · ' + t('hasta') + ' ' + x.hasta.slice(8,10) + '/' + x.hasta.slice(5,7) +
-          (dias <= 3 ? ' <b style="color:var(--warn)">(' + t('quedan') + ' ' + dias + ' ' + uj + ')</b>' : ' (' + t('quedan') + ' ' + dias + ' ' + uj + ')');
-      }
-      html += '<button class="toma' + (hecha ? ' hecha' : '') + '" onclick="toggleToma(\'' + x.id + '\')">' +
-        '<span class="pastilla">' + (hecha ? '✓' : '💊') + '</span>' +
-        '<span class="info"><div class="nombre">' + x.nombre + '</div>' +
-        '<div class="detalle">' + x.dosis + duracion + '</div></span>' +
-        '<span class="hora"' + (hecha ? ' onclick="event.stopPropagation();editarHora(\'' + x.id + '\')" title="Corregir hora"' : '') + '>' + (hecha ? hecha + ' ✎' : t('pendiente')) + '</span></button>';
-    });
+  meds.forEach(function (x) {
+    if (!medActivo(x, hoy) || !tocaHoy(x, hoy)) return;
+    const moms = momsDe(x), o = tomaObj(tomas, x), dem = moms.indexOf('demanda') >= 0;
+    const faltan = dem ? 1 : moms.filter(function (mo) { return !o[mo]; }).length;
+    let marcas;
+    if (dem) {
+      const l = o.demanda || [];
+      marcas = l.length ? '<span class="mq ok">' + l.join(' · ') + '</span>' : '<span class="mq">✚</span>';
+    } else {
+      marcas = moms.map(function (mo) {
+        return '<span class="mq' + (o[mo] ? ' ok' : '') + '">' + (MOM_ICONO[mo] || '•') + '</span>';
+      }).join('');
+    }
+    let duracion = '';
+    if (x.hasta) {
+      const dias = Math.round((new Date(x.hasta) - new Date(hoy)) / 86400000);
+      const uj = dias === 1 ? t('dia') : t('dias');
+      duracion = ' · ' + t('hasta') + ' ' + x.hasta.slice(8,10) + '/' + x.hasta.slice(5,7) +
+        (dias <= 3 ? ' <b style="color:var(--warn)">(' + t('quedan') + ' ' + dias + ' ' + uj + ')</b>'
+                   : ' (' + t('quedan') + ' ' + dias + ' ' + uj + ')');
+    }
+    html += '<button class="toma' + (!faltan ? ' hecha' : '') + '" onclick="abrirToma(\'' + x.id + '\')">' +
+      '<span class="pastilla">' + (!faltan ? '✓' : '💊') + '</span>' +
+      '<span class="info"><div class="nombre">' + x.nombre + '</div>' +
+      '<div class="detalle">' + x.dosis + duracion + '</div></span>' +
+      '<span class="marcas">' + marcas + '</span></button>';
   });
-  /* Les traitements terminés ne s'affichent plus dans la vue du jour
-     (P-H 18/07) — ils restent dans les données et dans Datos. */
   el.innerHTML = html;
   renderPuntuales(); renderAvisos();
+}
+
+/* La petite fenêtre de la prise : LES MOMENTS DE CETTE FICHE, pas les sept.
+   Elle pointe, elle ne redéclare jamais — la prescription se modifie dans
+   Datos, et nulle part ailleurs. */
+function abrirToma(medId) {
+  const med = getMeds().filter(function (m) { return m.id === medId; })[0];
+  if (!med) return;
+  const dem = momsDe(med).indexOf('demanda') >= 0;
+  const ov = document.createElement('div'); ov.className = 'dlg-ov';
+  ov.innerHTML = '<div class="dlg"><h3>' + med.nombre + '</h3>' +
+    '<div class="dose-dlg">' + med.dosis + '</div><div class="bascs"></div>' +
+    '<div class="dbtns">' + (dem ? '<button class="dcan dmas">✚</button>' : '') +
+    '<button class="dok">' + t('d_ok') + '</button></div></div>';
+  function pinta() {
+    const tm = getTomas()[diaKey()] || {}, o = tomaObj(tm, med), c = ov.querySelector('.bascs');
+    if (dem) {
+      const l = o.demanda || [];
+      c.innerHTML = l.length
+        ? l.map(function (h, i) { return '<div class="basc"><span>🕐 ' + h + '</span>' +
+            '<button class="quita" data-i="' + i + '">✕</button></div>'; }).join('')
+        : '<div class="dose-dlg">' + t('sin_tomas') + '</div>';
+      c.querySelectorAll('.quita').forEach(function (b) {
+        b.onclick = function () { quitaHora(medId, +b.getAttribute('data-i')); pinta(); renderTomas(); };
+      });
+    } else {
+      c.innerHTML = momsDe(med).map(function (mo) {
+        return '<button class="basc bt' + (o[mo] ? ' on' : '') + '" data-m="' + mo + '">' +
+               '<span>' + momNombre(mo) + '</span><span class="sw">' + (o[mo] ? '✓' : '○') + '</span></button>';
+      }).join('');
+      c.querySelectorAll('.bt').forEach(function (b) {
+        b.onclick = function () { basculaToma(medId, b.getAttribute('data-m')); pinta(); renderTomas(); };
+      });
+    }
+  }
+  if (dem) ov.querySelector('.dmas').onclick = function () {
+    pedirHoraDia(med.nombre, ahora(), function (h) { anadeHora(medId, h); pinta(); renderTomas(); });
+  };
+  ov.querySelector('.dok').onclick = function () { ov.remove(); };
+  ov.onclick = function (e) { if (e.target === ov) ov.remove(); };
+  document.body.appendChild(ov); pinta();
+}
+function _tomasDia() { const t = getTomas(); if (!t[diaKey()]) t[diaKey()] = {}; return t; }
+function basculaToma(medId, mo) {
+  const med = getMeds().filter(function (m) { return m.id === medId; })[0];
+  const t = _tomasDia(), k = diaKey(), o = tomaObj(t[k], med);
+  if (o[mo]) delete o[mo]; else o[mo] = true;
+  if (Object.keys(o).length) t[k][medId] = o; else delete t[k][medId];
+  lsSet('mfp_tomas', t);
+}
+function anadeHora(medId, h) {
+  const med = getMeds().filter(function (m) { return m.id === medId; })[0];
+  const t = _tomasDia(), k = diaKey(), o = tomaObj(t[k], med);
+  o.demanda = (o.demanda || []).concat([h]); o.demanda.sort();
+  t[k][medId] = o; lsSet('mfp_tomas', t);
+}
+function quitaHora(medId, i) {
+  const med = getMeds().filter(function (m) { return m.id === medId; })[0];
+  const t = _tomasDia(), k = diaKey(), o = tomaObj(t[k], med);
+  (o.demanda || []).splice(i, 1);
+  if (!(o.demanda || []).length) delete o.demanda;
+  if (Object.keys(o).length) t[k][medId] = o; else delete t[k][medId];
+  lsSet('mfp_tomas', t);
 }
 
 /* ── CONSTANTES ── */
@@ -3033,7 +3541,7 @@ function pintaArritmia() {
 function toggleArritmia() { _arrit = !_arrit; pintaArritmia(); upsertConst(); }
 function upsertConst() {
   const v = id => { const x = document.getElementById(id).value; return x === '' ? null : parseFloat(x); };
-  const hEl = document.getElementById('c-hora');
+  const hEl = document.getElementById('b-hora');
   const vals = { ta_sis: v('c-tas'), ta_dia: v('c-tad'), fc: v('c-fc'), spo2: v('c-spo2'), peso: v('c-peso'), temp: v('c-temp'), arritmia: _arrit ? true : null };
   const cs = getConstantes();
   if (Object.values(vals).every(x => x === null)) {
@@ -3063,6 +3571,30 @@ function _resumenConst(c) {
   if (c.arritmia) p.push('⚡ ' + t('c_arritmia'));
   return p.join(' · ');
 }
+/* Les champs de Constantes se reposent D'UN SEUL ENDROIT — que l'on
+   change de patient ou que l'on change de jour. Avant, la navigation
+   par jour laissait les champs (et _cDraft) sur le jour précédent : une
+   mesure tapée ensuite allait silencieusement déménager l'ancienne fiche. */
+function recargarConst() {
+  const cs = getConstantes();
+  let idx = -1;
+  for (let i = cs.length - 1; i >= 0; i--) if (cs[i] && cs[i].fecha === diaKey()) { idx = i; break; }
+  const c = idx >= 0 ? cs[idx] : null;
+  const pon = (id, v) => { const e = document.getElementById(id); if (e) e.value = (v === null || v === undefined) ? '' : v; };
+  pon('c-tas', c && c.ta_sis); pon('c-tad', c && c.ta_dia); pon('c-fc', c && c.fc);
+  pon('c-spo2', c && c.spo2); pon('c-peso', c && c.peso); pon('c-temp', c && c.temp);
+  /* fiche du jour : son heure ; fiche neuve : l'heure qu'il est, et sur un
+     jour passé « maintenant » n'existe pas — 12:00, heure neutre. */
+  const hAnt = (document.getElementById('b-hora') || {}).value || '';
+  pon('b-hora', (c && c.hora) || (horaValide(hAnt) ? hAnt : (esHoy() ? ahora() : '12:00')));
+  pon('c-fecha', fmtDiaLargo(diaKey()));
+  ['c-tas','c-tad','c-fc','c-spo2','c-peso','c-temp'].forEach(function (id) {
+    const e = document.getElementById(id); if (e && typeof avisarDudoso === 'function') avisarDudoso(e);
+  });
+  _arrit = !!(c && c.arritmia); pintaArritmia();
+  _cDraft = idx >= 0 ? idx : null;
+  estadoConst(c ? '✓ guardado · ' + c.hora : '');
+}
 function pintaConstHoy() {
   const el = document.getElementById('const-hoy'); if (!el) return;
   const hoy = getConstantes().filter(c => c && c.fecha === diaKey());
@@ -3082,9 +3614,18 @@ function pintaConstHoy() {
    de date sur les navigateurs qui n'émettent pas « input ». Les fonctions
    appelées sont des upsert : écrire cent fois ne crée pas cent fiches. */
 const CAMPOS_GUARDA = {
-  'c-tas': () => upsertConst(), 'c-tad': () => upsertConst(), 'c-fc': () => upsertConst(),
-  'c-spo2': () => upsertConst(), 'c-peso': () => upsertConst(), 'c-temp': () => upsertConst(),
-  'c-hora': () => upsertConst(),
+  'c-tas': e => { avisarDudoso(e); upsertConst(); },
+  'c-tad': e => { avisarDudoso(e); upsertConst(); },
+  'c-fc': e => { avisarDudoso(e); upsertConst(); },
+  'c-spo2': e => { avisarDudoso(e); upsertConst(); },
+  'c-peso': e => { avisarDudoso(e); upsertConst(); },
+  'c-temp': e => { avisarDudoso(e); upsertConst(); },
+  /* 15/08 — OUBLI RÉPARÉ : la boîte de l'heure de Notes s'affichait et se
+     formatait, mais n'était déclarée nulle part ici : rien ne l'enregistrait.
+     L'heure tapée mourait à l'écran et la fiche gardait son 12:00. */
+  /* Une seule boîte d'heure pour toute la maison : elle s'adresse à l'écran
+     ouvert. C'est l'écran qui dit de quelle heure il s'agit, pas la boîte. */
+  'b-hora': () => { const p = pantallaActiva(); if (p === 'const') upsertConst(); else if (p === 'notas') upsertObs(); },
   'nota-libre': () => upsertObs(),
   'cfg-patient2': e => renombrarActivo(e.value, null),
   'cfg-sip': e => renombrarActivo(null, e.value),
@@ -3137,18 +3678,7 @@ function guardarActual() {
    il s'en remettait au rechargement de la page. */
 function restaurarCampos() {
   /* — les constantes : la fiche du jour, si elle existe — */
-  const cs = getConstantes();
-  let idx = -1;
-  for (let i = cs.length - 1; i >= 0; i--) if (cs[i] && cs[i].fecha === diaKey()) { idx = i; break; }
-  const c = idx >= 0 ? cs[idx] : null;
-  const pon = (id, v) => { const e = document.getElementById(id); if (e) e.value = (v === null || v === undefined) ? '' : v; };
-  pon('c-tas', c && c.ta_sis); pon('c-tad', c && c.ta_dia); pon('c-fc', c && c.fc);
-  pon('c-spo2', c && c.spo2); pon('c-peso', c && c.peso); pon('c-temp', c && c.temp);
-  /* fiche du jour : son heure ; fiche neuve : l'heure qu'il est */
-  pon('c-hora', (c && c.hora) || ahora());
-  _arrit = !!(c && c.arritmia); pintaArritmia();
-  _cDraft = idx >= 0 ? idx : null;
-  estadoConst(c ? '✓ guardado · ' + c.hora : '');
+  recargarConst();
 
   /* — la note libre : le brouillon du jour, reconnu à sa marque — */
   const obs = getObs();
@@ -3176,12 +3706,13 @@ function cambiarPaciente(id) {
 function cerrarConstDraft() {
   pintaConstHoy();
   if (_cDraft === null) return;
-  ['c-tas','c-tad','c-fc','c-spo2','c-peso','c-temp','c-hora'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+  ['c-tas','c-tad','c-fc','c-spo2','c-peso','c-temp'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
   _cDraft = null; estadoConst('');
+  const ef = document.getElementById('c-fecha'); if (ef) ef.value = fmtDiaLargo(diaKey());
 }
 function _legacyGuardarConstantes() {
   const v = id => { const x = document.getElementById(id).value; return x === '' ? null : parseFloat(x); };
-  const hEl = document.getElementById('c-hora');
+  const hEl = document.getElementById('b-hora');
   const c = { fecha: diaKey(), hora: (hEl && horaValide(hEl.value)) || ahora(), ta_sis: v('c-tas'), ta_dia: v('c-tad'),
               fc: v('c-fc'), spo2: v('c-spo2'), peso: v('c-peso'), temp: v('c-temp') };
   if ([c.ta_sis,c.ta_dia,c.fc,c.spo2,c.peso,c.temp].every(x => x === null)) { toast('Nada que guardar'); return; }
@@ -3353,7 +3884,7 @@ function _quitarObs(idx) {
    par le facteur d'agrandissement. */
 function ajustaLista(ov) {
   const d = ov.querySelector('.dlg.lista'); if (!d) return;
-  const z = parseFloat(lsGet('mfp_zoom', 1.25)) || 1;
+  const z = parseFloat(lsGet('mfp_zoom', 1.33)) || 1;
   d.style.maxHeight = Math.floor((window.innerHeight - 20) / z) + 'px';
 }
 function _etiqDe(c, k) { const o = CHIP_OPC[c].op[k]; return o[2] ? o[2] : (c + ' ' + o[0]); }
@@ -3542,7 +4073,7 @@ function apagarMaterialAlSalir(hora) {
     ses.fin = hora;
     if (ab.dia !== diaKey()) ses.finDia = diaKey();
     ses.motivo = 'salida';            /* pourquoi elle s'arrête là */
-    nombres.push(d.nombre);
+    nombres.push(matNombre(d));
   });
   lsSet('mfp_material', m);
   renderMaterial();
@@ -4065,9 +4596,10 @@ function pintarResumen(R) {
   let h = '<div id="res-hoja" style="background:#fff;color:#111;padding:22px 20px;font-size:13.5px;line-height:1.5">';
   h += '<div style="text-align:center;margin-bottom:4px">' + conchaSVG('#1e9c5a', 34).replace('display:block', 'display:inline-block') + '</div>';
   h += '<div style="text-align:center;font-size:19px;font-weight:700">' + (P.nombre || '') + '</div>';
-  h += '<div style="text-align:center;color:#555;margin-bottom:2px">' + t('res_tit') + '</div>';
+  if (P.sip) h += '<div style="text-align:center;font-size:15px;font-weight:700;letter-spacing:.5px;margin-top:1px">SIP ' + P.sip + '</div>';
+  h += '<div style="text-align:center;color:#555;margin-bottom:2px' + (P.sip ? ';margin-top:3px' : '') + '">' + t('res_tit') + '</div>';
   h += '<div style="text-align:center;color:#555;font-size:12px;margin-bottom:14px">' +
-       R.desde + ' → ' + R.hasta + ' · ' + R.dias + ' ' + t('res_dias') + (P.sip ? ' · ' + P.sip : '') + '</div>';
+       R.desde + ' → ' + R.hasta + ' · ' + R.dias + ' ' + t('res_dias') + '</div>';
 
   h += '<table style="width:100%;border-collapse:collapse">';
   h += _fila(t('res_medic'), R.tomas.debidas
@@ -4393,7 +4925,7 @@ function regPanal() { pedirRegistro('panal'); }
 
 let _oDraft = null;
 function upsertObs() {
-  const nEl = document.getElementById('nota-libre'), oEl = document.getElementById('o-hora');
+  const nEl = document.getElementById('nota-libre'), oEl = document.getElementById('b-hora');
   const nota = (nEl ? nEl.value : '').trim();
   const obs = getObs();
   if (!_chipsSel.size && !nota) {
@@ -4410,18 +4942,51 @@ function upsertObs() {
   lsSet('mfp_obs', obs); estadoObs('✓ guardado · ' + rec.hora);
 }
 function estadoObs(s) { const e = document.getElementById('obs-estado'); if (e) e.textContent = s; }
+/* Comme dans Constantes : les champs de l'observation se reposent d'un
+   seul endroit, et l'observation en cours SUIT SA DATE quand on la
+   corrige — l'empreinte du pèlerin vaut ici aussi. */
+function recargarObs() {
+  const obs = getObs();
+  let idx = -1;
+  for (let i = obs.length - 1; i >= 0; i--) if (obs[i] && obs[i].fecha === diaKey() && obs[i].libre) { idx = i; break; }
+  const o = idx >= 0 ? obs[idx] : null;
+  const nEl = document.getElementById('nota-libre'); if (nEl) nEl.value = (o && o.nota) || '';
+  const hEl = document.getElementById('b-hora');
+  if (hEl) { const hAnt = hEl.value || '';
+    hEl.value = (o && o.hora) || (horaValide(hAnt) ? hAnt : (esHoy() ? ahora() : '12:00')); }
+  const fEl = document.getElementById('o-fecha');    if (fEl) fEl.value = fmtDiaLargo(diaKey());
+  _chipsSel = new Set();
+  if (o && o.tipos) o.tipos.forEach(function (tp) { const i = CHIP_TIPOS.indexOf(tp); if (i >= 0) _chipsSel.add(i); });
+  if (typeof renderChips === 'function') renderChips();
+  _oDraft = idx >= 0 ? idx : null;
+  estadoObs(o ? '✓ guardado · ' + o.hora : '');
+}
+function obsFijaFecha(el) {
+  const k = parseFechaLibre(el && el.value);
+  if (!k) return;                        /* saisie en cours : on ne bouge pas */
+  if (!fechaEnRango(k) || k === diaKey()) return;
+  const obs = getObs();
+  if (_oDraft !== null && obs[_oDraft]) {
+    const rec = obs.splice(_oDraft, 1)[0];   /* l'observation suit sa date… */
+    rec.fecha = k;
+    obs.push(rec);                           /* …et reste celle du jour */
+    lsSet('mfp_obs', obs);
+  }
+  _diaActivo = (k === hoyKey()) ? null : k;
+  repintarDia();
+}
 function cerrarObsDraft() {
   if (_oDraft === null && !_chipsSel.size) return;
   _chipsSel = new Set(); if (typeof renderChips === 'function') renderChips();
   const n = document.getElementById('nota-libre'); if (n) n.value = '';
-  const o = document.getElementById('o-hora'); if (o) o.value = '';
+  const o = document.getElementById('b-hora'); if (o) o.value = '';
   _oDraft = null; estadoObs('');
 }
 function _legacyGuardarObs() {
   const nota = document.getElementById('nota-libre').value.trim();
   if (!_chipsSel.size && !nota) { toast('Nada que guardar'); return; }
   const obs = getObs();
-  const oEl = document.getElementById('o-hora');
+  const oEl = document.getElementById('b-hora');
   obs.push({ fecha: diaKey(), hora: (oEl && horaValide(oEl.value)) || ahora(), tipos: [..._chipsSel].map(i => CHIP_TIPOS[i]), nota: nota || null });
   lsSet('mfp_obs', obs);
   _chipsSel = new Set(); document.getElementById('nota-libre').value = '';
@@ -4453,7 +5018,7 @@ function renderDatos() {
   /* meds config */
   document.getElementById('meds-lista').innerHTML = getMeds().map((m, i) =>
     '<div class="medrow"><span class="mi"><div class="mn">' + m.nombre + '</div>' +
-    '<div class="md">' + m.dosis + ' · ' + (MOMENTOS[m.momento] || m.momento) +
+    '<div class="md">' + m.dosis + ' · ' + momNombre(m.momento) +
       (frecTexto(m) ? ' · ' + frecTexto(m) : '') + (m.hasta ? ' · hasta ' + m.hasta : '') + '</div></span>' +
     '<button onclick="editarMed(' + i + ')" title="Editar" style="margin-right:6px">✏️</button>' +
     '<button onclick="quitarMed(' + i + ')" title="Quitar">🗑</button></div>').join('') ||
@@ -4473,16 +5038,16 @@ function renderDatos() {
     const hs = getHoras();
     ah.innerHTML = Object.keys(HORAS_DEF).map(function(mom) {
       const ts = getTimbres();
-      return '<div class="cbox" style="padding:8px"><label style="font-size:12px">' + (MOMENTOS[mom] || mom) + '</label>' +
+      return '<div class="cbox" style="padding:8px"><label style="font-size:12px">' + momNombre(mom) + '</label>' +
         '<input type="time" value="' + hs[mom] + '" onchange="setHora(\'' + mom + '\', this.value)" style="font-size:15px;padding:6px">' +
         /* on choisit le timbre, et l'on entend aussitôt ce qu'on a choisi */
         '<div style="display:flex;gap:4px;margin-top:5px">' +
-          '<select class="txt" style="flex:1;font-size:12.5px;padding:5px" onchange="setTimbre(\'' + mom + '\', this.value)">' +
+          '<select class="txt" style="flex:1;min-width:0;font-size:13.5px;padding:6px 4px" onchange="setTimbre(\'' + mom + '\', this.value)">' +
             Object.keys(TIMBRES).map(function (id) {
               return '<option value="' + id + '"' + (ts[mom] === id ? ' selected' : '') + '>' + t(TIMBRES[id].k) + '</option>';
             }).join('') +
           '</select>' +
-          '<button class="hbtn2" style="flex:0 0 40px;padding:5px 0" onclick="sonar(getTimbres()[\'' + mom + '\'])" title="' + t('tim_oir') + '">▶</button>' +
+          '<button class="hbtn2" style="flex:0 0 34px;padding:5px 0;border:none;background:transparent;box-shadow:none;font-size:17px" onclick="sonar(getTimbres()[\'' + mom + '\'])" title="' + t('tim_oir') + '">▶</button>' +
         '</div></div>';
     }).join('');
     ah.style.display = getAvisosOn() ? '' : 'none';
@@ -4492,27 +5057,30 @@ function renderDatos() {
 function agregarMed() {
   const n = document.getElementById('nm-nombre').value.trim();
   const d = document.getElementById('nm-dosis').value.trim();
-  const m = document.getElementById('nm-momento').value;
+  const moms = (_momsForm.nm || []).slice();
   if (!n) { toast('Falta el nombre'); return; }
+  if (!moms.length) { toast(t('mom_falta')); return; }
   const meds = getMeds();
   const hasta = (document.getElementById('nm-hasta') || {}).value || null;
   const frc = leerFrec('nm', diaKey());
-  meds.push(Object.assign({ id: n.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now() % 1000, nombre: n, dosis: d, momento: m, hasta: hasta }, frc));
+  meds.push(Object.assign({ id: n.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now() % 1000, nombre: n, dosis: d, momentos: moms, momento: moms[0], hasta: hasta }, frc));
   if (document.getElementById('nm-hasta')) document.getElementById('nm-hasta').value = '';
   lsSet('mfp_meds', meds);
   document.getElementById('nm-nombre').value = ''; document.getElementById('nm-dosis').value = '';
+  _momsForm.nm = ['desayuno']; pintaMomChips('nm');
+  const _cn = document.getElementById('nm-momento'); if (_cn) _cn.value = 'desayuno';
   renderDatos(); renderTomas(); toast('✓ ' + n + ' añadido');
 }
 function editarMed(i) {
   const meds = getMeds(); const m = meds[i]; if (!m) return;
   const ov = document.createElement('div');
   ov.style.cssText = 'position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px';
-  const opts = Object.keys(MOMENTOS).map(k => '<option value="' + k + '"' + (m.momento === k ? ' selected' : '') + '>' + MOMENTOS[k] + '</option>').join('');
+  const opts = Object.keys(MOMENTOS).map(k => '<option value="' + k + '"' + (m.momento === k ? ' selected' : '') + '>' + momNombre(k) + '</option>').join('');
   ov.innerHTML = '<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;width:100%;max-width:420px">' +
     '<div style="font-size:17px;font-weight:700;margin-bottom:10px">✏ ' + m.nombre + '</div>' +
     '<input class="txt" id="em-nombre" value="' + (m.nombre || '').replace(/"/g, '&quot;') + '">' +
     '<input class="txt" id="em-dosis" value="' + (m.dosis || '').replace(/"/g, '&quot;') + '" placeholder="Dosis" style="margin-top:8px">' +
-    '<select class="txt" id="em-momento" style="margin-top:8px" onchange="pintaFrec(\'em\')">' + opts + '</select>' +
+    '<div class="mchips" id="em-moms"></div><input type="hidden" id="em-momento" value="' + (momsDe(m)[0] || '') + '">' +
     '<div id="em-frec-caja" style="margin-top:8px">' +
       '<div class="nota-campo">' + t('fr_tit') + '</div>' +
       '<select class="txt" id="em-frec" onchange="pintaFrec(\'em\')">' + opcionesFrec(m.frec || 'diaria') + '</select>' +
@@ -4522,16 +5090,20 @@ function editarMed(i) {
       '<input class="txt" id="em-dmes" type="number" inputmode="numeric" min="1" max="31" placeholder="1 – 31"' +
         ' value="' + ((m.frec === 'mensual' && m.fdia) ? m.fdia : '') + '" style="display:none;margin-top:6px">' +
     '</div>' +
-    '<input class="txt" id="em-hasta" type="date" value="' + (m.hasta || '') + '" style="margin-top:8px">' +
+    '<input class="txt" id="em-hasta" type="text" readonly onclick="pedirFecha(this)" value="' + (m.hasta || '') + '" placeholder="—" style="margin-top:8px;cursor:pointer">' +
     '<div style="display:flex;gap:10px;margin-top:14px"><button class="btn sec" id="em-can" style="flex:1">' + t('d_can') + '</button>' +
     '<button class="btn" id="em-ok" style="flex:1">' + t('d_ok') + '</button></div></div>';
   document.body.appendChild(ov);
+  pintaFrec('em');
+  _momsForm.em = momsDe(m).slice();
+  pintaMomChips('em');
   pintaFrec('em');
   ov.querySelector('#em-can').onclick = () => ov.remove();
   ov.querySelector('#em-ok').onclick = () => {
     m.nombre = ov.querySelector('#em-nombre').value.trim() || m.nombre;
     m.dosis = ov.querySelector('#em-dosis').value.trim();
-    m.momento = ov.querySelector('#em-momento').value;
+    m.momentos = (_momsForm.em || []).slice();
+    m.momento = m.momentos[0] || m.momento;   /* tenu à jour pour les anciens lecteurs */
     m.hasta = ov.querySelector('#em-hasta').value || null;
     delete m.fdia; delete m.ancla;          /* on repart de ce que dit la fenêtre */
     Object.assign(m, leerFrec('em', diaKey()));
@@ -4666,7 +5238,7 @@ function restaurarArchivo(file) {
       const nom = (d.formato === 2 ? (d.paciente && d.paciente.nombre) : d.patient_label) || '(sin nombre)';
       confirmar('📂 Restaurar', 'Se cargarán los datos de « ' + nom + ' »' + (d.exportado ? '\n(guardados el ' + d.exportado + ')' : '') + '.\nSustituirán lo que haya en este dispositivo.', () => {
         restaurarDesdeObj(d);
-        localStorage.setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
+        _arm().setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
         toast('✓ restaurado — recargando…');
         setTimeout(() => location.reload(), 700);
       });
@@ -4748,19 +5320,46 @@ function copiarJSON() {
 }
 
 /* ── rendu général ── */
+/* Le jour se dit en toutes lettres, dans la langue de la maison —
+   LOCALES existe déjà plus haut, on ne le redéclare pas. */
+function fmtFechaLarga(k) {
+  const d = new Date(k + 'T12:00:00');
+  try { return d.toLocaleDateString(LOCALES[getLang()] || 'es-ES', { weekday:'long', day:'numeric', month:'long' }); }
+  catch (e) { return fmtDiaLargo(k); }
+}
+/* ═══ LES TITRES PORTENT LE JOUR (P-H, 14/08 : « un seul mécanisme pour
+   tous les écrans ») ═══ Doctrine de 1966 : le comportement se déclare
+   dans une table que le code parcourt. Un écran = son titre + trois clés.
+   Ajouter un écran demain, c'est ajouter UNE LIGNE ici, rien d'autre.
+   Le titre change aussi de TEMPS quand on recule : si « maintenant »
+   n'existe pas un autre jour, « aujourd'hui » non plus. */
+const TITULOS_DIA = { 'i-thoy':'th', 'i-tconst':'tc', 'i-tnotas':'tn' };
+function pintaTitulosDia() {
+  const larga = fmtFechaLarga(diaKey()), hoy = esHoy();
+  Object.entries(TITULOS_DIA).forEach(function ([id, b]) {
+    const e = document.getElementById(id); if (!e) return;
+    /* Sur AUJOURD'HUI le bandeau dit déjà la date juste au-dessus : la
+       répéter allongeait le titre au point d'obliger P-H à rapetisser
+       toute la police (14/08). Le jour en toutes lettres n'apparaît donc
+       QUE lorsqu'on n'est pas sur aujourd'hui — là il est indispensable. */
+    e.textContent = hoy ? t(b + '_hoy') + t(b + '_fin')
+                        : t(b + '_dia') + ' ' + larga + t(b + '_fin');
+  });
+}
 function fmtFecha(iso) {
   const d = new Date(iso + 'T12:00:00');
   return d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
 }
 function aplicarIdiomas() {
-  const M = { 'i-thoy':'t_hoy','i-tconst':'t_const','i-tnotas':'t_notas','i-thist':'t_hist',
+  const M = { 'i-thist':'t_hist',
     'i-tcomp':'t_comp','i-tmeds':'t_meds','i-tpac':'t_pac','i-bgconst':'b_gconst','i-bgobs':'b_gobs',
     'i-bpunt':'b_punt','i-bdesc':'b_desc','i-bcopi':'b_copi','i-bcomp':'b_comp','i-baddmed':'b_addmed',
-    'i-lhmed':'hora_med','i-bcorr':'b_corr','i-carrit':'c_arritmia','i-lfrec':'fr_tit','i-lfin':'fin_trat',
-    'i-nhoy':'hoy','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-nres':'nav_res','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-lsip':'sip_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp',
+    'i-carrit':'c_arritmia','i-lfrec':'fr_tit','i-lfin':'fin_trat',
+    'i-nhoy':'nav_med','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-nres':'nav_res','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-lsip':'sip_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp',
 
     'i-lpanal':'l_panal' };
   Object.entries(M).forEach(([id, k]) => { const e = document.getElementById(id); if (e) e.textContent = t(k); });
+  pintaTitulosDia(); pintaBarraHora();
   const nl = document.getElementById('nota-libre'); if (nl) nl.placeholder = t('nota_ph');
   if (typeof pintarEnvio === 'function') pintarEnvio();
   /* ⑲bis : le Resumen vit sur la barre du bas — une seule porte. */
@@ -4770,7 +5369,10 @@ function aplicarIdiomas() {
   if (sf) { const v = sf.value || 'diaria'; sf.innerHTML = opcionesFrec(v); }
   const ds = document.getElementById('nm-dsem');
   if (ds) { const v = ds.value; ds.innerHTML = nombresDiaSemana().map((nom, i) => '<option value="' + i + '">' + nom + '</option>').join(''); if (v) ds.value = v; }
+  pintaMomChips('nm');
   pintaFrec('nm');
+  /* nm-momento est devenu un champ caché : ce sont les cases qui parlent,
+     et elles se repeignent avec la langue comme le reste. */
   if (typeof renderU112 === 'function') renderU112();
   const bl = document.getElementById('btn-lang'); if (bl) { bl.innerHTML = BANDERAS[getLang()] || getLang().toUpperCase(); bl.title = getLang().toUpperCase(); }
 }
@@ -4798,7 +5400,14 @@ function render() {
   restaurarCampos();
   pintarCasaVacia();
   pintarAntena(baseSalufolio());        /* l'emblème existe avant la première sonde */
-  trioTotales(); pintaConstHoy(); bienvenida();
+  trioTotales(); pintaConstHoy(); recargarConst(); recargarObs(); pintaBarraHora(); bienvenida();
+  if (sinArmoire()) {
+    /* P-H, 17/08 : le bandeau masquait les boutons du haut. Un avertissement
+       qui empêche d'agir est pire que pas d'avertissement — il prend donc la
+       place du sous-titre, où il ne gêne personne. */
+    const sb = document.getElementById('hdr-sub');
+    if (sb) { sb.textContent = '⚠ ' + t('sin_mem'); sb.style.color = 'var(--warn)'; sb.style.opacity = '1'; }
+  }
   /* P-H, 31/07 : « on saura au moins au démarrage si Salufolio est
      disponible ». La sonde part donc à l'ouverture, revient quand on revient
      à l'application, et se rafraîchit d'elle-même — un serveur qu'on éteint
@@ -4821,12 +5430,12 @@ function render() {
     window._escuchasPuestas = true;
     ponerEscuchaUnica();
   }
-  const _oh = document.getElementById('o-hora'); if (_oh) _oh.addEventListener('change', upsertObs);
+  const _oh = document.getElementById('b-hora'); if (_oh) _oh.addEventListener('change', upsertObs);
   setTimeout(sondearPc, 400);
   document.querySelectorAll('details.acc').forEach(d => d.addEventListener('toggle', () => {
     if (d.open) document.querySelectorAll('details.acc[open]').forEach(o => { if (o !== d) o.open = false; });
   }));
-  if (localStorage.getItem('mfp_bienv2')) setTimeout(arranqueInicial, 350);
+  if (_arm().getItem('mfp_bienv2')) setTimeout(arranqueInicial, 350);
   /* devise P-H : la table se remplit toute seule — servie par le PC, l'app
      mémorise son adresse pour les ouvertures locales futures */
   if (location.protocol.indexOf('http') === 0 && location.origin) lsSet('mfp_pc', location.origin);
@@ -4836,6 +5445,8 @@ function render() {
   renderPacientes();
   document.getElementById('ver').textContent = 'v' + MFP_VERSION;
   aplicarTheme(); aplicarZoom(); aplicarIdiomas();
+  window.addEventListener('resize', ajustarPie);
+  window.addEventListener('orientationchange', () => setTimeout(ajustarPie, 120));
   /* Ces deux lignes posaient l'heure courante à chaque repeinture et
      écrasaient ce que restaurarCampos venait de relire — deux mains sur le
      même champ. C'est la restauration qui décide, elle seule. */

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banc d'essai — Salufolio Protocolo</title>
+<style>
+  :root{
+    --papier:#f2efe6;      /* le papier du carnet */
+    --encre:#1f2a24;       /* l'encre */
+    --pale:#6d7a72;        /* la note en marge */
+    --trait:#cfc8b8;       /* le filet */
+    --vert:#1e7a46;        /* le vert du pecten */
+    --miel:#c8892a;        /* l'avertissement */
+    --caisse:#e6e1d4;      /* le fond de l'établi */
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--papier);color:var(--encre);
+       font-family:Georgia,'Times New Roman',serif;display:flex;overflow:hidden}
+
+  /* ── L'ÉTABLI : la colonne des terminaux ── */
+  aside{flex:0 0 232px;border-right:1px solid var(--trait);padding:16px 14px;
+        overflow-y:auto;background:var(--papier)}
+  h1{font-size:15px;margin:0;letter-spacing:.3px}
+  .sub{font-size:11px;color:var(--pale);margin:0 0 10px;font-style:italic}
+  .marque{display:flex;align-items:center;gap:9px;margin-bottom:2px}
+  label{display:block;font-size:11px;color:var(--pale);margin:8px 0 3px}
+  button.act{margin-top:7px;padding:6px}
+  /* L'aide : elle se déplie sur place, elle n'ouvre pas une fenêtre. */
+  details.aide{margin-top:14px;border-top:1px solid var(--trait);padding-top:8px}
+  details.aide summary{cursor:pointer;font-size:12px;color:var(--vert);font-weight:bold}
+  details.aide div{font-size:11.5px;line-height:1.5;color:var(--encre);margin-top:7px}
+  details.aide code{background:var(--caisse);padding:1px 4px;border-radius:3px;
+        font-family:ui-monospace,'DejaVu Sans Mono',monospace;font-size:10.5px}
+  .titre{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--pale);
+         margin:12px 0 3px;font-family:ui-monospace,'DejaVu Sans Mono',monospace;
+         border-bottom:1px solid var(--trait);padding-bottom:2px}
+
+  .term{display:flex;align-items:baseline;gap:6px;width:100%;text-align:left;cursor:pointer;
+        background:none;border:none;padding:3px 6px;color:var(--encre);
+        font-family:inherit;font-size:13.5px;line-height:1.25;border-radius:5px}
+  .term:hover{background:var(--caisse)}
+  .term.on{background:var(--vert);color:#fff}
+  .term .px{margin-left:auto;font-size:11px;color:var(--pale);
+            font-family:ui-monospace,'DejaVu Sans Mono',monospace}
+  .term.on .px{color:#cfe8d9}
+  .term:focus-visible{outline:2px solid var(--vert);outline-offset:2px}
+
+  label{display:block;font-size:11px;color:var(--pale);margin:10px 0 3px}
+  input[type=text],input[type=number]{width:100%;font-family:ui-monospace,'DejaVu Sans Mono',monospace;
+        font-size:13px;padding:6px 8px;border:1px solid var(--trait);border-radius:6px;
+        background:#fff;color:var(--encre)}
+  .duo{display:flex;gap:6px}
+  button.act{margin-top:10px;width:100%;padding:8px;font-family:inherit;font-size:13px;
+        background:var(--vert);color:#fff;border:none;border-radius:7px;cursor:pointer}
+  button.act.pale{background:none;color:var(--vert);border:1px solid var(--vert)}
+
+  /* ── LA VITRINE ── */
+  main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+       padding:14px;background:var(--caisse);position:relative;overflow:hidden}
+  #socle{position:relative;transform-origin:top center}
+  iframe{border:none;display:block;background:#fff;
+         box-shadow:0 0 0 10px #1a1f1c,0 0 0 11px #000,0 18px 44px rgba(0,0,0,.35);
+         border-radius:22px}
+  #legende{margin-top:10px;font-size:12px;color:var(--pale);text-align:center;
+           font-family:ui-monospace,'DejaVu Sans Mono',monospace}
+  #legende b{color:var(--encre);font-weight:normal}
+  .source{font-size:11px;color:var(--pale);margin-top:7px;line-height:1.4;
+          border-left:2px solid var(--trait);padding-left:7px}
+  .source b{color:var(--encre);font-weight:normal}
+  .avis{position:absolute;top:12px;left:50%;transform:translateX(-50%);
+        background:#fff8e8;border:1px solid var(--miel);color:#6b4a10;
+        font-size:12px;padding:7px 12px;border-radius:8px;max-width:70%;text-align:center}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="marque"><span id="blason"></span><h1>Banc d'essai</h1></div>
+  <p class="sub">L'app à la taille du vrai, sans toucher un téléphone.</p>
+
+  <div class="titre">Téléphones</div>
+  <div id="tel"></div>
+  <div class="titre">Tablettes</div>
+  <div id="tab"></div>
+
+  <div class="titre">Sur mesure</div>
+  <div class="duo">
+    <div><label for="cw">Largeur</label><input type="number" id="cw" value="393"></div>
+    <div><label for="ch">Hauteur</label><input type="number" id="ch" value="873"></div>
+  </div>
+  <button class="act pale" onclick="surMesure()">Appliquer</button>
+  <button class="act pale" onclick="pivoter()">Pivoter ⟲</button>
+
+  <div class="titre">L'app à montrer</div>
+  <label for="url">Par son adresse</label>
+  <input type="text" id="url" value="http://192.168.10.200:7777/protocolo">
+  <button class="act" onclick="parURL()">Charger l'adresse</button>
+
+  <label for="fich" style="margin-top:12px">Ou un fichier du disque</label>
+  <input type="file" id="fich" accept=".html,.htm" onchange="parFichier(this)"
+         style="width:100%;font-size:11.5px;color:var(--pale)">
+  <div id="source" class="source"></div>
+  <button class="act pale" onclick="recharger()">Recharger</button>
+
+  <details class="aide">
+    <summary>Ajouter ou modifier un terminal</summary>
+    <div>
+      La liste vit dans <code>terminaux.js</code>, à côté de ce fichier.
+      Une ligne par appareil :<br>
+      <code>["Nom", largeur, hauteur]</code><br><br>
+      Ce sont des <b>pixels CSS</b>, pas la résolution du fabricant : divisez
+      la résolution par la densité de l'écran. Le Redmi 14C affiche 720 px de
+      large pour une densité de 2 — il vaut donc <b>360</b>.<br><br>
+      <code>"defaut"</code> doit reprendre exactement un nom de la liste.
+      Guillemets doubles partout, et pas de virgule après le dernier élément
+      d'une liste — le contenu est du JSON, il se vérifie.<br><br>
+      Les commentaires <code>/* … */</code> sont permis, y compris entre les
+      accolades : le vérificateur les enlève avant de lire.<br><br>
+      Pour contrôler le fichier :<br>
+      <code>python3 -c "import re,json;s=re.sub(r'/\*.*?\*/','',open('terminaux.js').read(),flags=re.S);json.loads(s[s.index('{'):s.rindex('}')+1]);print('OK')"</code>
+    </div>
+  </details>
+</aside>
+
+<main>
+  <div id="socle">
+    <iframe id="ecran" title="Salufolio Protocolo"></iframe>
+  </div>
+  <div id="legende"></div>
+  <div class="avis" id="avis" style="display:none"></div>
+</main>
+
+<script src="terminaux.js"></script>
+<script>
+/* ═══ LE BANC D'ESSAI (idée de P-H, 17/08) ═══
+   « ça m'évitera de télécharger l'app sur les téléphones et tablettes
+   pour vérifier ».
+
+   LE POINT DÉLICAT, et c'est lui qui fait tout marcher : on NE REDIMENSIONNE
+   PAS le cadre. Un cadre étroit ferait une mise en page de bureau écrasée,
+   pas celle du téléphone. On donne donc au cadre la taille EXACTE du terminal
+   en pixels CSS — l'app y répond comme sur l'appareil, médias-requêtes
+   comprises — puis on RÉDUIT L'IMAGE avec un transform:scale pour qu'elle
+   tienne dans la fenêtre. Ce qu'on voit est petit ; ce que l'app croit est
+   vrai. */
+
+/* La liste vit dans terminaux.js, à côté. Si le fichier manque ou qu'il est
+   mal écrit, le banc ne tombe pas : il se rabat sur un jeu minimal et le DIT
+   — un outil muet qui marche à moitié est pire qu'un outil qui s'explique. */
+var SECOURS = { defaut:'360 × 820', tel:[['360 × 820',360,820],['390 × 844',390,844]], tab:[['800 × 1280',800,1280]] };
+var TERMINAUX = (typeof window.TERMINAUX === 'object' && window.TERMINAUX && window.TERMINAUX.tel && window.TERMINAUX.tel.length)
+  ? window.TERMINAUX : SECOURS;
+var SANS_LISTE = (TERMINAUX === SECOURS);
+
+/* Le défaut est déclaré dans le fichier ; s'il ne correspond à rien, on
+   prend le premier téléphone de la liste plutôt que de rester vide. */
+var _tous = TERMINAUX.tel.concat(TERMINAUX.tab || []);
+var _def = _tous.filter(function (t) { return t[0] === TERMINAUX.defaut; })[0] || _tous[0];
+var L = _def[1], H = _def[2], choisi = _def[0];
+
+function poser(nom, l, h) {
+  choisi = nom; L = l; H = h;
+  document.getElementById('cw').value = l;
+  document.getElementById('ch').value = h;
+  peindreListe();
+  ajuster();
+}
+function surMesure() {
+  var l = +document.getElementById('cw').value, h = +document.getElementById('ch').value;
+  if (l > 200 && h > 300) poser('Sur mesure', l, h);
+}
+function pivoter() { poser(choisi, H, L); }
+
+function peindreListe() {
+  ['tel','tab'].forEach(function (grupo) {
+    document.getElementById(grupo).innerHTML = TERMINAUX[grupo].map(function (t) {
+      var on = (t[0] === choisi && t[1] === L && t[2] === H) ? ' on' : '';
+      return '<button class="term' + on + '" onclick="poser(\'' + t[0] + '\',' + t[1] + ',' + t[2] + ')">' +
+             t[0] + '<span class="px">' + t[1] + '×' + t[2] + '</span></button>';
+    }).join('');
+  });
+}
+
+/* La fenêtre de Brave donne la hauteur ; la largeur suit le rapport du
+   terminal. Si l'écran est trop étroit, c'est la largeur qui commande. */
+function ajuster() {
+  var m = document.querySelector('main'), lg = document.getElementById('legende');
+  var dispoH = m.clientHeight - 58, dispoL = m.clientWidth - 40;
+  var k = Math.min(dispoH / H, dispoL / L, 1);
+  var f = document.getElementById('ecran');
+  f.style.width = L + 'px'; f.style.height = H + 'px';
+  var socle = document.getElementById('socle');
+  socle.style.transform = 'scale(' + k + ')';
+  socle.style.height = (H * k) + 'px';
+  socle.style.width = (L * k) + 'px';
+  lg.innerHTML = '<b>' + choisi + '</b> — ' + L + ' × ' + H + ' px réels · vu à ' + Math.round(k * 100) + ' %';
+}
+
+/* ═══ DEUX PORTES POUR LA MÊME VITRINE (P-H, 17/08) ═══
+   Par ADRESSE : l'app servie par le pont, avec ses vraies données.
+   Par FICHIER : on choisit un .html du disque et on le regarde tout de suite,
+   sans le ranger nulle part ni relancer le serveur.
+
+   ⚠ LA RÉSERVE, et elle est réelle : un fichier ouvert ainsi tourne sous une
+   origine « blob », que le navigateur considère comme anonyme. Le carnet
+   n'y a donc PAS DE MÉMOIRE — ni patients, ni données, et rien ne s'y
+   enregistre. C'est parfait pour juger une mise en page, inutile pour
+   saisir. Le banc le dit à l'écran plutôt que de laisser croire. */
+var _source = { type: 'url', valeur: '', nom: '' }, _blob = null;
+
+function parURL() {
+  var u = document.getElementById('url').value.trim(); if (!u) return;
+  try { localStorage.setItem('banco_url', u); } catch (e) {}
+  _source = { type: 'url', valeur: u, nom: u };
+  document.getElementById('fich').value = '';
+  recharger();
+}
+function parFichier(el) {
+  var f = el.files && el.files[0]; if (!f) return;
+  if (_blob) { URL.revokeObjectURL(_blob); }
+  _blob = URL.createObjectURL(f);
+  _source = { type: 'fichier', valeur: _blob, nom: f.name };
+  recharger();
+}
+function recharger() {
+  if (!_source.valeur) { parURL(); return; }
+  var f = document.getElementById('ecran');
+  var u = _source.valeur;
+  f.src = (_source.type === 'url') ? u + (u.indexOf('?') < 0 ? '?' : '&') + 'banco=' + Date.now() : u;
+  document.getElementById('source').innerHTML = (_source.type === 'url')
+    ? 'Servi par le pont — <b>' + _source.nom + '</b><br>données réelles.'
+    : 'Fichier du disque — <b>' + _source.nom + '</b><br>⚠ sans mémoire : mise en page seulement.';
+  document.getElementById('avis').style.display = 'none';
+  if (_source.type === 'url') setTimeout(verifier, 4000);
+}
+/* Un cadre resté blanc ne dit rien de lui-même : on prévient au bout de
+   quelques secondes plutôt que de laisser croire à une page vide. */
+function verifier() {
+  var f = document.getElementById('ecran'), a = document.getElementById('avis');
+  try { if (f.contentWindow.length >= 0 && !f.contentDocument) return; } catch (e) { return; }
+  a.textContent = "Rien ne s'affiche. Vérifiez que le serveur tourne et que l'adresse est la bonne.";
+  a.style.display = 'block';
+}
+
+window.addEventListener('resize', ajuster);
+try {
+  var u0 = localStorage.getItem('banco_url');
+  if (u0) document.getElementById('url').value = u0;
+} catch (e) {}
+/* LES ARMES DE LA MAISON — même géométrie que dans l'app : une seule main
+   dessine la coquille, ici comme là-bas. */
+var CONCHA_RAYOS = [[4,124],[24,94],[51,70],[84,55],[120,50],[156,55],[189,70],[216,94],[236,124]];
+var CONCHA_ARCO = 'M4,124 Q2,101 24,94 Q28,71 51,70 Q62,50 84,55 Q100,39 120,50 Q140,39 156,55 Q178,50 189,70 Q212,71 216,94 Q238,101 236,124';
+document.getElementById('blason').innerHTML =
+  '<svg viewBox="0 0 240 240" width="34" height="34" style="display:block">' +
+  '<polygon points="224,120 172,210 68,210 16,120 68,30 172,30" fill="none" stroke="#1e7a46" stroke-width="12" stroke-linejoin="round"/>' +
+  '<g transform="translate(30,50) scale(0.75)">' +
+  CONCHA_RAYOS.map(function (pt) {
+    return '<line x1="120" y1="178" x2="' + pt[0] + '" y2="' + pt[1] + '" stroke="#e08a2e" stroke-width="11" stroke-linecap="round"/>';
+  }).join('') +
+  '<path d="' + CONCHA_ARCO + '" fill="none" stroke="#e08a2e" stroke-width="11" stroke-linejoin="round" stroke-linecap="round"/>' +
+  '<path d="M100,178 h40 l-7,16 h-26 z" fill="#e08a2e"/></g></svg>';
+
+peindreListe();
+ajuster();
+parURL();
+if (SANS_LISTE) {
+  var a = document.getElementById('avis');
+  a.textContent = "terminaux.js est introuvable ou mal écrit — liste de secours en service.";
+  a.style.display = 'block';
+}
+</script>
+</body>
+</html>
