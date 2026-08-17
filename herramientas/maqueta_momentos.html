@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maquette — les moments multiples</title>
+<style>
+  :root{
+    --bg:#141b2b; --surface:#212a3d; --surface2:#2c3750; --border:#3d4a66;
+    --text:#e8ecf4; --muted:#8b94a8; --ok:#3fb950; --accent:#4f8ff7;
+    --warn:#d99922; --bad:#f85149; --or:#f2c230;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;padding:14px}
+  h1{font-size:17px;margin:0 0 2px;display:flex;align-items:center;gap:9px}
+  .sub{color:var(--muted);font-size:12px;font-style:italic;margin:0 0 14px}
+  .avert{background:#3a2c12;border:1px solid var(--warn);color:#ffd98a;
+         border-radius:9px;padding:8px 11px;font-size:12.5px;margin-bottom:14px}
+  .carte{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+         padding:12px;margin-bottom:12px}
+  h2{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+     margin:0 0 9px;font-weight:700}
+  .med{border-top:1px solid var(--border);padding:9px 0}
+  .med:first-of-type{border-top:none}
+  .nom{font-weight:700}
+  .dose{color:var(--muted);font-size:12.5px}
+  .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+  .chip{background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+        border-radius:16px;padding:5px 10px;font-size:12.5px;cursor:pointer;
+        font-family:inherit;min-height:32px}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  .ligne{border-top:1px solid var(--border);padding:9px 0}
+.ligne:first-child{border-top:none}
+.tete{display:flex;align-items:baseline;gap:8px}
+.cases{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.case{background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+      border-radius:9px;padding:7px 10px;font-size:12.5px;cursor:pointer;
+      font-family:inherit;min-height:36px}
+.case.on{background:var(--ok);border-color:var(--ok);color:#fff;font-weight:700}
+.case.dem{border-style:dashed}
+.grp{margin-top:10px}
+  .grp h3{font-size:13px;margin:0 0 5px;color:var(--text);font-weight:700}
+  .prise{display:flex;align-items:center;gap:9px;padding:6px 0;border-top:1px dashed var(--border)}
+  .prise button{flex:0 0 30px;height:30px;border-radius:8px;border:1px solid var(--border);
+        background:var(--surface2);color:var(--text);cursor:pointer;font-size:15px}
+  .prise button.pris{background:var(--ok);border-color:var(--ok);color:#fff}
+  .prise .h{margin-left:auto;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+  .bilan{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:13px}
+  .pastille{width:13px;height:13px;border-radius:50%;box-sizing:border-box}
+  .pastille.plein{background:var(--or)}
+  .pastille.creux{background:transparent;border:3px solid var(--or)}
+  button.act{background:var(--surface2);color:var(--text);border:1px solid var(--border);
+        border-radius:9px;padding:8px 13px;font-size:13px;cursor:pointer;
+        font-family:inherit;margin:3px 4px 3px 0}
+  button.act.fort{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  pre{background:#0d1420;border:1px solid var(--border);border-radius:9px;padding:10px;
+      font-size:11.5px;line-height:1.45;overflow:auto;max-height:240px;
+      font-family:ui-monospace,Menlo,monospace;color:#9fd3a8;margin:0}
+  .trace{color:var(--muted);font-size:12px;margin-top:7px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+
+<h1><span id="blason"></span>Maquette — les moments multiples</h1>
+<p class="sub">Un médicament peut se prendre à plusieurs repas. On l'éprouve ici avant d'y toucher.</p>
+
+<div class="avert">
+  Cette page a <b>son propre casier</b> (préfixe <code>mq_</code>). Elle ne lit
+  ni n'écrit jamais les données du Protocolo.
+</div>
+
+<div class="carte">
+  <h2>① Les fiches — touchez les moments qui s'appliquent</h2>
+  <div id="fichas"></div>
+</div>
+
+<div class="carte">
+  <h2>② La journée — une ligne par médicament, ses cases dessus</h2>
+  <div id="jornada"></div>
+  <div class="bilan" id="bilan"></div>
+</div>
+
+<div class="carte">
+  <h2>③ L'ancienne forme se convertit-elle ?</h2>
+  <button class="act" onclick="poserAncien()">Charger des données à l'ancienne</button>
+  <button class="act fort" onclick="migrar()">Convertir</button>
+  <div class="trace" id="trazaMig">Aucune conversion faite.</div>
+</div>
+
+<div class="carte">
+  <h2>④ Sous le capot</h2>
+  <button class="act" onclick="reiniciar()">Repartir du jeu d'essai</button>
+  <pre id="capot"></pre>
+</div>
+
+<script>
+/* ═══ MAQUETTE DES MOMENTS MULTIPLES ═══
+   P-H, 17/08 : « un médicament qui se prend aux deux repas, comment fait-on ? »
+   Aujourd'hui le moment est UNIQUE : il faut créer la fiche deux fois, ce qui
+   est le MAM — deux copies d'une même vérité qui divergeront un jour.
+
+   CE QUI CHANGE VRAIMENT, et c'est pourquoi on passe par une maquette :
+   ce n'est pas l'écran, c'est LA FORME DES DONNÉES.
+
+     avant   tomas[jour][medId] = "08:12"
+     après   tomas[jour][medId] = { desayuno:"08:12", cena:"21:30" }
+
+   Tout ce qui lit les prises doit donc suivre : le Resumen, les Días por
+   transmitir, l'envoi, l'anneau creux du calendrier.
+
+   LAVOISIER : la conversion ne détruit rien. Une prise à l'ancienne va se
+   ranger sous le moment que la fiche déclarait — elle change d'adresse,
+   pas d'existence. */
+
+var CLE_M = 'mq_meds', CLE_T = 'mq_tomas';
+var MOM = [['desayuno','🌅','Desayuno'], ['almuerzo','🥐','Almuerzo'],
+           ['comida','☀️','Comida'],   ['merienda','🍵','Merienda'],
+           ['cena','🌇','Cena'],       ['noche','🌙','Noche']];
+/* « À la demande » n'est PAS un moment de la journée : c'est le contraire
+   d'un moment. Il est donc EXCLUSIF (P-H, 17/08) et c'est le seul cas où
+   l'heure a un sens — un antalgique à 3 h du matin n'est pas le même fait
+   qu'à 15 h, et l'espacement entre deux doses compte. */
+var DEMANDA = ['demanda','✚','A demanda'];
+var TOUS = MOM.concat([DEMANDA]);
+var HOY = new Date().toISOString().slice(0,10);
+
+var JEU = [
+  { id:'m1', nombre:'Neuralex',   dosis:'1 comprimé', momentos:['desayuno','comida','cena'] },
+  { id:'m2', nombre:'Donepezilo', dosis:'10 mg',      momentos:['noche'] },
+  { id:'m3', nombre:'Paracetamol',dosis:'1 g',        momentos:['demanda'] }
+];
+
+function lire(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
+function ecrire(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+function meds() { return lire(CLE_M, null) || (ecrire(CLE_M, JEU), JEU); }
+function tomas() { return lire(CLE_T, {}); }
+/* ⚠ LEÇON DE LA MAQUETTE (17/08) : charger d'anciennes données a fait un
+   écran blanc — l'affichage supposait `momentos` alors que les vieilles
+   fiches n'ont que `momento`. UN SEUL ENDROIT décide désormais ce qu'est la
+   liste des moments d'une fiche, et il tolère les deux formes. Sans cette
+   fonction, il faudrait migrer AVANT de pouvoir afficher — donc migrer à
+   l'aveugle, ce qu'on ne fait jamais. */
+function momsDe(m) { return m.momentos || (m.momento ? [m.momento] : []); }
+function mom(id) { return TOUS.filter(function (x) { return x[0] === id; })[0]; }
+function nomMom(id) { var m = mom(id); return m ? m[1] + ' ' + m[2] : id; }
+function aDemanda(m) { return momsDe(m).indexOf('demanda') >= 0; }
+function ahora() { var d = new Date(); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
+
+/* ── ① les fiches ── */
+function pintaFichas() {
+  document.getElementById('fichas').innerHTML = meds().map(function (m) {
+    return '<div class="med"><div class="nom">' + m.nombre + '</div>' +
+      '<div class="dose">' + m.dosis + '</div><div class="chips">' +
+      TOUS.map(function (x) {
+        var on = momsDe(m).indexOf(x[0]) >= 0;
+        return '<button class="chip' + (on ? ' on' : '') + '" onclick="bascule(\'' + m.id + '\',\'' + x[0] + '\')">' +
+               x[1] + ' ' + x[2] + '</button>';
+      }).join('') + '</div></div>';
+  }).join('');
+}
+function bascule(medId, momId) {
+  var ms = meds();
+  ms.forEach(function (m) {
+    if (m.id !== medId) return;
+    m.momentos = momsDe(m);
+    var i = m.momentos.indexOf(momId);
+    if (i >= 0) m.momentos.splice(i, 1);
+    else if (momId === 'demanda') m.momentos = ['demanda'];      /* exclusif */
+    else { m.momentos = m.momentos.filter(function (x) { return x !== 'demanda'; }); m.momentos.push(momId); }
+    /* L'ordre de la journée, jamais l'ordre des clics. */
+    var ordre = TOUS.map(function (x) { return x[0]; });
+    m.momentos.sort(function (a, b) { return ordre.indexOf(a) - ordre.indexOf(b); });
+  });
+  ecrire(CLE_M, ms); todo();
+}
+
+/* ── ② la journée, groupée par moment ── */
+/* ═══ LA JOURNÉE (conception de P-H, 17/08) ═══
+   « pointer Neuralex nous dit ses moments » — UNE LIGNE PAR MÉDICAMENT,
+   jamais le même nom deux ou trois fois. La ligne montre SES cases, celles
+   que la fiche déclare, et l'on coche celles qui ont été prises.
+   Le soir, on rattrape la journée entière d'un doigt.
+
+   AUCUNE HEURE N'EST ENREGISTRÉE pour ces prises-là : l'heure du geste
+   n'est pas l'heure de la prise, et l'écrire serait une fausse précision.
+   Le moment EST l'information. Seul « à la demande » porte des heures. */
+function pintaJornada() {
+  var ms = meds(), tj = tomas()[HOY] || {};
+  document.getElementById('jornada').innerHTML = ms.map(function (m) {
+    var pris = tj[m.id] || {};
+    if (aDemanda(m)) {
+      var horas = pris.demanda || [];
+      return '<div class="ligne"><div class="tete"><span class="nom">' + m.nombre + '</span>' +
+        '<span class="dose">' + m.dosis + '</span></div><div class="cases">' +
+        '<button class="case dem" onclick="tocaDemanda(\'' + m.id + '\')">✚ ' + DEMANDA[2] + '</button>' +
+        horas.map(function (h, k) {
+          return '<button class="case on" onclick="quitaDemanda(\'' + m.id + '\',' + k + ')">' + h + ' ✕</button>';
+        }).join('') + '</div></div>';
+    }
+    return '<div class="ligne"><div class="tete"><span class="nom">' + m.nombre + '</span>' +
+      '<span class="dose">' + m.dosis + '</span></div><div class="cases">' +
+      momsDe(m).map(function (mo) {
+        var x = mom(mo) || [mo, '•', mo];
+        return '<button class="case' + (pris[mo] ? ' on' : '') + '" onclick="toca(\'' + m.id + '\',\'' + mo + '\')">' +
+               x[1] + ' ' + x[2] + (pris[mo] ? ' ✓' : '') + '</button>';
+      }).join('') + '</div></div>';
+  }).join('') || '<div class="dose">Aucune fiche.</div>';
+}
+function toca(medId, momId) {
+  var t = tomas(); if (!t[HOY]) t[HOY] = {}; if (!t[HOY][medId]) t[HOY][medId] = {};
+  if (t[HOY][medId][momId]) delete t[HOY][medId][momId];
+  else t[HOY][medId][momId] = true;          /* vrai, pas une heure */
+  if (!Object.keys(t[HOY][medId]).length) delete t[HOY][medId];
+  ecrire(CLE_T, t); todo();
+}
+function tocaDemanda(medId) {
+  var t = tomas(); if (!t[HOY]) t[HOY] = {}; if (!t[HOY][medId]) t[HOY][medId] = {};
+  var h = prompt('Heure de la prise ?', ahora());
+  if (!h || !/^\d{1,2}:\d{2}$/.test(h.trim())) return;
+  t[HOY][medId].demanda = (t[HOY][medId].demanda || []).concat([h.trim()]);
+  t[HOY][medId].demanda.sort();
+  ecrire(CLE_T, t); todo();
+}
+function quitaDemanda(medId, k) {
+  var t = tomas(), l = ((t[HOY] || {})[medId] || {}).demanda || [];
+  l.splice(k, 1);
+  if (!l.length) { delete t[HOY][medId].demanda; if (!Object.keys(t[HOY][medId]).length) delete t[HOY][medId]; }
+  ecrire(CLE_T, t); todo();
+}
+/* ── le bilan : c'est lui qui décide la couleur du point au calendrier ── */
+function dus() {
+  var n = 0;
+  meds().forEach(function (m) {
+    momsDe(m).forEach(function (mo) { if (mo !== 'demanda') n++; });
+  });
+  return n;
+}
+function faits() {
+  var tj = tomas()[HOY] || {}, n = 0;
+  meds().forEach(function (m) {
+    momsDe(m).forEach(function (mo) {
+      if (mo !== 'demanda' && (tj[m.id] || {})[mo]) n++;
+    });
+  });
+  return n;
+}
+function pintaBilan() {
+  var d = dus(), f = faits(), rien = (f === 0 && !Object.keys(tomas()[HOY] || {}).length);
+  var forme = rien ? '' : (f >= d ? 'plein' : 'creux');
+  document.getElementById('bilan').innerHTML =
+    (forme ? '<span class="pastille ' + forme + '"></span>' : '<span class="pastille"></span>') +
+    '<span>' + f + ' prise' + (f > 1 ? 's' : '') + ' sur ' + d + ' due' + (d > 1 ? 's' : '') + ' — ' +
+    (rien ? 'aucune marque au calendrier' : (f >= d ? 'point PLEIN' : 'anneau CREUX')) + '</span>';
+}
+
+/* ── ③ la conversion ── */
+function poserAncien() {
+  /* Le monde d'avant : moment unique, une seule prise par jour et par fiche. */
+  var vieux = [
+    { id:'m1', nombre:'Neuralex',   dosis:'1 comprimé', momento:'desayuno' },
+    { id:'m1b',nombre:'Neuralex',   dosis:'1 comprimé', momento:'cena' },
+    { id:'m2', nombre:'Donepezilo', dosis:'10 mg',      momento:'noche' }
+  ];
+  var t = {}; t[HOY] = { m1:'08:12', m1b:'21:30' };
+  ecrire(CLE_M, vieux); ecrire(CLE_T, t);
+  document.getElementById('trazaMig').textContent =
+    'Chargé : 3 fiches à l\'ancienne (dont Neuralex EN DOUBLE) et 2 prises au format « une heure ».';
+  todo();
+}
+function migrar() {
+  var ms = lire(CLE_M, []), t = lire(CLE_T, {}), traces = [];
+
+  /* 1. moment unique → liste d'un seul moment */
+  ms.forEach(function (m) {
+    if (!m.momentos) { m.momentos = m.momento ? [m.momento] : []; traces.push('· ' + m.nombre + ' : moment « ' + m.momento + ' » devient une liste'); }
+  });
+
+  /* 2. les prises : "08:12" → { desayuno:"08:12" } — l'heure se range sous le
+        moment que la fiche déclarait. Rien ne se perd, on corrige une adresse. */
+  Object.keys(t).forEach(function (j) {
+    Object.keys(t[j]).forEach(function (id) {
+      if (typeof t[j][id] !== 'string') return;
+      var fiche = ms.filter(function (m) { return m.id === id; })[0];
+      var mo = (fiche && momsDe(fiche)[0]) || 'demanda';
+      var h = t[j][id]; t[j][id] = {};
+      if (mo === 'demanda') { t[j][id].demanda = [h];
+        traces.push('· prise à la demande du ' + j + ' : l\'heure ' + h + ' est conservée'); }
+      else { t[j][id][mo] = true;
+        traces.push('· prise du ' + j + ' rangée sous « ' + mo + ' » — l\'heure ' + h +
+                    ' était celle du GESTE, pas de la prise : elle ne ment plus'); }
+    });
+  });
+
+  /* 3. les doublons de fiche fusionnent : c'était le MAM, il disparaît. */
+  var vus = {}, gardes = [];
+  ms.forEach(function (m) {
+    var cle = m.nombre + '|' + m.dosis;
+    if (vus[cle]) {
+      momsDe(m).forEach(function (mo) { if (vus[cle].momentos.indexOf(mo) < 0) vus[cle].momentos.push(mo); });
+      /* les prises de la fiche absorbée suivent leur médicament */
+      Object.keys(t).forEach(function (j) {
+        if (!t[j][m.id]) return;
+        t[j][vus[cle].id] = t[j][vus[cle].id] || {};
+        Object.keys(t[j][m.id]).forEach(function (mo) { t[j][vus[cle].id][mo] = t[j][m.id][mo]; });
+        delete t[j][m.id];
+      });
+      traces.push('· ' + m.nombre + ' était en double : les deux fiches n\'en font plus qu\'une');
+    } else { vus[cle] = m; gardes.push(m); }
+  });
+
+  ecrire(CLE_M, gardes); ecrire(CLE_T, t);
+  document.getElementById('trazaMig').textContent =
+    (traces.length ? 'Converti :\n' + traces.join('\n') : 'Rien à convertir — tout était déjà à la nouvelle forme.');
+  todo();
+}
+
+function reiniciar() {
+  localStorage.removeItem(CLE_M); localStorage.removeItem(CLE_T);
+  document.getElementById('trazaMig').textContent = 'Aucune conversion faite.';
+  todo();
+}
+function pintaCapot() {
+  document.getElementById('capot').textContent =
+    'FICHES\n' + JSON.stringify(meds(), null, 1) + '\n\nPRISES\n' + JSON.stringify(tomas(), null, 1);
+}
+function todo() { pintaFichas(); pintaJornada(); pintaBilan(); pintaCapot(); }
+
+var CR = [[4,124],[24,94],[51,70],[84,55],[120,50],[156,55],[189,70],[216,94],[236,124]];
+var CA = 'M4,124 Q2,101 24,94 Q28,71 51,70 Q62,50 84,55 Q100,39 120,50 Q140,39 156,55 Q178,50 189,70 Q212,71 216,94 Q238,101 236,124';
+document.getElementById('blason').innerHTML =
+  '<svg viewBox="0 0 240 240" width="26" height="26" style="display:block">' +
+  '<polygon points="224,120 172,210 68,210 16,120 68,30 172,30" fill="none" stroke="#3dbf7f" stroke-width="12" stroke-linejoin="round"/>' +
+  '<g transform="translate(30,50) scale(0.75)">' +
+  CR.map(function (p) { return '<line x1="120" y1="178" x2="' + p[0] + '" y2="' + p[1] + '" stroke="#e8a13c" stroke-width="11" stroke-linecap="round"/>'; }).join('') +
+  '<path d="' + CA + '" fill="none" stroke="#e8a13c" stroke-width="11" stroke-linejoin="round" stroke-linecap="round"/>' +
+  '<path d="M100,178 h40 l-7,16 h-26 z" fill="#e8a13c"/></g></svg>';
+
+todo();
+</script>
+</body>
+</html>
