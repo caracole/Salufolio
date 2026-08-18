@@ -16,13 +16,17 @@
   --warn:#d99922; --bad:#f85149; --radius:14px;
 }
 html[data-theme="light"]{
-  --bg:#eef1f6; --surface:#ffffff; --surface2:#e6eaf2; --border:#c8d1e0;
+  --bg:#eef1f6; --surface:#ffffff; --surface2:#f4f6fa; --border:#c3cddd;
   --text:#1b2330; --muted:#5b6577;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scrollbar-width:none;-ms-overflow-style:none}
 html::-webkit-scrollbar,body::-webkit-scrollbar,.dlg::-webkit-scrollbar,
-.lista-cuerpo::-webkit-scrollbar,.bv-cuerpo::-webkit-scrollbar{width:0;height:0}
+.lista-cuerpo::-webkit-scrollbar,h2 .t2{font-weight:400;opacity:.7;letter-spacing:0}
+.bv-langs{display:flex;gap:7px;justify-content:center;margin:0 0 12px;flex-shrink:0}
+.bv-lang{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;
+  padding:5px 9px;font-size:19px;line-height:1;cursor:pointer;min-height:38px;font-family:inherit}
+.bv-lang.on{border-color:var(--accent);background:var(--bg)}
 body,.dlg,.lista-cuerpo,.bv-cuerpo{scrollbar-width:none}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
   font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-size:18px}
@@ -36,7 +40,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bg);
    eux resserré — c'est la marge qui rend la police, pas la lisibilité. */
 .ctrls{display:flex;gap:3px;justify-content:flex-end;margin-bottom:2px;flex-wrap:nowrap}
 .hbtn{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  width:34px;min-width:34px;height:32px;font-size:15px;cursor:pointer;color:var(--text);padding:0;font-weight:700;flex:0 0 34px}
+  width:32px;min-width:32px;height:32px;font-size:15px;cursor:pointer;color:var(--text);padding:0;font-weight:700;flex:0 0 32px}
 /* ── dialogues maison (adieu prompt/confirm agressifs) ── */
 /* ═══ LE CALENDRIER MAISON (P-H, 17/08) ═══ Le sélecteur natif nous a lâchés
    deux fois : sous le transform du banc, puis collé au bas du pied où il
@@ -90,6 +94,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bg);
   border-radius:var(--radius);padding:10px 14px;margin-bottom:8px;font-size:15px}
 /* Le logo est posé en absolu à gauche : la ligne de la date lui laisse
    sa place au lieu de passer dessous (P-H, 17/08). */
+h2 .t2{font-weight:400;opacity:.7;letter-spacing:0}
 .marcas{display:flex;gap:3px;align-items:center;flex-shrink:0}
 .mq{font-size:15px;opacity:.32;line-height:1}
 .mq.ok{opacity:1}
@@ -116,9 +121,16 @@ header .lema{font-size:11px;color:var(--muted);font-style:italic;margin-top:6px;
    chaque écran a disparu — une rangée rendue à tous les écrans. */
 #pie{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);
   border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
-#barra-hora{display:flex;align-items:center;gap:8px;padding:5px 10px;border-bottom:1px solid var(--border)}
-#barra-hora label{font-size:12px;color:var(--muted);font-weight:700;flex:1 1 auto;min-width:0}
-#barra-hora input{font-size:19px;font-weight:700;flex:0 0 88px;text-align:center;
+/* P-H, 18/08 : l'intitulé était comprimé à gauche et se coupait en trois.
+   Il passe AU-DESSUS, en entier ; la boîte garde sa largeur de doigt. */
+#barra-hora{display:flex;align-items:center;gap:10px;padding:5px 10px;border-bottom:1px solid var(--border)}
+/* Dans Notes l'ensemble intitulé + heure se centre (P-H, carnet note 3) ;
+   dans Constantes il garde l'intitulé à gauche et l'heure calée à droite,
+   comme il l'a demandé le 18/08 au matin. */
+#barra-hora.centrado{justify-content:center}
+#barra-hora.centrado label{flex:0 1 auto;text-align:right}
+#barra-hora label{font-size:11.5px;color:var(--muted);font-weight:700;line-height:1.25;flex:1 1 auto;min-width:0;white-space:normal}
+#barra-hora input{font-size:19px;font-weight:700;flex:0 0 auto;width:104px;min-width:104px;max-width:104px;text-align:center;
   background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:9px;padding:4px 0;font-family:inherit}
 #barra-quando{display:flex;align-items:stretch;gap:6px;padding:5px 8px;border-bottom:1px solid var(--border)}
 #barra-quando button{background:var(--bg);color:var(--text);border:1px solid var(--border);
@@ -137,8 +149,10 @@ nav button.act .ico{transform:scale(1.12)}
 
 main{padding:14px 14px 20px}
 .panel{display:none}.panel.act{display:block}
+/* P-H, carnet du 18/08 (notes 1 et 3) : les titres se centrent — les deux
+   lignes du titre d'écran comme les intitulés de section. */
 h2{font-size:16px;letter-spacing:.5px;color:var(--muted);font-weight:700;
-  text-transform:uppercase;margin:18px 0 10px}
+  text-transform:uppercase;margin:18px 0 10px;text-align:center}
 
 /* ── LA SIGNATURE : pastilles de prises ── */
 .toma{display:flex;align-items:center;gap:14px;width:100%;text-align:left;
@@ -244,6 +258,7 @@ select option{background:var(--surface);color:var(--text)}
    Deux faces qui pivotent autour de l'arête centrale : celle qu'on enfonce
    part en arrière, l'autre ressort. Aucun mot : O et I se lisent dans les
    quatre langues. La face enfoncée s'allume quand la machine tourne. ═══ */
+#u112 .matctrl{margin-left:0;flex:1 1 100%;justify-content:center}
 .matrow.u112-on{border-color:#d5241a;background:rgba(213,36,26,.09)}
 /* état 1 — la personne est sortie : ce n'est plus l'urgence, c'est
    l'attente du retour. La couleur le dit sans un mot. */
@@ -563,7 +578,7 @@ window.onerror = function (msg, src, line, col) {
 /* Adresse du PC injectée par le serveur au téléchargement (« Instalar en
    este teléfono ») — l'app locale naît déjà configurée. */
 const MFP_PC_DEF = '';
-const MFP_VERSION = '2026.8.17.47-SAT';
+const MFP_VERSION = '2026.8.18.61-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -645,6 +660,7 @@ const IDIOMAS = {
     come_pedido:"Ha pedido comer",
     come_bien:"Ha comido bien",
     mat_oxigeno:"Oxígeno",
+    bv_sub:"el cuaderno del cuidador", bv_cuerpo:"<b>Salufolio</b> es la casa del expediente médico personal: sus datos de salud, en su propia máquina, sin cuentas ni conexión a un servicio remoto.<br><br>Este <b>Protocolo</b> es el cuaderno del cuidador: tomas, constantes y observaciones del día a día. El informe para la consulta se prepara solo.", bv_lat:"Del latín <i>Salus</i>, la diosa de la salud, y <i>folium</i>: el folio de la salud.", bv_pasos:"1️⃣ <b>📦 Datos</b> — el paciente y su pauta (➕ / ✏️) · 2️⃣ <b>💊 Hoy</b> — toque cada toma (◀ días pasados) · 3️⃣ <b>🩺 Constantes</b> · <b>📝 Notas</b> — al momento.", bv_ok:"Entendido",
     mj_desayuno:"Desayuno", mj_almuerzo:"Almuerzo", mj_comida:"Comida", mj_merienda:"Merienda", mj_cena:"Cena", mj_noche:"Noche", mj_demanda:"A demanda", mom_falta:"Elija al menos un momento.", sin_mem:"Sin memoria en este modo : nada se guardará.", sin_tomas:"Ninguna toma anotada hoy.",
     rev_borrar:"Borrar",
     rev_borrar_tit:"Borrar esta observación", rev_borrar_ok:"Sí, borrar", rev_borrada:"Observación borrada", rev_borrar_nota:"Se borra por completo y no se puede deshacer. Hágalo solo si se anotó por error.",
@@ -750,18 +766,18 @@ const IDIOMAS = {
     lado_der:"Derecho",
     ay_tit:"❓ Cómo se usa",
     ay_hoy:"<b>💊 Hoy</b> — toque cada medicamento cuando se tome : queda registrado con la hora. ¿Se registró tarde? <b>Toque la hora</b> para corregirla. Un toque de más se anula tocando otra vez. «Toma puntual» registra una toma fuera de la lista ; si el medicamento está « a demanda », se elige de un toque.",
-    ay_const:"<b>🩺 Constantes</b> — rellene solo lo medido ; la hora se puede corregir. Se guarda solo.",
+    ay_const:"<b>🩺 Constantes</b> — rellene solo lo medido ; la hora se puede corregir. Se guarda automáticamente.",
     ay_notas:"<b>📝 Notas</b> — toque lo observado (hidratación, deposición, micción) : queda anotado con la hora, y el resumen del día aparece a la derecha. Son las preguntas del <i>informe para la consulta</i>.",
-    ay_datos:"<b>📦 Datos</b> — paciente y pauta, historial, y la salida : <b>⬇️</b> guardar o <b>📡</b> enviar una copia al ordenador (Salufolio la importará), y <b>📂 Restaurar</b> una copia en un teléfono nuevo.",
+    ay_datos:"<b>📦 Datos</b> — paciente y pauta, historial, y la salida : <b>⬇️</b> guardar o <b>📡</b> enviar una copia al ordenador por wifi local (Salufolio la importará), y <b>📂 Restaurar</b> una copia en un teléfono nuevo.",
     ay_ayer:"<b>Si ayer quedó una toma sin registrar</b>, la app lo pregunta al abrir. Ante dudas sobre una dosis, consulte el prospecto o al médico — la app registra, no aconseja.",
-    ay_disp:"Los datos viven en este dispositivo.",
+    ay_disp:"Los datos viven en este dispositivo.", ay_dev:"Producto en desarrollo", ay_doc:"Ver o descargar la documentación detallada",
     ay_ok:"Entendido", hoy:'Hoy', consts:'Constantes', notas:'Notas', datos:'Datos',
     t_hoy:'Medicación de hoy — toque cuando se tome · toque la hora para corregirla',
     t_const:'Constantes — deje vacío lo no medido', t_notas:'¿Qué se observa hoy? — toque lo que aplique',
-    th_hoy:'Medicación de hoy', th_dia:'Medicación del', th_fin:' — toque cuando se tome · toque la hora para corregirla',
-    tc_hoy:'Constantes', tc_dia:'Constantes del', tc_fin:' — deje vacío lo no medido',
+    th_hoy:'Medicación de hoy', th_dia:'Medicación del', th_fin:'toque cuando se tome',
+    tc_hoy:'Constantes', tc_dia:'Constantes del', tc_fin:'deje vacío lo no medido',
     nav_med:'Medicación', dh_obs:'Hora de la observación (corregible)',
-    tn_hoy:'¿Qué se observa hoy', tn_dia:'¿Qué se observó el', tn_fin:'? — toque lo que aplique',
+    tn_hoy:'¿Qué se observa hoy?', tn_dia:'¿Qué se observó el', tn_fin:'toque lo que aplique',
     t_hist:'Días por transmitir', hist_nada:'✓ Todo revisado y transmitido a Salufolio', hist_pie:'Toque un día para revisarlo y enviarlo.', hist_ap:'apuntes', hist_ap_1:'apunte', scan_tit:'Escanear el código QR del ordenador', scan_ayuda:'Apunte la cámara al código QR que muestra el ordenador (qr.sh o el panal de Salufolio).', scan_ok:'✓ Dirección guardada', scan_err:'⚠ Cámara no disponible — escriba la dirección a mano', t_comp:'Guardar y compartir', t_meds:'Medicamentos configurados', t_pac:'Paciente',
     b_gconst:'💾 Guardar constantes', b_gobs:'💾 Guardar observación', b_punt:'➕ Registrar toma puntual…',
     b_desc:'⬇️ Guardar copia de los datos', b_copi:'📋 Copiar datos', b_comp:'📤 Compartir…', b_addmed:'➕ Añadir medicamento',
@@ -855,6 +871,7 @@ const IDIOMAS = {
     come_pedido:"Ha demanat menjar",
     come_bien:"Ha menjat bé",
     mat_oxigeno:"Oxigen",
+    bv_sub:"el quadern del cuidador", bv_cuerpo:"<b>Salufolio</b> és la casa de l'expedient mèdic personal: les seues dades de salut, en la seua pròpia màquina, sense comptes ni connexió a un servei remot.<br><br>Este <b>Protocol</b> és el quadern del cuidador: preses, constants i observacions del dia a dia. L'informe per a la consulta es prepara sol.", bv_lat:"Del llatí <i>Salus</i>, la deessa de la salut, i <i>folium</i>: el foli de la salut.", bv_pasos:"1️⃣ <b>📦 Dades</b> — el pacient i la seua pauta (➕ / ✏️) · 2️⃣ <b>💊 Hui</b> — toque cada presa (◀ dies passats) · 3️⃣ <b>🩺 Constants</b> · <b>📝 Notes</b> — al moment.", bv_ok:"Entesos",
     mj_desayuno:"Esmorzar", mj_almuerzo:"Esmorzaret", mj_comida:"Dinar", mj_merienda:"Berenar", mj_cena:"Sopar", mj_noche:"Nit", mom_falta:"Trie almenys un moment.", sin_mem:"Sense memòria en aquest mode : res no es guardarà.", sin_tomas:"Cap presa anotada hui.", mj_demanda:"A demanda",
     rev_borrar:"Esborrar",
     rev_borrar_tit:"Esborrar esta observació", rev_borrar_ok:"Sí, esborrar", rev_borrada:"Observació esborrada", rev_borrar_nota:"S'esborra del tot i no es pot desfer. Feu-ho només si es va anotar per error.",
@@ -960,18 +977,18 @@ const IDIOMAS = {
     lado_der:"Dret",
     ay_tit:"❓ Com es fa servir",
     ay_hoy:"<b>💊 Hui</b> — toqueu cada medicament quan es prenga : queda registrat amb l’hora. Registrat tard? <b>Toqueu l’hora</b> per corregir-la. Un toc de més s’anul·la tocant una altra vegada. «Presa puntual» registra una presa fora de la llista ; si el medicament és « a demanda », es tria amb un toc.",
-    ay_const:"<b>🩺 Constants</b> — ompliu només el mesurat ; l’hora es pot corregir. Es guarda sol.",
+    ay_const:"<b>🩺 Constants</b> — ompliu només el mesurat ; l’hora es pot corregir. Es guarda automàticament.",
     ay_notas:"<b>📝 Notes</b> — toqueu l’observat (hidratació, deposició, micció) : queda anotat amb l’hora, i el resum del dia apareix a la dreta. Són les preguntes de l’<i>informe per a la consulta</i>.",
-    ay_datos:"<b>📦 Dades</b> — pacient i pauta, historial, i l’eixida : <b>⬇️</b> guardar o <b>📡</b> enviar una còpia a l’ordinador (Salufolio la importarà), i <b>📂 Restaurar</b> una còpia en un telèfon nou.",
-    ay_ayer:"<b>Si ahir va quedar una presa sense registrar</b>, l’app ho pregunta en obrir. Davant dubtes sobre una dosi, consulteu el prospecte o el metge — l’app registra, no aconsella.",
-    ay_disp:"Les dades viuen en este dispositiu.",
+    ay_datos:"<b>📦 Dades</b> — pacient i pauta, historial, i l’eixida : <b>⬇️</b> guardar o <b>📡</b> enviar una còpia a l’ordinador per wifi local (Salufolio la importarà), i <b>📂 Restaurar</b> una còpia en un telèfon nou.",
+    ay_ayer:"<b>Si ahir va quedar una presa sense registrar</b>, Protocolo ho pregunta en obrir. Davant dubtes sobre una dosi, consulteu el prospecte o el metge — Protocolo registra, no aconsella.",
+    ay_disp:"Les dades viuen en este dispositiu.", ay_dev:"Producte en desenvolupament", ay_doc:"Veure o descarregar la documentació detallada",
     ay_ok:"Entesos", hoy:'Hui', consts:'Constants', notas:'Notes', datos:'Dades',
     t_hoy:'Medicació de hui — toque quan es prenga · toque l\'hora per a corregir-la',
     t_const:'Constants — deixe buit el que no s\'haja mesurat', t_notas:'Què s\'observa hui? — toque el que aplique',
-    th_hoy:'Medicació de hui', th_dia:'Medicació del', th_fin:' — toque quan es prenga · toque l\'hora per a corregir-la',
-    tc_hoy:'Constants', tc_dia:'Constants del', tc_fin:' — deixe buit el que no s\'haja mesurat',
+    th_hoy:'Medicació de hui', th_dia:'Medicació del', th_fin:'toque quan es prenga',
+    tc_hoy:'Constants', tc_dia:'Constants del', tc_fin:'deixe buit el que no s\'haja mesurat',
     nav_med:'Medicació', dh_obs:'Hora de l\'observació (corregible)',
-    tn_hoy:'Què s\'observa hui', tn_dia:'Què es va observar el', tn_fin:'? — toque el que aplique',
+    tn_hoy:'Què s\'observa hui?', tn_dia:'Què es va observar el', tn_fin:'toque el que aplique',
     t_hist:'Dies per transmetre', hist_nada:'✓ Tot revisat i transmés a Salufolio', hist_pie:'Toque un dia per a revisar-lo i enviar-lo.', hist_ap:'apunts', hist_ap_1:'apunt', scan_tit:'Escanejar el codi QR de l\'ordinador', scan_ayuda:'Apunte la càmera al codi QR que mostra l\'ordinador (qr.sh o el panal de Salufolio).', scan_ok:'✓ Adreça guardada', scan_err:'⚠ Càmera no disponible — escriga l\'adreça a mà', t_comp:'Guardar i compartir', t_meds:'Medicaments configurats', t_pac:'Pacient',
     b_gconst:'💾 Guardar constants', b_gobs:'💾 Guardar observació', b_punt:'➕ Registrar presa puntual…',
     b_desc:'⬇️ Guardar còpia de les dades', b_copi:'📋 Copiar dades', b_comp:'📤 Compartir…', b_addmed:'➕ Afegir medicament',
@@ -1065,6 +1082,7 @@ const IDIOMAS = {
     come_pedido:"A demandé à manger",
     come_bien:"A bien mangé",
     mat_oxigeno:"Oxygène",
+    bv_sub:"le carnet de l'aidant", bv_cuerpo:"<b>Salufolio</b> est la maison du dossier médical personnel : vos données de santé, sur votre propre machine, sans comptes ni connexion à un service distant.<br><br>Ce <b>Protocole</b> est le carnet de l'aidant : prises, constantes et observations au jour le jour. Le compte rendu pour la consultation se prépare tout seul.", bv_lat:"Du latin <i>Salus</i>, la déesse de la santé, et <i>folium</i> : le feuillet de la santé.", bv_pasos:"1️⃣ <b>📦 Données</b> — le patient et son ordonnance (➕ / ✏️) · 2️⃣ <b>💊 Médication</b> — touchez chaque prise (◀ jours passés) · 3️⃣ <b>🩺 Constantes</b> · <b>📝 Notes</b> — sur le moment.", bv_ok:"Compris",
     mj_desayuno:"Petit-déjeuner", mj_almuerzo:"Collation", mj_comida:"Déjeuner", mj_merienda:"Goûter", mj_cena:"Dîner", mj_noche:"Nuit", mom_falta:"Choisissez au moins un moment.", sin_mem:"Sans mémoire dans ce mode : rien ne sera conservé.", sin_tomas:"Aucune prise notée ce jour.", mj_demanda:"À la demande",
     rev_borrar:"Supprimer",
     rev_borrar_tit:"Effacer cette observation", rev_borrar_ok:"Oui, effacer", rev_borrada:"Observation effacée", rev_borrar_nota:"Elle est effacée entièrement et ne peut pas être rétablie. À ne faire que si elle a été notée par erreur.",
@@ -1170,18 +1188,18 @@ const IDIOMAS = {
     lado_der:"Droite",
     ay_tit:"❓ Comment ça marche",
     ay_hoy:"<b>💊 Aujourd'hui</b> — touchez chaque médicament dès qu'il est pris : enregistré avec l'heure. Enregistré en retard ? <b>Touchez l'heure</b> pour la corriger. Un toque de trop s'annule en touchant à nouveau. « Prise ponctuelle » enregistre une prise hors liste ; si le médicament est « à la demande », il se choisit d'un toque.",
-    ay_const:"<b>🩺 Constantes</b> — ne remplissez que le mesuré ; l'heure est corrigeable. Enregistré tout seul.",
+    ay_const:"<b>🩺 Constantes</b> — ne remplissez que le mesuré ; l'heure est corrigeable. Enregistrée automatiquement.",
     ay_notas:"<b>📝 Notes</b> — touchez l'observé (hydratation, selles, urine) : noté avec l'heure, le résumé du jour s'affiche à droite. Ce sont les questions du <i>compte-rendu pour la consultation</i>.",
-    ay_datos:"<b>📦 Données</b> — patient et posologie, historique, et la sortie : <b>⬇️</b> enregistrer ou <b>📡</b> envoyer une copie vers l'ordinateur (Salufolio l'importera), et <b>📂 Restaurer</b> une copie sur un nouveau téléphone.",
-    ay_ayer:"<b>Si une prise d'hier est restée non enregistrée</b>, l'app le demande à l'ouverture. En cas de doute sur une dose, consultez la notice ou le médecin — l'app enregistre, elle ne conseille pas.",
-    ay_disp:"Les données vivent sur cet appareil.",
+    ay_datos:"<b>📦 Données</b> — patient et posologie, historique, et la sortie : <b>⬇️</b> enregistrer ou <b>📡</b> envoyer une copie vers l'ordinateur via wifi local (Salufolio l'importera), et <b>📂 Restaurer</b> une copie sur un nouveau téléphone.",
+    ay_ayer:"<b>Si une prise d'hier est restée non enregistrée</b>, Protocolo le demande à l'ouverture. En cas de doute sur une dose, consultez la notice ou le médecin — Protocolo enregistre, il ne conseille pas.",
+    ay_disp:"Les données vivent sur cet appareil.", ay_dev:"Produit en développement", ay_doc:"Voir ou télécharger la documentation détaillée",
     ay_ok:"Compris", hoy:'Aujourd\'hui', consts:'Constantes', notas:'Notes', datos:'Données',
     t_hoy:'Médication du jour — touchez à la prise · touchez l\'heure pour la corriger',
     t_const:'Constantes — laissez vide ce qui n\'est pas mesuré', t_notas:'Qu\'observe-t-on aujourd\'hui ? — touchez ce qui s\'applique',
-    th_hoy:'Médication du jour', th_dia:'Médication du', th_fin:' — touchez à la prise · touchez l\'heure pour la corriger',
-    tc_hoy:'Constantes', tc_dia:'Constantes du', tc_fin:' — laissez vide ce qui n\'est pas mesuré',
+    th_hoy:'Médication du jour', th_dia:'Médication du', th_fin:'touchez à la prise',
+    tc_hoy:'Constantes', tc_dia:'Constantes du', tc_fin:'laissez vide ce qui n\'est pas mesuré',
     nav_med:'Médication', dh_obs:'Heure de l\'observation (corrigible)',
-    tn_hoy:'Qu\'observe-t-on aujourd\'hui', tn_dia:'Qu\'a-t-on observé le', tn_fin:' ? — touchez ce qui s\'applique',
+    tn_hoy:'Qu\'observe-t-on aujourd\'hui ?', tn_dia:'Qu\'a-t-on observé le', tn_fin:'touchez ce qui s\'applique',
     t_hist:'Jours à transmettre', hist_nada:'✓ Tout est relu et transmis à Salufolio', hist_pie:'Touchez un jour pour le relire et l\'envoyer.', hist_ap:'notes', hist_ap_1:'note', scan_tit:'Scanner le code QR de l\'ordinateur', scan_ayuda:'Visez le code QR affiché par l\'ordinateur (qr.sh ou le panal de Salufolio).', scan_ok:'✓ Adresse enregistrée', scan_err:'⚠ Caméra indisponible — saisissez l\'adresse à la main', t_comp:'Sauvegarder et partager', t_meds:'Médicaments configurés', t_pac:'Patient',
     b_gconst:'💾 Enregistrer les constantes', b_gobs:'💾 Enregistrer l\'observation', b_punt:'➕ Prise ponctuelle…',
     b_desc:'⬇️ Enregistrer une copie des données', b_copi:'📋 Copier', b_comp:'📤 Partager…', b_addmed:'➕ Ajouter un médicament',
@@ -1276,6 +1294,7 @@ const IDIOMAS = {
     come_bien:"Ate well",
     mat_oxigeno:"Oxygen",
     dia_hoy:"today",
+    bv_sub:"the carer's notebook", bv_cuerpo:"<b>Salufolio</b> is the home of the personal medical record: your health data, on your own machine, with no accounts and no connection to a remote service.<br><br>This <b>Protocol</b> is the carer's notebook: doses, vitals and day-to-day observations. The report for the consultation prepares itself.", bv_lat:"From the Latin <i>Salus</i>, goddess of health, and <i>folium</i>: the leaf of health.", bv_pasos:"1️⃣ <b>📦 Data</b> — the patient and their prescription (➕ / ✏️) · 2️⃣ <b>💊 Medication</b> — tap each dose (◀ past days) · 3️⃣ <b>🩺 Vitals</b> · <b>📝 Notes</b> — as they happen.", bv_ok:"Got it",
     mj_desayuno:"Breakfast", mj_almuerzo:"Mid-morning", mj_comida:"Lunch", mj_merienda:"Afternoon snack", mj_cena:"Dinner", mj_noche:"Night", mom_falta:"Choose at least one moment.", sin_mem:"No memory in this mode: nothing will be saved.", sin_tomas:"No dose logged today.", mj_demanda:"As needed",
     rev_borrar:"Delete",
     rev_borrar_tit:"Delete this observation", rev_borrar_ok:"Yes, delete", rev_borrada:"Observation deleted", rev_borrar_nota:"It is deleted entirely and cannot be undone. Do this only if it was recorded by mistake.",
@@ -1381,18 +1400,18 @@ const IDIOMAS = {
     lado_der:"Right",
     ay_tit:"❓ How to use it",
     ay_hoy:"<b>💊 Today</b> — tap each medicine once taken: logged with the time. Logged late? <b>Tap the time</b> to fix it. An extra tap cancels by tapping again. “As-needed dose” logs an intake outside the list; if the medicine is “on demand”, pick it with one tap.",
-    ay_const:"<b>🩺 Vitals</b> — fill only what was measured; the time can be corrected. Saved on its own.",
+    ay_const:"<b>🩺 Vitals</b> — fill only what was measured; the time can be corrected. Saved automatically.",
     ay_notas:"<b>📝 Notes</b> — tap what you observe (hydration, stool, urine): logged with the time, the day’s summary shows on the right. These are the questions of the <i>report for the consultation</i>.",
-    ay_datos:"<b>📦 Data</b> — patient and schedule, history, and output: <b>⬇️</b> save or <b>📡</b> send a copy to the computer (Salufolio will import it), and <b>📂 Restore</b> a copy on a new phone.",
-    ay_ayer:"<b>If a dose from yesterday went unlogged</b>, the app asks on opening. If unsure about a dose, check the leaflet or the doctor — the app records, it does not advise.",
-    ay_disp:"Data lives on this device.",
+    ay_datos:"<b>📦 Data</b> — patient and schedule, history, and output: <b>⬇️</b> save or <b>📡</b> send a copy to the computer over local Wi-Fi (Salufolio will import it), and <b>📂 Restore</b> a copy on a new phone.",
+    ay_ayer:"<b>If a dose from yesterday went unlogged</b>, Protocolo asks on opening. If unsure about a dose, check the leaflet or the doctor — Protocolo records, it does not advise.",
+    ay_disp:"Data lives on this device.", ay_dev:"Product in development", ay_doc:"View or download the detailed documentation",
     ay_ok:"Got it", hoy:'Today', consts:'Vitals', notas:'Notes', datos:'Data',
     t_hoy:'Today\'s medication — tap when taken · tap the time to correct it',
     t_const:'Vitals — leave blank what was not measured', t_notas:'What is observed today? — tap what applies',
-    th_hoy:'Today\'s medication', th_dia:'Medication of', th_fin:' — tap when taken · tap the time to correct it',
-    tc_hoy:'Vitals', tc_dia:'Vitals of', tc_fin:' — leave blank what was not measured',
+    th_hoy:'Today\'s medication', th_dia:'Medication of', th_fin:'tap when taken',
+    tc_hoy:'Vitals', tc_dia:'Vitals of', tc_fin:'leave blank what was not measured',
     nav_med:'Medication', dh_obs:'Time of the observation (editable)',
-    tn_hoy:'What is observed today', tn_dia:'What was observed on', tn_fin:'? — tap what applies',
+    tn_hoy:'What is observed today?', tn_dia:'What was observed on', tn_fin:'tap what applies',
     t_hist:'Days to transmit', hist_nada:'✓ All reviewed and sent to Salufolio', hist_pie:'Tap a day to review and send it.', hist_ap:'entries', hist_ap_1:'entry', scan_tit:'Scan the computer\'s QR code', scan_ayuda:'Point the camera at the QR code shown by the computer (qr.sh or the Salufolio panal).', scan_ok:'✓ Address saved', scan_err:'⚠ Camera unavailable — type the address by hand', t_comp:'Save and share', t_meds:'Configured medications', t_pac:'Patient',
     b_gconst:'💾 Save vitals', b_gobs:'💾 Save observation', b_punt:'➕ One-off dose…',
     b_desc:'⬇️ Save a copy of the data', b_copi:'📋 Copy', b_comp:'📤 Share…', b_addmed:'➕ Add medication',
@@ -1410,7 +1429,23 @@ const IDIOMAS = {
     av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation', c_peso:'Weight', c_temp:'Temperature', env_wait:'⏳ Sending…', sip_label:'SIP (health card, optional)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
 };
 const LANGS = ['es','va','fr','en'];
-function getLang() { return lsGet('mfp_lang', 'es'); }
+/* ═══ LA LANGUE (P-H, 18/08) ═══
+   Elle vient du bouton drapeau, et le choix de l'aidant l'emporte toujours.
+   Mais TANT QUE PERSONNE N'A CHOISI, on ouvrait en espagnol pour tout le
+   monde : un aidant français recevait un mur qu'il ne comprenait pas, avec
+   pour seule issue un petit drapeau caché derrière la fenêtre d'accueil.
+   Au PREMIER démarrage seulement, on suit donc la langue de l'appareil.
+   Dès qu'on touche le drapeau, l'appareil ne redécide plus jamais. */
+function idiomaDelAparato() {
+  try {
+    const l = (navigator.language || 'es').toLowerCase();
+    if (l.indexOf('fr') === 0) return 'fr';
+    if (l.indexOf('ca') === 0 || l.indexOf('va') === 0) return 'va';
+    if (l.indexOf('en') === 0) return 'en';
+  } catch (e) {}
+  return 'es';
+}
+function getLang() { return lsGet('mfp_lang', null) || idiomaDelAparato(); }
 function t(k) { return (IDIOMAS[getLang()] || IDIOMAS.es)[k] || IDIOMAS.es[k] || k; }
 function cycleLang() {
   const i = LANGS.indexOf(getLang());
@@ -2140,7 +2175,9 @@ function verAyuda() {
       '<p>' + t('ay_hoy') + '</p><p>' + t('ay_const') + '</p><p>' + t('ay_notas') + '</p>' +
       '<p>' + t('ay_datos') + '</p><p>' + t('ay_ayer') + '</p>' +
       '<p style="color:var(--muted);font-size:12px">' + t('ay_disp') + '</p>' +
-      '<div style="font-size:11px;color:var(--muted);margin-top:10px">Producto en desarrollo — v' + MFP_VERSION + '</div>' +
+      '<p style="margin-top:6px"><a href="doc.pdf" target="_blank" rel="noopener" ' +
+        'style="color:var(--accent);font-size:13px">📄 ' + t('ay_doc') + '</a></p>' +
+      '<div style="font-size:11px;color:var(--muted);margin-top:10px">' + t('ay_dev') + ' — v' + MFP_VERSION + '</div>' +
     '</div>' +
     '<button class="btn" data-fin="1">' + t('ay_ok') + '</button></div>';
   ov.onclick = e => { if (e.target === ov) ov.remove(); };
@@ -3017,16 +3054,35 @@ function bienvenida() {
     '<div class="bv-cuerpo" style="overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;flex:1">' +
     blasonSVG(96) +
     '<div style="font-size:24px;font-weight:800">Salu<i>folio</i> Protocolo</div>' +
-    '<div style="font-size:11.5px;color:var(--muted);margin-bottom:6px">el cuaderno del cuidador · v' + MFP_VERSION + '</div>' +
+    '<div style="font-size:11.5px;color:var(--muted);margin-bottom:6px">' + t('bv_sub') + ' · v' + MFP_VERSION + '</div>' +
     /* ㉒ La connexion est une information d'IDENTITÉ : qui je suis, et à quoi
        je suis relié. Elle va donc avec le nom, non au pied de la carte. */
-    '<div id="bv-conexion" style="font-size:12.5px;margin:2px 0 10px;flex-shrink:0;min-height:18px"></div>' +
-    '<p style="margin:8px 0;text-align:left"><b>Salufolio</b> es la casa del expediente médico personal: sus datos de salud, en su propia máquina, sin nube y sin cuentas. Este <b>Protocolo</b> es el cuaderno del cuidador: tomas, constantes y observaciones del día a día — y el informe para la consulta se prepara solo.</p>' +
-    '<p style="margin:6px 0 12px;font-size:11.5px;color:var(--muted);font-style:italic;text-align:left">Del latín <i>Salus</i>, la diosa de la salud, y <i>folium</i>: el folio de la salud.</p>' +
-    '<p style="margin:6px 0;font-size:13px;text-align:left">1️⃣ <b>📦 Datos</b> — el paciente y su pauta (➕ / ✏️) · 2️⃣ <b>💊 Hoy</b> — toque cada toma (◀ días pasados) · 3️⃣ <b>🩺 Constantes · 📝 Notas</b> — al momento.</p>' +
+    '<div id="bv-conexion" style="font-size:12.5px;margin:2px 0 8px;flex-shrink:0;min-height:18px"></div>' +
+    /* Le drapeau de l'en-tête est CACHÉ DERRIÈRE cette fenêtre : qui ne
+       connaît pas l'app ne le trouvera pas. Les quatre langues sont donc
+       ici, au premier plan, sur le premier écran. */
+    '<div class="bv-langs">' + LANGS.map(function (lg) {
+      return '<button class="bv-lang' + (getLang() === lg ? ' on' : '') + '" data-lg="' + lg + '">' +
+             BANDERAS[lg] + '</button>'; }).join('') + '</div>' +
+    /* 17/08 — P-H : « le texte est en español au premier plan et le drapeau
+       est français au second plan ! » Tout l'écran suivait la langue SAUF
+       cette fenêtre, écrite en dur — et c'est LE PREMIER ÉCRAN, celui qui
+       explique la maison à qui ne la connaît pas. Elle lit la table. */
+    '<p style="margin:8px 0;text-align:left">' + t('bv_cuerpo') + '</p>' +
+    '<p style="margin:6px 0 12px;font-size:11.5px;color:var(--muted);font-style:italic;text-align:left">' + t('bv_lat') + '</p>' +
+    '<p style="margin:6px 0;font-size:13px;text-align:left">' + t('bv_pasos') + '</p>' +
     '</div>' +
     
-    '<button class="btn" style="width:100%;margin-top:8px;flex-shrink:0" id="bv-ok">Entendido</button></div>';
+    '<button class="btn" style="width:100%;margin-top:8px;flex-shrink:0" id="bv-ok">' + t('bv_ok') + '</button></div>';
+  ov.querySelectorAll('.bv-lang').forEach(function (b) {
+    b.onclick = function () {
+      lsSet('mfp_lang', b.getAttribute('data-lg'));
+      aplicarIdiomas();
+      ov.remove();
+      _arm().removeItem('mfp_bienv2');   /* on n'a rien validé : elle revient */
+      bienvenida();                      /* …et se relit dans la bonne langue */
+    };
+  });
   document.body.appendChild(ov);
   ajustarBienvenida(ov);
   pintarConexionBienvenida();
@@ -3345,6 +3401,7 @@ function pintaBarraHora() {
   const b = document.getElementById('barra-hora'); if (!b) return;
   const p = pantallaActiva(), on = (p === 'const' || p === 'notas');
   b.style.display = on ? 'flex' : 'none';
+  b.classList.toggle('centrado', p === 'notas');
   const l = document.getElementById('i-lhora');
   if (l && on) l.textContent = t(p === 'const' ? 'hora_med' : 'dh_obs');
   if (on) { if (p === 'const') recargarConst(); else recargarObs(); }
@@ -3397,9 +3454,7 @@ function toggleToma(medId) {
   if (tomas[k][medId]) toast('✓ Registrado a las ' + tomas[k][medId]);
 }
 function renderDiaNav() {
-  const th = document.getElementById('i-thoy');
-  if (th && !esHoy()) th.textContent = '✎ Medicación del ' + fmtDiaCorto(diaKey()) + ' — corrigiendo';
-  else if (th && typeof t === 'function') th.textContent = t('t_hoy');
+  if (typeof pintaTitulosDia === 'function') pintaTitulosDia();
   const et = document.getElementById('dia-etiqueta');  /* le jour se dit dans la langue de la maison */
   const av = document.getElementById('dia-aviso'), tx = document.getElementById('dia-aviso-txt');
   const sig = document.getElementById('dia-siguiente');
@@ -5342,8 +5397,8 @@ function pintaTitulosDia() {
        répéter allongeait le titre au point d'obliger P-H à rapetisser
        toute la police (14/08). Le jour en toutes lettres n'apparaît donc
        QUE lorsqu'on n'est pas sur aujourd'hui — là il est indispensable. */
-    e.textContent = hoy ? t(b + '_hoy') + t(b + '_fin')
-                        : t(b + '_dia') + ' ' + larga + t(b + '_fin');
+    const tete = hoy ? t(b + '_hoy') : t(b + '_dia') + ' ' + larga + (b === 'tn' ? ' ?' : '');
+    e.innerHTML = tete + '<br><span class="t2">' + t(b + '_fin') + '</span>';
   });
 }
 function fmtFecha(iso) {
