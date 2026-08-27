@@ -12,7 +12,7 @@ repository-code: "https://github.com/caracole/Salufolio"
 url: "https://salufolio.com"
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.19973451
+    value: 10.5281/zenodo.21997587
     description: "DOI de concepto — apunta siempre a la versión más reciente"
 abstract: >-
   Expediente médico longitudinal local-first: un archivo HTML, sin servidor y
