@@ -96,8 +96,11 @@ header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bg);
    sa place au lieu de passer dessous (P-H, 17/08). */
 h2 .t2{font-weight:400;opacity:.7;letter-spacing:0}
 .marcas{display:flex;gap:3px;align-items:center;flex-shrink:0}
-.mq{font-size:15px;opacity:.32;line-height:1}
-.mq.ok{opacity:1}
+/* 24/08 (P-H) : « plus clair c'est pris, plus lumineux c'est à prendre ».
+   L'éclat allait au travail FAIT — l'œil était tiré par ce qui n'appelle
+   plus rien. Il va désormais à ce qui reste à donner. */
+.mq{font-size:19px;opacity:1;line-height:1}
+.mq.ok{opacity:.3;filter:grayscale(1)}
 .dose-dlg{color:var(--muted);font-size:13px;margin:-4px 0 10px}
 .basc{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
   background:var(--surface2);border:1px solid var(--border);color:var(--text);
@@ -178,6 +181,46 @@ h2{font-size:16px;letter-spacing:.5px;color:var(--muted);font-weight:700;
   border-radius:10px;color:var(--text);font-size:26px;padding:10px;text-align:center;font-weight:700}
 .cbox input:focus{outline:2px solid var(--accent);border-color:var(--accent)}
 .cbox .unit{font-size:14px;color:var(--muted);text-align:center;margin-top:4px}
+/* ═══ 26/08 — LA TABLE DES CONSTANTES ═══
+   `table-layout:fixed` + un <colgroup> à 50/50 : les colonnes ne se
+   négocient plus avec le contenu, elles sont POSÉES. C'est toute la
+   différence avec une grille de DIV — et c'est pourquoi rien ne bouge
+   plus d'un écran à l'autre. Chaque élément occupe SA cellule et prend
+   100 % de sa largeur : plus une seule largeur à calculer à la main. */
+.ctab{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:5px 0;margin-bottom:4px}
+.ctab td{padding:0;vertical-align:middle}
+.ctab .cb{border-bottom:1px solid var(--border)}
+.cb-t td{padding:14px 0 2px;text-align:center}
+.cb-e td{padding:4px 0 2px;text-align:center}
+.cb-h td{padding:3px 0}
+.ctab tr:last-child td{padding-bottom:12px}
+/* 26/08 (P-H) : « augmenter la taille des titres en BLEU ». Ceux de Tº et
+   Poids gardent leur taille mais prennent la même couleur — l'œil doit
+   reconnaître un titre de bloc sans avoir à lire le mot. */
+.cb-tit{font-family:var(--mono);font-size:17px;letter-spacing:1.6px;
+  color:var(--accent);text-transform:uppercase;white-space:nowrap;font-weight:700}
+.cb-e .cb-tit{font-size:14px;letter-spacing:1px}
+/* les en-têtes de colonne : le titre du bloc dit déjà de quoi il s'agit,
+   ceux-ci nomment seulement les deux moitiés — P-H, 26/08 */
+.cb-e span{font-size:14px;color:var(--text);font-weight:600;white-space:nowrap}
+.cb-hora{width:100%;box-sizing:border-box;background:var(--surface2);
+  border:1px solid var(--border);border-radius:8px}
+/* le bouton prend la place de l'ancienne liste : même cellule, même
+   largeur — la table n'a rien à recalculer. */
+.cb-add{width:100%;box-sizing:border-box;background:var(--surface2);
+  border:1px solid var(--border);border-radius:8px;color:var(--accent);
+  font-family:var(--mono);font-size:12px;font-weight:700;padding:8px 2px;cursor:pointer}
+.cb-add:disabled{color:var(--muted);opacity:.4;cursor:default}
+.cb-add:not(:disabled):active{background:var(--accent);color:#fff}
+.cb-hora{color:var(--text);font-size:17px;font-weight:700;padding:7px 2px;
+  text-align:center;font-family:var(--mono)}
+.cb-hora:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+/* le champ de saisie sans son cadre : la cellule EST le cadre */
+.cnum{width:100%;box-sizing:border-box;background:var(--surface2);
+  border:1px solid var(--border);border-radius:10px;color:var(--text);
+  font-size:26px;padding:10px 4px;text-align:center;font-weight:700;margin-top:4px}
+.cnum:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.ctab .unit{font-size:13px;color:var(--muted);text-align:center;margin:3px 0 0}
 
 /* ── observations : jetons tactiles ── */
 .chips{display:flex;flex-wrap:wrap;gap:10px}
@@ -274,7 +317,7 @@ select option{background:var(--surface);color:var(--text)}
 /* Le témoin des mesures du jour. Une case vide et une valeur perdue se
    ressemblent trop : celui-ci montre que la journée a déjà ses mesures,
    pendant que le formulaire reste neuf pour la suivante. */
-/* ㉔ Joaquina : « pourquoi ça ne reste pas affiché derrière la barre ? »
+/* ㉔ la persona cuidada : « pourquoi ça ne reste pas affiché derrière la barre ? »
    Le titre et les mesures du jour restent visibles ; le formulaire défile
    dessous. On lit ce qui a déjà été pris pendant qu'on en prend une autre. */
 .panel h2{position:sticky;top:0;z-index:6;background:var(--bg);margin:0;padding:10px 0 6px}
@@ -282,7 +325,19 @@ select option{background:var(--surface);color:var(--text)}
   padding-bottom:6px;box-shadow:0 6px 6px -6px rgba(0,0,0,.18)}
 .const-hoy .ch-tit{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
 .const-hoy .ch-lin{font-size:14px;padding:5px 10px;border:1px solid var(--border);border-radius:9px;margin-bottom:5px}
-.const-hoy .ch-lin b{font-variant-numeric:tabular-nums}
+.const-hoy .ch-lin b{font-variant-numeric:tabular-nums;margin-right:4px}
+/* 26/08 — les unités s'effacent, les chiffres restent : la ligne doit tenir
+   d'un seul tenant sur un écran de 360 px. */
+.const-hoy .ch-lin i{font-style:normal;font-size:10px;color:var(--muted);margin-left:1px}
+/* 26/08 (P-H) : « une listbox extensible jusqu'à 4 lignes visibles ».
+   Le navigateur s'en charge — au-delà, une barre paraît et l'on fait
+   glisser. L'ordre reste CELUI DU TEMPS : c'est un fil de journée, pas
+   une pile ; c'est la vue qui descend d'elle-même sur la dernière. */
+.const-hoy{max-height:132px;overflow-y:auto}
+.const-hoy .ch-lin{white-space:nowrap;overflow-x:auto;cursor:pointer}
+.const-hoy .ch-lin:active{border-color:var(--accent);background:rgba(74,143,232,.12)}
+.v-ambar{color:#e0a03a;font-weight:700}
+.v-rojo{color:#e05a4a;font-weight:700}
 .rocker{position:relative;width:50px;height:52px;flex:none;padding:4px;border:0;
   border-radius:9px;background:linear-gradient(#4a5057,#23272d);cursor:pointer;
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.55),0 2px 5px rgba(0,0,0,.35);
@@ -411,26 +466,82 @@ body.sin-paciente #nav-res { opacity: .35; }
   <!-- ═══ CONSTANTES ═══ -->
   <section id="p-const" class="panel">
     <h2 id="i-tconst"></h2>
-    <!-- Joaquina, 01/08 : « pourquoi ça ne reste pas affiché en haut sous le
+    <!-- la persona cuidada, 01/08 : « pourquoi ça ne reste pas affiché en haut sous le
          trait ? comme ça on voit toujours ». Juste : les mesures du jour se
          lisent avant d'en prendre une nouvelle, non après avoir fait défiler
          tout l'écran. -->
     <div id="const-hoy" class="const-hoy" style="margin:0 0 10px"></div>
-    <div class="cgrid">
-      <!-- P-H, 31/07 : « l'heure de la mesure, je la mettrai en tête pour
-           qu'on la voie tout de suite sans faire défiler l'écran ». Elle
-           identifie la mesure : on la voit — et souvent on la corrige —
-           AVANT de saisir les chiffres. -->
-      
-      <div class="cbox"><label id="i-ctas"></label><input id="c-tas" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></div>
-      <div class="cbox"><label id="i-ctad"></label><input id="c-tad" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></div>
-      <div class="cbox"><label id="i-cfc"></label><input id="c-fc" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">lpm</div></div>
-      <div class="cbox"><label id="i-cspo2"></label><input id="c-spo2" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">%</div></div>
-      <div class="cbox"><label id="i-cpeso"></label><input id="c-peso" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><div class="unit">kg</div></div>
-      <div class="cbox"><label id="i-ctemp"></label><input id="c-temp" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><div class="unit">°C</div></div>
-      <div class="cbox" style="grid-column:1/-1"><button type="button" class="popt" id="c-arrit" onclick="toggleArritmia()" style="width:100%">⚡ <span id="i-carrit"></span></button></div>
-      
-    </div>
+    <!-- ═══ 26/08 (P-H) — LA TABLE PLUTÔT QUE LES DIV ═══
+         « la gestion par des DIV à outrance est complexe et il est difficile
+         d'obtenir une interface stable, alors qu'une table de largeur 100
+         avec ses lignes et colonnes tout entre bien sans problèmes ».
+         Il a raison, et pas par nostalgie : une grille de mesures EST un
+         tableau. Le dire en <table>, c'est le dire dans sa propre langue.
+
+         GÉOMÉTRIE ARRÊTÉE SUR SA MAQUETTE (dessinée au tiret, 26/08) :
+           titre du bloc, pleine largeur
+           deux en-têtes de colonne          ← Systolique | Diastolique
+           liste des mesures | heure          ← UNE seule ligne pour le bloc
+           les deux champs
+         ⚠ UNE HEURE PAR BLOC, PAS PAR COLONNE : le brassard donne
+         systolique et diastolique EN UN SEUL GESTE. Deux heures pour une
+         seule mesure serait le mensonge qu'on vient justement de retirer.
+         Tº et Poids font exception : ce sont deux APPAREILS différents,
+         donc deux blocs côte à côte, chacun avec sa liste et son heure. -->
+    <table class="ctab">
+      <colgroup><col style="width:50%"><col style="width:50%"></colgroup>
+
+      <tbody class="cb">
+        <tr class="cb-t"><td colspan="2"><span class="cb-tit" id="i-bta"></span></td></tr>
+        <tr class="cb-e"><td><span id="i-ctas"></span></td><td><span id="i-ctad"></span></td></tr>
+        <tr class="cb-h">
+          <!-- 26/08 (P-H) : « sert-elle vraiment cette liste ? puisqu'on a en
+               haut tout récapitulé ». Non — le fil de la journée montre déjà
+               tout, mieux. Il ne restait à la liste qu'un usage : revenir sur
+               une mesure. On le confie aux LIGNES DU RÉCAPITULATIF, qui sont
+               désormais cliquables, et le bouton ne fait plus qu'une chose :
+               ouvrir une mesure neuve. Un objet, un rôle. -->
+          <td><button type="button" class="cb-add" id="c-ta-add" onclick="nuevaMedida('ta')"></button></td>
+          <td><!-- ⚠ 26/08 : PAS DE maxlength ICI. « je ne peux pas corriger le 2 pour
+             écrire 12:10 » — le champ plein à 5 caractères refusait la frappe
+             au milieu, en silence. Le formateur remet en forme à la sortie. -->
+        <input class="cb-hora" id="c-ta-hora" autocomplete="off" inputmode="numeric" placeholder="--:--"></td>
+        </tr>
+        <tr>
+          <td><input class="cnum" id="c-tas" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></td>
+          <td><input class="cnum" id="c-tad" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></td>
+        </tr>
+        <tr><td colspan="2"><button type="button" class="popt" id="c-arrit" onclick="toggleArritmia()" style="width:100%">⚡ <span id="i-carrit"></span></button></td></tr>
+      </tbody>
+
+      <tbody class="cb">
+        <tr class="cb-t"><td colspan="2"><span class="cb-tit" id="i-bps"></span></td></tr>
+        <tr class="cb-e"><td><span id="i-cfc"></span></td><td><span id="i-cspo2"></span></td></tr>
+        <tr class="cb-h">
+          <td><button type="button" class="cb-add" id="c-ps-add" onclick="nuevaMedida('ps')"></button></td>
+          <td><input class="cb-hora" id="c-ps-hora" autocomplete="off" inputmode="numeric" placeholder="--:--"></td>
+        </tr>
+        <tr>
+          <td><input class="cnum" id="c-fc" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">lpm</div></td>
+          <td><input class="cnum" id="c-spo2" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">%</div></td>
+        </tr>
+        <!-- Sans ce bouton, 93 % à l'air et 93 % sous 2 litres se
+             ressemblent — et ce sont deux patientes différentes. -->
+        <tr><td colspan="2"><button type="button" class="popt" id="c-o2" onclick="toggleO2()" style="width:100%">💨 <span id="i-co2"></span></button></td></tr>
+      </tbody>
+
+      <tbody class="cb">
+        <tr class="cb-e"><td><span class="cb-tit" id="i-btemp"></span></td><td><span class="cb-tit" id="i-bpeso"></span></td></tr>
+        <tr class="cb-h">
+          <td><input class="cb-hora cb-full" id="c-temp-hora" autocomplete="off" inputmode="numeric" placeholder="--:--"></td>
+          <td><input class="cb-hora cb-full" id="c-peso-hora" autocomplete="off" inputmode="numeric" placeholder="--:--"></td>
+        </tr>
+        <tr>
+          <td><input class="cnum" id="c-temp" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><div class="unit">°C</div></td>
+          <td><input class="cnum" id="c-peso" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><div class="unit">kg</div></td>
+        </tr>
+      </tbody>
+    </table>
     <div id="const-estado" style="font-size:12.5px;color:var(--muted);min-height:18px;margin-top:6px;text-align:center"></div>
   </section>
 
@@ -472,6 +583,10 @@ body.sin-paciente #nav-res { opacity: .35; }
       <div id="nm-form" style="display:none">
         <input class="txt" id="nm-nombre" placeholder="Nombre (ej. Paracetamol)">
         <input class="txt" id="nm-dosis" placeholder="Dosis (ej. 20 mg)">
+        <div class="nota-campo" id="i-lini"></div>
+        <input class="txt" id="nm-desde" type="text" readonly onclick="pedirFecha(this)" oninput="calcFin('nm')" placeholder="—" style="cursor:pointer">
+        <div class="nota-campo" id="i-ldur"></div>
+        <input class="txt" id="nm-dias" type="number" inputmode="numeric" min="0" max="365" placeholder="—" oninput="calcFin('nm')">
         <div class="nota-campo" id="i-lfin"></div>
         <input class="txt" id="nm-hasta" type="text" readonly onclick="pedirFecha(this)" placeholder="—" style="cursor:pointer">
         <div class="mchips" id="nm-moms"></div>
@@ -532,7 +647,7 @@ body.sin-paciente #nav-res { opacity: .35; }
 </main>
 
 <div id="pie">
-  <div id="barra-hora"><label id="i-lhora"></label><input id="b-hora" autocomplete="off" type="text" inputmode="numeric" placeholder="hh:mm" maxlength="5"></div>
+  <div id="barra-hora"><label id="i-lhora"></label><input id="b-hora" autocomplete="off" type="text" inputmode="numeric" placeholder="hh:mm"></div>
   <div id="barra-quando">
     <button onclick="diaMas(-1)">◀</button>
     <span id="dia-etiqueta" onclick="abrirSelectorDia()"></span>
@@ -578,7 +693,7 @@ window.onerror = function (msg, src, line, col) {
 /* Adresse du PC injectée par le serveur au téléchargement (« Instalar en
    este teléfono ») — l'app locale naît déjà configurée. */
 const MFP_PC_DEF = '';
-const MFP_VERSION = '2026.8.18.61-SAT';
+const MFP_VERSION = '2026.8.26.76-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -782,7 +897,8 @@ const IDIOMAS = {
     b_gconst:'💾 Guardar constantes', b_gobs:'💾 Guardar observación', b_punt:'➕ Registrar toma puntual…',
     b_desc:'⬇️ Guardar copia de los datos', b_copi:'📋 Copiar datos', b_comp:'📤 Compartir…', b_addmed:'➕ Añadir medicamento',
     hora_med:'Hora de la medición (corregible)', hora_obs:'Hora de la observación (corregible)',
-    fin_trat:'Fin del tratamiento (opcional)', nota_ph:'Nota libre (opcional)…',
+    fin_trat:'Fin del tratamiento (calculado)', nota_ph:'Nota libre (opcional)…',
+    ini_trat:'Inicio del tratamiento', dur_trat:'Duración en días (vacío = sin fin)', desde:'desde',
     ayer_sin:'Ayer quedó sin registrar', si_tomo:'✓ Sí se tomó…', no_tomo:'✗ No se tomó',
     duda:'Ante dudas sobre una dosis olvidada, consulte el prospecto o al médico.',
     pendiente:'pendiente', quedan:'quedan', dia:'día', dias:'días', hasta:'hasta',
@@ -792,7 +908,7 @@ const IDIOMAS = {
     d_ok:'Aceptar', d_can:'Cancelar', omitida:'omitida', puntual:'puntual',
     exp_nota:'La copia guardada (⬇️) o enviada (📡) es la que Salufolio importará en el ordenador.',
     b_env:'📡 Enviar a Salufolio', pc_label:'Dirección de Salufolio en el PC (opcional, ej. http://192.168.1.20:7777)',
-    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono (app local, sin PC)', inst_nota:'Descarga la app ya configurada. Ábrala desde Descargas — funciona siempre, aunque el ordenador esté apagado. 📡 enviará cuando el PC esté encendido.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂', c_peso:'Peso', c_temp:'Temperatura', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria, opcional)', env_ok:'✓ Recibido en Salufolio', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
+    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono (app local, sin PC)', inst_nota:'Descarga la app ya configurada. Ábrala desde Descargas — funciona siempre, aunque el ordenador esté apagado. 📡 enviará cuando el PC esté encendido.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂ %', c_peso:'Peso', c_temp:'Temperatura', c_bta:'Tensión', c_bps:'Pulso y saturación', c_bpeso:'Peso', c_btemp:'Temperatura', c_sin_o2:'Sin aporte de O₂', c_con_o2:'Con aporte de O₂', c_nueva:'＋ nueva medición', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria, opcional)', env_ok:'✓ Recibido en Salufolio', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
   va: {
     sw_ini:"Iniciar",
     sw_fin:"Parar",
@@ -993,7 +1109,8 @@ const IDIOMAS = {
     b_gconst:'💾 Guardar constants', b_gobs:'💾 Guardar observació', b_punt:'➕ Registrar presa puntual…',
     b_desc:'⬇️ Guardar còpia de les dades', b_copi:'📋 Copiar dades', b_comp:'📤 Compartir…', b_addmed:'➕ Afegir medicament',
     hora_med:'Hora de la mesura (corregible)', hora_obs:'Hora de l\'observació (corregible)',
-    fin_trat:'Fi del tractament (opcional)', nota_ph:'Nota lliure (opcional)…',
+    fin_trat:'Fi del tractament (calculat)', nota_ph:'Nota lliure (opcional)…',
+    ini_trat:'Inici del tractament', dur_trat:'Durada en dies (buit = sense fi)', desde:'des de',
     ayer_sin:'Ahir va quedar sense registrar', si_tomo:'✓ Sí es va prendre…', no_tomo:'✗ No es va prendre',
     duda:'Davant dubtes sobre una dosi oblidada, consulte el prospecte o el metge.',
     pendiente:'pendent', quedan:'queden', dia:'dia', dias:'dies', hasta:'fins',
@@ -1003,7 +1120,7 @@ const IDIOMAS = {
     d_ok:'Acceptar', d_can:'Cancel·lar', omitida:'omesa', puntual:'puntual',
     exp_nota:'Per a passar les dades a Salufolio : guarde una còpia o envie-la a l\'ordinador.',
     b_env:'📡 Enviar a Salufolio', pc_label:'Adreça de Salufolio a l\'ordinador (opcional)',
-    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon (app local, sense PC)', inst_nota:'Descarrega l\'app ja configurada. Obriu-la des de Baixades — funciona sempre, encara que l\'ordinador estiga apagat.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂', c_peso:'Pes', c_temp:'Temperatura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària, opcional)', env_ok:'✓ Rebut a Salufolio', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
+    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon (app local, sense PC)', inst_nota:'Descarrega l\'app ja configurada. Obriu-la des de Baixades — funciona sempre, encara que l\'ordinador estiga apagat.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂ %', c_peso:'Pes', c_temp:'Temperatura', c_bta:'Tensió', c_bps:'Pols i saturació', c_bpeso:'Pes', c_btemp:'Temperatura', c_sin_o2:'Sense aportació d\'O₂', c_con_o2:'Amb aportació d\'O₂', c_nueva:'＋ nova mesura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària, opcional)', env_ok:'✓ Rebut a Salufolio', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
   fr: {
     sw_ini:"Démarrer",
     sw_fin:"Arrêter",
@@ -1204,7 +1321,8 @@ const IDIOMAS = {
     b_gconst:'💾 Enregistrer les constantes', b_gobs:'💾 Enregistrer l\'observation', b_punt:'➕ Prise ponctuelle…',
     b_desc:'⬇️ Enregistrer une copie des données', b_copi:'📋 Copier', b_comp:'📤 Partager…', b_addmed:'➕ Ajouter un médicament',
     hora_med:'Heure de la mesure (corrigible)', hora_obs:'Heure de l\'observation (corrigible)',
-    fin_trat:'Fin du traitement (optionnel)', nota_ph:'Note libre (optionnelle)…',
+    fin_trat:'Fin du traitement (calculée)', nota_ph:'Note libre (optionnelle)…',
+    ini_trat:'Début du traitement', dur_trat:'Durée en jours (vide = sans fin)', desde:'depuis',
     ayer_sin:'Hier est resté sans enregistrement', si_tomo:'✓ Oui, pris à…', no_tomo:'✗ Non pris',
     duda:'En cas de doute sur une dose oubliée, consultez la notice ou le médecin.',
     pendiente:'en attente', quedan:'reste', dia:'jour', dias:'jours', hasta:'jusqu\'au',
@@ -1214,7 +1332,7 @@ const IDIOMAS = {
     d_ok:'Valider', d_can:'Annuler', omitida:'omise', puntual:'ponctuelle',
     exp_nota:'Pour passer les données à Salufolio : enregistrez une copie ou envoyez-la vers l\'ordinateur.',
     b_env:'📡 Envoyer à Salufolio', pc_label:'Adresse de Salufolio sur le PC (optionnel)',
-    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone (app locale, sans PC)', inst_nota:'Télécharge l\'app déjà configurée. Ouvrez-la depuis Téléchargements — elle marche toujours, même ordinateur éteint. 📡 enverra quand le PC sera allumé.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂', c_peso:'Poids', c_temp:'Température', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire, optionnel)', env_ok:'✓ Reçu dans Salufolio', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
+    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone (app locale, sans PC)', inst_nota:'Télécharge l\'app déjà configurée. Ouvrez-la depuis Téléchargements — elle marche toujours, même ordinateur éteint. 📡 enverra quand le PC sera allumé.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂ %', c_peso:'Poids', c_temp:'Température', c_bta:'Tension', c_bps:'Pouls et saturation', c_bpeso:'Poids', c_btemp:'Température', c_sin_o2:'Sans apport d\'O₂', c_con_o2:'Avec apport d\'O₂', c_nueva:'＋ nouvelle mesure', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire, optionnel)', env_ok:'✓ Reçu dans Salufolio', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
   en: {
     sw_ini:"Start",
     sw_fin:"Stop",
@@ -1416,7 +1534,8 @@ const IDIOMAS = {
     b_gconst:'💾 Save vitals', b_gobs:'💾 Save observation', b_punt:'➕ One-off dose…',
     b_desc:'⬇️ Save a copy of the data', b_copi:'📋 Copy', b_comp:'📤 Share…', b_addmed:'➕ Add medication',
     hora_med:'Time of measurement (editable)', hora_obs:'Time of observation (editable)',
-    fin_trat:'End of treatment (optional)', nota_ph:'Free note (optional)…',
+    fin_trat:'End of treatment (calculated)', nota_ph:'Free note (optional)…',
+    ini_trat:'Start of treatment', dur_trat:'Duration in days (empty = no end)', desde:'from',
     ayer_sin:'Yesterday was left unrecorded', si_tomo:'✓ Yes, taken at…', no_tomo:'✗ Not taken',
     duda:'If in doubt about a missed dose, check the leaflet or ask the doctor.',
     pendiente:'pending', quedan:'left', dia:'day', dias:'days', hasta:'until',
@@ -1426,7 +1545,7 @@ const IDIOMAS = {
     d_ok:'OK', d_can:'Cancel', omitida:'missed', puntual:'one-off',
     exp_nota:'To move data into Salufolio: save a copy or send it to the computer.',
     b_env:'📡 Send to Salufolio', pc_label:'Salufolio address on the PC (optional)',
-    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation', c_peso:'Weight', c_temp:'Temperature', env_wait:'⏳ Sending…', sip_label:'SIP (health card, optional)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
+    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation %', c_peso:'Weight', c_temp:'Temperature', c_bta:'Blood pressure', c_bps:'Pulse and saturation', c_bpeso:'Weight', c_btemp:'Temperature', c_sin_o2:'Room air', c_con_o2:'On O₂', c_nueva:'＋ new reading', env_wait:'⏳ Sending…', sip_label:'SIP (health card, optional)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
 };
 const LANGS = ['es','va','fr','en'];
 /* ═══ LA LANGUE (P-H, 18/08) ═══
@@ -1501,6 +1620,18 @@ function dlgConfirm(titulo, onOk) {
    (l'ordre de la journée) ; momNombre() dit le nom dans la langue du foyer. */
 const MOM_ICONO = { desayuno:'🌅', almuerzo:'🥐', comida:'☀️', merienda:'🍵',
                     cena:'🌇', noche:'🌙', demanda:'✚' };
+/* ═══ 24/08 (P-H) — L'HEURE PLAUSIBLE DU MOMENT ═══
+   « on sait bien que le desayuno ce n'est pas à minuit ». Cocher une prise
+   à 23 h ne veut pas dire qu'elle a eu lieu à 23 h : elle a eu lieu AU
+   MOMENT, et le moment a son heure d'usage. L'heure du clic mentait ;
+   celle-ci est approchée mais jamais absurde.
+   ⚠ Elle est une TABLE : la changer, c'est changer une ligne. Le jour où
+   deux patients ne mangeront pas à la même heure, elle passera dans leur
+   fiche sans qu'on touche au code qui la lit.
+   « demanda » n'y figure pas : là, l'heure est celle du geste, et elle dit
+   quelque chose — c'est tout l'intérêt d'une prise à la demande. */
+const HORA_MOMENTO = { desayuno:'08:00', almuerzo:'11:00', comida:'13:30',
+                       merienda:'17:00', cena:'20:00',    noche:'22:00' };
 const MOMENTOS  = MOM_ICONO;
 function momNombre(id) { return (MOM_ICONO[id] || '') + ' ' + t('mj_' + id); }
 /* ═══ LES MOMENTS D'UNE FICHE (P-H, 17/08) ═══
@@ -1793,7 +1924,9 @@ function repintarDia() {
   if (typeof recargarConst === 'function') recargarConst();
   if (typeof pintaTitulosDia === 'function') pintaTitulosDia();
   const nl = document.getElementById('nota-libre'); if (nl) nl.value = '';
-  const oh = document.getElementById('b-hora'); if (oh) oh.value = '';
+  /* 24/08 : l'effacement aveugle de b-hora vidait ce que recargarConst
+     venait de poser, trois lignes plus haut. Ce sont les recargar* qui
+     décident, chacun pour son écran. */
   if (typeof recargarObs === 'function') recargarObs();
   document.querySelectorAll('.dia-aviso').forEach(function (e) {
     e.textContent = esHoy() ? '' : t('dia_otro');
@@ -1809,7 +1942,7 @@ function pedirHoraDia(titulo, sugerida, cb) {
   ov.innerHTML = '<div class="dlg">' +
     '<div style="font-size:17px;font-weight:700">🕐 ' + titulo + '</div>' +
     '<div style="font-size:12px;color:var(--muted);margin:4px 0 10px">' + fmtDiaCorto(diaKey()) + '</div>' +
-    '<input class="txt" id="ph-hora" type="text" inputmode="numeric" maxlength="5" placeholder="hh:mm" ' +
+    '<input class="txt" id="ph-hora" type="text" inputmode="numeric" placeholder="hh:mm" ' +
       'style="font-size:22px;text-align:center" value="' + (sugerida || '') + '">' +
     '<div style="display:flex;gap:8px;margin-top:12px">' +
       '<button class="btn sec" id="ph-can" style="flex:1">' + t('d_can') + '</button>' +
@@ -2100,7 +2233,9 @@ function tomaObj(tm, med) {
   if (!v) return {};
   if (typeof v === 'string') {
     const o = {}, mo = momsDe(med)[0] || 'demanda';
-    if (mo === 'demanda') o.demanda = [v]; else o[mo] = true;
+    /* 24/08 : l'ancienne forme portait DÉJÀ une heure — on la garde au lieu
+       de la remplacer par un « true » qui la jetait. */
+    if (mo === 'demanda') o.demanda = [v]; else o[mo] = v;
     return o;
   }
   return v;
@@ -2149,7 +2284,59 @@ function horaValide(s) {
 /* Les deux-points apparaissent à la frappe, dès le troisième chiffre. */
 function formatHora(e) {
   const d = String(e.value || '').replace(/[^0-9]/g, '').slice(0, 4);
-  e.value = (d.length <= 2) ? d : (d.slice(0, d.length - 2) + ':' + d.slice(-2));
+  const v = (d.length <= 2) ? d : (d.slice(0, d.length - 2) + ':' + d.slice(-2));
+  if (e.value !== v) e.value = v;   /* ne rien reposer si rien ne change */
+}
+/* Le champ perd le focus : c'est le moment de mettre l'heure en forme et
+   de l'enregistrer. Posé sur `blur` parce que `change` n'arrive pas si
+   l'on repart sans avoir modifié — et alors une heure tapée « 930 »
+   resterait telle quelle à l'écran. */
+/* ═══ 26/08 (P-H) — L'HEURE SE RÉPLIQUE PAR TABLE ═══
+   « je change l'heure de la tension, je réplique -> pouls et saturation
+   -> température et poids ». Une action sur un champ se répercute vers
+   n champs : la table dit lesquels, la fonction ne fait qu'obéir.
+   Ajouter un bloc demain, c'est ajouter une ligne ici.
+   ⚠ ON NE RÉPLIQUE QUE VERS LES BLOCS ENCORE VIDES — jamais dans une
+   fiche déjà mesurée : ce serait redater en douce une mesure qui a eu
+   lieu à une autre heure. */
+const REPLICA_HORA = {
+  'c-ta-hora':   ['c-ps-hora', 'c-temp-hora', 'c-peso-hora'],
+  'c-ps-hora':   ['c-temp-hora', 'c-peso-hora'],
+  'c-temp-hora': ['c-peso-hora'],
+  'c-peso-hora': []
+};
+function replicarHora(origen) {
+  const destinos = REPLICA_HORA[origen.id]; if (!destinos) return;
+  const h = horaValide(origen.value); if (!h) return;
+  destinos.forEach(id => {
+    const e = document.getElementById(id); if (!e) return;
+    const m = /^c-(\w+)-hora$/.exec(id); if (!m) return;
+    /* bloc vide = aucun brouillon en cours : c'est là qu'on peut poser */
+    if (_cDraftB[m[1]] !== null) return;
+    if (e.value.trim() === h) return;
+    e.value = h;
+  });
+}
+function _blurHora(ev) {
+  const el = ev.target;
+  if (!el || !el.id) return;
+  if (/-hora$/.test(el.id)) {
+    formatHora(el);
+    /* ce qui reste après la frappe n'est pas une heure : on remet celle
+       de la fiche plutôt que de laisser une bouillie à l'écran */
+    if (el.value.trim() !== '' && !horaValide(el.value)) {
+      const m = /^c-(\w+)-hora$/.exec(el.id);
+      if (m) { const cs = getConstantes(), ix = _cDraftB[m[1]];
+               el.value = (ix !== null && cs[ix]) ? cs[ix].hora : ''; }
+    }
+    replicarHora(el);
+    const f = CAMPOS_GUARDA[el.id];
+    if (f) { try { f(el); } catch (e) {} }
+  }
+  /* le doigt a quitté le champ : les listes retenues peuvent se remettre
+     à jour sans déranger personne */
+  if (el.id.indexOf('c-') === 0 && typeof pintaSelBloques === 'function')
+    setTimeout(pintaSelBloques, 0);
 }
 
 /* ── thème jour/nuit ── */
@@ -2178,6 +2365,9 @@ function verAyuda() {
       '<p style="margin-top:6px"><a href="doc.pdf" target="_blank" rel="noopener" ' +
         'style="color:var(--accent);font-size:13px">📄 ' + t('ay_doc') + '</a></p>' +
       '<div style="font-size:11px;color:var(--muted);margin-top:10px">' + t('ay_dev') + ' — v' + MFP_VERSION + '</div>' +
+      '<div style="font-size:11px;color:var(--muted);margin-top:3px">DOI ' +
+        '<a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" rel="noopener" ' +
+        'style="color:var(--accent)">10.5281/zenodo.21997587</a></div>' +
     '</div>' +
     '<button class="btn" data-fin="1">' + t('ay_ok') + '</button></div>';
   ov.onclick = e => { if (e.target === ov) ov.remove(); };
@@ -2248,7 +2438,9 @@ function renderPuntuales() {
 /* ── oublis de la veille ── */
 function ayerKey() { const d = new Date(); d.setDate(d.getDate() - 1);
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
-function medActivo(m, fecha) { return !m.hasta || fecha <= m.hasta; }
+/* 24/08 (P-H) : « seulement le 27, pas de pollution inutile » — un traitement
+   qui commence plus tard ne figure pas dans la liste du jour avant son début. */
+function medActivo(m, fecha) { return (!m.desde || fecha >= m.desde) && (!m.hasta || fecha <= m.hasta); }
 
 /* ═══════════════════════════════════════════════════════════════════
    LA FRÉQUENCE (P-H 29/07 — « Hydroferol ampolla cada mes »)
@@ -2660,7 +2852,7 @@ function baseSalufolio() {
    on tâte le serveur avant de proposer l'envoi ; bouton éteint + explication
    quand Salufolio ne répond pas ; message « pourquoi et que faire » à l'échec. */
 let _pcVivo = null;
-/* Joaquina, 01/08 : « pourquoi ça ne vient pas tout seul ici ? » — puis
+/* la persona cuidada, 01/08 : « pourquoi ça ne vient pas tout seul ici ? » — puis
    « pourquoi faut-il cliquer sur Dosis ? ». Elle a raison deux fois : ouvrir
    un formulaire, c'est vouloir écrire dedans ; et Entrée doit mener au champ
    suivant, comme sur n'importe quelle machine depuis soixante ans. */
@@ -2676,6 +2868,26 @@ function _encadenarCampos(ids) {
       else if (typeof agregarMed === 'function') agregarMed();
     });
   });
+}
+/* ═══ DÉBUT + DURÉE ⇒ FIN (P-H, 24/08 : « l'ordinateur sait le faire »)
+       Le jour de début COMPTE comme le premier : 7 jours depuis le 21 → le 27.
+       `hasta` reste le champ stocké et le seul que medActivo interroge ;
+       `desde` et `dias` sont les sources, `hasta` est le produit. ═══ */
+function sumaDias(iso, n) {
+  const d = new Date(iso + 'T12:00:00');
+  if (isNaN(d)) return '';
+  d.setDate(d.getDate() + n);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function calcFin(pfx) {
+  const eD = document.getElementById(pfx + '-desde');
+  const eN = document.getElementById(pfx + '-dias');
+  const eH = document.getElementById(pfx + '-hasta');
+  if (!eD || !eN || !eH) return;
+  const n = parseInt(eN.value, 10);
+  if (!eN.value.trim() || !n || n < 1) { eH.value = ''; return; }  /* vide ou 0 = sans fin */
+  if (!eD.value) eD.value = hoyKey();          /* pas de début donné ⇒ aujourd'hui */
+  eH.value = sumaDias(eD.value, n - 1);
 }
 function nmToggle() {
   const f = document.getElementById('nm-form'); if (!f) return;
@@ -3399,7 +3611,7 @@ function pantallaActiva() {
    retire. Ce qui ne peut pas marcher ne se montre pas. */
 function pintaBarraHora() {
   const b = document.getElementById('barra-hora'); if (!b) return;
-  const p = pantallaActiva(), on = (p === 'const' || p === 'notas');
+  const p = pantallaActiva(), on = (p === 'notas');
   b.style.display = on ? 'flex' : 'none';
   b.classList.toggle('centrado', p === 'notas');
   const l = document.getElementById('i-lhora');
@@ -3419,7 +3631,15 @@ function ir(p) {
      revient dessus au lieu d'en ouvrir une neuve à chaque passage. */
   if (p === 'datos') setTimeout(sondearPc, 50);
   if (p === 'notas') setTimeout(trioTotales, 30);
-  if (p === 'const') setTimeout(pintaConstHoy, 30);
+  if (p === 'const') {
+    /* 26/08, P-H : « en quittant l'onglet constantes et en y revenant plus tard
+       il faut tout effacer — ça peut prêter à confusion et être source d'erreurs ».
+       ON ENTRE TOUJOURS DANS CONSTANTES AVEC UNE TABLE VIERGE : heure --:-- et
+       champs vides. Ce qui a été mesuré vit dans le récapitulatif, pas dans les
+       champs. Même geste que le bouton ＋ nueva medición, rien de plus. */
+    Object.keys(BLOQUES_CONST).forEach(function (tipo) { _cargarBloque(tipo, null); });
+    setTimeout(pintaConstHoy, 30);
+  }
   document.querySelectorAll('.panel').forEach(x => x.classList.remove('act'));
   document.querySelectorAll('nav button').forEach(x => x.classList.remove('act'));
   document.getElementById('p-' + p).classList.add('act');
@@ -3554,7 +3774,10 @@ function _tomasDia() { const t = getTomas(); if (!t[diaKey()]) t[diaKey()] = {};
 function basculaToma(medId, mo) {
   const med = getMeds().filter(function (m) { return m.id === medId; })[0];
   const t = _tomasDia(), k = diaKey(), o = tomaObj(t[k], med);
-  if (o[mo]) delete o[mo]; else o[mo] = true;
+  /* 24/08 : la coche ne pose plus un « true » muet mais l'heure plausible
+     du moment. Présence d'une heure = prise faite ; absence = pas prise.
+     Un seul état à lire, et l'heure vient avec. */
+  if (o[mo]) delete o[mo]; else o[mo] = HORA_MOMENTO[mo] || ahora();
   if (Object.keys(o).length) t[k][medId] = o; else delete t[k][medId];
   lsSet('mfp_tomas', t);
 }
@@ -3593,21 +3816,143 @@ function pintaArritmia() {
   const e = document.getElementById('c-arrit');
   if (e) e.className = 'popt' + (_arrit ? ' on' : '');
 }
-function toggleArritmia() { _arrit = !_arrit; pintaArritmia(); upsertConst(); }
-function upsertConst() {
-  const v = id => { const x = document.getElementById(id).value; return x === '' ? null : parseFloat(x); };
-  const hEl = document.getElementById('b-hora');
-  const vals = { ta_sis: v('c-tas'), ta_dia: v('c-tad'), fc: v('c-fc'), spo2: v('c-spo2'), peso: v('c-peso'), temp: v('c-temp'), arritmia: _arrit ? true : null };
+/* ═══ 25/08 (P-H) — LA TABLE DES BLOCS ═══
+   « le brassard donne sys, dia et pouls en un geste ; l'oxymètre donne
+   saturation et pouls en un autre ». Quatre appareils, quatre moments,
+   quatre fiches — et une TABLE qui le dit, pour qu'ajouter un bloc demain
+   ne soit qu'une ligne de plus.
+   `campos` : clé du fichier → identifiant du champ à l'écran.
+   `extra`  : les drapeaux du bloc — l'arythmie appartient au brassard,
+              l'oxygène à la saturation, pas à la journée. */
+const BLOQUES_CONST = {
+  ta:   { campos: { ta_sis: 'c-tas', ta_dia: 'c-tad' }, extra: ['arritmia'] },
+  ps:   { campos: { fc: 'c-fc', spo2: 'c-spo2' },       extra: ['o2'] },
+  peso: { campos: { peso: 'c-peso' },                   extra: [] },
+  temp: { campos: { temp: 'c-temp' },                   extra: [] }
+};
+/* Un brouillon PAR BLOC : noter une température ne touche plus la tension. */
+let _cDraftB = { ta: null, ps: null, peso: null, temp: null };
+let _o2 = false;
+function toggleArritmia() { _arrit = !_arrit; pintaArritmia(); upsertBloque('ta'); }
+function toggleO2() { _o2 = !_o2; pintaO2(); upsertBloque('ps'); }
+function pintaO2() {
+  const b = document.getElementById('c-o2'); if (!b) return;
+  b.classList.toggle('on', !!_o2);
+  const l = document.getElementById('i-co2');
+  if (l) l.textContent = t(_o2 ? 'c_con_o2' : 'c_sin_o2');
+}
+/* Quelle fiche appartient à quel bloc : celle qui porte au moins un de ses
+   champs. Une ancienne fiche (six valeurs, une heure) répond donc à
+   plusieurs — elle se relit telle quelle, comme une mesure unique. */
+function _fichaDeBloque(c, tipo) {
+  const B = BLOQUES_CONST[tipo]; if (!c || !B) return false;
+  return Object.keys(B.campos).some(k => c[k] !== null && c[k] !== undefined);
+}
+function _fichasDia(tipo) {
+  const cs = getConstantes(), out = [];
+  cs.forEach((c, i) => { if (c && c.fecha === diaKey() && _fichaDeBloque(c, tipo)) out.push(i); });
+  return out;
+}
+function upsertBloque(tipo) {
+  const B = BLOQUES_CONST[tipo]; if (!B) return;
+  const v = id => { const e = document.getElementById(id); if (!e) return null;
+                    return e.value === '' ? null : parseFloat(e.value); };
+  const hEl = document.getElementById('c-' + tipo + '-hora');
+  const vals = {};
+  Object.keys(B.campos).forEach(k => vals[k] = v(B.campos[k]));
   const cs = getConstantes();
-  if (Object.values(vals).every(x => x === null)) {
-    if (_cDraft !== null && cs[_cDraft]) { cs.splice(_cDraft, 1); lsSet('mfp_constantes', cs); }
-    _cDraft = null; estadoConst(''); return;
+  const idx = _cDraftB[tipo];
+  if (Object.values(vals).every(x => x === null)) {   /* plus rien : la fiche s'efface */
+    if (idx !== null && cs[idx]) { cs.splice(idx, 1); lsSet('mfp_constantes', cs); _reindexar(idx); }
+    _cDraftB[tipo] = null; estadoConst(''); pintaSelBloques(); return;
   }
-  const horaPrev = (_cDraft !== null && cs[_cDraft]) ? cs[_cDraft].hora : null;
+  if (B.extra.indexOf('arritmia') >= 0) vals.arritmia = _arrit ? true : null;
+  if (B.extra.indexOf('o2') >= 0 && vals.spo2 !== null) vals.o2 = !!_o2;
+  const horaPrev = (idx !== null && cs[idx]) ? cs[idx].hora : null;
   const rec = Object.assign({ fecha: diaKey(), hora: (hEl && horaValide(hEl.value)) || horaPrev || ahora() }, vals);
-  if (_cDraft === null || !cs[_cDraft]) { cs.push(rec); _cDraft = cs.length - 1; }
-  else cs[_cDraft] = rec;
+  if (idx === null || !cs[idx]) { cs.push(rec); _cDraftB[tipo] = cs.length - 1; }
+  else cs[idx] = Object.assign({}, cs[idx], rec);
   lsSet('mfp_constantes', cs); estadoConst('✓ guardado · ' + rec.hora);
+  /* 26/08 — NE JAMAIS réécrire l'heure pendant la frappe : on ne la pose que
+     si le champ est VIDE. Le contrôle se fait à la sortie (focusout, plus bas).
+     Avant : toute heure incomplète (« 1:30 » après un backspace) était aussitôt
+     « réparée » — le geste d'effacer était annulé dans la milliseconde. */
+  if (hEl && hEl.value.trim() === '') hEl.value = rec.hora;
+  pintaSelBloques();
+}
+
+/* Retirer une fiche décale les indices : sans cela, les brouillons des
+   autres blocs pointeraient sur la mauvaise ligne. */
+function _reindexar(quitado) {
+  Object.keys(_cDraftB).forEach(k => {
+    if (_cDraftB[k] === null) return;
+    if (_cDraftB[k] === quitado) _cDraftB[k] = null;
+    else if (_cDraftB[k] > quitado) _cDraftB[k]--;
+  });
+}
+/* P-H, 25/08 : « on devrait pouvoir visualiser une liste déroulante des
+   heures de mesure ». Chaque bloc montre les siennes, plus « nouvelle ». */
+/* Charger une fiche dans un bloc — ou vider le bloc si idx est null.
+   C'est le geste commun au bouton « nouvelle mesure » et au clic sur une
+   ligne du récapitulatif : un seul endroit, une seule vérité. */
+function _cargarBloque(tipo, idx) {
+  const B = BLOQUES_CONST[tipo]; if (!B) return;
+  const cs = getConstantes(), c = (idx === null) ? null : cs[idx];
+  const hEl = document.getElementById('c-' + tipo + '-hora');
+  _cDraftB[tipo] = c ? idx : null;
+  Object.keys(B.campos).forEach(k => { const e = document.getElementById(B.campos[k]);
+    if (e) e.value = (!c || c[k] === null || c[k] === undefined) ? '' : c[k]; });
+  if (tipo === 'ta') { _arrit = !!(c && c.arritmia); pintaArritmia(); }
+  if (tipo === 'ps') { _o2 = !!(c && c.o2 === true); pintaO2(); }
+  if (hEl) hEl.value = c ? (c.hora || '') : (esHoy() ? ahora() : '');
+}
+/* Le bouton : il ouvre une mesure neuve, rien d'autre. Éteint tant qu'il
+   n'y a rien à prolonger — P-H, 26/08 : « actif dès que la première est
+   validée ». Tº et Poids n'en ont pas : on ne se pèse pas dix fois. */
+function nuevaMedida(tipo) {
+  _cargarBloque(tipo, null);
+  estadoConst('');
+  const e = document.getElementById(BLOQUES_CONST[tipo].campos[Object.keys(BLOQUES_CONST[tipo].campos)[0]]);
+  if (e) e.focus();
+}
+/* Cliquer une ligne du récapitulatif la ramène dans les champs. La ligne
+   peut réunir plusieurs fiches (tension + pouls + température d'un même
+   moment) : chaque bloc reprend LA SIENNE, les autres ne bougent pas. */
+function abrirGrupo(ids) {
+  const lista = String(ids || '').split(',').map(x => parseInt(x, 10)).filter(x => !isNaN(x));
+  const cs = getConstantes();
+  Object.keys(BLOQUES_CONST).forEach(tipo => {
+    const i = lista.find(j => cs[j] && _fichaDeBloque(cs[j], tipo));
+    if (i !== undefined) _cargarBloque(tipo, i);
+  });
+  estadoConst('');
+  const p = document.getElementById('p-const'); if (p) p.scrollIntoView({ block: 'nearest' });
+}
+function pintaSelBloques() {
+  /* ⚠ 26/08 (P-H) : « on ne peut pas corriger l'heure de tension ».
+     Trouvé : chaque frappe enregistre, chaque enregistrement REPEIGNAIT la
+     liste — et refaire le contenu d'un <select> lui rend le focus sur
+     certains navigateurs. Le curseur quittait donc la boîte de l'heure en
+     pleine frappe. On ne repeint plus une liste tant que le doigt est
+     posé dans un champ de son bloc ; elle se remettra à jour en sortant. */
+  Object.keys(BLOQUES_CONST).forEach(tipo => {
+    const b = document.getElementById('c-' + tipo + '-add'); if (!b) return;
+    b.textContent = t('c_nueva');
+    /* éteint tant qu'aucune mesure n'existe, et pendant qu'on en saisit
+       une neuve — il n'y aurait rien à ouvrir */
+    b.disabled = (_fichasDia(tipo).length === 0) || (_cDraftB[tipo] === null);
+  });
+}
+/* 26/08 : le texte le plus long décide de la largeur du menu déroulant —
+   sur un téléphone il occupait tout l'écran. On le resserre. */
+function _resumenBloque(c, tipo) {
+  if (tipo === 'ta') return (c.ta_sis != null ? c.ta_sis : '—') + '/' + (c.ta_dia != null ? c.ta_dia : '—');
+  if (tipo === 'ps') { const p = [];
+    if (c.fc != null) p.push(c.fc);
+    if (c.spo2 != null) p.push(c.spo2 + '%' + (c.o2 === true ? '↑' : ''));
+    return p.join('·'); }
+  if (tipo === 'peso') return (c.peso != null ? c.peso : '');
+  return (c.temp != null ? c.temp : '');
 }
 function estadoConst(s) {
   const e = document.getElementById('const-estado'); if (e) e.textContent = s;
@@ -3620,7 +3965,7 @@ function _resumenConst(c) {
   if (c.ta_sis != null || c.ta_dia != null)
     p.push((c.ta_sis != null ? c.ta_sis : '—') + '/' + (c.ta_dia != null ? c.ta_dia : '—') + ' mmHg');
   if (c.fc != null) p.push(c.fc + ' lpm');
-  if (c.spo2 != null) p.push(c.spo2 + ' %');
+  if (c.spo2 != null) p.push(c.spo2 + ' %' + (c.o2 === true ? ' (O₂)' : (c.o2 === false ? ' (aire)' : '')));
   if (c.peso != null) p.push(c.peso + ' kg');
   if (c.temp != null) p.push(c.temp + ' °C');
   if (c.arritmia) p.push('⚡ ' + t('c_arritmia'));
@@ -3630,33 +3975,152 @@ function _resumenConst(c) {
    change de patient ou que l'on change de jour. Avant, la navigation
    par jour laissait les champs (et _cDraft) sur le jour précédent : une
    mesure tapée ensuite allait silencieusement déménager l'ancienne fiche. */
+/* 25/08 — CHAQUE BLOC REPREND LA SIENNE. Auparavant on cherchait « la »
+   fiche du jour et on la posait dans les six champs ; avec plusieurs
+   mesures par jour, cela mélangeait la tension du matin et la température
+   du soir. Chaque bloc va chercher SA dernière fiche, et l'heure affichée
+   est celle de cette mesure-là. */
 function recargarConst() {
   const cs = getConstantes();
-  let idx = -1;
-  for (let i = cs.length - 1; i >= 0; i--) if (cs[i] && cs[i].fecha === diaKey()) { idx = i; break; }
-  const c = idx >= 0 ? cs[idx] : null;
   const pon = (id, v) => { const e = document.getElementById(id); if (e) e.value = (v === null || v === undefined) ? '' : v; };
-  pon('c-tas', c && c.ta_sis); pon('c-tad', c && c.ta_dia); pon('c-fc', c && c.fc);
-  pon('c-spo2', c && c.spo2); pon('c-peso', c && c.peso); pon('c-temp', c && c.temp);
-  /* fiche du jour : son heure ; fiche neuve : l'heure qu'il est, et sur un
-     jour passé « maintenant » n'existe pas — 12:00, heure neutre. */
-  const hAnt = (document.getElementById('b-hora') || {}).value || '';
-  pon('b-hora', (c && c.hora) || (horaValide(hAnt) ? hAnt : (esHoy() ? ahora() : '12:00')));
+  let ult = null;
+  Object.keys(BLOQUES_CONST).forEach(tipo => {
+    const B = BLOQUES_CONST[tipo], idxs = _fichasDia(tipo);
+    const idx = idxs.length ? idxs[idxs.length - 1] : null;
+    const c = idx !== null ? cs[idx] : null;
+    Object.keys(B.campos).forEach(k => pon(B.campos[k], c && c[k]));
+    const hEl = document.getElementById('c-' + tipo + '-hora');
+    if (hEl) hEl.value = (c && c.hora) || (esHoy() ? ahora() : '');
+    _cDraftB[tipo] = idx;
+    if (tipo === 'ta') { _arrit = !!(c && c.arritmia); pintaArritmia(); }
+    if (tipo === 'ps') { _o2 = !!(c && c.o2 === true); pintaO2(); }
+    if (c) ult = c;
+  });
   pon('c-fecha', fmtDiaLargo(diaKey()));
   ['c-tas','c-tad','c-fc','c-spo2','c-peso','c-temp'].forEach(function (id) {
     const e = document.getElementById(id); if (e && typeof avisarDudoso === 'function') avisarDudoso(e);
   });
-  _arrit = !!(c && c.arritmia); pintaArritmia();
-  _cDraft = idx >= 0 ? idx : null;
-  estadoConst(c ? '✓ guardado · ' + c.hora : '');
+  pintaSelBloques();
+  estadoConst(ult ? '✓ guardado · ' + ult.hora : '');
 }
+/* ═══ 26/08 (P-H) — LES SEUILS ═══
+   Deux degrés, pas un : l'AMBRE dit « regarde », le ROUGE dit « agis ».
+   ⚠ ILS NE JUGENT PAS LA PERSONNE, ILS JUGENT UNE MESURE. P-H, 26/08 :
+   « la persona cuidada parle beaucoup, elle s'essouffle, alors le pouls augmente et
+   la tension aussi — j'attends le calme avant de mesurer ». Une couleur
+   invite donc à REGARDER la valeur, jamais à conclure : c'est le cuidador
+   qui sait si elle venait de parler. Pour la même raison le Protocolo
+   n'écrit JAMAIS « hypertension » ni « fièvre » — il colore, il ne
+   diagnostique pas.
+   Valeurs arrêtées avec P-H le 26/08 (seuil domicile, pas celui du
+   cabinet). `bajo`/`bajo_r` : en dessous ; `alto`/`alto_r` : au-dessus. */
+const SEUILS_CONST = {
+  ta_sis: { bajo_r: 90,  bajo: 100, alto: 130,  alto_r: 140 },
+  ta_dia: { bajo_r: 60,  bajo: 65,  alto: 85,   alto_r: 90 },
+  fc:     { bajo_r: 55,  bajo: 58,  alto: 86,   alto_r: 100 },
+  spo2:   { bajo_r: 90,  bajo: 94 },
+  temp:   { bajo_r: 35,  bajo: 35.5, alto: 37.5, alto_r: 38 }
+};
+function _nivel(k, v) {
+  const S = SEUILS_CONST[k];
+  if (!S || v === null || v === undefined || isNaN(v)) return '';
+  if (S.bajo_r !== undefined && v < S.bajo_r) return 'rojo';
+  if (S.alto_r !== undefined && v >= S.alto_r) return 'rojo';
+  if (S.bajo !== undefined && v < S.bajo) return 'ambar';
+  if (S.alto !== undefined && v >= S.alto) return 'ambar';
+  return '';
+}
+function _pinta(k, v, txt) {
+  const n = _nivel(k, v);
+  return n ? '<span class="v-' + n + '">' + txt + '</span>' : txt;
+}
+/* ═══ LE FIL DE LA JOURNÉE ═══
+   P-H, 26/08 : « afficher les mesures dans l'ordre des heures, ligne par
+   ligne, heure en gras, anomalies en rouge — tout sur la même ligne ».
+   Les listes déroulantes montrent chacune leur appareil ; ceci montre la
+   JOURNÉE, tous appareils mêlés, dans l'ordre où les choses se sont
+   passées. C'est la seule vue qui donne la suite des événements. */
 function pintaConstHoy() {
   const el = document.getElementById('const-hoy'); if (!el) return;
-  const hoy = getConstantes().filter(c => c && c.fecha === diaKey());
+  /* on garde l'INDICE de chaque fiche : c'est lui qu'on rendra au clic */
+  const hoy = getConstantes().map((c, i) => (c && c.fecha === diaKey()) ? Object.assign({ _i: i }, c) : null)
+    .filter(Boolean).sort((a, b) => String(a.hora || '').localeCompare(String(b.hora || '')));
   if (!hoy.length) { el.innerHTML = ''; return; }
-  el.innerHTML = '<div class="ch-tit">' + t('tri_hoy') + '</div>' +
-    hoy.map(c => '<div class="ch-lin"><b>' + (c.hora || '--:--') + '</b> · ' + _resumenConst(c) + '</div>').join('');
+  /* 24/08 (P-H) : elle listait les fiches du JOUR AFFICHÉ en les annonçant
+     « aujourd'hui ». Le mot ne se dit que s'il est vrai — sinon la date. */
+  /* ═══ 26/08 (P-H) — REGROUPER CE QUI EST UN SEUL MOMENT ═══
+     « avant, une même heure s'affichait sur la même ligne ». Quatre
+     appareils sortis d'affilée, c'est UNE lecture, pas quatre lignes.
+     ⚠ MAIS PAS N'IMPORTE COMMENT : « quand je prends la tension de
+     la persona cuidada je mesure en deux fois, ou même trois si un doute, et en
+     moins de cinq minutes ». Une tranche de temps seule fondrait ces
+     reprises et effacerait justement ce qui a motivé la seconde mesure.
+     LA RÈGLE EST DONC DOUBLE : deux fiches se fondent si elles sont
+     proches DANS LE TEMPS **ET** SI ELLES NE SE RECOUVRENT PAS — aucune
+     valeur présente dans les deux. Tension, pouls, température et poids
+     d'un même moment se rassemblent ; deux tensions d'affilée restent
+     deux lignes. */
+  const _min = h => { const m = /^(\d{1,2}):(\d{2})$/.exec(String(h || ''));
+                      return m ? (+m[1]) * 60 + (+m[2]) : null; };
+  const CLAVES = ['ta_sis','ta_dia','fc','spo2','temp','peso'];
+  const grupos = [];
+  hoy.forEach(c => {
+    const g = grupos[grupos.length - 1];
+    const t1 = _min(c.hora), t0 = g ? _min(g.hora) : null;
+    const cerca = (g && t0 !== null && t1 !== null && (t1 - t0) <= 5);
+    const choca = g && CLAVES.some(k => c[k] != null && g[k] != null);
+    if (cerca && !choca) {
+      CLAVES.concat(['o2','arritmia']).forEach(k => { if (c[k] != null && g[k] == null) g[k] = c[k]; });
+      g._ids.push(c._i);
+    } else { grupos.push(Object.assign({ _ids: [c._i] }, c)); }
+  });
+  el.innerHTML = '<div class="ch-tit">' + (esHoy() ? t('tri_hoy') : _fechaCorta(diaKey()) + ' :') + '</div>' +
+    grupos.map(c => {
+      const p = [];
+      if (c.ta_sis != null || c.ta_dia != null)
+        p.push(_pinta('ta_sis', c.ta_sis, c.ta_sis != null ? c.ta_sis : '—') + '/' +
+               _pinta('ta_dia', c.ta_dia, c.ta_dia != null ? c.ta_dia : '—'));
+      if (c.fc != null) p.push(_pinta('fc', c.fc, c.fc + '<i>lpm</i>'));
+      if (c.spo2 != null) p.push(_pinta('spo2', c.spo2, c.spo2 + '<i>%</i>') +
+        (c.o2 === true ? '<i>O₂</i>' : (c.o2 === false ? '<i>aire</i>' : '')));
+      if (c.temp != null) p.push(_pinta('temp', c.temp, c.temp + '<i>°</i>'));
+      if (c.peso != null) p.push(c.peso + '<i>kg</i>');
+      /* le symbole suffit — P-H, 26/08 : « inutile de mettre tout le texte
+         en clair + rythme irrégulier » */
+      if (c.arritmia) p.push('⚡');
+      return '<div class="ch-lin" data-ids="' + (c._ids || []).join(',') + '">' +
+             '<b>' + (c.hora || '--:--') + '</b> ' + p.join(' · ') + '</div>';
+    }).join('');
+  /* la vue descend d'elle-même sur la dernière : quatre lignes visibles,
+     et c'est toujours la mesure qu'on vient de prendre qu'on voit */
+  el.scrollTop = el.scrollHeight;
 }
+/* ═══ 26/08 (P-H) — « les champs se remplissent sans que je touche à rien » ═══
+   Trouvé : une ligne du récapitulatif est À LA FOIS déroulante
+   (overflow-x, pour lire la fin d'une longue mesure) ET cliquable. Sur un
+   écran tactile, faire glisser pour lire déclenchait le clic au lever du
+   doigt — donc abrirGrupo, donc une vieille fiche remontait dans les
+   champs. On ne compte donc plus un clic, mais un TOUCHER : le doigt doit
+   être reparti d'où il est venu (moins de 10 px) et n'avoir pas traîné. */
+(function () {
+  let x0 = 0, y0 = 0, t0 = 0;
+  document.addEventListener('pointerdown', ev => {
+    const l = ev.target.closest && ev.target.closest('.const-hoy .ch-lin');
+    if (!l) return;
+    x0 = ev.clientX; y0 = ev.clientY; t0 = Date.now();
+  }, true);
+  document.addEventListener('pointerup', ev => {
+    const l = ev.target.closest && ev.target.closest('.const-hoy .ch-lin');
+    if (!l || !t0) return;
+    const bougé = Math.abs(ev.clientX - x0) > 10 || Math.abs(ev.clientY - y0) > 10;
+    const long  = (Date.now() - t0) > 700;
+    t0 = 0;
+    if (bougé || long) return;          /* c'était un défilement, pas un choix */
+    const ids = l.getAttribute('data-ids');
+    if (ids) abrirGrupo(ids);
+  }, true);
+})();
+
 /* ═══ UNE SEULE ÉCOUTE POUR TOUTE LA MAISON (forme proposée par P-H,
    29/07) ═══ Plutôt que de brancher un écouteur sur chaque champ — qu'on
    oubliera le jour où l'on en ajoutera un —, une seule écoute déléguée sur
@@ -3669,29 +4133,43 @@ function pintaConstHoy() {
    de date sur les navigateurs qui n'émettent pas « input ». Les fonctions
    appelées sont des upsert : écrire cent fois ne crée pas cent fiches. */
 const CAMPOS_GUARDA = {
-  'c-tas': e => { avisarDudoso(e); upsertConst(); },
-  'c-tad': e => { avisarDudoso(e); upsertConst(); },
-  'c-fc': e => { avisarDudoso(e); upsertConst(); },
-  'c-spo2': e => { avisarDudoso(e); upsertConst(); },
-  'c-peso': e => { avisarDudoso(e); upsertConst(); },
-  'c-temp': e => { avisarDudoso(e); upsertConst(); },
+  /* 25/08 : chaque champ dit maintenant À QUEL BLOC il appartient. */
+  'c-tas': e => { avisarDudoso(e); upsertBloque('ta'); },
+  'c-tad': e => { avisarDudoso(e); upsertBloque('ta'); },
+  'c-fc': e => { avisarDudoso(e); upsertBloque('ps'); },
+  'c-spo2': e => { avisarDudoso(e); upsertBloque('ps'); },
+  'c-peso': e => { avisarDudoso(e); upsertBloque('peso'); },
+  'c-temp': e => { avisarDudoso(e); upsertBloque('temp'); },
+  'c-ta-hora': () => upsertBloque('ta'),
+  'c-ps-hora': () => upsertBloque('ps'),
+  'c-peso-hora': () => upsertBloque('peso'),
+  'c-temp-hora': () => upsertBloque('temp'),
   /* 15/08 — OUBLI RÉPARÉ : la boîte de l'heure de Notes s'affichait et se
      formatait, mais n'était déclarée nulle part ici : rien ne l'enregistrait.
      L'heure tapée mourait à l'écran et la fiche gardait son 12:00. */
   /* Une seule boîte d'heure pour toute la maison : elle s'adresse à l'écran
      ouvert. C'est l'écran qui dit de quelle heure il s'agit, pas la boîte. */
-  'b-hora': () => { const p = pantallaActiva(); if (p === 'const') upsertConst(); else if (p === 'notas') upsertObs(); },
+  /* 25/08 : Constantes a désormais une heure PAR BLOC — la barre partagée
+     ne s'adresse plus qu'aux Notes. */
+  'b-hora': () => { if (pantallaActiva() === 'notas') upsertObs(); },
   'nota-libre': () => upsertObs(),
   'cfg-patient2': e => renombrarActivo(e.value, null),
   'cfg-sip': e => renombrarActivo(null, e.value),
   'cfg-pc': e => setPc(e.value)
 };
 function ponerEscuchaUnica() {
+  /* `blur` ne remonte pas : on l'écoute en phase de capture. */
+  document.addEventListener('blur', _blurHora, true);
   const guarda = ev => {
     const t = ev.target;
     if (!t || !t.id) return;
-    /* tout champ dont l'identifiant finit par -hora se formate seul */
-    if (ev.type === 'input' && /-hora$/.test(t.id)) formatHora(t);
+    /* ⚠ 26/08 (P-H) : « impossible de corriger une heure — sélection +
+       nouvelle frappe, ou effacement arrière ». C'était ceci : reformater
+       À CHAQUE FRAPPE repose la valeur du champ, ce qui détruit la
+       sélection et rejette le curseur à la fin. On formate donc À LA
+       SORTIE du champ — la frappe reste libre, et l'heure se met en forme
+       quand on la quitte. */
+    if (ev.type === 'change' && /-hora$/.test(t.id)) formatHora(t);
     const f = CAMPOS_GUARDA[t.id];
     if (!f) return;
     /* Ne jamais avaler une erreur : un enregistrement qui échoue en silence
@@ -3724,7 +4202,7 @@ function ponerEscuchaUnica() {
    serait encore sous le doigt. */
 function guardarActual() {
   try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {}
-  try { upsertConst(); } catch (e) {}
+  try { Object.keys(BLOQUES_CONST).forEach(k => upsertBloque(k)); } catch (e) {}
   try { upsertObs(); } catch (e) {}
 }
 
@@ -3762,6 +4240,8 @@ function cerrarConstDraft() {
   pintaConstHoy();
   if (_cDraft === null) return;
   ['c-tas','c-tad','c-fc','c-spo2','c-peso','c-temp'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+  Object.keys(_cDraftB).forEach(k => _cDraftB[k] = null);
+  _o2 = false; if (typeof pintaO2 === 'function') pintaO2();
   _cDraft = null; estadoConst('');
   const ef = document.getElementById('c-fecha'); if (ef) ef.value = fmtDiaLargo(diaKey());
 }
@@ -3808,7 +4288,7 @@ const CHIP_OPC = {
      journée peut être agitée le matin ET le soir, et ce n'est pas la même
      chose. Le quatrième temps — la nuit — n'était pas dans sa liste, mais
      l'agitation nocturne est le signe que le médecin attend le plus. */
-  /* ㉖ Joaquina : « hace falta pinchar todo para decir que estaba preocupada
+  /* ㉖ la persona cuidada : « hace falta pinchar todo para decir que estaba preocupada
      todo el día ? ». Non : un seul toucher, en tête, et il exclut les autres. */
   'Agitación / inquietud': { tit:'mom_tit', multi:true, op:[
       ['todo el día','mom_todo','Agitación todo el día'],
@@ -3820,7 +4300,7 @@ const CHIP_OPC = {
      has visto el rasguño que tengo en el codo ? ». À choix multiple, donc —
      sinon il faudrait choisir entre les deux moitiés du fait. */
   'Caída':         { tit:'zona_tit', multi:true, op:[['golpe en la cabeza','caida_cabeza','Caída con golpe en la cabeza'],['golpe en la cadera','caida_cadera','Caída con golpe en la cadera'],['golpe en las nalgas','caida_nalgas','Caída sobre las nalgas'],['sin golpe','caida_singolpe','Caída sin golpe'],
-      /* ⑨ Joaquina, 01/08 : « me he caído en el suelo y has visto el rasguño
+      /* ⑨ la persona cuidada, 01/08 : « me he caído en el suelo y has visto el rasguño
          que tengo en el codo ? ». La table disait OÙ, jamais CE QUI EN
          RÉSULTE — et c'est cela que le médecin demande. */
       ['con rasguño','caida_rasguno','Caída con rasguño'],
@@ -3865,7 +4345,7 @@ const CHIP_OPC = {
       /* ⑧ Les trois entrées d'origine étaient toutes négatives : rien ne
          permettait de noter que le repas s'était bien passé. L'initiative et
          le résultat sont deux faits distincts — on peut demander à manger et
-         laisser l'assiette. Observés le 31/07, l'un par Joaquina, l'autre
+         laisser l'assiette. Observés le 31/07, l'un par la persona cuidada, l'autre
          rapporté par son accompagnatrice au retour du centre de jour. */
       ['ha pedido comer','come_pedido','Ha pedido comer'],
       ['ha comido bien','come_bien','Ha comido bien']] }
@@ -4142,7 +4622,7 @@ function regRapida(tipo, detalle) {
 }
 /* Ce qu'on boit se déclare, comme tout le reste. La note stockée reste
    espagnole : c'est l'identifiant, pas l'affichage. */
-/* P-H, 31/07 : Joaquina a bu un verre de lait, et la liste ne le connaissait
+/* P-H, 31/07 : la persona cuidada a bu un verre de lait, et la liste ne le connaissait
    pas. J'y ajoute aussi le bouillon et l'infusion — ce sont les deux qui
    auraient manqué demain chez une personne âgée. */
 const BEBIDAS = [ { id:'agua', k:'beb_agua' }, { id:'leche', k:'beb_leche' },
@@ -4329,7 +4809,7 @@ function pedirRegistro(clave) {
     '<div class="lista-cuerpo" style="gap:5px">' +
       R.lineas.map(function (L, k) {
         return '<div class="reg-lin" data-k="' + k + '">' +
-          '<input class="reg-h" type="text" inputmode="numeric" maxlength="5" placeholder="--:--" ' +
+          '<input class="reg-h" type="text" inputmode="numeric" placeholder="--:--" ' +
             'oninput="regHora(\'' + clave + '\',' + k + ',this)">' +
           '<span class="reg-et">' + t(L.k) + '</span>' +
           '<button class="reg-ant" onclick="regIr(\'' + clave + '\',' + k + ',-1)">‹</button>' +
@@ -4852,7 +5332,7 @@ function cerrarRevision(lista) {
     if (typeof renderDatos === 'function') renderDatos();
   });
 }
-/* ═══ CORRIGER UN REGISTRE DU CORPS (Joaquina, 01/08) ═══
+/* ═══ CORRIGER UN REGISTRE DU CORPS (la persona cuidada, 01/08) ═══
    Les puces à choix se corrigent en retouchant le choix allumé, mais ces
    quatre lignes sont des COMPTEURS : chaque toucher ajoutait, rien ne
    retirait. Le correcteur existait, mais à part — et le geste naturel est
@@ -4925,7 +5405,7 @@ function corregirHoraEv(idx, despues) {
     '<div style="font-size:12px;color:var(--muted);margin:4px 0 10px">' + _fechaCorta(e.fecha) + '</div>' +
     '<label class="nota-campo">' + t('d_hora') + '</label>' +
     '<div style="display:flex;gap:6px;align-items:center;margin-top:4px">' +
-    '<input class="txt" id="ev-hora" type="text" inputmode="numeric" placeholder="hh:mm" maxlength="5" value="' + e.hora + '" style="flex:1">' +
+    '<input class="txt" id="ev-hora" type="text" inputmode="numeric" placeholder="hh:mm" value="' + e.hora + '" style="flex:1">' +
     '<button type="button" class="hbtn2" onclick="reloj(\'ev-hora\')">🕐</button></div>' +
     /* P-H, 31/07 : « 2 boutons suffisent ! cancelar et supprimer ».
        C'est sa propre doctrine qui supprime le troisième : l'heure
@@ -4988,13 +5468,14 @@ function upsertObs() {
     _oDraft = null; estadoObs(''); return;
   }
   const horaPrev = (_oDraft !== null && obs[_oDraft]) ? obs[_oDraft].hora : null;
-  /* sur un jour passé l'heure ne s'invente pas : midi sert de repère neutre,
-     et la relecture invite à la corriger */
-  const rec = { fecha: diaKey(), hora: (oEl && horaValide(oEl.value)) || horaPrev || (esHoy() ? ahora() : '12:00'),
+  /* 24/08 — même règle que Constantes, pour que la boîte partagée ne mente
+     pas : on retient l'heure courante, et elle reste corrigeable. */
+  const rec = { fecha: diaKey(), hora: (oEl && horaValide(oEl.value)) || horaPrev || ahora(),
                 tipos: [..._chipsSel].map(i => CHIP_TIPOS[i]), nota: nota || null, libre: true };
   if (_oDraft === null || !obs[_oDraft]) { obs.push(rec); _oDraft = obs.length - 1; }
   else obs[_oDraft] = rec;
   lsSet('mfp_obs', obs); estadoObs('✓ guardado · ' + rec.hora);
+  if (oEl && !horaValide(oEl.value)) oEl.value = rec.hora;
 }
 function estadoObs(s) { const e = document.getElementById('obs-estado'); if (e) e.textContent = s; }
 /* Comme dans Constantes : les champs de l'observation se reposent d'un
@@ -5007,8 +5488,8 @@ function recargarObs() {
   const o = idx >= 0 ? obs[idx] : null;
   const nEl = document.getElementById('nota-libre'); if (nEl) nEl.value = (o && o.nota) || '';
   const hEl = document.getElementById('b-hora');
-  if (hEl) { const hAnt = hEl.value || '';
-    hEl.value = (o && o.hora) || (horaValide(hAnt) ? hAnt : (esHoy() ? ahora() : '12:00')); }
+  if (hEl && pantallaActiva() === 'notas') { const hAnt = hEl.value || '';
+    hEl.value = (o && o.hora) || (horaValide(hAnt) ? hAnt : (esHoy() ? ahora() : '')); }
   const fEl = document.getElementById('o-fecha');    if (fEl) fEl.value = fmtDiaLargo(diaKey());
   _chipsSel = new Set();
   if (o && o.tipos) o.tipos.forEach(function (tp) { const i = CHIP_TIPOS.indexOf(tp); if (i >= 0) _chipsSel.add(i); });
@@ -5074,7 +5555,9 @@ function renderDatos() {
   document.getElementById('meds-lista').innerHTML = getMeds().map((m, i) =>
     '<div class="medrow"><span class="mi"><div class="mn">' + m.nombre + '</div>' +
     '<div class="md">' + m.dosis + ' · ' + momNombre(m.momento) +
-      (frecTexto(m) ? ' · ' + frecTexto(m) : '') + (m.hasta ? ' · hasta ' + m.hasta : '') + '</div></span>' +
+      (frecTexto(m) ? ' · ' + frecTexto(m) : '') +
+      (m.desde ? ' · ' + t('desde') + ' ' + m.desde : '') +
+      (m.hasta ? ' · ' + t('hasta') + ' ' + m.hasta : '') + '</div></span>' +
     '<button onclick="editarMed(' + i + ')" title="Editar" style="margin-right:6px">✏️</button>' +
     '<button onclick="quitarMed(' + i + ')" title="Quitar">🗑</button></div>').join('') ||
     '<div class="vacio">Sin medicamentos configurados.</div>';
@@ -5084,7 +5567,7 @@ function renderDatos() {
      rien à restreindre selon l'origine. */
   const ba = document.getElementById('btn-avisos');
   if (ba) ba.textContent = getAvisosOn() ? '🔔 ' + t('av_on') : '🔕 ' + t('av_off');
-  /* Joaquina, 01/08 : « ils se répètent combien de temps ? » — c'était écrit
+  /* la persona cuidada, 01/08 : « ils se répètent combien de temps ? » — c'était écrit
      dans le code et nulle part à l'écran, donc personne ne pouvait le savoir. */
   const an = document.getElementById('i-avisos-nota');
   if (an) an.textContent = t('av_nota') + ' ' + t('av_repite');
@@ -5116,10 +5599,14 @@ function agregarMed() {
   if (!n) { toast('Falta el nombre'); return; }
   if (!moms.length) { toast(t('mom_falta')); return; }
   const meds = getMeds();
+  calcFin('nm');                               /* la fin se recalcule avant d'enregistrer */
   const hasta = (document.getElementById('nm-hasta') || {}).value || null;
+  const desde = (document.getElementById('nm-desde') || {}).value || null;
+  const _nd = parseInt((document.getElementById('nm-dias') || {}).value, 10);
+  const dias = (_nd && _nd > 0) ? _nd : null;
   const frc = leerFrec('nm', diaKey());
-  meds.push(Object.assign({ id: n.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now() % 1000, nombre: n, dosis: d, momentos: moms, momento: moms[0], hasta: hasta }, frc));
-  if (document.getElementById('nm-hasta')) document.getElementById('nm-hasta').value = '';
+  meds.push(Object.assign({ id: n.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now() % 1000, nombre: n, dosis: d, momentos: moms, momento: moms[0], desde: desde, dias: dias, hasta: hasta }, frc));
+  ['nm-hasta', 'nm-desde', 'nm-dias'].forEach(function (k) { const e = document.getElementById(k); if (e) e.value = ''; });
   lsSet('mfp_meds', meds);
   document.getElementById('nm-nombre').value = ''; document.getElementById('nm-dosis').value = '';
   _momsForm.nm = ['desayuno']; pintaMomChips('nm');
@@ -5145,7 +5632,12 @@ function editarMed(i) {
       '<input class="txt" id="em-dmes" type="number" inputmode="numeric" min="1" max="31" placeholder="1 – 31"' +
         ' value="' + ((m.frec === 'mensual' && m.fdia) ? m.fdia : '') + '" style="display:none;margin-top:6px">' +
     '</div>' +
-    '<input class="txt" id="em-hasta" type="text" readonly onclick="pedirFecha(this)" value="' + (m.hasta || '') + '" placeholder="—" style="margin-top:8px;cursor:pointer">' +
+    '<div class="nota-campo" style="margin-top:8px">' + t('ini_trat') + '</div>' +
+    '<input class="txt" id="em-desde" type="text" readonly onclick="pedirFecha(this)" oninput="calcFin(\'em\')" value="' + (m.desde || '') + '" placeholder="—" style="cursor:pointer">' +
+    '<div class="nota-campo">' + t('dur_trat') + '</div>' +
+    '<input class="txt" id="em-dias" type="number" inputmode="numeric" min="0" max="365" oninput="calcFin(\'em\')" value="' + (m.dias || '') + '" placeholder="—">' +
+    '<div class="nota-campo">' + t('fin_trat') + '</div>' +
+    '<input class="txt" id="em-hasta" type="text" readonly onclick="pedirFecha(this)" value="' + (m.hasta || '') + '" placeholder="—" style="cursor:pointer">' +
     '<div style="display:flex;gap:10px;margin-top:14px"><button class="btn sec" id="em-can" style="flex:1">' + t('d_can') + '</button>' +
     '<button class="btn" id="em-ok" style="flex:1">' + t('d_ok') + '</button></div></div>';
   document.body.appendChild(ov);
@@ -5159,6 +5651,10 @@ function editarMed(i) {
     m.dosis = ov.querySelector('#em-dosis').value.trim();
     m.momentos = (_momsForm.em || []).slice();
     m.momento = m.momentos[0] || m.momento;   /* tenu à jour pour les anciens lecteurs */
+    calcFin('em');
+    m.desde = ov.querySelector('#em-desde').value || null;
+    const _ed = parseInt(ov.querySelector('#em-dias').value, 10);
+    m.dias = (_ed && _ed > 0) ? _ed : null;
     m.hasta = ov.querySelector('#em-hasta').value || null;
     delete m.fdia; delete m.ancla;          /* on repart de ce que dit la fenêtre */
     Object.assign(m, leerFrec('em', diaKey()));
@@ -5195,9 +5691,14 @@ function _f2agrupa(arr) {
 function payloadExport() {
   const tomasF2 = {};
   const tm = getTomas();
-  Object.keys(tm).forEach(dia => Object.keys(tm[dia] || {}).forEach(mom => {
-    const h = tm[dia][mom]; if (!h) return;
-    (tomasF2[dia] = tomasF2[dia] || []).push({ momento: mom, hora: h });
+  /* ⚠ 24/08 — LA CLÉ S'APPELAIT « momento » ET CONTENAIT UN IDENTIFIANT DE
+     MÉDICAMENT (« medicamento_385 »). Salufolio, lui, la lisait comme un
+     moment de la journée et n'appariait donc JAMAIS rien : aucune prise
+     n'arrivait dans le dossier. Le mot dit maintenant ce qu'il désigne.
+     « momento » reste écrit à côté, pour les lecteurs d'avant. */
+  Object.keys(tm).forEach(dia => Object.keys(tm[dia] || {}).forEach(mid => {
+    const h = tm[dia][mid]; if (!h) return;
+    (tomasF2[dia] = tomasF2[dia] || []).push({ med_id: mid, momento: mid, hora: h });
   }));
   getPuntuales().forEach(pu => {
     if (!pu || !pu.fecha) return;
@@ -5210,9 +5711,15 @@ function payloadExport() {
     exportado: new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' }),
     paciente: pac,
     medicamentos: getMeds().map(m => {
-      const o = { nombre: m.nombre, dosis: m.dosis };
+      /* l'identifiant voyage : c'est par lui que les prises se rattachent.
+         Et les moments PRESCRITS voyagent aussi — sans eux le lecteur ne
+         peut pas déduire l'oubli (prescrit sans prise). */
+      const o = { id: m.id, nombre: m.nombre, dosis: m.dosis };
+      const _ms = momsDe(m); if (_ms.length) o.momentos = _ms;
       if (m.momento === 'demanda') o.puntual = true; else o.momento = m.momento;
-      if (m.hasta) o.hasta = m.hasta;
+      if (m.desde) o.desde = m.desde;
+      if (m.dias) o.dias = m.dias;
+      if (m.hasta) o.hasta = m.hasta;   /* écrite en clair : le lecteur du .sf ne calcule pas */
       return o;
     }),
     tomas: tomasF2,
@@ -5233,12 +5740,27 @@ function restaurarDesdeObj(d) {
   const F2 = d && d.formato === 2;
   const nom = F2 ? (d.paciente && d.paciente.nombre) : d.patient_label;
   const sip = F2 ? (d.paciente && d.paciente.sip) : d.patient_sip;
+  /* ═══ 24/08 — OUVRIR LE CASIER AVANT D'Y RANGER ═══
+     Défaut trouvé par P-H : restaurer sur un appareil neuf ne restaurait
+     RIEN, et la fenêtre « Restaurar una copia » revenait sans fin.
+     Le guichet du 17/08 refuse en silence toute écriture patient quand
+     aucun patient n'est actif (lsSet : « if (…) return »). Or la
+     restauration est PRÉCISÉMENT le cas où le casier n'existe pas encore
+     — c'est le premier geste d'un téléphone neuf. On l'ouvre donc ici,
+     du nom lu dans le fichier, comme le fait pacienteNuevo. */
+  if (!getActivo()) {
+    const nomP = (nom || '').trim() || 'Paciente';
+    const id = _idPaciente(nomP);
+    const l = getPacientes(); l.push({ id: id, nombre: nomP, sip: (sip || '').trim() });
+    setPacientes(l); setActivo(id);
+  }
   renombrarActivo(nom || null, sip || '');
   const medsIn = (F2 ? d.medicamentos : d.medicamentos_config) || [];
   lsSet('mfp_meds', medsIn.map((m, i) => ({
     id: m.id || ('med' + Date.now() + '_' + i),
     nombre: m.nombre, dosis: m.dosis || '',
     momento: m.puntual ? 'demanda' : (m.momento || 'desayuno'),
+    desde: m.desde || null, dias: m.dias || null,
     hasta: m.hasta || null
   })));
   if (d.material) {
@@ -5257,7 +5779,10 @@ function restaurarDesdeObj(d) {
     const cs = [];
     Object.keys(d.constantes || {}).forEach(f => (d.constantes[f] || []).forEach(c => cs.push({
       fecha: f, hora: c.hora || null, ta_sis: _nn(c.ta_sis), ta_dia: _nn(c.ta_dia),
-      fc: _nn(c.fc), spo2: _nn(c.spo2), peso: _nn(c.peso), temp: _nn(c.temp)
+      fc: _nn(c.fc), spo2: _nn(c.spo2), peso: _nn(c.peso), temp: _nn(c.temp),
+      /* la condition voyage avec la mesure : 93 % sous oxygène n'est pas
+         93 % à l'air, et le dossier doit pouvoir le dire */
+      o2: (c.o2 === true || c.o2 === false) ? c.o2 : undefined
     })));
     lsSet('mfp_constantes', cs);
     const ob = [];
@@ -5294,6 +5819,8 @@ function restaurarArchivo(file) {
       confirmar('📂 Restaurar', 'Se cargarán los datos de « ' + nom + ' »' + (d.exportado ? '\n(guardados el ' + d.exportado + ')' : '') + '.\nSustituirán lo que haya en este dispositivo.', () => {
         restaurarDesdeObj(d);
         _arm().setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
+        /* si le casier a échoué malgré tout, ne pas rouvrir l'assistant en boucle */
+        if (!lsGet('mfp_asist', null)) _arm().setItem('mfp_asist', JSON.stringify('1'));
         toast('✓ restaurado — recargando…');
         setTimeout(() => location.reload(), 700);
       });
@@ -5304,6 +5831,8 @@ function restaurarArchivo(file) {
 /* ═══ ASISTENTE DE PRIMER ARRANQUE (dessiné par P-H) ═══ */
 function asistente() {
   if (lsGet('mfp_asist', null)) return;
+  /* 24/08 : hors casier, lsGet ne voit rien — on regarde aussi la clé nue */
+  try { if (_arm().getItem('mfp_asist')) return; } catch (e) {}
   if (getMeds().length) { lsSet('mfp_asist', '1'); return; }
   const ov = document.createElement('div');
   ov.style.cssText = 'position:fixed;inset:0;z-index:94;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:18px';
@@ -5409,12 +5938,16 @@ function aplicarIdiomas() {
   const M = { 'i-thist':'t_hist',
     'i-tcomp':'t_comp','i-tmeds':'t_meds','i-tpac':'t_pac','i-bgconst':'b_gconst','i-bgobs':'b_gobs',
     'i-bpunt':'b_punt','i-bdesc':'b_desc','i-bcopi':'b_copi','i-bcomp':'b_comp','i-baddmed':'b_addmed',
-    'i-carrit':'c_arritmia','i-lfrec':'fr_tit','i-lfin':'fin_trat',
-    'i-nhoy':'nav_med','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-nres':'nav_res','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-lsip':'sip_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp',
+    'i-carrit':'c_arritmia','i-lfrec':'fr_tit','i-lfin':'fin_trat','i-lini':'ini_trat','i-ldur':'dur_trat',
+    'i-nhoy':'nav_med','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-nres':'nav_res','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-lsip':'sip_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp','i-bta':'c_bta','i-bps':'c_bps','i-bpeso':'c_bpeso','i-btemp':'c_btemp',
 
     'i-lpanal':'l_panal' };
   Object.entries(M).forEach(([id, k]) => { const e = document.getElementById(id); if (e) e.textContent = t(k); });
   pintaTitulosDia(); pintaBarraHora();
+  /* le bouton O₂ porte son état en toutes lettres : il se repeint avec la
+     langue, comme celui de l'arythmie */
+  if (typeof pintaO2 === 'function') pintaO2();
+  if (typeof pintaSelBloques === 'function') pintaSelBloques();
   const nl = document.getElementById('nota-libre'); if (nl) nl.placeholder = t('nota_ph');
   if (typeof pintarEnvio === 'function') pintarEnvio();
   /* ⑲bis : le Resumen vit sur la barre du bas — une seule porte. */
