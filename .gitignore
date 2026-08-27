@@ -2,3 +2,7 @@ Pacientes/
 *.mf
 *.mt
 protocolo-entrada/
+*~
+index_RESPALDO_*.html
+app_RESPALDO_*.html
+*.bak
