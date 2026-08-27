@@ -48,7 +48,7 @@ API): solo salen de su máquina los documentos que usted decide enviar.
 
 ## Licencia y cita
 
-GNU GPL v3 · DOI [10.5281/zenodo.19973451](https://doi.org/10.5281/zenodo.19973451)
+GNU GPL v3 · DOI [10.5281/zenodo.21997587](https://doi.org/10.5281/zenodo.21997587)
 Contacto: salufolio@proton.me
 
 *Desarrollado por Pierre-Henri Giraud (ingeniero desde 1966 — CAE 510, Bull) con Claude (Anthropic) como taller.*

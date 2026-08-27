@@ -51,4 +51,4 @@ Cada `.mf` generado incluye una cabecera de codificación:
 Salufolio no es un producto sanitario ni un sistema de historia clínica electrónica oficial; es una herramienta personal de organización y visualización. La alineación con el CMDIC es una decisión de diseño orientada a la calidad de los datos y a la interoperabilidad futura.
 
 ---
-*Salufolio — Pierre-Henri Giraud · GNU GPL v3 · DOI 10.5281/zenodo.19973451*
+*Salufolio — Pierre-Henri Giraud · GNU GPL v3 · DOI 10.5281/zenodo.21997587*
