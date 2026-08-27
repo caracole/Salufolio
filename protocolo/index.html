@@ -216,11 +216,24 @@ h2{font-size:16px;letter-spacing:.5px;color:var(--muted);font-weight:700;
   text-align:center;font-family:var(--mono)}
 .cb-hora:focus{outline:2px solid var(--accent);border-color:var(--accent)}
 /* le champ de saisie sans son cadre : la cellule EST le cadre */
-.cnum{width:100%;box-sizing:border-box;background:var(--surface2);
-  border:1px solid var(--border);border-radius:10px;color:var(--text);
-  font-size:26px;padding:10px 4px;text-align:center;font-weight:700;margin-top:4px}
-.cnum:focus{outline:2px solid var(--accent);border-color:var(--accent)}
-.ctab .unit{font-size:13px;color:var(--muted);text-align:center;margin:3px 0 0}
+/* ═══ 26/08 — L'UNITÉ SE MET À CÔTÉ DU CHIFFRE, PLUS EN DESSOUS ═══
+   Remarque de Mattieu : on lit « 136 mmHg » d'un coup d'œil ; « 136 » avec
+   « mmHg » sur la ligne d'en dessous demande de recoller les deux. Et elle
+   n'apparaît QUE dès le premier chiffre — un champ vide n'a pas d'unité.
+   C'est le CSS qui le sait (:placeholder-shown), pas une ligne de code :
+   tant que le champ montre son tiret, l'unité reste invisible.
+   Le CADRE est sur la boîte .cval : chiffre et unité vivent DEDANS. */
+.cval{display:flex;align-items:baseline;justify-content:center;gap:5px;
+  box-sizing:border-box;background:var(--surface2);
+  border:1px solid var(--border);border-radius:10px;padding:10px 4px;margin-top:4px}
+.cval:focus-within{outline:2px solid var(--accent);border-color:var(--accent)}
+.cnum{width:3.4ch;background:none;border:0;padding:0;color:var(--text);
+  font-size:26px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.cnum.dec{width:4.6ch}
+.cnum:focus{outline:none}
+.ctab .unit{font-size:13px;color:var(--muted);margin:0;white-space:nowrap;
+  transition:opacity .12s}
+.cnum:placeholder-shown + .unit{opacity:0}
 
 /* ── observations : jetons tactiles ── */
 .chips{display:flex;flex-wrap:wrap;gap:10px}
@@ -359,6 +372,11 @@ select option{background:var(--surface);color:var(--text)}
   box-shadow:0 1px 2px rgba(0,0,0,.35),0 0 12px rgba(255,60,40,.75)}
 .rocker:active{box-shadow:inset 0 0 0 1px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.35)}
 .hbtn2{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:16px;padding:6px 9px;cursor:pointer}
+/* v.80 — l'abeille du retour au panal : discrète devant le sous-titre,
+   elle grossit quand on la survole ou qu'on la touche. */
+#bee-panal{cursor:pointer;font-size:15px;display:inline-block;margin-right:5px;
+  vertical-align:-2px;transition:transform .15s}
+#bee-panal:hover,#bee-panal:active{transform:scale(1.6)}
 .acc{border:1px solid var(--border);border-radius:12px;margin:10px 0;overflow:hidden;background:var(--surface)}
 .acc summary{list-style:none;cursor:pointer;padding:13px 14px;font-weight:700;font-size:16px;display:flex;align-items:center}
 .acc summary::-webkit-details-marker{display:none}
@@ -439,11 +457,14 @@ body.sin-paciente #nav-res { opacity: .35; }
     <button class="hbtn" onclick="zoomMas(-1)">A−</button>
     <button class="hbtn" onclick="zoomMas(1)">A＋</button>
     <button class="hbtn" onclick="verAyuda()">❓</button>
-    <button class="hbtn" id="btn-panal" onclick="location.href='index.html'" style="display:none" title="Volver al panal">🐝</button>
   </div>
   <div class="fecha" id="hdr-fecha" style="font-size:15px"></div>
   <div id="hdr-patient" style="font-size:17px;font-weight:800;color:var(--text);margin-top:1px"></div>
-  <div class="sub" id="hdr-sub" style="font-size:10px;opacity:.75">Salufolio Protocolo</div>
+  <!-- v.80 (P-H, 27/08) : « l'abeille toute seule, à gauche du texte — on
+       clique, on y va ; on passe dessus, elle grossit ». Comme au panal,
+       l'abeille fait voyager. Elle vit dans SON span : render() réécrit
+       hdr-sub, l'abeille à côté n'est jamais effacée. -->
+  <div class="sub" style="font-size:10px"><span id="bee-panal" onclick="window.open('https://caracole.github.io/Salufolio/index.html','_blank')" title="Panal Salufolio">🐝</span><span id="hdr-sub" style="opacity:.75">Salufolio Protocolo</span></div>
 </header>
 
 <main>
@@ -508,8 +529,8 @@ body.sin-paciente #nav-res { opacity: .35; }
         <input class="cb-hora" id="c-ta-hora" autocomplete="off" inputmode="numeric" placeholder="--:--"></td>
         </tr>
         <tr>
-          <td><input class="cnum" id="c-tas" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></td>
-          <td><input class="cnum" id="c-tad" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">mmHg</div></td>
+          <td><div class="cval"><input class="cnum" id="c-tas" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><span class="unit">mmHg</span></div></td>
+          <td><div class="cval"><input class="cnum" id="c-tad" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><span class="unit">mmHg</span></div></td>
         </tr>
         <tr><td colspan="2"><button type="button" class="popt" id="c-arrit" onclick="toggleArritmia()" style="width:100%">⚡ <span id="i-carrit"></span></button></td></tr>
       </tbody>
@@ -522,8 +543,8 @@ body.sin-paciente #nav-res { opacity: .35; }
           <td><input class="cb-hora" id="c-ps-hora" autocomplete="off" inputmode="numeric" placeholder="--:--"></td>
         </tr>
         <tr>
-          <td><input class="cnum" id="c-fc" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">lpm</div></td>
-          <td><input class="cnum" id="c-spo2" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><div class="unit">%</div></td>
+          <td><div class="cval"><input class="cnum" id="c-fc" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><span class="unit">lpm</span></div></td>
+          <td><div class="cval"><input class="cnum" id="c-spo2" autocomplete="off" type="number" inputmode="numeric" placeholder="—"><span class="unit">%</span></div></td>
         </tr>
         <!-- Sans ce bouton, 93 % à l'air et 93 % sous 2 litres se
              ressemblent — et ce sont deux patientes différentes. -->
@@ -537,8 +558,8 @@ body.sin-paciente #nav-res { opacity: .35; }
           <td><input class="cb-hora cb-full" id="c-peso-hora" autocomplete="off" inputmode="numeric" placeholder="--:--"></td>
         </tr>
         <tr>
-          <td><input class="cnum" id="c-temp" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><div class="unit">°C</div></td>
-          <td><input class="cnum" id="c-peso" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><div class="unit">kg</div></td>
+          <td><div class="cval"><input class="cnum dec" id="c-temp" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><span class="unit">°C</span></div></td>
+          <td><div class="cval"><input class="cnum dec" id="c-peso" autocomplete="off" type="number" inputmode="decimal" step="0.1" placeholder="—"><span class="unit">kg</span></div></td>
         </tr>
       </tbody>
     </table>
@@ -693,7 +714,7 @@ window.onerror = function (msg, src, line, col) {
 /* Adresse du PC injectée par le serveur au téléchargement (« Instalar en
    este teléfono ») — l'app locale naît déjà configurée. */
 const MFP_PC_DEF = '';
-const MFP_VERSION = '2026.8.26.76-SAT';
+const MFP_VERSION = '2026.8.27.80-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -885,7 +906,7 @@ const IDIOMAS = {
     ay_notas:"<b>📝 Notas</b> — toque lo observado (hidratación, deposición, micción) : queda anotado con la hora, y el resumen del día aparece a la derecha. Son las preguntas del <i>informe para la consulta</i>.",
     ay_datos:"<b>📦 Datos</b> — paciente y pauta, historial, y la salida : <b>⬇️</b> guardar o <b>📡</b> enviar una copia al ordenador por wifi local (Salufolio la importará), y <b>📂 Restaurar</b> una copia en un teléfono nuevo.",
     ay_ayer:"<b>Si ayer quedó una toma sin registrar</b>, la app lo pregunta al abrir. Ante dudas sobre una dosis, consulte el prospecto o al médico — la app registra, no aconseja.",
-    ay_disp:"Los datos viven en este dispositivo.", ay_dev:"Producto en desarrollo", ay_doc:"Ver o descargar la documentación detallada",
+    ay_disp:"Los datos viven en este dispositivo.", ay_panal:"Panal Salufolio — todas las aplicaciones", ay_dev:"Producto en desarrollo", ay_doc:"Ver o descargar la documentación detallada",
     ay_ok:"Entendido", hoy:'Hoy', consts:'Constantes', notas:'Notas', datos:'Datos',
     t_hoy:'Medicación de hoy — toque cuando se tome · toque la hora para corregirla',
     t_const:'Constantes — deje vacío lo no medido', t_notas:'¿Qué se observa hoy? — toque lo que aplique',
@@ -1097,7 +1118,7 @@ const IDIOMAS = {
     ay_notas:"<b>📝 Notes</b> — toqueu l’observat (hidratació, deposició, micció) : queda anotat amb l’hora, i el resum del dia apareix a la dreta. Són les preguntes de l’<i>informe per a la consulta</i>.",
     ay_datos:"<b>📦 Dades</b> — pacient i pauta, historial, i l’eixida : <b>⬇️</b> guardar o <b>📡</b> enviar una còpia a l’ordinador per wifi local (Salufolio la importarà), i <b>📂 Restaurar</b> una còpia en un telèfon nou.",
     ay_ayer:"<b>Si ahir va quedar una presa sense registrar</b>, Protocolo ho pregunta en obrir. Davant dubtes sobre una dosi, consulteu el prospecte o el metge — Protocolo registra, no aconsella.",
-    ay_disp:"Les dades viuen en este dispositiu.", ay_dev:"Producte en desenvolupament", ay_doc:"Veure o descarregar la documentació detallada",
+    ay_disp:"Les dades viuen en este dispositiu.", ay_panal:"Panal Salufolio — totes les aplicacions", ay_dev:"Producte en desenvolupament", ay_doc:"Veure o descarregar la documentació detallada",
     ay_ok:"Entesos", hoy:'Hui', consts:'Constants', notas:'Notes', datos:'Dades',
     t_hoy:'Medicació de hui — toque quan es prenga · toque l\'hora per a corregir-la',
     t_const:'Constants — deixe buit el que no s\'haja mesurat', t_notas:'Què s\'observa hui? — toque el que aplique',
@@ -1309,7 +1330,7 @@ const IDIOMAS = {
     ay_notas:"<b>📝 Notes</b> — touchez l'observé (hydratation, selles, urine) : noté avec l'heure, le résumé du jour s'affiche à droite. Ce sont les questions du <i>compte-rendu pour la consultation</i>.",
     ay_datos:"<b>📦 Données</b> — patient et posologie, historique, et la sortie : <b>⬇️</b> enregistrer ou <b>📡</b> envoyer une copie vers l'ordinateur via wifi local (Salufolio l'importera), et <b>📂 Restaurer</b> une copie sur un nouveau téléphone.",
     ay_ayer:"<b>Si une prise d'hier est restée non enregistrée</b>, Protocolo le demande à l'ouverture. En cas de doute sur une dose, consultez la notice ou le médecin — Protocolo enregistre, il ne conseille pas.",
-    ay_disp:"Les données vivent sur cet appareil.", ay_dev:"Produit en développement", ay_doc:"Voir ou télécharger la documentation détaillée",
+    ay_disp:"Les données vivent sur cet appareil.", ay_panal:"Panal Salufolio — toutes les applications", ay_dev:"Produit en développement", ay_doc:"Voir ou télécharger la documentation détaillée",
     ay_ok:"Compris", hoy:'Aujourd\'hui', consts:'Constantes', notas:'Notes', datos:'Données',
     t_hoy:'Médication du jour — touchez à la prise · touchez l\'heure pour la corriger',
     t_const:'Constantes — laissez vide ce qui n\'est pas mesuré', t_notas:'Qu\'observe-t-on aujourd\'hui ? — touchez ce qui s\'applique',
@@ -1522,7 +1543,7 @@ const IDIOMAS = {
     ay_notas:"<b>📝 Notes</b> — tap what you observe (hydration, stool, urine): logged with the time, the day’s summary shows on the right. These are the questions of the <i>report for the consultation</i>.",
     ay_datos:"<b>📦 Data</b> — patient and schedule, history, and output: <b>⬇️</b> save or <b>📡</b> send a copy to the computer over local Wi-Fi (Salufolio will import it), and <b>📂 Restore</b> a copy on a new phone.",
     ay_ayer:"<b>If a dose from yesterday went unlogged</b>, Protocolo asks on opening. If unsure about a dose, check the leaflet or the doctor — Protocolo records, it does not advise.",
-    ay_disp:"Data lives on this device.", ay_dev:"Product in development", ay_doc:"View or download the detailed documentation",
+    ay_disp:"Data lives on this device.", ay_panal:"Panal Salufolio — all the applications", ay_dev:"Product in development", ay_doc:"View or download the detailed documentation",
     ay_ok:"Got it", hoy:'Today', consts:'Vitals', notas:'Notes', datos:'Data',
     t_hoy:'Today\'s medication — tap when taken · tap the time to correct it',
     t_const:'Vitals — leave blank what was not measured', t_notas:'What is observed today? — tap what applies',
@@ -1895,13 +1916,6 @@ function mfpFbGuardar(btn) {
   btn.textContent = '💾 OK (' + lista.length + ')';
   ta.value = '';
 }
-/* 🐝 : visible seulement sur le web (le panal y vit à côté) — les origines
-   locales (127.x, 10.x…) gardent leur navigation propre. */
-window.addEventListener('load', function() {
-  const local = /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.|localhost$)/.test(location.hostname);
-  const bp = document.getElementById('btn-panal');
-  if (bp && !local && location.protocol.indexOf('http') === 0) bp.style.display = '';
-});
 function volverHoy() { _diaActivo = null; repintarDia(); }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -2364,6 +2378,8 @@ function verAyuda() {
       '<p style="color:var(--muted);font-size:12px">' + t('ay_disp') + '</p>' +
       '<p style="margin-top:6px"><a href="doc.pdf" target="_blank" rel="noopener" ' +
         'style="color:var(--accent);font-size:13px">📄 ' + t('ay_doc') + '</a></p>' +
+      '<p style="margin-top:4px"><a href="https://caracole.github.io/Salufolio/index.html" target="_blank" rel="noopener" ' +
+        'style="color:var(--accent);font-size:13px">🐝 ' + t('ay_panal') + '</a></p>' +
       '<div style="font-size:11px;color:var(--muted);margin-top:10px">' + t('ay_dev') + ' — v' + MFP_VERSION + '</div>' +
       '<div style="font-size:11px;color:var(--muted);margin-top:3px">DOI ' +
         '<a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" rel="noopener" ' +
