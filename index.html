@@ -106,10 +106,16 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 #visita .v-btns button.v-voz.v-off{opacity:.35}   /* coupé, pas effacé (P-H) */
 /* le sous-titre ne couvre jamais l'acteur : leçon en bas → cadre en haut */
 #visita.v-arriba{bottom:auto;top:7%}
+/* ── LE RÉCIT DE LA CONCHA (v.28.10) : un cadre sobre, même famille que la visite ── */
+#concha-h{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,29em);max-height:84vh;display:flex;flex-direction:column;background:var(--pop-fondo);border:2px solid #3dbf7f;border-radius:1em;padding:1em 1.2em .8em;z-index:310;box-shadow:0 .6em 2.5em rgba(0,0,0,.5)}
+#concha-h .c-tit{font-family:var(--serif);font-size:1.25em;font-weight:700;margin-bottom:.5em;color:#3dbf7f}
+#concha-h .c-txt{font-size:.95em;line-height:1.7;color:var(--text);overflow-y:auto}
+#concha-h .c-txt p{margin:.5em 0}
+#concha-h .c-x{align-self:flex-end;margin-top:.6em;padding:.5em 1em;border-radius:.6em;border:1px solid var(--muted);background:transparent;color:var(--muted);cursor:pointer}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.9</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.10</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -351,6 +357,7 @@ function buildHive(){
       pk.style.top=Math.round(R/3)+'px';
       pk.innerHTML='<svg viewBox="0 0 100 100"><path d="M89.8 61.0A46 46 0 0 0 10.2 61.0" fill="none" stroke="#3dbf7f" stroke-width="4.5" stroke-linecap="round"/><g stroke="#3dbf7f" stroke-width="4" stroke-linecap="round"><line x1="63.0" y1="76.5" x2="89.8" y2="61.0"/><line x1="59.6" y1="72.5" x2="79.6" y2="48.8"/><line x1="55.1" y1="69.9" x2="65.7" y2="40.8"/><line x1="50.0" y1="69.0" x2="50.0" y2="38.0"/><line x1="44.9" y1="69.9" x2="34.3" y2="40.8"/><line x1="40.4" y1="72.5" x2="20.4" y2="48.8"/><line x1="37.0" y1="76.5" x2="10.2" y2="61.0"/></g></svg>';
       bulle(pk, bt('concha'));   /* APRÈS innerHTML — qui efface tout ce qui précède */
+      pk.onclick=function(ev){ ev.stopPropagation(); conchaHistoria(); };
       div.appendChild(pk);
     }
     el.appendChild(div);
@@ -3150,6 +3157,23 @@ function vSalir(){
   var d=document.getElementById('visita'); if(d)d.remove();
   document.querySelectorAll('.hex.tour-focus').forEach(function(h){h.classList.remove('tour-focus')});
   if(_isMain) swapHive();   /* le guide raccompagne : sortie = rez-de-chaussée */
+}
+
+
+/* ═══ LA GENÈSE DE LA CONCHA (question d'un visiteur, 28/08 : « pour un
+   panal, pourquoi le pecten ? ») — le blason énonce la doctrine. ═══ */
+function conchaHistoria(){
+  var T={
+   es:{tit:'¿Por qué la concha?',txt:'<p>Antes de escribir programas, el autor caminó a Santiago — un año, desde su propia casa: tres meses de marcha. Y al volver fue <strong>hospitalero</strong>: el que acoge al caminante, lo cuida y lo deja partir.</p><p>Mire las estrías de la concha: <strong>todas convergen hacia un solo punto</strong>, la charnela. Como los caminos de Europa convergen hacia un solo lugar. Como este proyecto reúne diez años de fuentes dispersas en un solo punto.</p><p>Y en este blasón <strong>el punto fue quitado a propósito: el punto es el paciente</strong>. La concha no decora el programa — enuncia su doctrina: acoger, cuidar, dejar partir.</p>'},
+   ca:{tit:'Per què la conquilla?',txt:'<p>Abans d\'escriure programes, l\'autor caminà a Santiago — un any, des de sa pròpia casa: tres mesos de marxa. I en tornar fou <strong>hospitaler</strong>: el que acull el caminant, el cuida i el deixa partir.</p><p>Mire les estries de la conquilla: <strong>totes convergixen cap a un sol punt</strong>, la xarnera. Com els camins d\'Europa convergixen cap a un sol lloc. Com este projecte reunix deu anys de fonts disperses en un sol punt.</p><p>I en este blasó <strong>el punt fou llevat a propòsit: el punt és el pacient</strong>. La conquilla no decora el programa — enuncia la seua doctrina: acollir, cuidar, deixar partir.</p>'},
+   fr:{tit:'Pourquoi la coquille ?',txt:'<p>Avant d\'écrire des programmes, l\'auteur a marché vers Compostelle — une année, depuis sa propre maison : trois mois de marche. Et au retour il fut <strong>hospitalier</strong> : celui qui accueille le marcheur, le soigne et le laisse repartir.</p><p>Regardez les stries de la coquille : <strong>toutes convergent vers un seul point</strong>, la charnière. Comme les chemins d\'Europe convergent vers un seul lieu. Comme ce projet ramène dix ans de sources dispersées à un seul point.</p><p>Et dans ce blason, <strong>le point a été ôté volontairement : le point, c\'est le patient</strong>. La coquille ne décore pas le programme — elle en énonce la doctrine : accueillir, soigner, laisser repartir.</p>'},
+   en:{tit:'Why the shell?',txt:'<p>Before writing programs, the author walked to Santiago — one year, from his own front door: three months on foot. And on returning he became a <strong>hospitalero</strong>: the one who welcomes the walker, cares for them, and lets them go.</p><p>Look at the grooves of the shell: <strong>they all converge on a single point</strong>, the hinge. As the roads of Europe converge on a single place. As this project gathers ten years of scattered sources into a single point.</p><p>And in this emblem <strong>the point was removed on purpose: the point is the patient</strong>. The shell does not decorate the program — it states its doctrine: welcome, care, let go.</p>'}
+  };
+  var t=T[PLANG]||T.es;
+  var old=document.getElementById('concha-h'); if(old)old.remove();
+  var d=document.createElement('div'); d.id='concha-h';
+  d.innerHTML='<div class="c-tit">🐚 '+t.tit+'</div><div class="c-txt">'+t.txt+'</div><button class="c-x" onclick="this.parentNode.remove()">✕</button>';
+  document.body.appendChild(d);
 }
 
 </script>
