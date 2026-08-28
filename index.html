@@ -103,12 +103,13 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 #visita .v-btns button{flex:1;padding:.6em .4em;border-radius:.6em;border:1px solid var(--accent);background:transparent;color:var(--text);font-size:.9em;cursor:pointer}
 #visita .v-btns button.v-x{flex:0 0 auto;border-color:var(--muted);color:var(--muted);padding:.6em .85em}
 #visita .v-btns button.v-voz{flex:0 0 auto;padding:.6em .8em;font-size:1.05em}
+#visita .v-btns button.v-voz.v-off{opacity:.35}   /* coupé, pas effacé (P-H) */
 /* le sous-titre ne couvre jamais l'acteur : leçon en bas → cadre en haut */
 #visita.v-arriba{bottom:auto;top:7%}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.7</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.8</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -3034,6 +3035,12 @@ function vVoces(){
    voix s'annonce dans le gros hexagone. Choix mémorisé par langue. */
 function vVoz(){
   var vs = vVoces();
+  /* machine muette : le haut-parleur est COUPÉ, pas effacé — le toucher
+     explique, et le bouton se rallumera si des voix arrivent un jour. */
+  if(!window.speechSynthesis || !(speechSynthesis.getVoices()||[]).length){
+    if(typeof hexToast==='function') hexToast('🔇<br>Este aparato no tiene voces instaladas');
+    return;
+  }
   if(!V_VOZ){ V_VOZ=true; }
   else {
     V_VOZI[PLANG] = (V_VOZI[PLANG]||0) + 1;
@@ -3082,6 +3089,13 @@ function arrancarVisita(){
     if(dx>50)vPaso(-1); else if(dx<-50)vPaso(1);
   });
   document.body.appendChild(d);
+  var mudo = !window.speechSynthesis || !(speechSynthesis.getVoices()||[]).length;
+  var bv=document.getElementById('v-voz');
+  if(bv && mudo) bv.classList.add('v-off');
+  if(window.speechSynthesis) speechSynthesis.onvoiceschanged = function(){
+    var b2=document.getElementById('v-voz');
+    if(b2) b2.classList.toggle('v-off', !(speechSynthesis.getVoices()||[]).length);
+  };
   _vi=0; vMuestra();
 }
 function vPaso(d){
