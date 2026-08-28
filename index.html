@@ -13,8 +13,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 body.light{--bg:#f5f0e8;--surface:#fffdf7;--text:#111118;--muted:#555;--accent:#1a5fa8}
 body.light .popup-frame{background:rgba(255,253,247,.92)}
 body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
-.top{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:8px;padding:6px 16px;background:var(--bg)}  /* même fond que le panal, jour et nuit, SANS trait horizontal (P-H 22/07) */
-.top-logo{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--muted);margin-right:auto}.top-logo i{color:var(--accent);font-style:italic}
+.top{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 16px;background:var(--bg)}  /* v.28/08 (P-H) : centré dans la ligne, juste au-dessus du panal */  /* même fond que le panal, jour et nuit, SANS trait horizontal (P-H 22/07) */
+.top-logo{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--muted)}.top-logo i{color:var(--accent);font-style:italic}
 .top-btn{padding:3px 7px;border-radius:5px;border:1px solid rgba(74,143,232,.2);background:transparent;color:var(--text);cursor:pointer;font-size:14px}
 .hive-wrap{position:fixed;left:0;right:0;top:44px;bottom:54px;overflow:hidden}   /* hublot fixe : le zoom se rogne symétriquement, le centre ne dérive JAMAIS (P-H 17/07) */
 .hive{position:absolute;left:50%;top:50%;transform-origin:center center}
@@ -24,7 +24,6 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .hex-ico{margin-bottom:3px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
 .hex-lbl{font-family:var(--serif);font-weight:600;color:var(--text);text-align:center;line-height:1.3;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .hex-sub{color:var(--muted)}
-.concha-live{position:absolute;top:13%;right:15%;z-index:3;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;border:2px solid;box-shadow:0 2px 8px rgba(0,0,0,.35);pointer-events:none;transition:background .4s}
 /* Popup */
 .pov{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0);display:none;align-items:center;justify-content:center;padding:10px;transition:background .5s}
 .pov.show{display:flex;background:rgba(0,0,0,.88)}
@@ -53,6 +52,12 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .pecten-hs{position:absolute;left:50%;transform:translate(-50%,-50%);z-index:3;width:42px;height:42px;transition:all .3s;opacity:.9}
 .pecten-hs:hover{transform:translate(-50%,-50%) scale(1.3);opacity:1}
 .pecten-hs svg{width:100%;height:100%;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}
+/* v.28/08 (P-H) : les infos-bulles du système étaient affreuses — les
+   nôtres : un rectangle virtuel large comme la diagonale du triangle
+   (√3·R) et haut comme le côté (R), FOND TRANSPARENT, centré au-dessus
+   de l'objet. Le texte porte son ombre, pas de boîte. */
+.p-bulle{position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);display:none;align-items:center;justify-content:center;text-align:center;pointer-events:none;background:transparent;color:var(--text);font-family:var(--serif);font-size:15px;line-height:1.35;text-shadow:0 1px 5px rgba(0,0,0,.85);z-index:90}
+.notch-hs:hover .p-bulle,.bee-swap:hover .p-bulle,.pecten-hs:hover .p-bulle{display:flex}
 /* Le GROS HEXAGONE central : il annonce, puis s'efface — seul ou au toucher. */
 .hex-toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.7);z-index:200;width:280px;height:320px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;opacity:0;transition:all .35s;pointer-events:none}
 .hex-toast.on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
@@ -73,7 +78,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.4</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.5</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -286,7 +291,7 @@ function buildHive(){
     if(c.id==='proto'){
       var pk=document.createElement('div');
       pk.className='pecten-hs';
-      pk.title='La concha del peregrino: todas las estrías convergen en un punto — el paciente.';
+      bulle(pk, 'La concha del peregrino: todas las estrías convergen en un punto — el paciente.');
       pk.style.top=Math.round(R/3)+'px';
       pk.innerHTML='<svg viewBox="0 0 100 100"><path d="M89.8 61.0A46 46 0 0 0 10.2 61.0" fill="none" stroke="#3dbf7f" stroke-width="4.5" stroke-linecap="round"/><g stroke="#3dbf7f" stroke-width="4" stroke-linecap="round"><line x1="63.0" y1="76.5" x2="89.8" y2="61.0"/><line x1="59.6" y1="72.5" x2="79.6" y2="48.8"/><line x1="55.1" y1="69.9" x2="65.7" y2="40.8"/><line x1="50.0" y1="69.0" x2="50.0" y2="38.0"/><line x1="44.9" y1="69.9" x2="34.3" y2="40.8"/><line x1="40.4" y1="72.5" x2="20.4" y2="48.8"/><line x1="37.0" y1="76.5" x2="10.2" y2="61.0"/></g></svg>';
       div.appendChild(pk);
@@ -299,7 +304,7 @@ function buildHive(){
   var bee=document.createElement('div');
   bee.className='bee-swap';
   bee.textContent='🐝';
-  bee.title='Cambiar de panal';
+  bulle(bee, 'Cambiar de panal');
   bee.onclick=function(ev){ev.stopPropagation();swapHive();};
   bee.style.left=Math.round(cx)+'px';
   /* v.27/08 soir (P-H) : au CENTRE DE GRAVITÉ du triangle du bas —
@@ -312,9 +317,14 @@ function buildHive(){
      jour/nuit et plein écran aux creux latéraux hauts — miroirs de
      l'abeille. Reconstruits avec la ruche : le drapeau suit la langue
      sans veilleur, et l'homothétie les grossit avec le reste. */
+  function bulle(parent, txt){
+    var b=document.createElement('div'); b.className='p-bulle';
+    b.style.width=Math.round(S3*R)+'px'; b.style.height=Math.round(R)+'px';
+    b.textContent=txt; parent.appendChild(b);
+  }
   function notch(x,y,html,title,fn,id){
     var d=document.createElement('div');
-    d.className='notch-hs'; if(id)d.id=id; d.title=title; d.innerHTML=html;
+    d.className='notch-hs'; if(id)d.id=id; d.innerHTML=html; bulle(d, title);
     d.onclick=function(ev){ev.stopPropagation();fn()};
     d.style.left=Math.round(x)+'px'; d.style.top=Math.round(y)+'px';
     el.appendChild(d);
@@ -558,14 +568,9 @@ function sondaPuente(){
     .catch(function(){ clearTimeout(to); _PUENTE = null; _reponConcha(); });
 }
 function _reponConcha(){
-  var hex = document.querySelector('.hex[data-cell="proto"]'); if (!hex) return;
-  var viva = !!(_PUENTE && _PUENTE.movil);
-  var b = hex.querySelector('.concha-live');
-  if (!b) { b = document.createElement('div'); b.className = 'concha-live'; hex.appendChild(b); }
-  b.innerHTML = pectenSVG(17, '#fff');
-  b.style.background = viva ? '#1e7a46' : '#b8952a';
-  b.style.borderColor = viva ? '#3dbf7f' : '#e8c34a';
-  b.title = viva ? qt('v_tit') : qt('a_txt');
+  /* v.28/08 (P-H) : la pastille a vécu — le pecten nu de l'alvéole la
+     remplace ; l'état du pont se lit dans la carte elle-même. */
+  var b = document.querySelector('.concha-live'); if (b) b.remove();
 }
 function pintaPuente(){
   var z = document.getElementById('proto-puente'); if (!z) return;
