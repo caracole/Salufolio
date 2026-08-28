@@ -108,7 +108,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.5</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.7</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -3021,24 +3021,44 @@ var _vi=0,_vT=null,_vX0=null;
    parole. Choix mémorisé. Réserve : sans voix valencienne sur
    l'appareil, le film reste muet en ca plutôt que parler castillan. */
 var V_VOZ=false; try{ V_VOZ = localStorage.getItem('panal_voz')==='1'; }catch(e){}
+var V_VOZI={}; try{ V_VOZI = JSON.parse(localStorage.getItem('panal_voz_i')||'{}'); }catch(e){}
+function vVoces(){
+  if(!window.speechSynthesis) return [];
+  var vs = speechSynthesis.getVoices() || [], out=[];
+  for(var i=0;i<vs.length;i++) if(vs[i].lang && vs[i].lang.toLowerCase().indexOf(PLANG)===0) out.push(vs[i]);
+  return out;
+}
+/* Le CARROUSEL des voix (Berta, 28/08 : « ¿y si quiero oír un hombre? ») :
+   chaque toucher passe à la voix suivante de la langue — femme, homme,
+   ce que le téléphone possède — puis revient au silence. Le nom de la
+   voix s'annonce dans le gros hexagone. Choix mémorisé par langue. */
 function vVoz(){
-  V_VOZ=!V_VOZ;
-  try{ localStorage.setItem('panal_voz', V_VOZ?'1':'0'); }catch(e){}
+  var vs = vVoces();
+  if(!V_VOZ){ V_VOZ=true; }
+  else {
+    V_VOZI[PLANG] = (V_VOZI[PLANG]||0) + 1;
+    if(!vs.length || V_VOZI[PLANG] >= vs.length){ V_VOZI[PLANG]=0; V_VOZ=false; }
+  }
+  try{ localStorage.setItem('panal_voz', V_VOZ?'1':'0'); localStorage.setItem('panal_voz_i', JSON.stringify(V_VOZI)); }catch(e){}
   var b=document.getElementById('v-voz'); if(b)b.textContent=V_VOZ?'🔊':'🔇';
   if(!V_VOZ && window.speechSynthesis) speechSynthesis.cancel();
-  vMuestra();   /* le tableau courant repart, parlé ou muet */
+  if(V_VOZ && vs.length && typeof hexToast==='function') hexToast('🔊<br>'+(vs[V_VOZI[PLANG]||0].name||''));
+  vMuestra();   /* le tableau courant repart, avec la voix du moment */
 }
 function vHabla(titulo, texto){
   if(!window.speechSynthesis) return false;
+  /* v.28.7 — l'ASUS de P-H : un Linux de bureau n'a pas de voix d'usine.
+     Aucune voix dans le systeme → on rend la main au rythme minuté,
+     sinon le film attendrait une fin de lecture qui ne vient jamais. */
+  if(!(speechSynthesis.getVoices()||[]).length) return false;
   var plain = (titulo+'. '+texto).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ');
   var u = new SpeechSynthesisUtterance(plain);
   u.lang = ({es:'es-ES',ca:'ca-ES',fr:'fr-FR',en:'en-GB'})[PLANG] || 'es-ES';
   u.rate = .95;
-  var vs = speechSynthesis.getVoices() || [];
-  var voz = null;
-  for(var i=0;i<vs.length;i++){ if(vs[i].lang && vs[i].lang.toLowerCase().indexOf(PLANG)===0){ voz=vs[i]; break; } }
+  var vs = vVoces();
+  var voz = vs.length ? vs[(V_VOZI[PLANG]||0) % vs.length] : null;
   if(voz) u.voice = voz;
-  if(PLANG==='ca' && vs.length && !voz) return false;   /* pas de voix valencienne : silence honnête */
+  if(PLANG==='ca' && (speechSynthesis.getVoices()||[]).length && !voz) return false;   /* pas de voix valencienne : silence honnête */
   u.onend = function(){ if(_vi<VISITA.length-1) vPaso(1); };
   u.onerror = function(){ _vT=setTimeout(function(){vPaso(1)},vTiempo(texto)); };
   speechSynthesis.speak(u);
