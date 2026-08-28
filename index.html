@@ -109,7 +109,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.8</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.9</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -241,6 +241,18 @@ function hexToast(msg){
     d.innerHTML='<svg viewBox="0 0 242 280" preserveAspectRatio="none"><polygon points="121,2 240,70 240,210 121,278 2,210 2,70" fill="rgba(20,28,40,.96)" stroke="#e8a44a" stroke-width="2.5"/></svg><div class="ht-txt" id="ht-txt"></div>';
     d.onclick=function(){d.classList.remove('on')};
     document.body.appendChild(d);
+  }
+  /* v.28.9 (P-H) : à la taille de l'alvéole centrale, pas plus — il se
+     mesure sur la ruche affichée, texte proportionné. Même famille,
+     même modestie. */
+  var h=document.querySelector('.hex');
+  if(h){
+    var r=h.getBoundingClientRect();
+    d.style.width=Math.round(r.width)+'px';
+    d.style.height=Math.round(r.height)+'px';
+    var t=document.getElementById('ht-txt');
+    t.style.fontSize=Math.max(11, Math.round(r.width*0.085))+'px';
+    t.style.padding='0 '+Math.round(r.width*0.14)+'px';
   }
   document.getElementById('ht-txt').innerHTML=msg;
   d.classList.add('on');
