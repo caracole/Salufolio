@@ -40,7 +40,17 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 @keyframes hintPulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
 .popup-frame h3{color:var(--text);margin:14px 0 6px;font-family:var(--serif);font-size:20px}
 .popup-frame p{margin-bottom:12px;color:var(--muted);font-size:16px;line-height:1.8}
-.bee-swap{position:absolute;transform:translate(-50%,-50%);font-size:29px;cursor:pointer;z-index:60;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s;opacity:.7}
+.bee-swap{position:absolute;transform:translate(-50%,-50%);font-size:40px;cursor:pointer;z-index:60;width:68px;height:68px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s;opacity:.75}
+/* v2026.8.27 (retour de Berta, La Habana) : les commandes vivent dans les
+   CREUX du panal, comme l'abeille — la topbar était introuvable au doigt. */
+.notch-hs{position:absolute;transform:translate(-50%,-50%);z-index:60;width:54px;height:54px;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;transition:all .3s;opacity:.8;font-size:24px}
+.notch-hs:hover{opacity:1;transform:translate(-50%,-50%) scale(1.25)}
+.notch-hs .n-lang{font-weight:800;font-size:14px;letter-spacing:1px;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+/* Le GROS HEXAGONE central : il annonce, puis s'efface — seul ou au toucher. */
+.hex-toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.7);z-index:200;width:280px;height:320px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;opacity:0;transition:all .35s;pointer-events:none}
+.hex-toast.on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+.hex-toast svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 8px 30px rgba(0,0,0,.5))}
+.hex-toast .ht-txt{position:relative;z-index:2;padding:0 46px;font-family:var(--serif);font-size:19px;color:#f0ead8;line-height:1.5}
 .bee-swap:hover{opacity:1;transform:translate(-50%,-50%) scale(1.28)}
 .vertex-hs{position:absolute;width:46px;height:46px;margin-left:-23px;margin-top:-23px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s;opacity:.45;background:transparent;border:1.5px solid transparent}   /* au repos : l'icône seule, diffuse (P-H 17/07) */
 .v-lab{position:absolute;top:106%;left:50%;transform:translateX(-50%);font-size:10px;color:var(--text);white-space:nowrap;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px;display:none}
@@ -56,7 +66,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.3.3</span></div><button class="top-btn" id="plang-actual" onclick="pCycleLang()" title="Idioma / Llengua / Langue / Language" style="font-weight:800;font-size:13px;letter-spacing:1px">🇪🇸 ES</button><button class="top-btn" onclick="if(document.fullscreenElement){document.exitFullscreen()}else{document.documentElement.requestFullscreen().catch(function(){})}" title="Pantalla completa (F11 para salir)">⛶</button><button class="top-btn" onclick="document.body.classList.toggle('light')">☀️</button></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.1</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -163,6 +173,34 @@ window.addEventListener('load', function(){
    le bouton langue montre le drapeau + le code. CA porte le drapeau
    d'Andorre, convention usuelle pour le catalan/valencià en emoji. */
 function pLangEtiqueta(l){ return ({es:'🇪🇸 ES', ca:'🇦🇩 CA', fr:'🇫🇷 FR', en:'🇬🇧 EN'})[l] || l.toUpperCase(); }
+/* ══ v2026.8.27 — LE GROS HEXAGONE (retour de Berta, La Habana) ══
+   « Le 404 doit disparaître : mieux, un gros hexagone au centre qui
+   disparaît tout seul ou au toucher. » (P-H, 27/08)
+   irA() frappe à la porte AVANT d'y envoyer le visiteur : si la page
+   manque, l'hexagone le dit et s'efface — PERSONNE ne reverra un 404,
+   même si un lien meurt un jour. En file:// (essai local sans serveur),
+   frapper est impossible : on entre directement, comme avant. */
+var _htT=null;
+function hexToast(msg){
+  var d=document.getElementById('hex-toast');
+  if(!d){
+    d=document.createElement('div'); d.id='hex-toast'; d.className='hex-toast';
+    d.innerHTML='<svg viewBox="0 0 242 280" preserveAspectRatio="none"><polygon points="121,2 240,70 240,210 121,278 2,210 2,70" fill="rgba(20,28,40,.96)" stroke="#e8a44a" stroke-width="2.5"/></svg><div class="ht-txt" id="ht-txt"></div>';
+    d.onclick=function(){d.classList.remove('on')};
+    document.body.appendChild(d);
+  }
+  document.getElementById('ht-txt').innerHTML=msg;
+  d.classList.add('on');
+  clearTimeout(_htT); _htT=setTimeout(function(){d.classList.remove('on')},4000);
+}
+function irA(url){
+  if(location.protocol==='file:'){location.href=url;return}
+  fetch(url,{method:'HEAD'}).then(function(r){
+    if(r.ok){location.href=url}
+    else{hexToast('🚧<br>Esta puerta aún no está construida')}
+  }).catch(function(){hexToast('🚧<br>Esta puerta aún no está construida')});
+}
+
 function pCycleLang(){
   PLANG = {es:'ca', ca:'fr', fr:'en', en:'es'}[PLANG] || 'es';   /* l'ordre du Protocolo */
   localStorage.setItem('panal_lang', PLANG);
@@ -254,6 +292,24 @@ function buildHive(){
   bee.style.left=Math.round(cx)+'px';
   bee.style.top=Math.round(cy + 2*R + R/4)+'px';
   el.appendChild(bee);
+  /* v2026.8.27 (retour de Berta) : LES COMMANDES DANS LES CREUX.
+     Le drapeau au creux du sommet (entre les deux alvéoles du haut),
+     jour/nuit et plein écran aux creux latéraux hauts — miroirs de
+     l'abeille. Reconstruits avec la ruche : le drapeau suit la langue
+     sans veilleur, et l'homothétie les grossit avec le reste. */
+  function notch(x,y,html,title,fn,id){
+    var d=document.createElement('div');
+    d.className='notch-hs'; if(id)d.id=id; d.title=title; d.innerHTML=html;
+    d.onclick=function(ev){ev.stopPropagation();fn()};
+    d.style.left=Math.round(x)+'px'; d.style.top=Math.round(y)+'px';
+    el.appendChild(d);
+  }
+  notch(cx, cy-2*R-R/4, '<span class="n-lang">'+pLangEtiqueta(PLANG)+'</span>',
+        'Idioma / Llengua / Langue / Language', pCycleLang, 'plang-actual');
+  notch(cx-S3*R, cy-R, '☀️', 'Día / Noche',
+        function(){document.body.classList.toggle('light')});
+  notch(cx+S3*R, cy-R, '⛶', 'Pantalla completa',
+        function(){if(document.fullscreenElement){document.exitFullscreen()}else{document.documentElement.requestFullscreen().catch(function(){})}});
 }
 
 /* ══ Zoom molette ══ */
@@ -350,11 +406,11 @@ function navP(d){var n=ACTIVE.length,i=_cur;for(var k=0;k<n;k++){i=(i+d+n)%n;if(
 
 /* ══ SUB-HIVE — Même grille, contenu qui change ══ */
 var SUB=[
-  {icon:'🧑',label:'Paciente',sub:'Su historial',color:'#4ae8a4',action:function(){location.href='Salufolio.html?tour=0&perfil=paciente'}},
-  {icon:'👨‍⚕️',label:'Profesional',sub:'Vista completa',color:'#e8e84a',action:function(){location.href='Salufolio.html?tour=0&perfil=medico'}},
-  {icon:'👨‍👩‍👧',label:'Cuidador',sub:'Protocolo',color:'#e84a8a',action:function(){location.href='Salufolio_Protocolo_movil.html'}},
-  {icon:'🩺',label:'Salufolio',sub:'Acceder',color:'#2a9d5f',action:function(){location.href='Salufolio.html?tour=0'}},   /* P-H 19/07 : le stéthoscope ENTRE toujours — dans les deux essaims */
-  {icon:'🎓',label:'Visita guiada',sub:'22 etapas',color:'#4ae8e8',action:function(){location.href='Salufolio.html?tour=1'}},
+  {icon:'🧑',label:'Paciente',sub:'Su historial',color:'#4ae8a4',action:function(){irA('Salufolio.html?tour=0&perfil=paciente')}},
+  {icon:'👨‍⚕️',label:'Profesional',sub:'Vista completa',color:'#e8e84a',action:function(){irA('Salufolio.html?tour=0&perfil=medico')}},
+  {icon:'👨‍👩‍👧',label:'Cuidador',sub:'Protocolo',color:'#e84a8a',action:function(){irA('protocolo/index.html')}},
+  {icon:'🩺',label:'Salufolio',sub:'Acceder',color:'#2a9d5f',action:function(){irA('Salufolio.html?tour=0')}},   /* P-H 19/07 : le stéthoscope ENTRE toujours — dans les deux essaims */
+  {icon:'🎓',label:'Visita guiada',sub:'22 etapas',color:'#4ae8e8',action:function(){irA('Salufolio.html?tour=1')}},
   {icon:'📊',label:'Saber más',sub:'En números',color:'#e8a44a',content:'<div class="sr"><div class="si"><span class="sn">10</span><span class="slab">Años</span></div><div class="si"><span class="sn">79</span><span class="slab">Módulos</span></div><div class="si"><span class="sn">510</span><span class="slab">Valores</span></div><div class="si"><span class="sn">36</span><span class="slab">PDF leídos</span></div></div><h3>¿Qué es Salufolio?</h3><p>Expediente médico longitudinal. Un único archivo HTML, sin conexión, sin servidor, sin nube. GNU GPL v3 · DOI 10.5281/zenodo.21997587</p>'},
   {icon:'📧',label:'Contacto',sub:'MediFolio@proton.me',color:'#8a4ae8',content:'PFB'}
 ];
