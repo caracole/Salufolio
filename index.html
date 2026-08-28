@@ -26,7 +26,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .hex-sub{color:var(--muted)}
 /* Popup */
 .pov{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0);display:none;align-items:center;justify-content:center;padding:10px;transition:background .5s}
-.pov.show{display:flex;background:rgba(0,0,0,.88)}
+.pov.show{display:flex}  /* v.28/08 (P-H) : PLUS DE VOILE — l'alvéole agrandie se superpose au panal, rien de plus ; le logo et la devise restent en pleine lumière */
 .popup{transform:scale(0);opacity:0;transition:transform 2s cubic-bezier(.25,1,.5,1),opacity 1.2s}
 .pov.show .popup{transform:scale(1);opacity:1}
 .popup{position:relative}
@@ -56,7 +56,12 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
    nôtres : un rectangle virtuel large comme la diagonale du triangle
    (√3·R) et haut comme le côté (R), FOND TRANSPARENT, centré au-dessus
    de l'objet. Le texte porte son ombre, pas de boîte. */
-.p-bulle{position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);display:none;align-items:center;justify-content:center;text-align:center;pointer-events:none;background:transparent;color:var(--text);font-family:var(--serif);font-size:15px;line-height:1.35;text-shadow:0 1px 5px rgba(0,0,0,.85);z-index:90}
+/* v.28/08 bis (P-H, « on s'est mal compris ») : la bulle se pose SOUS
+   le doigt, collée à l'objet — dessous par défaut ; dessus pour
+   l'abeille, qui vit au bord bas du panal. Largeur √3·R, hauteur libre. */
+.p-bulle{position:absolute;left:50%;transform:translateX(-50%);display:none;align-items:flex-start;justify-content:center;text-align:center;pointer-events:none;background:transparent;color:var(--text);font-family:var(--serif);font-size:15px;line-height:1.35;text-shadow:0 1px 5px rgba(0,0,0,.85);z-index:90}
+.p-bulle.b-abajo{top:calc(100% + 4px)}
+.p-bulle.b-arriba{bottom:calc(100% + 4px)}
 .notch-hs:hover .p-bulle,.bee-swap:hover .p-bulle,.pecten-hs:hover .p-bulle{display:flex}
 /* Le GROS HEXAGONE central : il annonce, puis s'efface — seul ou au toucher. */
 .hex-toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.7);z-index:200;width:280px;height:320px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;opacity:0;transition:all .35s;pointer-events:none}
@@ -78,7 +83,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.5</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.8</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -180,6 +185,16 @@ function ptr(c, champ){
 /* v2026.7.22b — DRAPEAUX comme dans Protocolo (demande P-H, 2e rappel !) :
    le bouton langue montre le drapeau + le code. CA porte le drapeau
    d'Andorre, convention usuelle pour le catalan/valencià en emoji. */
+/* v.28/08 (P-H) : LA SENYERA au lieu du drapeau andorran — « cette
+   bandera satisfait les deux ! » : quatre barres rouges sur or, la
+   valencienne et la catalane s'y reconnaissent. Pas d'emoji pour elle :
+   on la dessine. */
+function pBandera(l){
+  /* la senyera est une IMAGE (senyera.png, fournie par P-H 28/08) —
+     pas de dessin dans le code. */
+  if (l === 'ca') return '<img src="senyera.png" alt="CA" style="width:36px;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))">';
+  return ({es:'🇪🇸', fr:'🇫🇷', en:'🇬🇧'})[l] || l.toUpperCase();
+}
 function pLangEtiqueta(l){ return ({es:'🇪🇸 ES', ca:'🇦🇩 CA', fr:'🇫🇷 FR', en:'🇬🇧 EN'})[l] || l.toUpperCase(); }
 /* ══ v2026.8.27 — LE GROS HEXAGONE (retour de Berta, La Habana) ══
    « Le 404 doit disparaître : mieux, un gros hexagone au centre qui
@@ -304,7 +319,7 @@ function buildHive(){
   var bee=document.createElement('div');
   bee.className='bee-swap';
   bee.textContent='🐝';
-  bulle(bee, 'Cambiar de panal');
+  bulle(bee, 'Cambiar de panal', true);
   bee.onclick=function(ev){ev.stopPropagation();swapHive();};
   bee.style.left=Math.round(cx)+'px';
   /* v.27/08 soir (P-H) : au CENTRE DE GRAVITÉ du triangle du bas —
@@ -317,9 +332,9 @@ function buildHive(){
      jour/nuit et plein écran aux creux latéraux hauts — miroirs de
      l'abeille. Reconstruits avec la ruche : le drapeau suit la langue
      sans veilleur, et l'homothétie les grossit avec le reste. */
-  function bulle(parent, txt){
-    var b=document.createElement('div'); b.className='p-bulle';
-    b.style.width=Math.round(S3*R)+'px'; b.style.height=Math.round(R)+'px';
+  function bulle(parent, txt, arriba){
+    var b=document.createElement('div'); b.className='p-bulle '+(arriba?'b-arriba':'b-abajo');
+    b.style.width=Math.round(S3*R)+'px';
     b.textContent=txt; parent.appendChild(b);
   }
   function notch(x,y,html,title,fn,id){
@@ -335,7 +350,7 @@ function buildHive(){
      Triangles des flancs hauts : (cx∓√3R, cy−2R), (cx∓√3R, cy−R),
      (cx∓1.5√3R, cy−0.5R) → G = (cx∓7√3R/6, cy−7R/6).
      Le drapeau SEUL, sans libellé — il se suffit. */
-  notch(cx, cy-7*R/3, '<span class="n-flag">'+pLangEtiqueta(PLANG).split(' ')[0]+'</span>',
+  notch(cx, cy-7*R/3, '<span class="n-flag">'+pBandera(PLANG)+'</span>',
         'Idioma / Llengua / Langue / Language', pCycleLang, 'plang-actual');
   notch(cx-7*S3*R/6, cy-7*R/6, '☀️', 'Día / Noche',
         function(){document.body.classList.toggle('light')});
