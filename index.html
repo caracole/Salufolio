@@ -88,22 +88,27 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 
 /* ═══ LA VISITA DE LOS ALREDEDORES (P-H + Claude, 28/08) ═══ */
 .tour-focus{filter:drop-shadow(0 0 26px rgba(255,255,255,.75));transform:scale(1.25);z-index:15;transition:all .5s}
-#visita{position:fixed;left:50%;bottom:6%;transform:translateX(-50%);transition:top .5s,bottom .5s;width:min(92vw,430px);background:var(--pop-fondo);border:2px solid var(--accent);border-radius:16px;padding:16px 18px 12px;z-index:300;box-shadow:0 10px 40px rgba(0,0,0,.5);touch-action:pan-y;user-select:none}
-#visita .v-tit{font-family:var(--serif);font-size:19px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-#visita .v-txt{font-size:14.5px;line-height:1.65;color:var(--text);min-height:86px}
+/* v.28/08 soir (P-H) : le cadre en EM, pas en px — il suit le zoom et la
+   lettre du lecteur au lieu de déborder du téléphone. */
+#visita{position:fixed;left:50%;bottom:6%;transform:translateX(-50%);transition:top .5s,bottom .5s;width:min(92vw,27em);max-height:80vh;display:flex;flex-direction:column;background:var(--pop-fondo);border:2px solid var(--accent);border-radius:1em;padding:1em 1.1em .75em;z-index:300;box-shadow:0 .6em 2.5em rgba(0,0,0,.5);touch-action:pan-y;user-select:none}
+/* le PLAFOND (P-H, 28/08 soir) : jamais plus haut que 80% de l'écran —
+   un tableau trop long DÉFILE dans le cadre, boutons toujours en vue. */
+#visita .v-tit{font-family:var(--serif);font-size:1.2em;font-weight:700;margin-bottom:.4em;display:flex;align-items:center;gap:.4em}
+#visita .v-txt{font-size:.92em;line-height:1.65;color:var(--text);min-height:3em;flex:1 1 auto;overflow-y:auto;min-height:0}
 #visita .v-txt em{color:var(--muted)}
-#visita .v-dots{display:flex;gap:5px;justify-content:center;margin:10px 0 8px}
-#visita .v-dots i{width:7px;height:7px;border-radius:50%;background:var(--muted);opacity:.35}
+#visita .v-dots{display:flex;gap:.3em;justify-content:center;margin:.6em 0 .5em}
+#visita .v-dots i{width:.45em;height:.45em;border-radius:50%;background:var(--muted);opacity:.35}
 #visita .v-dots i.on{background:var(--accent);opacity:1}
-#visita .v-btns{display:flex;justify-content:space-between;gap:8px}
-#visita .v-btns button{flex:1;padding:9px 6px;border-radius:9px;border:1px solid var(--accent);background:transparent;color:var(--text);font-size:14px;cursor:pointer}
-#visita .v-btns button.v-x{flex:0 0 auto;border-color:var(--muted);color:var(--muted);padding:9px 13px}
+#visita .v-btns{display:flex;justify-content:space-between;gap:.5em}
+#visita .v-btns button{flex:1;padding:.6em .4em;border-radius:.6em;border:1px solid var(--accent);background:transparent;color:var(--text);font-size:.9em;cursor:pointer}
+#visita .v-btns button.v-x{flex:0 0 auto;border-color:var(--muted);color:var(--muted);padding:.6em .85em}
+#visita .v-btns button.v-voz{flex:0 0 auto;padding:.6em .8em;font-size:1.05em}
 /* le sous-titre ne couvre jamais l'acteur : leçon en bas → cadre en haut */
 #visita.v-arriba{bottom:auto;top:7%}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.1</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.5</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -2978,7 +2983,7 @@ var qrcode = function() {
    le cadre. Avance seul au pas du lecteur, recule au glissement, boucle.
    Textes : VISITA (es) ici ; ca/fr/en dans PanalLangues.js (VTR). */
 var VISITA=[
- {h:'Salufolio',ico:'🐝',tit:'Bienvenido al panal',
+ {h:'Salufolio',ico:'🐝',tit:'Bienvenida al Panal Salufolio',
   txt:'Esta es la casa de Salufolio: <strong>dos pisos y siete puertas por piso</strong>. En un minuto sabrá qué ofrece cada una y cuál es la suya. El film avanza solo, despacio — <em>«Seguir» para avanzar, deslice el dedo hacia atrás para repasar, ✕ para salir cuando quiera.</em>'},
  {h:'Paciente',ico:'🧑',tit:'Paciente',
   txt:'La puerta de quien vive su historia clínica. Abre Salufolio con <strong>su historial en primer plano</strong>: análisis, informes y fechas, ordenados y explicados. Sus datos viven en su aparato — nunca en una nube.'},
@@ -3010,6 +3015,35 @@ var VISITA=[
   txt:'Ya conoce la casa. En los huecos: la <strong>bandera</strong> cambia el idioma, las <strong>flechas</strong> llenan la pantalla. Y un consejo honesto: el Protocolo está hecho para este teléfono; <strong>Salufolio prefiere un ordenador</strong>.'}
 ];
 var _vi=0,_vT=null,_vX0=null;
+/* ── LA VOIX (idée de Berta, La Habana, 28/08 : « ¿no habla? ») ──
+   La synthèse du téléphone lit le tableau dans la langue du drapeau ;
+   le film avance QUAND LA VOIX A FINI — le rythme devient celui de la
+   parole. Choix mémorisé. Réserve : sans voix valencienne sur
+   l'appareil, le film reste muet en ca plutôt que parler castillan. */
+var V_VOZ=false; try{ V_VOZ = localStorage.getItem('panal_voz')==='1'; }catch(e){}
+function vVoz(){
+  V_VOZ=!V_VOZ;
+  try{ localStorage.setItem('panal_voz', V_VOZ?'1':'0'); }catch(e){}
+  var b=document.getElementById('v-voz'); if(b)b.textContent=V_VOZ?'🔊':'🔇';
+  if(!V_VOZ && window.speechSynthesis) speechSynthesis.cancel();
+  vMuestra();   /* le tableau courant repart, parlé ou muet */
+}
+function vHabla(titulo, texto){
+  if(!window.speechSynthesis) return false;
+  var plain = (titulo+'. '+texto).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ');
+  var u = new SpeechSynthesisUtterance(plain);
+  u.lang = ({es:'es-ES',ca:'ca-ES',fr:'fr-FR',en:'en-GB'})[PLANG] || 'es-ES';
+  u.rate = .95;
+  var vs = speechSynthesis.getVoices() || [];
+  var voz = null;
+  for(var i=0;i<vs.length;i++){ if(vs[i].lang && vs[i].lang.toLowerCase().indexOf(PLANG)===0){ voz=vs[i]; break; } }
+  if(voz) u.voice = voz;
+  if(PLANG==='ca' && vs.length && !voz) return false;   /* pas de voix valencienne : silence honnête */
+  u.onend = function(){ if(_vi<VISITA.length-1) vPaso(1); };
+  u.onerror = function(){ _vT=setTimeout(function(){vPaso(1)},vTiempo(texto)); };
+  speechSynthesis.speak(u);
+  return true;
+}
 /* Le pas du lecteur : un socle + tant de ms par lettre — à régler sur
    le lecteur réel. 300 lettres ≈ V_BASE + 300×V_MS_LETRA. */
 var V_BASE=4000, V_MS_LETRA=75;
@@ -3021,7 +3055,7 @@ function arrancarVisita(){
   var b=vBtn();
   d.innerHTML='<div class="v-tit" id="v-tit"></div><div class="v-txt" id="v-txt"></div>'+
     '<div class="v-dots" id="v-dots"></div>'+
-    '<div class="v-btns"><button onclick="vPaso(-1)">'+b[0]+'</button><button onclick="vPaso(1)">'+b[1]+'</button><button class="v-x" onclick="vSalir()">✕</button></div>';
+    '<div class="v-btns"><button onclick="vPaso(-1)">'+b[0]+'</button><button class="v-voz" id="v-voz" onclick="vVoz()">'+(V_VOZ?'🔊':'🔇')+'</button><button onclick="vPaso(1)">'+b[1]+'</button><button class="v-x" onclick="vSalir()">✕</button></div>';
   d.addEventListener('pointerdown',function(e){_vX0=e.clientX});
   d.addEventListener('pointerup',function(e){
     if(_vX0===null)return; var dx=e.clientX-_vX0; _vX0=null;
@@ -3060,10 +3094,13 @@ function vMuestra(){
   /* rangée basse (5,6) ou l'abeille : le cadre monte ; sinon il redescend */
   var v=document.getElementById('visita');
   if(v) v.classList.toggle('v-arriba', idx>=5 || !!p.swap);
-  if(_vi<VISITA.length-1) _vT=setTimeout(function(){vPaso(1)},vTiempo(txt));
+  if(window.speechSynthesis) speechSynthesis.cancel();
+  var hablo = V_VOZ && vHabla(((tr&&tr.tit)||p.tit), txt);
+  if(!hablo && _vi<VISITA.length-1) _vT=setTimeout(function(){vPaso(1)},vTiempo(txt));
 }
 function vSalir(){
   clearTimeout(_vT);
+  if(window.speechSynthesis) speechSynthesis.cancel();
   var d=document.getElementById('visita'); if(d)d.remove();
   document.querySelectorAll('.hex.tour-focus').forEach(function(h){h.classList.remove('tour-focus')});
   if(_isMain) swapHive();   /* le guide raccompagne : sortie = rez-de-chaussée */
