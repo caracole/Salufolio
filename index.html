@@ -11,7 +11,8 @@
      --bulle-txt : la taille du texte des infobulles ;
      --pop-fondo : le fond de l'alvéole agrandie (monter le ,92 vers 1
      pour l'opacifier, le baisser pour laisser voir le panal). */
-  --bulle-txt:12.5px;--pop-fondo:rgba(14,17,23,.92)}
+  --bulle-txt:12.5px;--bulle-dist:2px;--pop-fondo:rgba(14,17,23,.92)}
+  /* --bulle-dist : l'écart entre l'objet et sa bulle (négatif = chevauche). */
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,rgba(74,143,232,.04) 0%,transparent 70%);pointer-events:none}
@@ -63,9 +64,9 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 /* v.28/08 bis (P-H, « on s'est mal compris ») : la bulle se pose SOUS
    le doigt, collée à l'objet — dessous par défaut ; dessus pour
    l'abeille, qui vit au bord bas du panal. Largeur √3·R, hauteur libre. */
-.p-bulle{position:absolute;left:50%;transform:translateX(-50%);display:none;align-items:flex-start;justify-content:center;text-align:center;pointer-events:none;background:transparent;color:var(--text);font-family:var(--serif);font-size:var(--bulle-txt);line-height:1.35;text-shadow:0 1px 5px rgba(0,0,0,.85);z-index:90}
-.p-bulle.b-abajo{top:calc(100% + 4px)}
-.p-bulle.b-arriba{bottom:calc(100% + 4px)}
+.p-bulle{position:absolute;left:50%;transform:translateX(-50%);display:none;justify-content:center;text-align:center;pointer-events:none;background:transparent;color:var(--text);font-family:var(--serif);font-size:var(--bulle-txt);line-height:1.35;text-shadow:0 1px 5px rgba(0,0,0,.85);z-index:90}
+.p-bulle.b-abajo{top:calc(100% + var(--bulle-dist));align-items:flex-start}   /* le texte COLLE au bord proche */
+.p-bulle.b-arriba{bottom:calc(100% + var(--bulle-dist));align-items:flex-end}
 .notch-hs:hover .p-bulle,.bee-swap:hover .p-bulle,.pecten-hs:hover .p-bulle{display:flex}
 /* Le GROS HEXAGONE central : il annonce, puis s'efface — seul ou au toucher. */
 .hex-toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.7);z-index:200;width:280px;height:320px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;opacity:0;transition:all .35s;pointer-events:none}
@@ -87,7 +88,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.11</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.12</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -359,7 +360,8 @@ function buildHive(){
      (cx∓1.5√3R, cy−0.5R) → G = (cx∓7√3R/6, cy−7R/6).
      Le drapeau SEUL, sans libellé — il se suffit. */
   notch(cx, cy-7*R/3, '<span class="n-flag">'+pBandera(PLANG)+'</span>',
-        'Idioma / Llengua / Langue / Language', pCycleLang, 'plang-actual');
+        ({es:'Cambio de idioma',ca:'Canvi de llengua',fr:'Changement de langue',en:'Change language'})[PLANG],
+        pCycleLang, 'plang-actual');
   notch(cx-7*S3*R/6, cy-7*R/6, '☀️', 'Día / Noche',
         function(){document.body.classList.toggle('light')});
   notch(cx+7*S3*R/6, cy-7*R/6, '<img src="pantalla_completa.png" alt="⤢" style="width:30px;height:30px;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))">', 'Pantalla completa',
