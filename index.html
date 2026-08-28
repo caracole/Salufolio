@@ -88,7 +88,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.12</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.13</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -317,7 +317,7 @@ function buildHive(){
       pk.className='pecten-hs';
       pk.style.top=Math.round(R/3)+'px';
       pk.innerHTML='<svg viewBox="0 0 100 100"><path d="M89.8 61.0A46 46 0 0 0 10.2 61.0" fill="none" stroke="#3dbf7f" stroke-width="4.5" stroke-linecap="round"/><g stroke="#3dbf7f" stroke-width="4" stroke-linecap="round"><line x1="63.0" y1="76.5" x2="89.8" y2="61.0"/><line x1="59.6" y1="72.5" x2="79.6" y2="48.8"/><line x1="55.1" y1="69.9" x2="65.7" y2="40.8"/><line x1="50.0" y1="69.0" x2="50.0" y2="38.0"/><line x1="44.9" y1="69.9" x2="34.3" y2="40.8"/><line x1="40.4" y1="72.5" x2="20.4" y2="48.8"/><line x1="37.0" y1="76.5" x2="10.2" y2="61.0"/></g></svg>';
-      bulle(pk, 'La concha del peregrino: todas las estrías convergen en un punto — el paciente.');   /* APRÈS innerHTML — qui efface tout ce qui précède */
+      bulle(pk, bt('concha'));   /* APRÈS innerHTML — qui efface tout ce qui précède */
       div.appendChild(pk);
     }
     el.appendChild(div);
@@ -328,7 +328,7 @@ function buildHive(){
   var bee=document.createElement('div');
   bee.className='bee-swap';
   bee.textContent='🐝';
-  bulle(bee, 'Cambiar de panal', true);
+  bulle(bee, bt('panal'), true);
   bee.onclick=function(ev){ev.stopPropagation();swapHive();};
   bee.style.left=Math.round(cx)+'px';
   /* v.27/08 soir (P-H) : au CENTRE DE GRAVITÉ du triangle du bas —
@@ -341,6 +341,22 @@ function buildHive(){
      jour/nuit et plein écran aux creux latéraux hauts — miroirs de
      l'abeille. Reconstruits avec la ruche : le drapeau suit la langue
      sans veilleur, et l'homothétie les grossit avec le reste. */
+  /* v.28/08 (P-H) : TOUTES les bulles parlent la langue du moment.
+     Table entière DANS la fonction : le hoisting la rend disponible
+     même au pecten, construit avant cette ligne. */
+  function bt(k){
+    var T={
+      idioma:{es:'Cambio de idioma',ca:'Canvi de llengua',fr:'Changement de langue',en:'Change language'},
+      dia:{es:'Día / Noche',ca:'Dia / Nit',fr:'Jour / Nuit',en:'Day / Night'},
+      pant:{es:'Pantalla completa',ca:'Pantalla completa',fr:'Plein écran',en:'Full screen'},
+      panal:{es:'Cambiar de panal',ca:'Canviar de panal',fr:'Changer de panal',en:'Change hive'},
+      concha:{es:'La concha del peregrino: todas las estrías convergen en un punto — el paciente.',
+              ca:'La conquilla del pelegrí: totes les estries convergixen en un punt — el pacient.',
+              fr:'La coquille du pèlerin : toutes les stries convergent vers un point — le patient.',
+              en:"The pilgrim's shell: every groove converges on one point — the patient."}
+    };
+    return (T[k]||{})[PLANG] || (T[k]||{}).es || k;
+  }
   function bulle(parent, txt, arriba){
     var b=document.createElement('div'); b.className='p-bulle '+(arriba?'b-arriba':'b-abajo');
     b.style.width=Math.round(S3*R)+'px';
@@ -360,11 +376,10 @@ function buildHive(){
      (cx∓1.5√3R, cy−0.5R) → G = (cx∓7√3R/6, cy−7R/6).
      Le drapeau SEUL, sans libellé — il se suffit. */
   notch(cx, cy-7*R/3, '<span class="n-flag">'+pBandera(PLANG)+'</span>',
-        ({es:'Cambio de idioma',ca:'Canvi de llengua',fr:'Changement de langue',en:'Change language'})[PLANG],
-        pCycleLang, 'plang-actual');
-  notch(cx-7*S3*R/6, cy-7*R/6, '☀️', 'Día / Noche',
+        bt('idioma'), pCycleLang, 'plang-actual');
+  notch(cx-7*S3*R/6, cy-7*R/6, '☀️', bt('dia'),
         function(){document.body.classList.toggle('light')});
-  notch(cx+7*S3*R/6, cy-7*R/6, '<img src="pantalla_completa.png" alt="⤢" style="width:30px;height:30px;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))">', 'Pantalla completa',
+  notch(cx+7*S3*R/6, cy-7*R/6, '<img src="pantalla_completa.png" alt="⤢" style="width:30px;height:30px;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))">', bt('pant'),
         function(){if(document.fullscreenElement){document.exitFullscreen()}else{document.documentElement.requestFullscreen().catch(function(){})}});
 }
 
