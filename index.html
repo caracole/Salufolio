@@ -43,9 +43,10 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .bee-swap{position:absolute;transform:translate(-50%,-50%);font-size:40px;cursor:pointer;z-index:60;width:68px;height:68px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s;opacity:.75}
 /* v2026.8.27 (retour de Berta, La Habana) : les commandes vivent dans les
    CREUX du panal, comme l'abeille — la topbar était introuvable au doigt. */
-.notch-hs{position:absolute;transform:translate(-50%,-50%);z-index:60;width:54px;height:54px;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;transition:all .3s;opacity:.8;font-size:24px}
+.notch-hs{position:absolute;transform:translate(-50%,-50%);z-index:60;width:60px;height:60px;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;transition:all .3s;opacity:.85;font-size:30px}
 .notch-hs:hover{opacity:1;transform:translate(-50%,-50%) scale(1.25)}
-.notch-hs .n-lang{font-weight:800;font-size:14px;letter-spacing:1px;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.notch-hs .n-flag{font-size:34px;line-height:1}
+.notch-hs .n-exp{font-size:32px;font-weight:700;color:var(--text);line-height:1}
 /* Le GROS HEXAGONE central : il annonce, puis s'efface — seul ou au toucher. */
 .hex-toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.7);z-index:200;width:280px;height:320px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;opacity:0;transition:all .35s;pointer-events:none}
 .hex-toast.on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
@@ -66,7 +67,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.1</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.2</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -290,7 +291,10 @@ function buildHive(){
   bee.title='Cambiar de panal';
   bee.onclick=function(ev){ev.stopPropagation();swapHive();};
   bee.style.left=Math.round(cx)+'px';
-  bee.style.top=Math.round(cy + 2*R + R/4)+'px';
+  /* v.27/08 soir (P-H) : au CENTRE DE GRAVITÉ du triangle du bas —
+     le creux en V entre les deux alvéoles de la rangée basse :
+     sommets (cx±√3R/2, cy+2.5R) et (cx, cy+2R) → G = (cx, cy+7R/3). */
+  bee.style.top=Math.round(cy + 7*R/3)+'px';
   el.appendChild(bee);
   /* v2026.8.27 (retour de Berta) : LES COMMANDES DANS LES CREUX.
      Le drapeau au creux du sommet (entre les deux alvéoles du haut),
@@ -304,11 +308,17 @@ function buildHive(){
     d.style.left=Math.round(x)+'px'; d.style.top=Math.round(y)+'px';
     el.appendChild(d);
   }
-  notch(cx, cy-2*R-R/4, '<span class="n-lang">'+pLangEtiqueta(PLANG)+'</span>',
+  /* v.27/08 soir (P-H) : chaque objet au CENTRE DE GRAVITÉ de son
+     triangle — les creux en V du contour. Triangle du sommet :
+     (cx±√3R/2, cy−2.5R) et (cx, cy−2R) → G = (cx, cy−7R/3).
+     Triangles des flancs hauts : (cx∓√3R, cy−2R), (cx∓√3R, cy−R),
+     (cx∓1.5√3R, cy−0.5R) → G = (cx∓7√3R/6, cy−7R/6).
+     Le drapeau SEUL, sans libellé — il se suffit. */
+  notch(cx, cy-7*R/3, '<span class="n-flag">'+pLangEtiqueta(PLANG).split(' ')[0]+'</span>',
         'Idioma / Llengua / Langue / Language', pCycleLang, 'plang-actual');
-  notch(cx-S3*R, cy-R, '☀️', 'Día / Noche',
+  notch(cx-7*S3*R/6, cy-7*R/6, '☀️', 'Día / Noche',
         function(){document.body.classList.toggle('light')});
-  notch(cx+S3*R, cy-R, '⛶', 'Pantalla completa',
+  notch(cx+7*S3*R/6, cy-7*R/6, '<span class="n-exp">⤢</span>', 'Pantalla completa',
         function(){if(document.fullscreenElement){document.exitFullscreen()}else{document.documentElement.requestFullscreen().catch(function(){})}});
 }
 
