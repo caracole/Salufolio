@@ -85,10 +85,25 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .slab{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
 .devise{position:fixed;bottom:12px;text-align:center;font-family:var(--serif);font-size:13px;font-style:italic;color:var(--muted);opacity:.5}
 .devise span{display:block;font-size:10px;margin-top:2px;font-style:normal;color:var(--accent)}
+
+/* ═══ LA VISITA DE LOS ALREDEDORES (P-H + Claude, 28/08) ═══ */
+.tour-focus{filter:drop-shadow(0 0 26px rgba(255,255,255,.75));transform:scale(1.25);z-index:15;transition:all .5s}
+#visita{position:fixed;left:50%;bottom:6%;transform:translateX(-50%);transition:top .5s,bottom .5s;width:min(92vw,430px);background:var(--pop-fondo);border:2px solid var(--accent);border-radius:16px;padding:16px 18px 12px;z-index:300;box-shadow:0 10px 40px rgba(0,0,0,.5);touch-action:pan-y;user-select:none}
+#visita .v-tit{font-family:var(--serif);font-size:19px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+#visita .v-txt{font-size:14.5px;line-height:1.65;color:var(--text);min-height:86px}
+#visita .v-txt em{color:var(--muted)}
+#visita .v-dots{display:flex;gap:5px;justify-content:center;margin:10px 0 8px}
+#visita .v-dots i{width:7px;height:7px;border-radius:50%;background:var(--muted);opacity:.35}
+#visita .v-dots i.on{background:var(--accent);opacity:1}
+#visita .v-btns{display:flex;justify-content:space-between;gap:8px}
+#visita .v-btns button{flex:1;padding:9px 6px;border-radius:9px;border:1px solid var(--accent);background:transparent;color:var(--text);font-size:14px;cursor:pointer}
+#visita .v-btns button.v-x{flex:0 0 auto;border-color:var(--muted);color:var(--muted);padding:9px 13px}
+/* le sous-titre ne couvre jamais l'acteur : leçon en bas → cadre en haut */
+#visita.v-arriba{bottom:auto;top:7%}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.14</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.1</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -377,8 +392,8 @@ function buildHive(){
      Le drapeau SEUL, sans libellé — il se suffit. */
   notch(cx, cy-7*R/3, '<span class="n-flag">'+pBandera(PLANG)+'</span>',
         bt('idioma'), pCycleLang, 'plang-actual');
-  notch(cx-7*S3*R/6, cy-7*R/6, '☀️', bt('dia'),
-        function(){document.body.classList.toggle('light')});
+  /* v.28/08 : le soleil a quitté le panal — le mode jour ne lui va pas
+     (remarque de Joaquina). Une ligne à remettre si un jour il est réparé. */
   notch(cx+7*S3*R/6, cy-7*R/6, '<img src="pantalla_completa.png" alt="⤢" style="width:30px;height:30px;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))">', bt('pant'),
         function(){if(document.fullscreenElement){document.exitFullscreen()}else{document.documentElement.requestFullscreen().catch(function(){})}});
 }
@@ -481,12 +496,14 @@ var SUB=[
   {icon:'👨‍⚕️',label:'Profesional',sub:'Vista completa',color:'#e8e84a',action:function(){irA('Salufolio.html?tour=0&perfil=medico')}},
   {icon:'👨‍👩‍👧',label:'Cuidador',sub:'Protocolo',color:'#e84a8a',action:function(){irA('protocolo/index.html')}},
   {icon:'🩺',label:'Salufolio',sub:'Acceder',color:'#2a9d5f',action:function(){irA('Salufolio.html?tour=0')}},   /* P-H 19/07 : le stéthoscope ENTRE toujours — dans les deux essaims */
-  {icon:'🎓',label:'Visita guiada',sub:'22 etapas',color:'#4ae8e8',action:function(){irA('Salufolio.html?tour=1')}},
+  {icon:'🎓',label:'Visita guiada',sub:'el panal, puerta a puerta',color:'#4ae8e8',action:function(){arrancarVisita()}},
   {icon:'📊',label:'Saber más',sub:'En números',color:'#e8a44a',content:'<div class="sr"><div class="si"><span class="sn">10</span><span class="slab">Años</span></div><div class="si"><span class="sn">79</span><span class="slab">Módulos</span></div><div class="si"><span class="sn">510</span><span class="slab">Valores</span></div><div class="si"><span class="sn">36</span><span class="slab">PDF leídos</span></div></div><h3>¿Qué es Salufolio?</h3><p>Expediente médico longitudinal. Un único archivo HTML, sin conexión, sin servidor, sin nube. GNU GPL v3 · DOI 10.5281/zenodo.21997587</p>'},
   {icon:'📧',label:'Contacto',sub:'MediFolio@proton.me',color:'#8a4ae8',content:'PFB'}
 ];
 
-var _isMain=true;
+ACTIVE=SUB;                /* v.28/08 (P-H) : le REZ-DE-CHAUSSÉE accueille —
+   les perfiles ; l'abeille descend au taller. */
+var _isMain=false;
 function swapHive(){
   var hexEls=document.querySelectorAll('.hex');
   var target=_isMain?SUB:CELLS;
@@ -2953,6 +2970,104 @@ var qrcode = function() {
 }(function () {
     return qrcode;
 }));
+
+
+/* ═══ LA VISITA DE LOS ALREDEDORES (P-H + Claude, maquette 28/08) ═══
+   Enseñar, no dejar adivinar : un film par tableaux, dans un cadre fixe —
+   le mouvement est dans le panal (l'alvéole enseignée s'allume), pas dans
+   le cadre. Avance seul au pas du lecteur, recule au glissement, boucle.
+   Textes : VISITA (es) ici ; ca/fr/en dans PanalLangues.js (VTR). */
+var VISITA=[
+ {h:'Salufolio',ico:'🐝',tit:'Bienvenido al panal',
+  txt:'Esta es la casa de Salufolio: <strong>dos pisos y siete puertas por piso</strong>. En un minuto sabrá qué ofrece cada una y cuál es la suya. El film avanza solo, despacio — <em>«Seguir» para avanzar, deslice el dedo hacia atrás para repasar, ✕ para salir cuando quiera.</em>'},
+ {h:'Paciente',ico:'🧑',tit:'Paciente',
+  txt:'La puerta de quien vive su historia clínica. Abre Salufolio con <strong>su historial en primer plano</strong>: análisis, informes y fechas, ordenados y explicados. Sus datos viven en su aparato — nunca en una nube.'},
+ {h:'Profesional',ico:'👨‍⚕️',tit:'Profesional',
+  txt:'La puerta del médico o del enfermero. Abre Salufolio en <strong>vista completa</strong>: toda la historia longitudinal, los valores comparados a lo largo de los años, las fuentes a un toque. Pensada para la consulta.'},
+ {h:'Cuidador',ico:'👨‍👩‍👧',tit:'Cuidador',
+  txt:'La puerta de quien cuida cada día. Abre el <strong>Protocolo</strong>: tomas, constantes y observaciones, junto a la cama, <strong>en este mismo teléfono</strong>. Funciona sin conexión; cuando el ordenador se enciende, los datos suben solos.'},
+ {h:'Saber más',ico:'📊',tit:'Saber más',
+  txt:'Los números del proyecto: <strong>diez años de historia clínica</strong> convertidos en datos, los módulos, los PDF leídos. Y la carta de identidad: licencia libre GNU GPL y DOI científico. Aquí se responde «¿qué es Salufolio?».'},
+ {h:'Contacto',ico:'📧',tit:'Contacto',
+  txt:'Su voz. Un formulario sencillo para <strong>escribir al autor</strong>: una duda, un fallo, una idea. Los comentarios se guardan y se envían cuando usted lo decide.'},
+ {h:'Salufolio',ico:'🩺',tit:'Salufolio — el centro',
+  txt:'El corazón de la casa: <strong>el expediente médico completo</strong>, un único archivo que se explica solo. Todas las puertas llevan a él o salen de él. <em>Prefiere una pantalla grande: en el teléfono le quedará estrecho.</em>'},
+ {h:null,ico:'🐝',tit:'La abeja',swap:true,
+  txt:'¿Ve la abeja abajo? <strong>Cambia de piso</strong>. Acabamos de bajar al taller: las <strong>herramientas</strong> que fabrican y vigilan el expediente. Sígame.'},
+ {h:'Protocolo',ico:'📱',tit:'Protocolo',
+  txt:'La aplicación del móvil, de cuerpo entero: el <strong>QR para instalarla</strong> cuando su ordenador la sirve, y el acceso directo cuando no. Es la misma puerta que «Cuidador» — vista desde el taller.'},
+ {h:'Informe express',ico:'⚡',tit:'Informe express',
+  txt:'<strong>La pantalla del médico en un gesto.</strong> Para la consulta que empieza en dos minutos: lo esencial del expediente, listo para enseñar, sin buscar nada.'},
+ {h:'Auditoría',ico:'🔍',tit:'Auditoría',
+  txt:'El juez de paz del expediente. Señala <strong>lo que no cuadra</strong>: diagnósticos sin análisis que los respalden, valores imposibles, duplicados. La auditoría señala; <strong>el juicio es humano</strong>.'},
+ {h:'Farmacovigilancia',ico:'💊',tit:'Farmacovigilancia',
+  txt:'<em>En construcción.</em> Conectará cada medicamento con la <strong>base pública CIMA/AEMPS</strong>: marca y genérico, duplicidades de principio activo, interacciones. El taller ya tiene los planos.'},
+ {h:'Ensayo clínico',ico:'🧪',tit:'Ensayo clínico',
+  txt:'<em>Módulo futuro.</em> Visitas, eventos adversos y sello de tiempo según <strong>GCP · ICH E6</strong>: el expediente abierto a la investigación — el uso que más piden los profesionales.'},
+ {h:'ModularBuilder',ico:'🧱',tit:'ModularBuilder',
+  txt:'Donde se fabrica todo: <strong>79 módulos ensamblados en un archivo único</strong>. Y el Extractor: del papel al dato — lee los PDF y los convierte en valores fechados con su fuente. <em>Salufolio no inventa nada.</em>'},
+ {h:null,ico:'🎓',tit:'Fin de la visita',
+  txt:'Ya conoce la casa. En los huecos: la <strong>bandera</strong> cambia el idioma, las <strong>flechas</strong> llenan la pantalla. Y un consejo honesto: el Protocolo está hecho para este teléfono; <strong>Salufolio prefiere un ordenador</strong>.'}
+];
+var _vi=0,_vT=null,_vX0=null;
+/* Le pas du lecteur : un socle + tant de ms par lettre — à régler sur
+   le lecteur réel. 300 lettres ≈ V_BASE + 300×V_MS_LETRA. */
+var V_BASE=4000, V_MS_LETRA=75;
+function vTiempo(t){ return V_BASE + t.replace(/<[^>]*>/g,'').length * V_MS_LETRA; }
+function vBtn(){ return ({es:['⟵ Atrás','Seguir ⟶'],ca:['⟵ Arrere','Seguir ⟶'],fr:['⟵ Retour','Suivant ⟶'],en:['⟵ Back','Next ⟶']})[PLANG]||['⟵','⟶']; }
+function arrancarVisita(){
+  var old=document.getElementById('visita'); if(old)old.remove();   /* recréé à chaque départ : les boutons parlent la langue du jour */
+  var d=document.createElement('div'); d.id='visita';
+  var b=vBtn();
+  d.innerHTML='<div class="v-tit" id="v-tit"></div><div class="v-txt" id="v-txt"></div>'+
+    '<div class="v-dots" id="v-dots"></div>'+
+    '<div class="v-btns"><button onclick="vPaso(-1)">'+b[0]+'</button><button onclick="vPaso(1)">'+b[1]+'</button><button class="v-x" onclick="vSalir()">✕</button></div>';
+  d.addEventListener('pointerdown',function(e){_vX0=e.clientX});
+  d.addEventListener('pointerup',function(e){
+    if(_vX0===null)return; var dx=e.clientX-_vX0; _vX0=null;
+    if(dx>50)vPaso(-1); else if(dx<-50)vPaso(1);
+  });
+  document.body.appendChild(d);
+  _vi=0; vMuestra();
+}
+function vPaso(d){
+  _vi=_vi+d;
+  if(_vi>=VISITA.length)_vi=0;          /* l'anneau : on revisite dix fois s'il le faut */
+  if(_vi<0)_vi=0;
+  vMuestra();
+}
+function vMuestra(){
+  clearTimeout(_vT);
+  var p=VISITA[_vi];
+  /* l'étage juste : _isMain vrai = taller (CELLS) affiché.
+     Tableaux 0-6 : rez-de-chaussée ; l'abeille descend ; 8+ : taller. */
+  if(p.swap){ if(!_isMain) swapHive(); }
+  else if(_vi<7){ if(_isMain) swapHive(); }
+  else if(_vi<VISITA.length-1){ if(!_isMain) swapHive(); }
+  /* le texte : VISITA (es) ou sa traduction VTR dans la langue du drapeau */
+  var tr=(typeof VTR!=='undefined' && VTR[PLANG] && VTR[PLANG][_vi]) || null;
+  document.getElementById('v-tit').innerHTML=p.ico+' '+((tr&&tr.tit)||p.tit);
+  var txt=(tr&&tr.txt)||p.txt;
+  document.getElementById('v-txt').innerHTML=txt;
+  var dots=''; for(var i=0;i<VISITA.length;i++) dots+='<i class="'+(i===_vi?'on':'')+'"></i>';
+  document.getElementById('v-dots').innerHTML=dots;
+  document.querySelectorAll('.hex.tour-focus').forEach(function(h){h.classList.remove('tour-focus')});
+  var idx=-1;
+  if(p.h){
+    var hexes=document.querySelectorAll('.hex');
+    for(var i=0;i<ACTIVE.length;i++) if(ACTIVE[i].label===p.h && hexes[i]){ hexes[i].classList.add('tour-focus'); idx=i; }
+  }
+  /* rangée basse (5,6) ou l'abeille : le cadre monte ; sinon il redescend */
+  var v=document.getElementById('visita');
+  if(v) v.classList.toggle('v-arriba', idx>=5 || !!p.swap);
+  if(_vi<VISITA.length-1) _vT=setTimeout(function(){vPaso(1)},vTiempo(txt));
+}
+function vSalir(){
+  clearTimeout(_vT);
+  var d=document.getElementById('visita'); if(d)d.remove();
+  document.querySelectorAll('.hex.tour-focus').forEach(function(h){h.classList.remove('tour-focus')});
+  if(_isMain) swapHive();   /* le guide raccompagne : sortie = rez-de-chaussée */
+}
 
 </script>
 </body>
