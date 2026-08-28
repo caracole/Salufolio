@@ -112,10 +112,15 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 #concha-h .c-txt{font-size:.95em;line-height:1.7;color:var(--text);overflow-y:auto}
 #concha-h .c-txt p{margin:.5em 0}
 #concha-h .c-x{align-self:flex-end;margin-top:.6em;padding:.5em 1em;border-radius:.6em;border:1px solid var(--muted);background:transparent;color:var(--muted);cursor:pointer}
+#aviso-ord{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(88vw,24em);background:var(--pop-fondo);border:2px solid #e8a44a;border-radius:1em;padding:1em 1.2em .9em;z-index:310;box-shadow:0 .6em 2.5em rgba(0,0,0,.5)}
+#aviso-ord .c-tit{font-family:var(--serif);font-size:1.15em;font-weight:700;margin-bottom:.4em}
+#aviso-ord .c-txt{font-size:.95em;line-height:1.6;color:var(--text)}
+#aviso-ord button{flex:1;padding:.6em .5em;border-radius:.6em;border:1px solid var(--accent);background:transparent;color:var(--text);font-size:.92em;cursor:pointer}
+#aviso-ord button.a-b2{border-color:var(--muted);color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.10</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.11</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -455,7 +460,9 @@ function openP(i){
   _cur=i;var c=ACTIVE[i];resizeP(c.color);
   document.getElementById('pop-title').textContent=(c.icon||'')+' '+(ptr(c,'label')||c.label||'');
   document.getElementById('pop-title').style.color=c.color;
-  document.getElementById('pop-body').innerHTML=ptr(c,'content')||'';
+  /* v.28.11 : les portes en chantier l'annoncent d'entrée — barrière franche */
+  var _obra = c.obra ? '<div style="margin:6px auto 12px;max-width:360px;padding:8px 12px;border:1px solid #e8a44a;border-radius:10px;background:rgba(232,164,74,.1);color:#e8a44a;font-weight:700;text-align:center">🚧 '+(({es:'En construcción — todavía no ejecutable',ca:'En construcció — encara no executable',fr:'En construction — pas encore exécutable',en:'Under construction — not yet executable'})[PLANG]||'En construcción')+'</div>' : '';
+  document.getElementById('pop-body').innerHTML=_obra+(ptr(c,'content')||'');
   if(c.id==='proto'&&typeof pintaPuente==='function')pintaPuente();
   document.getElementById('pov').classList.add('show');
   /* ⌄ seulement si ça déborde — et il s'efface dès qu'on déroule */
@@ -517,10 +524,10 @@ function navP(d){var n=ACTIVE.length,i=_cur;for(var k=0;k<n;k++){i=(i+d+n)%n;if(
 
 /* ══ SUB-HIVE — Même grille, contenu qui change ══ */
 var SUB=[
-  {icon:'🧑',label:'Paciente',sub:'Su historial',color:'#4ae8a4',action:function(){irA('Salufolio.html?tour=0&perfil=paciente')}},
-  {icon:'👨‍⚕️',label:'Profesional',sub:'Vista completa',color:'#e8e84a',action:function(){irA('Salufolio.html?tour=0&perfil=medico')}},
+  {icon:'🧑',label:'Paciente',sub:'Su historial',color:'#4ae8a4',action:function(){irSalufolio('Salufolio.html?tour=0&perfil=paciente')}},
+  {icon:'👨‍⚕️',label:'Profesional',sub:'Vista completa',color:'#e8e84a',action:function(){irSalufolio('Salufolio.html?tour=0&perfil=medico')}},
   {icon:'👨‍👩‍👧',label:'Cuidador',sub:'Protocolo',color:'#e84a8a',action:function(){irA('protocolo/index.html')}},
-  {icon:'🩺',label:'Salufolio',sub:'Acceder',color:'#2a9d5f',action:function(){irA('Salufolio.html?tour=0')}},   /* P-H 19/07 : le stéthoscope ENTRE toujours — dans les deux essaims */
+  {icon:'🩺',label:'Salufolio',sub:'Acceder',color:'#2a9d5f',action:function(){irSalufolio('Salufolio.html?tour=0')}},   /* P-H 19/07 : le stéthoscope ENTRE toujours — dans les deux essaims */
   {icon:'🎓',label:'Visita guiada',sub:'el panal, puerta a puerta',color:'#4ae8e8',action:function(){arrancarVisita()}},
   {icon:'📊',label:'Saber más',sub:'En números',color:'#e8a44a',content:'<div class="sr"><div class="si"><span class="sn">10</span><span class="slab">Años</span></div><div class="si"><span class="sn">79</span><span class="slab">Módulos</span></div><div class="si"><span class="sn">510</span><span class="slab">Valores</span></div><div class="si"><span class="sn">36</span><span class="slab">PDF leídos</span></div></div><h3>¿Qué es Salufolio?</h3><p>Expediente médico longitudinal. Un único archivo HTML, sin conexión, sin servidor, sin nube. GNU GPL v3 · DOI 10.5281/zenodo.21997587</p>'},
   {icon:'📧',label:'Contacto',sub:'MediFolio@proton.me',color:'#8a4ae8',content:'PFB'}
@@ -629,16 +636,16 @@ function _qrSVG(url, cell){
 var QTXT = {
  es:{v_tit:'Puente conectado', v_txt:'Salufolio responde en este ordenador.', v_btn:'📶 Ver código QR — instalar en el móvil',
      a_txt:'El puente no responde aquí. El código QR vive donde Salufolio está encendido — abra el panal en ese ordenador.',
-     q_sub:'Escanee con la cámara del móvil o de la tablet', q_toca:'Toque el código para ampliarlo.', q_nota:'El código lleva a la aplicación del cuidador servida por este ordenador. Después: menú ⋮ del navegador → «Añadir a pantalla de inicio».', cerrar:'Cerrar'},
+     q_sub:'Escanee con la cámara del móvil o de la tablet', q_toca:'Toque el código para ampliarlo.', q_nota:'El código lleva a la aplicación del cuidador servida por este ordenador. Después: menú ⋮ del navegador → «Añadir a pantalla de inicio».', b_btn:'Buscar Salufolio en esta red', b_avi:'El navegador pedirá permiso para mirar en la red local.', cerrar:'Cerrar'},
  ca:{v_tit:'Pont connectat', v_txt:'Salufolio respon en este ordinador.', v_btn:'📶 Veure codi QR — instal·lar al mòbil',
      a_txt:'El pont no respon ací. El codi QR viu on Salufolio està encés — òbriga el panal en eixe ordinador.',
-     q_sub:'Escanege amb la càmera del mòbil o de la tablet', q_toca:'Toque el codi per a ampliar-lo.', q_nota:'El codi porta a l\'aplicació del cuidador servida per este ordinador. Després: menú ⋮ del navegador → «Afegir a pantalla d\'inici».', cerrar:'Tancar'},
+     q_sub:'Escanege amb la càmera del mòbil o de la tablet', q_toca:'Toque el codi per a ampliar-lo.', q_nota:'El codi porta a l\'aplicació del cuidador servida per este ordinador. Després: menú ⋮ del navegador → «Afegir a pantalla d\'inici».', b_btn:'Buscar Salufolio en esta xarxa', b_avi:'El navegador demanarà permís per a mirar en la xarxa local.', cerrar:'Tancar'},
  fr:{v_tit:'Pont connecté', v_txt:'Salufolio répond sur cet ordinateur.', v_btn:'📶 Voir le code QR — installer sur le mobile',
      a_txt:'Le pont ne répond pas ici. Le code QR vit là où Salufolio est allumé — ouvrez le panal sur cet ordinateur-là.',
-     q_sub:'Scannez avec la caméra du mobile ou de la tablette', q_toca:'Touchez le code pour l\'agrandir.', q_nota:'Le code mène à l\'application du soignant servie par cet ordinateur. Ensuite : menu ⋮ du navigateur → « Ajouter à l\'écran d\'accueil ».', cerrar:'Fermer'},
+     q_sub:'Scannez avec la caméra du mobile ou de la tablette', q_toca:'Touchez le code pour l\'agrandir.', q_nota:'Le code mène à l\'application du soignant servie par cet ordinateur. Ensuite : menu ⋮ du navigateur → « Ajouter à l\'écran d\'accueil ».', b_btn:'Chercher Salufolio sur ce réseau', b_avi:'Le navigateur demandera la permission de regarder le réseau local.', cerrar:'Fermer'},
  en:{v_tit:'Bridge connected', v_txt:'Salufolio answers on this computer.', v_btn:'📶 Show QR code — install on the phone',
      a_txt:'The bridge does not answer here. The QR code lives where Salufolio is on — open the panal on that computer.',
-     q_sub:'Scan with the phone or tablet camera', q_toca:'Tap the code to enlarge it.', q_nota:'The code opens the caregiver app served by this computer. Then: browser menu ⋮ → "Add to Home screen".', cerrar:'Close'}
+     q_sub:'Scan with the phone or tablet camera', q_toca:'Tap the code to enlarge it.', q_nota:'The code opens the caregiver app served by this computer. Then: browser menu ⋮ → "Add to Home screen".', b_btn:'Look for Salufolio on this network', b_avi:'The browser will ask permission to look at the local network.', cerrar:'Close'}
 };
 function qt(k){ return (QTXT[PLANG]||QTXT.es)[k] || QTXT.es[k] || k; }
 function sondaPuente(){
@@ -646,8 +653,8 @@ function sondaPuente(){
   var to = setTimeout(function(){ if (ctl) ctl.abort(); }, 1600);   /* délai de garde réseau, pas un enchaînement de fenêtres */
   fetch('http://localhost:7777/api/ip', ctl ? {signal: ctl.signal} : {})
     .then(function(r){ return r.json(); })
-    .then(function(d){ clearTimeout(to); _PUENTE = (d && d.movil) ? d : null; _reponConcha(); })
-    .catch(function(){ clearTimeout(to); _PUENTE = null; _reponConcha(); });
+    .then(function(d){ clearTimeout(to); _PUENTE = (d && d.movil) ? d : null; _reponConcha(); if(typeof pintaPuente==='function')pintaPuente(); })
+    .catch(function(){ clearTimeout(to); _PUENTE = null; _reponConcha(); if(typeof pintaPuente==='function')pintaPuente(); });
 }
 function _reponConcha(){
   /* v.28/08 (P-H) : la pastille a vécu — le pecten nu de l'alvéole la
@@ -671,7 +678,9 @@ function pintaPuente(){
       '<div style="font-family:monospace;font-size:12.5px;font-weight:700;color:#3dbf7f;margin-top:8px;word-break:break-all">' + _PUENTE.movil + '</div>' +
       '<div style="font-size:11px;color:var(--muted);margin-top:4px">' + qt('q_toca') + '</div></div>';
   } else {
-    z.innerHTML = '<div style="margin:10px auto 14px;max-width:360px;padding:10px 12px;border:1px solid #e8c34a;border-radius:10px;background:rgba(232,195,74,.07);color:var(--muted)">' + pectenSVG(15, '#e8c34a') + ' ' + qt('a_txt') + '</div>';
+    z.innerHTML = '<div style="margin:10px auto 14px;max-width:360px;padding:10px 12px;border:1px solid #e8c34a;border-radius:10px;background:rgba(232,195,74,.07);color:var(--muted)">' + pectenSVG(15, '#e8c34a') + ' ' + qt('a_txt') +
+      '<div style="text-align:center;margin-top:10px"><button onclick="sondaPuente()" style="padding:8px 14px;border-radius:9px;border:1px solid var(--accent);background:transparent;color:var(--text);font-size:14px;cursor:pointer">🔍 ' + qt('b_btn') + '</button>' +
+      '<div style="font-size:11px;color:var(--muted);margin-top:5px">' + qt('b_avi') + '</div></div></div>';
   }
 }
 function cartaQR(){
@@ -692,7 +701,10 @@ function cartaQR(){
   ov.querySelector('button[data-cerrar]').onclick = function(){ ov.remove(); };
   ov.onclick = function(e){ if (e.target === ov) ov.remove(); };
 }
-window.addEventListener('load', sondaPuente);
+/* v.28.11 (P-H, alerte de Mattieu au Portugal) : la sonde ne frappe PLUS
+   au chargement — Chrome demandait au visiteur une permission réseau
+   inquiétante avant même de voir le panal. Elle ne part que sur le
+   bouton « Buscar » de la carte Protocolo, APRÈS avoir prévenu. */
 </script>
 <script>
 /* ══ MÓDULO qr-js — generador QR embarcado (qrcode-generator, licencia MIT,
@@ -3173,6 +3185,30 @@ function conchaHistoria(){
   var old=document.getElementById('concha-h'); if(old)old.remove();
   var d=document.createElement('div'); d.id='concha-h';
   d.innerHTML='<div class="c-tit">🐚 '+t.tit+'</div><div class="c-txt">'+t.txt+'</div><button class="c-x" onclick="this.parentNode.remove()">✕</button>';
+  document.body.appendChild(d);
+}
+
+
+/* ═══ v.28.11 — LA BARRIÈRE DE L'ÉCRAN (liste de Berta, GO de P-H) ═══
+   Salufolio est fait pour un grand écran : sur téléphone, on prévient
+   AVANT d'entrer, et le visiteur choisit. Élégant et honnête. */
+function irSalufolio(url){
+  if(window.innerWidth < 820){ avisoOrdenador(url); } else { irA(url); }
+}
+function avisoOrdenador(url){
+  var T={
+   es:{tit:'🖥️ Pensada para ordenador',txt:'Esta puerta abre Salufolio, hecho para una pantalla grande: en el teléfono quedará estrecho.',b1:'Entrar igualmente',b2:'Volver'},
+   ca:{tit:'🖥️ Pensada per a ordinador',txt:'Esta porta obri Salufolio, fet per a una pantalla gran: en el telèfon quedarà estret.',b1:'Entrar igualment',b2:'Tornar'},
+   fr:{tit:'🖥️ Pensée pour ordinateur',txt:"Cette porte ouvre Salufolio, fait pour un grand écran : sur le téléphone il sera à l'étroit.",b1:'Entrer quand même',b2:'Retour'},
+   en:{tit:'🖥️ Made for a computer',txt:'This door opens Salufolio, built for a large screen: on a phone it will feel cramped.',b1:'Enter anyway',b2:'Back'}
+  };
+  var t=T[PLANG]||T.es;
+  var old=document.getElementById('aviso-ord'); if(old)old.remove();
+  var d=document.createElement('div'); d.id='aviso-ord';
+  d.innerHTML='<div class="c-tit" style="color:#e8a44a">'+t.tit+'</div><div class="c-txt">'+t.txt+'</div>'+
+    '<div style="display:flex;gap:.5em;margin-top:.8em"><button class="a-b1">'+t.b1+'</button><button class="a-b2">'+t.b2+'</button></div>';
+  d.querySelector('.a-b1').onclick=function(){ d.remove(); irA(url); };
+  d.querySelector('.a-b2').onclick=function(){ d.remove(); };
   document.body.appendChild(d);
 }
 
