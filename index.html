@@ -50,7 +50,6 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .notch-hs{position:absolute;transform:translate(-50%,-50%);z-index:60;width:60px;height:60px;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;transition:all .3s;opacity:.85;font-size:30px}
 .notch-hs:hover{opacity:1;transform:translate(-50%,-50%) scale(1.25)}
 .notch-hs .n-flag{font-size:34px;line-height:1}
-.notch-hs .n-exp{font-size:32px;font-weight:700;color:var(--text);line-height:1}
 /* v.28/08 (P-H) : LE PECTEN sur l'alvéole Protocolo — au centre de gravité
    de son triangle supérieur, nu, sans cercle. Les stries convergent vers la
    charnière et s'arrêtent avant le point : le point, c'est le patient. */
@@ -88,7 +87,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.10</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.27.11</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -363,7 +362,7 @@ function buildHive(){
         'Idioma / Llengua / Langue / Language', pCycleLang, 'plang-actual');
   notch(cx-7*S3*R/6, cy-7*R/6, '☀️', 'Día / Noche',
         function(){document.body.classList.toggle('light')});
-  notch(cx+7*S3*R/6, cy-7*R/6, '<span class="n-exp">⤢</span>', 'Pantalla completa',
+  notch(cx+7*S3*R/6, cy-7*R/6, '<img src="pantalla_completa.png" alt="⤢" style="width:30px;height:30px;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))">', 'Pantalla completa',
         function(){if(document.fullscreenElement){document.exitFullscreen()}else{document.documentElement.requestFullscreen().catch(function(){})}});
 }
 
