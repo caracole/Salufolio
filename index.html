@@ -120,7 +120,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.28.11</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.29.1</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -3105,6 +3105,21 @@ function vHabla(titulo, texto){
 /* Le pas du lecteur : un socle + tant de ms par lettre — à régler sur
    le lecteur réel. 300 lettres ≈ V_BASE + 300×V_MS_LETRA. */
 var V_BASE=4000, V_MS_LETRA=75;
+/* ── PAUSE/REPRISE (manque relevé par Berta, 29/08) ── ⏸ gèle le film
+   ET la voix en pleine phrase ; ▶ reprend la phrase où elle s'était tue.
+   En pause, Atrás/Seguir feuillettent toujours — gelé, pas enfermé. */
+var V_PAUSA=false;
+function vPausa(){
+  V_PAUSA=!V_PAUSA;
+  var b=document.getElementById('v-pausa'); if(b)b.textContent=V_PAUSA?'▶':'⏸';
+  if(V_PAUSA){
+    clearTimeout(_vT);
+    if(window.speechSynthesis && speechSynthesis.speaking) speechSynthesis.pause();
+  } else {
+    if(window.speechSynthesis && speechSynthesis.paused){ speechSynthesis.resume(); }
+    else { vMuestra(); }
+  }
+}
 function vTiempo(t){ return V_BASE + t.replace(/<[^>]*>/g,'').length * V_MS_LETRA; }
 function vBtn(){ return ({es:['⟵ Atrás','Seguir ⟶'],ca:['⟵ Arrere','Seguir ⟶'],fr:['⟵ Retour','Suivant ⟶'],en:['⟵ Back','Next ⟶']})[PLANG]||['⟵','⟶']; }
 function arrancarVisita(){
@@ -3113,7 +3128,7 @@ function arrancarVisita(){
   var b=vBtn();
   d.innerHTML='<div class="v-tit" id="v-tit"></div><div class="v-txt" id="v-txt"></div>'+
     '<div class="v-dots" id="v-dots"></div>'+
-    '<div class="v-btns"><button onclick="vPaso(-1)">'+b[0]+'</button><button class="v-voz" id="v-voz" onclick="vVoz()">'+(V_VOZ?'🔊':'🔇')+'</button><button onclick="vPaso(1)">'+b[1]+'</button><button class="v-x" onclick="vSalir()">✕</button></div>';
+    '<div class="v-btns"><button onclick="vPaso(-1)">'+b[0]+'</button><button class="v-voz" id="v-pausa" onclick="vPausa()">⏸</button><button class="v-voz" id="v-voz" onclick="vVoz()">'+(V_VOZ?'🔊':'🔇')+'</button><button onclick="vPaso(1)">'+b[1]+'</button><button class="v-x" onclick="vSalir()">✕</button></div>';
   d.addEventListener('pointerdown',function(e){_vX0=e.clientX});
   d.addEventListener('pointerup',function(e){
     if(_vX0===null)return; var dx=e.clientX-_vX0; _vX0=null;
@@ -3127,6 +3142,7 @@ function arrancarVisita(){
     var b2=document.getElementById('v-voz');
     if(b2) b2.classList.toggle('v-off', !(speechSynthesis.getVoices()||[]).length);
   };
+  V_PAUSA=false;
   _vi=0; vMuestra();
 }
 function vPaso(d){
@@ -3160,11 +3176,13 @@ function vMuestra(){
   var v=document.getElementById('visita');
   if(v) v.classList.toggle('v-arriba', idx>=5 || !!p.swap);
   if(window.speechSynthesis) speechSynthesis.cancel();
+  if(V_PAUSA) return;   /* gelé : le tableau s'affiche, rien ne parle ni n'avance */
   var hablo = V_VOZ && vHabla(((tr&&tr.tit)||p.tit), txt);
   if(!hablo && _vi<VISITA.length-1) _vT=setTimeout(function(){vPaso(1)},vTiempo(txt));
 }
 function vSalir(){
   clearTimeout(_vT);
+  V_PAUSA=false;
   if(window.speechSynthesis) speechSynthesis.cancel();
   var d=document.getElementById('visita'); if(d)d.remove();
   document.querySelectorAll('.hex.tour-focus').forEach(function(h){h.classList.remove('tour-focus')});
