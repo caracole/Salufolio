@@ -125,7 +125,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15);white-space:nowrap;max
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.6</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.7</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -472,13 +472,19 @@ function openP(i){
     setTimeout(function(){popup.style.transformOrigin='center center'},600);
   }
   _cur=i;var c=ACTIVE[i];resizeP(c.color);
-  /* v.30.6 (P-H) : sinTitulo — la carte ne répète pas le nom que la ruche
-     vient de montrer ; l'icône seule, centrée, un peu plus grosse,
-     juste au-dessus du contenu. */
+  /* v.30.7 (P-H, géométrie de la tablette) : sinTitulo — l'icône seule,
+     DOUBLE (68px), son CENTRE posé sur l'axe à mi-hauteur entre le côté
+     supérieur de l'hexagone (y=0%) et le bord supérieur du conteneur
+     d'affichage (y=25%) : top 12.5% + translate(-50%,-50%). Position
+     proportionnelle à la carte — jamais coupée, sur aucun écran.
+     Les cartes normales récupèrent leurs styles d'origine (cssText=''). */
+  var _pt=document.getElementById('pop-title');
   if(c.sinTitulo){
-    document.getElementById('pop-title').innerHTML='<span style="display:block;text-align:center;font-size:34px">'+icono(c,34)+'</span>';
+    _pt.style.cssText='position:absolute;left:50%;top:12.5%;transform:translate(-50%,-50%);margin:0;padding:0;font-size:68px;line-height:1;z-index:3;text-align:center';
+    _pt.innerHTML=icono(c,68);
   } else {
-    document.getElementById('pop-title').innerHTML=icono(c,22)+' '+(ptr(c,'label')||c.label||'');
+    _pt.style.cssText='';
+    _pt.innerHTML=icono(c,22)+' '+(ptr(c,'label')||c.label||'');
   }
   document.getElementById('pop-title').style.color=c.color;
   /* v.28.11 : les portes en chantier l'annoncent d'entrée — barrière franche */
