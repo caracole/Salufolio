@@ -80,9 +80,12 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .vertex-hs:hover{opacity:1;transform:scale(1.22);background:rgba(0,0,0,.5);border-color:rgba(255,255,255,.5);backdrop-filter:blur(2px)}   /* le cercle naît sous la souris */
 .vertex-hs .v-ico{transition:all .3s}.vertex-hs:hover .v-ico{filter:drop-shadow(0 0 8px rgba(74,143,232,.8))}
 .sr{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0;justify-content:center}
-.si{text-align:center;flex:1;min-width:60px;padding:10px;background:rgba(74,143,232,.04);border-radius:8px}
+/* v.30.1 (l'œil de Joaquina) : gris sur ambre transparent = invisible.
+   Les tuiles se détachent du fond, les libellés parlent en clair. */
+.si{text-align:center;flex:1;min-width:60px;padding:10px;background:rgba(11,14,20,.55);border-radius:8px}
 .sn{font-family:var(--serif);font-size:32px;font-weight:700;color:#e8a44a;display:block}
-.slab{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.slab{font-size:11.5px;color:var(--text);letter-spacing:1px;text-transform:uppercase;opacity:.9}
+#pop-voz{position:absolute;top:10px;right:12px;z-index:5;background:transparent;border:1px solid var(--muted);border-radius:8px;color:var(--text);font-size:15px;padding:4px 9px;cursor:pointer}
 .devise{position:fixed;bottom:12px;text-align:center;font-family:var(--serif);font-size:13px;font-style:italic;color:var(--muted);opacity:.5}
 .devise span{display:block;font-size:10px;margin-top:2px;font-style:normal;color:var(--accent)}
 
@@ -120,11 +123,11 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.29.2</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.1</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
-  <div class="popup" id="popup"><svg class="popup-svg" id="popup-svg"></svg><div class="popup-title" id="pop-title"></div><div id="vertex-hotspots"></div><div class="popup-frame" id="pop-body"></div><div class="scroll-hint" id="scroll-hint">⌄</div></div>
+  <div class="popup" id="popup"><svg class="popup-svg" id="popup-svg"></svg><div class="popup-title" id="pop-title"></div><button id="pop-voz" onclick="hablaCarta(event)" title="escuchar">🔊</button><div id="vertex-hotspots"></div><div class="popup-frame" id="pop-body"></div><div class="scroll-hint" id="scroll-hint">⌄</div></div>
 </div>
 <script>
 /* ══ PolygoneReg ══ */
@@ -515,6 +518,7 @@ function hsA(a){
   cP();
 }
 function cP(){
+  if(window.speechSynthesis && speechSynthesis.speaking){ speechSynthesis.cancel(); var _b=document.getElementById('pop-voz'); if(_b)_b.textContent='🔊'; }
   var pov=document.getElementById('pov');
   var popup=document.getElementById('popup');
   popup.style.transform='scale(0)';
@@ -3233,6 +3237,26 @@ function avisoOrdenador(url){
   document.body.appendChild(d);
 }
 
+
+/* ═══ v.30.1 — LA CARTE QUI PARLE (P-H : « ce texte, il doit parler ! ») ═══
+   Le 🔊 de l'alvéole agrandie lit son contenu — titre puis texte — dans
+   la langue du drapeau, avec la synthèse du téléphone. Un toucher lit,
+   un autre tait ; fermer la carte tait aussi. */
+function hablaCarta(ev){
+  if(ev) ev.stopPropagation();
+  if(!window.speechSynthesis) return;
+  var b=document.getElementById('pop-voz');
+  if(speechSynthesis.speaking){ speechSynthesis.cancel(); if(b)b.textContent='🔊'; return; }
+  var tit=document.getElementById('pop-title').textContent||'';
+  var cuerpo=document.getElementById('pop-body').innerText||'';
+  var u=new SpeechSynthesisUtterance(tit+'. '+cuerpo);
+  u.lang=({es:'es-ES',ca:'ca-ES',fr:'fr-FR',en:'en-US'})[PLANG]||'es-ES';
+  var voces=speechSynthesis.getVoices().filter(function(v){return v.lang && v.lang.toLowerCase().indexOf(PLANG)===0});
+  if(voces.length){ var i=parseInt(localStorage.getItem('panal_voz_i_'+PLANG)||'0',10); u.voice=voces[Math.min(i,voces.length-1)]; }
+  u.onend=function(){ if(b)b.textContent='🔊'; };
+  if(b)b.textContent='⏹';
+  speechSynthesis.speak(u);
+}
 </script>
 </body>
 </html>
