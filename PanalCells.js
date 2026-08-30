@@ -10,3 +10,16 @@ var CELLS=[
   {id:'ensayo',icon:'🧪',label:'Ensayo clínico',sub:'GCP · ICH E6',color:'#4ac8e8',obra:true,content:'<h3>Salufolio para la investigación</h3><p>Visitas, eventos adversos, reportador y sello de tiempo: el módulo que abre el expediente a <strong>los ensayos clínicos</strong> — el uso que más piden los profesionales.</p>'},
   {id:'builder',icon:'🧱',label:'ModularBuilder',sub:'el taller',color:'#d4c44a',content:'<h3>Donde se fabrica todo</h3><p><strong>79 módulos</strong> ensamblados en un archivo único: build, split, punto fijo, empaquetado.</p><p>Herramienta universal — no depende de Salufolio; Salufolio depende de ella.</p><p>📥 <strong>Extractor</strong> — del papel al dato: lee los PDF y los convierte en valores fechados con su fuente; las extracciones se guardan (♻️ el mismo documento nunca se paga dos veces). <em>Salufolio no inventa nada.</em></p>'}
 ];
+
+
+/* ═══ LE REZ-DE-CHAUSSÉE (perfiles) — déménagé d'index.html le 29/08,
+   doctrine P-H : les données hors du code, comme les textes. ═══ */
+var SUB=[
+  {icon:'🧑',label:'Paciente',sub:'Su historial',color:'#4ae8a4',action:function(){irSalufolio('Salufolio.html?tour=0&perfil=paciente')}},
+  {icon:'👨‍⚕️',label:'Profesional',sub:'Vista completa',color:'#e8e84a',action:function(){irSalufolio('Salufolio.html?tour=0&perfil=medico')}},
+  {icon:'👨‍👩‍👧',label:'Cuidador',sub:'Protocolo',color:'#e84a8a',action:function(){irA('protocolo/index.html')}},
+  {icon:'🩺',label:'Salufolio',sub:'Acceder',color:'#2a9d5f',action:function(){irSalufolio('Salufolio.html?tour=0')}},   /* P-H 19/07 : le stéthoscope ENTRE toujours — dans les deux essaims */
+  {icon:'🎓',label:'Visita guiada',sub:'el panal, puerta a puerta',color:'#4ae8e8',action:function(){arrancarVisita()}},
+  {icon:'📊',label:'Saber más',sub:'En números',color:'#e8a44a',content:'<div class="sr"><div class="si"><span class="sn">10</span><span class="slab">Años</span></div><div class="si"><span class="sn">79</span><span class="slab">Módulos</span></div><div class="si"><span class="sn">510</span><span class="slab">Valores</span></div><div class="si"><span class="sn">36</span><span class="slab">PDF leídos</span></div></div><h3>¿Qué significan estos números?</h3><p><strong>Diez años</strong> de historia clínica que antes vivían dispersos — un PDF aquí, un informe en papel allá — hoy conviven en un solo lugar, ordenados por fecha. <strong>510 valores</strong> de análisis y constantes que antes había que buscar uno a uno; ahora se comparan de un vistazo, año tras año. <strong>36 informes</strong> ya leídos y clasificados por Salufolio, con su fecha y su origen siempre a mano.</p><h3>¿Qué es Salufolio?</h3><p>Un expediente médico longitudinal: <strong>un único archivo</strong>, sin conexión a internet, sin servidor, sin nube. Sus datos no salen nunca de su aparato. Programa libre (GNU GPL v3) · DOI científico 10.5281/zenodo.21997587</p>'},
+  {icon:'📧',label:'Contacto',sub:'MediFolio@proton.me',color:'#8a4ae8',content:'PFB'}
+];
