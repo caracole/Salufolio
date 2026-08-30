@@ -43,8 +43,10 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .scroll-hint{position:absolute;bottom:16%;left:50%;transform:translateX(-50%);z-index:4;font-size:22px;color:var(--accent);opacity:0;pointer-events:none;transition:opacity .4s;animation:hintPulse 1.6s ease-in-out infinite}
 .scroll-hint.show{opacity:.8}
 @keyframes hintPulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
-.popup-frame h3{color:var(--text);margin:14px 0 6px;font-family:var(--serif);font-size:20px}
-.popup-frame p{margin-bottom:12px;color:var(--muted);font-size:16px;line-height:1.8}
+/* v.30.2 (Joaquina + P-H) : le gris sur fond ambré ne se lit pas — le
+   corps de carte parle en clair, les titres prennent de la voix. */
+.popup-frame h3{color:var(--text);margin:16px 0 7px;font-family:var(--serif);font-size:23px}
+.popup-frame p{margin-bottom:12px;color:var(--text);font-size:16px;line-height:1.8}
 .bee-swap{position:absolute;transform:translate(-50%,-50%);font-size:40px;cursor:pointer;z-index:60;width:68px;height:68px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s;opacity:.75}
 /* v2026.8.27 (retour de Berta, La Habana) : les commandes vivent dans les
    CREUX du panal, comme l'abeille — la topbar était introuvable au doigt. */
@@ -123,7 +125,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15)}
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.1</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.2</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -501,8 +503,8 @@ function resizeP(color){
      Indice du sommet (hexágono flat) : 0=derecha 1=abajo-dcha 2=abajo-izq
      3=izquierda 4=arriba-izq 5=arriba-dcha */
   var VERTS=[
-    {i:3, ico:'◀',  act:'prev',  lab:'Anterior'},
-    {i:0, ico:'▶',  act:'next',  lab:'Siguiente'},
+    {i:3, ico:'👈',  act:'prev',  lab:'Anterior'},   /* v.30.2 (P-H) : des doigts, pas des flèches */
+    {i:0, ico:'👉',  act:'next',  lab:'Siguiente'},
     {i:5, ico:'✕',  act:'close', lab:'Cerrar'},
     {i:1, ico:'🐝', act:'hive',  lab:_isMain?'Ver perfiles':'Ver soluciones'}
   ];
@@ -3023,7 +3025,7 @@ var qrcode = function() {
    Textes : VISITA (es) ici ; ca/fr/en dans PanalLangues.js (VTR). */
 var VISITA=[
  {h:'Salufolio',ico:'🐝',tit:'Bienvenida al Panal Salufolio',
-  txt:'Esta es la casa de Salufolio: <strong>dos pisos y siete puertas por piso</strong>. En un minuto sabrá qué ofrece cada una y cuál es la suya. El film avanza solo, despacio — <em>«Seguir» para avanzar, deslice el dedo hacia atrás para repasar, ✕ para salir cuando quiera.</em>'},
+  txt:'Esta es la casa de Salufolio: <strong>dos pisos y siete puertas por piso</strong>. En un minuto sabrá qué ofrece cada una y cuál es la suya. El film avanza solo, despacio — <em>«Seguir» para avanzar, deslice el dedo hacia atrás para repasar, ✕ para salir cuando quiera.</em> Cuando un texto no quepa entero, <strong>deslícelo con el dedo</strong>, hacia arriba o hacia abajo — aquí y en cada puerta.'},
  {h:'Paciente',ico:'🧑',tit:'Paciente',
   txt:'La puerta de quien vive su historia clínica. Abre Salufolio con <strong>su historial en primer plano</strong>: análisis, informes y fechas, ordenados y explicados. Sus datos viven en su aparato — nunca en una nube.'},
  {h:'Profesional',ico:'👨‍⚕️',tit:'Profesional',
