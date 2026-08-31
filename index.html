@@ -127,7 +127,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15);white-space:nowrap;max
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.9</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.10</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -189,21 +189,21 @@ var PLANG = localStorage.getItem('panal_lang') || (function(){
    (mt_feedback, partagé avec l'app — même origine) et se TÉLÉCHARGE en
    .json pour l'envoyer par le canal qu'on voudra. ══ */
 var PFBL = {
- es: { intro:'Deje su comentario o sugerencia — se guarda en este navegador. Cuando quiera, descárguelos en un archivo .json y envíelos por el canal que prefiera.', guardar:'💾 Guardar', desc:'⬇ Descargar comentarios (.json)', n:'comentario(s) guardado(s)', ok:'💾 Guardado' },
- ca: { intro:'Deixe el seu comentari o suggeriment — es guarda en este navegador. Quan vullga, descarregue\'ls en un arxiu .json i envie\'ls pel canal que preferisca.', guardar:'💾 Guardar', desc:'⬇ Descarregar comentaris (.json)', n:'comentari(s) guardat(s)', ok:'💾 Guardat' },
- fr: { intro:'Laissez votre commentaire ou suggestion — il se garde dans ce navigateur. Quand vous voudrez, téléchargez-les en .json et envoyez-les par le canal de votre choix.', guardar:'💾 Enregistrer', desc:'⬇ Télécharger les commentaires (.json)', n:'commentaire(s) enregistré(s)', ok:'💾 Enregistré' },
- en: { intro:'Leave your comment or suggestion — it stays in this browser. Whenever you wish, download them as a .json file and send them through any channel.', guardar:'💾 Save', desc:'⬇ Download comments (.json)', n:'comment(s) saved', ok:'💾 Saved' }
+ es: { intro:'Escríbanos su comentario o sugerencia. Puede guardarlo aquí y, cuando quiera, descargarlo para enviárnoslo — o escribirnos directamente a nuestro correo, más abajo.', guardar:'💾 Guardar', desc:'⬇ Descargar mis comentarios', n:'comentario(s) guardado(s)', ok:'💾 Guardado' },
+ ca: { intro:'Escriga\'ns el seu comentari o suggeriment. Pot guardar-lo ací i, quan vullga, descarregar-lo per a enviar-nos-el — o escriure\'ns directament al nostre correu, més avall.', guardar:'💾 Guardar', desc:'⬇ Descarregar els meus comentaris', n:'comentari(s) guardat(s)', ok:'💾 Guardat' },
+ fr: { intro:'Écrivez-nous votre commentaire ou suggestion. Vous pouvez le garder ici et, quand vous voudrez, le télécharger pour nous l\'envoyer — ou nous écrire directement à notre adresse, plus bas.', guardar:'💾 Enregistrer', desc:'⬇ Télécharger mes commentaires', n:'commentaire(s) enregistré(s)', ok:'💾 Enregistré' },
+ en: { intro:'Write us your comment or suggestion. You can keep it here and, whenever you wish, download it to send it to us — or write to us directly at our address, below.', guardar:'💾 Save', desc:'⬇ Download my comments', n:'comment(s) saved', ok:'💾 Saved' }
 };
 function pFbLista(){ try { return JSON.parse(localStorage.getItem('mt_feedback')||'[]'); } catch(e){ return []; } }
 function pFbHTML(){
   var L = PFBL[PLANG] || PFBL.es;
-  return '<h3>📧 Contacto</h3><p style="font-size:13px">' + L.intro + '</p>' +
-    '<textarea id="pfb-texto" style="width:100%;box-sizing:border-box;height:84px;border:1px solid var(--muted);border-radius:8px;padding:8px;font-size:14px;background:rgba(255,255,255,.05);color:var(--text)"></textarea>' +
-    '<div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap">' +
+  return '<p style="font-size:14px;text-align:center;margin-top:4px">' + L.intro + '</p>' +
+    '<textarea id="pfb-texto" style="width:100%;box-sizing:border-box;height:90px;border:1px solid var(--muted);border-radius:8px;padding:8px;font-size:14px;background:rgba(255,255,255,.05);color:var(--text)"></textarea>' +
+    '<div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap;justify-content:center">' +
     '<button onclick="pFbGuardar(this)" style="background:var(--accent);color:#08130c;border:none;border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-weight:700">' + L.guardar + '</button>' +
     '<button onclick="pFbDescargar()" style="background:transparent;border:1px solid var(--muted);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer">' + L.desc + '</button>' +
     '<span id="pfb-n" style="font-size:11px;color:var(--muted)">' + pFbLista().length + ' ' + L.n + '</span></div>' +
-    '<p style="font-size:11px;color:var(--muted);margin-top:10px">MediFolio@proton.me</p>';
+    '<p style="text-align:center;margin-top:14px"><a href="mailto:salufolio@proton.me" style="color:var(--accent);font-size:16px;text-decoration:none">✉ salufolio@proton.me</a></p>';
 }
 function pFbGuardar(btn){
   var ta = document.getElementById('pfb-texto');
