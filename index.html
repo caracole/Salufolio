@@ -132,7 +132,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15);white-space:nowrap;max
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
-  <div class="popup" id="popup"><svg class="popup-svg" id="popup-svg"></svg><div class="popup-title" id="pop-title"></div><button id="pop-voz" onclick="hablaCarta(event)" title="escuchar">🔊</button><div id="vertex-hotspots"></div><div class="popup-frame" id="pop-body"></div><div class="scroll-hint" id="scroll-hint">⌄</div></div>
+  <div class="popup" id="popup"><svg class="popup-svg" id="popup-svg"></svg><div class="popup-title" id="pop-title"></div><div id="vertex-hotspots"></div><div class="popup-frame" id="pop-body"></div><div class="scroll-hint" id="scroll-hint">⌄</div></div>
 </div>
 <script>
 /* ══ PolygoneReg ══ */
@@ -547,14 +547,16 @@ function resizeP(color){
     {i:3, ico:'👈',  act:'prev',  lab:'Anterior'},   /* v.30.2 (P-H) : des doigts, pas des flèches */
     {i:0, ico:'👉',  act:'next',  lab:'Siguiente'},
     {i:5, ico:'🚪', act:'close', lab:'Cerrar'},
-    {i:1, ico:'🐝', act:'hive',  lab:_isMain?'Ver perfiles':'Ver soluciones'}
+    {i:1, ico:'🐝', act:'hive',  lab:_isMain?'Ver perfiles':'Ver soluciones'},
+    {i:2, ico:'🔊', act:'voz', lab:'Escuchar', grande:true}
   ];
   var icoSize=Math.min(26,Math.max(18,Math.round(hex.R/6)));   /* plafonné : l'icône reste dans sa pastille */
   var hs='';VERTS.forEach(function(vd){var v=verts[vd.i];
-    hs+='<div class="vertex-hs" style="left:'+Math.round(v.x/w*100)+'%;top:'+Math.round(v.y/h*100)+'%" onclick="hsA(\''+vd.act+'\')" title="'+vd.lab+'"><span class="v-ico" style="font-size:'+icoSize+'px">'+vd.ico+'</span><span class="v-lab">'+vd.lab+'</span></div>'});
+    hs+='<div class="vertex-hs" style="left:'+Math.round(v.x/w*100)+'%;top:'+Math.round(v.y/h*100)+'%" onclick="hsA(\''+vd.act+'\')" title="'+vd.lab+'"><span class="v-ico" style="font-size:'+(vd.grande? Math.round(icoSize*1.5) : icoSize)+'px">'+vd.ico+'</span><span class="v-lab">'+vd.lab+'</span></div>'});
   document.getElementById('vertex-hotspots').innerHTML=hs;
 }
 function hsA(a){
+  if(a==='voz'){ hablaCarta(); return; }
   if(a==='prev'){navP(-1);return}
   if(a==='next'){navP(1);return}
   if(a==='hive'){cP();setTimeout(function(){swapHive()},450);return}   /* le popup se referme, l'essaim permute */
