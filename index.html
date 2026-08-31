@@ -79,7 +79,8 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15);white-space:nowrap;max
 .vertex-hs{position:absolute;width:46px;height:46px;margin-left:-23px;margin-top:-23px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s;opacity:.45;background:transparent;border:1.5px solid transparent}   /* au repos : l'icône seule, diffuse (P-H 17/07) */
 .v-lab{position:absolute;top:106%;left:50%;transform:translateX(-50%);font-size:10px;color:var(--text);white-space:nowrap;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px;display:none}
 .vertex-hs:hover .v-lab{display:block}
-.vertex-hs:hover{opacity:1;transform:scale(1.22);background:rgba(0,0,0,.5);border-color:rgba(255,255,255,.5);backdrop-filter:blur(2px)}   /* le cercle naît sous la souris */
+.vertex-hs:hover{opacity:1;transform:scale(1.3)}
+.vertex-hs:hover .v-ico{filter:drop-shadow(0 0 10px rgba(255,255,255,.85))}   /* le cercle naît sous la souris */
 .vertex-hs .v-ico{transition:all .3s}.vertex-hs:hover .v-ico{filter:drop-shadow(0 0 8px rgba(74,143,232,.8))}
 /* v.30.9 (P-H, téléphone) : les quatre tuiles restent DE FRONT — elles se
    serrent (clamp) au lieu de plier sur une deuxième ligne. */
@@ -127,7 +128,7 @@ body.light .hex-lbl{text-shadow:0 1px 2px rgba(0,0,0,.15);white-space:nowrap;max
 </style>
 </head>
 <body>
-<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.12</span></div></div>
+<div class="top"><div class="top-logo">Salu<i>folio</i><sup style="font-size:8px;color:var(--muted)">©</sup><span id="pver" style="font-size:10px;color:var(--muted);margin-left:8px;opacity:.7;font-family:monospace">v2026.8.30.13</span></div></div>
 <div class="hive-wrap"><div class="hive" id="hive"></div></div>
 <div class="devise">« Éviter de faire tout ce que l'ordinateur peut faire »<span>Pierre-Henri Giraud, 1966</span><span style="font-style:normal;font-size:9.5px;margin-top:3px;opacity:.85">© 2016–2026 Pierre-Henri Giraud · GNU GPL v3 · <a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" style="color:var(--accent);text-decoration:underline dotted 1px">DOI 10.5281/zenodo.21997587</a></span></div>
 <div class="pov" id="pov" onclick="if(event.target===this)cP()">
@@ -545,7 +546,7 @@ function resizeP(color){
   var VERTS=[
     {i:3, ico:'👈',  act:'prev',  lab:'Anterior'},   /* v.30.2 (P-H) : des doigts, pas des flèches */
     {i:0, ico:'👉',  act:'next',  lab:'Siguiente'},
-    {i:5, ico:'✕',  act:'close', lab:'Cerrar'},
+    {i:5, ico:'🚪', act:'close', lab:'Cerrar'},
     {i:1, ico:'🐝', act:'hive',  lab:_isMain?'Ver perfiles':'Ver soluciones'}
   ];
   var icoSize=Math.min(26,Math.max(18,Math.round(hex.R/6)));   /* plafonné : l'icône reste dans sa pastille */
