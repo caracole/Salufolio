@@ -6073,5 +6073,16 @@ setInterval(() => { const f = document.getElementById('hdr-fecha').textContent;
   const n = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   if (f !== n) render(); }, 60000);
 </script>
+
+<!-- Le Protocolo doit marcher SANS INTERNET une fois installe (P-H, 08/09) -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./sw.js')
+      .then(function(r){ console.log('Protocolo listo sin conexion'); })
+      .catch(function(e){ console.warn('sin service-worker:', e.message); });
+  });
+}
+</script>
 </body>
 </html>
