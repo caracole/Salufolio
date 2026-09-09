@@ -18,7 +18,7 @@
    anciens caches sont effacés et le Protocolo se recharge.
    ══════════════════════════════════════════════════════════════════════ */
 
-const VERSION = 'protocolo-2026.09.08';
+const VERSION = 'protocolo-2026.9.8.81';
 const GUARDAR = [
   './',
   './index.html',
