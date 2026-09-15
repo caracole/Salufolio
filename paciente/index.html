@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Paciente · Salufolio</title>
+
+<script src="../pacientes/pacientes.js"></script>
+
+<link rel="stylesheet" href="../comun/salufolio.css">
+<style>
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
+header[data-cabecera]{display:flex;align-items:baseline;gap:var(--gap-m,12px);
+       padding:var(--pad-s,10px) var(--pad-m,18px);border-bottom:1px solid var(--border)}
+.mod-tit{font-family:var(--serif);font-size:var(--tam-tit,18px);font-weight:600;color:var(--text)}
+header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);
+             border-radius:var(--radio-s,6px);padding:1px 8px;color:var(--muted)}
+main{padding:20px;max-width:720px;margin:0 auto}
+.campo{width:100%;padding:7px 10px;background:var(--bg);color:var(--text);
+       border:1px solid var(--border);border-radius:var(--radio-s,7px);
+       font-size:13.5px;box-sizing:border-box}
+.bmini{padding:7px 13px;border-radius:var(--radio-s,7px);border:1px solid var(--border);
+       background:transparent;color:var(--text);cursor:pointer;font-size:12.5px}
+.bmini:hover{border-color:var(--accent)}
+.exp{background:var(--surface);border:1px solid var(--border);
+     border-radius:var(--radio-m,10px);padding:16px 18px}
+.nota{font-size:12px;color:var(--muted);line-height:1.65;margin-top:10px}
+.ok{font-size:13px;color:var(--ok);margin-top:10px;display:none}
+.ver-item{cursor:pointer;padding:7px 11px;margin-bottom:4px;background:var(--bg);
+          border:1px solid var(--border);border-radius:7px;font-size:12.5px;
+          display:flex;align-items:center;gap:9px}
+.ver-item.on{border-color:var(--ok)}
+#vuelve-a{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header data-cabecera>
+  <span id="titulo" class="mod-tit">🧑 ¿Qué paciente?</span>
+  <span class="chip" id="x-vuelve"></span>
+</header>
+
+<main>
+
+<div id="vuelve-a"></div>
+
+<div class="exp">
+  <div id="lista-pac" style="display:none;margin-bottom:12px"></div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px">
+    <div style="flex:2;min-width:180px">
+      <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px">Nombre y apellidos</label>
+      <input type="text" id="p-nombre" placeholder="Ana García López" oninput="calcula()" class="campo">
+    </div>
+    <div style="flex:0 0 110px">
+      <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px">SIP</label>
+      <input type="text" id="p-sip" placeholder="12345678" maxlength="10" oninput="calcula()" class="campo">
+    </div>
+    <div style="flex:0 0 auto">
+      <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px">Matrícula</label>
+      <div id="p-mat" class="campo" style="font-family:var(--mono,monospace);color:var(--warn);
+           width:100px;text-align:center">—</div>
+    </div>
+    <div style="flex:0 0 auto;display:flex;gap:6px">
+      <button onclick="buscaCarpeta()" class="bmini">🔎 Buscar</button>
+      <button onclick="creaPaciente(calcula())" class="bmini"
+              style="border-color:var(--warn);color:var(--warn)">➕ Nuevo</button>
+    </div>
+  </div>
+  <input type="file" id="p-dir" webkitdirectory directory multiple style="display:none" onchange="leeCarpeta(this)">
+
+  <div id="versiones" style="display:none;margin-top:10px"></div>
+  <div class="ok" id="exp-ok"><b id="exp-nom"></b> <span id="exp-det" style="color:var(--muted)"></span></div>
+  <div class="nota" id="exp-nota">Escriba el nombre y el SIP para encontrar el expediente.</div>
+</div>
+
+<div style="margin-top:16px;display:flex;gap:8px;justify-content:space-between;align-items:center">
+  <button class="bmini" onclick="alaCasa()">🏠 A la casa</button>
+  <button class="bmini" id="b-demo" onclick="tomaDemo()"
+          style="border-color:var(--accent);color:var(--accent)">🎬 Ver la demostración</button>
+</div>
+
+</main>
+
+<script src="paciente.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   PACIENTE — el programa que dice CUÁL expediente
+   Versión 2026.09.11-16:04:54
+
+   « le choix du patient est une garde, pas une étape » — P-H, 11/09/2026
+
+   Cualquier programa que necesite datos puede llamarlo:
+
+       paciente/?vuelve=curvas
+
+   Y cuando ha terminado, devuelve la mano ahí de donde vino, con el
+   expediente elegido en la dirección:
+
+       ../curvas/?mf=AGL5678_....mf&carpeta=../pacientes/AGL5678/
+
+   NO CARGA EL FICHERO — dice cuál es. El programa que llamó lo lee él
+   mismo, como sabe hacerlo ya. Nada que pasar de una página a otra.
+   ═══════════════════════════════════════════════════════════════════════ */
+const VERSION_PROGRAMA = SF_CONFIG.version;
+
+var T = { carpeta_expedientes: '../pacientes/' };
+var PACIENTES = [];
+var CARPETA = '';
+var NOMBRE  = '';
+var SIP_OCULTO = '';
+var _versiones = [];
+
+/* ── qui nous a appelés ? ── */
+function _param(n){
+  var m = new RegExp('[?&]'+n+'=([^&]*)').exec(location.search);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+var VUELVE = _param('vuelve') || 'casa';
+
+function pintaVuelve(){
+  var z = document.getElementById('vuelve-a');
+  var c = document.getElementById('x-vuelve');
+  if(VUELVE === 'casa'){
+    z.innerHTML = 'Elija un paciente, o cree uno nuevo. '
+      + 'Después vuelve usted a la casa, con su expediente abierto.';
+    c.textContent = '← casa';
+  } else {
+    z.innerHTML = '<b>' + VUELVE + '</b> necesita un expediente para trabajar. '
+      + 'Elija uno y volverá allí directamente.';
+    c.textContent = '← ' + VUELVE;
+  }
+}
+
+/* ── la main rendue : on dit QUEL dossier, on ne le charge pas ── */
+function devuelve(carpeta, nombre){
+  var destino = (VUELVE === 'casa') ? '../casa/' : ('../' + VUELVE + '/');
+  var q = '?mf=' + encodeURIComponent(nombre)
+        + '&carpeta=' + encodeURIComponent(carpeta);
+  location.href = destino + q;
+}
+function alaCasa(){ location.href = '../casa/'; }
+
+/* la démonstration : un dossier tout prêt */
+function tomaDemo(){
+  var d = (typeof SF_PACIENTES!=='undefined')
+    ? (SF_PACIENTES.pacientes||[]).filter(function(p){ return p.demo; })[0] : null;
+  if(d && (d.ficheros||[]).length){
+    devuelve('../pacientes/' + d.matricula + '/', d.ficheros[0]);
+  } else {
+    document.getElementById('exp-nota').innerHTML =
+      'No hay expediente de demostración todavía. '
+      + 'Puede crear uno con <b>➕ Nuevo</b>.';
+  }
+}
+
+function matriculaDe(nombre, sip){
+  var ini=(nombre||'').trim().split(/\s+/).filter(function(p){return p.length>1;})
+      .slice(0,3).map(function(p){return p.charAt(0).toUpperCase();}).join('');
+  var num=String(sip||'').replace(/\D/g,'').slice(-4);
+  return (ini.length>=2 && num.length===4)? ini+num : '';
+}
+
+function calcula(){
+  var sip=document.getElementById('p-sip').value || SIP_OCULTO;
+  var m=matriculaDe(document.getElementById('p-nombre').value, sip);
+  var e=document.getElementById('p-mat');
+  e.textContent=m||'—';
+  e.style.color=m? 'var(--ok)':'var(--warn)';
+  return m;
+}
+
+/*function carpetaDe(mat){ return ((T&&T.carpeta_expedientes)||'../pacientes/') + mat + '/'; }*/
+
+function carpetaDe(mat){
+  /* v2 (P-H, 15/09) : « ../pacientes/ » ne vaut que pour un programme
+     à UN niveau de la racine. adquisicion/manual/ est à deux. */
+  if(T && T.carpeta_expedientes) return T.carpeta_expedientes + mat + '/';
+  if(location.protocol !== 'file:') return '/pacientes/' + mat + '/';
+  var p = location.pathname.split('/').filter(Boolean);
+  p.pop();
+  var i = p.lastIndexOf('Salufolio');
+  var sube = '';
+  for(var k = 0; k < ((i>=0) ? (p.length-i-1) : 1); k++) sube += '../';
+  return sube + 'pacientes/' + mat + '/';
+}
+
+/*---------------------------------------------------*/
+
+/* ── chercher le répertoire et lister ses versions ── */
+function buscaCarpeta(){
+  var mat=calcula(), nota=document.getElementById('exp-nota');
+  if(!mat){ nota.textContent='Escriba el nombre completo y el SIP.'; return; }
+  var dir=carpetaDe(mat);
+
+  /* ══ v2 (P-H, 15/09) : SANS SERVEUR, ON NE LISTE PAS UN DOSSIER ══
+     C'est une règle du navigateur, pas un chemin qui manque. Mais la
+     table pacientes.js déclare ce qu'il y a, et elle se charge par
+     <script src> — donc elle passe partout.
+
+     « Un navegador no puede listar una carpeta sin servidor: se lo
+       decimos. » — le commentaire de pacientes.py, qui avait raison. */
+  if(location.protocol.indexOf('file') === 0){
+    var P = (typeof SF_PACIENTES !== 'undefined')
+          ? (SF_PACIENTES.pacientes||[]).filter(function(x){
+              return x.matricula === mat; })[0] : null;
+    if(P && (P.ficheros||[]).length){
+      CARPETA = dir;
+      pintaVersiones(dir, P.ficheros.slice());
+      return;
+    }
+    nota.innerHTML = 'Sin servidor no puedo mirar dentro de una carpeta — '
+      + 'es una regla del navegador.<br>'
+      + '<span style="font-size:11px">Use <b>📂</b> para abrir el fichero, '
+      + 'o arranque Salufolio con su abeja 🐝.</span>';
+    return;
+  }
+
+  nota.textContent='Buscando en '+dir+' …';
+  fetch(dir).then(function(r){ if(!r.ok) throw new Error('no existe'); return r.text(); })
+    .then(function(html){
+      var n=[], re=/href="([^"]+\.(?:sf|mf|json))"/gi, m2;
+      while((m2=re.exec(html))!==null){
+        var x=decodeURIComponent(m2[1]).replace(/^.*\//,'');
+        if(x.toUpperCase().indexOf(mat.toUpperCase())!==0) continue;
+        if(n.indexOf(x)<0) n.push(x);
+      }
+      if(!n.length) throw new Error('vacía');
+      n.sort(function(a,b){ return a<b?1:-1; });
+      CARPETA=dir;
+      pintaVersiones(dir, n);
+    })
+    .catch(function(){
+      nota.innerHTML='No se encuentra <b>'+dir+'</b>.<br>'
+        +'<span style="font-size:11px">Use <b>📂</b> para un fichero suelto, o cree el paciente.</span>'
+        +'<div style="margin-top:8px"><button onclick="creaPaciente(\''+mat+'\')" '
+        +'style="padding:6px 13px;border-radius:8px;border:1px solid var(--warn);background:transparent;color:var(--warn);font-size:12.5px;cursor:pointer">'
+        +'➕ Crear el paciente '+mat+'</button></div>';
+    });
+}
+
+
+/*---------------------------------------------------*/
+
+function pintaVersiones(dir, nombres){
+  var z=document.getElementById('versiones');
+  z.style.display='block';
+  /* v9 (P-H) : le libellé disparaît — la liste dit déjà tout */
+  z.innerHTML='<label id="p-ver-lbl" style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px">Expediente</label>'
+    + '<select id="p-ver" onchange="tomaVersion(this.selectedIndex)">'
+    + nombres.map(function(n,i){
+        return '<option>'+n+(i===0? '   ← más reciente':'')+'</option>';
+      }).join('')
+    + '</select>';
+  _versiones=nombres;
+  tomaVersion(0);
+}
+
+function leeCarpeta(input){
+  var f=Array.prototype.slice.call(input.files).filter(function(x){ return /\.(sf|mf|json)$/i.test(x.name); });
+  if(!f.length){ document.getElementById('exp-nota').textContent='Esa carpeta no contiene ningún expediente.'; return; }
+  f.sort(function(a,b){ return a.name<b.name?1:-1; });
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      DATOS=JSON.parse(r.result);
+      NOMBRE=f[0].name.replace(/\.(sf|mf|json)$/i,''); CARPETA=null;
+      try{ sessionStorage.setItem('mf_datos', r.result); sessionStorage.setItem('mf_nombre', NOMBRE); }catch(e){}
+      muestraExpediente();
+    }catch(e){ alert('No es un JSON válido'); }
+  };
+  r.readAsText(f[0]);
+}
+
+function cargaPacientes(){
+  var dir=(T&&T.carpeta_expedientes)||'../pacientes/';
+  fetch(dir+'pacientes.json')
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      PACIENTES = (d.pacientes || []).concat(pacientesCreados());
+      pintaPacientes();
+    })
+    .catch(function(){
+      /* pas de fichier : il reste ceux qu'on a créés ici */
+      PACIENTES = pacientesCreados();
+      if(PACIENTES.length) pintaPacientes();
+    });
+}
+
+function pintaPacientes(){
+  if(!PACIENTES.length) return;
+  var z=document.getElementById('lista-pac');
+  z.style.display='block';
+  z.innerHTML='<label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px">Pacientes conocidos</label>'
+    + '<select id="p-lista" onchange="eligePaciente(this.selectedIndex)">'
+    + PACIENTES.map(function(p){
+        var mat = p.matricula || matriculaDe(p.nombre, p.sip);
+        return '<option>'+(p.demo?'🎬 ':'')+(p._creado?'✚ ':'')+p.nombre+(mat? '   ·   '+mat : '')+'</option>';
+      }).join('')
+    + '</select>';
+  eligePaciente(0);
+}
+
+function eligePaciente(i){
+  var p=PACIENTES[i]; if(!p) return;
+  document.getElementById('p-nombre').value = p.nombre || '';
+  /* v14 (P-H) : le SIP ne s'affiche pas — c'est une donnée de santé,
+     elle n'a pas à traîner à l'écran. La matricule suffit. */
+  /* v9 (P-H, 08/09) : le SIP du patient précédent traînait dans le champ. */
+  document.getElementById('p-sip').value = '';
+  SIP_OCULTO = p.sip || '';
+  if(!p.sip){ document.getElementById('p-sip').placeholder = 'escriba el SIP'; }
+  var mat = p.matricula || matriculaDe(p.nombre, p.sip);
+  var e=document.getElementById('p-mat');
+  e.textContent = mat || '—';
+  e.style.color = mat? 'var(--ok)' : 'var(--warn)';
+  buscaCarpeta();
+}
+
+function pacientesCreados(){
+  try{ return JSON.parse(localStorage.getItem(PAC_CLAVE) || '[]'); }
+  catch(e){ return []; }
+}
+
+function recuerdaPaciente(p){
+  var L = pacientesCreados();
+  var i = L.findIndex(function(x){ return x.matricula === p.matricula; });
+  var ficha = { matricula:p.matricula, nombre:p.etiqueta || p.nombre || p.matricula,
+                sip:p.sip || '', creado: new Date().toISOString(), _creado:true };
+  if(i>=0) L[i] = ficha; else L.push(ficha);
+  try{ localStorage.setItem(PAC_CLAVE, JSON.stringify(L)); }catch(e){}
+  return ficha;
+}
+
+
+
+/* ── ce que la version choisie déclenche : on rend la main ── */
+function tomaVersion(i){
+  var n = _versiones[i];
+  if(!n) return;
+  devuelve(CARPETA, n);
+}
+
+/* ── créer un patient : on le déclare, et on rend la main ── */
+function creaPaciente(mat){
+  if(!mat){ document.getElementById('exp-nota').textContent =
+    'Escriba el nombre y el SIP antes de crear.'; return; }
+  var nom = document.getElementById('p-nombre').value.trim();
+  var sip = document.getElementById('p-sip').value.trim() || SIP_OCULTO;
+  var p = { matricula: mat, etiqueta: nom, sip: sip, nombre: nom };
+  try{ recuerdaPaciente(p); }catch(e){}
+  /* le dossier n'existe pas encore : on rend la main avec la matricule
+     seule, et le programme appelant partira d'un expediente vide */
+  var destino = (VUELVE === 'casa') ? '../casa/' : ('../' + VUELVE + '/');
+  location.href = destino + '?nuevo=' + encodeURIComponent(mat)
+    + '&etiqueta=' + encodeURIComponent(nom)
+    + '&sip=' + encodeURIComponent(sip);
+}
+
+/* ── au démarrage ── */
+pintaVuelve();
+try{ cargaPacientes(); }catch(e){ console.warn(e); }
+</script>
+</body>
+</html>

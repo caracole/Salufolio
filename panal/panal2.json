@@ -1,0 +1,422 @@
+{
+  "id": "panal2",
+  "nombre": "Taller",
+  "geometria": {
+    "R": 92,
+    "centro": "auto",
+    "_nota": "R = rayon de l'alveole (centre -> sommet). a = 2R.sin(pi/6) = R ; r = R.cos(pi/6) = R.raiz3/2 ; di = 2r ; beta = 60deg. rotacion = angle applique aux sommets ET aux voisines : 30 = alveole posee sur un cote (cotes verticaux qui se touchent, comme le dessin de P-H) ; 0 = pointe en haut.",
+    "rotacion": 30,
+    "_zoom": "zoom por celda = radio de la copia en unidades de R. El panal entero mide R + di = R(1+raiz3) ~ 2.73 R desde el centro: con 2.5 la copia lo recubre casi todo y deja asomar la corona.",
+    "opacidad": 0.95,
+    "icono_y": 0.683,
+    "_ventana": "La ventana de visualizacion (rectangulo verde del dibujo): ancho = di = R*raiz3 = 1,732 R, alto = R. Es el mayor rectangulo inscribible en el hexagono posado sobre un lado. icono_y = altura del icono en unidades de R desde el centro (0,683 = mitad del triangulo superior).",
+    "_botones": "El triangulo inferior del hexagono (bajo la ventana) esta reservado a los botones. Cada celda declara los suyos: icono/texto + accion. Acciones conocidas por el motor: voz, cerrar, abrir (lanza el lien de la celda).",
+    "_mandos": "Metodo empirico (P-H, 31/08): cada mando lleva sus coordenadas x,y en unidades de R desde el centro (en SVG y baja: negativo = arriba). Posiciones halladas a ojo: Idiomas 0,-2.35 arriba; abajo la Reina 0,2.40 flanqueada por el sonido -1.5,2.40 y la ayuda 1.5,2.40. Se pone, se mira, se ajusta — en el JSON, nunca en el codigo.",
+    "_opacidad": "opacidad de la copia: 1 = opaca · 0,95 = apenas se adivina la colmena detras · 0,88 = intermedia · 0,7 = muy transparente. Ajustable aqui.",
+    "zoom_min": 1.6,
+    "zoom_max": 2.8,
+    "_zoom_limites": "Limites del zoom de la copia, ajustables aqui. Referencia: el panal entero mide R(1+raiz3) ~ 2,73 R desde el centro; por encima de 2,6 la copia empieza a salirse de la pantalla.",
+    "op_centro": 0.42,
+    "op_borde": 0.14,
+    "desenfoque": 3.4,
+    "_aspecto": "Aspecto de la alveola: op_centro/op_borde = densidad del degradado radial (mas alto = menos transparente); desenfoque = el blur gaussiano de los bordes, en pixeles. El zoom del survol esta en el CSS: .celda:hover scale(1.045)."
+  },
+  "celdas": [
+    {
+      "orden": 0,
+      "titulo": {
+        "es": "Salufolio",
+        "ca": "Salufolio",
+        "fr": "Salufolio",
+        "en": "Salufolio"
+      },
+      "sub": {
+        "es": "Acceder",
+        "ca": "Acceder",
+        "fr": "Acceder",
+        "en": "Acceder"
+      },
+      "icono": "🩺",
+      "color": "#2a9d5f",
+      "estado": "activo",
+      "lien": "Salufolio.html?tour=0",
+      "ayuda": {
+        "es": "El expediente completo, el mismo centro que en el otro panal.",
+        "ca": "El expediente completo, el mismo centro que en el otro panal.",
+        "fr": "El expediente completo, el mismo centro que en el otro panal.",
+        "en": "El expediente completo, el mismo centro que en el otro panal."
+      },
+      "zoom": 2.5,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p2-salufolio_es.mp3",
+        "ca": "voz/p2-salufolio_ca.mp3",
+        "fr": "voz/p2-salufolio_fr.mp3",
+        "en": "voz/p2-salufolio_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "▶",
+          "texto": "Entrar",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        }
+      ],
+      "nueva": true
+    },
+    {
+      "orden": 1,
+      "titulo": {
+        "es": "Protocolo",
+        "ca": "Protocolo",
+        "fr": "Protocolo",
+        "en": "Protocolo"
+      },
+      "sub": {
+        "es": "el día a día",
+        "ca": "el día a día",
+        "fr": "el día a día",
+        "en": "el día a día"
+      },
+      "icono": "📋",
+      "color": "#4a8fe8",
+      "estado": "activo",
+      "lien": "protocolo/index.html",
+      "ayuda": {
+        "es": "El cuaderno del cuidador en el teléfono: constantes, tomas, observaciones.",
+        "ca": "El cuaderno del cuidador en el teléfono: constantes, tomas, observaciones.",
+        "fr": "El cuaderno del cuidador en el teléfono: constantes, tomas, observaciones.",
+        "en": "El cuaderno del cuidador en el teléfono: constantes, tomas, observaciones."
+      },
+      "zoom": 2.5,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p2-protocolo_es.mp3",
+        "ca": "voz/p2-protocolo_ca.mp3",
+        "fr": "voz/p2-protocolo_fr.mp3",
+        "en": "voz/p2-protocolo_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "▶",
+          "texto": "Abrir",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        }
+      ],
+      "nueva": true
+    },
+    {
+      "orden": 2,
+      "titulo": {
+        "es": "Informe express",
+        "ca": "Informe express",
+        "fr": "Informe express",
+        "en": "Informe express"
+      },
+      "sub": {
+        "es": "Para el médico",
+        "ca": "Para el médico",
+        "fr": "Para el médico",
+        "en": "Para el médico"
+      },
+      "icono": "⚡",
+      "color": "#e8a44a",
+      "estado": "activo",
+      "lien": "Salufolio.html?tour=0&express=1",
+      "avisoOrdenador": true,
+      "ayuda": {
+        "es": "Lo esencial en una página, listo para la consulta.",
+        "ca": "Lo esencial en una página, listo para la consulta.",
+        "fr": "Lo esencial en una página, listo para la consulta.",
+        "en": "Lo esencial en una página, listo para la consulta."
+      },
+      "zoom": 2.5,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p2-informe-express_es.mp3",
+        "ca": "voz/p2-informe-express_ca.mp3",
+        "fr": "voz/p2-informe-express_fr.mp3",
+        "en": "voz/p2-informe-express_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "▶",
+          "texto": "Abrir",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        }
+      ],
+      "nueva": true
+    },
+    {
+      "orden": 3,
+      "titulo": {
+        "es": "Auditoría",
+        "ca": "Auditoría",
+        "fr": "Auditoría",
+        "en": "Auditoría"
+      },
+      "sub": {
+        "es": "coherencia clínica",
+        "ca": "coherencia clínica",
+        "fr": "coherencia clínica",
+        "en": "coherencia clínica"
+      },
+      "icono": "🔍",
+      "color": "#4ae8a4",
+      "estado": "activo",
+      "lien": "#auditoria",
+      "ayuda": {
+        "es": "El expediente se revisa a sí mismo: fechas imposibles, valores fuera de rango, huecos.",
+        "ca": "El expediente se revisa a sí mismo: fechas imposibles, valores fuera de rango, huecos.",
+        "fr": "El expediente se revisa a sí mismo: fechas imposibles, valores fuera de rango, huecos.",
+        "en": "El expediente se revisa a sí mismo: fechas imposibles, valores fuera de rango, huecos."
+      },
+      "zoom": 2.5,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p2-auditoria_es.mp3",
+        "ca": "voz/p2-auditoria_ca.mp3",
+        "fr": "voz/p2-auditoria_fr.mp3",
+        "en": "voz/p2-auditoria_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "▶",
+          "texto": "Abrir",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        }
+      ],
+      "nueva": true
+    },
+    {
+      "orden": 4,
+      "titulo": {
+        "es": "Taller",
+        "ca": "Taller",
+        "fr": "Atelier",
+        "en": "Workshop"
+      },
+      "sub": {
+        "es": "las herramientas",
+        "ca": "les eines",
+        "fr": "les outils",
+        "en": "the tools"
+      },
+      "icono": "🛠",
+      "color": "#8a4ae8",
+      "estado": "activo",
+      "lien": "#builder",
+      "ayuda": {
+        "es": "Las herramientas de la casa: el <b>Configurador</b> del panal, <b>ModularBuilder</b>, el <b>Anonimizador</b>… Aquí se fabrica, no se consulta.",
+        "ca": "Les eines de la casa: el <b>Configurador</b> del panal, <b>ModularBuilder</b>, l'<b>Anonimitzador</b>… Ací es fabrica, no es consulta.",
+        "fr": "Les outils de la maison : le <b>Configurateur</b> du panal, <b>ModularBuilder</b>, l'<b>Anonymiseur</b>… Ici on fabrique, on ne consulte pas.",
+        "en": "The tools of the house: the panal <b>Configurator</b>, <b>ModularBuilder</b>, the <b>Anonymiser</b>… Here one builds, not consults."
+      },
+      "zoom": 2.5,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p2-modularbuilder_es.mp3",
+        "ca": "voz/p2-modularbuilder_ca.mp3",
+        "fr": "voz/p2-modularbuilder_fr.mp3",
+        "en": "voz/p2-modularbuilder_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "⚙",
+          "texto": "Configurador",
+          "accion": "configurador"
+        },
+        {
+          "icono": "🧩",
+          "texto": "Builder",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🕶",
+          "texto": "",
+          "accion": "abrir"
+        }
+      ],
+      "psw": true,
+      "nueva": true
+    },
+    {
+      "orden": 5,
+      "titulo": {
+        "es": "Farmacovigilancia",
+        "ca": "Farmacovigilancia",
+        "fr": "Farmacovigilancia",
+        "en": "Farmacovigilancia"
+      },
+      "sub": {
+        "es": "en construcción",
+        "ca": "en construcción",
+        "fr": "en construcción",
+        "en": "en construcción"
+      },
+      "icono": "💊",
+      "color": "#8a4ae8",
+      "estado": "obra",
+      "ayuda": {
+        "es": "Seguimiento de efectos e interacciones. Todavía en construcción.",
+        "ca": "Seguimiento de efectos e interacciones. Todavía en construcción.",
+        "fr": "Seguimiento de efectos e interacciones. Todavía en construcción.",
+        "en": "Seguimiento de efectos e interacciones. Todavía en construcción."
+      },
+      "zoom": 2.5,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p2-farmacovigilancia_es.mp3",
+        "ca": "voz/p2-farmacovigilancia_ca.mp3",
+        "fr": "voz/p2-farmacovigilancia_fr.mp3",
+        "en": "voz/p2-farmacovigilancia_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "🔊",
+          "texto": "Escuchar",
+          "accion": "voz"
+        }
+      ]
+    },
+    {
+      "orden": 6,
+      "titulo": {
+        "es": "Ensayo clínico",
+        "ca": "Ensayo clínico",
+        "fr": "Ensayo clínico",
+        "en": "Ensayo clínico"
+      },
+      "sub": {
+        "es": "GCP · ICH E6",
+        "ca": "GCP · ICH E6",
+        "fr": "GCP · ICH E6",
+        "en": "GCP · ICH E6"
+      },
+      "icono": "🧪",
+      "color": "#4ac8e8",
+      "estado": "obra",
+      "ayuda": {
+        "es": "Preparado para los requisitos de un ensayo clínico. Todavía en construcción.",
+        "ca": "Preparado para los requisitos de un ensayo clínico. Todavía en construcción.",
+        "fr": "Preparado para los requisitos de un ensayo clínico. Todavía en construcción.",
+        "en": "Preparado para los requisitos de un ensayo clínico. Todavía en construcción."
+      },
+      "zoom": 2.5,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p2-ensayo-clinico_es.mp3",
+        "ca": "voz/p2-ensayo-clinico_ca.mp3",
+        "fr": "voz/p2-ensayo-clinico_fr.mp3",
+        "en": "voz/p2-ensayo-clinico_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "🔊",
+          "texto": "Escuchar",
+          "accion": "voz"
+        }
+      ]
+    }
+  ],
+  "mandos": [
+    {
+      "zona": "N",
+      "icono": "🌐",
+      "accion": "idiomas",
+      "etiqueta": "Idiomas",
+      "grande": true,
+      "ayuda": "Elija su idioma: todo el panal lo sigue.",
+      "x": 0,
+      "y": -2.35
+    },
+    {
+      "zona": "S",
+      "icono": "🐝",
+      "accion": "otroPanal",
+      "etiqueta": "La Reina",
+      "grande": true,
+      "ayuda": "La Reina va de un panal al otro, y vuelve. Es la llave del sitio.",
+      "x": 0,
+      "y": 2.4
+    },
+    {
+      "zona": "SO",
+      "icono": "🔊",
+      "accion": "voz",
+      "etiqueta": "Sonido",
+      "ayuda": "Lee en voz alta la alveola abierta.",
+      "x": -1.5,
+      "y": 2.4
+    },
+    {
+      "zona": "SE",
+      "icono": "❔",
+      "accion": "ayuda",
+      "etiqueta": "Ayuda",
+      "ayuda": "Dónde está usted y qué puede hacer aquí — siempre disponible.",
+      "x": 1.5,
+      "y": 2.4,
+      "color": "#e8a44a"
+    },
+    {
+      "zona": "NO",
+      "icono": "·",
+      "accion": "libre",
+      "etiqueta": "Reservado"
+    },
+    {
+      "zona": "NE",
+      "icono": "⛶",
+      "accion": "pantalla",
+      "etiqueta": "Pantalla completa",
+      "ayuda": "Pantalla completa: el panal ocupa todo el aparato.",
+      "x": 1.5,
+      "y": -2.35,
+      "color": "#4a8fe8",
+      "escala": 1.5,
+      "grueso": true
+    }
+  ],
+  "_voz": "Cada alveola declara la ruta de sus ficheros de sonido por idioma. Si el fichero existe se reproduce (voces Álvaro/Elvira fabricadas con edge-tts); si falta, el motor cae en la síntesis del navegador. Los dos tableros.",
+  "idiomas": [
+    "es",
+    "ca",
+    "fr",
+    "en"
+  ],
+  "idioma_defecto": "es",
+  "visita": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "_visita": "El panal se visita a si mismo: la visita abre las alveolas una a una, como si una mano las tocara. Los textos son los mismos 'ayuda' de la tabla — nada que escribir aparte. 'visita' declara el recorrido; sin ella, el orden natural.",
+  "_psw": "psw:true — puerta reservada. Aparta el uso accidental (nadie cae por azar en el taller); no es una cerradura: en un sitio estatico ningun secreto se guarda.",
+  "version": "2026.9.1",
+  "_version": "Version de la tabla. El panal muestra la suya en la cabecera: sin numero de version no se sabe nunca que se esta mirando.",
+  "_directo": "directo:true en una celda — acceso directo: el primer clic entra en la aplicacion sin pasar por la presentacion. Es la casilla 'olvideme'. Vive en la tabla porque cada Salufolio esta en casa de su duenyo: el de Berta es de Berta, el de Pierre es de Pierre. Asi el ajuste sobrevive a un borrado de cache."
+}

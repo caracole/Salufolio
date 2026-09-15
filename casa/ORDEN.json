@@ -1,0 +1,98 @@
+[
+ {
+  "orden": 1,
+  "icono": "📖",
+  "nombre": "Glosario",
+  "id": "glosario"
+ },
+ {
+  "orden": 2,
+  "icono": "📅",
+  "nombre": "Cronología",
+  "id": "cronologia"
+ },
+ {
+  "orden": 3,
+  "icono": "📄",
+  "nombre": "Resumen",
+  "id": "resumen"
+ },
+ {
+  "orden": 4,
+  "icono": "📋",
+  "nombre": "Tabla detallada",
+  "id": "tabla"
+ },
+ {
+  "orden": 5,
+  "icono": "📈",
+  "nombre": "Curvas",
+  "id": "curvas"
+ },
+ {
+  "orden": 6,
+  "icono": "💊",
+  "nombre": "Medicamentos",
+  "id": "tratamientos"
+ },
+ {
+  "orden": 7,
+  "icono": "🕸️",
+  "nombre": "Radar",
+  "id": "radar"
+ },
+ {
+  "orden": 8,
+  "icono": "🔗",
+  "nombre": "Correlaciones",
+  "id": "correlaciones"
+ },
+ {
+  "orden": 9,
+  "icono": "💊",
+  "nombre": "Observancia terapéutica",
+  "id": "observancia"
+ },
+ {
+  "orden": 10,
+  "icono": "📜",
+  "nombre": "Antecedentes",
+  "id": "antecedentes"
+ },
+ {
+  "orden": 11,
+  "icono": "🫀",
+  "nombre": "Análisis vascular",
+  "id": "vascular"
+ },
+ {
+  "orden": 12,
+  "icono": "🦠",
+  "nombre": "Bacteriología",
+  "id": "bacteriologia"
+ },
+ {
+  "orden": 13,
+  "icono": "⚠️",
+  "nombre": "Farmacovigilancia",
+  "id": "farmacovigilancia"
+ },
+ {
+  "orden": 14,
+  "icono": "🔍",
+  "nombre": "Auditoría",
+  "id": "auditoria"
+ },
+ {
+  "orden": 15,
+  "icono": "🔍",
+  "nombre": "Revisar",
+  "id": "revisar"
+ },
+ {
+  "orden": 16,
+  "icono": "⚙️",
+  "nombre": "Adquisición automática",
+  "id": "automatica"
+ }
+]

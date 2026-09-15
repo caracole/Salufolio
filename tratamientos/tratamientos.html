@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Medicamentos · Salufolio</title>
+<script src="../comun/chart.umd.min.js"></script>
+<script src="../medicamentos/principios.js"></script>
+<script src="../comun/glosario-datos.js"></script>
+<link rel="stylesheet" href="../comun/salufolio.css">
+<style>
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
+header[data-cabecera]{display:flex;align-items:baseline;gap:var(--gap-m,12px);
+       padding:var(--pad-s,10px) var(--pad-m,18px);border-bottom:1px solid var(--border)}
+.mod-tit{font-family:var(--serif);font-size:var(--tam-tit,18px);font-weight:600;color:var(--text)}
+header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-radius:var(--radio-s,6px);
+             padding:1px 8px;color:var(--muted)}
+#panel-medicamentos{display:block;padding:12px 20px 40px}
+#aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
+.module-version-corner{display:none}
+</style>
+</head>
+<body>
+<header data-cabecera>
+  <span id="titulo" class="mod-tit">💊 Medicamentos</span>
+  <span class="chip" id="m-pac">—</span>
+  <span class="chip" id="m-est"></span>
+</header>
+
+
+<!-- ===== PANEL MEDICAMENTOS ===== -->
+<div id="panel-medicamentos" class="panel">
+
+  <!-- Barre de sélection fixe (gérée par JS) -->
+  <div id="meds-fixed-bar" style="display:none;position:fixed;top:44px;left:0;right:0;z-index:200;background:var(--bg);padding:6px 20px;border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.2)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:4px">
+      <select id="meds-quicknav-fixed" onchange="jumpToMed(this.value);document.getElementById('meds-quicknav').value=this.value" style="font-family:var(--mono);font-size:13px;padding:6px 10px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer">
+        <option value="">— Seleccionar —</option>
+      </select>
+      <button onclick="medNavPrev()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Anterior">▲</button>
+      <button onclick="medNavNext()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Siguiente">▼</button>
+      <button onclick="medNavTop()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Inicio">⏏</button>
+      <button onclick="medNuevoMedicamento()" style="font-size:11px;padding:5px 10px;border:1px solid var(--accent);border-radius:6px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer" title="Añadir un medicamento nuevo (no viene de un PDF)">➕ Nuevo</button>
+      <button onclick="medDeducirPrescriptores()" style="font-size:11px;padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);cursor:pointer" title="Deducir los prescriptores desde los firmantes de los documentos">🔗</button>
+      <select id="meds-filter-fixed" onchange="window._medFiltroUsuarioEligio=true;medFilterStatus(this.value);document.getElementById('meds-filter').value=this.value" style="font-family:var(--mono);font-size:12px;padding:6px 8px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer" title="Filtrar por estado">
+        <option value="">Todos</option>
+        <option value="en_cours">🟢 En curso</option>
+        <option value="nouveau">🆕 Nuevo</option>
+        <option value="a_demanda">💊 Si necesario</option>
+        <option value="suspendu">⏸️ Suspendido</option>
+        <option value="abandonne">🔴 Abandonado</option>
+        <option value="terminado">✅ Terminado</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Listbox normale (en haut du panneau) -->
+  <div id="meds-bar-anchor" style="margin-bottom:12px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+    <select id="meds-quicknav" onchange="jumpToMed(this.value)" style="font-family:var(--mono);font-size:14px;padding:8px 12px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer">
+      <option value="">— Seleccionar —</option>
+    </select>
+    <button onclick="medNavPrev()" style="width:30px;height:30px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Anterior">▲</button>
+    <button onclick="medNavNext()" style="width:30px;height:30px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Siguiente">▼</button>
+    <button onclick="medNavTop()" style="width:30px;height:30px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Inicio">⏏</button>
+    <button onclick="medNuevoMedicamento()" style="font-size:13px;padding:8px 14px;border:1px solid var(--accent);border-radius:6px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer" title="Añadir un medicamento nuevo (no viene de un PDF)">➕ Nuevo</button>
+    <button onclick="medDeducirPrescriptores()" style="font-size:13px;padding:8px 14px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);cursor:pointer" title="Deducir los prescriptores desde los firmantes de los documentos">🔗 Prescriptores</button>
+    <select id="meds-filter" onchange="window._medFiltroUsuarioEligio=true;medFilterStatus(this.value)" style="font-family:var(--mono);font-size:13px;padding:8px 10px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer" title="Filtrar por estado">
+      <option value="">Todos</option>
+      <option value="en_cours">🟢 En curso</option>
+      <option value="nouveau">🆕 Nuevo</option>
+      <option value="a_demanda">💊 Si necesario</option>
+      <option value="suspendu">⏸️ Suspendido</option>
+      <option value="abandonne">🔴 Abandonado</option>
+      <option value="terminado">✅ Terminado</option>
+    </select>
+  </div>
+
+  <div id="meds-content"></div>
+  <div class="module-version-corner">
+    <span class="module-version-tag" data-module="medications"></span>
+  </div>
+</div>
+
+<div id="aviso" style="display:none"></div>
+
+<script src="tratamientos.js"></script>
+<script src="tratamientos.idiomas.js"></script>
+<script src="../comun/mf.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   MEDICAMENTOS — programa autónomo de Salufolio V2
+   Versión 2026.09.07-14:51:20
+
+   Extraído de la V1: medications-js.js (38 funciones — la lista, la ficha,
+   los prescriptores, las recetas), medications-html.html, y sus
+   dependencias tomadas en su fuente.
+
+   ESTE PROGRAMA ESCRIBE. Lo que se modifica va al expediente en memoria
+   y enciende el 💾 de la banda; nada se escribe en el disco hasta que se
+   toca. Es voluntario: se ve lo que se ha cambiado antes de guardarlo.
+   ═══════════════════════════════════════════════════════════════════════ */
+const VERSION_PROGRAMA = SF_CONFIG.version;
+const APP_VERSION = SF_CONFIG.version;
+const APP_VERSION_DATE = SF_CONFIG.version;
+
+/* ══ LES PONTS vers mf.js ══
+   Celui-ci ÉCRIT : saveMeds range dans le dossier et allume le 💾 de la
+   bande du lanceur. Rien n'est écrit sur le disque tant qu'on ne le
+   touche pas — la mémoire de travail garde le brouillon. */
+var _DATOS=null;
+function loadData(){   return (_DATOS && _DATOS.mesures) || []; }
+function loadEvents(){ return (_DATOS && _DATOS.events) || []; }
+function loadMeds(){   return (_DATOS && _DATOS.medicaments) || []; }
+function saveMeds(lista){
+  if(!_DATOS) return;
+  _DATOS.medicaments = lista || _DATOS.medicaments;
+  MF.tocado();                     /* le 💾 s'allume */
+}
+function saveData(){ if(_DATOS) MF.tocado(); }
+function getPatientLabel(){ var p=MF.paciente(); return p.etiqueta || p.matricula || ''; }
+function showPanel(){}
+/* les prescripteurs vivent dans le dossier */
+function loadPrescriptores(){ return (_DATOS && _DATOS.mt_prescripteurs) || []; }
+function savePrescriptores(l){ if(_DATOS){ _DATOS.mt_prescripteurs = l; MF.tocado(); } }
+
+
+
+
+/* ================================================================
+   UTILITAIRES
+================================================================ */
+/* Petit toast de statut (bas de l'écran, auto-disparition) — utilisé par
+   les actions rapides (vaccins, changement de statut médicament, etc.)
+   pour confirmer une action sans bloquer avec une alert(). Historiquement
+   appelé mais jamais défini nulle part -> "status is not a function". */
+function status(msg) {
+  var el = document.getElementById('mf-status-toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'mf-status-toast';
+    el.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%);' +
+      'background:var(--surface2);color:var(--text);border:1px solid var(--accent);' +
+      'border-radius:8px;padding:10px 18px;font-size:13px;z-index:20000;' +
+      'box-shadow:0 4px 16px rgba(0,0,0,0.35);opacity:0;transition:opacity .2s;pointer-events:none';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.opacity = '1';
+  clearTimeout(el._hideTimer);
+  el._hideTimer = setTimeout(function() { el.style.opacity = '0'; }, 2600);
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+function getStatus(key, val) {
+  const p = PARAMS[key];
+  if (!p || !p.ref) return 'ok';
+  const [lo, hi] = p.ref;
+  if (lo !== null && val < lo) return 'bad';
+  if (hi !== null && val > hi) return 'bad';
+  return 'ok';
+}
+function getSeriesForParam(data, key) {
+  /* v2026.7.21.10 — chaque point porte sa ROCHE-MÈRE : pdf_id + pdf voyagent
+     avec la valeur (Lavoisier appliqué aux graphiques). */
+  return data.filter(m => m.vals && (m.vals||{})[key] !== undefined)
+             .map(m => ({ x: m.date, y: (m.vals||{})[key], src: m.src, pdf_id: m.pdf_id, pdf: m.pdf }))
+             .sort((a,b) => a.x.localeCompare(b.x));
+}
+
+/* v2026.7.21.10 — « el médico no se lo creerá: ¿dónde está el informe? » (P-H) :
+   un clic sur un point OUVRE le document source (résolu via le registre pdfs).
+   Sans carpeta configurée, on affiche au moins le nom du document. */
+/* P-H 09/08 : le PDF s'affiche dans un POPUP MAISON — déplaçable par sa
+   poignée, redimensionnable par le coin bas-droit (poignée native du
+   navigateur), fermable par ✕. Le document est rendu par la visionneuse
+   PDF intégrée de Brave, DANS le popup. Pur HTML, zéro serveur. */
+/* P-H 09/08-10/08 : « mets en relief HEMOGLOBINA dans le pdf » — la
+   visionneuse de Brave ne surligne pas sur commande, alors l'app dessine
+   ELLE-MÊME la page avec pdf.js (déjà embarqué pour l'OCR) et pose des
+   surlignages dorés sur chaque occurrence du paramètre ET de sa valeur.
+   Navigation ◀ ▶ entre les pages, redessin au redimensionnement du popup.
+   Sans pdf.js ou PDF illisible (scan) : repli sur la visionneuse embed. */
+function _pdfPopupShell(titulo, info) {
+  document.querySelectorAll('.pdf-popup-maison').forEach(function(o) { o.remove(); });
+  var pop = document.createElement('div');
+  pop.className = 'pdf-popup-maison';
+  pop.style.cssText = 'position:fixed;z-index:10002;width:min(900px,94vw);height:82vh;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.5);padding:4px;display:flex;flex-direction:column;resize:both;overflow:hidden;min-width:280px;min-height:160px';
+  pop.style.left = 'calc(50% - min(450px,47vw))';
+  pop.style.top = '40px';
+  var banda = info ? '<div class="pdf-popup-banda" style="flex:0 0 auto;padding:4px 6px;font-size:12px;border-bottom:1px solid var(--border)">🔍 Verificar en el documento: <b style="color:' + info.color + '">' + info.label + '</b> = <b>' + info.valor + '</b> ' + info.unidad + ' (' + (typeof fmtDate === 'function' ? fmtDate(info.fecha) : info.fecha) + ')<span class="pdf-popup-extra"></span></div>' : '';
+  pop.innerHTML =
+    '<div class="pdf-popup-drag" style="cursor:move;user-select:none;flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 6px;border-bottom:1px solid var(--border)">' +
+    '<b style="font-size:13px">📄 ' + titulo + '</b>' +
+    '<span style="cursor:pointer;color:var(--muted);font-size:16px" onclick="this.closest(\'.pdf-popup-maison\').remove()">✕</span></div>' + banda +
+    '<div class="pdf-popup-cuerpo" style="flex:1;min-height:0;overflow:auto;position:relative"></div>';
+  document.body.appendChild(pop);
+  (function() {
+    var poignee = pop.querySelector('.pdf-popup-drag');
+    var dragging = false, sx = 0, sy = 0, ol = 0, ot = 0;
+    function pt(e) { return e.touches && e.touches[0] ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY }; }
+    function down(e) { if (e.target.tagName === 'SPAN' && e.target.getAttribute('onclick')) return; dragging = true; var p = pt(e); sx = p.x; sy = p.y; var r = pop.getBoundingClientRect(); ol = r.left; ot = r.top; e.preventDefault(); }
+    function move(e) { if (!dragging) return; var p = pt(e); pop.style.left = Math.max(0, Math.min(window.innerWidth - 80, ol + p.x - sx)) + 'px'; pop.style.top = Math.max(0, Math.min(window.innerHeight - 40, ot + p.y - sy)) + 'px'; }
+    function up() { dragging = false; }
+    poignee.addEventListener('mousedown', down);
+    poignee.addEventListener('touchstart', down, { passive: false });
+    window.addEventListener('mousemove', move);
+    window.addEventListener('touchmove', move, { passive: false });
+    window.addEventListener('mouseup', up);
+    window.addEventListener('touchend', up);
+  })();
+  return { pop: pop, cuerpo: pop.querySelector('.pdf-popup-cuerpo'), extra: pop.querySelector('.pdf-popup-extra') };
+}
+
+function _pdfPopupAbrir(url, titulo, info) {
+  var sh = _pdfPopupShell(titulo, info);
+  sh.cuerpo.innerHTML = '<embed src="' + url + '" type="application/pdf" style="width:100%;height:100%;border:0">';
+}
+
+async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
+  if (typeof pdfjsLib === 'undefined') { _pdfPopupAbrir(url, titulo, info); return; }
+  var doc;
+  /* P-H 10/08 : un file:// ne peut PAS être lu par fetch NI par le worker
+     pdf.js depuis une page file:// (CORS « origin null », mur définitif).
+     La seule voie propre pour récupérer les OCTETS (nécessaires au rendu
+     maison + surlignage) est le serveur, qui sert le PDF en http:// —
+     guichet /api/pdf déjà là. Repli sur l'embed file:// si pas de serveur
+     (l'embed, lui, le navigateur l'autorise). */
+  try {
+    var buf = null;
+    if (nom) {
+      var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
+      var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
+      var r = await fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem));
+      if (r.ok) buf = await r.arrayBuffer();
+    }
+    if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */
+    doc = await pdfjsLib.getDocument({ data: buf }).promise;
+  }
+  catch (e) { _pdfPopupAbrir(url, titulo, info); return; }
+  try {
+    var labelMin = (info && info.label) ? info.label.toLowerCase() : null;
+    /* Les formes sous lesquelles le laboratoire peut écrire CETTE valeur.
+       P-H 11/08 : le feutre ratait les valeurs > 1000 — le .sf porte 2583
+       mais le PDF imprime « 2.583,00 » (point de milliers à l'espagnole).
+       Faute de la trouver, le feutre continuait et surlignait le LABEL sur
+       une autre page (« elevación de Dímero D... » p4 au lieu du 2.583 p2).
+       On fabrique donc toutes les écritures plausibles de la même valeur. */
+    var valores = [];
+    if (info) {
+      var n = Number(info.valor);
+      var brut = String(info.valor);
+      valores.push(brut);                         /* 2583   ·  13.8   */
+      valores.push(brut.replace('.', ','));       /* 2583   ·  13,8   */
+      if (isFinite(n) && Math.abs(n) >= 1000) {
+        /* séparateur de milliers espagnol : le point */
+        var ent = Math.trunc(Math.abs(n));
+        var dec = brut.indexOf('.') >= 0 ? brut.split('.')[1] : '';
+        var mil = String(ent).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        valores.push(mil);                        /* 2.583            */
+        valores.push(mil + ',' + (dec || '00'));  /* 2.583,00         */
+        valores.push(mil + ',' + (dec || '0'));   /* 2.583,0          */
+      } else if (isFinite(n) && Number.isInteger(n)) {
+        /* un entier peut être imprimé avec décimales : 235 → 235,00 */
+        valores.push(brut + ',00');
+        valores.push(brut + ',0');
+      }
+      valores = valores.filter(function (v, i, a) { return v && a.indexOf(v) === i; });
+    }
+    /* P-H 10/08 : « affiche la page qui tient le 1er feutre ». On ouvre
+       donc la première page où quelque chose SERA surligné — c.-à-d. la
+       valeur (le repère le plus sûr) ou, à défaut, le label. On cherche
+       la valeur en priorité (page du vrai feutre), le label ne servant
+       que de repli s'il n'y a aucune valeur nulle part. */
+    var pagina = 1, pageValeur = 0, pageLabel = 0, textoVacio = true;
+    if (labelMin || valores.length) {
+      for (var pnum = 1; pnum <= doc.numPages; pnum++) {
+        var pg = await doc.getPage(pnum);
+        var tc0 = await pg.getTextContent();
+        var texto = tc0.items.map(function(it) { return it.str; }).join(' ');
+        if (texto.trim()) textoVacio = false;
+        var tl = texto.toLowerCase();
+        if (!pageValeur && valores.some(function(v) { return v && texto.indexOf(v) !== -1; })) pageValeur = pnum;
+        if (!pageLabel && labelMin && tl.indexOf(labelMin) !== -1) pageLabel = pnum;
+        if (pageValeur) break; /* la page du feutre-valeur trouvée, on s'arrête */
+      }
+      pagina = pageValeur || pageLabel || 1;
+    }
+    if (textoVacio) { try { doc.destroy(); } catch (e) {} _pdfPopupAbrir(url, titulo, info); return; } /* scan sans OCR */
+    var sh = _pdfPopupShell(titulo, info);
+    var barra = document.createElement('div');
+    barra.style.cssText = 'flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:3px 6px;border-bottom:1px solid var(--border);font-size:12px';
+    barra.innerHTML = '<button class="pdf-pg-prev" style="cursor:pointer;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:0 8px">◀</button>' +
+      '<span class="pdf-pg-info"></span>' +
+      '<button class="pdf-pg-next" style="cursor:pointer;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:0 8px">▶</button>' +
+      '<span class="pdf-pg-nb" style="color:var(--muted)"></span>';
+    sh.pop.insertBefore(barra, sh.cuerpo);
+    sh.cuerpo.style.background = '#8a8a8a';
+    sh.cuerpo.style.textAlign = 'center';
+    var actual = pagina;
+    async function dibujar(pnum) {
+      actual = pnum;
+      sh.cuerpo.innerHTML = '';
+      var page = await doc.getPage(pnum);
+      var vp1 = page.getViewport({ scale: 1 });
+      var ancho = Math.max(300, sh.cuerpo.clientWidth - 20);
+      var scale = ancho / vp1.width;
+      var vp = page.getViewport({ scale: scale });
+      var wrapper = document.createElement('div');
+      wrapper.style.cssText = 'position:relative;display:inline-block;margin:8px 0;box-shadow:0 2px 10px rgba(0,0,0,.4)';
+      var canvas = document.createElement('canvas');
+      canvas.width = vp.width; canvas.height = vp.height;
+      wrapper.appendChild(canvas);
+      sh.cuerpo.appendChild(wrapper);
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+      var tc = await page.getTextContent();
+      var nb = 0, premierTop = null;
+      tc.items.forEach(function(it) {
+        var s = (it.str || '');
+        var hit = (labelMin && s.toLowerCase().indexOf(labelMin) !== -1) ||
+                  valores.some(function(v) { return v && s.indexOf(v) !== -1; });
+        if (!hit) return;
+        nb++;
+        var tx = pdfjsLib.Util.transform(vp.transform, it.transform);
+        var h = Math.hypot(tx[2], tx[3]) || 12;
+        var d = document.createElement('div');
+        d.style.cssText = 'position:absolute;background:rgba(255,200,0,.45);outline:1.5px solid rgba(230,150,0,.9);border-radius:2px;pointer-events:none;left:' + (tx[4] - 2) + 'px;top:' + (tx[5] - h) + 'px;width:' + (it.width * scale + 4) + 'px;height:' + (h * 1.2) + 'px';
+        wrapper.appendChild(d);
+        if (premierTop === null) premierTop = tx[5] - h;
+      });
+      barra.querySelector('.pdf-pg-info').textContent = 'página ' + pnum + ' / ' + doc.numPages;
+      barra.querySelector('.pdf-pg-nb').textContent = nb ? ('🟡 ' + nb + ' resaltado' + (nb > 1 ? 's' : '')) : '';
+      if (premierTop !== null) sh.cuerpo.scrollTop = Math.max(0, premierTop - 60);
+    }
+    barra.querySelector('.pdf-pg-prev').onclick = function() { if (actual > 1) dibujar(actual - 1); };
+    barra.querySelector('.pdf-pg-next').onclick = function() { if (actual < doc.numPages) dibujar(actual + 1); };
+    /* redessin quand P-H redimensionne le popup (poignée du coin) */
+    var roT = null;
+    new ResizeObserver(function() { clearTimeout(roT); roT = setTimeout(function() { dibujar(actual); }, 200); }).observe(sh.cuerpo);
+    await dibujar(pagina);
+  } catch (e) {
+    try { doc.destroy(); } catch (e2) {}
+    _pdfPopupAbrir(url, titulo, info);
+  }
+}
+
+function _chartVerInforme(s, key) {
+  var id = s && (s.pdf_id || s.pdf); if (!id) return;
+  /* P-H 09/08 : le popup annonce CE QU'ON EST VENU VÉRIFIER — paramètre,
+     valeur, date — et l'URL porte #search= (honoré par certains visores). */
+  var info = null;
+  if (key && typeof PARAMS === 'object' && PARAMS[key]) {
+    info = { label: PARAMS[key].label || key, valor: s.y, unidad: PARAMS[key].unit || '', fecha: s.x, color: PARAMS[key].color || 'var(--accent)' };
+  }
+  /* P-H 09/08 (« je n'ai pas besoin d'un serveur pour lire un pdf ») :
+     ouverture DIRECTE en file:// — les fichiers de sources/ portent
+     désormais leur nom exact PDFxxx.pdf, il suffisait d'ajouter
+     l'extension que l'ancien code n'ajoutait pas. Zéro dépendance. */
+  var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
+  var dir = (typeof pdfCarpeta === 'function') ? pdfCarpeta(id) : '';
+  if (dir) {
+    var base = dir.replace(/\/+$/, '');
+    var url = (base.indexOf('://') !== -1 ? base : 'file://' + (base.charAt(0) === '/' ? '' : '/') + base) + '/' + encodeURIComponent(nom);
+    try { _pdfPopupAbrirEnPagina(url, nom, info, nom); return; } catch (e) {}
+  }
+  /* v2026.7.21.20 — plus d'aboiement du navigateur (demande P-H) : le repli
+     passe par la BANDE DU PAVÉ quand elle existe, et nomme le bon guichet
+     (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si
+     aucune bande n'est à l'écran. */
+  var msg = '📄 ' + nom + (dir
+    ? ' — carpeta: ' + dir + ' (no se pudo abrir)'
+    : ' — para abrirlo con un clic, defina la «carpeta de PDF» en la vista AUDITORÍA.');
+  var det = document.getElementById('xz-cmt-detalle');
+  if (det) { det.innerHTML = '🧪 ' + msg; return; }
+  alert(msg);
+}
+
+Chart.defaults.font.family = "'IBM Plex Mono', monospace";
+Chart.defaults.font.size = 10;
+Chart.defaults.color = '#7a8499';
+Chart.defaults.borderColor = '#2a3348';
+const chartInstances = {};
+
+/* v2026.7.21.4 — échelle par courbe : Lin (par défaut) ⇄ Log (natif Chart.js).
+   Le BNP à 11924 (TEP 2022, valeur RÉELLE et grave) écrasait les valeurs
+   récentes en linéaire ; en log, le pic ET les variations fines cohabitent.
+   L'état vit dans _chartScale[key] ; le bouton dans le titre bascule et redessine. */
+window._chartScale = window._chartScale || {};
+
+/* v2026.7.21.17 — P-H avait RAISON sur l'échelle : l'app applique un zoom CSS
+   (document.body.style.zoom, module languages) que Chart.js ignore dans ses
+   calculs de souris → mauvais point détecté, doigt posé à côté. On calcule
+   donc NOUS-MÊMES la position du curseur, auto-calibrée par le rapport
+   rect/offsetWidth — juste quel que soit le zoom/l'échelle en vigueur. */
+function _chartPosEvento(chart, ev) {
+  var rect = chart.canvas.getBoundingClientRect();
+  var f = (rect.width / (chart.canvas.offsetWidth || rect.width)) || 1;
+  return { x: (ev.clientX - rect.left) / f, y: (ev.clientY - rect.top) / f };
+}
+function _chartPuntoCercano(chart, ev) {
+  var pos = _chartPosEvento(chart, ev);
+  var meta = chart.getDatasetMeta(0);
+  var best = -1, bd = Infinity, dist = Infinity;
+  (meta && meta.data || []).forEach(function(el, i) {
+    var d = Math.abs(el.x - pos.x);
+    if (d < bd) { bd = d; best = i; dist = Math.hypot(el.x - pos.x, el.y - pos.y); }
+  });
+  return { index: best, precis: dist <= 16 };
+}
+function makeChart(canvasId, key, data, opts) {
+  opts = opts || {};
+  /* v2026.7.21.8 — les opts sont mémorisées par canvas : les redraws
+     (bascule d'échelle, resize) conservent l'habillage d'origine. */
+  window._chartOpts = window._chartOpts || {};
+  _chartOpts[canvasId] = opts;
+  var rejilla = opts.claro ? '#e6e6de' : '#2a3348';
+  const p = PARAMS[key];
+  const series = getSeriesForParam(data, key);
+  if (!series.length) return;
+  const esLog = (_chartScale[key] === 'log');
+  const labels = series.map(s => fmtDate(s.x));
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+  if (chartInstances[canvasId]) { chartInstances[canvasId].destroy(); }
+  window._chartSeries = window._chartSeries || {};
+  _chartSeries[canvasId] = series;
+  chartInstances[canvasId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: p.label,
+        data: series.map(s => s.y),
+        borderColor: p.color,
+        backgroundColor: p.color + '18',
+        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? '#c0392b' : p.color),
+        pointRadius: 5, pointHoverRadius: (opts.sinTooltip ? 5 : 7), pointHitRadius: 14, tension: 0.3, fill: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      /* v2026.7.21.10 — clic sur un point → ver informe (le survol l'annonce) */
+      /* v2026.7.21.16 (P-H : « manque de sensibilité » + « un doigt à la
+         place du curseur ») : le SURVOL est généreux — n'importe où sur la
+         courbe, c'est le point le plus proche en X qui parle au pavé ; le
+         CLIC reste précis — il n'ouvre l'informe que pile sur le rond ; et
+         le curseur devient un DOIGT 👆 quand un rond est saisi. */
+      interaction: { mode: 'nearest', axis: 'x', intersect: false },
+      onClick: (e, els, chart) => {
+        try {
+          const pc = _chartPuntoCercano(chart, e.native || e);
+          if (pc.precis) { const s = series[pc.index]; if (s && (s.pdf_id || s.pdf)) _chartVerInforme(s, key); }
+        } catch (er) {}
+      },
+      /* v2026.7.21.15 (conception P-H : « affiche le texte dans la popup et
+         point final ») : le survol d'un point nourrit le pavé DIRECTEMENT,
+         sans dépendre de l'infobulle — que celle-ci soit activée ou non. */
+      onHover: (e, els, chart) => {
+        const ev = e.native || e;
+        let pc = { index: -1, precis: false };
+        try { pc = _chartPuntoCercano(chart, ev); } catch (er) {}
+        try { const cible = ev.target || chart.canvas; if (cible) cible.style.cursor = pc.precis ? 'pointer' : 'default'; } catch (er) {}
+        if (pc.index < 0 || typeof window._chartPuntoHover !== 'function') return;
+        const s = series[pc.index] || {};
+        const v = s.y;
+        const doc = (typeof pdfNombre === 'function' && (s.pdf_id || s.pdf)) ? pdfNombre(s.pdf_id || s.pdf) : (s.src || '');
+        try { _chartPuntoHover({ param: (p.label || key), fecha: s.x, valor: v, unidad: p.unit || '', fuera: getStatus(key, v) === 'bad', doc: doc, tienePdf: !!(s.pdf_id || s.pdf) }); } catch (er) {}
+      },
+      plugins: { legend: { display: false }, tooltip: { enabled: !opts.sinTooltip, callbacks: {
+        afterLabel: c => {
+          const s = series[c.dataIndex] || {};
+          const fuera = getStatus(key, c.raw) === 'bad';
+          const l = [fuera ? '⚠ Fuera de rango' : '✓ Normal'];
+          const doc = (typeof pdfNombre === 'function' && (s.pdf_id || s.pdf)) ? pdfNombre(s.pdf_id || s.pdf) : (s.src || '');
+          if (doc) l.push('📄 ' + doc);
+          if (s.pdf_id || s.pdf) l.push('(clic: ver informe)');
+          return l;
+        }
+      }}},
+      scales: {
+        x: { grid: { color: rejilla } },
+        y: { type: esLog ? 'logarithmic' : 'linear',
+             grid: { color: rejilla }, ticks: { maxTicksLimit: 6 },
+             title: { display: true, text: p.unit + ' — vista ' + (esLog ? 'LOG' : 'LIN') } }
+      }
+    },
+    plugins: [{
+      id: 'ref', beforeDraw(chart) {
+        if (!p.ref) return;
+        const [lo, hi] = p.ref;
+        if (lo === null && hi === null) return;
+        const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = chart;
+        ctx.save(); ctx.fillStyle = 'rgba(30,180,100,0.06)';
+        const yTop = hi !== null ? y.getPixelForValue(Math.min(hi, y.max)) : top;
+        const yBot = lo !== null ? y.getPixelForValue(Math.max(lo, y.min)) : bottom;
+        ctx.fillRect(left, yTop, right - left, yBot - yTop);
+        ctx.restore();
+      }
+    }]
+  });
+}
+
+
+
+
+
+
+/* ================================================================
+   PARAMÈTRES BIOLOGIQUES
+================================================================ */
+
+/* ── RUBRIQUES (Grupo de determinación, comme dans les rapports de labo) ──
+   Table de pilotage : classe les paramètres du catalogue par rubrique pour
+   la sélection des courbes. Un paramètre absent d'ici tombe dans « Otros ». */
+/* Rubriques affichées PAR DÉFAUT dans les courbes (première visite ou
+   après réinitialisation). Réglable ici en attendant l'engrenage ⚙️. */
+const GRUPOS_DEFECTO = ["COAGULACIÓN", "HEMATOLOGÍA"];
+
+const GRUPOS = {
+  "HEMATOLOGÍA":   ["hemoglobina","hematocrito","vcm","hcm","chcm","rdw","leucocitos","neutrofilos","linfocitos","monocitos","plaquetas","vsg"],
+  "COAGULACIÓN":   ["dimero_d","fibrinogeno","inr","tp","ttpa","actividad_protrombina"],
+  "BIOQUÍMICA":    ["glucosa","hba1c","creatinina","filtrado","filtrado_glomerular","urea","acido_urico","urato","sodio","potasio","cloro","cloruro","calcio","fosforo","magnesio","bicarbonato","proteinas","albumina"],
+  "HEPÁTICO":      ["gpt","got","ggt","fosfatasa","fosfatasa_alcalina","bilirrubina","ldh","cpk"],
+  "LÍPIDOS":       ["colesterol","colesterol_hdl","colesterol_ldl","trigliceridos","no_hdl"],
+  "CARDÍACO":      ["troponina","bnp"],
+  "HORMONAS":      ["tsh","tiroxina_libre","tiroxina_libre_t4","t3","t4"],
+  "VITAMINAS/FE":  ["vitamina_d","vitamina_b12","folico","ferritina","hierro","transferrina"],
+  "INFLAMACIÓN":   ["pcr"],
+  "CONSTANTES":    ["TA_sys","TA_dia","FC","Temp","SpO2"],
+  "OTROS":         ["psa"]
+};
+
+/* ═══ PARAMS_I18N (P-H 06/08) — table à part, par langue, comme GLOSARIO ═══
+   Une seule ligne par paramètre et par langue. Pour ajouter le français,
+   copier le bloc es: {...} entier, traduire les valeurs, l'appeler fr: {...}.
+   Rien d'autre à toucher : textInt() et les 69 getters de PARAMS suivent. ═══ */
+const PARAMS_I18N = {
+  es: {
+    hemoglobina: { label:"Hemoglobina", desc:"Proteína que transporta O₂. Baja=anemia. Alta=deshidratación o policitemia." },
+    hematocrito: { label:"Hematocrito", desc:"% de glóbulos rojos en sangre. Refleja capacidad de transporte de O₂." },
+    vcm: { label:"VCM", desc:"Volumen Corpuscular Medio. Alto(macrocitosis)=déficit B12/folatos. Bajo=déficit hierro." },
+    hcm: { label:"HCM", desc:"Hemoglobina Corpuscular Media. Cantidad de Hb por glóbulo rojo." },
+    chcm: { label:"CHCM", desc:"Concentración de hemoglobina corpuscular media." },
+    rdw: { label:"RDW", desc:"Amplitud de distribución eritrocitaria." },
+    monocitos: { label:"Monocitos", desc:"Monocitos en sangre." },
+    leucocitos: { label:"Leucocitos", desc:"Glóbulos blancos (defensas). Altos=infección/inflamación. Bajos=inmunosupresión." },
+    plaquetas: { label:"Plaquetas", desc:"Esenciales para coagulación. Bajas=riesgo sangrado. Altas=riesgo trombótico." },
+    glucosa: { label:"Glucosa", desc:"Azúcar en sangre (ayunas). >126=diabetes. 110–126=prediabetes." },
+    hba1c: { label:"HbA1c", desc:"Hemoglobina glicosilada — media de glucosa de 2-3 meses. >6.5%=diabetes." },
+    creatinina: { label:"Creatinina", desc:"Desecho muscular filtrado por riñones. Alta=posible insuficiencia renal." },
+    filtrado: { label:"Filtrado glom.", desc:"Filtración Glomerular CKD-EPI — función renal. <60=insuf. renal. <30=severa." },
+    colesterol: { label:"Colesterol total", desc:"Grasa total en sangre (HDL+LDL+VLDL). Objetivo según riesgo cardiovascular." },
+    colesterol_hdl: { label:"HDL", desc:"Colesterol 'bueno' — protector cardiovascular. Más alto=mejor. <40=riesgo." },
+    colesterol_ldl: { label:"LDL", desc:"Colesterol 'malo' — se acumula en arterias. Objetivo <70 si RCV muy alto." },
+    trigliceridos: { label:"Triglicéridos", desc:"Grasas circulantes. Elevados=riesgo CV + pancreatitis si >500." },
+    no_hdl: { label:"Col. no-HDL", desc:"Colesterol total menos HDL. Marcador de riesgo cardiovascular aterogénico." },
+    vitamina_d: { label:"Vitamina D", desc:"Vitamina D — <20=carencia grave (raquitismo/osteomalacia)\\n<30=insuficiencia frecuente en ancianos\\nFunciones: huesos, inmunidad, cardiovascular, ánimo\\nSuplementar si <30 ng/mL" },
+    vitamina_b12: { label:"Vitamina B12", desc:"Vital para sistema nervioso y glóbulos rojos. <200=carencia → anemia macrocítica, deterioro cognitivo." },
+    folico: { label:"Ácido Fólico", desc:"Vitamina B9 — síntesis de ADN y glóbulos rojos. Carencia=anemia megaloblástica." },
+    filtrado_glomerular: { label:"Filtrado glomerular", desc:"Función renal — FG estimado. <60=ERC. <30=ERC grave. <15=diálisis." },
+    urato: { label:"Ácido úrico", desc:"Urato sérico. >7 mg/dL=hiperuricemia. Riesgo gota y cálculos renales." },
+    fosfatasa_alcalina: { label:"Fosfatasa alcalina", desc:"FA elevada: colestasis, enfermedad ósea (Paget), hepática." },
+    cloruro: { label:"Cloruro", desc:"Electrolito — equilibrio ácido-base y hidratación." },
+    tiroxina_libre: { label:"T4 libre", desc:"Hormona tiroidea activa. Baja=hipotiroidismo. Alta=hipertiroidismo." },
+    neutrofilos: { label:"Neutrófilos abs.", desc:"Glóbulos blancos de defensa. Bajos=neutropenia (infección grave). Altos=infección bacteriana." },
+    linfocitos: { label:"Linfocitos abs.", desc:"Linfocitos absolutos. Bajos=inmunodeficiencia. Altos=infección viral o linfoma." },
+    transferrina: { label:"Transferrina", desc:"Proteína transportadora de hierro. Baja=déficit proteico. Alta=déficit de hierro." },
+    tiroxina_libre_t4: { label:"T4 libre", desc:"T4 libre — función tiroidea." },
+    tsh: { label:"TSH", desc:"Hormona tireostimulante. Alta=hipotiroidismo. Baja=hipertiroidismo." },
+    t3: { label:"T3 libre", desc:"Triyodotironina libre." },
+    t4: { label:"T4 libre", desc:"Tiroxina libre." },
+    ferritina: { label:"Ferritina", desc:"Reserva de hierro. Baja=carencia de hierro. Muy alta=inflamación o sobrecarga." },
+    hierro: { label:"Hierro", desc:"Hierro sérico. Bajo=anemia ferropénica. Alto=sobrecarga o hemólisis." },
+    pcr: { label:"PCR", desc:"Proteína C Reactiva — inflamación. >10=infección activa. >50=severa." },
+    fibrinogeno: { label:"Fibrinógeno", desc:"Proteína de coagulación. Elevado=inflamación aguda o riesgo trombótico." },
+    vsg: { label:"VSG", desc:"Velocidad de Sedimentación — inflamación inespecífica. Aumenta con la edad." },
+    albumina: { label:"Albúmina", desc:"Proteína hepática. Baja=desnutrición, insuf. hepática, síndrome nefrótico." },
+    proteinas: { label:"Proteínas totales", desc:"Albúmina + globulinas. Marcador nutricional y hepático." },
+    urea: { label:"Urea", desc:"Desecho del metabolismo proteico. Alta=insuf. renal o deshidratación." },
+    sodio: { label:"Sodio", desc:"Electrolito — hidratación y tensión arterial. Bajo(hiponatremia)=confusión, caídas." },
+    potasio: { label:"Potasio", desc:"Electrolito vital para el corazón. Muy bajo o muy alto=arritmia peligrosa." },
+    cloro: { label:"Cloro", desc:"Electrolito — equilibrio ácido-base. Sigue generalmente al sodio." },
+    calcio: { label:"Calcio", desc:"Mineral óseo y neuromuscular. Bajo=tetania. Alto=hiperparatiroidismo." },
+    fosforo: { label:"Fósforo", desc:"Mineral ligado al calcio y energía celular. Alto=insuf. renal." },
+    magnesio: { label:"Magnesio", desc:"Cofactor de 300+ enzimas. Bajo=calambres, arritmia. Riesgo bajo con uso crónico de IBP." },
+    bicarbonato: { label:"Bicarbonato", desc:"Tampón ácido-base. Bajo=acidosis metabólica. Alto=alcalosis." },
+    bnp: { label:"BNP/NT-ProBNP", desc:"Marcador de insuficiencia cardíaca. Más alto=peor función cardíaca. >300=IC probable." },
+    troponina: { label:"Troponina", desc:"Proteína cardíaca — liberada si daño miocárdico. Elevada=infarto o sufrimiento cardíaco." },
+    dimero_d: { label:"Dímero D", desc:"Producto de degradación de fibrina. Elevado=sospecha trombosis (TVP, TEP)." },
+    inr: { label:"INR", desc:"Coagulación. Bajo AVK: objetivo 2-3. Bajo anticoagulantes directos: INR normal esperado." },
+    tp: { label:"T. Protrombina", desc:"Tiempo de Protrombina — mide la vía extrínseca de coagulación." },
+    ttpa: { label:"TTPA", desc:"Tiempo de Tromboplastina Parcial Activada — vía intrínseca de coagulación." },
+    actividad_protrombina: { label:"Act. Protrombina", desc:"Porcentaje de actividad de protrombina. Bajo=riesgo de sangrado." },
+    gpt: { label:"GPT/ALT", desc:"Enzima hepática — daño del hígado. Alta=hepatitis, toxicidad medicamentosa." },
+    got: { label:"GOT/AST", desc:"Enzima hepática y muscular. Relación GOT/GPT ayuda al diagnóstico." },
+    ggt: { label:"GGT", desc:"Gamma-GT — sensible al alcohol y medicamentos. Alta=colestasis, toxicidad hepática." },
+    fosfatasa: { label:"Fosfatasa alcalina", desc:"Enzima ósea y hepática. Alta=patología ósea o colestasis." },
+    cpk: { label:"CPK", desc:"Creatina Fosfoquinasa — enzima muscular. Alta=rabdomiólisis, infarto, efecto de estatinas." },
+    ldh: { label:"LDH", desc:"Lactato Deshidrogenasa — daño tisular inespecífico. Alta=hemólisis, infarto, cáncer." },
+    bilirrubina: { label:"Bilirrubina", desc:"Pigmento de degradación de glóbulos rojos. Alta=ictericia, patología hepática o hemólisis." },
+    acido_urico: { label:"Ácido úrico", desc:"Metabolismo de purinas. Elevado=riesgo de gota y cálculos renales." },
+    psa: { label:"PSA", desc:"Antígeno prostático específico. Marcador de próstata: seguimiento de HBP y cribado urológico." },
+    TA_sys: { label:"TA sistólica", desc:"Presión arterial sistólica. Objetivo <140 mmHg (HTA), <130 en alto riesgo cardiovascular." },
+    TA_dia: { label:"TA diastólica", desc:"Presión arterial diastólica. Objetivo <90 mmHg." },
+    FC: { label:"Frec. cardíaca", desc:"Frecuencia cardíaca en reposo. Bradicardia <60, taquicardia >100." },
+    Temp: { label:"Temperatura", desc:"Temperatura corporal. Fiebre ≥38°C." },
+    SpO2: { label:"Saturación O₂", desc:"Saturación de oxígeno en sangre. <92% = insuficiencia respiratoria." },
+  },
+  fr: {
+    hemoglobina: { label:"Hémoglobine", desc:"Protéine qui transporte l'O₂. Basse=anémie. Haute=déshydratation ou polyglobulie." },
+    hematocrito: { label:"Hématocrite", desc:"% de globules rouges dans le sang. Reflète la capacité de transport d'O₂." },
+    vcm: { label:"VGM", desc:"Volume Globulaire Moyen. Élevé(macrocytose)=carence B12/folates. Bas=carence en fer." },
+    hcm: { label:"TCMH", desc:"Teneur Corpusculaire Moyenne en Hémoglobine. Quantité d'Hb par globule rouge." },
+    chcm: { label:"CCMH", desc:"Concentration Corpusculaire Moyenne en Hémoglobine." },
+    rdw: { label:"IDR", desc:"Indice de Distribution des globules Rouges." },
+    monocitos: { label:"Monocytes", desc:"Monocytes dans le sang." },
+    leucocitos: { label:"Leucocytes", desc:"Globules blancs (défenses). Élevés=infection/inflammation. Bas=immunosuppression." },
+    plaquetas: { label:"Plaquettes", desc:"Essentielles à la coagulation. Basses=risque de saignement. Élevées=risque thrombotique." },
+    glucosa: { label:"Glycémie", desc:"Sucre dans le sang (à jeun). >126=diabète. 110–126=prédiabète." },
+    hba1c: { label:"HbA1c", desc:"Hémoglobine glyquée — moyenne de la glycémie sur 2-3 mois. >6,5%=diabète." },
+    creatinina: { label:"Créatinine", desc:"Déchet musculaire filtré par les reins. Élevée=possible insuffisance rénale." },
+    filtrado: { label:"Filtration glom.", desc:"Filtration Glomérulaire CKD-EPI — fonction rénale. <60=insuf. rénale. <30=sévère." },
+    colesterol: { label:"Cholestérol total", desc:"Graisse totale dans le sang (HDL+LDL+VLDL). Objectif selon le risque cardiovasculaire." },
+    colesterol_hdl: { label:"HDL", desc:"Cholestérol « bon » — protecteur cardiovasculaire. Plus élevé=mieux. <40=risque." },
+    colesterol_ldl: { label:"LDL", desc:"Cholestérol « mauvais » — s'accumule dans les artères. Objectif <70 si risque CV très élevé." },
+    trigliceridos: { label:"Triglycérides", desc:"Graisses circulantes. Élevés=risque CV + pancréatite si >500." },
+    no_hdl: { label:"Chol. non-HDL", desc:"Cholestérol total moins HDL. Marqueur de risque cardiovasculaire athérogène." },
+    vitamina_d: { label:"Vitamine D", desc:"Vitamine D — <20=carence sévère (rachitisme/ostéomalacie)\n<30=insuffisance fréquente chez les personnes âgées\nFonctions : os, immunité, cardiovasculaire, humeur\nSupplémenter si <30 ng/mL" },
+    vitamina_b12: { label:"Vitamine B12", desc:"Vitale pour le système nerveux et les globules rouges. <200=carence → anémie macrocytaire, déclin cognitif." },
+    folico: { label:"Acide folique", desc:"Vitamine B9 — synthèse de l'ADN et des globules rouges. Carence=anémie mégaloblastique." },
+    filtrado_glomerular: { label:"Filtration glomérulaire", desc:"Fonction rénale — DFG estimé. <60=IRC. <30=IRC sévère. <15=dialyse." },
+    urato: { label:"Acide urique", desc:"Urate sérique. >7 mg/dL=hyperuricémie. Risque de goutte et calculs rénaux." },
+    fosfatasa_alcalina: { label:"Phosphatase alcaline", desc:"PA élevée : cholestase, maladie osseuse (Paget), hépatique." },
+    cloruro: { label:"Chlorure", desc:"Électrolyte — équilibre acido-basique et hydratation." },
+    tiroxina_libre: { label:"T4 libre", desc:"Hormone thyroïdienne active. Basse=hypothyroïdie. Haute=hyperthyroïdie." },
+    neutrofilos: { label:"Neutrophiles abs.", desc:"Globules blancs de défense. Bas=neutropénie (infection grave). Élevés=infection bactérienne." },
+    linfocitos: { label:"Lymphocytes abs.", desc:"Lymphocytes absolus. Bas=immunodéficience. Élevés=infection virale ou lymphome." },
+    transferrina: { label:"Transferrine", desc:"Protéine transporteuse de fer. Basse=carence protéique. Haute=carence en fer." },
+    tiroxina_libre_t4: { label:"T4 libre", desc:"T4 libre — fonction thyroïdienne." },
+    tsh: { label:"TSH", desc:"Hormone thyréostimulante. Haute=hypothyroïdie. Basse=hyperthyroïdie." },
+    t3: { label:"T3 libre", desc:"Triiodothyronine libre." },
+    t4: { label:"T4 libre", desc:"Thyroxine libre." },
+    ferritina: { label:"Ferritine", desc:"Réserve de fer. Basse=carence en fer. Très haute=inflammation ou surcharge." },
+    hierro: { label:"Fer", desc:"Fer sérique. Bas=anémie ferriprive. Haut=surcharge ou hémolyse." },
+    pcr: { label:"CRP", desc:"Protéine C-Réactive — inflammation. >10=infection active. >50=sévère." },
+    fibrinogeno: { label:"Fibrinogène", desc:"Protéine de coagulation. Élevé=inflammation aiguë ou risque thrombotique." },
+    vsg: { label:"VS", desc:"Vitesse de Sédimentation — inflammation non spécifique. Augmente avec l'âge." },
+    albumina: { label:"Albumine", desc:"Protéine hépatique. Basse=dénutrition, insuf. hépatique, syndrome néphrotique." },
+    proteinas: { label:"Protéines totales", desc:"Albumine + globulines. Marqueur nutritionnel et hépatique." },
+    urea: { label:"Urée", desc:"Déchet du métabolisme protéique. Haute=insuf. rénale ou déshydratation." },
+    sodio: { label:"Sodium", desc:"Électrolyte — hydratation et tension artérielle. Bas(hyponatrémie)=confusion, chutes." },
+    potasio: { label:"Potassium", desc:"Électrolyte vital pour le cœur. Trop bas ou trop haut=arythmie dangereuse." },
+    cloro: { label:"Chlore", desc:"Électrolyte — équilibre acido-basique. Suit généralement le sodium." },
+    calcio: { label:"Calcium", desc:"Minéral osseux et neuromusculaire. Bas=tétanie. Haut=hyperparathyroïdie." },
+    fosforo: { label:"Phosphore", desc:"Minéral lié au calcium et à l'énergie cellulaire. Haut=insuf. rénale." },
+    magnesio: { label:"Magnésium", desc:"Cofacteur de 300+ enzymes. Bas=crampes, arythmie. Risque avec l'usage chronique d'IPP." },
+    bicarbonato: { label:"Bicarbonate", desc:"Tampon acido-basique. Bas=acidose métabolique. Haut=alcalose." },
+    bnp: { label:"BNP/NT-ProBNP", desc:"Marqueur d'insuffisance cardiaque. Plus haut=moins bonne fonction cardiaque. >300=IC probable." },
+    troponina: { label:"Troponine", desc:"Protéine cardiaque — libérée en cas de lésion myocardique. Élevée=infarctus ou souffrance cardiaque." },
+    dimero_d: { label:"D-dimères", desc:"Produit de dégradation de la fibrine. Élevé=suspicion de thrombose (TVP, EP)." },
+    inr: { label:"INR", desc:"Coagulation. Sous AVK : objectif 2-3. Sous anticoagulants directs : INR normal attendu." },
+    tp: { label:"T. Prothrombine", desc:"Temps de Prothrombine — mesure la voie extrinsèque de la coagulation." },
+    ttpa: { label:"TCA", desc:"Temps de Céphaline Activée — voie intrinsèque de la coagulation." },
+    actividad_protrombina: { label:"Act. Prothrombine", desc:"Pourcentage d'activité de prothrombine. Bas=risque de saignement." },
+    gpt: { label:"GPT/ALAT", desc:"Enzyme hépatique — atteinte du foie. Élevée=hépatite, toxicité médicamenteuse." },
+    got: { label:"GOT/ASAT", desc:"Enzyme hépatique et musculaire. Rapport GOT/GPT aide au diagnostic." },
+    ggt: { label:"GGT", desc:"Gamma-GT — sensible à l'alcool et aux médicaments. Élevée=cholestase, toxicité hépatique." },
+    fosfatasa: { label:"Phosphatase alcaline", desc:"Enzyme osseuse et hépatique. Élevée=pathologie osseuse ou cholestase." },
+    cpk: { label:"CPK", desc:"Créatine Phosphokinase — enzyme musculaire. Élevée=rhabdomyolyse, infarctus, effet des statines." },
+    ldh: { label:"LDH", desc:"Lactate Déshydrogénase — atteinte tissulaire non spécifique. Élevée=hémolyse, infarctus, cancer." },
+    bilirrubina: { label:"Bilirubine", desc:"Pigment de dégradation des globules rouges. Élevée=ictère, pathologie hépatique ou hémolyse." },
+    acido_urico: { label:"Acide urique", desc:"Métabolisme des purines. Élevé=risque de goutte et calculs rénaux." },
+    psa: { label:"PSA", desc:"Antigène prostatique spécifique. Marqueur de la prostate : suivi de l'HBP et dépistage urologique." },
+    TA_sys: { label:"TA systolique", desc:"Pression artérielle systolique. Objectif <140 mmHg (HTA), <130 si risque cardiovasculaire élevé." },
+    TA_dia: { label:"TA diastolique", desc:"Pression artérielle diastolique. Objectif <90 mmHg." },
+    FC: { label:"Fréq. cardiaque", desc:"Fréquence cardiaque au repos. Bradycardie <60, tachycardie >100." },
+    Temp: { label:"Température", desc:"Température corporelle. Fièvre ≥38°C." },
+    SpO2: { label:"Saturation O₂", desc:"Saturation en oxygène dans le sang. <92% = insuffisance respiratoire." },
+  },
+};
+function textInt(id, campo) {
+  var lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'es';
+  var tabla = PARAMS_I18N[lang] || PARAMS_I18N.es;
+  var entrada = tabla[id] || PARAMS_I18N.es[id];
+  return entrada ? entrada[campo] : id;
+}
+
+const PARAMS = {
+  hemoglobina: { get label() { return textInt('hemoglobina','label'); }, unit:"g/dL", ref:[12,18], color:"#922b21", get desc() { return textInt('hemoglobina','desc'); } },
+  hematocrito: { get label() { return textInt('hematocrito','label'); }, unit:"%", ref:[37,52], color:"#c0634c", get desc() { return textInt('hematocrito','desc'); } },
+  vcm: { get label() { return textInt('vcm','label'); }, unit:"fL", ref:[80,96], color:"#c0634c", get desc() { return textInt('vcm','desc'); } },
+  hcm: { get label() { return textInt('hcm','label'); }, unit:"pg", ref:[27,33], color:"#c0634c", get desc() { return textInt('hcm','desc'); } },
+  chcm: { get label() { return textInt('chcm','label'); }, unit:"g/dL", ref:[32,36], color:"#c77dba", get desc() { return textInt('chcm','desc'); } },
+  rdw: { get label() { return textInt('rdw','label'); }, unit:"%", ref:[11.5,14.5], color:"#8d6cab", get desc() { return textInt('rdw','desc'); } },
+  monocitos: { get label() { return textInt('monocitos','label'); }, unit:"10³/µL", ref:[0.2,0.8], color:"#5e9c8f", get desc() { return textInt('monocitos','desc'); } },
+  leucocitos: { get label() { return textInt('leucocitos','label'); }, unit:"x10³/µL", ref:[4.8,10.8], color:"#1a5276", get desc() { return textInt('leucocitos','desc'); } },
+  plaquetas: { get label() { return textInt('plaquetas','label'); }, unit:"x10³/µL", ref:[130,400], color:"#117a65", get desc() { return textInt('plaquetas','desc'); } },
+  glucosa: { get label() { return textInt('glucosa','label'); }, unit:"mg/dL", ref:[70,110], color:"#784212", get desc() { return textInt('glucosa','desc'); } },
+  hba1c: { get label() { return textInt('hba1c','label'); }, unit:"%", ref:[4,6.5], color:"#a05c2a", get desc() { return textInt('hba1c','desc'); } },
+  creatinina: { get label() { return textInt('creatinina','label'); }, unit:"mg/dL", ref:[0.51,0.95], color:"#117a65", get desc() { return textInt('creatinina','desc'); } },
+  filtrado: { get label() { return textInt('filtrado','label'); }, unit:"ml/min", ref:[60,200], color:"#148f77", get desc() { return textInt('filtrado','desc'); } },
+  colesterol: { get label() { return textInt('colesterol','label'); }, unit:"mg/dL", ref:null, color:"#7d3c98", get desc() { return textInt('colesterol','desc'); } },
+  colesterol_hdl: { get label() { return textInt('colesterol_hdl','label'); }, unit:"mg/dL", ref:[40,65], color:"#5b2c6f", get desc() { return textInt('colesterol_hdl','desc'); } },
+  colesterol_ldl: { get label() { return textInt('colesterol_ldl','label'); }, unit:"mg/dL", ref:[null,116], color:"#922b21", get desc() { return textInt('colesterol_ldl','desc'); } },
+  trigliceridos: { get label() { return textInt('trigliceridos','label'); }, unit:"mg/dL", ref:[50,165], color:"#935116", get desc() { return textInt('trigliceridos','desc'); } },
+  no_hdl: { get label() { return textInt('no_hdl','label'); }, unit:"mg/dL", ref:[null,130], color:"#7d3c98", get desc() { return textInt('no_hdl','desc'); } },
+  vitamina_d: { get label() { return textInt('vitamina_d','label'); }, unit:"ng/mL", ref:[30,100], color:"#b7950b", get desc() { return textInt('vitamina_d','desc'); } },
+  vitamina_b12: { get label() { return textInt('vitamina_b12','label'); }, unit:"pg/mL", ref:[180,914], color:"#a04000", get desc() { return textInt('vitamina_b12','desc'); } },
+  folico: { get label() { return textInt('folico','label'); }, unit:"ng/mL", ref:[4,16], color:"#1d8348", get desc() { return textInt('folico','desc'); } },
+  filtrado_glomerular: { get label() { return textInt('filtrado_glomerular','label'); }, unit:"ml/min", ref:[60,120], color:"#117a65", get desc() { return textInt('filtrado_glomerular','desc'); } },
+  urato: { get label() { return textInt('urato','label'); }, unit:"mg/dL", ref:[2.4,7], color:"#8e44ad", get desc() { return textInt('urato','desc'); } },
+  fosfatasa_alcalina: { get label() { return textInt('fosfatasa_alcalina','label'); }, unit:"UI/L", ref:[40,145], color:"#7f8c8d", get desc() { return textInt('fosfatasa_alcalina','desc'); } },
+  cloruro: { get label() { return textInt('cloruro','label'); }, unit:"mmol/L", ref:[95,105], color:"#2e86c1", get desc() { return textInt('cloruro','desc'); } },
+  tiroxina_libre: { get label() { return textInt('tiroxina_libre','label'); }, unit:"ng/dL", ref:[0.54,1.24], color:"#a04000", get desc() { return textInt('tiroxina_libre','desc'); } },
+  neutrofilos: { get label() { return textInt('neutrofilos','label'); }, unit:"x10³/μL", ref:[1.9,8], color:"#2471a3", get desc() { return textInt('neutrofilos','desc'); } },
+  linfocitos: { get label() { return textInt('linfocitos','label'); }, unit:"x10³/μL", ref:[0.9,5.2], color:"#1a5276", get desc() { return textInt('linfocitos','desc'); } },
+  transferrina: { get label() { return textInt('transferrina','label'); }, unit:"mg/dL", ref:[200,360], color:"#7d6608", get desc() { return textInt('transferrina','desc'); } },
+  tiroxina_libre_t4: { get label() { return textInt('tiroxina_libre_t4','label'); }, unit:"ng/dL", ref:[0.54,1.24], color:"#a04000", get desc() { return textInt('tiroxina_libre_t4','desc'); } },
+  tsh: { get label() { return textInt('tsh','label'); }, unit:"mUI/L", ref:[0.38,5.33], color:"#1a5276", get desc() { return textInt('tsh','desc'); } },
+  t3: { get label() { return textInt('t3','label'); }, unit:"pg/mL", ref:[2.0,4.4], color:"#d1a054", get desc() { return textInt('t3','desc'); } },
+  t4: { get label() { return textInt('t4','label'); }, unit:"ng/dL", ref:[0.9,1.7], color:"#b8863b", get desc() { return textInt('t4','desc'); } },
+  ferritina: { get label() { return textInt('ferritina','label'); }, unit:"ng/mL", ref:[20,300], color:"#6e2f1a", get desc() { return textInt('ferritina','desc'); } },
+  hierro: { get label() { return textInt('hierro','label'); }, unit:"µg/dL", ref:[50,150], color:"#6e2f1a", get desc() { return textInt('hierro','desc'); } },
+  pcr: { get label() { return textInt('pcr','label'); }, unit:"mg/L", ref:[1,10], color:"#922b21", get desc() { return textInt('pcr','desc'); } },
+  fibrinogeno: { get label() { return textInt('fibrinogeno','label'); }, unit:"mg/dL", ref:[200,400], color:"#6c3483", get desc() { return textInt('fibrinogeno','desc'); } },
+  vsg: { get label() { return textInt('vsg','label'); }, unit:"mm/h", ref:[0,10], color:"#922b21", get desc() { return textInt('vsg','desc'); } },
+  albumina: { get label() { return textInt('albumina','label'); }, unit:"g/dL", ref:[3.5,5.2], color:"#1e8449", get desc() { return textInt('albumina','desc'); } },
+  proteinas: { get label() { return textInt('proteinas','label'); }, unit:"g/dL", ref:[6.6,8], color:"#1d8348", get desc() { return textInt('proteinas','desc'); } },
+  urea: { get label() { return textInt('urea','label'); }, unit:"mg/dL", ref:[10,50], color:"#7f8c8d", get desc() { return textInt('urea','desc'); } },
+  sodio: { get label() { return textInt('sodio','label'); }, unit:"mmol/L", ref:[134,145], color:"#148f77", get desc() { return textInt('sodio','desc'); } },
+  potasio: { get label() { return textInt('potasio','label'); }, unit:"mmol/L", ref:[3.5,5], color:"#1a5276", get desc() { return textInt('potasio','desc'); } },
+  cloro: { get label() { return textInt('cloro','label'); }, unit:"mmol/L", ref:[95,105], color:"#148f77", get desc() { return textInt('cloro','desc'); } },
+  calcio: { get label() { return textInt('calcio','label'); }, unit:"mg/dL", ref:[8.5,10.5], color:"#148f77", get desc() { return textInt('calcio','desc'); } },
+  fosforo: { get label() { return textInt('fosforo','label'); }, unit:"mg/dL", ref:[2.5,4.5], color:"#148f77", get desc() { return textInt('fosforo','desc'); } },
+  magnesio: { get label() { return textInt('magnesio','label'); }, unit:"mg/dL", ref:[1.6,2.6], color:"#148f77", get desc() { return textInt('magnesio','desc'); } },
+  bicarbonato: { get label() { return textInt('bicarbonato','label'); }, unit:"mmol/L", ref:[24,29], color:"#148f77", get desc() { return textInt('bicarbonato','desc'); } },
+  bnp: { get label() { return textInt('bnp','label'); }, unit:"pg/mL", ref:[20,125], color:"#922b21", get desc() { return textInt('bnp','desc'); } },
+  troponina: { get label() { return textInt('troponina','label'); }, unit:"ng/L", ref:[0,14], color:"#c0392b", get desc() { return textInt('troponina','desc'); } },
+  dimero_d: { get label() { return textInt('dimero_d','label'); }, unit:"ng/mL", ref:[null,500], color:"#922b21", get desc() { return textInt('dimero_d','desc'); } },
+  inr: { get label() { return textInt('inr','label'); }, unit:"", ref:[0.85,1.25], color:"#6c3483", get desc() { return textInt('inr','desc'); } },
+  tp: { get label() { return textInt('tp','label'); }, unit:"seg", ref:[9,13], color:"#6c3483", get desc() { return textInt('tp','desc'); } },
+  ttpa: { get label() { return textInt('ttpa','label'); }, unit:"seg", ref:[25,38], color:"#6c3483", get desc() { return textInt('ttpa','desc'); } },
+  actividad_protrombina: { get label() { return textInt('actividad_protrombina','label'); }, unit:"%", ref:[75,120], color:"#6c3483", get desc() { return textInt('actividad_protrombina','desc'); } },
+  gpt: { get label() { return textInt('gpt','label'); }, unit:"UI/L", ref:[10,37], color:"#7f8c8d", get desc() { return textInt('gpt','desc'); } },
+  got: { get label() { return textInt('got','label'); }, unit:"UI/L", ref:[10,38], color:"#7f8c8d", get desc() { return textInt('got','desc'); } },
+  ggt: { get label() { return textInt('ggt','label'); }, unit:"UI/L", ref:[7,50], color:"#7f8c8d", get desc() { return textInt('ggt','desc'); } },
+  fosfatasa: { get label() { return textInt('fosfatasa','label'); }, unit:"UI/L", ref:[40,145], color:"#7f8c8d", get desc() { return textInt('fosfatasa','desc'); } },
+  cpk: { get label() { return textInt('cpk','label'); }, unit:"UI/L", ref:[50,195], color:"#7f8c8d", get desc() { return textInt('cpk','desc'); } },
+  ldh: { get label() { return textInt('ldh','label'); }, unit:"UI/L", ref:[0,248], color:"#7f8c8d", get desc() { return textInt('ldh','desc'); } },
+  bilirrubina: { get label() { return textInt('bilirrubina','label'); }, unit:"mg/dL", ref:[0.5,1.0], color:"#b7950b", get desc() { return textInt('bilirrubina','desc'); } },
+  acido_urico: { get label() { return textInt('acido_urico','label'); }, unit:"mg/dL", ref:[2.4,7.0], color:"#7f8c8d", get desc() { return textInt('acido_urico','desc'); } },
+  psa: { get label() { return textInt('psa','label'); }, unit:"ng/mL", ref:[0,4.0], color:"#b06ab3", get desc() { return textInt('psa','desc'); } },
+  TA_sys: { get label() { return textInt('TA_sys','label'); }, unit:"mmHg", ref:[90,140], color:"#e74c3c", get desc() { return textInt('TA_sys','desc'); } },
+  TA_dia: { get label() { return textInt('TA_dia','label'); }, unit:"mmHg", ref:[60,90], color:"#c0392b", get desc() { return textInt('TA_dia','desc'); } },
+  FC: { get label() { return textInt('FC','label'); }, unit:"lpm", ref:[60,100], color:"#e67e22", get desc() { return textInt('FC','desc'); } },
+  Temp: { get label() { return textInt('Temp','label'); }, unit:"°C", ref:[36.0,37.5], color:"#f39c12", get desc() { return textInt('Temp','desc'); } },
+  SpO2: { get label() { return textInt('SpO2','label'); }, unit:"%", ref:[95,100], color:"#3498db", get desc() { return textInt('SpO2','desc'); } },
+};
+
+/* Helper: tooltip interactif pour les noms de paramètres */
+function paramTip(key) {
+  const p = PARAMS[key];
+  if (!p) return '';
+  const ref = p.ref ? p.ref.filter(v=>v!==null).join('–') + ' ' + p.unit : 'sin rango definido';
+  return p.desc + '\nRef: ' + ref;
+}
+/* Tooltip global : un seul élément fixé au body, mesuré puis positionné —
+   jamais rogné, jamais étroit (délégation : fonctionne pour tout .param-tip). */
+(function initParamTip() {
+  if (typeof document === 'undefined') return;
+  let box = null;
+  function ensureBox() {
+    if (!box) { box = document.createElement('div'); box.id = 'param-tipbox'; document.body.appendChild(box); }
+    return box;
+  }
+  document.addEventListener('mouseover', function (e) {
+    const t = e.target && e.target.closest ? e.target.closest('[data-ptip]') : null;
+    if (!t || !t.getAttribute('data-ptip')) return;
+    const b = ensureBox();
+    /* livrée : or-sur-bleu pour les corrélations (P-H), défaut sinon */
+    if (t.classList && t.classList.contains('corr-tip')) {
+      b.style.background = 'linear-gradient(135deg, var(--corr-tip-bg1), var(--corr-tip-bg2))';
+      b.style.color = 'var(--corr-tip-color)';
+      b.style.border = '1.5px solid var(--corr-tip-border)';
+    } else {
+      b.style.background = ''; b.style.color = ''; b.style.border = '';
+    }
+    const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    b.innerHTML = (t.getAttribute('data-ptip') || '').split('\n')
+      .map(l => l.indexOf('Ref:') === 0
+        ? '<span style="color:#3fb950;font-weight:600">' + esc(l) + '</span>'
+        : esc(l)).join('<br>');
+    b.classList.remove('on');
+    b.style.left = '0px'; b.style.top = '-9999px';   /* mesurer hors écran */
+    const r = t.getBoundingClientRect();
+    const bw = b.offsetWidth, bh = b.offsetHeight;
+    let x = Math.min(Math.max(6, r.left), window.innerWidth - bw - 6);
+    let y = r.top - bh - 8;
+    if (y < 6) y = r.bottom + 8;                      /* pas de place en haut → dessous */
+    b.style.left = x + 'px'; b.style.top = y + 'px';
+    b.classList.add('on');
+  });
+  document.addEventListener('mouseout', function (e) {
+    const t = e.target && e.target.closest ? e.target.closest('[data-ptip]') : null;
+    if (t && box) box.classList.remove('on');
+  });
+  document.addEventListener('scroll', function () { if (box) box.classList.remove('on'); }, true);
+})();
+
+function paramSpan(key, shortLabel, extraStyle) {
+  const p = PARAMS[key];
+  if (!p) return key;
+  const ref = p.ref ? p.ref.filter(v=>v!==null).join(' – ') + ' ' + p.unit : '';
+  /* P-H 07/08 : fondu avec l'indication clic droit dans LA MÊME bulle
+     rapide (data-ptip) — l'ancien title="" natif du <td> parent avait un
+     délai imposé par le navigateur, impossible à raccourcir en JS. */
+  const tip = (p.desc || p.label) + (ref ? '\nRef: ' + ref : '') + '\n🖱️ Clic izq.: glosario · Clic der.: curva';
+  const label = shortLabel || p.label;
+  return '<span class="param-tip" data-ptip="' + tip.replace(/"/g, '&quot;') + '" onclick="glosarioMostrarToast(\'' + key.replace(/'/g,"") + '\', event)" style="cursor:pointer' + (extraStyle ? ';'+extraStyle : '') + '">' + label + '</span>';
+}
+
+/* Alias court pour templates */
+function paramTip(key, short) {
+  return paramSpan(key, short);
+}
+
+function fillParamSelect() {
+  const sel = document.getElementById('m-param');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— ' + (t('lbl_param')||'Parámetro') + ' —</option>';
+
+  /* Paramètres prédéfinis — triés alphabétiquement */
+  const optGroup1 = document.createElement('optgroup');
+  optGroup1.label = 'Parámetros estándar';
+  Object.entries(PARAMS)
+    .sort((a, b) => a[1].label.localeCompare(b[1].label))
+    .forEach(([k,p]) => {
+      const opt = document.createElement('option');
+      opt.value = k; opt.textContent = p.label + ' (' + p.unit + ')';
+      optGroup1.appendChild(opt);
+    });
+  sel.appendChild(optGroup1);
+
+  /* Paramètres personnalisés */
+  const customs = loadCustomParams();
+  if (Object.keys(customs).length) {
+    const optGroup2 = document.createElement('optgroup');
+    optGroup2.label = 'Mis parámetros';
+    Object.entries(customs).forEach(([k,p]) => {
+      const opt = document.createElement('option');
+      opt.value = k; opt.textContent = p.label + ' (' + p.unit + ')';
+      optGroup2.appendChild(opt);
+    });
+    sel.appendChild(optGroup2);
+  }
+
+  /* Option pour ajouter un nouveau */
+  const sep = document.createElement('option');
+  sep.disabled = true; sep.textContent = '────────────────';
+  sel.appendChild(sep);
+  const addOpt = document.createElement('option');
+  addOpt.value = '__NEW__'; addOpt.textContent = '➕ Nuevo parámetro...';
+  addOpt.style.color = 'var(--accent)';
+  sel.appendChild(addOpt);
+
+  /* Remplir la datalist des sources */
+  fillSourceList();
+}
+
+function fillSourceList() {
+  const sel = document.getElementById('m-source-select');
+  if (!sel) return;
+
+  /* Collecter toutes les sources connues */
+  const sources = new Set();
+  loadData().forEach(d => { if (d.src) sources.add(d.src); });
+  loadEvents().forEach(e => { if (e.src) sources.add(e.src); });
+  loadCustomSources().forEach(s => sources.add(s));
+
+  /* Garder la sélection actuelle */
+  const prev = sel.value;
+
+  sel.innerHTML = '<option value="">— Seleccionar fuente —</option>';
+
+  /* Sources existantes */
+  [...sources].sort().forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    sel.appendChild(opt);
+  });
+
+  /* Séparateur + option nouvelle */
+  if (sources.size > 0) {
+    const sep = document.createElement('option');
+    sep.disabled = true; sep.textContent = '────────────────';
+    sel.appendChild(sep);
+  }
+  const addOpt = document.createElement('option');
+  addOpt.value = '__NEW_SOURCE__'; addOpt.textContent = '➕ Nueva fuente...';
+  sel.appendChild(addOpt);
+
+  /* Restaurer sélection si possible */
+  if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
+}
+
+function onSourceChange() {
+  const sel = document.getElementById('m-source-select');
+  const inp = document.getElementById('m-source-new');
+  if (sel.value === '__NEW_SOURCE__') {
+    inp.style.display = 'block';
+    inp.focus();
+  } else {
+    inp.style.display = 'none';
+    inp.value = '';
+  }
+}
+
+function getSelectedSource() {
+  const sel = document.getElementById('m-source-select');
+  if (sel.value === '__NEW_SOURCE__') {
+    return document.getElementById('m-source-new').value.trim() || '';
+  }
+  return sel.value || '';
+}
+
+/* Gestion des paramètres personnalisés */
+const CUSTOM_PARAMS_KEY = 'mt_custom_params';
+const CUSTOM_SOURCES_KEY = 'mt_custom_sources';
+
+function loadCustomParams() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_PARAMS_KEY) || '{}'); } catch { return {}; }
+}
+function saveCustomParams(p) { localStorage.setItem(CUSTOM_PARAMS_KEY, JSON.stringify(p)); }
+function loadCustomSources() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_SOURCES_KEY) || '[]'); } catch { return []; }
+}
+function saveCustomSources(s) { localStorage.setItem(CUSTOM_SOURCES_KEY, JSON.stringify(s)); }
+
+function addCustomSource(src) {
+  if (!src || src === 'Manuel') return;
+  const sources = loadCustomSources();
+  if (!sources.includes(src)) {
+    sources.push(src);
+    sources.sort();
+    saveCustomSources(sources);
+  }
+}
+
+function onParamChange() {
+  const sel = document.getElementById('m-param');
+  const box = document.getElementById('custom-param-box');
+  if (sel.value === '__NEW__') {
+    box.style.display = 'block';
+    document.getElementById('cp-label').focus();
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+function registerCustomParam() {
+  const label = document.getElementById('cp-label').value.trim();
+  const unit  = document.getElementById('cp-unit').value.trim() || '';
+  const refStr = document.getElementById('cp-ref').value.trim();
+
+  if (!label) return null;
+
+  /* Générer une clé machine depuis le label */
+  const key = 'custom_' + label.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+
+  /* Parser ref "min-max" */
+  let ref = null;
+  if (refStr) {
+    const parts = refStr.split(/[-–—]/);
+    if (parts.length === 2) {
+      ref = [parseFloat(parts[0]) || null, parseFloat(parts[1]) || null];
+    }
+  }
+
+  /* Sauvegarder dans PARAMS (runtime) et localStorage */
+  const customs = loadCustomParams();
+  const paramDef = { label, unit, ref, color: '#7f8c8d', desc: 'Parámetro personalizado: ' + label };
+  customs[key] = paramDef;
+  PARAMS[key] = paramDef;
+  saveCustomParams(customs);
+
+  /* Reset les champs */
+  document.getElementById('cp-label').value = '';
+  document.getElementById('cp-unit').value = '';
+  document.getElementById('cp-ref').value = '';
+  document.getElementById('custom-param-box').style.display = 'none';
+
+  /* Recharger le select et sélectionner le nouveau */
+  fillParamSelect();
+  document.getElementById('m-param').value = key;
+
+  return key;
+}
+
+
+
+function customAlert(title, message, icon='ℹ️', color='var(--accent)') {
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px)';
+  var bx = document.createElement('div');
+  bx.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--surface);border:2px solid ' + color + ';border-radius:14px;padding:0;width:90%;max-width:440px;box-shadow:0 16px 48px rgba(0,0,0,0.4);overflow:hidden';
+  bx.innerHTML =
+    '<div class="ca-head" style="cursor:move;background:' + color + ';color:white;padding:9px 18px;font-weight:700;font-size:14px;user-select:none;text-align:left">' + icon + ' ' + title + '</div>'
+    + '<div style="padding:18px 24px">'
+    + '<div style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.7;text-align:left">' + message + '</div>'
+    + '<button class="ca-ok btn primary" style="font-size:14px;padding:10px 32px;width:100%">OK</button>'
+    + '</div>';
+  ov.appendChild(bx);
+  document.body.appendChild(ov);
+  var bo = bx.querySelector('.ca-ok');
+  /* Déplaçable par l'en-tête */
+  var head = bx.querySelector('.ca-head'), drag = null;
+  head.onmousedown = function(e) {
+    var r = bx.getBoundingClientRect();
+    bx.style.transform = 'none'; bx.style.left = r.left + 'px'; bx.style.top = r.top + 'px';
+    drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+    e.preventDefault();
+  };
+  ov.onmousemove = function(e) { if (drag) { bx.style.left = (e.clientX - drag.dx) + 'px'; bx.style.top = (e.clientY - drag.dy) + 'px'; } };
+  ov.onmouseup = function() { drag = null; };
+  bo.onclick = function() { document.body.removeChild(ov); };
+  ov.onclick = function(e) { if (e.target === ov) document.body.removeChild(ov); };
+  setTimeout(() => bo.focus(), 50);
+}
+
+function prescriptorNombre(id) {
+  if (!id) return '';
+  return loadPrescriptores()[id] || id;
+}
+
+function prescriptorResolverId(nombre) {
+  nombre = (nombre || '').trim();
+  if (!nombre) return null;
+  var reg = loadPrescriptores();
+  var norm = normNombre(nombre);
+  var found = Object.keys(reg).find(function(id) { return normNombre(reg[id]) === norm; });
+  if (found) return found;
+  var max = 0;
+  Object.keys(reg).forEach(function(id) {
+    var m = /^PR(\d+)$/.exec(id);
+    if (m) max = Math.max(max, parseInt(m[1]));
+  });
+  var nuevoId = 'PR' + (max + 1);
+  reg[nuevoId] = nombre;
+  savePrescriptores(reg);
+  return nuevoId;
+}
+
+function protoBuildRxView() {
+  var L = protoListaPrescripcion();
+  var dispositivos = L.dispositivos, rx = L.rx;
+  var el = document.getElementById('proto-rx-list');
+  protoFillRxMeasures();
+  if (!rx.length && !dispositivos.length && !L.defacto.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:12px;text-align:center">' +
+      'Ningún medicamento en curso.<br>Añada medicamentos desde el panel <b>💊 Medicamentos</b> (botón Editar → Posología y Horarios).</div>';
+    return;
+  }
+  var html = '';
+  rx.forEach(function(m) {
+    var slots = m.slots || [];
+    var hasSlots = slots.length > 0;
+    var laDosis = (m.dosis && m.dosis !== '0' && m.dosis.trim() !== '') ? m.dosis : (m.dose || '');
+    var hasDosis = laDosis.trim() !== '';
+    /* Ergonomie P-H 18/07 : la ZONE D'ACTION vit à GAUCHE, à position fixe
+       (⚡ 🕐 dosis horaires) — le médicament, de longueur variable, vient en
+       5e et s'étale à droite. La souris ne voyage plus. */
+    html += '<div class="proto-rx-card">';
+    html += '<button class="proto-rx-remove" onclick="quickMedAction(\'' + m.nom.replace(/'/g,"\\'") + '\', this)" title="Acción rápida (estado)">⚡</button>';
+    html += '<button class="proto-rx-remove" onclick="protoQuickHorarios(\'' + m.nom.replace(/'/g,"\\'") + '\')" title="Cambiar horarios de toma">🕐</button>';
+    if (hasDosis) html += '<span class="proto-rx-dosis">' + laDosis + '</span>';
+    if (hasSlots) {
+      html += '<span class="proto-rx-schedule">';
+      slots.forEach(function(sid) {
+        var s = PROTO_SLOTS.find(function(x){return x.id===sid;});
+        if (s) html += '<span class="proto-rx-slot" title="'+s.label+'">' + s.icon + '</span>';
+      });
+      html += '</span>';
+    } else {
+      html += '<span style="font-size:13px;color:var(--warn);font-family:var(--mono)">⚠</span>';
+    }
+    html += '<span class="proto-rx-med">' + m.nom + '</span>';
+    if (m.prescriptor) html += '<span class="proto-rx-notes">👨‍⚕️ ' + prescriptorNombre(m.prescriptor) + '</span>';
+    html += '</div>';
+  });
+  /* ── Prescripción de hecho (P-H 18/07) : medicamentos que el cuidador
+     REGISTRA en el Protocolo pero que NO constan en la receta electrónica
+     (ej. memantina). Forman parte de la prescripción real — se muestran
+     con su aviso, para que ninguna consulta los olvide. ── */
+  L.defacto.forEach(function(nom) {
+    html += '<div class="proto-rx-card" style="border-color:var(--warn)">' +
+      '<span class="proto-rx-med">' + nom + '</span>' +
+      '<span class="proto-rx-notes" style="color:var(--warn)">⚠ no consta en receta electrónica — registrado por el cuidador</span></div>';
+  });
+
+  /* ── Dispositivos y material ── */
+  if (dispositivos.length) {
+    html += '<div style="font-size:11px;letter-spacing:.6px;color:var(--accent);font-weight:700;margin:14px 0 6px">🩹 DISPOSITIVOS Y MATERIAL</div>';
+    dispositivos.forEach(function(m) {
+      var laDosis = (m.dosis && m.dosis !== '0' && (m.dosis||'').trim() !== '') ? m.dosis : (m.dose || '');
+      html += '<div class="proto-rx-card">' +
+        '<button class="proto-rx-remove" onclick="quickMedAction(\'' + m.nom.replace(/'/g,"\\'") + '\', this)" title="Acción rápida (estado)">⚡</button>' +
+        (laDosis ? '<span class="proto-rx-dosis">' + laDosis + '</span>' : '') +
+        '<span class="proto-rx-med">' + m.nom + '</span>' +
+        (m.prescriptor ? '<span class="proto-rx-notes">👨‍⚕️ ' + prescriptorNombre(m.prescriptor) + '</span>' : '') +
+        '</div>';
+    });
+    html += '<div style="font-size:10px;color:var(--muted);margin:2px 0 4px">Cantidad/frecuencia según necesidad (O₂ en L/min) — sin horarios de toma.</div>';
+  }
+  /* P-H 18/07 (depuis l'hôpital) : les résolus/anciens ne s'affichent PLUS
+     dans la Prescripción — même pas en bannière. Leur clôture vit dans
+     💊 Medicamentos (⚡), leur histoire dans les données. */
+  html += '<div style="font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;text-align:center">' +
+    '💡 Para modificar posología u horarios → panel 💊 Medicamentos → botón Editar</div>';
+  el.innerHTML = html;
+}
+
+
+
+
+/* ================================================================
+   PANEL MEDICAMENTOS — Vue chronologique des médicaments extraits
+================================================================ */
+function updateMedFilterCounts() {
+  var container = document.getElementById('meds-content');
+  if (!container) return;
+  var cards = container.querySelectorAll('[id^="med-card-"]');
+  var counts = { '': 0, 'en_cours': 0, 'nouveau': 0, 'a_demanda': 0, 'suspendu': 0, 'abandonne': 0, 'terminado': 0 };
+  cards.forEach(function(card) {
+    var s = card.getAttribute('data-statut') || '';
+    counts['']++;
+    if (counts[s] !== undefined) counts[s]++;
+  });
+  var labels = {
+    '': 'Todos', 'en_cours': '🟢 En curso', 'nouveau': '🆕 Nuevo',
+    'a_demanda': '💊 Si necesario', 'suspendu': '⏸️ Suspendido',
+    'abandonne': '🔴 Abandonado', 'terminado': '✅ Terminado'
+  };
+  ['meds-filter', 'meds-filter-fixed'].forEach(function(id) {
+    var sel = document.getElementById(id);
+    if (!sel) return;
+    sel.querySelectorAll('option').forEach(function(opt) {
+      var v = opt.value;
+      var n = counts[v] !== undefined ? counts[v] : 0;
+      opt.textContent = labels[v] + ' (' + n + ')';
+    });
+  });
+}
+
+/* Liste de motifs partagée entre la popup Editar et les menus d'action
+   rapide (Abandonado / No administrado) — norme demandée : mêmes motifs
+   partout plutôt qu'un texte libre dans un cas et une liste dans l'autre. */
+var DEFAULT_MOTIFS = [
+  'Intolerancia digestiva',
+  'Reacción alérgica',
+  'Parkinsonismo farmacológico',
+  'Hipotensión',
+  'Bradicardia',
+  'Hemorragia / sangrado',
+  'Insuficiencia renal',
+  'Hepatotoxicidad',
+  'Interacción medicamentosa',
+  'Mejoría clínica',
+  'Falta de eficacia',
+  'Decisión del paciente',
+  'Decisión médica',
+  'Cambio de tratamiento',
+  'Fin de duración prevista',
+  'Efectos adversos cognitivos'
+];
+function getMedMotifsList() {
+  var s = {};
+  DEFAULT_MOTIFS.forEach(function(m) { s[m] = 1; });
+  loadMeds().forEach(function(m) { if (m.motif) s[m.motif] = 1; });
+  return Object.keys(s).sort();
+}
+
+function quickMedRazon(actionLabel, callback, motifsList) {
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center';
+
+  var box = document.createElement('div');
+  box.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;min-width:320px;max-width:480px;box-shadow:0 8px 40px rgba(0,0,0,0.5)';
+
+  var hasList = motifsList && motifsList.length > 0;
+  var selectHtml = '';
+  if (hasList) {
+    selectHtml = '<select id="quick-razon-select" style="width:100%;box-sizing:border-box;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:7px 9px;color:var(--text);font-family:var(--sans);font-size:13px;margin-bottom:8px">' +
+      '<option value="">— Seleccionar motivo —</option>' +
+      motifsList.map(function(m) { return '<option value="' + m.replace(/"/g, '&quot;') + '">' + m + '</option>'; }).join('') +
+      '<option value="__otro__">Otro (especificar)…</option>' +
+      '</select>';
+  }
+
+  box.innerHTML =
+    '<div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px">Motivo de ' + actionLabel.toLowerCase() + '</div>' +
+    selectHtml +
+    '<textarea id="quick-razon-inp" placeholder="Indique el motivo…" rows="3" style="width:100%;box-sizing:border-box;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--sans);font-size:13px;resize:vertical;outline:none' + (hasList ? ';display:none' : '') + '"></textarea>' +
+    '<div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">' +
+      '<button id="quick-razon-cancel" class="btn" style="font-size:12px;padding:5px 14px">Cancelar</button>' +
+      '<button id="quick-razon-ok" class="btn primary" style="font-size:12px;padding:5px 14px">Confirmar</button>' +
+    '</div>';
+
+  ov.appendChild(box);
+  document.body.appendChild(ov);
+
+  var inp = document.getElementById('quick-razon-inp');
+  var sel = document.getElementById('quick-razon-select');
+  if (sel) {
+    sel.focus();
+    sel.onchange = function() {
+      if (sel.value === '__otro__') { inp.style.display = ''; inp.value = ''; inp.focus(); }
+      else { inp.style.display = 'none'; inp.value = sel.value; }
+    };
+  } else {
+    inp.focus();
+  }
+
+  document.getElementById('quick-razon-cancel').onclick = function() { ov.remove(); };
+  document.getElementById('quick-razon-ok').onclick = function() {
+    var razon = (sel && sel.value && sel.value !== '__otro__') ? sel.value : inp.value.trim();
+    if (!razon) { (sel && inp.style.display === 'none' ? sel : inp).style.border = '1px solid var(--danger)'; return; }
+    ov.remove();
+    callback(razon);
+  };
+  inp.onkeydown = function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('quick-razon-ok').onclick(); }
+    if (e.key === 'Escape') ov.remove();
+  };
+  ov.onclick = function(e) { if (e.target === ov) ov.remove(); };
+}
+
+function quickMedAction(medName, anchor) {
+  /* Fermer tout menu existant */
+  document.querySelectorAll('.quick-med-menu').forEach(function(m){ m.remove(); });
+
+  var menu = document.createElement('div');
+  menu.className = 'quick-med-menu';
+  menu.style.cssText = 'position:fixed;z-index:99999;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.4);padding:6px;min-width:200px;font-size:12px';
+
+  var actions = [
+    { statut:'terminado',       icon:'✅', label:'Terminado',           razon:false },
+    { statut:'a_demanda',       icon:'💜', label:'Si necesario',        razon:false },
+    { statut:'suspendu',        icon:'⏸️', label:'Suspendido',          razon:true  },
+    { statut:'abandonne',       icon:'🔴', label:'Abandonado',          razon:true  },
+    { statut:'no_administrado', icon:'⚪', label:'No administrado',     razon:true  },
+    { statut:'en_cours',        icon:'🟢', label:'Reactivar (En curso)',razon:false },
+    { statut:'nouveau',         icon:'🆕', label:'Marcar como Nuevo',   razon:false },
+  ];
+
+  actions.forEach(function(a) {
+    var item = document.createElement('div');
+    item.style.cssText = 'padding:6px 10px;border-radius:6px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:8px';
+    item.innerHTML = '<span>' + a.icon + '</span><span>' + a.label + '</span>';
+    item.onmouseenter = function(){ item.style.background='var(--surface2)'; };
+    item.onmouseleave = function(){ item.style.background=''; };
+    item.onclick = function() {
+      menu.remove();
+      if (a.razon) {
+        /* Mini popup maison pour la raison, avec la même liste de motifs
+           que la popup Editar (Abandonado / No administrado) */
+        quickMedRazon(a.label, function(razon) {
+          applyQuickMedStatut(medName, a.statut, razon);
+        }, getMedMotifsList());
+      } else {
+        applyQuickMedStatut(medName, a.statut, '');
+      }
+    };
+    menu.appendChild(item);
+  });
+
+  /* Positionner le menu sous le bouton */
+  document.body.appendChild(menu);
+  var r = anchor.getBoundingClientRect();
+  var mh = menu.offsetHeight;
+  var top = r.bottom + 4;
+  if (top + mh > window.innerHeight) top = r.top - mh - 4;
+  menu.style.left = Math.min(r.left, window.innerWidth - 220) + 'px';
+  menu.style.top  = top + 'px';
+
+  /* Fermer au clic extérieur */
+  setTimeout(function(){
+    document.addEventListener('click', function close(){ menu.remove(); document.removeEventListener('click', close); });
+  }, 10);
+}
+
+/* Action rapide sur UNE SEULE occurrence/date (pas tout le groupe) — utile
+   pour un médicament répété à plusieurs dates (ex. plusieurs "Receta privada")
+   où chaque date peut avoir un statut différent. */
+function quickMedActionForEntry(entry, anchor) {
+  document.querySelectorAll('.quick-med-menu').forEach(function(m){ m.remove(); });
+  var menu = document.createElement('div');
+  menu.className = 'quick-med-menu';
+  menu.style.cssText = 'position:fixed;z-index:99999;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.4);padding:6px;min-width:220px;font-size:12px';
+  var actions = [
+    { statut:'terminado',       icon:'✅', label:'Terminado (esta fecha)',       razon:false },
+    { statut:'a_demanda',       icon:'💜', label:'Si necesario (esta fecha)',    razon:false },
+    { statut:'suspendu',        icon:'⏸️', label:'Suspendido (esta fecha)',      razon:true  },
+    { statut:'abandonne',       icon:'🔴', label:'Abandonado (esta fecha)',      razon:true  },
+    { statut:'no_administrado', icon:'⚪', label:'No administrado (esta fecha)', razon:true  },
+    { statut:'en_cours',        icon:'🟢', label:'Reactivar (esta fecha)',       razon:false },
+  ];
+  actions.forEach(function(a) {
+    var item = document.createElement('div');
+    item.style.cssText = 'padding:6px 10px;border-radius:6px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:8px';
+    item.innerHTML = '<span>' + a.icon + '</span><span>' + a.label + '</span>';
+    item.onmouseenter = function(){ item.style.background='var(--surface2)'; };
+    item.onmouseleave = function(){ item.style.background=''; };
+    item.onclick = function() {
+      menu.remove();
+      if (a.razon) quickMedRazon(a.label, function(razon){ applyQuickMedStatutForEntry(entry, a.statut, razon); }, getMedMotifsList());
+      else applyQuickMedStatutForEntry(entry, a.statut, '');
+    };
+    menu.appendChild(item);
+  });
+  document.body.appendChild(menu);
+  var r = anchor.getBoundingClientRect();
+  var mh = menu.offsetHeight;
+  var top = r.bottom + 4;
+  if (top + mh > window.innerHeight) top = r.top - mh - 4;
+  menu.style.left = Math.min(r.left, window.innerWidth - 240) + 'px';
+  menu.style.top  = top + 'px';
+  setTimeout(function(){
+    document.addEventListener('click', function close(){ menu.remove(); document.removeEventListener('click', close); });
+  }, 10);
+}
+
+function applyQuickMedStatutForEntry(entry, statut, razon) {
+  var allMeds = loadMeds();
+  var idx = allMeds.findIndex(function(m) {
+    return m.nom === entry.nom && m.date === entry.date && (m.source||'') === (entry.source||'') && (m.dose||'') === (entry.dose||'');
+  });
+  if (idx === -1) { status('⚠ No se encontró la entrada exacta'); return; }
+  allMeds[idx].statut = statut;
+  if (razon) allMeds[idx].motif_suspension = razon;
+  if (statut === 'terminado' || statut === 'abandonne' || statut === 'suspendu') allMeds[idx].date_fin = new Date().toISOString().slice(0,10);
+  saveMeds(allMeds);
+  buildMedicamentos();
+  status('⚡ ' + entry.nom + ' (' + fmtDate(entry.date) + ') → ' + statut);
+}
+
+function applyQuickMedStatut(medName, statut, razon) {
+  var allMeds = loadMeds();
+  var changed = false;
+  for (var i = 0; i < allMeds.length; i++) {
+    var m = allMeds[i];
+    if (medKeyCanon(m.nom) === medKeyCanon(medName.replace(/\s*\(\d+\)$/, ''))) {
+      m.statut = statut;
+      if (razon) m.motif_suspension = razon;
+      if (statut === 'terminado' || statut === 'abandonne' || statut === 'suspendu') {
+        m.date_fin = new Date().toISOString().slice(0,10);
+      }
+      changed = true;
+    }
+  }
+  if (changed) {
+    saveMeds(allMeds);
+    buildMedicamentos();
+    status('⚡ ' + medName + ' → ' + statut);
+  }
+}
+
+/* Filtre de période du panneau Medicación (suggestion P-H 13/07) :
+   12m / année en cours / tout / depuis une date choisie. Persistant. */
+const MEDS_FILTRO_KEY = 'mt_meds_filtro';
+function medsFiltroSet(mode, desde) {
+  localStorage.setItem(MEDS_FILTRO_KEY, JSON.stringify({ mode: mode, desde: desde || null }));
+  buildMedicamentos();
+}
+function medsFiltroGet() {
+  try { return JSON.parse(localStorage.getItem(MEDS_FILTRO_KEY)) || { mode: '12m' }; }
+  catch { return { mode: '12m' }; }
+}
+/* ════ SOURCE DE VÉRITÉ UNIQUE (P-H 15/07 : incohérence Medicamentos/Protocolo) ════
+   Une seule clé de regroupement et une seule règle d'état pour TOUS les panneaux :
+   · medKeyCanon : 1er mot du nom normalisé, sans accents ni parenthèses
+   · medGruposCanon : groupes {displayName, entries triées CHRONOLOGIQUEMENT}
+   · l'état actuel d'un médicament = statut de sa dernière entrée par DATE
+     (plus jamais l'ordre d'insertion du tableau). */
+/* Synonymes marque↔générique (P-H 05/08, ex. Xarelto=Rivaroxabán) — une
+   ligne par paire, à enrichir toi-même au fil des découvertes. Sans cette
+   table, deux noms de la même molécule sont vus comme deux médicaments
+   différents (ex. le faux « no consta en receta electrónica »). */
+const MED_SINONIMOS = {
+  'xarelto': 'rivaroxaban',
+};
+function medKeyCanon(s) {
+  s = (s || '').replace(/\s*\(.*?\)/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  const primera = (s.split(/\s+/)[0] || s);
+  return MED_SINONIMOS[primera] || primera;
+}
+/* Dispositifs & matériel (P-H 15/07) : l'oxygène et les Incopack ne sont pas
+   des médicaments — catégorie propre, unités propres (L/min, unidades/día). */
+const DISPOSITIVO_PAT = ['oxigen', 'incopack', 'panal', 'pañal', 'absorbente', 'aposito',
+  'apósito', 'tiras react', 'lanceta', 'aguja', 'jeringa', 'camara inhal', 'cámara inhal',
+  'aerochamber', 'sonda', 'colector', 'nebulizador', 'andador', 'colchon', 'colchón'];
+function esDispositivo(nom) {
+  const n = (nom || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  return DISPOSITIVO_PAT.some(function(p) {
+    return n.indexOf(p.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) !== -1;
+  });
+}
+/* Ancienneté : une prescription non renouvelée depuis N mois n'est pas un
+   traitement courant (les cures d'antibiotiques jamais clôturées). */
+function medEsAntiguo(entry, meses) {
+  const d = entry.date || entry.date_debut || '';
+  if (!d) return false;
+  const lim = new Date(); lim.setMonth(lim.getMonth() - (meses || 12));
+  return d < lim.toISOString().slice(0, 10);
+}
+function medGruposCanon() {
+  const meds = loadMeds();
+  const byName = {};
+  meds.forEach(function(m) {
+    const key = medKeyCanon(m.nom);
+    if (!byName[key]) byName[key] = { displayName: (m.nom || '').trim().split(/\s+/)[0].toUpperCase(), entries: [] };
+    byName[key].entries.push(m);
+  });
+  Object.values(byName).forEach(function(g) {
+    g.entries.sort(function(a, b) {
+      return String(a.date || a.date_debut || '').localeCompare(String(b.date || b.date_debut || ''));
+    });
+  });
+  return byName;
+}
+
+function buildMedicamentos() {
+  const todos = loadMeds();
+  const el = document.getElementById('meds-content');
+  el.innerHTML = '';
+
+  /* ── barre de période ── */
+  const f = medsFiltroGet();
+  let limite = null;
+  if (f.mode === '12m') { const d = new Date(); d.setFullYear(d.getFullYear() - 1); limite = d.toISOString().slice(0, 10); }
+  else if (f.mode === 'anno') { limite = new Date().getFullYear() + '-01-01'; }
+  else if (f.mode === 'desde' && f.desde) { limite = f.desde; }
+  const meds = limite ? todos.filter(m => (m.date || m.date_debut || '') >= limite) : todos;
+
+  const btnP = (mode, label) => '<button class="btn" style="font-size:11px;padding:4px 12px;border-radius:14px;' +
+    (f.mode === mode ? 'background:var(--accent);color:#fff;border-color:var(--accent)' : '') +
+    '" onclick="medsFiltroSet(\'' + mode + '\')">' + label + '</button>';
+  el.innerHTML +=
+    '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:10px">' +
+    '<span style="font-size:11px;color:var(--muted)">Periodo:</span>' +
+    btnP('12m', 'Últimos 12 meses') + btnP('anno', 'Este año') + btnP('todo', 'Todo') +
+    '<span style="font-size:11px;color:var(--muted);margin-left:6px">desde</span>' +
+    '<input type="date" value="' + (f.mode === 'desde' && f.desde ? f.desde : '') + '" ' +
+    'onchange="if(this.value)medsFiltroSet(\'desde\',this.value)" ' +
+    'style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text)"/>' +
+    '<span style="margin-left:auto;font-size:11px;color:var(--muted)">' + meds.length + ' / ' + todos.length + ' entradas</span>' +
+    '</div>';
+
+  if (!meds.length) {
+    if (todos.length) {
+      el.innerHTML += '<div style="color:var(--muted);padding:40px;text-align:center;font-size:14px">' +
+        'Sin medicación documentada en el periodo elegido — pulse «Todo» para ver las ' + todos.length + ' entradas.</div>';
+      return;
+    }
+    el.innerHTML += '<div style="color:var(--muted);padding:40px;text-align:center;font-size:14px">' +
+      '💊 No hay medicamentos registrados.<br><br>' +
+      'Los medicamentos se extraen automáticamente al importar PDFs con la API Claude,<br>' +
+      'o bien al restaurar un archivo .mt que los contiene.' +
+      '</div>';
+    return;
+  }
+
+  /* Regroupement et tri chronologique : LA loi unique (medGruposCanon) */
+  const byName = medGruposCanon();
+
+  const keys = Object.keys(byName).sort();
+  const uniqueDates = [...new Set(meds.map(m => m.date))].sort();
+
+  /* Mettre à jour le tooltip de l'onglet Medicamentos avec les infos dynamiques */
+  var medTab = document.getElementById('tour-tab-medicamentos');
+  if (medTab) {
+    medTab.setAttribute('data-tip-always', '');
+    medTab.setAttribute('data-tiptext',
+      '💡 Fuentes: extractión automática de informes médicos. ⚠ NO sustituye la conciliación farmacéutica.\n' +
+      '🟢 En curso · 🆕 Nuevo · ⏸️ Suspendido · 🔴 Abandonado\n' +
+      '💊 ' + keys.length + ' medicamentos · ' + meds.length + ' entradas · ' +
+      uniqueDates.length + ' fechas · ' + uniqueDates[0] + ' → ' + uniqueDates[uniqueDates.length-1]);
+  }
+
+  /* Statut → style */
+  const STAT = {
+    en_cours:         { bg: 'rgba(74,232,164,0.12)', border: 'var(--accent2)', icon: '🟢', label: 'En curso' },
+    nouveau:          { bg: 'rgba(74,143,232,0.12)', border: 'var(--accent)',  icon: '🆕', label: 'Nuevo' },
+    a_demanda:        { bg: 'rgba(164,74,232,0.12)', border: '#a44ae8',        icon: '💜', label: 'Si necesario' },
+    no_administrado:  { bg: 'rgba(120,120,120,0.12)', border: '#9ca3af',       icon: '⚪', label: 'No administrado' },
+    suspendu:         { bg: 'rgba(232,164,74,0.12)', border: 'var(--warn)',    icon: '⏸️', label: 'Suspendido' },
+    abandonne:        { bg: 'rgba(232,74,74,0.12)',  border: 'var(--danger)',  icon: '🔴', label: 'Abandonado' },
+    terminado:        { bg: 'rgba(150,150,150,0.12)', border: 'var(--muted)',  icon: '✅', label: 'Terminado' }
+  };
+
+  keys.forEach(key => {
+    const entries = byName[key].entries;
+    const name = byName[key].displayName + (entries.length > 1 ? ' (' + entries.length + ')' : '');
+    const lastEntry = entries[entries.length - 1];
+    const firstEntry = entries[0];
+    const lastStat = STAT[lastEntry.statut] || STAT.en_cours;
+
+    /* Dates début/fin : utiliser date_debut si édité, sinon date de la première/dernière entrée */
+    const dateDebut = lastEntry.date_debut || firstEntry.date || '';
+    const dateFin = lastEntry.date_fin || '';
+
+    const card = document.createElement('div');
+    card.id = 'med-card-' + key;
+    card.setAttribute('data-statut', lastEntry.statut || 'en_cours');
+    card.style.cssText = `background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;max-width:780px`;
+
+    /* === BANDE DE TÊTE (statut color + Nom centré + Editar) === */
+    const statusBand = document.createElement('div');
+    statusBand.style.cssText = `background:${lastStat.bg};border-bottom:2px solid ${lastStat.border};padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:14px`;
+    statusBand.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:700;font-size:12px;color:var(--text);flex-shrink:0;min-width:120px">
+        <span style="font-size:18px">${lastStat.icon}</span>
+        <span>${lastStat.label}</span>
+      </div>`;
+    /* Bouton Editar déplacé à GAUCHE du nom (plus repérable que tout à
+       droite, à côté du bouton ⚡ action rapide) */
+    const btnEdit = document.createElement('button');
+    btnEdit.textContent = '📝 Editar';
+    btnEdit.className = 'btn';
+    btnEdit.style.cssText = `font-size:11px;padding:4px 12px;background:rgba(255,255,255,0.15);border:1px solid ${lastStat.border};color:var(--text);font-weight:600;flex-shrink:0`;
+    btnEdit.onclick = function() { editMedStatut(name); };
+    statusBand.appendChild(btnEdit);
+
+    const nameDiv = document.createElement('div');
+    nameDiv.style.cssText = 'flex:1;text-align:center;font-family:var(--mono);font-weight:700;font-size:17px;color:var(--text);padding:0 10px';
+    nameDiv.textContent = name;
+    statusBand.appendChild(nameDiv);
+
+    /* Bouton action rapide ⚡ */
+    const btnQuick = document.createElement('button');
+    btnQuick.textContent = '⚡';
+    btnQuick.className = 'btn';
+    btnQuick.title = 'Acción rápida';
+    btnQuick.style.cssText = `font-size:11px;padding:4px 8px;background:rgba(255,255,255,0.1);border:1px solid ${lastStat.border};color:var(--text);flex-shrink:0`;
+    btnQuick.onclick = function(ev) { ev.stopPropagation(); quickMedAction(name, btnQuick); };
+    statusBand.appendChild(btnQuick);
+    card.appendChild(statusBand);
+
+    /* === CONTENU PRINCIPAL (détails sans le nom — déjà dans la bande) === */
+    const body = document.createElement('div');
+    body.style.cssText = 'padding:12px 18px';
+    body.innerHTML = `
+      <div style="font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:6px">${lastEntry.dose}${lastEntry.frequence ? ' · ' + lastEntry.frequence : ''}</div>
+      ${dateDebut ? '<div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:2px">📅 Inicio: ' + fmtDate(dateDebut) + (dateFin ? ' → Fin: ' + fmtDate(dateFin) : '') + '</div>' : ''}
+      ${lastEntry.motif ? '<div style="font-family:var(--mono);font-size:11px;color:var(--danger);margin-bottom:2px">⚠ Motivo: ' + lastEntry.motif + '</div>' : ''}
+      ${lastEntry.remplace_par ? '<div style="font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:2px">→ Reemplazado por: ' + lastEntry.remplace_par + '</div>' : ''}
+      ${lastEntry.prescriptor ? '<div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:2px">👨‍⚕️ ' + prescriptorNombre(lastEntry.prescriptor) + '</div>' : ''}
+      ${lastEntry.dosis ? '<div style="font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:2px">💊 ' + lastEntry.dosis + '</div>' : ''}
+      ${lastEntry.slots && lastEntry.slots.length ? '<div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:2px">🕐 ' + lastEntry.slots.map(function(s){return {am:'🌅 Desayuno',almuerzo:'🥐 Almuerzo',mid:'🍽️ Comida',pm:'🫖 Merienda',cena:'🌆 Cena',night:'🌙 Noche',libre:'🕐 Libre'}[s]||s;}).join(' · ') + '</div>' : ''}
+      ${lastEntry.receta ? '<div style="font-family:var(--mono);font-size:11px;color:var(--accent2);margin-bottom:2px">📋 ' + ({receta_publica:'Receta pública',receta_privada:'Receta privada',iniciativa_paciente:'Iniciativa del paciente',no_financiado:'Receta pública (no financiada)',hospital:'Dispensación hospitalaria'}[lastEntry.receta] || lastEntry.receta) + '</div>' : ''}`;
+    card.appendChild(body);
+
+    /* === TIMELINE des apparitions === */
+    if (entries.length > 1 || entries[0].source) {
+      const timeline = document.createElement('div');
+      timeline.style.cssText = 'border-top:1px solid var(--border);padding:10px 18px;background:var(--surface2)';
+      entries.forEach((entry, i) => {
+        const st = STAT[entry.statut] || STAT.en_cours;
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:3px 0;font-family:var(--mono);font-size:11px';
+        row.innerHTML = `
+          <span style="color:${st.border};font-size:12px">${i === entries.length-1 ? '●' : '│'}</span>
+          <span style="color:var(--muted);min-width:80px">${fmtDate(entry.date)}</span>
+          <span style="color:var(--accent);min-width:120px">${entry.nom || ''}</span>
+          <span style="color:var(--text)">${entry.dose}${entry.frequence ? ' · ' + entry.frequence : ''}</span>
+          <span style="color:var(--muted);font-size:10px">— ${entry.source || ''}</span>
+          ${entry.motif ? '<span style="color:var(--danger);font-size:10px">(' + entry.motif + ')</span>' : ''}`;
+        /* Action rapide sur cette occurrence précise (utile quand un même
+           médicament revient à plusieurs dates, ex. plusieurs "Receta
+           privada" à statuts différents) */
+        const btnEntryQuick = document.createElement('button');
+        btnEntryQuick.textContent = '⚡';
+        btnEntryQuick.title = 'Acción rápida sobre esta fecha';
+        btnEntryQuick.style.cssText = 'margin-left:auto;font-size:10px;padding:2px 6px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer';
+        btnEntryQuick.onclick = function(ev) { ev.stopPropagation(); quickMedActionForEntry(entry, btnEntryQuick); };
+        row.appendChild(btnEntryQuick);
+        timeline.appendChild(row);
+      });
+      card.appendChild(timeline);
+    }
+
+    el.appendChild(card);
+  });
+
+  /* Remplir la listbox de navigation rapide */
+  var nav = document.getElementById('meds-quicknav');
+  var navFixed = document.getElementById('meds-quicknav-fixed');
+  if (nav) {
+    nav.innerHTML = '<option value="">— Seleccionar medicamento —</option>';
+    keys.forEach(function(key) {
+      var opt = document.createElement('option');
+      opt.value = 'med-card-' + key;
+      var info = byName[key];
+      var lastSt = STAT[info.entries[info.entries.length-1].statut] || STAT.en_cours;
+      opt.textContent = info.displayName + (info.entries.length > 1 ? ' (' + info.entries.length + ')' : '') + ' ' + lastSt.icon;
+      nav.appendChild(opt);
+    });
+    /* Copier dans la listbox fixed */
+    if (navFixed) navFixed.innerHTML = nav.innerHTML;
+  }
+  /* Scroll listener : afficher la barre fixed quand la listbox normale sort de l'écran */
+  medInitScrollWatch();
+  updateMedFilterCounts();
+  /* P-H 05/08 : par défaut on montre les actifs, pas tout — mais UNE SEULE
+     fois par session, pour ne jamais écraser un filtre que l'aidant aurait
+     lui-même choisi ensuite (un changement de patient ou un import relance
+     bien buildMedicamentos(), ce drapeau ne doit pas s'y opposer). */
+  /* P-H 05/08 (bug trouvé) : un drapeau "une seule fois" se déclenchait
+     sur un premier appel invisible (avant que le patient soit chargé) et
+     n'appliquait donc jamais le filtre au vrai premier affichage — il
+     fallait recliquer pour voir l'effet. Corrigé : on réapplique le
+     défaut à CHAQUE reconstruction, sauf si l'aidant a lui-même choisi
+     un filtre au moins une fois (son choix reste alors respecté). */
+  if (!window._medFiltroUsuarioEligio) {
+    medFilterStatus('en_cours');
+  }
+}
+
+/* Afficher/masquer la barre fixed quand la listbox normale sort de l'écran */
+var _medScrollWatchActive = false;
+function medInitScrollWatch() {
+  if (_medScrollWatchActive) return;
+  _medScrollWatchActive = true;
+  var anchor = document.getElementById('meds-bar-anchor');
+  var fixedBar = document.getElementById('meds-fixed-bar');
+  if (!anchor || !fixedBar) return;
+  
+  /* Ajuster le top de la barre fixe selon la hauteur réelle de la navbar */
+  var navBar = document.querySelector('.nav');
+  var navH = navBar ? navBar.offsetHeight : 44;
+  fixedBar.style.top = navH + 'px';
+  
+  /* IntersectionObserver : quand l'ancre sort de l'écran → afficher la barre fixe */
+  var observer = new IntersectionObserver(function(entries) {
+    var panel = document.getElementById('panel-medicamentos');
+    if (!panel || !panel.classList.contains('active')) { fixedBar.style.display = 'none'; return; }
+    entries.forEach(function(entry) {
+      fixedBar.style.display = entry.isIntersecting ? 'none' : 'block';
+    });
+  }, { threshold: 0, rootMargin: '-' + navH + 'px 0px 0px 0px' });
+  
+  observer.observe(anchor);
+}
+
+function medNavTop() {
+  var nav = document.getElementById('meds-quicknav');
+  var navFixed = document.getElementById('meds-quicknav-fixed');
+  if (nav) nav.selectedIndex = 0;
+  if (navFixed) navFixed.value = '';
+  var panel = document.getElementById('panel-medicamentos');
+  if (panel) {
+    var navBar = document.querySelector('.nav');
+    var navHeight = navBar ? navBar.offsetHeight : 48;
+    var panelRect = panel.getBoundingClientRect();
+    window.scrollTo({ top: window.pageYOffset + panelRect.top - navHeight - 4, behavior: 'smooth' });
+  }
+}
+
+/* Filtrer les cartes par statut */
+function medFilterStatus(statut) {
+  var container = document.getElementById('meds-content');
+  if (!container) return;
+  var cards = container.querySelectorAll('[id^="med-card-"]');
+  var nav = document.getElementById('meds-quicknav');
+  var navFixed = document.getElementById('meds-quicknav-fixed');
+  /* Synchroniser les deux filtres */
+  var filterMain = document.getElementById('meds-filter');
+  var filterFixed = document.getElementById('meds-filter-fixed');
+  if (filterMain) filterMain.value = statut;
+  if (filterFixed) filterFixed.value = statut;
+
+  cards.forEach(function(card) {
+    if (!statut) { card.style.display = ''; return; }
+    var cardStatut = card.getAttribute('data-statut') || '';
+    card.style.display = (cardStatut === statut) ? '' : 'none';
+  });
+
+  /* Mettre à jour la listbox pour n'afficher que les médicaments visibles */
+  if (nav) {
+    for (var i = 1; i < nav.options.length; i++) {
+      var cardId = nav.options[i].value;
+      var card = document.getElementById(cardId);
+      nav.options[i].style.display = (card && card.style.display !== 'none') ? '' : 'none';
+    }
+    nav.selectedIndex = 0;
+  }
+  if (navFixed) {
+    for (var i = 1; i < navFixed.options.length; i++) {
+      var cardId = navFixed.options[i].value;
+      var card = document.getElementById(cardId);
+      navFixed.options[i].style.display = (card && card.style.display !== 'none') ? '' : 'none';
+    }
+    navFixed.selectedIndex = 0;
+  }
+}
+
+/* Navigation précédent/suivant dans la listbox */
+function medNavPrev() {
+  var nav = document.getElementById('meds-quicknav');
+  if (!nav || nav.selectedIndex <= 1) return;
+  nav.selectedIndex--;
+  jumpToMed(nav.value);
+  var navFixed = document.getElementById('meds-quicknav-fixed');
+  if (navFixed) navFixed.value = nav.value;
+}
+function medNavNext() {
+  var nav = document.getElementById('meds-quicknav');
+  if (!nav || nav.selectedIndex >= nav.options.length - 1) return;
+  if (nav.selectedIndex === 0) nav.selectedIndex = 1; else nav.selectedIndex++;
+  jumpToMed(nav.value);
+  var navFixed = document.getElementById('meds-quicknav-fixed');
+  if (navFixed) navFixed.value = nav.value;
+}
+
+function jumpToMed(id) {
+  if (!id) return;
+  var el = document.getElementById(id);
+  if (!el) return;
+  /* Synchroniser les deux listbox */
+  var nav = document.getElementById('meds-quicknav');
+  var navFixed = document.getElementById('meds-quicknav-fixed');
+  if (nav) nav.value = id;
+  if (navFixed) navFixed.value = id;
+  /* Calculer la position : sous la barre (fixed ou normale) */
+  var topOffset = 52; /* hauteur navbar */
+  var fixedBar = document.getElementById('meds-fixed-bar');
+  if (fixedBar && fixedBar.style.display !== 'none') {
+    topOffset = fixedBar.getBoundingClientRect().bottom;
+  }
+  var cardRect = el.getBoundingClientRect();
+  window.scrollBy({ top: cardRect.top - topOffset - 8, behavior: 'smooth' });
+  /* Surbrillance */
+  el.style.transition = 'outline .2s, box-shadow .2s';
+  el.style.outline = '3px solid var(--accent)';
+  el.style.boxShadow = '0 0 20px rgba(74,143,232,0.3)';
+  setTimeout(function() { el.style.outline = ''; el.style.boxShadow = ''; }, 2000);
+}
+
+function medDeducirPrescriptores() {
+  /* MOULINETTE (P-H 06/08) : les medicaments extraits des PDF n'ont jamais
+     porte de prescripteur ligne a ligne — le signataire vit au niveau du
+     DOCUMENT (cartouche). Rapprochement : par pdf_id, puis par date, et
+     l'ecrire MARQUE COMME DEDUCTION (prescriptor_origen:'deducido') —
+     jamais en silence. Validation humaine = rouvrir la fiche et Actualizar
+     (le flag tombe). Doctrine : senala, no juzga. */
+  var meds = loadMeds();
+  var events = (typeof loadEvents === 'function') ? loadEvents() : [];
+  var episodios = [];
+  try {
+    var mtRaw = localStorage.getItem('mt_mf_structure');
+    if (mtRaw) { episodios = (JSON.parse(mtRaw).episodios) || []; }
+  } catch (e) {}
+
+  function firmante(med) {
+    if (med.pdf_id) {
+      var ev = events.find(function(e) { return e.pdf_id === med.pdf_id && (e.prescriptor || e.facultativo); });
+      if (ev) return { nombre: ev.prescriptor || ev.facultativo, via: 'documento ' + med.pdf_id };
+    }
+    var fecha = med.date || med.date_debut;
+    if (fecha) {
+      var ev2 = events.find(function(e) { return e.date === fecha && (e.prescriptor || e.facultativo); });
+      if (ev2) return { nombre: ev2.prescriptor || ev2.facultativo, via: 'episodio del ' + fecha };
+      var ep = episodios.find(function(x) { return (x.date === fecha || x.fecha === fecha) && (x.prescriptor || x.facultativo); });
+      if (ep) return { nombre: ep.prescriptor || ep.facultativo, via: 'episodio del ' + fecha };
+    }
+    return null;
+  }
+
+  var deducciones = [];
+  meds.forEach(function(m) {
+    if (m.prescriptor) return;
+    var f = firmante(m);
+    if (f) {
+      m.prescriptor = prescriptorResolverId(f.nombre);
+      m.prescriptor_origen = 'deducido';
+      deducciones.push({ med: m.nom, medico: f.nombre, via: f.via });
+    }
+  });
+  if (deducciones.length) saveMeds(meds);
+
+  var ov = document.createElement('div');
+  ov.id = 'med-deduc-resumen';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;padding:20px';
+  var lista = deducciones.length
+    ? deducciones.map(function(d) { return '<div style="padding:4px 0;border-bottom:1px solid var(--border)"><b>' + d.med + '</b> \u2192 ' + d.medico + ' <span style="font-size:10px;color:var(--muted)">(' + d.via + ')</span></div>'; }).join('')
+    : '<div style="color:var(--muted);font-style:italic">Ninguna deducci\u00f3n posible : el expediente no contiene firmantes de documentos rastreables (la extracci\u00f3n nativa no los captura todav\u00eda \u2014 mejora prevista).</div>';
+  ov.innerHTML = '<div style="background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:20px 24px;max-width:520px;max-height:80vh;overflow-y:auto">' +
+    '<div style="font-size:16px;font-weight:700;margin-bottom:10px">\ud83d\udd17 Prescriptores deducidos: ' + deducciones.length + '</div>' +
+    '<div style="font-size:12px;color:var(--muted);margin-bottom:10px">Cada deducci\u00f3n queda MARCADA \u2014 abre la ficha y pulsa Actualizar para confirmarla (o corr\u00edgela).</div>' +
+    lista +
+    '<div style="text-align:right;margin-top:14px"><button class="btn primary" onclick="document.getElementById(&quot;med-deduc-resumen&quot;).remove()">Cerrar</button></div></div>';
+  document.body.appendChild(ov);
+  if (deducciones.length) buildMedicamentos();
+}
+
+function medNuevoMedicamento() {
+  /* École de P-H (05/08), adoptée : PAS de popup native moche pour
+     demander le nom. On crée une fiche vide dans le JSON (statut
+     "nouveau", qui existe déjà dans le filtre), elle apparaît dans la
+     liste comme n'importe quel médicament, puis on simule le clic sur
+     Editar — le nom se corrige alors DANS le beau formulaire habituel,
+     pas dans un prompt(). C'est aussi la seule façon qui marche vraiment :
+     le bouton Guardar ne fait rien s'il ne trouve aucune entrée à
+     l'avance portant ce nom (vérifié dans le code). */
+  var meds = loadMeds();
+  var existentes = {};
+  meds.forEach(function(m) { existentes[m.nom] = true; });
+  var base = 'Nuevo medicamento', nombre = base, n = 1;
+  while (existentes[nombre]) { n++; nombre = base + ' (' + n + ')'; }
+  meds.push({ nom: nombre, statut: 'nouveau', dosis: '', date_debut: new Date().toISOString().slice(0, 10),
+              _borrador: 1 /* brouillon : n'existe vraiment qu'une fois Actualizar cliqué (P-H 06/08 : fantômes) */ });
+  saveMeds(meds);
+  buildMedicamentos();
+  /* appel DIRECT (P-H 06/08) : le setTimeout de 150ms ne servait qu'à laisser
+     peindre la liste — inutile, et un timer est fragile par nature. */
+  editMedStatut(nombre);
+}
+
+/* PURGE DES BROUILLONS ORPHELINS (P-H 06/08 : « Nuevo medicamento (2) » vides
+   dans le patrimoine) : un Cancelar ou une fermeture d'app avant Actualizar
+   laissait la fiche vide créée par ➕ Nuevo. On purge au chargement :
+   ① les _borrador d'une session passée ② les fantômes d'AVANT ce correctif
+   (nom auto ET fiche vierge — aucune donnée saisie). */
+(function medPurgarBorradores() {
+  try {
+    var meds = loadMeds();
+    var limpios = meds.filter(function(m) {
+      if (m._borrador) return false;
+      var nomAuto = /^Nuevo medicamento( \(\d+\))?$/.test(m.nom || '');
+      var vierge = !m.dosis && !m.prescriptor && !m.receta && !m.concentracion &&
+                   !(m.slots && m.slots.length) && !m.comida && !m.frecuencia;
+      return !(nomAuto && vierge);
+    });
+    if (limpios.length !== meds.length) {
+      saveMeds(limpios);
+      console.log('[Medicamentos] ' + (meds.length - limpios.length) + ' borrador(es) huérfano(s) purgado(s)');
+    }
+  } catch (e) {}
+})();
+
+function editMedStatut(medName) {
+  /* Garde-fou (P-H 06/08, bug débusqué : un clic « qui ne fait rien ») —
+     un voile de visite guidée resté actif (quelle qu'en soit la cause)
+     intercepte TOUS les clics de la page, y compris ceux de ce popup, sans
+     rien afficher de visible. On le referme systématiquement à l'ouverture,
+     par précaution — sans effet s'il n'était pas là. */
+  try {
+    var _tourOv = document.getElementById('tour-overlay');
+    if (_tourOv && _tourOv.style.display !== 'none') _tourOv.style.display = 'none';
+    var _tourBub = document.getElementById('tour-bubble');
+    if (_tourBub && _tourBub.style.display !== 'none') _tourBub.style.display = 'none';
+    document.body.classList.remove('tour-active');
+  } catch (e) {}
+
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;padding:20px;overflow-y:auto';
+  var bx = document.createElement('div');
+  bx.style.cssText = 'background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:0;width:90%;max-width:520px;max-height:96vh;overflow:hidden;display:flex;flex-direction:column;position:relative';
+
+  /* Barre de titre déplaçable */
+  var titleBar = document.createElement('div');
+  titleBar.id = 'med-edit-titlebar';
+  titleBar.style.cssText = 'background:rgba(74,143,232,0.15);padding:12px 22px;cursor:move;user-select:none;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);transition:background .15s';
+  var _esNuevo = (function() {
+    var m = loadMeds().find(function(x) { return x.nom === medName; });
+    return m && m.statut === 'nouveau';
+  })();
+  titleBar.innerHTML = '<div style="font-size:17px;font-weight:700;color:var(--text)">EDITAR / CORREGIR MEDICAMENTO</div>' +
+    '<div style="font-family:var(--mono);font-size:11px;color:var(--accent);opacity:0.7" title="Arrastrar para mover">⋮⋮</div>';
+  bx.appendChild(titleBar);
+
+  /* Effet hover sur la barre de titre */
+  titleBar.addEventListener('mouseenter', function() { titleBar.style.background = 'rgba(74,143,232,0.25)'; });
+  titleBar.addEventListener('mouseleave', function() { titleBar.style.background = 'rgba(74,143,232,0.15)'; });
+
+  /* Conteneur scrollable pour le formulaire */
+  var content = document.createElement('div');
+  content.style.cssText = 'padding:18px 24px;overflow-y:auto;flex:1';
+
+  var form = document.createElement('div');
+  form.style.cssText = 'display:flex;flex-direction:column;gap:10px';
+
+  /* Style compact pour les champs */
+  var lblStyle = 'font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:3px';
+  var inpStyle = 'width:100%;font-size:13px;padding:7px 9px;border:1px solid var(--border);border-radius:5px;background:var(--surface2);color:var(--text);box-sizing:border-box';
+
+  /* Récupérer la liste des médecins : depuis prescriptors déjà saisis + facultativo des events */
+  var allMedsForList = loadMeds();
+  var doctorsSet = {};
+  allMedsForList.forEach(function(m) { if (m.prescriptor) doctorsSet[prescriptorNombre(m.prescriptor)] = 1; });
+  /* Ajouter les facultativos depuis les events */
+  var allEvents = loadEvents();
+  allEvents.forEach(function(e) { if (e.facultativo) doctorsSet[e.facultativo] = 1; });
+  /* Ajouter depuis mt_prescripteurs (extrait lors du bridge) */
+  try {
+    var prescs = JSON.parse(localStorage.getItem('mt_prescripteurs') || '[]');
+    prescs.forEach(function(p) { if (p) doctorsSet[p] = 1; });
+  } catch(e) {}
+  /* Ajouter depuis mt_mf_structure (structure complète du .mf importé) */
+  try {
+    var mtRaw = localStorage.getItem('mt_mf_structure');
+    if (mtRaw) {
+      var mtData = JSON.parse(mtRaw);
+      (mtData.episodios || []).forEach(function(ep) { if (ep.facultativo) doctorsSet[ep.facultativo] = 1; if (ep.prescriptor) doctorsSet[ep.prescriptor] = 1; });
+      (mtData.docs_cartouche || []).forEach(function(d) { if (d.facultativo) doctorsSet[d.facultativo] = 1; });
+      (mtData.prescripteurs || []).forEach(function(p) { if (p) doctorsSet[p] = 1; });
+    }
+  } catch(e) {}
+  var doctorsList = Object.keys(doctorsSet).sort();
+  var datalistOptions = doctorsList.map(function(d) { return '<option value="' + d.replace(/"/g, '&quot;') + '">'; }).join('');
+  console.log('[Editar Medicamentos] Médecins trouvés :', doctorsList.length, doctorsList);
+
+  /* Récupérer la liste des motifs : suggestions initiales + motifs déjà saisis (unique, trié) — mêmes DEFAULT_MOTIFS que le menu d'action rapide */
+  var motifsSet = {};
+  DEFAULT_MOTIFS.forEach(function(m) { motifsSet[m] = 1; });
+  allMedsForList.forEach(function(m) { if (m.motif) motifsSet[m.motif] = 1; });
+  var motifsList = Object.keys(motifsSet).sort();
+  console.log('[Editar Medicamentos] Motifs disponibles :', motifsList.length);
+  medSetMotifsList(motifsList);
+
+  /* MAQUETA P-H 06/08 — Ligne 1 : Nombre (liste qui apprend) + Receta */
+  var nombresSet = {};
+  allMedsForList.forEach(function(m) { if (m.nom) nombresSet[m.nom] = 1; });
+  var nombresOptions = Object.keys(nombresSet).sort().map(function(n) { return '<option value="' + n.replace(/"/g, '&quot;') + '">'; }).join('');
+  form.innerHTML += '<div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">' +
+    '<div style="flex:2;min-width:200px"><label style="' + lblStyle + '">Nombre del medicamento</label>' +
+    '<input type="text" id="med-edit-nombre" autocomplete="off" value="' + medName.replace(/"/g, '&quot;') + '" placeholder="Ej: Memantina" style="' + inpStyle + ';font-weight:600"/>' +
+    '<div style="flex:1;min-width:160px" id="med-edit-receta-slot"></div>' +
+    '</div>';
+  /* P-H 06/08 : le champ, construit dans une grosse chaîne HTML d'un coup
+     avec le reste du formulaire, peut mal peindre sa valeur initiale selon
+     le navigateur — on la refixe une seconde fois en JS pur, juste après,
+     pour être sûr que ce qui s'affiche corresponde toujours à medName. */
+  setTimeout(function() {
+    var _champNom = document.getElementById('med-edit-nombre');
+    if (_champNom) _champNom.value = medName;
+  }, 0);
+
+  /* Receta : injectée dans son emplacement de la ligne 1 (maquette P-H) */
+  document.createElement('div'); /* no-op, garde la numérotation lisible */
+  form.querySelector('#med-edit-receta-slot').innerHTML = '<label style="' + lblStyle + '">Receta / Ordonnance</label>' +
+    '<select id="med-edit-receta" onchange="medReordenarDoctores()" style="' + inpStyle + '">' +
+    '<option value="">— No especificado —</option>' +
+    '<option value="receta_publica">Receta pública (financiada)</option>' +
+    '<option value="receta_privada">Receta privada</option>' +
+    '<option value="iniciativa_paciente">Iniciativa del paciente</option>' +
+    '<option value="no_financiado">Receta pública (no financiada)</option>' +
+    '<option value="hospital">Dispensación hospitalaria</option>' +
+    '</select>';
+
+  /* 2. Prescrito por — entre Receta et Posología */
+  form.innerHTML += '<div><label style="' + lblStyle + '">Prescrito por</label>' +
+    '<div style="display:flex;gap:4px;align-items:center">' +
+    '<input type="text" id="med-edit-prescriptor" list="med-edit-doctors" autocomplete="off" placeholder="Escribir las primeras letras, o un nombre nuevo" style="flex:1;' + inpStyle + '"/>' +
+    '<button type="button" onclick="var c=document.getElementById(\'med-edit-prescriptor\');c.value=\'\';c.focus();" title="Vaciar el campo y mostrar toda la lista" style="width:34px;height:32px;border:1px solid var(--border);border-radius:5px;background:var(--surface2);color:var(--text);cursor:pointer;font-size:12px">▼</button>' +
+    '</div>' +
+    '<datalist id="med-edit-doctors">' + datalistOptions + '</datalist>' +
+    '<div style="font-size:10px;color:var(--muted);margin-top:2px">' + (doctorsList.length > 0 ? '💡 ' + doctorsList.length + ' médico(s) — ▼ vacía el campo y muestra toda la lista' : 'No hay médicos registrados todavía. Escriba el nombre para añadirlo a la lista.') + '</div></div>';
+
+  /* Ligne 3 (retour P-H 06/08 14h30) : Dosis · Posología · FORMA À LA FIN,
+     libellés à gauche de chaque champ, tout sur la même ligne. */
+  form.innerHTML += '<div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap">' +
+    '<div style="display:flex;gap:4px;align-items:center;flex-shrink:0"><label style="' + lblStyle + ';margin-bottom:0;white-space:nowrap">Dosis (mg)</label>' +
+    '<input type="text" inputmode="decimal" id="med-edit-concentracion" placeholder="0" style="' + inpStyle + ';width:52px;text-align:center;font-weight:600" title="Concentración de cada unidad, ej. 20"/></div>' +
+    '<div style="display:flex;gap:4px;align-items:center;flex-shrink:0"><label style="' + lblStyle + ';margin-bottom:0;white-space:nowrap">Posología (Qté)</label>' +
+    '<input type="text" inputmode="decimal" id="med-edit-dosis-qty" value="0" style="' + inpStyle + ';width:52px;text-align:center;font-weight:600" title="Cantidad por toma"/></div>' +
+    '<div style="display:flex;gap:4px;align-items:center;flex:1;min-width:0"><label style="' + lblStyle + ';margin-bottom:0;white-space:nowrap">Forma</label>' +
+    '<select id="med-edit-dosis-form" style="flex:1;min-width:0;' + inpStyle + '">' +
+    '<option value="">— Forma —</option>' +
+    '<option value="ampolla">ampolla</option>' +
+    '<option value="cápsula">cápsula</option>' +
+    '<option value="comprimido">comprimido</option>' +
+    '<option value="cucharada">cucharada</option>' +
+    '<option value="gotas">gotas</option>' +
+    '<option value="inhalación">inhalación</option>' +
+    '<option value="inyección">inyección</option>' +
+    '<option value="mg">mg</option>' +
+    '<option value="ml">ml</option>' +
+    '<option value="parche">parche</option>' +
+    '<option value="píldora">píldora</option>' +
+    '<option value="sobre">sobre</option>' +
+    '<option value="supositorio">supositorio</option>' +
+    '</select></div>' +
+    '</div>';
+
+  /* MAQUETA P-H 06/08 — Ligne 4 : les repas. L'INTERFACE parle repas, le
+     STOCKAGE garde les ids historiques (am/mid/pm/night, connus du Protocolo
+     et des .mf existants) + 2 nouveaux (almuerzo, libre). Rétro-compat
+     totale : un .mf ancien coche les bonnes cases sans migration. */
+  var chkStyle = 'display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--text);cursor:pointer;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface2)';
+  form.innerHTML += '<div><label style="' + lblStyle + '">Horarios de toma</label>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px">' +
+    '<label style="' + chkStyle + '"><input type="checkbox" id="med-edit-slot-am" style="accent-color:var(--accent)"> 🌅 Desayuno</label>' +
+    '<label style="' + chkStyle + '"><input type="checkbox" id="med-edit-slot-almuerzo" style="accent-color:var(--accent)"> 🥐 Almuerzo</label>' +
+    '<label style="' + chkStyle + '"><input type="checkbox" id="med-edit-slot-mid" style="accent-color:var(--accent)"> 🍽️ Comida</label>' +
+    '<label style="' + chkStyle + '"><input type="checkbox" id="med-edit-slot-pm" style="accent-color:var(--accent)"> 🫖 Merienda</label>' +
+    '<label style="' + chkStyle + '"><input type="checkbox" id="med-edit-slot-cena" style="accent-color:var(--accent)"> 🌆 Cena</label>' +
+    '<label style="' + chkStyle + '"><input type="checkbox" id="med-edit-slot-night" style="accent-color:var(--accent)"> 🌙 Noche</label>' +
+    '<label style="' + chkStyle + '"><input type="checkbox" id="med-edit-slot-libre" style="accent-color:var(--accent)"> 🕐 Libre</label>' +
+    '</div></div>';
+
+  /* 5. Frecuencia — NOUVEAU */
+  form.innerHTML += '<div><label style="' + lblStyle + '">Frecuencia de toma</label>' +
+    '<select id="med-edit-frecuencia" style="' + inpStyle + '">' +
+    '<option value="diario">Diario</option>' +
+    '<option value="cada2">Cada 2 días</option>' +
+    '<option value="semanal">Semanal</option>' +
+    '<option value="quincenal">Quincenal</option>' +
+    '<option value="mensual">Mensual</option>' +
+    '<option value="trimestral">Trimestral</option>' +
+    '<option value="anual">Anual</option>' +
+    '<option value="si_necesario">Si es necesario (PRN)</option>' +
+    '</select></div>';
+
+  /* Instrucciones (comidas + duración) — retirées d'abord (absentes de la
+     maquette), RESTAURÉES à la demande de P-H (06/08 : « je ne vois pas
+     Instrucciones ») à leur place d'origine. */
+  form.innerHTML += '<div><label style="' + lblStyle + '">Instrucciones</label>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">' +
+    '<select id="med-edit-comida" title="Relación con las comidas" style="' + inpStyle + ';flex:1;max-width:200px">' +
+    '<option value="">— Comidas —</option>' +
+    '<option value="antes">Antes de comer</option>' +
+    '<option value="durante">Durante la comida</option>' +
+    '<option value="despues">Después de comer</option>' +
+    '<option value="ayunas">En ayunas</option>' +
+    '<option value="lejos">Lejos de comidas</option>' +
+    '<option value="si_necesario">Si necesario (PRN)</option>' +
+    '</select>' +
+    '<select id="med-edit-duracion" title="Duración del tratamiento" onchange="medDuracionChange()" style="' + inpStyle + ';flex:1;max-width:180px">' +
+    '<option value="0">— Duración —</option>' +
+    '<option value="3">3 días</option>' +
+    '<option value="5">5 días</option>' +
+    '<option value="7">7 días</option>' +
+    '<option value="10">10 días</option>' +
+    '<option value="14">14 días</option>' +
+    '<option value="21">21 días</option>' +
+    '<option value="30">30 días</option>' +
+    '<option value="90">90 días</option>' +
+    '<option value="-1">Sin límite</option>' +
+    '</select>' +
+    '</div></div>';
+
+  /* 7+8. Estatuto actual, Fecha inicio, Fecha fin — TOUS SUR LA MÊME LIGNE (P-H 06/08) */
+  form.innerHTML += '<div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">' +
+    '<div style="flex:1;min-width:130px"><label style="' + lblStyle + '">Estatuto actual</label>' +
+    '<select id="med-edit-statut" onchange="medStatutChange()" style="' + inpStyle + '">' +
+    '<option value="en_cours">En curso</option>' +
+    '<option value="nouveau">Nuevo</option>' +
+    '<option value="a_demanda">Si necesario (PRN)</option>' +
+    '<option value="no_administrado">No administrado</option>' +
+    '<option value="suspendu">Suspendido</option>' +
+    '<option value="abandonne">Abandonado</option>' +
+    '<option value="terminado">Terminado</option>' +
+    '</select></div>' +
+    '<div style="flex:1;min-width:130px"><label style="' + lblStyle + '">Fecha inicio</label>' +
+    '<input type="date" id="med-edit-debut" onchange="medDuracionChange()" style="' + inpStyle + '"/></div>' +
+    '<div id="med-edit-fin-block" style="flex:1;min-width:130px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">' +
+      '<label style="font-size:12px;font-weight:600;color:var(--muted)">Fecha fin</label>' +
+      '<span id="med-edit-fin-hint" style="font-size:10px;color:var(--muted);font-style:italic"></span>' +
+    '</div>' +
+    '<input type="date" id="med-edit-fin" style="' + inpStyle + '"/>' +
+    '</div></div>';
+
+  /* MAQUETA P-H 06/08 : Motivo et Reemplazado retirés de l'interface —
+     valeurs existantes préservées, plus éditées ici. */
+
+  content.appendChild(form);
+  bx.appendChild(content);
+
+  /* Barre de boutons en bas, fixe */
+  var btnRow = document.createElement('div');
+  btnRow.style.cssText = 'display:flex;gap:6px;align-items:center;padding:10px 20px;border-top:1px solid var(--border);background:var(--surface);flex-wrap:wrap';
+  var btnS = 'font-size:13px;padding:7px 14px;white-space:nowrap';
+  var bPrint = document.createElement('button'); bPrint.innerHTML = '🖨️ Imprimir'; bPrint.className = 'btn'; bPrint.style.cssText = btnS;
+  bPrint.onclick = function() { medPrintRx(medName); };
+  var bCopy = document.createElement('button'); bCopy.innerHTML = '📋 Copiar'; bCopy.className = 'btn'; bCopy.style.cssText = btnS;
+  bCopy.onclick = function() { medCopyRx(medName); };
+  /* MAQUETA P-H 06/08 — Ligne 7 : les 4 boutons, même ligne, son ordre */
+  var bo = document.createElement('button'); bo.innerHTML = '✅ Actualizar'; bo.className = 'btn primary'; bo.style.cssText = btnS + ';flex:1';
+  var bc = document.createElement('button'); bc.textContent = 'Cancelar'; bc.className = 'btn'; bc.style.cssText = btnS + ';flex:1';
+  bc.addEventListener('click', function() {
+    /* brouillon jamais validé (P-H 06/08) : Cancelar le retire — pas de fantôme.
+       addEventListener : coexiste avec le onclick de fermeture, sans le remplacer. */
+    try {
+      var _m = loadMeds();
+      var _l = _m.filter(function(x) { return !(x._borrador && x.nom === medName); });
+      if (_l.length !== _m.length) { saveMeds(_l); buildMedicamentos(); }
+    } catch (e) {}
+  });
+  bPrint.style.cssText = btnS + ';flex:1'; bCopy.style.cssText = btnS + ';flex:1';
+  btnRow.appendChild(bPrint); btnRow.appendChild(bCopy); btnRow.appendChild(bo); btnRow.appendChild(bc);
+  bx.appendChild(btnRow);
+  /* Version en bas à droite */
+  var verRow = document.createElement('div');
+  verRow.style.cssText = 'text-align:right;padding:2px 20px 4px;background:var(--surface)';
+  var verSpan = document.createElement('span');
+  verSpan.style.cssText = 'font-family:var(--mono);font-size:9px;color:var(--muted);opacity:0.5';
+  verSpan.textContent = 'Medicamentos v1.8.5';
+  verRow.appendChild(verSpan);
+  bx.appendChild(verRow);
+  ov.appendChild(bx);
+  document.body.appendChild(ov);
+
+  /* === DRAG SUPPORT === */
+  (function() {
+    var startX = 0, startY = 0, origLeft = 0, origTop = 0, dragging = false;
+    function getPoint(e) {
+      if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      return { x: e.clientX, y: e.clientY };
+    }
+    function onDown(e) {
+      /* Au premier drag, basculer le modal en position fixe */
+      if (!bx.dataset.detached) {
+        var r = bx.getBoundingClientRect();
+        ov.style.display = 'block'; /* enlever le flex pour permettre position absolue */
+        bx.style.position = 'fixed';
+        bx.style.left = r.left + 'px';
+        bx.style.top = r.top + 'px';
+        bx.style.margin = '0';
+        bx.dataset.detached = '1';
+      }
+      dragging = true;
+      var p = getPoint(e);
+      startX = p.x; startY = p.y;
+      var rect = bx.getBoundingClientRect();
+      origLeft = rect.left; origTop = rect.top;
+      e.preventDefault();
+    }
+    function onMove(e) {
+      if (!dragging) return;
+      var p = getPoint(e);
+      var newLeft = origLeft + (p.x - startX);
+      var newTop = origTop + (p.y - startY);
+      var w = bx.offsetWidth, h = bx.offsetHeight;
+      newLeft = Math.max(0, Math.min(window.innerWidth - w, newLeft));
+      newTop = Math.max(0, Math.min(window.innerHeight - h, newTop));
+      bx.style.left = newLeft + 'px';
+      bx.style.top = newTop + 'px';
+    }
+    function onUp() { dragging = false; }
+    titleBar.addEventListener('mousedown', onDown);
+    titleBar.addEventListener('touchstart', onDown, { passive: false });
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchend', onUp);
+  })();
+
+  /* Pré-remplir avec les données existantes */
+  var meds = loadMeds();
+  var entries = meds.filter(function(m) { 
+    return m.nom === medName || 
+           (m.nom && m.nom.toUpperCase().startsWith(medName.toUpperCase().replace(/\s*\(\d+\)$/,'')));
+  });
+  var last = entries.length ? entries[entries.length - 1] : {};
+
+  /* Pré-remplir */
+  setTimeout(function() {
+    document.getElementById('med-edit-statut').value = last.statut || 'en_cours';
+    document.getElementById('med-edit-debut').value = last.date_debut || entries[0].date || '';
+    document.getElementById('med-edit-prescriptor').value = last.prescriptor ? prescriptorNombre(last.prescriptor) : '';
+    if (last.prescriptor_origen === 'deducido') {
+      var _pEl = document.getElementById('med-edit-prescriptor');
+      _pEl.style.fontStyle = 'italic';
+      _pEl.style.color = 'var(--warn)';
+      _pEl.title = 'Deducido del documento firmante \u2014 pulse Actualizar para confirmar, o corrija';
+    }
+    document.getElementById('med-edit-receta').value = last.receta || '';
+    /* Posología : décomposer le champ dosis en quantité + forme */
+    var dosis = last.dosis || last.dose || '';   /* les DEUX colonnes d'origine (P-H 15/07) */
+    var dosisMatch = dosis.match(/^([\d.,]+)\s*(\S+)/);
+    if (dosisMatch) {
+      document.getElementById('med-edit-dosis-qty').value = dosisMatch[1];
+      /* Normaliser la forme : capsula→cápsula, etc. */
+      var formaMap = {
+        'capsula':'cápsula','capsulas':'cápsula','comprimidos':'comprimido',
+        'gotas':'gotas','sobres':'sobre','ampollas':'ampolla',
+        'parches':'parche','supositorios':'supositorio',
+        'inhalaciones':'inhalación','inyecciones':'inyección'
+      };
+      var formaRaw = dosisMatch[2].toLowerCase();
+      var formaNorm = formaMap[formaRaw] || formaRaw;
+      document.getElementById('med-edit-dosis-form').value = formaNorm;
+    }
+    document.getElementById('med-edit-concentracion').value = last.concentracion || '';
+    /* Horarios */
+    var slots = last.slots || [];
+    ['am', 'almuerzo', 'mid', 'pm', 'cena', 'night', 'libre'].forEach(function(sid) {
+      if (slots.indexOf(sid) >= 0) {
+        var el = document.getElementById('med-edit-slot-' + sid);
+        if (el) el.checked = true;
+      }
+    });
+    document.getElementById('med-edit-frecuencia').value = last.frecuencia || 'diario';
+    document.getElementById('med-edit-comida').value = last.comida || '';
+    document.getElementById('med-edit-duracion').value = last.duracion || '0';
+
+    var finInput = document.getElementById('med-edit-fin');
+    var hint = document.getElementById('med-edit-fin-hint');
+    var savedFin = last.date_fin || '';
+    if (savedFin) {
+      finInput.value = savedFin;
+      finInput.style.color = 'var(--text)';
+      finInput.style.fontWeight = '700';
+      finInput.style.fontStyle = 'normal';
+      hint.textContent = '';
+    } else {
+      var startDateStr = last.date_debut || entries[0].date || '';
+      var duree = parseInt(last.duree_jours);
+      if (startDateStr && duree && !isNaN(duree)) {
+        var start = new Date(startDateStr);
+        start.setDate(start.getDate() + duree);
+        finInput.value = start.toISOString().slice(0, 10);
+        finInput.style.color = 'var(--muted)';
+        finInput.style.fontWeight = '400';
+        finInput.style.fontStyle = 'italic';
+        hint.textContent = '(prevista)';
+        finInput.dataset.prevista = '1';
+      } else {
+        finInput.value = '';
+        finInput.style.color = 'var(--text)';
+        hint.textContent = '';
+      }
+    }
+
+    finInput.addEventListener('input', function() {
+      finInput.style.color = 'var(--text)';
+      finInput.style.fontWeight = '700';
+      finInput.style.fontStyle = 'normal';
+      hint.textContent = '';
+      delete finInput.dataset.prevista;
+    });
+
+    /* Appliquer la logique d'activation/désactivation selon le statut */
+    medStatutChange();
+    medReordenarDoctores();
+  }, 50);
+
+  bo.onclick = function() {
+    var nuevoNombre = document.getElementById('med-edit-nombre').value.trim() || medName;
+    var statut = document.getElementById('med-edit-statut').value;
+    var debut = document.getElementById('med-edit-debut').value;
+    var finInput = document.getElementById('med-edit-fin');
+    var fin = (finInput.dataset.prevista === '1') ? '' : finInput.value;
+    var prescriptor = document.getElementById('med-edit-prescriptor').value.trim();
+    var receta = document.getElementById('med-edit-receta').value;
+    /* LISTE QUI APPREND, vraiment (P-H 06/08 : « le médecin privé antérieur a
+       disparu ») : la suggestion ne doit JAMAIS dépendre de l'état courant des
+       fiches — un nom tapé une fois entre pour toujours dans le registre
+       mt_prescripteurs (déjà lu par le datalist), même si la fiche change de
+       médecin ensuite. Un traitement passe entre plusieurs mains (Xarelto...). */
+    if (prescriptor) {
+      try {
+        var _reg = JSON.parse(localStorage.getItem('mt_prescripteurs') || '[]');
+        if (_reg.indexOf(prescriptor) === -1) {
+          _reg.push(prescriptor);
+          localStorage.setItem('mt_prescripteurs', JSON.stringify(_reg));
+        }
+        /* apprendre aussi le COUPLE nom↔type de recette (P-H 06/08) : sert à
+           proposer d'abord les médecins du type choisi, sans cacher les autres */
+        if (receta) {
+          var _regT = JSON.parse(localStorage.getItem('mt_prescriptores_receta') || '{}');
+          if (!_regT[prescriptor]) _regT[prescriptor] = [];
+          if (_regT[prescriptor].indexOf(receta) === -1) {
+            _regT[prescriptor].push(receta);
+            localStorage.setItem('mt_prescriptores_receta', JSON.stringify(_regT));
+          }
+        }
+      } catch (e) {}
+    }
+    /* Composer la posologie */
+    var dosisQty = document.getElementById('med-edit-dosis-qty').value.trim();
+    var dosisForm = document.getElementById('med-edit-dosis-form').value;
+    var concentracion = document.getElementById('med-edit-concentracion').value.trim();
+    var dosis = '';
+    if (dosisQty && dosisForm) dosis = dosisQty + ' ' + dosisForm;
+    else if (dosisQty) dosis = dosisQty;
+    else if (dosisForm) dosis = dosisForm;
+    var slots = [];
+    ['am', 'almuerzo', 'mid', 'pm', 'cena', 'night', 'libre'].forEach(function(sid) {
+      var el = document.getElementById('med-edit-slot-' + sid);
+      if (el && el.checked) slots.push(sid);
+    });
+
+    var allMeds = loadMeds();
+    for (var i = allMeds.length - 1; i >= 0; i--) {
+      if (allMeds[i].nom === medName || (allMeds[i].nom && allMeds[i].nom.toUpperCase().startsWith(medName.toUpperCase().replace(/\s*\(\d+\)$/,'')))) {
+        allMeds[i].nom = nuevoNombre;
+        delete allMeds[i]._borrador; /* geste humain = la fiche existe pour de vrai */
+        allMeds[i].statut = statut;
+        if (debut) allMeds[i].date_debut = debut;
+        if (fin) allMeds[i].date_fin = fin;
+        /* motif / remplace_par : plus dans l'UI (maquette 06/08) — préservés tels quels */
+        if (prescriptor) {
+          allMeds[i].prescriptor = prescriptorResolverId(prescriptor); /* nom tapé -> id (P-H 06/08) */
+          delete allMeds[i].prescriptor_origen; /* geste humain = validation, le flag deducido tombe */
+        }
+        if (receta) allMeds[i].receta = receta;
+        allMeds[i].dosis = dosis;
+        allMeds[i].concentracion = concentracion;
+        allMeds[i].slots = slots;
+        allMeds[i].comida = document.getElementById('med-edit-comida').value;
+        allMeds[i].duracion = document.getElementById('med-edit-duracion').value;
+        allMeds[i].frecuencia = document.getElementById('med-edit-frecuencia').value;
+        break;
+      }
+    }
+    saveMeds(allMeds);
+    document.body.removeChild(ov);
+    buildMedicamentos();
+    /* Rafraîchir le Protocolo si la fonction existe */
+    if (typeof protoBuildRxView === 'function') protoBuildRxView();
+    /* P-H 06/08 (trouvé par lui-même) : sauter vers la fiche n'a de sens que
+       pour une VRAIE édition — pour une création, la fiche peut très bien
+       être filtrée hors de vue (statut « nouveau » sous le filtre par
+       défaut « En curso »), et le saut vers un élément invisible produisait
+       un défilement erroné au lieu d'un simple rafraîchissement propre. */
+    if (!_esNuevo) {
+      var normKey = nuevoNombre.replace(/\s*\(.*?\)/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+      setTimeout(function() { jumpToMed('med-card-' + normKey); }, 200);
+    }
+  };
+  bc.onclick = function() { document.body.removeChild(ov); };
+  ov.onclick = function(e) { if (e.target === ov) document.body.removeChild(ov); };
+}
+
+/* ── Modale de sélection des motifs (déplaçable) ── */
+var _medMotifsList = [];
+function medSetMotifsList(list) { _medMotifsList = list; }
+
+function medShowMotifPicker() {
+  /* Supprimer si déjà ouverte */
+  var existing = document.getElementById('med-motif-picker');
+  if (existing) existing.remove();
+
+  var motifs = _medMotifsList.length ? _medMotifsList : [
+    'Intolerancia digestiva','Reacción alérgica','Parkinsonismo farmacológico',
+    'Hipotensión','Bradicardia','Hemorragia / sangrado',
+    'Insuficiencia renal','Hepatotoxicidad','Interacción medicamentosa',
+    'Mejoría clínica','Falta de eficacia','Decisión del paciente','Decisión médica',
+    'Cambio de tratamiento','Fin de duración prevista','Efectos adversos cognitivos'
+  ];
+
+  /* Motifs déjà sélectionnés dans le champ */
+  var currentVal = (document.getElementById('med-edit-motif').value || '').trim();
+  var currentMotifs = currentVal ? currentVal.split(/\s*\+\s*/) : [];
+  var currentSet = {};
+  currentMotifs.forEach(function(m) { currentSet[m.trim().toLowerCase()] = true; });
+
+  var ov = document.createElement('div');
+  ov.id = 'med-motif-picker';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:15000;background:rgba(0,0,0,0.3);display:flex;justify-content:center;align-items:center;padding:20px';
+
+  var box = document.createElement('div');
+  box.style.cssText = 'background:var(--surface);border:2px solid var(--accent);border-radius:12px;width:90%;max-width:440px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.4)';
+
+  /* Barre de titre déplaçable */
+  var titleBar = document.createElement('div');
+  titleBar.style.cssText = 'background:rgba(74,143,232,0.15);padding:10px 18px;cursor:move;user-select:none;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)';
+  titleBar.innerHTML = '<span style="font-size:15px;font-weight:600;color:var(--text)">📋 Motivos</span>' +
+    '<span id="med-motif-counter" style="font-family:var(--mono);font-size:12px;color:var(--accent)">0/' + motifs.length + '</span>';
+  box.appendChild(titleBar);
+
+  /* Rendre déplaçable */
+  var isDragging = false, dragX = 0, dragY = 0;
+  titleBar.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    dragX = e.clientX - box.offsetLeft;
+    dragY = e.clientY - box.offsetTop;
+    box.style.position = 'fixed';
+    box.style.margin = '0';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    box.style.left = (e.clientX - dragX) + 'px';
+    box.style.top = (e.clientY - dragY) + 'px';
+  });
+  document.addEventListener('mouseup', function() { isDragging = false; });
+
+  /* Contenu : checkboxes */
+  var content = document.createElement('div');
+  content.style.cssText = 'padding:14px 18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:4px';
+
+  function updateCounter() {
+    var count = content.querySelectorAll('input[type="checkbox"]:checked').length;
+    document.getElementById('med-motif-counter').textContent = count + '/' + motifs.length + ' seleccionados';
+  }
+
+  motifs.forEach(function(motif) {
+    var isChecked = currentSet[motif.toLowerCase()] ? true : false;
+    var label = document.createElement('label');
+    label.style.cssText = 'display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all 0.15s;border:1px solid ' + (isChecked ? 'var(--accent)' : 'var(--border)') + ';background:' + (isChecked ? 'rgba(74,143,232,0.15)' : 'var(--surface2)');
+
+    var cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = isChecked;
+    cb.value = motif;
+    cb.style.cssText = 'accent-color:var(--accent);cursor:pointer;width:16px;height:16px';
+    cb.addEventListener('change', function() {
+      label.style.borderColor = cb.checked ? 'var(--accent)' : 'var(--border)';
+      label.style.background = cb.checked ? 'rgba(74,143,232,0.15)' : 'var(--surface2)';
+      updateCounter();
+    });
+
+    var txt = document.createElement('span');
+    txt.textContent = motif;
+    txt.style.cssText = 'font-family:var(--sans);font-size:13px;color:var(--text)';
+
+    label.appendChild(cb);
+    label.appendChild(txt);
+
+    label.addEventListener('mouseenter', function() {
+      if (!cb.checked) { label.style.borderColor = 'var(--accent)'; label.style.background = 'rgba(74,143,232,0.08)'; }
+    });
+    label.addEventListener('mouseleave', function() {
+      if (!cb.checked) { label.style.borderColor = 'var(--border)'; label.style.background = 'var(--surface2)'; }
+    });
+
+    content.appendChild(label);
+  });
+
+  box.appendChild(content);
+
+  /* Boutons : Aplicar + Cerrar */
+  var footer = document.createElement('div');
+  footer.style.cssText = 'padding:10px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end';
+  var applyBtn = document.createElement('button');
+  applyBtn.innerHTML = '✓ Aplicar';
+  applyBtn.className = 'btn primary';
+  applyBtn.style.cssText = 'font-size:13px;padding:7px 16px';
+  applyBtn.onclick = function() {
+    var selected = [];
+    content.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
+      selected.push(cb.value);
+    });
+    document.getElementById('med-edit-motif').value = selected.join(' + ');
+    ov.remove();
+  };
+  var closeBtn = document.createElement('button');
+  closeBtn.textContent = 'Cerrar';
+  closeBtn.className = 'btn';
+  closeBtn.style.cssText = 'font-size:13px;padding:7px 14px';
+  closeBtn.onclick = function() { ov.remove(); };
+  footer.appendChild(closeBtn);
+  footer.appendChild(applyBtn);
+  box.appendChild(footer);
+
+  ov.appendChild(box);
+  ov.addEventListener('click', function(e) { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+
+  /* Mettre à jour le compteur initial */
+  updateCounter();
+}
+
+/* Calcul auto de Fecha fin à partir de Fecha inicio + durée */
+function medDuracionChange() {
+  var durEl = document.getElementById('med-edit-duracion');
+  if (!durEl) return; /* champ retiré de l'UI (maquette 06/08) — appel depuis Fecha inicio devenu inoffensif */
+  var dur = parseInt(durEl.value);
+  var debut = document.getElementById('med-edit-debut').value;
+  if (dur > 0 && debut) {
+    var d = new Date(debut);
+    d.setDate(d.getDate() + dur);
+    var finInput = document.getElementById('med-edit-fin');
+    finInput.value = d.toISOString().slice(0, 10);
+    finInput.style.color = 'var(--accent)';
+    var hint = document.getElementById('med-edit-fin-hint');
+    if (hint) hint.textContent = '(calculada: ' + dur + ' días)';
+  }
+}
+
+/* Copier les données du médicament dans le presse-papiers */
+function medCopyRx(medName) {
+  var meds = loadMeds().filter(function(m) { return m.nom === medName; });
+  var last = meds.length ? meds[meds.length - 1] : {};
+  var slotsLabels = {am:'Desayuno',almuerzo:'Almuerzo',mid:'Comida',pm:'Merienda',cena:'Cena',night:'Noche',libre:'Libre'};
+  var comidaLabels = {antes:'Antes de comer',durante:'Durante la comida',despues:'Después de comer',ayunas:'En ayunas',lejos:'Lejos de comidas',si_necesario:'Si necesario (PRN)'};
+  var text = '══════════════════════════════════\n';
+  text += '  PRESCRIPCIÓN — ' + medName + '\n';
+  text += '══════════════════════════════════\n';
+  if (last.dosis) text += '  Posología: ' + last.dosis + (last.concentracion ? ' (' + last.concentracion + ' mg)' : '') + '\n';
+  if (last.slots && last.slots.length) text += '  Horarios: ' + last.slots.map(function(s){return slotsLabels[s]||s;}).join(', ') + '\n';
+  if (last.comida) text += '  Instrucciones: ' + (comidaLabels[last.comida]||last.comida) + '\n';
+  if (last.prescriptor) text += '  Prescrito por: ' + prescriptorNombre(last.prescriptor) + '\n';
+  if (last.date_debut) text += '  Desde: ' + last.date_debut + '\n';
+  if (last.date_fin) text += '  Hasta: ' + last.date_fin + '\n';
+  text += '\n── Salufolio · Medicamentos v1.8.5 ──\n';
+  navigator.clipboard.writeText(text).then(function() {
+    if (typeof customAlert === 'function') customAlert('✓ Copiado', 'Prescripción copiada al portapapeles.', '📋', 'var(--accent2)');
+  });
+}
+
+/* Imprimer les données du médicament + liste de tous les traitements en cours */
+function medPrintRx(medName) {
+  var allMeds = loadMeds();
+  var meds = allMeds.filter(function(m) { return m.nom === medName; });
+  var last = meds.length ? meds[meds.length - 1] : {};
+  var slotsLabels = {am:'🌅 Desayuno',almuerzo:'🥐 Almuerzo',mid:'🍽️ Comida',pm:'🫖 Merienda',cena:'🌆 Cena',night:'🌙 Noche',libre:'🕐 Libre'};
+  var comidaLabels = {antes:'Antes de comer',durante:'Durante la comida',despues:'Después de comer',ayunas:'En ayunas',lejos:'Lejos de comidas',si_necesario:'Si necesario (PRN)'};
+  var patient = (typeof getPatientLabel === 'function') ? getPatientLabel() : '';
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Prescripción — ' + medName + '</title>' +
+    '<style>body{font-family:Arial,sans-serif;max-width:650px;margin:30px auto;padding:20px}' +
+    'h1{font-size:18px;border-bottom:2px solid #333;padding-bottom:8px}' +
+    'h2{font-size:14px;color:#555;margin-top:24px;border-bottom:1px solid #ccc;padding-bottom:4px}' +
+    '.field{margin:6px 0;font-size:13px}.label{font-weight:bold;color:#555;min-width:120px;display:inline-block}' +
+    'table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}' +
+    'th{text-align:left;padding:4px 8px;background:#f0f0f0;border:1px solid #ddd}' +
+    'td{padding:4px 8px;border:1px solid #ddd}' +
+    '.footer{margin-top:30px;font-size:10px;color:#999;border-top:1px solid #ddd;padding-top:8px}</style></head><body>' +
+    '<h1>💊 Prescripción — ' + medName + '</h1>';
+  if (patient) html += '<div class="field"><span class="label">Paciente:</span> ' + patient + '</div>';
+  if (last.dosis) html += '<div class="field"><span class="label">Posología:</span> ' + last.dosis + (last.concentracion ? ' (' + last.concentracion + ' mg)' : '') + '</div>';
+  if (last.slots && last.slots.length) html += '<div class="field"><span class="label">Horarios:</span> ' + last.slots.map(function(s){return slotsLabels[s]||s;}).join(' · ') + '</div>';
+  if (last.comida) html += '<div class="field"><span class="label">Instrucciones:</span> ' + (comidaLabels[last.comida]||last.comida) + '</div>';
+  if (last.prescriptor) html += '<div class="field"><span class="label">Prescrito por:</span> ' + prescriptorNombre(last.prescriptor) + '</div>';
+  if (last.date_debut) html += '<div class="field"><span class="label">Desde:</span> ' + last.date_debut + '</div>';
+  if (last.date_fin) html += '<div class="field"><span class="label">Hasta:</span> ' + last.date_fin + '</div>';
+  if (last.duracion && parseInt(last.duracion) > 0) html += '<div class="field"><span class="label">Duración:</span> ' + last.duracion + ' días</div>';
+
+  /* Liste de tous les médicaments en cours */
+  var byName = {};
+  allMeds.forEach(function(m) {
+    if (m.statut === 'en_cours' || m.statut === 'nouveau' || m.statut === 'a_demanda') byName[m.nom] = m;
+  });
+  var activeList = Object.values(byName);
+  if (activeList.length > 1) {
+    html += '<h2>📋 Todos los tratamientos en curso (' + activeList.length + ')</h2>';
+    html += '<table><thead><tr><th>Medicamento</th><th>Posología</th><th>Horarios</th><th>Instrucciones</th></tr></thead><tbody>';
+    activeList.sort(function(a,b){return (a.nom||'').localeCompare(b.nom||'');}).forEach(function(m) {
+      var sl = (m.slots||[]).map(function(s){return slotsLabels[s]||s;}).join(', ');
+      var ci = comidaLabels[m.comida] || '';
+      html += '<tr><td><b>' + m.nom + '</b></td><td>' + (m.dosis||'—') + '</td><td>' + (sl||'—') + '</td><td>' + (ci||'—') + '</td></tr>';
+    });
+    html += '</tbody></table>';
+  }
+
+  html += '<div class="footer">Salufolio · Medicamentos v1.8.5 — Generado el ' + new Date().toISOString().slice(0,10) + '</div>';
+  html += '</body></html>';
+  var w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  w.print();
+}
+
+/* Incrémenter/décrémenter la quantité de dosis et activer/désactiver la forme */
+function medReordenarDoctores() {
+  /* P-H 06/08 : choisir un type de recette PROPOSE D'ABORD les médecins
+     appris avec ce type (registre mt_prescriptores_receta, nourri à chaque
+     sauvegarde) — sans jamais cacher les autres : un filtre strict qui vide
+     la liste ferait croire à une panne au premier médecin nouveau. */
+  try {
+    var dl = document.getElementById('med-edit-doctors');
+    var tipo = document.getElementById('med-edit-receta');
+    if (!dl || !tipo) return;
+    var regT = JSON.parse(localStorage.getItem('mt_prescriptores_receta') || '{}');
+    var opciones = Array.prototype.slice.call(dl.querySelectorAll('option')).map(function(o) { return o.value; });
+    var t = tipo.value;
+    opciones.sort(function(a, b) {
+      var aT = t && regT[a] && regT[a].indexOf(t) !== -1 ? 0 : 1;
+      var bT = t && regT[b] && regT[b].indexOf(t) !== -1 ? 0 : 1;
+      if (aT !== bT) return aT - bT;
+      return a.localeCompare(b);
+    });
+    dl.innerHTML = opciones.map(function(n) { return '<option value="' + n.replace(/"/g, '&quot;') + '">'; }).join('');
+  } catch (e) {}
+}
+
+/* Désactiver Motivo et Fecha fin quand le statut est actif, remplir date fin si abandon/suspension */
+function medStatutChange() {
+  var statut = document.getElementById('med-edit-statut').value;
+  var actif = (statut === 'en_cours' || statut === 'nouveau' || statut === 'a_demanda');
+  var motifBlock = document.getElementById('med-edit-motif-block');
+  var finBlock = document.getElementById('med-edit-fin-block');
+  var motifInput = document.getElementById('med-edit-motif');
+  var finInput = document.getElementById('med-edit-fin');
+  if (motifBlock) motifBlock.style.opacity = actif ? '0.4' : '1';
+  if (motifInput) motifInput.disabled = actif;
+  if (finBlock) {
+    var hint = document.getElementById('med-edit-fin-hint');
+    if (actif) {
+      finBlock.style.opacity = '0.4';
+      finInput.disabled = true;
+      if (hint) hint.textContent = '(sin límite)';
+    } else {
+      finBlock.style.opacity = '1';
+      finInput.disabled = false;
+      if (hint && !finInput.value) hint.textContent = '';
+      /* Si abandon/suspension/terminé et pas de date fin → mettre aujourd'hui */
+      if (!finInput.value && (statut === 'suspendu' || statut === 'abandonne' || statut === 'terminado')) {
+        finInput.value = new Date().toISOString().slice(0, 10);
+        if (hint) hint.textContent = '(fecha de hoy)';
+        finInput.style.color = 'var(--warn)';
+      }
+    }
+  }
+}
+
+/* buildObservancia déplacé dans observancia-js.js */
+
+
+
+
+MF.arranca({
+  alCargar: function(d, p){
+    _DATOS=d;
+    var pa=MF.paciente();
+    document.getElementById('m-pac').textContent = pa.etiqueta || pa.matricula || '';
+    var n=(d.medicaments||[]).length;
+    document.getElementById('m-est').textContent = n + ' líneas';
+    document.getElementById('aviso').style.display='none';
+    try{
+      buildMedicamentos();
+      MF.ponVersion();
+    }catch(e){
+      var a=document.getElementById('aviso');
+      a.style.display='block';
+      a.innerHTML='<b>El motor de medicamentos ha tropezado:</b><br><code>'+String(e.message)+'</code>';
+      console.error(e);
+    }
+  },
+  alFallar: function(msg){
+    var a=document.getElementById('aviso');
+    a.style.display='block';
+    a.innerHTML='<b>'+msg+'</b><br><br>Llame al programa con la matrícula:<br>'
+      +'<code>medicamentos.html?mf=AGL5678&carpeta=../pacientes/AGL5678/</code>';
+  }
+});
+</script>
+</body>
+</html>

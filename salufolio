@@ -1,0 +1,251 @@
+#!/usr/bin/env python3
+# ══════════════════════════════════════════════════════════════════════
+#  SALUFOLIO — el servidor de taller
+#
+#  Sirve ~/Salufolio en 127.0.0.1 Y ACEPTA ESCRIBIR. Es lo que permite
+#  a los programas guardar el diario, los expedientes y los informes sin
+#  que usted tenga que colocar los ficheros a mano.
+#
+#  Se lanza escribiendo:   salufolio
+#
+#  ── POR QUÉ HACE FALTA ──────────────────────────────────────────────
+#  Un navegador no puede escribir en su disco: es una regla de seguridad,
+#  no un defecto. Sin ella, cualquier página web podría tocar sus
+#  ficheros.
+#
+#  Casi todo Salufolio funciona sin servidor —los quince programas, las
+#  tablas, las paletas— gracias a la solución que encontró P-H: todo en
+#  .js, cargado con <script src>, que pasa en todas partes.
+#
+#  Pero tres cosas siguen prohibidas en file:// :
+#     · leer un .txt con fetch    → los prompts de extracción
+#     · los workers de PDF.js     → Cotejo y el OCR
+#     · listar una carpeta        → buscar los expedientes
+#  Y ninguna permite escribir.
+#
+#  ── DOS REGLAS ESTRICTAS ────────────────────────────────────────────
+#     · Sólo escucha en 127.0.0.1 — su propia máquina. Nada entra de
+#       fuera, nada sale a Internet.
+#     · Sólo escribe bajo ~/Salufolio — ni un fichero más allá.
+#
+#  P-H Giraud & Claude · septiembre de 2026
+# ══════════════════════════════════════════════════════════════════════
+
+import os, sys, json, re, webbrowser, threading, time
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import unquote
+
+VERSION = '2026.09.10-17:16'
+RAIZ   = os.path.expanduser('~/Salufolio')
+PUERTO = 8900
+ABRIR  = '/casa/index.html'
+
+# ── la seule chose qui compte : ne jamais écrire hors de ~/Salufolio ──
+
+def rehaz_pacientes():
+    """La tabla se rehace sola cuando algo se escribe bajo pacientes/.
+       « un paciente nuevo no entra solo en la tabla » — P-H, 15/09."""
+    guion = os.path.join(RAIZ, 'pacientes', 'pacientes.py')
+    if not os.path.exists(guion): return
+    try:
+        import subprocess
+        r = subprocess.run(['python3', guion], capture_output=True, timeout=20)
+        print('  ↻ pacientes.js rehecha' if r.returncode == 0
+              else '  ⚠ pacientes.py ha fallado')
+    except Exception as e:
+        print('  ⚠ no he podido rehacer pacientes.js:', e)
+
+
+def ruta_segura(rel):
+    """Rend le chemin absolu, ou None s'il sort de ~/Salufolio."""
+    rel = unquote(rel).lstrip('/')
+    if '..' in rel.split('/'):
+        return None
+    p = os.path.abspath(os.path.join(RAIZ, rel))
+    if not p.startswith(os.path.abspath(RAIZ) + os.sep):
+        return None
+    return p
+
+
+class Salufolio(SimpleHTTPRequestHandler):
+
+    def __init__(self, *a, **k):
+        super().__init__(*a, directory=RAIZ, **k)
+
+    # ── on ne parle qu'à soi-même ──
+    def _mio(self):
+        return self.client_address[0] in ('127.0.0.1', '::1')
+
+    def _json(self, codigo, obj):
+        cuerpo = json.dumps(obj, ensure_ascii=False).encode('utf-8')
+        self.send_response(codigo)
+        self.send_header('Content-Type', 'application/json; charset=utf-8')
+        self.send_header('Content-Length', str(len(cuerpo)))
+        self.end_headers()
+        self.wfile.write(cuerpo)
+
+    # ── GUARDAR: POST /_guardar/ruta/del/fichero ──
+    def do_POST(self):
+        if not self._mio():
+            self._json(403, {'error': 'sólo desde esta máquina'}); return
+        if not self.path.startswith('/_guardar/'):
+            self._json(404, {'error': 'no sé hacer eso'}); return
+
+        destino = ruta_segura(self.path[len('/_guardar/'):])
+        if not destino:
+            self._json(403, {'error': 'fuera de ~/Salufolio'}); return
+
+        try:
+            n = int(self.headers.get('Content-Length') or 0)
+            datos = self.rfile.read(n)
+            os.makedirs(os.path.dirname(destino), exist_ok=True)
+            with open(destino, 'wb') as f:
+                f.write(datos)
+            rel = os.path.relpath(destino, RAIZ)
+            print(f'  ✎ {rel}  ({len(datos):,} octetos)')
+            if rel.startswith('pacientes' + os.sep):
+                rehaz_pacientes()
+            self._json(200, {'ok': True, 'ruta': rel, 'octetos': len(datos)})
+        except Exception as e:
+            self._json(500, {'error': str(e)})
+
+    # ── LISTAR: GET /_listar/carpeta  → los ficheros que hay ──
+    def do_GET(self):
+        if self.path.startswith('/_listar/'):
+            if not self._mio():
+                self._json(403, {'error': 'sólo desde esta máquina'}); return
+            carpeta = ruta_segura(self.path[len('/_listar/'):])
+            if not carpeta or not os.path.isdir(carpeta):
+                self._json(404, {'error': 'no existe'}); return
+            try:
+                out = []
+                for n in sorted(os.listdir(carpeta)):
+                    p = os.path.join(carpeta, n)
+                    out.append({'nombre': n, 'carpeta': os.path.isdir(p),
+                                'octetos': os.path.getsize(p) if os.path.isfile(p) else 0})
+                self._json(200, {'ok': True, 'contenido': out})
+            except Exception as e:
+                self._json(500, {'error': str(e)})
+            return
+
+        if self.path == '/_soy_salufolio':
+            self._json(200, {'ok': True, 'escribe': True, 'raiz': RAIZ,
+                             'version': VERSION, 'pid': os.getpid()})
+            return
+
+        super().do_GET()
+
+    # ── on garde le journal du serveur discret ──
+    def log_message(self, formato, *args):
+        pass
+
+
+def ya_esta_en_marcha():
+    """¿Hay algo en el puerto? ¿Y es Salufolio o es otra cosa?"""
+    import socket, urllib.request
+    s = socket.socket(); s.settimeout(.4)
+    libre = (s.connect_ex(('127.0.0.1', PUERTO)) != 0)
+    s.close()
+    if libre:
+        return (None, None, None)        # nadie: adelante
+    try:
+        with urllib.request.urlopen(f'http://127.0.0.1:{PUERTO}/_soy_salufolio',
+                                     timeout=.6) as r:
+            d = json.loads(r.read())
+            if d.get('ok'):
+                return ('salufolio', d.get('version'), d.get('pid'))
+    except Exception:
+        pass
+    return ('otro', None, None)          # otra cosa ocupa el puerto
+
+
+def main():
+    if not os.path.isdir(RAIZ):
+        print(f'✗ No encuentro {RAIZ}')
+        sys.exit(1)
+
+    quien, suversion, supid = ya_esta_en_marcha()
+
+    if quien == 'salufolio':
+        if suversion == VERSION:
+            print()
+            print('  🐝  Salufolio ya estaba en marcha. Abro la ventana.')
+            print(f'      http://localhost:{PUERTO}{ABRIR}')
+            print()
+            webbrowser.open(f'http://localhost:{PUERTO}{ABRIR}')
+            return
+
+        # ── una versión más antigua está corriendo (P-H, 10/09) ──
+        print()
+        print('  ⚠  Un Salufolio más antiguo está en marcha.')
+        print()
+        print(f'      el que corre   {suversion or "(sin versión)"}')
+        print(f'      el de aquí     {VERSION}')
+        print()
+        try:
+            r = input('  ¿Lo paro y arranco el nuevo? [S/n] ').strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            print(); sys.exit(0)
+        if r and r not in ('s', 'si', 'sí', 'y', 'yes', 'o', 'oui'):
+            print()
+            print('  Dejo el antiguo corriendo. Abro la ventana.')
+            print()
+            webbrowser.open(f'http://localhost:{PUERTO}{ABRIR}')
+            return
+        if supid:
+            try:
+                os.kill(supid, 15)
+                print('  ✓ Antiguo parado.')
+                time.sleep(.8)
+            except Exception as e:
+                print(f'  ✗ No he podido pararlo: {e}')
+                print(f'    Pruebe:  kill {supid}')
+                sys.exit(1)
+        else:
+            print('  ✗ No sé qué proceso es. Pruebe:')
+            print(f'    kill $(lsof -t -i :{PUERTO})')
+            sys.exit(1)
+
+    if quien == 'otro':
+        print()
+        print(f'  ✗ El puerto {PUERTO} está ocupado por otro programa.')
+        print()
+        print('    Quizá sea un « python3 -m http.server » de antes.')
+        print('    Para ver quién es:')
+        print(f'        lsof -i :{PUERTO}')
+        print('    Para pararlo:')
+        print(f'        kill $(lsof -t -i :{PUERTO})')
+        print()
+        sys.exit(1)
+
+    print()
+    print('  ╭────────────────────────────────────────────────╮')
+    print('  │  🐝  SALUFOLIO                                 │')
+    print('  ╰────────────────────────────────────────────────╯')
+    print()
+    print(f'  Versión   {VERSION}')
+    print(f'  Carpeta   {RAIZ}')
+    print(f'  Dirección http://localhost:{PUERTO}{ABRIR}')
+    print()
+    print('  Este servidor escribe — los programas pueden guardar')
+    print('  el diario y los expedientes sin colocarlos a mano.')
+    print()
+    print('  Sólo escucha en 127.0.0.1, su propia máquina.')
+    print('  Sólo escribe bajo ~/Salufolio.')
+    print()
+    print('  Ctrl+C para pararlo.')
+    print()
+
+    srv = ThreadingHTTPServer(('127.0.0.1', PUERTO), Salufolio)
+    threading.Thread(target=lambda: (time.sleep(.7),
+        webbrowser.open(f'http://localhost:{PUERTO}{ABRIR}')), daemon=True).start()
+    try:
+        srv.serve_forever()
+    except KeyboardInterrupt:
+        print()
+        print('  Salufolio parado. Hasta luego.')
+        print()
+
+
+if __name__ == '__main__':
+    main()

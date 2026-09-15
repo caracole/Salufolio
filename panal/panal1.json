@@ -1,0 +1,444 @@
+{
+  "id": "panal1",
+  "nombre": "Panal de acceso",
+  "geometria": {
+    "R": 92,
+    "centro": "auto",
+    "_nota": "R = rayon de l'alveole (centre -> sommet). a = 2R.sin(pi/6) = R ; r = R.cos(pi/6) = R.raiz3/2 ; di = 2r ; beta = 60deg. rotacion = angle applique aux sommets ET aux voisines : 30 = alveole posee sur un cote (cotes verticaux qui se touchent, comme le dessin de P-H) ; 0 = pointe en haut.",
+    "rotacion": 30,
+    "_zoom": "zoom por celda = radio de la copia en unidades de R. El panal entero mide R + di = R(1+raiz3) ~ 2.73 R desde el centro: con 2.5 la copia lo recubre casi todo y deja asomar la corona.",
+    "opacidad": 1,
+    "icono_y": 0.69,
+    "_ventana": "La ventana de visualizacion (rectangulo verde del dibujo): ancho = di = R*raiz3 = 1,732 R, alto = R. Es el mayor rectangulo inscribible en el hexagono posado sobre un lado. icono_y = altura del icono en unidades de R desde el centro (0,683 = mitad del triangulo superior).",
+    "_botones": "El triangulo inferior del hexagono (bajo la ventana) esta reservado a los botones. Cada celda declara los suyos: icono/texto + accion. Acciones conocidas por el motor: voz, cerrar, abrir (lanza el lien de la celda).",
+    "_mandos": "Metodo empirico (P-H, 31/08): cada mando lleva sus coordenadas x,y en unidades de R desde el centro (en SVG y baja: negativo = arriba). Posiciones halladas a ojo: Idiomas 0,-2.35 arriba; abajo la Reina 0,2.40 flanqueada por el sonido -1.5,2.40 y la ayuda 1.5,2.40. Se pone, se mira, se ajusta — en el JSON, nunca en el codigo.",
+    "_opacidad": "opacidad de la copia: 1 = opaca · 0,95 = apenas se adivina la colmena detras · 0,88 = intermedia · 0,7 = muy transparente. Ajustable aqui."
+  },
+  "celdas": [
+    {
+      "orden": 0,
+      "titulo": {
+        "es": "Salufolio",
+        "fr": "Salufolio",
+        "ca": "Salufolio",
+        "en": "Salufolio"
+      },
+      "sub": {
+        "es": "Acceder",
+        "fr": "Entrer",
+        "ca": "Accedir",
+        "en": "Enter"
+      },
+      "icono": "🩺",
+      "color": "#125933",
+      "estado": "activo",
+      "lien": "https://salufolio.com/Salufolio.html?tour=0",
+      "ayuda": {
+        "es": "El expediente completo. <p>Toda la historia clínica en un solo archivo, ordenada por fecha.",
+        "fr": "Le dossier complet. Toute l'histoire médicale dans un seul fichier, classée par date.",
+        "ca": "L'expedient complet. Tota la història clínica en un sol arxiu, ordenada per data.",
+        "en": "The complete record. A whole medical history in a single file, ordered by date."
+      },
+      "zoom": 2.6,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p1-salufolio_es.mp3",
+        "ca": "voz/p1-salufolio_ca.mp3",
+        "fr": "voz/p1-salufolio_fr.mp3",
+        "en": "voz/p1-salufolio_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "▶",
+          "texto": "Entrar",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        }
+      ],
+      "nueva": true
+    },
+    {
+      "orden": 1,
+      "titulo": {
+        "es": "Visita guiada",
+        "fr": "Visite guidée",
+        "ca": "Visita guiada",
+        "en": "Guided tour"
+      },
+      "sub": {
+        "es": "el panal, puerta a puerta",
+        "fr": "le panal, porte à porte",
+        "ca": "el panal, porta a porta",
+        "en": "the hive, door by door"
+      },
+      "icono": "🎓",
+      "color": "#0678b1",
+      "estado": "activo",
+      "lien": "#visita",
+      "ayuda": {
+        "es": "Un recorrido completo por las siete puertas de este panal, con voz y a su ritmo.",
+        "fr": "Un parcours des sept portes de ce panal, avec la voix et à votre rythme.",
+        "ca": "Un recorregut per les set portes d'este panal, amb veu i al seu ritme.",
+        "en": "A walk through the seven doors of this hive, with voice, at your own pace."
+      },
+      "zoom": 2.6,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p1-visita-guiada_es.mp3",
+        "ca": "voz/p1-visita-guiada_ca.mp3",
+        "fr": "voz/p1-visita-guiada_fr.mp3",
+        "en": "voz/p1-visita-guiada_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "🎬",
+          "texto": "Empezar",
+          "accion": "visita"
+        }
+      ],
+      "sinTitulo": false,
+      "tamIcono": 1.3,
+      "tamPanal": 1.45,
+      "tamTitulo": 1.55,
+      "tamSub": 1.35,
+      "colorTexto": "#ffffff"
+    },
+    {
+      "orden": 2,
+      "titulo": {
+        "es": "Contacto",
+        "fr": "Contact",
+        "ca": "Contacte",
+        "en": "Contact"
+      },
+      "sub": {
+        "es": "salufolio@proton.me",
+        "fr": "salufolio@proton.me",
+        "ca": "salufolio@proton.me",
+        "en": "salufolio@proton.me"
+      },
+      "icono": "📧",
+      "color": "#8a4ae8",
+      "estado": "activo",
+      "lien": "#contacto",
+      "sinTitulo": true,
+      "ayuda": {
+        "es": "Escríbanos: una impresión, una duda, una idea. Su mensaje llega directamente al autor.",
+        "fr": "Écrivez-nous : une impression, un doute, une idée. Votre message arrive directement à l'auteur.",
+        "ca": "Escriga'ns: una impressió, un dubte, una idea. El seu missatge arriba directament a l'autor.",
+        "en": "Write to us: an impression, a doubt, an idea. Your message reaches the author directly."
+      },
+      "zoom": 2.6,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p1-contacto_es.mp3",
+        "ca": "voz/p1-contacto_ca.mp3",
+        "fr": "voz/p1-contacto_fr.mp3",
+        "en": "voz/p1-contacto_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "✉",
+          "texto": "Escribir",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        }
+      ]
+    },
+    {
+      "orden": 3,
+      "titulo": {
+        "es": "Saber más",
+        "fr": "En savoir plus",
+        "ca": "Saber-ne més",
+        "en": "Learn more"
+      },
+      "sub": {
+        "es": "En números",
+        "fr": "En chiffres",
+        "ca": "En xifres",
+        "en": "In numbers"
+      },
+      "icono": "🤔",
+      "color": "#caa068",
+      "estado": "activo",
+      "lien": "#sabermas",
+      "sinTitulo": false,
+      "ayuda": {
+        "es": "<center>Qué es <big><b> S</b>alu<i>folio </i>?<br><br><br>Qué significan sus cifras, <p>y por qué es libre y gratuito .?</center>",
+        "fr": "Ce quest Salufolio, ce que ses chiffres signifient, et pourquoi il est libre et gratuit.",
+        "ca": "Què és Salufolio, què signifiquen les seues xifres, i per què és lliure i gratuït.",
+        "en": "What Salufolio is, what its numbers mean, and why it is free and open."
+      },
+      "zoom": 2.6,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p1-saber-mas_es.mp3",
+        "ca": "voz/p1-saber-mas_ca.mp3",
+        "fr": "voz/p1-saber-mas_fr.mp3",
+        "en": "voz/p1-saber-mas_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "🔊",
+          "texto": "Oír",
+          "accion": "voz"
+        },
+        {
+          "icono": "📄",
+          "texto": "Ver",
+          "accion": "abrir"
+        },
+        {
+          "icono": "✕",
+          "texto": "",
+          "accion": "cerrar"
+        }
+      ],
+      "colorTexto": "#162b69"
+    },
+    {
+      "orden": 4,
+      "titulo": {
+        "es": "Cuidador",
+        "fr": "Aidant",
+        "ca": "Cuidador",
+        "en": "Caregiver"
+      },
+      "sub": {
+        "es": "Protocolo",
+        "fr": "Protocole",
+        "ca": "Protocol",
+        "en": "Protocol"
+      },
+      "icono": "👨‍👩‍👧",
+      "color": "#4c152b",
+      "estado": "activo",
+      "lien": "protocolo/index.html",
+      "ayuda": {
+        "es": "El cuaderno del día a día: constantes, tomas y observaciones, desde el teléfono.",
+        "fr": "Le carnet du quotidien : constantes, prises et observations, depuis le téléphone.",
+        "ca": "El quadern del dia a dia: constants, preses i observacions, des del telèfon.",
+        "en": "The day-to-day notebook: vitals, doses and observations, from your phone."
+      },
+      "zoom": 2.6,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p1-cuidador_es.mp3",
+        "ca": "voz/p1-cuidador_ca.mp3",
+        "fr": "voz/p1-cuidador_fr.mp3",
+        "en": "voz/p1-cuidador_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "▶",
+          "texto": "Abrir",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        },
+        {
+          "icono": "📄",
+          "texto": "",
+          "accion": "abrir"
+        },
+        {
+          "icono": "✕",
+          "texto": "",
+          "accion": "cerrar"
+        }
+      ],
+      "colorTexto": "#788c18"
+    },
+    {
+      "orden": 5,
+      "titulo": {
+        "es": "Paciente",
+        "fr": "Patient",
+        "ca": "Pacient",
+        "en": "Patient"
+      },
+      "sub": {
+        "es": "Su historial",
+        "fr": "Son histoire",
+        "ca": "El seu historial",
+        "en": "Your history"
+      },
+      "icono": "🧑",
+      "color": "#13442f",
+      "estado": "activo",
+      "lien": "Salufolio.html?tour=0&perfil=paciente",
+      "avisoOrdenador": true,
+      "ayuda": {
+        "es": "Su propia historia clínica, presentada con claridad — para verla y para entenderla.",
+        "fr": "Votre propre histoire médicale, présentée avec clarté — pour la voir et la comprendre.",
+        "ca": "La seua pròpia història clínica, presentada amb claredat — per a veure-la i entendre-la.",
+        "en": "Your own medical history, presented clearly — to see it and to understand it."
+      },
+      "zoom": 2.6,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p1-paciente_es.mp3",
+        "ca": "voz/p1-paciente_ca.mp3",
+        "fr": "voz/p1-paciente_fr.mp3",
+        "en": "voz/p1-paciente_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "▶",
+          "texto": "Abrir",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        }
+      ]
+    },
+    {
+      "orden": 6,
+      "titulo": {
+        "es": "Profesional",
+        "fr": "Professionnel",
+        "ca": "Professional",
+        "en": "Professional"
+      },
+      "sub": {
+        "es": "Vista completa",
+        "fr": "Vue complète",
+        "ca": "Vista completa",
+        "en": "Full view"
+      },
+      "icono": "👨‍⚕️",
+      "color": "#ffffff",
+      "estado": "activo",
+      "lien": "Salufolio.html?tour=0&perfil=medico",
+      "avisoOrdenador": true,
+      "ayuda": {
+        "es": "La vista del médico: todo el expediente, curvas, correlaciones y antecedentes.",
+        "fr": "La vue du médecin : tout le dossier, courbes, corrélations et antécédents.",
+        "ca": "La vista del metge: tot l'expedient, corbes, correlacions i antecedents.",
+        "en": "The doctor's view: the whole record, curves, correlations and history."
+      },
+      "zoom": 2.6,
+      "rotacion": 0,
+      "sonido": {
+        "es": "voz/p1-profesional_es.mp3",
+        "ca": "voz/p1-profesional_ca.mp3",
+        "fr": "voz/p1-profesional_fr.mp3",
+        "en": "voz/p1-profesional_en.mp3"
+      },
+      "botones": [
+        {
+          "icono": "▶",
+          "texto": "Abrir",
+          "accion": "abrir"
+        },
+        {
+          "icono": "🔊",
+          "texto": "",
+          "accion": "voz"
+        }
+      ],
+      "colorTexto": "#022af2"
+    }
+  ],
+  "mandos": [
+    {
+      "zona": "N",
+      "icono": "🌐",
+      "accion": "idiomas",
+      "etiqueta": "Idiomas",
+      "grande": true,
+      "ayuda": "Elija su idioma: todo el panal lo sigue.",
+      "x": 0,
+      "y": -2.35
+    },
+    {
+      "zona": "S",
+      "icono": "🐝",
+      "accion": "otroPanal",
+      "etiqueta": "La Reina",
+      "grande": true,
+      "ayuda": "La Reina va de un panal al otro, y vuelve. Es la llave del sitio.",
+      "x": 0,
+      "y": 2.4
+    },
+    {
+      "zona": "SO",
+      "icono": "🔊",
+      "accion": "voz",
+      "etiqueta": "Sonido",
+      "ayuda": "Lee en voz alta la alveola abierta.",
+      "x": -1.5,
+      "y": 2.4
+    },
+    {
+      "zona": "SE",
+      "icono": "❔",
+      "accion": "ayuda",
+      "etiqueta": "Ayuda",
+      "ayuda": "Dónde está usted y qué puede hacer aquí — siempre disponible.",
+      "x": 1.5,
+      "y": 2.4,
+      "color": "#e8a44a"
+    },
+    {
+      "zona": "NO",
+      "icono": "·",
+      "accion": "libre",
+      "etiqueta": "Reservado"
+    },
+    {
+      "zona": "NE",
+      "icono": "⛶",
+      "accion": "pantalla",
+      "etiqueta": "Pantalla completa",
+      "ayuda": "Pantalla completa: el panal ocupa todo el aparato.",
+      "x": 1.5,
+      "y": -2.35,
+      "color": "#4a8fe8",
+      "escala": 1.5,
+      "grueso": true
+    }
+  ],
+  "_voz": "Cada alveola declara la ruta de sus ficheros de sonido por idioma. Si el fichero existe se reproduce (voces Álvaro/Elvira fabricadas con edge-tts); si falta, el motor cae en la síntesis del navegador. Los dos tableros.",
+  "idiomas": [
+    "es",
+    "ca",
+    "fr",
+    "en"
+  ],
+  "idioma_defecto": "es",
+  "_idiomas": "Doctrina de P-H (31/08): una alveola, una tabla — todo lo que necesita para funcionar vive con ella, idiomas incluidos. titulo/sub/ayuda son objetos por idioma; si falta uno, el motor cae en idioma_defecto.",
+  "visita": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "_visita": "El panal se visita a si mismo: la visita abre las alveolas una a una, como si una mano las tocara. Los textos son los mismos 'ayuda' de la tabla — nada que escribir aparte. 'visita' declara el recorrido; sin ella, el orden natural.",
+  "paleta": {
+    "--bg": "#0a031c",
+    "--surface": "#0e1016",
+    "--text": "#b1c25b",
+    "--muted": "#7a8499",
+    "--accent": "#106eea",
+    "--serif": "system-ui,sans-serif"
+  }
+}

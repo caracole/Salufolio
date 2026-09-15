@@ -714,7 +714,7 @@ window.onerror = function (msg, src, line, col) {
 /* Adresse du PC injectée par le serveur au téléchargement (« Instalar en
    este teléfono ») — l'app locale naît déjà configurée. */
 const MFP_PC_DEF = '';
-const MFP_VERSION = '2026.9.8.81-SAT';
+const MFP_VERSION = '2026.8.27.80-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -6072,17 +6072,6 @@ document.addEventListener('keydown', function(e) {
 setInterval(() => { const f = document.getElementById('hdr-fecha').textContent;
   const n = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   if (f !== n) render(); }, 60000);
-</script>
-
-<!-- Le Protocolo doit marcher SANS INTERNET une fois installe (P-H, 08/09) -->
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./sw.js')
-      .then(function(r){ console.log('Protocolo listo sin conexion'); })
-      .catch(function(e){ console.warn('sin service-worker:', e.message); });
-  });
-}
 </script>
 </body>
 </html>

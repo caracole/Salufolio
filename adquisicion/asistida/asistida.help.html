@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ayuda · Adquisición asistida</title>
+<link rel="stylesheet" href="../../comun/salufolio.css">
+<style>
+body{margin:0;padding:24px 28px 50px;background:var(--bg);color:var(--text);
+     font-family:var(--sans,system-ui,sans-serif);line-height:1.7}
+.env{max-width:700px;margin:0 auto}
+h1{font-family:var(--serif);font-size:21px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:12.5px;margin-bottom:20px}
+h2{font-family:var(--serif);font-size:15px;color:var(--accent);margin:22px 0 6px;
+   border-bottom:1px solid var(--border);padding-bottom:4px}
+p{margin:0 0 12px;font-size:14px}
+.nota{background:var(--surface);border-left:3px solid var(--accent);
+      border-radius:0 8px 8px 0;padding:11px 15px;font-size:13px;color:var(--muted);margin:16px 0}
+code{background:var(--bg);padding:1px 6px;border-radius:4px;color:var(--warn);font-size:12.5px}
+</style></head>
+<body><div class="env">
+<h1>📋 Adquisición asistida</h1>
+<div class="sub">Copiar y pegar con claude.ai — sin clave, sin coste</div>
+
+<p>Este modo no pide clave y no cuesta nada. Usted lleva el texto a
+claude.ai a mano, y trae la respuesta.</p>
+
+<h2>1 · El documento</h2>
+<p>Suelte un PDF, o pegue el texto si ya lo tiene. Si el PDF está
+escaneado —una foto de un papel— no lleva texto: entonces aparece el
+botón <b>🔍 Reconocer el texto</b>.</p>
+<p>El OCR trabaja <b>en su ordenador</b>. Nada sale a Internet: el motor
+y el diccionario español viven en su disco. Pero necesita el servidor —
+arranque Salufolio con su abeja 🐝.</p>
+
+<h2>2 · Llevarlo a claude.ai</h2>
+<p>El botón copia la pregunta y el texto juntos. Péguelo en una
+conversación de claude.ai y espere la respuesta.</p>
+
+<h2>3 · Traer la respuesta</h2>
+<p>Copie lo que claude.ai devuelve —el objeto entre llaves— y péguelo
+aquí. Se guarda en el expediente y deja su línea en el diario.</p>
+
+<div class="nota">El texto que sale de un escaneo viene estropeado: el
+OCR confunde letras. La pregunta se lo advierte y le pide que diga qué
+ha corregido — lo que leyó, lo que propone, y cuánto se fía.</div>
+</div></body></html>

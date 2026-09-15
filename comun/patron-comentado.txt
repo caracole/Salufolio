@@ -1,0 +1,285 @@
+═══════════════════════════════════════════════════════════════════════════
+  EL PATRÓN DEL .mf — cada campo, explicado
+  Salufolio · septiembre de 2026
+═══════════════════════════════════════════════════════════════════════════
+
+  Este documento no es un fichero de trabajo: es la explicación de lo que
+  hay dentro de un .mf. Léalo cuando dude de un campo.
+
+  La forma viva está en comun/plantilla-mf.js — si los dos no coinciden,
+  manda el programa, y este papel se corrige.
+
+  UNA REGLA PRESIDE TODO: nada se escribe que no se sepa. Un campo que no
+  se conoce se queda vacío; no se inventa nunca.
+
+
+───────────────────────────────────────────────────────────────────────────
+  1 · LO QUE HAY QUE SABER PARA LEER EL FICHERO
+───────────────────────────────────────────────────────────────────────────
+
+  "_leeme"                Una nota, no un dato. El guion bajo lo dice.
+                          El JSON no admite comentarios: se hace un campo.
+
+    .que_es               Qué es este fichero, en una frase.
+    .fuentes              Qué quieren decir A, X, P y S. Ver el punto 4.
+    .historial            La diferencia entre modificar y actualizar.
+    .fechas               El formato de las fechas de dentro.
+
+
+───────────────────────────────────────────────────────────────────────────
+  2 · DE QUÉ SE TRATA
+───────────────────────────────────────────────────────────────────────────
+
+  "formato"               Siempre "SF1". Si un día cambia la forma del
+                          fichero, este campo lo dirá — y un programa
+                          antiguo sabrá que no lo entiende.
+
+  "version"               La versión de Salufolio que lo escribió.
+                          «Sin numéro, impossible de dire quelle version
+                           cloche» — doctrina de P-H desde MediTrace.
+
+  "data_type"             "real" · "demo" · "anonimo"
+                          Un expediente de demostración NO debe poder
+                          confundirse con uno de verdad.
+
+  "original_data_type"    Si se anonimizó, lo que era antes.
+  "date_anonymized"       Cuándo se anonimizó. Vacío si nunca.
+
+  "exported"              La fecha del último guardado, en ISO.
+                          Pertenece al SOBRE, no al expediente: dice
+                          cuándo salió el fichero, no cuándo se cuidó.
+
+
+───────────────────────────────────────────────────────────────────────────
+  3 · DE QUIÉN ES
+───────────────────────────────────────────────────────────────────────────
+
+  Va en la cabeza, donde se busca. Se abre un expediente y lo primero que
+  se quiere saber es de quién es.
+
+  "patient_name"          Nombre y apellidos, tal como se escriben.
+  "patient_label"         La MATRÍCULA: tres iniciales + cuatro cifras del
+                          SIP. Ejemplo: Ana García López, SIP
+                          12345678 → AGL5678.
+                          Es lo que da nombre a su carpeta y a sus
+                          ficheros. No cambia nunca.
+
+  "sip"                   Nº SIP — la tarjeta sanitaria de la comunidad.
+  "nhc"                   Nº Historia Clínica. CAMBIA SEGÚN EL HOSPITAL:
+                          el mismo paciente tiene un NHC en Castellón y
+                          otro en Navarra.
+  "cip_sns"               Código SNS — el del Estado, letras y cifras.
+                          Ejemplo: BBBBBBBBBZ546105. Es válido así: no
+                          es una lectura rota.
+
+  "nacimiento"            AAAA-MM-DD.
+  "sexo"                  "mujer" · "hombre" · vacío.
+
+  ── Un aviso que vale la pena ──
+  Estos dos últimos se ponen al crear el expediente. Si una extracción
+  automática devuelve otros, NO se sobreescriben: o se ignoran, o se
+  señalan como error del documento. Un informe puede equivocarse.
+
+
+───────────────────────────────────────────────────────────────────────────
+  4 · SU HISTORIA — "historial"
+───────────────────────────────────────────────────────────────────────────
+
+  Conception arrêtée avec P-H el 1 de agosto de 2026.
+
+  "creacion"              Una sola vez, jamás reescrita.
+                          No se nace dos veces.
+
+  "creacion_nota"         Casi siempre: «historial iniciado aquí — no
+                          cubre lo anterior». Es honesto: un expediente
+                          que se empieza hoy no sabe lo de ayer, y no se
+                          inventa una fecha de nacimiento del fichero.
+
+  "modificacion" []       SE RECONOCE QUE SE HABÍA ESCRITO FALSO.
+  "actualizacion" []      SE ENRIQUECE CON ALGO NUEVO.
+
+  ── Por qué DOS listas y no una ──
+
+  « MODIFIER, c'est reconnaître qu'on avait écrit faux ; ACTUALISER,
+    c'est enrichir. Un médecin qui lit "corrigé le 12 août" ne lit pas
+    la même chose que "enrichi le 12 août". »
+
+  Y no bastaría con un campo que las distinga: el Protocolo puede añadir
+  una jornada (actualización) Y rectificar una hora releída
+  (modificación) — mismo código, dos naturalezas. Dos listas = la
+  separación la lleva LA ESTRUCTURA, no un valor que hay que leer.
+  Doctrina de 1966.
+
+  ── Lo que lleva cada línea ──
+
+     { "src": "S", "fecha": "2026-09-15-16:24:07", "razon": "corregido el SIP" }
+
+  "src"                   POR DÓNDE entró el cambio. Cuatro vías, por
+                          orden de autoridad:
+
+        A · API           Un documento leído por máquina. La vía
+                          principal desde 2026.
+        X · Extractor     El PDF despojado, contraprueba. Lleva su
+                          pdf_id, de modo que se puede volver al papel.
+        P · Protocolo     Observado a la cabecera y RELEÍDO POR UN
+                          HUMANO. Vale más que lo que lee una máquina.
+        S · Salufolio     Escrito a mano por quien cuida, en el
+                          expediente mismo.
+
+                          « S » sólo vale si designa la mano del
+                          cuidador y nada más — si no, vuelve a ser un
+                          cajón de sastre donde todo entra, puesto que
+                          todo pasa por Salufolio.
+
+  "fecha"                 AAAA-MM-DD-HH:MM:SS, hora de donde se trabaja.
+                          Un cuidador en Buenos Aires anota a su hora.
+
+  "razon"                 Por qué — si se sabe. Opcional.
+                          Dentro de diez años, «corregido el SIP» dirá
+                          más que una fecha sola.
+
+  ── Una advertencia ──
+  Una fecha que no se mantiene miente más que una fecha ausente. El
+  programa debe ponerlas en CADA escritura, sin excepción — si no,
+  «modificacion» se quedará congelada en el día en que se inventó.
+
+
+───────────────────────────────────────────────────────────────────────────
+  5 · LO QUE LLEVA — las tablas
+───────────────────────────────────────────────────────────────────────────
+
+  Todas existen desde el primer día, aunque estén vacías. Un campo
+  ausente es una pregunta más cada vez que se lee.
+
+  "mesures" []            Lo que se ha medido. Una entrada por fecha,
+                          hora y condición — con sus valores dentro:
+
+        { "date": "2026-01-24", "hora": "10:57",
+          "grupo": "gasometria",          laboratorio · constantes …
+          "tipo": "arterial",             gasometría: arterial · venosa
+          "metodo": "POC",                POC (cabecera) · laboratorio
+          "condicion": "FiO2 40%",        SIN ESTO LA SERIE MIENTE
+          "vals": { "pO2": 83, "pCO2": 39 },
+          "unidades": { "pO2": "mmHg" },
+          "src": "A", "pdf": "ICU_….pdf", "pdf_id": "PDF007" }
+
+     · El nombre del parámetro SE COPIA TAL COMO ESTÁ IMPRESO. Si el
+       papel dice «Tª timpánica», no se escribe «temperatura»: si se
+       normaliza, el dato no se junta con los diez años ya guardados.
+
+     · "sin_fecha": true    cuando el documento no imprimió la fecha.
+                            Entra igualmente, marcada, en vez de
+                            perderse en silencio.
+
+     · "repetido": true     el mismo valor el mismo día en otro
+                            apartado. No se descarta: se señala.
+
+  "events" []             Lo que ha pasado. Una consulta, una caída, un
+                          ingreso. Con su fecha, su título y su detalle.
+                          Y SU FUENTE — el 09/09/2026 se descubrió que
+                          faltaba: nueve urgencias sin saber si eran de
+                          Vithas, de Castellón o de Navarra.
+
+  "medicaments" []        Los tratamientos.
+
+        "origen"          habitual      lo que YA tomaba — se constata
+                          al_alta       lo recetado ese día — es una orden
+                          administrado  puesto una vez, durante el paso
+
+                          Constatar no es prescribir. Sin esta marca,
+                          nadie sabrá cuál empezó ese día.
+
+        "momentos_dia"    "0-1-0-1-0" — al levantarse, desayuno, comida,
+                          cena, noche. Los cinco de las recetas de la GVA.
+                          La pauta dice CUÁNTO; esto dice CUÁNDO.
+
+        "condicion"       «si más dolor», «si fiebre >38». Un rescate
+                          contado como toma diaria falsea la observancia.
+
+        "hasta"           Vacío quiere decir «sigue».
+
+  "antecedentes" []       Lo que el paciente ARRASTRA, no lo que pasó
+                          ese día. Un ictus de 2021 citado en un informe
+                          de 2026 no ocurrió en 2026.
+                          La fecha puede ser sólo el año.
+
+  "diagnosticos" []       La conclusión de un informe, no un suceso.
+                          principal · secundario. Con su código CIE-10
+                          si lo lleva.
+
+  "escalas" []            Barthel, Rankin, NIHSS, MMSE… Cifras fechadas
+                          que se comparan. La misma escala al ingreso y
+                          al alta son DOS entradas — fundirlas pierde
+                          justamente lo que valía: el movimiento.
+
+  "citas" []              Lo que viene. Una cita futura no ha ocurrido.
+
+  "prescripciones" []     Lo que no es fármaco pero obliga igual: una
+                          dieta triturada, un espesante, reposo, frío
+                          local. En alguien con disfagia, el espesante
+                          manda tanto como una pastilla.
+
+  "bacteriologia" []      Un cultivo y lo que creció. Lo que más importa
+                          guardar es a qué es RESISTENTE.
+
+  "vacunas" []            El catálogo.
+  "vacunaciones" []       Las puestas, con su fecha.
+
+  "enfermeria_dx" []      Diagnósticos NANDA.
+  "enfermeria_int" []     Intervenciones NIC.
+  "…_registro" []         Lo aplicado de verdad, con fecha.
+
+  "servicios" []          Los servicios que han atendido.
+  "centros" []            Los hospitales. Cada uno con su ABREVIATURA:
+                          « CHU-CS-URG » cabe en una tabla, el nombre
+                          entero no. Se corrige una vez, vale para todas
+                          sus apariciones.
+  "prescriptores" []      Los médicos. Un mismo médico escrito de tres
+                          maneras es un médico de más.
+
+  "custom_params" []      Parámetros que el usuario ha añadido.
+  "listas" {}             Las listas que se enriquecen al escribir:
+                          categorías, parámetros, condiciones. Cada
+                          paciente tiene las suyas.
+
+  "correcciones" []       Lo que se ha corregido a mano.
+  "auditoria_conformes" [] Lo que la auditoría ha dado por bueno.
+  "comentarios_curvas" {} Notas puestas sobre una curva.
+
+  "dudas" []              LO QUE EL LECTOR NO HA SABIDO. Vale tanto como
+                          los datos: dentro de diez años alguien querrá
+                          saber por qué aquel SIP nunca se asignó.
+                          Se guardan CON el documento, no sólo en el
+                          diario.
+
+  "identificadores_dudosos" []
+                          Los números leídos que no se supieron situar.
+                          Mejor tres números sin nombre que tres nombres
+                          con el número de otro — un SIP en el sitio del
+                          NHC ata los datos al paciente equivocado.
+
+  "pdfs" {}               .directorio   dónde están los PDF
+                          .archivos     { "PDF001": "ICU_….pdf" }
+                          Es lo que ata un dato a su documento. Sin
+                          ello, un valor que sorprende no se puede
+                          comprobar.
+
+
+───────────────────────────────────────────────────────────────────────────
+  6 · LO QUE NO ESTÁ EN EL .mf
+───────────────────────────────────────────────────────────────────────────
+
+  "diario"                Vive aparte, en pacientes/MATRÍCULA/diario.js
+                          Una línea por documento leído: cuándo, qué
+                          fichero, qué se sacó, qué faltaba.
+                          No es un dato médico: es el cuaderno del
+                          trabajo. Por eso no va dentro.
+
+  Los PDF                 Salufolio no guarda nunca el fichero: sólo su
+                          nombre. Viven en pacientes/MATRÍCULA/sources/
+
+
+═══════════════════════════════════════════════════════════════════════════
+  Si encuentra un campo que no está aquí, es que alguien lo añadió sin
+  escribirlo. Dígalo — o escríbalo usted.
+═══════════════════════════════════════════════════════════════════════════

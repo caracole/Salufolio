@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Adquisición manual · Salufolio</title>
+<script src="../../medicamentos/principios.js"></script>
+<script src="../../comun/plantilla-mf.js"></script>
+<script src="../../comun/formularios/adquisicion.js"></script>
+<link rel="stylesheet" href="../../comun/salufolio.css">
+<style>
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
+header[data-cabecera]{display:flex;align-items:baseline;gap:12px;
+       padding:10px 18px;border-bottom:1px solid var(--border)}
+.mod-tit{font-family:var(--serif);font-size:18px;font-weight:600}
+header .chip{font-size:11px;border:1px solid var(--muted);border-radius:6px;
+             padding:1px 8px;color:var(--muted)}
+main{padding:16px 20px 40px;max-width:900px;margin:0 auto}
+.sordo{font-size:12.5px;color:var(--muted);line-height:1.75;margin:0 0 16px}
+
+/* le menu des rubriques */
+.fam{margin-bottom:18px}
+.fam-tit{font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:2px;
+         color:var(--accent);margin-bottom:7px;text-transform:uppercase}
+.rubs{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px}
+.rubs button{padding:9px 14px;border-radius:9px;border:1px solid var(--border);
+             background:var(--surface);color:var(--text);cursor:pointer;
+             font-size:13px;font-family:inherit;transition:all .18s}
+.rubs button:hover{border-color:var(--accent);transform:translateY(-1px)}
+
+.lista{margin-top:10px;max-height:340px;overflow-y:auto}
+.item{display:flex;gap:9px;align-items:baseline;font-size:12.5px;
+      padding:6px 4px;border-bottom:1px solid var(--border);cursor:pointer}
+.item:hover{background:rgba(74,158,255,.06)}
+.item .x{color:var(--muted);cursor:pointer;font-size:12px;padding:0 4px}
+.item .x:hover{color:var(--danger)}
+.btn{padding:7px 14px;border-radius:7px;border:1px solid var(--border);
+     background:transparent;color:var(--text);cursor:pointer;font-size:12.5px;font-family:inherit}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{border-color:var(--accent);background:rgba(74,158,255,.15)}
+#estado{font-size:12.5px;margin-top:10px;min-height:18px}
+
+/* ce que le formulaire dessine — il vient des communs */
+.sf-campo-caja{margin-bottom:14px}
+.sf-campo-caja.sf-malo .sf-campo{border-color:var(--danger)}
+.sf-etiqueta{display:block;font-size:11.5px;color:var(--muted);margin-bottom:4px}
+.sf-campo{width:100%;padding:8px 11px;background:var(--bg);color:var(--text);
+          border:1px solid var(--border);border-radius:7px;font-size:13.5px;
+          box-sizing:border-box;font-family:inherit}
+.sf-campo:focus{border-color:var(--accent);outline:none}
+.sf-ayuda{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+.sf-aviso{font-size:11.5px;margin-top:3px;line-height:1.5;min-height:2px}
+.sf-paso{font-family:var(--mono,monospace);font-size:10.5px;color:var(--accent);
+         letter-spacing:2px;margin-bottom:12px}
+.sf-sino{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:13.5px}
+.sf-momentos{display:flex;gap:10px;flex-wrap:wrap}
+.sf-mom{display:inline-flex;align-items:center;gap:4px;cursor:pointer;
+        padding:4px 9px;border:1px solid var(--border);border-radius:7px;
+        font-size:16px;user-select:none;transition:all .18s}
+.sf-mom:hover{border-color:var(--accent)}
+.sf-mom:has(input:checked){border-color:var(--ok);background:rgba(62,207,142,.12)}
+.module-version-corner{display:none}
+</style>
+</head>
+<body>
+
+<header data-cabecera>
+  <span class="mod-tit">✍️ Adquisición manual</span>
+  <span class="chip" id="x-pac">—</span>
+  <span class="chip" id="x-est"></span>
+</header>
+
+<main>
+
+<div class="sordo" id="intro"></div>
+
+<div id="menu"></div>
+
+<details class="sf-plegable" id="d-visto" open>
+  <summary style="color:var(--accent)">
+    <span data-idioma="tit_visto">✍️ Lo escrito a mano</span>
+    <span class="cuenta" id="c-visto"></span>
+  </summary>
+  <div class="lista" id="lista-visto"></div>
+</details>
+
+<details class="sf-plegable" id="d-diario">
+  <summary style="color:var(--muted)">
+    <span data-idioma="tit_diario">📓 El diario</span>
+    <span class="cuenta" id="c-diario"></span>
+  </summary>
+  <div id="diario-en-curso"></div>
+  <div id="diario-lista" style="max-height:280px;overflow-y:auto"></div>
+</details>
+
+<div style="display:flex;justify-content:flex-end;margin-top:16px">
+  <button class="btn pri" onclick="guardaExpediente()" id="b-guardar"></button>
+</div>
+<div id="estado"></div>
+
+</main>
+
+<script src="manual.js"></script>
+<script src="manual.idiomas.js"></script>
+<script src="../../comun/mf.js"></script>
+<script src="../../comun/formulario.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   ADQUISICIÓN MANUAL — Salufolio
+   Versión 2026.09.14-18:18:31
+
+   « Ce système est universel, on peut saisir n'importe quoi. Il suffit
+     d'une table bien renseignée. »                  — P-H, 14/09/2026
+
+   ESTE PROGRAMA NO SABE QUÉ ES UNA TENSIÓN. No conoce sus campos, ni sus
+   límites, ni sus unidades. Todo eso vive en
+   comun/formularios/adquisicion.js — una tabla.
+
+   Antes había cinco formularios escritos a mano aquí dentro. Ahora hay
+   diecisiete rúbricas, y ninguna está en el código. Para añadir la
+   décimoctava, se añade a la tabla.
+
+   Es la doctrina de 1966: el programa no sabe, la tabla sabe.
+   ═══════════════════════════════════════════════════════════════════════ */
+const VERSION_PROGRAMA = SF_CONFIG.version;
+const TABLA = 'adquisicion';
+
+function t(clave, vars){
+  var out;
+  try{
+    var T=(typeof SF_TEXTOS!=='undefined'&&SF_TEXTOS.textos)||{};
+    var lg=(typeof MF!=='undefined'&&MF.idioma)?MF.idioma():'es';
+    out = (T[lg]&&T[lg][clave])||(T.es&&T.es[clave])||clave;
+  }catch(e){ out = clave; }
+  var v = vars||{};
+  return String(out).replace(/\{(\w+)\}/g, function(m,k){
+    return (v[k]!==undefined) ? v[k] : m; });
+}
+
+/* ── LES PONTS ── */
+var _DATOS = null, _ABIERTO = false;
+function _asegura(){
+  if(!_DATOS) _DATOS = (typeof SF_PLANTILLA!=='undefined')
+    ? SF_PLANTILLA.nuevo(MF.paciente()||{})
+    : { formato:'SF1', mesures:[], events:[], medicaments:[] };
+  return _DATOS;
+}
+function L(k){ var d=_asegura(); if(!Array.isArray(d[k])) d[k]=[]; return d[k]; }
+/* ══ LA MARQUE DE CE QUI EST ÉCRIT À LA MAIN (P-H, 14/09) ══
+   « src : manual » dit QUI l'a écrit ; « escrito » dit QUAND.
+   Sans la date, une tension saisie ce soir et une de mars se
+   ressemblent — et on ne peut plus dire ce qui est entré quand.
+
+   « a mano » se lit encore : les lignes d'avant le portent. */
+function _aMano(x){
+  return !!(x && (x.src === 'manual' || x.source === 'manual'
+                || x.src === 'a mano' || x.source === 'a mano'));
+}
+function _marca(){ return { src:'manual', escrito:_sello(), sesion:(SESION || _sello()) }; }
+
+/* ── LE DIARIO, mode M ── */
+var MI_MODO='M', DIARIO=[], SESION=null, _DIA_SUCIO=false, _CUENTA={};
+function _sello(d){
+  d=d||new Date(); var z=function(x){return String(x).padStart(2,'0');};
+  return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())
+       +'_'+z(d.getHours())+'h'+z(d.getMinutes());
+}
+function cargaDiario(alListo){
+  var p=MF.paciente()||{}; DIARIO=[];
+  if(!p.matricula){ pintaDiario(); if(alListo) alListo(); return; }
+  var v=document.getElementById('_sc_diario'); if(v) v.remove();
+  window.SF_DIARIO=null;
+  var sc=document.createElement('script');
+  sc.id='_sc_diario';
+  sc.src='../../pacientes/'+p.matricula+'/diario.js?'+Date.now();
+  sc.onload =function(){ if(window.SF_DIARIO&&Array.isArray(SF_DIARIO.lineas)) DIARIO=SF_DIARIO.lineas;
+                         pintaDiario(); if(alListo) alListo(); };
+  sc.onerror=function(){ pintaDiario(); if(alListo) alListo(); };
+  document.head.appendChild(sc);
+}
+function salvaDiario(){
+  var p=MF.paciente()||{};
+  if(!p.matricula) return Promise.resolve({ok:false});
+  var js='/* El diario de '+(p.etiqueta||p.matricula)+' */\n'
+    +'var SF_DIARIO = window.SF_DIARIO = '
+    +JSON.stringify({matricula:p.matricula,actualizado:_sello(),lineas:DIARIO},null,1)+';\n';
+  return MF.guarda('pacientes/'+p.matricula+'/diario.js', js).then(function(r){
+    _DIA_SUCIO=!(r&&r.como==='servidor'); pintaDiario(); return r; });
+}
+function anota(que){
+  if(!SESION) SESION = _sello();     /* la séance commence ici */
+  _CUENTA[que]=(_CUENTA[que]||0)+1; pintaEnCurso();
+}
+function pintaEnCurso(){
+  var n = Object.keys(_CUENTA).reduce(function(a,k){ return a+_CUENTA[k]; },0);
+  var D = DIARIO.filter(function(l){ return (l.modo||'A')===MI_MODO; });
+  var c = document.getElementById('c-diario');
+  if(c) c.textContent = (D.length?D.length:'') + (n?((D.length?' · ':'')+n+' sin guardar'):'');
+  var q = document.getElementById('diario-en-curso');
+  if(q) q.innerHTML = n
+    ? ('<div style="font-size:12px;color:var(--warn);padding:8px 0;'
+       +'border-bottom:1px solid var(--border)">✍️ ' + t('en_sesion') + ' : '
+       + Object.keys(_CUENTA).map(function(k){ return _CUENTA[k]+' '+k; }).join(' · ')
+       + '</div>') : '';
+}
+function cierraSesion(){
+  var total = Object.keys(_CUENTA).reduce(function(a,k){ return a+_CUENTA[k]; },0);
+  if(!total) return;
+  if(!SESION) SESION=_sello();
+  DIARIO.push({ cuando:_sello(), sesion:SESION, modo:MI_MODO,
+    programa: SF_CONFIG.id+' '+SF_CONFIG.version, fichero:'(a mano)',
+    detalle: Object.keys(_CUENTA).map(function(k){ return _CUENTA[k]+' '+k; }).join(' · ') });
+  _CUENTA={}; _DIA_SUCIO=true; pintaEnCurso();
+}
+var ICO_MODO={A:'\u2699\ufe0f',M:'\u270d\ufe0f',S:'\ud83d\udccb'};
+function pintaDiario(){
+  var z=document.getElementById('diario-lista'); if(!z) return;
+  var D=DIARIO.filter(function(l){ return (l.modo||'A')===MI_MODO; });
+  pintaEnCurso();
+  if(!D.length){ z.innerHTML='<div style="font-size:12.5px;color:var(--muted);padding:10px 0">'
+    + t('dia_vacio')+'</div>'; return; }
+  z.innerHTML = D.slice().reverse().map(function(l){
+    return '<div class="item" style="cursor:default">'
+      +'<span style="flex:0 0 16px">'+(ICO_MODO[l.modo]||'\u00b7')+'</span>'
+      +'<span style="flex:0 0 112px;color:var(--muted);font-family:var(--mono);font-size:10.5px">'
+      +String(l.cuando||'').replace('_',' ')+'</span>'
+      +'<span style="flex:1;color:var(--muted)">'+(l.detalle||l.fichero||'')+'</span></div>';
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LE MENU — dessiné d'après la table, pas écrit ici
+   ══════════════════════════════════════════════════════════════════════ */
+var TABLA_CARGADA = null;
+
+function pintaMenu(){
+  SF_FORM.carga(TABLA, function(T){
+    if(!T){ document.getElementById('menu').innerHTML =
+      '<div style="color:var(--danger)">No encuentro la tabla « ' + TABLA + ' ».</div>';
+      return; }
+    TABLA_CARGADA = T;
+    var fam = T.familias || [{ id:'todo', titulo:'', rubricas:Object.keys(T.rubricas) }];
+    /* ══ une famille, un volet — un seul ouvert (P-H, 14/09) ══
+       Six volets valent mieux qu'un mur de dix-sept boutons. */
+    var COLOR = { medir:'var(--accent)', tratar:'var(--ok,#3ecf8e)',
+                  contar:'var(--warn)', seguir:'#d97bff' };
+    document.getElementById('menu').innerHTML = fam.map(function(f){
+      var rs = f.rubricas.filter(function(r){ return T.rubricas[r]; });
+      return '<details class="sf-plegable" id="d-' + f.id + '">'
+        + '<summary style="color:' + (COLOR[f.id]||'var(--accent)') + '">'
+        + '<span>' + (f.titulo||'') + '</span>'
+        + '<span class="cuenta">' + rs.length + '</span></summary>'
+        + '<div class="rubs">' + rs.map(function(r){
+              return '<button onclick="pide(\'' + r + '\')">'
+                   + (T.rubricas[r].titulo || r) + '</button>'; }).join('')
+        + '</div></details>';
+    }).join('');
+    unSoloAbierto();
+  });
+}
+
+/* ══ un seul volet ouvert, familles comprises ══ */
+function unSoloAbierto(){
+  var todos = [];
+  document.querySelectorAll('details.sf-plegable').forEach(function(d){
+    if(d.id) todos.push(d.id); });
+  todos.forEach(function(id){
+    var d = document.getElementById(id);
+    if(!d || d._enganchado) return;
+    d._enganchado = true;
+    d.addEventListener('toggle', function(){
+      if(!d.open) return;
+      todos.forEach(function(o){
+        if(o === id) return;
+        var e = document.getElementById(o);
+        if(e && e.open) e.open = false;
+      });
+    });
+  });
+}
+
+/* ══ pedir una rúbrica — el formulario hace todo el trabajo ══ */
+function pide(rubrica, corrigiendo){
+  var R = TABLA_CARGADA && TABLA_CARGADA.rubricas[rubrica];
+  if(!R) return;
+
+  /* ce qu'on propose : les listes qui viennent du dossier */
+  var iniciales = corrigiendo ? Object.assign({}, corrigiendo.valores) : {};
+  if(!corrigiendo){
+    (R.campos||[]).forEach(function(c){
+      if(c.tipo === 'fecha' && !c.aproximada && !iniciales[c.id])
+        iniciales[c.id] = new Date().toISOString().substring(0,10);
+      if(c.defecto !== undefined && iniciales[c.id] === undefined)
+        iniciales[c.id] = c.defecto;
+    });
+  }
+
+  SF_FORM.pide(TABLA, rubrica, function(v){
+    if(!v) return;
+    guarda(rubrica, R, v, corrigiendo);
+  }, iniciales, { fuentes: fuentesDe(R) });
+}
+
+/* les listes qui se nourrissent du dossier */
+function fuentesDe(R){
+  var f = {};
+  (R.campos||[]).forEach(function(c){
+    if(c.fuente === 'principios'){
+      var vus = {};
+      L('medicaments').forEach(function(m){
+        var n = m.nombre || m.nom; if(n) vus[n] = 1; });
+      try{
+        var P = (typeof SF_PRINCIPIOS!=='undefined') ? SF_PRINCIPIOS : null;
+        if(P) Object.keys(P.principios || P).forEach(function(n){ vus[n]=1; });
+      }catch(e){}
+      f[c.id] = Object.keys(vus).sort(function(a,b){
+        return a.localeCompare(b,'es',{sensitivity:'base'}); });
+    }
+    if(c.fuente === 'ya_dichos'){
+      var d = {};
+      L('antecedentes').forEach(function(a){
+        var x = a.texto || a; if(x) d[x] = 1; });
+      f[c.id] = Object.keys(d).sort(function(a,b){
+        return a.localeCompare(b,'es',{sensitivity:'base'}); });
+    }
+  });
+  return f;
+}
+
+/* ══ ranger ce que le formulaire a rendu ══
+   Chaque rubrique dit dans quelle table elle va. Les mesures se
+   regroupent par date, le reste s'ajoute tel quel. */
+function guarda(rubrica, R, v, corrigiendo){
+  var destino = R.tabla || 'mesures';
+  var A = L(destino);
+
+  var obj;
+  if(destino === 'mesures'){
+    /* les mesures : une entrée par date/heure, avec ses valeurs */
+    var meta = ['fecha','hora','condicion','tipo','metodo','parametro',
+                'valor','unidad','referencia'];
+    obj = Object.assign({ date: v.fecha || '', vals:{}, unidades:{} }, _marca());
+    if(!v.fecha) obj.sin_fecha = true;
+    if(v.hora)      obj.hora = v.hora;
+    if(v.condicion) obj.condicion = v.condicion;
+    if(v.tipo)      obj.tipo = v.tipo;
+    if(v.metodo)    obj.metodo = v.metodo;
+    if(R.grupo)     obj.grupo = R.grupo;
+
+    if(v.parametro){                      /* laboratorio : un paramètre libre */
+      obj.vals[v.parametro] = v.valor;
+      if(v.unidad) obj.unidades[v.parametro] = v.unidad;
+      if(v.referencia) obj.referencias = { [v.parametro]: v.referencia };
+    } else {                              /* les autres : les champs sont les paramètres */
+      Object.keys(v).forEach(function(k){
+        if(meta.indexOf(k) >= 0) return;
+        obj.vals[k] = v[k];
+        var c = (R.campos||[]).filter(function(x){ return x.id === k; })[0];
+        if(c && c.unidad) obj.unidades[k] = c.unidad;
+      });
+    }
+    if(!Object.keys(obj.unidades).length) delete obj.unidades;
+  }
+  else {
+    obj = Object.assign({}, v, _marca());
+    if(destino === 'medicaments') obj.source = 'manual';
+  }
+
+  if(corrigiendo && corrigiendo.tabla === destino){
+    A[corrigiendo.i] = Object.assign(A[corrigiendo.i] || {}, obj);
+    anota('corregido en ' + destino);
+  } else {
+    A.push(obj);
+    anota(destino);
+  }
+  if(destino === 'mesures' || destino === 'events' || destino === 'citas' || destino === 'escalas')
+    A.sort(function(a,b){
+      return String(a.date||a.fecha||'').localeCompare(String(b.date||b.fecha||'')); });
+  _asegura()[destino] = A;
+  MF.tocado();
+  if(!_ABIERTO) guardaTemporal();
+  pintaVisto(); refresca();
+  estado(t('guardado_linea'));
+}
+
+/* ══ ce qui a été écrit à la main, toutes rubriques confondues ══ */
+function pintaVisto(){
+  var z = document.getElementById('lista-visto');
+  if(!z || !TABLA_CARGADA) return;
+  var out = [], n = 0, otros = 0;
+
+  Object.keys(TABLA_CARGADA.rubricas).forEach(function(r){
+    var R = TABLA_CARGADA.rubricas[r];
+    var destino = R.tabla || 'mesures';
+    L(destino).forEach(function(x, i){
+      if(!_aMano(x)) { return; }
+      /* à quelle rubrique appartient cette ligne ? */
+      if(destino === 'mesures'){
+        var ks = Object.keys(x.vals || {});
+        var suya = (R.campos||[]).some(function(c){ return ks.indexOf(c.id) >= 0; })
+                || (R.grupo && x.grupo === R.grupo);
+        if(!suya) return;
+      }
+      n++;
+      out.push(linea(r, R, destino, x, i));
+    });
+  });
+
+  /* ce qui vient d'ailleurs */
+  ['mesures','events','medicaments','antecedentes','escalas','citas'].forEach(function(k){
+    otros += L(k).filter(function(x){ return !_aMano(x); }).length;
+  });
+
+  document.getElementById('c-visto').textContent =
+    n + (otros ? (' + ' + otros + ' ' + t('ya_en_exp')) : '');
+  z.innerHTML = out.length ? out.join('')
+    : ('<div style="font-size:12.5px;color:var(--muted);padding:10px 0">'
+       + (otros ? t('solo_otros', {n:otros}) : t('vacio')) + '</div>');
+}
+
+function linea(rubrica, R, destino, x, i){
+  var cuando = x.date || x.fecha || x.desde || '';
+  var que = '';
+  if(destino === 'mesures'){
+    que = Object.keys(x.vals||{}).map(function(k){
+      return k + ' ' + x.vals[k] + ((x.unidades&&x.unidades[k])?' '+x.unidades[k]:'');
+    }).join(' · ');
+    if(x.condicion) que += ' <span style="color:var(--muted);font-size:11px">('+x.condicion+')</span>';
+  }
+  else if(destino === 'medicaments')
+    que = '<b>' + (x.nombre||x.nom||'') + '</b> ' + (x.dosis||'') + ' ' + (x.pauta||x.frecuencia||'');
+  else if(destino === 'antecedentes') que = x.texto || '';
+  else if(destino === 'escalas')      que = x.nombre + ' : <b>' + x.valor + '</b>'
+                                          + (x.maximo?' / '+x.maximo:'');
+  else if(destino === 'citas')        que = (x.hora?x.hora+' · ':'') + (x.servicio||'');
+  else if(destino === 'events')       que = x.titulo || x.title || '';
+  else                                que = x.texto || x.germen || x.vacuna || '';
+
+  return '<div class="item" onclick="corrige(\'' + rubrica + '\',\'' + destino + '\',' + i + ')">'
+    + '<span style="flex:0 0 22px">' + (R.icono||'') + '</span>'
+    + '<span style="flex:0 0 118px;color:var(--muted);font-family:var(--mono);font-size:10.5px">'
+    + (cuando || '—') + (x.hora && destino==='mesures' ? ' '+x.hora : '') + '</span>'
+    + '<span style="flex:1">' + que + '</span>'
+    + (x.escrito ? '<span style="flex:0 0 auto;color:var(--muted);font-size:10px;'
+        + 'font-family:var(--mono)" title="escrito el ' + x.escrito.replace('_',' ') + '">✍️</span>' : '')
+    + '<span class="x" onclick="quita(\'' + destino + '\',' + i + ',event)">✕</span></div>';
+}
+
+/* ══ corriger : on rouvre le formulaire, rempli ══ */
+function corrige(rubrica, destino, i){
+  var R = TABLA_CARGADA.rubricas[rubrica];
+  var x = L(destino)[i];
+  if(!R || !x) return;
+  var v = {};
+  if(destino === 'mesures'){
+    v.fecha = x.date || ''; if(x.hora) v.hora = x.hora;
+    if(x.condicion) v.condicion = x.condicion;
+    if(x.tipo) v.tipo = x.tipo; if(x.metodo) v.metodo = x.metodo;
+    Object.keys(x.vals||{}).forEach(function(k){ v[k] = x.vals[k]; });
+    /* laboratorio : le paramètre est libre */
+    if(R.campos.some(function(c){ return c.id === 'parametro'; })){
+      var k0 = Object.keys(x.vals||{})[0];
+      if(k0){ v.parametro = k0; v.valor = x.vals[k0];
+              if(x.unidades && x.unidades[k0]) v.unidad = x.unidades[k0]; }
+    }
+  } else {
+    v = Object.assign({}, x);
+    delete v.src; delete v.source; delete v.escrito; delete v.sesion;
+  }
+  pide(rubrica, { tabla:destino, i:i, valores:v });
+}
+
+function quita(destino, i, ev){
+  if(ev && ev.stopPropagation) ev.stopPropagation();
+  var A = L(destino);
+  if(i < 0 || i >= A.length) return;
+  A.splice(i,1);
+  _asegura()[destino] = A; MF.tocado();
+  anota('quitado de ' + destino);
+  if(!_ABIERTO) guardaTemporal();
+  pintaVisto(); refresca();
+}
+
+function estado(txt, mal){
+  var z=document.getElementById('estado');
+  z.innerHTML = txt ? ('<span style="color:'+(mal?'var(--danger)':'var(--ok)')+'">'+txt+'</span>') : '';
+  if(txt) setTimeout(function(){ z.innerHTML=''; }, 3500);
+}
+
+/* ══ GUARDAR ══ */
+function _matricula(nombre, sip){
+  var n=(nombre||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  var p=n.split(/\s+/).filter(Boolean);
+  var ini=p.slice(0,3).map(function(x){ return x[0]||''; }).join('');
+  while(ini.length<3) ini+='X';
+  var s=String(sip||'').replace(/\D/g,'');
+  return ini + (s.slice(-4)||'0000');
+}
+function guardaTemporal(){
+  if(!_DATOS) return Promise.resolve({ok:false});
+  return MF.guarda('pacientes/_temporal/en-curso.mf', JSON.stringify(_DATOS,null,1));
+}
+function guardaExpediente(){
+  if(!_DATOS){ estado(t('nada_guardar'), true); return; }
+  cierraSesion();
+  if(_ABIERTO) confirmaSobreEscribir(); else pideIdentidad();
+}
+function confirmaSobreEscribir(){
+  var p = MF.paciente()||{};
+  var cuerpo = '<div class="sf-sordo">' + t('conf_texto', {quien:'<b>'
+    + (p.etiqueta||p.matricula||'?') + '</b>'}) + '</div>';
+  var pie = '<button class="sf-ventana-btn sf-suave" id="_g-no">' + t('no_guardar') + '</button>'
+          + '<button class="sf-ventana-btn" id="_g-si">' + t('si_guardar') + '</button>';
+  var v = MF.ventana('💾 ' + t('guardar'), cuerpo, { ancho:'460px', alPie:pie });
+  v.caja.querySelector('#_g-no').onclick = v.cierra;
+  v.caja.querySelector('#_g-si').onclick = function(){ v.cierra(); escribe(p); };
+}
+function pideIdentidad(){
+  var cuerpo = '<div class="sf-sordo">' + t('id_texto') + '</div>'
+    + '<label class="sf-etiqueta">' + t('id_nombre') + '</label>'
+    + '<input type="text" id="_i-nom" class="sf-campo" placeholder="Ana García López">'
+    + '<div style="display:flex;gap:10px;margin-top:10px">'
+    +   '<div style="flex:1"><label class="sf-etiqueta">SIP</label>'
+    +     '<input type="text" id="_i-sip" class="sf-campo" maxlength="10"></div>'
+    +   '<div style="flex:1"><label class="sf-etiqueta">' + t('id_nac') + '</label>'
+    +     '<input type="date" id="_i-nac" class="sf-campo"></div>'
+    +   '<div style="flex:0 0 110px"><label class="sf-etiqueta">' + t('id_mat') + '</label>'
+    +     '<div id="_i-mat" class="sf-campo" style="text-align:center;color:var(--warn)">—</div></div>'
+    + '</div><div id="_i-aviso" style="font-size:12px;margin-top:12px"></div>';
+  var pie = '<button class="sf-ventana-btn sf-suave" id="_i-no">' + t('cancelar') + '</button>'
+          + '<button class="sf-ventana-btn" id="_i-si">' + t('crear_guardar') + '</button>';
+  var v = MF.ventana('🧑 ' + t('id_titulo'), cuerpo, { ancho:'520px', alPie:pie });
+  var iN=v.caja.querySelector('#_i-nom'), iS=v.caja.querySelector('#_i-sip'),
+      zM=v.caja.querySelector('#_i-mat');
+  function calc(){ var m=_matricula(iN.value,iS.value);
+    zM.textContent=(iN.value.trim()&&iS.value.trim())?m:'—'; return m; }
+  iN.oninput=calc; iS.oninput=calc; iN.focus();
+  v.caja.querySelector('#_i-no').onclick = v.cierra;
+  v.caja.querySelector('#_i-si').onclick = function(){
+    var nom=iN.value.trim(), sip=iS.value.trim();
+    if(!nom||!sip){ v.caja.querySelector('#_i-aviso').innerHTML =
+      '<span style="color:var(--danger)">' + t('id_falta') + '</span>'; return; }
+    var mat=calc();
+    var p={matricula:mat, etiqueta:nom, nombre:nom, sip:sip,
+           nacimiento:v.caja.querySelector('#_i-nac').value};
+    MF.lista('pacientes/'+mat).then(function(hay){
+      if(hay && hay.length){
+        v.caja.querySelector('#_i-aviso').innerHTML =
+          '<span style="color:var(--warn)">' + t('id_existe',{mat:'<b>'+mat+'</b>'}) + '</span>';
+        setTimeout(function(){ v.cierra(); escribe(p,true); }, 2200);
+      } else { v.cierra(); escribe(p,true); }
+    });
+  };
+}
+function escribe(p, esNuevo){
+  if(typeof SF_PLANTILLA!=='undefined'){
+    SF_PLANTILLA.actualiza(_DATOS,'S'); SF_PLANTILLA.paraExportar(_DATOS);
+  }
+  if(esNuevo){
+    _DATOS.paciente = Object.assign(_DATOS.paciente||{}, p);
+    _DATOS.patient_label = p.matricula; _DATOS.sip = p.sip;
+    if(MF.ponPaciente) MF.ponPaciente(p);
+    _ABIERTO = true;
+    document.getElementById('x-pac').textContent = p.etiqueta || p.matricula;
+    document.getElementById('x-pac').style.color = '';
+  }
+  var mat = p.matricula || (MF.paciente()||{}).matricula || 'SIN_PACIENTE';
+  mat = String(mat).replace(/_\d{4}-\d{2}-\d{2}_\d{2}h\d{2}.*$/, '');
+  var nombre = mat + '_' + _sello() + '.mf';
+  MF.guarda('pacientes/'+mat+'/'+nombre, JSON.stringify(_DATOS,null,1)).then(function(){
+    estado(t('guardado') + ' : ' + nombre);
+    salvaDiario();
+  });
+}
+
+function refresca(){
+  try{
+    document.getElementById('x-est').textContent =
+      L('mesures').length + ' ' + t('u_mediciones') + ' · '
+      + L('events').length + ' ' + t('u_eventos') + ' · '
+      + L('medicaments').length + ' ' + t('u_medicamentos');
+  }catch(e){}
+}
+
+function pintaTextos(){
+  document.getElementById('intro').innerHTML = t('intro');
+  document.getElementById('b-guardar').textContent = '💾 ' + t('guardar');
+  if(typeof MF!=='undefined' && MF.aplicaIdioma) MF.aplicaIdioma();
+}
+
+/* un seul cadre ouvert : unSoloAbierto() le fait, une fois le menu dessiné */
+
+MF.arranca({
+  alCargar: function(d){
+    _DATOS = (typeof SF_PLANTILLA!=='undefined') ? SF_PLANTILLA.completa(d, MF.paciente()) : d;
+    _ABIERTO = true;
+    var p = MF.paciente();
+    document.getElementById('x-pac').textContent = p.etiqueta || p.matricula || '';
+    pintaTextos(); pintaMenu();
+    setTimeout(function(){ pintaVisto(); }, 300);
+    cargaDiario(function(){ refresca(); });
+    MF.ponVersion();
+  },
+  alFallar: function(){
+    document.getElementById('x-pac').textContent = t('sin_exp');
+    document.getElementById('x-pac').style.color = 'var(--warn)';
+    pintaTextos(); pintaMenu();
+    setTimeout(function(){ pintaVisto(); }, 300);
+    pintaDiario(); MF.ponVersion();
+  }
+});
+</script>
+</body>
+</html>
