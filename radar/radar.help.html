@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ayuda · Radar</title>
+<style>
+:root{--bg:#161b27;--text:#e8eaf0;--muted:#9aa3b8;--accent:#4a8fe8;
+      --border:#2a3348;--surface:#1e2535;--serif:Georgia,serif}
+body{margin:0;padding:24px 28px 50px;background:var(--bg);color:var(--text);
+     font-family:system-ui,sans-serif;line-height:1.7}
+.env{max-width:720px;margin:0 auto}
+h1{font-family:var(--serif);font-size:21px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:12.5px;margin-bottom:20px}
+h2{font-family:var(--serif);font-size:15px;color:var(--accent);margin:22px 0 6px;
+   border-bottom:1px solid var(--border);padding-bottom:4px}
+p{margin:0 0 12px;font-size:14px}
+.nota{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
+      padding:11px 15px;font-size:13px;color:var(--muted);margin:16px 0}
+</style>
+</head>
+<body><div class="env">
+<h1>🕸️ Radar</h1>
+<div class="sub">La vista de conjunto, fechas superpuestas</div>
+
+<h2>Cómo leer</h2>
+<p>Cada eje es un parámetro <b>normalizado</b>: 100 % es el centro del rango normal. Cuanto más lejos del centro, más se aparta el valor de la norma — hacia arriba o hacia abajo, el radar no lo distingue: mide la distancia, no el sentido.</p>
+
+<h2>Las fechas</h2>
+<p>Elija hasta ocho extracciones para superponerlas. <b>Últimas 3</b> muestra la evolución reciente; <b>Últimas 8</b>, la tendencia larga. Ctrl+clic para añadir o quitar una fecha.</p>
+
+<h2>Los grupos</h2>
+<p>General, hematología, lípidos, renal, hepático, vitaminas, coagulación. Con todos los parámetros a la vez el radar se vuelve ilegible: es mejor mirar una familia cada vez.</p>
+
+<h2>Los valores</h2>
+<p>Debajo del radar, la tabla de los datos que lo componen — con el 📄 del documento de donde viene cada valor.</p>
+
+<div class="nota">Salufolio no inventa nada: cada punto del radar viene de un informe. Si un valor sorprende, mire el documento antes de sacar conclusiones.</div>
+</div></body>
+</html>

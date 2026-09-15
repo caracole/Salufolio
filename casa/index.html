@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Salufolio</title>
+<link rel="stylesheet" href="../comun/salufolio.css">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   LA STRUCTURE (P-H, 03/09) — trois bandes, comme il l'a éprouvée :
+     · en haut  : le bandeau, TOUJOURS visible
+     · au milieu: l'écran (la liste, ou l'iframe d'un module)
+     · en bas   : le copyright et les mentions
+   En flex : si un bandeau change de hauteur, le milieu s'ajuste seul.
+   ══════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:0;overflow:hidden;
+          background:var(--bg);color:var(--text);font-family:system-ui,sans-serif}
+body{display:flex;flex-direction:column}
+
+#banda-arr{flex:0 0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+           padding:5px 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+#pantalla {flex:1;min-height:0;position:relative;overflow:auto}
+#banda-abj{flex:0 0 auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+           padding:5px 14px;background:var(--surface);border-top:1px solid var(--border);
+           font-size:11px;color:var(--muted)}
+
+.b-tit{font-family:var(--serif);font-size:15px;font-weight:600;cursor:help}
+.b-ver{font-size:10.5px;color:var(--muted);font-family:var(--mono,monospace);font-weight:400;margin-left:5px}
+.b-pac{font-size:12px;color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:0 8px;cursor:pointer}
+.b-est{font-size:11px;color:var(--muted)}
+.b-sep{flex:1}
+.b-b{cursor:pointer;font-size:16px;opacity:.72;transition:all .2s;user-select:none;padding:1px 4px}
+.b-b:hover{opacity:1;transform:scale(1.18)}
+.b-b.off{opacity:.22;cursor:not-allowed;pointer-events:none}
+.b-b.bandera{opacity:.55}
+.b-b.bandera.on{opacity:1;transform:scale(1.15)}
+#banderas{align-items:center}
+#paleta{align-items:center}
+.pal-lista{position:absolute;top:34px;right:60px;z-index:9000;width:190px;
+           background:var(--surface);border:1px solid var(--warn);border-radius:9px;
+           padding:5px;box-shadow:0 8px 28px rgba(0,0,0,.6)}
+.pal-fila{display:flex;align-items:center;gap:7px;padding:7px 10px;margin-bottom:3px;
+          border-radius:6px;cursor:pointer;font-size:12.5px;border:1px solid transparent;
+          transition:all .15s}
+.pal-fila:hover{transform:translateX(2px)}
+.pal-fila.on{border-color:var(--warn)}
+
+/* les infobulles maison */
+/* v13 (P-H) : cadre jaune — plus lisible sur fond sombre que le bleu */
+/* les infobulles suivent la palette : sur fond clair, l'ambre serait
+   illisible — c'est la couleur du texte courant qui commande. */
+.tip{position:fixed;z-index:9999;display:none;background:var(--surface);
+     border:1px solid var(--warn);border-radius:8px;padding:5px 11px;
+     font-size:12px;color:var(--text);box-shadow:0 5px 20px rgba(0,0,0,.45);
+     pointer-events:none;white-space:nowrap;max-width:220px}
+
+/* le thème clair : les champs suivent, ils restaient sombres */
+
+#banda-abj a{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted)}
+#banda-abj a:hover{color:var(--accent)}
+
+#marco-mod{width:100%;height:100%;border:0;display:none;background:var(--bg)}
+
+#lista{max-width:960px;margin:0 auto;padding:20px 24px 40px}
+.sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.exp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px;margin-bottom:14px}
+/* v9 (P-H) : champs et boutons de même hauteur, padding resserré */
+/* les champs suivent la palette — ils gardaient un fond sombre en dur */
+.exp .campo{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:7px;
+            color:var(--text);padding:4px 8px;font-size:14px;height:30px;line-height:20px}
+.exp .campo::placeholder{color:var(--muted);opacity:.7}
+.exp .bmini{width:auto;padding:4px 12px;height:30px;border-radius:7px;border:1px solid var(--ok);
+            background:transparent;color:var(--ok);font-size:13px;cursor:pointer;white-space:nowrap}
+/* les options prennent le thème, sinon le navigateur met du noir sur noir */
+.exp select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:7px;
+            color:var(--text);padding:4px 8px;font-size:13px;height:30px}
+.exp select option{background:var(--surface);color:var(--text)}
+.exp button{width:100%;padding:10px;border-radius:9px;border:1px solid var(--ok);background:transparent;color:var(--ok);font-size:14.5px;cursor:pointer}
+.exp .ok{display:none;margin-top:10px;padding:9px 12px;background:rgba(61,191,127,.1);border:1px solid var(--ok);border-radius:8px;font-size:13px}
+.exp .nota{font-size:11.5px;color:var(--muted);margin-top:7px;line-height:1.5}
+
+/* v2 (P-H, 11/09) : la barre des profils reste en haut quand on fait
+   défiler les cartes — sinon, pour changer de profil, il faut remonter. */
+.perf{position:sticky;top:0;z-index:300;background:var(--bg);
+      padding-top:var(--pad-s,10px);padding-bottom:var(--pad-s,8px);
+      box-shadow:0 4px 14px var(--bg);display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 4px;align-items:center}
+.perf button{padding:6px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12.5px;cursor:pointer;transition:all .2s}
+.perf button:hover{border-color:var(--accent);color:var(--text)}
+.perf button.on{border-color:var(--accent);background:rgba(74,143,232,.14);color:var(--text)}
+h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0 8px;border-bottom:1px solid var(--border);padding-bottom:4px}
+.rej{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:10px}
+.tar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px;cursor:pointer;transition:all .2s}
+.tar:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.tar.apagado{opacity:.34;cursor:not-allowed}
+.tar.apagado:hover{border-color:var(--border);transform:none;box-shadow:none}
+.tar .ic{font-size:24px;display:block;margin-bottom:5px}
+.tar .nm{font-family:var(--serif);font-size:15px;font-weight:600}
+.tar .ds{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.ver-item{cursor:pointer;padding:7px 11px;margin-bottom:4px;background:var(--bg);
+          border:1px solid var(--border);border-radius:7px;font-size:12.5px;
+          display:flex;align-items:center;gap:9px}
+.ver-item.on{border-color:var(--ok)}
+</style>
+</head>
+<body>
+
+<div id="banda-arr"></div>
+
+<div id="pantalla">
+  <iframe id="marco-mod" title="módulo"></iframe>
+  <div id="lista">
+
+    <!-- ══════════════════════════════════════════════════════════════
+         DOS CUADROS, NO UNO (P-H, 15/09/2026)
+
+         « On sélectionne dans la liste et on y va. Pas dans la liste :
+           un bouton +NUEVO qui ouvre un cadre à part. »
+
+         Elegir y crear no son el mismo gesto. Mezclarlos obligaba a
+         escribir un nombre que ya estaba en la lista.
+
+         Y de un paciente conocido no hace falta ni el SIP ni la
+         matrícula: se ha elegido en la lista, con eso basta. El SIP es
+         un dato de salud — no tiene por qué andar por la pantalla.
+         ══════════════════════════════════════════════════════════════ -->
+
+    <div class="exp" id="cuadro-conocidos">
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+        <div style="flex:1;min-width:230px">
+          <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px"
+                 id="et-conocidos">Pacientes conocidos</label>
+          <select id="sel-pac" class="campo" onchange="eligeDeLista()"
+                  style="width:100%"></select>
+        </div>
+        <button onclick="abreNuevo()" class="bmini" id="b-nuevo"
+                style="border-color:var(--warn);color:var(--warn)">➕ Nuevo</button>
+        <button onclick="abreSuelto()" class="bmini" id="b-suelto"
+                title="abrir un fichero que esté en otro sitio">📂</button>
+      </div>
+
+      <div id="caja-expedientes" style="display:none;margin-top:12px">
+        <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px"
+               id="et-expedientes">Expedientes</label>
+        <select id="sel-exp" class="campo" onchange="tomaVersion(this.selectedIndex)"
+                style="width:100%"></select>
+      </div>
+
+      <div class="ok" id="exp-ok"><b id="exp-nom"></b>
+        <span id="exp-det" style="color:var(--muted)"></span></div>
+      <div class="nota" id="exp-nota"></div>
+    </div>
+
+    <div class="exp" id="cuadro-nuevo" style="display:none;border-color:var(--warn)">
+      <div style="font-family:var(--serif);font-size:15px;margin-bottom:4px"
+           id="tit-nuevo">🧑 Un paciente nuevo</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:12px"
+           id="ayuda-nuevo">La matrícula se forma sola: las iniciales del nombre
+           y las cuatro últimas cifras del SIP.</div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+        <div style="flex:2;min-width:190px">
+          <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px"
+                 id="et-nombre">Nombre y apellidos</label>
+          <input type="text" id="n-nombre" placeholder="Ana García López"
+                 oninput="calculaNuevo()" class="campo" style="width:100%">
+        </div>
+        <div style="flex:0 0 118px">
+          <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px"
+                 id="et-sip">SIP</label>
+          <input type="text" id="n-sip" maxlength="10" autocomplete="off" oninput="calculaNuevo()"
+                 class="campo" style="width:100%">
+        </div>
+        <div style="flex:0 0 auto">
+          <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px"
+                 id="et-mat">Matrícula</label>
+          <div id="n-mat" class="campo" style="font-family:var(--mono,monospace);
+               color:var(--warn);width:100px;text-align:center">—</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+        <button onclick="cierraNuevo()" class="bmini" id="b-cancelar">Cancelar</button>
+        <button onclick="creaDesdeCuadro()" class="bmini" id="b-crear"
+                style="border-color:var(--ok);color:var(--ok)">Crear</button>
+      </div>
+      <div class="nota" id="nuevo-nota"></div>
+    </div>
+
+    <input type="file" id="p-dir" webkitdirectory directory multiple
+           style="display:none" onchange="leeCarpeta(this)">
+
+    <div class="perf" id="perfiles"></div>
+    <div id="familias"></div>
+  </div>
+</div>
+
+<div id="banda-abj"></div>
+
+<script>document.write('<script src="../comun/plantilla-mf.js?'+Date.now()+'"><\/script>');</script>
+<script>document.write('<script src="../pacientes/pacientes.js?'+Date.now()+'"><\/script>');</script>
+<script src="casa.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   LANZADOR — el marco de Salufolio (P-H + Claude, 03/09/2026)
+
+   Todo viene de casa.json: la lista de módulos, las bandas, los
+   perfiles. Una modificación se hace AHÍ, no aquí.
+
+   Cada módulo es un PROGRAMA ENTERO, en su propia página, mostrado en el
+   iframe: conserva su código y sus variables. El lanzador le pasa la
+   matrícula en la dirección; el módulo carga el fichero él mismo.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+var SIP_OCULTO='';
+/* v15b : les palettes étaient déclarées APRÈS leur chargement — la ligne
+   « var PALETAS=[] » les remettait à vide juste après les avoir lues. */
+var PALETAS=[], PALETA='oscuro', PAL_MOD=null, MODULOS=[];
+var T=null, LANG='es', PERFIL=null, DATOS=null, NOMBRE=null, MANIJA=null,
+    SUCIO=false, ACTUAL=null, CARPETA=null, _versiones=[];
+
+/* ══ L'ARCHITECTURE DE P-H (dessin du 04/09/2026) ══
+   1 lanceur, 1 json : casa.json ne fait que POINTER vers les json
+   des applications. N programmes, N json : chacun pointe vers son html,
+   vers le json du lanceur, et porte TOUS ses paramètres.
+   Le lanceur ne sait rien des modules — il suit des pointeurs. */
+/* la configuration du lanceur, chargée comme un script (P-H, 05/09) */
+Promise.resolve(SF_LANZADOR).then(function(d){
+  T=d; LANG=d.idioma_defecto||'es';
+  PALETAS = d.paletas || [];
+  PALETA  = d.paleta_defecto || 'oscuro';
+  PERFIL  = d.perfil_actual || null;
+  try{ var q=localStorage.getItem('sf_perfil'); if(q) PERFIL=q; }catch(e){}
+  try{ var g=localStorage.getItem('sf_paleta'); if(g) PALETA=g; }catch(e){}
+  aplicaPaleta(PALETA);
+  pintaBandas(); cargaPacientes();
+  /* l'id générique suffit : curvas → curvas.json → curvas.html.
+     L'accès vient du lanceur ; l'icône, le titre et la description
+     viennent du module — c'est lui qui se décrit. */
+  /* ══ V2 (P-H, 05/09) — CHAQUE PROGRAMME DANS SON DOSSIER, ET SA
+     CONFIGURATION EN .js — pas en .json : un navigateur ne peut pas lire
+     un fichier local avec fetch, mais il peut charger un script. Ainsi
+     tout marche même sans serveur.
+         V2/resumen/resumen.js  déclare SF_CONFIG
+         V2/resumen/resumen.html  le programme ══ */
+  return Promise.all((d.modulos||[]).map(function(e){
+    var id = (typeof e==='string')? e.replace(/\.(json|html|js)$/,'') : e.id;
+    return cargaConfigDe(id, (typeof e==='object' && e.carpeta) || null).then(function(m){
+      if(!m) return null;
+      m.id = m.id || id;
+      var _c = (typeof e==='object' && e.carpeta) || m.carpeta;
+      m._carpeta = _c ? ('../' + _c) : ('../' + id + '/');
+      m.acceso = (typeof e==='object' && e.acceso) || m.acceso || [d.acceso_defecto||'todos'];
+      return m;
+    });
+  }));
+}).then(function(ms){
+  MODULOS=(ms||[]).filter(Boolean);
+  pintaPerfiles(); pintaModulos();
+}).catch(function(e){
+  document.getElementById('familias').innerHTML='<div class="nota">No se pudo leer casa.json — '+e.message+'</div>';
+});
+
+function t(campo){
+  if(!campo) return '';
+  if(typeof campo==='string') return campo;
+  return campo[LANG] || campo[(T&&T.idioma_defecto)||'es'] || '';
+}
+
+/* ── les deux bandes, dessinées d'après la table ── */
+/* ══ LE LOGO : une alvéole, et « Salu » droit / « folio » italique bleu ══ */
+function logoSVG(){ return ''; }   /* hexagone retiré (P-H, 04/09) */
+function pintaBandas(){
+  var a=document.getElementById('banda-arr');
+  var bts=(T.banda_arriba&&T.banda_arriba.botones)||[];
+  a.innerHTML=
+     '<span class="b-b" data-b="panal" style="font-size:19px">🐝</span>'
+    +'<span class="b-tit" id="b-tit">'+logoSVG()
+    +' <span style="color:var(--text)">Salu</span><span style="font-style:italic;color:var(--accent)">folio</span></span>'
+    +'<span class="b-pac" id="b-pac" onclick="cambiarPaciente()">DEMO</span>'
+    +'<span class="b-b" data-b="guardar" style="font-size:15px">💾</span>'
+    +'<span class="b-est" id="b-est"></span>'
+    +'<span class="b-sep"></span>'
+    +'<span id="banderas" style="display:none;gap:4px"></span>'
+    +'<span id="paleta" style="display:none"></span>'
+    + bts.filter(function(b){ return ['idioma','tema','ayuda','inicio'].indexOf(b.id)>=0; })
+        .map(function(b){
+          return '<span class="b-b" data-b="'+b.id+'">'+b.icono+'</span>';
+        }).join('');
+  a.querySelectorAll('[data-b]').forEach(function(e){
+    e.onclick=function(ev){ ev.stopPropagation(); manda(e.dataset.b); };
+    ponTip(e, tipDe(e.dataset.b));
+  });
+  ponTip(document.getElementById('b-pac'), 'Toque aquí para cambiar de paciente');
+  ponTip(document.getElementById('b-tit'), 'Salufolio  ·  lanzador v'+(T.version||'?'));
+  pintaBanderas();
+
+  var z=document.getElementById('banda-abj');
+  var ab=T.banda_abajo||{};
+  /* v11 (P-H) : « fichero » se montre dans l'écran, « enlace » s'ouvre
+     dehors. Zenodo et les sites sérieux interdisent l'iframe, d'où le
+     PDF gardé en local — et le lien vers la source à côté. */
+  z.innerHTML='<span>'+(ab.izquierda||'')+'</span><span class="b-sep"></span>'
+    + ((ab.centro||[]).map(function(c,i){
+        if(c.fichero) return '<a href="#" data-doc="'+i+'" title="'+(c.titulo||'')+'">'+c.texto+'</a>';
+        return c.enlace? '<a href="'+c.enlace+'" target="_blank">'+c.texto+'</a>' : '<span>'+c.texto+'</span>';
+      }).join('<span> · </span>'))
+    + '<span class="b-sep"></span><span>v'+(T.version||'')+'</span>';
+  z.querySelectorAll('[data-doc]').forEach(function(e){
+    e.onclick=function(ev){ ev.preventDefault(); abreDoc(+e.dataset.doc); };
+  });
+}
+
+/* ── un document dans l'écran ── */
+function abreDoc(i){
+  var c=(T.banda_abajo&&T.banda_abajo.centro||[])[i];
+  if(!c||!c.fichero) return;
+  var f=document.getElementById('marco-mod');
+  f.src=(T.carpeta_doc||'../doc/Salufolio/')+c.fichero;
+  f.style.display='block';
+  document.getElementById('lista').style.display='none';
+  ACTUAL={id:'doc'};
+  document.getElementById('b-tit').innerHTML=logoSVG()+' <span style="color:var(--text)">'+(c.titulo||c.texto)+'</span>'
+    + (c.fuera? ' <a href="'+c.fuera+'" target="_blank" style="font-size:11px;color:var(--muted);margin-left:8px">↗ en línea</a>' : '');
+  ajustaBotones();
+}
+
+/* ── les profils et les modules ── */
+function pintaPerfiles(){
+  var z=document.getElementById('perfiles');
+  z.innerHTML='<span style="font-size:12px;color:var(--muted);margin-right:4px">¿Quién accede?</span>'
+    + '<button class="'+(PERFIL===null?'on':'')+'" onclick="ponPerfil(null)">Todo</button>'
+    + T.perfiles.map(function(p){
+        return '<button class="'+(PERFIL===p.id?'on':'')+'" onclick="ponPerfil(\''+p.id+'\')">'+p.icono+' '+t(p.nombre)+'</button>';
+      }).join('');
+}
+function ponPerfil(p){
+  PERFIL=p;
+  pintaPerfiles(); pintaModulos();
+  /* le module ouvert doit le savoir : il montre moins selon qui regarde */
+  var f=document.getElementById('marco-mod');
+  if(f && f.contentWindow) f.contentWindow.postMessage({de:'lanzador', tipo:'perfil', perfil:p}, '*');
+  try{ localStorage.setItem('sf_perfil', p||''); }catch(e){}
+}
+
+function pintaModulos(){
+  var z=document.getElementById('familias'); z.innerHTML='';
+  (T.familias||[]).forEach(function(f){
+    var ms=MODULOS.filter(function(m){
+      if(m.familia!==f.id) return false;
+      if(!PERFIL) return true;
+      var a=m.acceso||['todos'];
+      return a.indexOf('todos')>=0 || a.indexOf(PERFIL)>=0;
+    });
+    if(!ms.length) return;
+    z.innerHTML+='<h2 class="fam">'+t(f.nombre)+'</h2><div class="rej">'
+      + ms.map(function(m){
+          /* v2 (P-H, 11/09) : un programme qui dit « sin_expediente » n'a
+             pas besoin de patient — le glosario n'est qu'une information. */
+          return '<div class="tar'+((DATOS||m.sin_expediente)?'':' apagado')+'" onclick="carga(\''+m.id+'\')">'
+            +'<span class="ic">'+m.icono+'</span>'
+            +'<span class="nm">'+t(m.nombre)+'</span>'
+            +'<div class="ds">'+t(m.descripcion)+'</div></div>';
+        }).join('')
+      + '</div>';
+  });
+}
+
+/* ── charger un module dans l'iframe ── */
+function carga(id, clave){
+  /* « ne pas tenter le diable » (P-H) : les cartes se voient mais ne
+     s'ouvrent pas tant qu'aucun expediente n'est choisi. */
+  if(!DATOS){
+    var n=document.getElementById('exp-nota');
+    n.textContent='Elija primero un expediente — nombre, SIP, y 🔎 Buscar.';
+    n.style.color='var(--warn)';
+    setTimeout(function(){ n.style.color=''; }, 2200);
+    return;
+  }
+  var m=MODULOS.filter(function(x){return x.id===id})[0];
+  if(!m) return;
+  ACTUAL=m;
+  var f=document.getElementById('marco-mod');
+  var q='?enMarco=1';
+  if(PERFIL) q += '&perfil='+encodeURIComponent(PERFIL);
+  q += '&idioma='+encodeURIComponent(LANG);
+  if(NOMBRE && CARPETA) q += '&mf='+encodeURIComponent(NOMBRE)+'&carpeta='+encodeURIComponent(CARPETA);
+  if(clave) q += '&termino='+encodeURIComponent(clave);
+  f.src = m._carpeta + (m.programa || (m.id+'.html')) + q;
+  f.style.display='block';
+  document.getElementById('lista').style.display='none';
+  /* v20 (P-H, doctrine depuis MediTrace) : le numéro de version dans
+     l'infobulle du nom — sans lui, on ne peut pas dire « c'est cette
+     version-là qui cloche ». */
+  /* ══ LA VERSION DANS LE BANDEAU (P-H, 06/09) ══
+     Le titre du programme est caché dans l'iframe pour ne pas faire
+     doublon — et un élément caché ne reçoit aucun survol : l'infobulle
+     ne pouvait jamais paraître. C'est donc le lanceur qui l'affiche,
+     dans son bandeau, toujours visible. Il a déjà lu la configuration
+     du programme : la version y est. */
+  var bt=document.getElementById('b-tit');
+  bt.innerHTML = m.icono+' '+t(m.nombre)
+    + (m.version? ' <span class="b-ver">v'+m.version+'</span>' : '')
+    + (PILA.length? ' <span onclick="vuelveAtras()" style="font-size:11px;color:var(--accent);cursor:pointer;margin-left:8px">↩ volver a '+t(PILA[PILA.length-1].nombre)+'</span>' : '');
+  ponTip(bt, t(m.nombre)
+             + String.fromCharCode(10) + 'versión ' + (m.version||'sin versión')
+             + String.fromCharCode(10) + (m._carpeta||'') + (m.programa||''));
+  PAL_MOD = m.paleta || PALETA;
+  setTimeout(function(){
+    mandaAlModulo();
+    var p=PALETAS.filter(function(x){return x.id===PAL_MOD})[0];
+    if(p && f.contentWindow) f.contentWindow.postMessage({de:'lanzador', tipo:'paleta', v:p.v, id:PAL_MOD}, '*');
+  }, 200);
+  ajustaBotones();
+}
+function volverInicio(){
+  ACTUAL=null; PAL_MOD=null; PILA=[];
+  aplicaPaleta(PALETA);
+  var f=document.getElementById('marco-mod');
+  f.style.display='none'; f.src='about:blank';
+  document.getElementById('lista').style.display='block';
+  document.getElementById('b-tit').innerHTML=logoSVG()
+    +' <span style="color:var(--text)">Salu</span><span style="font-style:italic;color:var(--accent)">folio</span>';
+  /* v10 (P-H) : le patient est choisi — le cadre de sélection n'a plus
+     lieu d'être. On le retrouve en touchant le matricule du bandeau. */
+  var e=document.querySelector('.exp');
+  if(e) e.style.display = DATOS? 'none' : 'block';
+  ponEstado('');
+}
+
+/* ── la matricule se déduit du nom et du SIP ── */
+function matriculaDe(nombre, sip){
+  var ini=(nombre||'').trim().split(/\s+/).filter(function(p){return p.length>1;})
+      .slice(0,3).map(function(p){return p.charAt(0).toUpperCase();}).join('');
+  var num=String(sip||'').replace(/\D/g,'').slice(-4);
+  return (ini.length>=2 && num.length===4)? ini+num : '';
+}
+function calcula(){
+  /* le cadre « nuevo » a sa propre calculaNuevo() */
+  return (ACTUAL && ACTUAL.matricula) || '';
+}
+function carpetaDe(mat){ return ((T&&T.carpeta_expedientes)||'../pacientes/') + mat + '/'; }
+
+/* ── chercher le répertoire et lister ses versions ── */
+function buscaCarpeta(){
+  /* elle ne sert plus : la liste des expedientes vient de pacientes.js,
+     posée par eligeDeLista(). Gardée pour qui l'appellerait encore. */
+  eligeDeLista();
+}
+/* v6 (P-H) : les versions dans une liste déroulante — plus compact que
+   des lignes empilées, et la plus récente d'office. Le nom porte
+   l'horodatage : MATRICULA_aaaa-mm-jj_hh-mn-ss[option].sf */
+function pintaVersiones(dir, nombres){
+  _versiones = nombres;
+  var caja = document.getElementById('caja-expedientes');
+  var sel  = document.getElementById('sel-exp');
+  if(!sel) return;
+  caja.style.display = 'block';
+  sel.innerHTML = nombres.map(function(n, i){
+    return '<option value="' + i + '">' + n
+         + (i === 0 ? '   ← más reciente' : '') + '</option>';
+  }).join('');
+  sel.selectedIndex = 0;
+  tomaVersion(0);
+}
+function tomaVersion(i){
+  var n=_versiones[i]; if(!n) return;
+  fetch(CARPETA+encodeURIComponent(n)).then(function(r){return r.json()})
+    .then(function(d){
+      DATOS=d; NOMBRE=n.replace(/\.(sf|mf|json)$/i,''); MANIJA=null; SUCIO=false;
+      try{ sessionStorage.setItem('mf_datos', JSON.stringify(d)); sessionStorage.setItem('mf_nombre', NOMBRE); }catch(e){}
+      muestraExpediente();
+      document.querySelectorAll('#versiones .ver-item').forEach(function(e,j){
+        e.classList.toggle('on', j===i);
+      });
+    })
+    .catch(function(){ document.getElementById('exp-nota').textContent='No se pudo leer '+n; });
+}
+
+/* ── un fichier ailleurs sur le disque ── */
+function abrirFichero(){
+  var i=document.createElement('input'); i.type='file'; i.accept='.mf,.sf,.json';
+  i.onchange=function(){
+    var f=i.files[0]; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        DATOS=JSON.parse(r.result);
+        NOMBRE=f.name.replace(/\.(mf|sf|json)$/i,'');
+        CARPETA=null; MANIJA=null; SUCIO=false;
+        try{ sessionStorage.setItem('mf_datos', r.result); sessionStorage.setItem('mf_nombre', NOMBRE); }catch(e){}
+        muestraExpediente();
+        mandaAlModulo(); setTimeout(mandaAlModulo, 150);
+      }catch(e){ alert('No es un JSON válido: '+e.message); }
+    };
+    r.readAsText(f);
+  };
+  i.click();
+}
+function eligeCarpeta(){ document.getElementById('p-dir').click(); }
+function leeCarpeta(input){
+  var f=Array.prototype.slice.call(input.files).filter(function(x){ return /\.(sf|mf|json)$/i.test(x.name); });
+  if(!f.length){ document.getElementById('exp-nota').textContent='Esa carpeta no contiene ningún expediente.'; return; }
+  f.sort(function(a,b){ return a.name<b.name?1:-1; });
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      DATOS=JSON.parse(r.result);
+      NOMBRE=f[0].name.replace(/\.(sf|mf|json)$/i,''); CARPETA=null;
+      try{ sessionStorage.setItem('mf_datos', r.result); sessionStorage.setItem('mf_nombre', NOMBRE); }catch(e){}
+      muestraExpediente();
+    }catch(e){ alert('No es un JSON válido'); }
+  };
+  r.readAsText(f[0]);
+}
+
+function muestraExpediente(){
+  document.getElementById('exp-ok').style.display='block';
+  var _p=DATOS.paciente||{};
+  document.getElementById('exp-nom').textContent = _p.etiqueta || DATOS.patient_label || NOMBRE;
+  var n=(DATOS.mesures||[]).length, e=(DATOS.events||[]).length, m=(DATOS.medicaments||[]).length;
+  var det=' · '+n+' '+tx('extracciones')+' · '+e+' '+tx('eventos')+' · '+m+' '+tx('medicamentos');
+  document.getElementById('exp-det').textContent=det;
+  document.getElementById('exp-nota').textContent='';
+  abreModulos(true);
+  document.getElementById('b-pac').textContent = (_p.matricula || DATOS.matricula || NOMBRE || 'DEMO');
+  ponEstado('');
+}
+function ponEstado(extra){
+  var base = DATOS? ((DATOS.mesures||[]).length+' '+tx('extracciones')+' · '+(DATOS.events||[]).length+' '+tx('eventos')) : '';
+  document.getElementById('b-est').textContent = base + (extra? ' · '+extra : '');
+}
+
+function abreNuevo(){
+  document.getElementById('cuadro-conocidos').style.display = 'none';
+  document.getElementById('cuadro-nuevo').style.display = 'block';
+  ['n-nombre','n-sip'].forEach(function(k){ document.getElementById(k).value = ''; });
+  document.getElementById('n-mat').textContent = '—';
+  document.getElementById('nuevo-nota').innerHTML = '';
+  document.getElementById('n-nombre').focus();
+}
+function cierraNuevo(){
+  document.getElementById('cuadro-nuevo').style.display = 'none';
+  document.getElementById('cuadro-conocidos').style.display = 'block';
+}
+function calculaNuevo(){
+  var nom = document.getElementById('n-nombre').value;
+  var sip = document.getElementById('n-sip').value;
+  var m = matriculaDe(nom, sip);
+  var e = document.getElementById('n-mat');
+  e.textContent = m || '—';
+  e.style.color = m ? 'var(--ok)' : 'var(--warn)';
+  return m;
+}
+function creaDesdeCuadro(){
+  var nom = document.getElementById('n-nombre').value.trim();
+  var sip = document.getElementById('n-sip').value.trim();
+  var z   = document.getElementById('nuevo-nota');
+  if(!nom || !sip){
+    z.innerHTML = '<span style="color:var(--danger)">Hacen falta el nombre y el SIP.</span>';
+    return;
+  }
+  var mat = calculaNuevo();
+  if(!mat){
+    z.innerHTML = '<span style="color:var(--danger)">No he podido formar la matrícula.</span>';
+    return;
+  }
+  var ya = PACIENTES_TODOS.some(function(p){ return p.matricula === mat; });
+  if(ya){
+    z.innerHTML = '<span style="color:var(--warn)">Ya existe un paciente con la '
+      + 'matrícula <b>' + mat + '</b>. Elíjalo en la lista.</span>';
+    return;
+  }
+
+  var p = { matricula:mat, nombre:nom, sip:sip, ficheros:[], _creado:true };
+  recuerdaPaciente(p);
+  PACIENTES_TODOS.push(p);
+
+  /* un expediente vide, mais complet */
+  DATOS = (typeof SF_PLANTILLA !== 'undefined')
+        ? SF_PLANTILLA.nuevo({ matricula:mat, etiqueta:nom, nombre:nom, sip:sip })
+        : { formato:'SF1', paciente:{matricula:mat, etiqueta:nom, sip:sip},
+            mesures:[], events:[], medicaments:[] };
+  NOMBRE = mat; CARPETA = null; SUCIO = true; ACTUAL = p;
+  SIP_OCULTO = sip;
+
+  cierraNuevo();
+  pintaPacientes();
+  document.getElementById('sel-pac').value = String(PACIENTES_TODOS.length - 1);
+  document.getElementById('caja-expedientes').style.display = 'none';
+  ponNota('<b>' + nom + '</b> creado. Todavía no tiene datos: '
+    + 'use la adquisición para llenarlo.');
+  muestraExpediente();
+  pintaModulos();
+}
+
+/* le 📂, pour un fichier posé ailleurs */
+function abreSuelto(){
+  var i = document.createElement('input');
+  i.type = 'file'; i.accept = '.mf,.sf,.json';
+  i.onchange = function(){
+    var f = i.files[0]; if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      try{
+        DATOS = JSON.parse(r.result);
+        NOMBRE = f.name.replace(/\.(mf|sf|json)$/i, '');
+        CARPETA = null; MANIJA = null; SUCIO = false;
+        document.getElementById('caja-expedientes').style.display = 'none';
+        muestraExpediente(); pintaModulos();
+      }catch(e){
+        ponNota('<span style="color:var(--danger)">Ese fichero no se ha podido leer.</span>');
+      }
+    };
+    r.readAsText(f);
+  };
+  i.click();
+}
+
+/* ── le canal avec le module ── */
+function mandaAlModulo(){
+  var f=document.getElementById('marco-mod');
+  if(!f || !f.contentWindow) return;
+  /* la palette d'abord : le module doit s'habiller avant de se montrer */
+  var p=PALETAS.filter(function(x){return x.id===PALETA})[0];
+  if(p) f.contentWindow.postMessage({de:'lanzador', tipo:'paleta', v:p.v}, '*');
+  if(!DATOS){ f.contentWindow.postMessage({de:'lanzador', tipo:'sin-expediente'}, '*'); return; }
+  f.contentWindow.postMessage({de:'lanzador', tipo:'expediente', nombre:NOMBRE, datos:DATOS}, '*');
+}
+document.getElementById('marco-mod').addEventListener('load', function(){ setTimeout(mandaAlModulo, 60); });
+
+window.addEventListener('message', function(ev){
+  var d=ev.data||{};
+  if(d.de!=='modulo') return;
+  if(d.tipo==='listo'){ mandaAlModulo(); return; }
+  if(d.tipo==='tocado'){ DATOS=d.datos||DATOS; SUCIO=true; marcaSucio(true); guardaAuto(); return; }
+  if(d.tipo==='estado'){ ponEstado(d.texto||''); return; }
+  /* un module en appelle un autre — c'est le lanceur qui connaît tout le
+     monde, jamais le module (P-H : « pas d'appel d'un module en dur »). */
+  if(d.tipo==='abre-modulo'){
+    /* v19 (P-H) : on EMPILE le module courant — en quittant le glossaire
+       on retrouve là d'où l'on venait. push / pop, comme il l'a dit. */
+    if(MODULOS.some(function(m){ return m.id===d.id; })){
+      if(ACTUAL && ACTUAL.id && ACTUAL.id!==d.id) PILA.push(ACTUAL);
+      carga(d.id, d.clave);
+    } else ponEstado('el módulo « '+d.id+' » no está en las tablas');
+    return;
+  }
+  if(d.tipo==='cierra-modulo'){ vuelveAtras(); return; }
+  if(d.tipo==='paleta-elegida'){ PAL_MOD=d.paleta; return; }
+  if(d.tipo==='mis-paletas'){ PAL_MOD=d.actual; return; }
+});
+
+function marcaSucio(si){
+  var b=document.querySelector('[data-b="guardar"]');
+  if(!b) return;
+  b.textContent = si? '💾*' : '💾';
+  b.style.color = si? 'var(--warn)' : '';
+}
+
+/* ── les boutons du bandeau ── */
+function manda(id){
+  if(id==='guardar') return guarda();
+  if(id==='abrir')   return abrirFichero();
+  if(id==='inicio')  return volverInicio();
+  if(id==='panal')   return (window.opener&&!window.opener.closed)? window.close() : (window.location.href='../index.html');
+  if(id==='tema'){ togglePaleta(); return; }
+  if(id==='idioma'){ toggleBanderas(); return; }
+  if(id==='ayuda'){ abreAyuda(); return; }
+}
+
+/* ── l'enregistrement ── */
+var autoT=null;
+function guardaAuto(){ if(MANIJA){ clearTimeout(autoT); autoT=setTimeout(function(){ guarda(true); }, 900); } }
+function guarda(callado){
+  if(!DATOS){ ponEstado('no hay expediente'); return; }
+  /* ══ v2 (P-H, 15/09) : c'est ICI que « modificado » s'écrivait, et
+     que l'ordre des champs se perdait. La matrice fait les deux —
+     elle range, et elle empile l'histoire au lieu de l'écraser. ══ */
+  if(typeof SF_PLANTILLA !== 'undefined'){
+    DATOS = SF_PLANTILLA.completa(DATOS);
+    SF_PLANTILLA.paraExportar(DATOS);
+  }
+  delete DATOS.modificado;
+  var txt=JSON.stringify(DATOS,null,1), nom=(NOMBRE||'expediente')+'.mf';
+  if(window.showSaveFilePicker){
+    (async function(){
+      try{
+        if(!MANIJA) MANIJA=await window.showSaveFilePicker({ suggestedName:nom,
+          types:[{description:'Expediente Salufolio', accept:{'application/json':['.mf','.sf','.json']}}] });
+        var w=await MANIJA.createWritable(); await w.write(txt); await w.close();
+        SUCIO=false; marcaSucio(false);
+        if(!callado) ponEstado('💾 guardado — a partir de ahora se guarda solo');
+      }catch(e){ if(e.name!=='AbortError') descarga(txt,nom); }
+    })();
+  } else descarga(txt,nom);
+}
+function descarga(txt,nom){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:'application/json'}));
+  a.download=nom; document.body.appendChild(a); a.click(); a.remove();
+  SUCIO=false; marcaSucio(false);
+  ponEstado('⬇ descargado: '+nom);
+}
+window.addEventListener('beforeunload', function(e){ if(SUCIO){ e.preventDefault(); e.returnValue=''; } });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape' && ACTUAL) volverInicio(); });
+
+function abreModulos(si){
+  /* les programmes libres ne se grisent jamais */
+  document.querySelectorAll('.tar').forEach(function(e,i){
+    var m = MODULOS[i];
+    e.classList.toggle('apagado', !si && !(m && m.sin_expediente));
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA LISTE DES PATIENTS (P-H, 03/09)
+
+   Elle vit dans pacientes/pacientes.json — AVEC les données, pas avec le
+   code : les noms et les SIP ne voyagent pas si Salufolio est publié.
+   Le lanceur la lit si elle existe, et s'en passe sinon.
+
+   Un clic sur un nom remplit le nom, le SIP et la matricule d'un coup.
+   ══════════════════════════════════════════════════════════════════════ */
+var PACIENTES=[];
+
+function cargaPacientes(){
+  var dir=(T&&T.carpeta_expedientes)||'../pacientes/';
+  fetch(dir+'pacientes.json')
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      PACIENTES = (d.pacientes || []).concat(pacientesCreados());
+      pintaPacientes();
+    })
+    .catch(function(){
+      /* pas de fichier : il reste ceux qu'on a créés ici */
+      PACIENTES = pacientesCreados();
+      if(PACIENTES.length) pintaPacientes();
+    });
+}
+
+/* v9 (P-H) : une liste déroulante plutôt que des pastilles — la
+   démonstration par défaut, en tête. */
+function pintaPacientes(){
+  /* ══ UNE SEULE LISTE, ET RIEN D'AUTRE (P-H, 15/09) ══
+     D'un patient connu on n'a besoin ni du SIP ni de la matricule :
+     on l'a choisi dans la liste, c'est assez. Le SIP est une donnée de
+     santé — elle n'a pas à traîner à l'écran. */
+  var sel = document.getElementById('sel-pac');
+  if(!sel) return;
+  var todos = PACIENTES.concat(pacientesCreados().filter(function(c){
+    return !PACIENTES.some(function(p){ return p.matricula === c.matricula; });
+  }));
+  PACIENTES_TODOS = todos;
+
+  if(!todos.length){
+    sel.innerHTML = '<option value="">— no hay ninguno todavía —</option>';
+    ponNota('Toque <b>➕ Nuevo</b> para crear el primero.');
+    return;
+  }
+  sel.innerHTML = '<option value="">— elija un paciente —</option>'
+    + todos.map(function(p, i){
+        var et = p.nombre || p.etiqueta || p.matricula;
+        return '<option value="' + i + '">'
+             + (p.demo ? '🎬 ' : (p._creado ? '✚ ' : ''))
+             + et + '</option>';
+      }).join('');
+  ponNota('');
+}
+var PACIENTES_TODOS = [];
+
+function ponNota(html){
+  var z = document.getElementById('exp-nota');
+  if(z) z.innerHTML = html || '';
+}
+
+function eligeDeLista(){
+  var sel = document.getElementById('sel-pac');
+  var i = sel.value;
+  if(i === ''){
+    document.getElementById('caja-expedientes').style.display = 'none';
+    document.getElementById('exp-ok').style.display = 'none';
+    ponNota(''); return;
+  }
+  var p = PACIENTES_TODOS[parseInt(i,10)];
+  if(!p) return;
+
+  /* on garde ce qu'il faut pour travailler, sans le montrer */
+  SIP_OCULTO = p.sip || '';
+  ACTUAL = p;
+
+  if(!(p.ficheros||[]).length){
+    /* un patient neuf : rien à choisir */
+    document.getElementById('caja-expedientes').style.display = 'none';
+    DATOS = null; NOMBRE = null; CARPETA = null;
+    ponNota('<b>' + (p.nombre||p.matricula) + '</b> todavía no tiene expediente. '
+      + 'Use la adquisición para llenarlo.');
+    document.getElementById('exp-ok').style.display = 'none';
+    pintaModulos();
+    return;
+  }
+
+  CARPETA = carpetaDe(p.matricula);
+  pintaVersiones(CARPETA, p.ficheros.slice());
+}
+
+/* elle reste pour qui l'appellerait encore */
+function eligePaciente(i){
+  var sel = document.getElementById('sel-pac');
+  if(sel){ sel.value = String(i); eligeDeLista(); }
+}
+
+/* ══ LES INFOBULLES MAISON ══ */
+function tipDe(id){
+  var d={ panal:'Volver al panal', guardar:'Guardar el expediente',
+          idioma:'Idioma', tema:'Claro / oscuro', ayuda:'Ayuda',
+          inicio:'Volver al lanzador' };
+  return d[id]||'';
+}
+function ponTip(el, texto){
+  if(!texto) return;
+  el.onmouseenter=function(){
+    var t=document.getElementById('mi-tip');
+    if(!t){ t=document.createElement('div'); t.id='mi-tip'; document.body.appendChild(t); }
+    t.className='tip'; t.textContent=texto;
+    var r=el.getBoundingClientRect();
+    t.style.left=Math.max(6, r.left + r.width/2 - 60)+'px';
+    t.style.top =(r.bottom + 7)+'px';
+    t.style.display='block';
+  };
+  el.onmouseleave=function(){ var t=document.getElementById('mi-tip'); if(t) t.style.display='none'; };
+}
+
+/* ══ LES LANGUES : le globe déploie les bannières ══ */
+var BANDERAS={ es:'🇪🇸', ca:'🏴󠁥󠁳󠁣󠁴󠁿', fr:'🇫🇷', en:'🇬🇧' };
+function pintaBanderas(){
+  var z=document.getElementById('banderas');
+  if(!z) return;
+  z.innerHTML=(T.idiomas||['es']).map(function(l){
+    return '<span class="b-b bandera'+(l===LANG?' on':'')+'" data-l="'+l+'" style="font-size:15px">'+(BANDERAS[l]||l)+'</span>';
+  }).join('');
+  z.querySelectorAll('[data-l]').forEach(function(e){
+    e.onclick=function(ev){ ev.stopPropagation(); ponIdioma(e.dataset.l); };
+  });
+}
+function toggleBanderas(){
+  var z=document.getElementById('banderas');
+  z.style.display = (z.style.display==='none')? 'inline-flex' : 'none';
+}
+function ponIdioma(l){
+  LANG=l;
+  pintaBanderas(); pintaPerfiles(); pintaModulos(); traduceFormulario();
+  if(DATOS) ponEstado('');        /* le bandeau se retrace dans la nouvelle langue */
+  /* le titre du programme ouvert se retraduit aussi */
+  if(ACTUAL && ACTUAL.nombre){
+    var bt=document.getElementById('b-tit');
+    if(bt) bt.innerHTML = ACTUAL.icono+' '+t(ACTUAL.nombre)
+      + (PILA.length? ' <span onclick="vuelveAtras()" style="font-size:11px;color:var(--accent);cursor:pointer;margin-left:8px">↩ volver</span>':'');
+    ponTip(bt, t(ACTUAL.nombre) + String.fromCharCode(10) + 'versión ' + (ACTUAL.version||'?'));
+  }
+  document.getElementById('banderas').style.display='none';
+  /* le programme ouvert doit le savoir aussi */
+  var f=document.getElementById('marco-mod');
+  if(f && f.contentWindow) f.contentWindow.postMessage({de:'lanzador', tipo:'idioma', idioma:l}, '*');
+  try{ localStorage.setItem('sf_idioma', l); }catch(e){}
+}
+
+/* ══ LA TRADUCTION du cadre de sélection ══ */
+var TX={
+  es:{ ayuda_nuevo:'La matrícula se forma sola: las iniciales del nombre y las cuatro últimas cifras del SIP.', tit_nuevo:'🧑 Un paciente nuevo', crear:'Crear', cancelar:'Cancelar', extracciones:'extracciones', eventos:'eventos', medicamentos:'medicamentos',
+       conocidos:'Pacientes conocidos', nombre:'Nombre y apellidos', mat:'Matrícula',
+       buscar:'🔎 Buscar', nuevo:'➕ Nuevo', exp:'Expediente', quien:'¿Quién accede?', todo:'Todo' },
+  fr:{ ayuda_nuevo:'La matricule se forme toute seule : les initiales du nom et les quatre derniers chiffres du SIP.', tit_nuevo:'🧑 Un patient nouveau', crear:'Créer', cancelar:'Annuler', extracciones:'prélèvements', eventos:'événements', medicamentos:'médicaments',
+       conocidos:'Patients connus', nombre:'Nom et prénoms', mat:'Matricule',
+       buscar:'🔎 Chercher', nuevo:'➕ Nouveau', exp:'Dossier', quien:'Qui accède ?', todo:'Tout' },
+  ca:{ ayuda_nuevo:'La matrícula es forma sola.', tit_nuevo:'🧑 Un pacient nou', crear:'Crear', cancelar:'Cancel·lar', extracciones:'extraccions', eventos:'esdeveniments', medicamentos:'medicaments',
+       conocidos:'Pacients coneguts', nombre:'Nom i cognoms', mat:'Matrícula',
+       buscar:'🔎 Buscar', nuevo:'➕ Nou', exp:'Expedient', quien:'Qui accedeix?', todo:'Tot' },
+  en:{ ayuda_nuevo:'The ID forms itself: initials of the name and the last four SIP digits.', tit_nuevo:'🧑 A new patient', crear:'Create', cancelar:'Cancel', extracciones:'tests', eventos:'events', medicamentos:'medications',
+       conocidos:'Known patients', nombre:'Name and surname', mat:'ID',
+       buscar:'🔎 Search', nuevo:'➕ New', exp:'Record', quien:'Who is accessing?', todo:'All' }
+};
+function tx(k){ return (TX[LANG]&&TX[LANG][k]) || TX.es[k] || k; }
+function traduceFormulario(){
+  /* v2 (P-H, 15/09) : chaque étiquette a son identifiant — on ne les
+     compte plus par leur rang, qui changeait au premier remaniement. */
+  var pon = function(id, k){
+    var e = document.getElementById(id);
+    if(e) e.textContent = tx(k);
+  };
+  pon('et-conocidos',   'conocidos');
+  pon('et-expedientes', 'exp');
+  pon('et-nombre',      'nombre');
+  pon('et-mat',         'mat');
+  pon('b-nuevo',        'nuevo');
+  pon('b-cancelar',     'cancelar');
+  pon('b-crear',        'crear');
+  pon('tit-nuevo',      'tit_nuevo');
+  var a = document.getElementById('ayuda-nuevo');
+  if(a) a.textContent = tx('ayuda_nuevo');
+}
+
+/* ══ CHANGER DE PATIENT : le cadre reparaît ══ */
+function cambiarPaciente(){
+  volverInicio();
+  var e = document.getElementById('cuadro-conocidos');
+  if(e){ e.style.display='block'; e.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  var n = document.getElementById('cuadro-nuevo');
+  if(n) n.style.display = 'none';
+}
+
+/* ══ L'AIDE : un fichier montré dans l'écran, pas un message ══ */
+/* ══ L'AIDE DE CE QU'ON REGARDE (P-H) ══
+   Chaque app déclare la sienne dans son json — déjà lu au démarrage.
+   Le ❔ montre l'aide du module en cours, ou celle du lanceur. */
+function abreAyuda(){
+  var f=document.getElementById('marco-mod');
+  var vuelvo=(ACTUAL && ACTUAL.id && ACTUAL.id!=='ayuda' && ACTUAL.id!=='doc')? ACTUAL : null;
+  var ruta   = vuelvo? (vuelvo.ayuda || 'ayuda/'+vuelvo.id+'.html') : (T.ayuda || 'ayuda/lanzador.html');
+  var titulo = vuelvo? t(vuelvo.nombre) : '';
+  f.src=ruta;
+  f.style.display='block';
+  document.getElementById('lista').style.display='none';
+  document.getElementById('b-tit').innerHTML='<span style="color:var(--text)">Ayuda</span>'
+    + (titulo? ' <span style="color:var(--muted);font-size:12px">· '+titulo+'</span>':'')
+    + (vuelvo? ' <span onclick="carga(\''+vuelvo.id+'\')" style="font-size:11px;color:var(--accent);cursor:pointer;margin-left:8px">↩ volver</span>':'');
+  ACTUAL={id:'ayuda'};
+  if(typeof ajustaBotones==='function') ajustaBotones();
+}
+
+/* ══ « ne pas tenter le diable » : les boutons inutiles s'éteignent ══ */
+function ajustaBotones(){
+  var g=document.querySelector('[data-b="guardar"]');
+  if(g) g.classList.toggle('off', !DATOS);
+  var h=document.querySelector('[data-b="inicio"]');
+  if(h) h.classList.toggle('off', !ACTUAL);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALETTE (P-H, 04/09) — « le blanc est parfois difficile et le noir
+   aussi ». Cinq ambiances plutôt que deux extrêmes. Le choix se garde
+   dans le navigateur, et se transmet AUX MODULES : chacun vit dans son
+   iframe, il ne saurait pas seul quel thème on a choisi.
+   ══════════════════════════════════════════════════════════════════════ */
+/* déclarées en tête — voir plus haut */
+
+/* ══ v15 (P-H) — « dans un module, le bouton change la palette DU
+   MODULE ; au lanceur, il change la globale. » On habille ce qu'on
+   regarde. ══ */
+function aplicaPaleta(id){
+  var p=PALETAS.filter(function(x){return x.id===id})[0];
+  if(!p) return;
+  if(ACTUAL && ACTUAL.id && ACTUAL.id!=='ayuda' && ACTUAL.id!=='doc'){
+    /* on est dans un module : c'est lui qu'on habille */
+    var f=document.getElementById('marco-mod');
+    /* on envoie LES COULEURS, pas seulement le nom : le programme n'a
+       pas la table des palettes — elle vit chez le lanceur. */
+    if(f && f.contentWindow) f.contentWindow.postMessage({de:'lanzador', tipo:'paleta', v:p.v, id:id}, '*');
+    PAL_MOD=id;
+    var z2=document.getElementById('paleta');
+    if(z2 && z2.style.display!=='none') pintaPaleta();
+    return;
+  }
+  /* au lanceur : la palette globale */
+  PALETA=id;
+  Object.keys(p.v).forEach(function(k){ document.documentElement.style.setProperty(k, p.v[k]); });
+  try{ localStorage.setItem('sf_paleta', id); }catch(e){}
+  var z=document.getElementById('paleta');
+  if(z && z.style.display!=='none') pintaPaleta();
+}
+
+/* v14 (P-H : « pas assez de contraste ») — une liste, une ligne par
+   ambiance, chacune peinte de SES propres couleurs : on voit ce qu'on
+   choisit avant de le choisir. */
+function pintaPaleta(){
+  var z=document.getElementById('paleta');
+  if(!z) return;
+  z.innerHTML='<div class="pal-lista">'
+    + (ACTUAL? '<div style="font-size:10.5px;color:var(--muted);padding:3px 10px 5px">Paleta de este módulo</div>':'')
+    + PALETAS.map(function(p){
+        var actual = (ACTUAL && PAL_MOD)? PAL_MOD : PALETA;
+        return '<div class="pal-fila'+(p.id===actual?' on':'')+'" data-p="'+p.id+'" '
+          +'style="background:'+p.v['--bg']+';color:'+p.v['--text']+';border-color:'+p.v['--border']+'">'
+          +'<span style="flex:1">'+p.nombre+'</span>'
+          +'<span style="width:13px;height:13px;border-radius:3px;background:'+p.v['--surface']+';border:1px solid '+p.v['--border']+'"></span>'
+          +'<span style="width:13px;height:13px;border-radius:3px;background:'+p.v['--accent-m']+'"></span>'
+          +(p.id===actual? '<span style="font-size:11px;opacity:.7">✓</span>':'')
+          +'</div>';
+      }).join('')
+    + '</div>';
+  z.querySelectorAll('[data-p]').forEach(function(e){
+    e.onclick=function(ev){ ev.stopPropagation(); aplicaPaleta(e.dataset.p); };
+  });
+}
+function togglePaleta(){
+  var z=document.getElementById('paleta');
+  if(z.style.display==='none'){ pintaPaleta(); z.style.display='inline'; }
+  else z.style.display='none';
+}
+try{ var g=localStorage.getItem('sf_paleta'); if(g) setTimeout(function(){ aplicaPaleta(g); }, 40); }catch(e){}
+
+/* ══ LA PILE DES MODULES (P-H, 05/09) ══
+   Ouvrir le glossaire depuis la table empile la table ; le fermer
+   dépile et l'on revient dessus. Vide, on retourne au lanceur. */
+var PILA=[];
+function vuelveAtras(){
+  var ant=PILA.pop();
+  if(ant) carga(ant.id);
+  else volverInicio();
+}
+
+/* ── charger la configuration d'un programme : un script, pas un fetch ── */
+function cargaConfigDe(id, carpeta){
+  return new Promise(function(ok){
+    var s=document.createElement('script');
+    /* v2 (P-H, 11/09) : un programme peut vivre ailleurs que dans
+       V2/<id>/ — la table le dit avec « carpeta ». */
+    s.src = (carpeta ? ('../' + carpeta) : ('../' + id + '/')) + id + '.js';
+    s.onload = function(){
+      var c = window.SF_CONFIG;
+      window.SF_CONFIG = undefined;      /* on libère pour le suivant */
+      s.remove(); ok(c||null);
+    };
+    s.onerror = function(){ console.warn('no se pudo leer ' + s.src); s.remove(); ok(null); };
+    document.head.appendChild(s);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LES PATIENTS CRÉÉS ICI (P-H, 08/09)
+
+   On crée un patient, on l'enregistre — et il ne paraît pas dans la
+   liste, parce que celle-ci vient d'un fichier que rien n'a mis à jour.
+
+   Alors le lanceur les retient, comme il retient les programmes qui se
+   déclarent. Sans serveur, sans rien lancer.
+
+   Limite : c'est lié à ce navigateur. Le .mf reste sur le disque quoi
+   qu'il arrive — pacientes.py grave la liste pour de bon quand on veut.
+   ══════════════════════════════════════════════════════════════════════ */
+var PAC_CLAVE = 'sf_pacientes_creados';
+
+function pacientesCreados(){
+  try{ return JSON.parse(localStorage.getItem(PAC_CLAVE) || '[]'); }
+  catch(e){ return []; }
+}
+function recuerdaPaciente(p){
+  var L = pacientesCreados();
+  var i = L.findIndex(function(x){ return x.matricula === p.matricula; });
+  var ficha = { matricula:p.matricula, nombre:p.etiqueta || p.nombre || p.matricula,
+                sip:p.sip || '', creado: new Date().toISOString(), _creado:true };
+  if(i>=0) L[i] = ficha; else L.push(ficha);
+  try{ localStorage.setItem(PAC_CLAVE, JSON.stringify(L)); }catch(e){}
+  return ficha;
+}
+function olvidaPaciente(mat){
+  var L = pacientesCreados().filter(function(x){ return x.matricula !== mat; });
+  try{ localStorage.setItem(PAC_CLAVE, JSON.stringify(L)); }catch(e){}
+}
+</script>
+</body>
+</html>

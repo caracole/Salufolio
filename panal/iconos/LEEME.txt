@@ -1,0 +1,16 @@
+CARPETA DE ICONOS — panal de Salufolio
+======================================
+Ponga aquí sus ficheros SVG (o PNG).
+
+Después, escriba sus nombres en lista.json:
+
+  ["corazon.svg", "pastilla.svg", "medico.svg"]
+
+El panel de configuración (⚙ → Alveola → iconos/) los mostrará
+y bastará con tocar uno para ponerlo en la alveola elegida.
+
+En la tabla, la alveola guardará:  "icono": "iconos/corazon.svg"
+
+Lo mismo vale para las voces, en la carpeta voz/ :
+  "sonido": { "es": "voz/p1-nombre_es.mp3", ... }
+Fabricadas con edge-tts (Álvaro, Elvira, Henri, Denise, Enric, Joana).

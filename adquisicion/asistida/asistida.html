@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Adquisición asistida · Salufolio</title>
+<script src="../../herramientas/cotejo/lib/pdf.min.js"></script>
+<script src="../../herramientas/cotejo/lib/tesseract.min.js"></script>
+<script src="../prompts/prompts.js"></script>
+<script src="../prompts/prompt-extraccion-ocr.js"></script>
+<script src="../../comun/plantilla-mf.js"></script>
+<link rel="stylesheet" href="../../comun/salufolio.css">
+<style>
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
+header[data-cabecera]{display:flex;align-items:baseline;gap:var(--gap-m,12px);
+       padding:var(--pad-s,10px) var(--pad-m,18px);border-bottom:1px solid var(--border)}
+.mod-tit{font-family:var(--serif);font-size:var(--tam-tit,18px);font-weight:600;color:var(--text)}
+header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);
+             border-radius:var(--radio-s,6px);padding:1px 8px;color:var(--muted)}
+main{padding:16px 20px 40px;max-width:900px;margin:0 auto}
+#zona{border:2px dashed var(--border);border-radius:var(--radio-g,12px);
+      padding:30px 20px;text-align:center;cursor:pointer;transition:all .25s;margin:6px 0}
+#zona:hover,#zona.encima{border-color:var(--accent);background:rgba(74,158,255,.07)}
+.btn{padding:6px 14px;border-radius:var(--radio-s,7px);border:1px solid var(--border);
+     background:transparent;color:var(--text);cursor:pointer;font-size:12.5px;font-family:inherit}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{border-color:var(--accent);background:rgba(74,158,255,.15)}
+.btn.ok{border-color:var(--ok);color:var(--ok)}
+textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);
+         border-radius:var(--radio-s,7px);padding:10px;font-family:var(--mono,monospace);
+         font-size:12px;line-height:1.6;resize:vertical;box-sizing:border-box}
+.sordo{font-size:12px;color:var(--muted);line-height:1.7;margin:4px 0 12px}
+.paso{font-family:var(--mono);font-size:10.5px;color:var(--accent);
+      letter-spacing:2px;margin-bottom:4px}
+#estado{font-size:12.5px;margin-top:10px;min-height:18px}
+.module-version-corner{display:none}
+</style>
+</head>
+<body>
+
+<header data-cabecera>
+  <span id="titulo" class="mod-tit">📋 Adquisición asistida</span>
+  <span class="chip" id="x-pac">—</span>
+  <span class="chip" id="x-est"></span>
+</header>
+
+<main>
+
+<details class="sf-plegable" id="d-doc" open>
+  <summary style="color:var(--accent)">
+    <span data-idioma="tit_doc">📄 El documento</span>
+    <span class="cuenta" id="c-doc"></span>
+  </summary>
+
+  <div class="sordo" id="doc-intro"></div>
+
+  <div id="zona">
+    <div style="font-size:28px;margin-bottom:6px">📄</div>
+    <div style="font-size:13.5px" data-idioma="doc_suelte">Suelte aquí un PDF, o toque para elegirlo</div>
+  </div>
+  <input type="file" id="fichero" accept=".pdf" style="display:none">
+
+  <div style="text-align:center;font-size:11.5px;color:var(--muted);margin:10px 0"
+       data-idioma="doc_o_pegue">…o pegue el texto directamente, si ya lo tiene</div>
+
+  <textarea id="texto" rows="8" placeholder="Pegue el texto aquí"></textarea>
+
+  <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:8px">
+    <button class="btn" id="b-ocr" onclick="haceOcr()" style="display:none"></button>
+    <span style="flex:1"></span>
+    <span id="cuenta-letras" style="font-size:11px;color:var(--muted)"></span>
+  </div>
+  <div id="estado"></div>
+</details>
+
+<details class="sf-plegable" id="d-llevar" open>
+  <summary style="color:var(--warn)">
+    <span data-idioma="tit_llevar">📋 Llevarlo a claude.ai</span>
+  </summary>
+  <div class="sordo" id="lle-intro"></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn pri" id="b-copiar" onclick="copiaTodo()"></button>
+    <button class="btn" onclick="window.open('https://claude.ai','_blank')" id="b-abrir"></button>
+  </div>
+</details>
+
+<details class="sf-plegable" id="d-traer" open>
+  <summary style="color:var(--ok,#3ecf8e)">
+    <span data-idioma="tit_traer">📥 Traer la respuesta</span>
+  </summary>
+  <div class="sordo" id="tra-intro"></div>
+  <textarea id="respuesta" rows="7" placeholder='{ … }'></textarea>
+  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+    <button class="btn ok" id="b-guardar" onclick="guardaRespuesta()"></button>
+  </div>
+  <div id="estado-tra" style="font-size:12.5px;margin-top:10px"></div>
+</details>
+
+<details class="sf-plegable" id="d-diario" open>
+  <summary style="color:var(--muted)">
+    <span data-idioma="tit_diario">📓 El diario</span>
+    <span class="cuenta" id="c-diario"></span>
+  </summary>
+  <div style="display:none;gap:8px;justify-content:flex-end;margin-bottom:8px" id="botones-diario">
+    <button class="btn" onclick="guardaExpediente()">💾 Guardar lo leído</button>
+  </div>
+  <div id="diario-lista" style="max-height:340px;overflow-y:auto"></div>
+</details>
+
+</main>
+
+<script src="asistida.js"></script>
+<script src="asistida.idiomas.js"></script>
+<script src="../../comun/mf.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   ADQUISICIÓN ASISTIDA — Salufolio
+   Versión 2026.09.14-12:26:39
+
+   El segundo de los tres modos (P-H, 09/09):
+     manual     · a mano, sin documento
+     asistida   · copiar y pegar con claude.ai — ESTE
+     automática · con clave API
+
+   « Si prefiere no pagar nada, el modo asistida hace lo mismo. »
+
+   No cuesta nada y no pide clave. Se saca el texto del documento —con
+   OCR si está escaneado—, se lleva a claude.ai a mano, y se trae la
+   respuesta. Deja su línea en el diario, modo S.
+
+   EL OCR ES LOCAL: Tesseract vive en herramientas/cotejo/lib/, con el
+   español. Nada sale a Internet. Pero los workers están prohibidos en
+   file:// — hace falta el servidor.
+   ═══════════════════════════════════════════════════════════════════════ */
+const VERSION_PROGRAMA = SF_CONFIG.version;
+
+/* ── la traduction ── */
+function t(clave, vars){
+  var out;
+  try{
+    var T=(typeof SF_TEXTOS!=='undefined'&&SF_TEXTOS.textos)||{};
+    var lg=(typeof MF!=='undefined'&&MF.idioma)?MF.idioma():'es';
+    out = (T[lg]&&T[lg][clave])||(T.es&&T.es[clave])||clave;
+  }catch(e){ out = clave; }
+  var todas = vars||{};
+  return String(out).replace(/\{(\w+)\}/g, function(m,k){
+    return (todas[k]!==undefined) ? todas[k] : m; });
+}
+
+/* ── LES PONTS vers mf.js ── */
+var _DATOS = null, _ABIERTO = false;
+function _asegura(){
+  if(!_DATOS) _DATOS = (typeof SF_PLANTILLA!=='undefined')
+    ? SF_PLANTILLA.nuevo(MF.paciente()||{})
+    : { formato:'SF1', mesures:[], events:[], medicaments:[] };
+  return _DATOS;
+}
+function loadData(){     return _asegura().mesures || []; }
+function saveDataArr(v){ _asegura().mesures=v; MF.tocado(); }
+function loadEvents(){   return _asegura().events || []; }
+function saveEvents(v){  _asegura().events=v; MF.tocado(); }
+function loadMeds(){     return _asegura().medicaments || []; }
+function saveMeds(v){    _asegura().medicaments=v; MF.tocado(); }
+function loadEscalas(){  return _asegura().escalas || []; }
+function saveEscalas(v){ _asegura().escalas=v; MF.tocado(); }
+function loadDiag(){     return _asegura().diagnosticos || []; }
+function saveDiag(v){    _asegura().diagnosticos=v; MF.tocado(); }
+function loadCitas(){    return _asegura().citas || []; }
+function saveCitas(v){   _asegura().citas=v; MF.tocado(); }
+function loadNoFarm(){   return _asegura().prescripciones || []; }
+function saveNoFarm(v){  _asegura().prescripciones=v; MF.tocado(); }
+function loadAnteced(){  return _asegura().antecedentes || []; }
+function saveAnteced(v){ _asegura().antecedentes=v; MF.tocado(); }
+function loadCentros(){  return _asegura().centros || []; }
+function saveCentros(v){ _asegura().centros=v; MF.tocado(); }
+function loadPdfs(){     return (_asegura().pdfs && _asegura().pdfs.archivos) || {}; }
+function savePdfs(v){
+  var p=_asegura(); if(!p.pdfs) p.pdfs={directorio:'',archivos:{}};
+  p.pdfs.archivos=v; MF.tocado();
+}
+
+/* ══ LE DIARIO — le même que l'automatique, mode S ══ */
+var MI_MODO='S', DIARIO=[], SESION=null, _DIA_SUCIO=false;
+function _sello(d){
+  d=d||new Date(); var z=function(x){return String(x).padStart(2,'0');};
+  return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())
+       +'_'+z(d.getHours())+'h'+z(d.getMinutes());
+}
+function cargaDiario(alListo){
+  var p=MF.paciente()||{}; DIARIO=[];
+  if(!p.matricula){ pintaDiario(); if(alListo) alListo(); return; }
+  var v=document.getElementById('_sc_diario'); if(v) v.remove();
+  window.SF_DIARIO=null;
+  var sc=document.createElement('script');
+  sc.id='_sc_diario';
+  sc.src='../../pacientes/'+p.matricula+'/diario.js?'+Date.now();
+  sc.onload =function(){ if(window.SF_DIARIO&&Array.isArray(SF_DIARIO.lineas)) DIARIO=SF_DIARIO.lineas;
+                         pintaDiario(); if(alListo) alListo(); };
+  sc.onerror=function(){ pintaDiario(); if(alListo) alListo(); };
+  document.head.appendChild(sc);
+}
+function salvaDiario(){
+  var p=MF.paciente()||{};
+  if(!p.matricula) return Promise.resolve({ok:false});
+  var js='/* El diario de '+(p.etiqueta||p.matricula)+' */\n'
+    +'var SF_DIARIO = window.SF_DIARIO = '
+    +JSON.stringify({matricula:p.matricula,actualizado:_sello(),lineas:DIARIO},null,1)+';\n';
+  return MF.guarda('pacientes/'+p.matricula+'/diario.js', js).then(function(r){
+    _DIA_SUCIO = !(r && r.como==='servidor'); pintaDiario(); return r; });
+}
+function anotaEnDiario(linea){
+  if(!SESION) SESION=_sello();
+  DIARIO.push(Object.assign({cuando:_sello(),sesion:SESION,modo:MI_MODO,
+    programa:SF_CONFIG.id+' '+SF_CONFIG.version}, linea));
+  _DIA_SUCIO=true; pintaDiario();
+}
+var ICO_MODO={A:'\u2699\ufe0f',M:'\u270d\ufe0f',S:'\ud83d\udccb'};
+function pintaDiario(){
+  var z=document.getElementById('diario-lista'); if(!z) return;
+  var D=DIARIO.filter(function(l){ return (l.modo||'A')===MI_MODO; });
+  var c=document.getElementById('c-diario');
+  if(c) c.textContent = D.length ? (D.length+(_DIA_SUCIO?' \u00b7 sin guardar':'')) : '';
+  var b=document.getElementById('botones-diario');
+  if(b) b.style.display = DIARIO.length ? 'flex' : 'none';
+  if(!D.length){ z.innerHTML='<div style="font-size:12.5px;color:var(--muted);padding:10px 0">'
+    + t('dia_vacio')+'</div>'; return; }
+  z.innerHTML = D.slice().reverse().map(function(l){
+    return '<div style="display:flex;gap:9px;align-items:baseline;font-size:12px;'
+      +'padding:5px 4px;border-bottom:1px solid var(--border)">'
+      +'<span style="flex:0 0 16px">'+(ICO_MODO[l.modo]||'\u00b7')+'</span>'
+      +'<span style="flex:0 0 112px;color:var(--muted);font-family:var(--mono);font-size:10.5px">'
+      +String(l.cuando||'').replace('_',' ')+'</span>'
+      +'<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
+      +(l.fichero||'\u2014')+'</span>'
+      +'<span style="flex:0 0 92px;color:var(--muted);font-family:var(--mono);'
+      +'font-size:10.5px;text-align:right">'
+      + (l.segundos_ocr ? ('\ud83d\udd0d' + l.segundos_ocr + 's ') : '')
+      + (l.segundos ? ('\u21c4' + (l.segundos>=120
+          ? Math.round(l.segundos/60)+'min' : l.segundos+'s')) : '')
+      +'</span>'
+      +'<span style="flex:0 0 auto;color:var(--muted);font-size:11px">'
+      +(l.error ? l.error.substring(0,50)
+        : ((l.mediciones||0)+' med \u00b7 '+(l.eventos||0)+' ev \u00b7 '+(l.medicamentos||0)+' trat'
+           + (l.antecedentes ? ' \u00b7 '+l.antecedentes+' ant' : '')))
+      +'</span></div>';
+  }).join('');
+}
+
+/* ══ LE TEXTE : d'un PDF, ou collé ══ */
+var FICHERO = null, PROMPT_TEXTO = null;
+
+/* ══ LES DEUX DURÉES (P-H, 14/09) ══
+   Claude ne peut pas mesurer son propre temps — il ne sait ni quand il
+   a commencé ni quand il finit. Le programme, lui, voit les deux bouts.
+
+   Et ce sont deux choses différentes :
+     · l'OCR      ce que la machine met à lire le papier
+     · l'ida y vuelta   du « copier » au collage de la réponse. Elle
+                  comprend le temps de l'usager : ouvrir l'onglet,
+                  coller, attendre, revenir. C'est le coût réel du
+                  mode assisté, et il vaut d'être connu. */
+var SEG_OCR = null;      /* secondes de reconnaissance */
+var T_COPIA = null;      /* quand on a copié pour claude.ai */
+
+function estado(txt, mal){
+  var z=document.getElementById('estado');
+  z.innerHTML = txt ? ('<span style="color:'+(mal?'var(--danger)':'var(--accent)')+'">'+txt+'</span>') : '';
+}
+function cuentaLetras(){
+  var n=document.getElementById('texto').value.length;
+  document.getElementById('cuenta-letras').textContent = n ? (n.toLocaleString()+' letras') : '';
+}
+
+async function tomaPdf(f){
+  FICHERO = f;
+  document.getElementById('c-doc').textContent = f.name;
+  estado('Leyendo ' + f.name + '…');
+  try{
+    var buf = await f.arrayBuffer();
+    var doc = await pdfjsLib.getDocument({ data: buf }).promise;
+    var todo = '';
+    for(var i=1; i<=doc.numPages; i++){
+      var pg = await doc.getPage(i);
+      var tc = await pg.getTextContent();
+      todo += tc.items.map(function(x){ return x.str; }).join(' ') + '\n\n';
+    }
+    document.getElementById('texto').value = todo.trim();
+    cuentaLetras();
+    if(todo.trim().length < 120){
+      /* pas de couche texte : c'est un scan */
+      estado('Este PDF no lleva texto — está escaneado.');
+      muestraBotonOcr(true);
+    } else {
+      estado('Texto sacado de ' + doc.numPages + ' página(s).');
+      muestraBotonOcr(false);
+    }
+  }catch(e){ estado('No se ha podido leer: ' + e.message, true); }
+}
+
+function muestraBotonOcr(si){
+  var b = document.getElementById('b-ocr');
+  b.style.display = si ? 'inline-block' : 'none';
+  b.textContent = t('doc_ocr');
+  b.disabled = false;
+}
+
+/* ── l'OCR, comme dans Cotejo : Tesseract en local ── */
+var ocrWorker = null;
+async function getOcrWorker(){
+  if(ocrWorker) return ocrWorker;
+  estado('Cargando el motor OCR local…');
+  ocrWorker = await Tesseract.createWorker('spa', 1, {
+    workerPath: '../../herramientas/cotejo/lib/worker.min.js',
+    corePath:   '../../herramientas/cotejo/lib/',
+    langPath:   '../../herramientas/cotejo/lib/',
+    gzip: false
+  });
+  return ocrWorker;
+}
+
+async function haceOcr(){
+  if(!FICHERO){ estado('Elija primero un PDF.', true); return; }
+  if(location.protocol === 'file:'){
+    estado(t('doc_sin_servidor'), true); return;
+  }
+  var b = document.getElementById('b-ocr');
+  b.textContent = t('doc_ocr_curso'); b.disabled = true;
+  var t0 = Date.now();
+  try{
+    var buf = await FICHERO.arrayBuffer();
+    var doc = await pdfjsLib.getDocument({ data: buf }).promise;
+    var w = await getOcrWorker();
+    var todo = '';
+    for(var i=1; i<=doc.numPages; i++){
+      estado('OCR página ' + i + ' de ' + doc.numPages + '…');
+      var pg = await doc.getPage(i);
+      var vp = pg.getViewport({ scale: 2 });
+      var cv = document.createElement('canvas');
+      cv.width = vp.width; cv.height = vp.height;
+      await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+      var r = await w.recognize(cv);
+      todo += (r.data.text || '') + '\n\n';
+    }
+    document.getElementById('texto').value = todo.trim();
+    cuentaLetras();
+    var seg = Math.round((Date.now()-t0)/1000);
+    SEG_OCR = seg;
+    estado('OCR de ' + doc.numPages + ' página(s) terminado en ' + seg + 's.');
+    b.textContent = t('doc_ocr_hecho'); b.disabled = true;
+  }catch(e){
+    estado('Error OCR: ' + e.message, true);
+    b.textContent = t('doc_ocr'); b.disabled = false;
+  }
+}
+
+/* ══ PORTER À CLAUDE.AI ══ */
+/* ══ le prompt vient de son .js, charge par <script src> ══
+   Un navigateur ne peut pas lire un .txt local avec fetch, mais il peut
+   charger un script. C'est ce qui permet a ce programme de marcher SANS
+   SERVEUR — et c'est sa raison d'etre. La regle du 11/08 tient : le
+   prompt reste dans son fichier, hors du code. */
+function cargaPrompt(){
+  var T = (typeof SF_PROMPTS!=='undefined') ? SF_PROMPTS : {prompts:[]};
+  var p = (T.prompts||[]).filter(function(x){ return x.id==='extraccion-ocr'; })[0]
+       || (T.prompts||[]).filter(function(x){ return x.por_defecto; })[0]
+       || (T.prompts||[])[0];
+  if(!p) return;
+  var v = p.variable || 'SF_PROMPT_EXTRACCION_OCR';
+  PROMPT_TEXTO = (typeof window[v] === 'string') ? window[v] : null;
+  if(!PROMPT_TEXTO) console.warn('el prompt ' + v + ' no se ha cargado');
+}
+
+function copiaTodo(){
+  var txt = document.getElementById('texto').value.trim();
+  if(!txt){ estado('No hay texto que llevar.', true); return; }
+  if(!PROMPT_TEXTO){
+    estado('La pregunta no se ha cargado. Compruebe que prompt-extraccion-ocr.js '
+         + 'está en adquisicion/prompts/.', true); return;
+  }
+  var todo = PROMPT_TEXTO + '\n\n────────────────────────────────\nEL DOCUMENTO:\n\n' + txt;
+  navigator.clipboard.writeText(todo).then(function(){
+    T_COPIA = Date.now();          /* l'aller-retour commence ici */
+    var b = document.getElementById('b-copiar');
+    b.textContent = t('lle_copiado');
+    setTimeout(function(){ b.textContent = t('lle_copiar'); }, 4000);
+  }).catch(function(){
+    estado('El navegador no ha dejado copiar. Seleccione el texto a mano.', true);
+  });
+}
+
+/* ══ RAPPORTER LA RÉPONSE ══ */
+function guardaRespuesta(){
+  var z = document.getElementById('estado-tra');
+  var txt = document.getElementById('respuesta').value.trim();
+  txt = txt.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'');
+  if(!txt || txt[0] !== '{'){
+    z.innerHTML = '<span style="color:var(--danger)">' + t('tra_mal') + '</span>'; return;
+  }
+  var parsed;
+  try{ parsed = JSON.parse(txt); }
+  catch(e){
+    z.innerHTML = '<span style="color:var(--danger)">' + t('tra_mal')
+      + '<br><span style="font-size:11px">' + e.message + '</span></span>'; return;
+  }
+  if(!_ABIERTO && !_DATOS) _asegura();
+  var r = guardaLoLeido(parsed, FICHERO ? FICHERO.name : 'texto pegado');
+  var segVuelta = T_COPIA ? Math.round((Date.now()-T_COPIA)/1000) : null;
+  anotaEnDiario({ fichero: FICHERO ? FICHERO.name : 'texto pegado',
+    mediciones:r.mediciones, eventos:r.eventos, medicamentos:r.medicamentos,
+    antecedentes:r.antecedentes, fuente:r.fuente, dudas:r.dudas,
+    segundos_ocr: SEG_OCR,        /* lo que tardó la máquina en leer */
+    segundos: segVuelta,          /* del « copiar » a la respuesta pegada */
+    letras: (document.getElementById('texto').value||'').length });
+  T_COPIA = null; SEG_OCR = null;
+  z.innerHTML = '<span style="color:var(--ok)">' + t('tra_leido') + ' \u2014 '
+    + r.mediciones + ' mediciones \u00b7 ' + r.eventos + ' eventos \u00b7 '
+    + r.medicamentos + ' medicamentos'
+    + (r.antecedentes ? ' \u00b7 ' + r.antecedentes + ' antecedentes' : '')
+    + (r.escalas ? ' \u00b7 ' + r.escalas + ' escalas' : '')
+    + (r.citas ? ' \u00b7 ' + r.citas + ' citas' : '')
+    + '</span>'
+    + '</span>'
+    + ((r.sin_fecha || r.repetidos)
+       ? '<div style="font-size:11.5px;color:var(--warn);margin-top:5px">'
+         + (r.sin_fecha ? ('\ud83d\udcc5 ' + r.sin_fecha + ' sin fecha') : '')
+         + (r.sin_fecha && r.repetidos ? ' \u00b7 ' : '')
+         + (r.repetidos ? ('\u21ba ' + r.repetidos + ' repetido(s)') : '')
+         + ' \u2014 revisar a mano</div>' : '')
+    + (r.dudas.length ? '<div style="font-size:11.5px;color:var(--warn);margin-top:5px">'
+        + '\u26a0 ' + r.dudas.length + ' duda(s) guardada(s) con el documento</div>' : '');
+  document.getElementById('respuesta').value = '';
+  salvaDiario();
+  refresca();
+}
+
+/* ── ranger, comme l'automatique ── */
+function guardaLoLeido(parsed, nombreFichero){
+  var doc = parsed.documento || {};
+  var idf = parsed.identificacion || {};
+  var fuente = doc.centro ? (doc.centro + (doc.servicio ? ' \u2014 ' + doc.servicio : ''))
+                          : (parsed.source || '');
+  var fecha = doc.fecha_informe || doc.fecha_ingreso || parsed.date || '';
+
+  var A = loadPdfs(), pdfId = null;
+  Object.keys(A).forEach(function(k){ if(A[k]===nombreFichero) pdfId=k; });
+  if(!pdfId){
+    var n=1; while(A['PDF'+String(n).padStart(3,'0')]) n++;
+    pdfId='PDF'+String(n).padStart(3,'0'); A[pdfId]=nombreFichero; savePdfs(A);
+  }
+
+  var nMed=0, nEv=0, nTrat=0;
+
+  /* ══ DEUX AIDES POUR LA RÉVISION À LA MAIN (P-H, 14/09) ══
+
+     Ce que le lecteur signale mais ne peut pas trancher, le programme
+     le marque — pour que « revisar » le montre en premier.
+
+       · sin_fecha   une mesure sans date ne se place dans aucune
+                     courbe. Elle entre quand même, marquee, au lieu
+                     d'être perdue en silence.
+       · repetido    sept valeurs identiques au chiffre près, le même
+                     jour : probablement le même prélèvement réimprimé.
+                     « Probablement » ne suffit pas pour effacer, mais
+                     suffit pour le dire.                               */
+  var nSinFecha = 0, nRepe = 0;
+
+  if((parsed.mediciones||[]).length){
+    var D = loadData(), porFecha = {};
+
+    /* ── ce qui est deja dans le dossier, pour reperer les repetitions ── */
+    var _yaHay = {};
+    D.forEach(function(x){
+      Object.keys(x.vals||{}).forEach(function(p){
+        _yaHay[(x.date||'') + '|' + p + '|' + x.vals[p]] = (x.grupo || '');
+      });
+    });
+
+    parsed.mediciones.forEach(function(m){
+      var f = m.fecha || '';
+      var _sinFecha = !f;
+      if(_sinFecha){ f = fecha || 'SIN-FECHA'; nSinFecha++; }
+      if(!f) return;
+      var k = f + '|' + (m.hora||'') + '|' + (m.condicion||'') + '|' + (m.grupo||'');
+      if(!porFecha[k]) porFecha[k] = { date:f, src:fuente, vals:{},
+                                       pdf:nombreFichero, pdf_id:pdfId };
+      if(m.hora)      porFecha[k].hora = m.hora;
+      if(m.condicion) porFecha[k].condicion = m.condicion;
+      if(m.grupo)     porFecha[k].grupo = m.grupo;
+      if(m.tipo)      porFecha[k].tipo = m.tipo;
+      if(m.metodo)    porFecha[k].metodo = m.metodo;
+
+      /* la date manque : on le dit, plutot que de la perdre */
+      if(_sinFecha){
+        porFecha[k].sin_fecha = true;
+        porFecha[k].date_supuesta = true;
+      }
+
+      /* la meme valeur, le meme jour, deja rangee ? */
+      var _firma = f + '|' + (m.parametro||'').trim() + '|' + m.valor;
+      if(_yaHay[_firma] !== undefined && _yaHay[_firma] !== (m.grupo||'')){
+        porFecha[k].repetido = true;
+        nRepe++;
+      }
+      var v = m.valor;
+      if(typeof v === 'string' && /^-?\d+([.,]\d+)?$/.test(v.trim()))
+        v = parseFloat(v.trim().replace(',','.'));
+      porFecha[k].vals[(m.parametro||'').trim()] = v;
+      if(m.unidad){
+        porFecha[k].unidades = porFecha[k].unidades || {};
+        porFecha[k].unidades[(m.parametro||'').trim()] = m.unidad;
+      }
+      nMed++;
+    });
+    Object.keys(porFecha).forEach(function(k){ D.push(porFecha[k]); });
+    D.sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); });
+    saveDataArr(D);
+  }
+
+  if((parsed.eventos||[]).length){
+    var E = loadEvents();
+    parsed.eventos.forEach(function(e){
+      var ev = { date:e.fecha||fecha,
+        type:(doc.tipo||'').toLowerCase().indexOf('urgen')>=0 ? 'urgencias'
+           : (doc.tipo||'').toLowerCase().indexOf('alta')>=0  ? 'ingreso'
+           : (doc.servicio||'').toLowerCase() || 'consulta',
+        title:e.titulo||'', text:e.detalle||'', src:fuente,
+        pdf:nombreFichero, pdf_id:pdfId };
+      if(doc.centro)     ev.centro = doc.centro;
+      if(doc.servicio)   ev.servicio = doc.servicio;
+      if(idf.n_episodio) ev.n_episodio = idf.n_episodio;
+      if(idf.n_informe)  ev.n_informe = idf.n_informe;
+      if(idf.nhc)        ev.nhc = idf.nhc;
+      E.push(ev); nEv++;
+    });
+    E.sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); });
+    saveEvents(E);
+  }
+
+  if((parsed.medicamentos||[]).length){
+    var M = loadMeds();
+    parsed.medicamentos.forEach(function(m){
+      if(!m.nombre) return;
+      M.push({ nombre:m.nombre, dosis:m.dosis||'', frecuencia:m.pauta||'', via:m.via||'',
+               desde:m.desde||fecha, hasta:m.hasta||'',
+               source:fuente, pdf:nombreFichero, pdf_id:pdfId });
+      nTrat++;
+    });
+    saveMeds(M);
+  }
+
+  if(nSinFecha){
+    _dudas.push(nSinFecha + ' medición(es) SIN FECHA IMPRESA. Se han puesto con la '
+      + 'fecha del documento (' + (fecha||'?') + ') y marcadas « sin_fecha »: '
+      + 'no formarán serie fiable hasta que alguien las feche a mano.');
+  }
+  if(nRepe){
+    _dudas.push(nRepe + ' valor(es) idéntico(s) a otro(s) ya guardado(s) el mismo día '
+      + 'en otro apartado. Puede ser la misma analítica reimpresa, o dos muestras '
+      + 'distintas. No se ha descartado nada: van marcados « repetido ».');
+  }
+
+  /* ══ les echelles : NIHSS, Rankin, Barthel, MMSE ══
+     « cifras fechadas y comparables — exactamente lo que un cuidador
+       sigue en el tiempo » (P-H, 14/09). Elles etaient perdues dans le
+     texte ; maintenant elles font serie. */
+  var nEsc = 0;
+  if((parsed.escalas||[]).length){
+    var ES = loadEscalas();
+    parsed.escalas.forEach(function(e){
+      if(!e.nombre || e.valor===undefined || e.valor==='') return;
+      var v = e.valor;
+      if(typeof v === 'string' && /^-?\d+([.,]\d+)?$/.test(v.trim()))
+        v = parseFloat(v.trim().replace(',','.'));
+      ES.push({ nombre:e.nombre, valor:v, maximo:e.maximo||'',
+                fecha:e.fecha||fecha, momento:e.momento||'',
+                src:fuente, pdf:nombreFichero, pdf_id:pdfId });
+      nEsc++;
+    });
+    if(nEsc){ ES.sort(function(a,b){ return String(a.fecha).localeCompare(String(b.fecha)); });
+              saveEscalas(ES); }
+  }
+
+  /* ══ les diagnostics : la conclusion, pas un evenement ══ */
+  var nDia = 0;
+  if((parsed.diagnosticos||[]).length){
+    var DI = loadDiag();
+    parsed.diagnosticos.forEach(function(d){
+      var txt = (typeof d === 'string') ? d : (d.texto||'');
+      if(!txt) return;
+      DI.push({ texto:txt, tipo:(typeof d==='object' && d.tipo)||'',
+                fecha:fecha, src:fuente, pdf:nombreFichero, pdf_id:pdfId });
+      nDia++;
+    });
+    if(nDia) saveDiag(DI);
+  }
+
+  /* ══ les rendez-vous : ce qui vient, pas ce qui est passe ══ */
+  var nCit = 0;
+  if((parsed.citas||[]).length){
+    var CI = loadCitas();
+    parsed.citas.forEach(function(c){
+      if(!c.fecha) return;
+      var ya = CI.some(function(x){
+        return x.fecha===c.fecha && (x.hora||'')===(c.hora||'')
+            && (x.servicio||'')===(c.servicio||''); });
+      if(ya) return;
+      CI.push({ fecha:c.fecha, hora:c.hora||'', servicio:c.servicio||'',
+                lugar:c.lugar||'', src:fuente, pdf:nombreFichero, pdf_id:pdfId });
+      nCit++;
+    });
+    if(nCit){ CI.sort(function(a,b){ return String(a.fecha).localeCompare(String(b.fecha)); });
+              saveCitas(CI); }
+  }
+
+  /* ══ ce qui n'est pas un medicament mais oblige autant ══
+     « en una paciente con disfagia el espesante obliga tanto como una
+       pastilla » — et ca n'avait nulle part ou aller. */
+  var nNoF = 0;
+  if((parsed.prescripciones_no_farmacologicas||[]).length){
+    var NF = loadNoFarm();
+    parsed.prescripciones_no_farmacologicas.forEach(function(p){
+      var txt = (typeof p === 'string') ? p : (p.texto||'');
+      if(!txt) return;
+      NF.push({ texto:txt, tipo:(typeof p==='object' && p.tipo)||'',
+                desde:(typeof p==='object' && p.desde)||fecha,
+                src:fuente, pdf:nombreFichero, pdf_id:pdfId });
+      nNoF++;
+    });
+    if(nNoF) saveNoFarm(NF);
+  }
+
+  /* ══ les antecedents : ce que le patient traine, pas ce qui est arrive
+     ce jour-la. Un ictus de 2021 cite dans un rapport de 2026 n'a pas
+     eu lieu en 2026. (P-H, 14/09) ══ */
+  var nAnt = 0;
+  if((parsed.antecedentes||[]).length){
+    var AN = loadAnteced();
+    parsed.antecedentes.forEach(function(a){
+      var txt = (typeof a === 'string') ? a : (a.texto || '');
+      if(!txt) return;
+      /* deja la ? on ne le remet pas */
+      var ya = AN.some(function(x){
+        return String(x.texto||x).toLowerCase().trim() === txt.toLowerCase().trim(); });
+      if(ya) return;
+      AN.push({ texto: txt,
+                categoria: (typeof a === 'object' && a.categoria) || '',
+                fecha:     (typeof a === 'object' && a.fecha) || '',
+                src: fuente, pdf: nombreFichero, pdf_id: pdfId });
+      nAnt++;
+    });
+    if(nAnt) saveAnteced(AN);
+  }
+
+  /* ══ les dudas : elles valent autant que les donnees ══
+     « surtout les dudas importantes a conserver » — P-H, 14/09
+     Elles vivent avec le document, pas seulement dans le journal :
+     dix ans plus tard, quelqu'un voudra savoir pourquoi ce SIP n'a
+     jamais ete assigne. */
+  var _dudas = (parsed.dudas || []).concat(
+    (parsed.incertidumbres_ocr || []).map(function(x){
+      return (x.nivel==='ilegible' ? '[ilegible] ' : '[' + (x.nivel||'?') + '] ')
+        + (x.campo||'') + ' : le\u00eddo \u00ab ' + (x.leido||'') + ' \u00bb'
+        + (x.propuesta ? ' \u2192 ' + x.propuesta : ' \u2192 sin propuesta'); }));
+  if(_dudas.length){
+    var d = _asegura();
+    if(!Array.isArray(d.dudas)) d.dudas = [];
+    d.dudas.push({ fecha: _sello(), pdf: nombreFichero, pdf_id: pdfId,
+                   modo: MI_MODO, lineas: _dudas });
+    MF.tocado();
+  }
+  /* ══ UN NUMÉRO QU'ON CONNAÎT DÉJÀ SE RECONNAÎT (P-H, 14/09) ══
+     Le lecteur refuse de placer un numéro dont l'étiquette est loin —
+     et il a raison. Mais si le dossier ouvert porte déjà ce SIP, alors
+     ce n'est plus une supposition : c'est une reconnaissance.
+
+     On ne devine pas : on compare à ce qu'on sait. */
+  if(idf.sin_asignar && idf.sin_asignar.length){
+    var _p = MF.paciente() || {};
+    var _d = _asegura();
+    var _conocidos = {
+      sip: _p.sip || (_d.paciente && _d.paciente.sip) || _d.sip || '',
+      nhc: (_d.paciente && _d.paciente.nhc) || _d.nhc || ''
+    };
+    var _quedan = [];
+    idf.sin_asignar.forEach(function(x){
+      var val = (typeof x === 'string') ? x : (x.valor || '');
+      if(!val){ _quedan.push(x); return; }
+      if(_conocidos.sip && String(val) === String(_conocidos.sip)){
+        if(!idf.sip) idf.sip = val;
+        _dudas.push('El número ' + val + ' estaba sin asignar, pero coincide con '
+          + 'el SIP del expediente abierto: se ha reconocido como SIP.');
+        return;
+      }
+      if(_conocidos.nhc && String(val) === String(_conocidos.nhc)){
+        if(!idf.nhc) idf.nhc = val;
+        _dudas.push('El número ' + val + ' coincide con el NHC del expediente: '
+          + 'se ha reconocido como NHC.');
+        return;
+      }
+      _quedan.push(x);
+    });
+    idf.sin_asignar = _quedan;
+  }
+  if(idf.sin_asignar && idf.sin_asignar.length){
+    var d2 = _asegura();
+    if(!Array.isArray(d2.identificadores_dudosos)) d2.identificadores_dudosos = [];
+    d2.identificadores_dudosos.push({ pdf: nombreFichero, pdf_id: pdfId,
+                                      numeros: idf.sin_asignar });
+    MF.tocado();
+  }
+
+  if(doc.centro){
+    var C = loadCentros();
+    if(!C.some(function(x){ return (typeof x==='string'?x:(x.nombre||'')).toLowerCase()===fuente.toLowerCase(); })){
+      C.push({ nombre:fuente, abrev:'' }); saveCentros(C);
+    }
+  }
+
+  /* ce qui entre est du neuf : actualizacion, source S (la main de l'aidant) */
+  if((nMed+nEv+nTrat) > 0 && typeof SF_PLANTILLA!=='undefined')
+    SF_PLANTILLA.actualiza(_DATOS, 'S');
+
+  return { mediciones:nMed, eventos:nEv, medicamentos:nTrat, antecedentes:nAnt,
+           escalas:nEsc, diagnosticos:nDia, citas:nCit, prescripciones:nNoF,
+           sin_fecha:nSinFecha, repetidos:nRepe,
+           fuente:fuente, dudas:_dudas };
+}
+
+function guardaExpediente(){
+  if(!_DATOS) return;
+  if(typeof SF_PLANTILLA!=='undefined') SF_PLANTILLA.paraExportar(_DATOS);
+  var p = MF.paciente()||{};
+  var nombre = (p.matricula||'SIN_PACIENTE') + '_' + _sello() + '.mf';
+  MF.guarda('pacientes/' + (p.matricula||'') + '/' + nombre, JSON.stringify(_DATOS,null,1))
+    .then(function(r){
+      var z = document.getElementById('estado-tra');
+      z.innerHTML = '<span style="color:var(--ok)">Guardado: ' + nombre + '</span>';
+    });
+}
+
+function refresca(){
+  try{
+    var n=loadData().length, e=loadEvents().length, m=loadMeds().length;
+    document.getElementById('x-est').textContent =
+      n + ' extracciones \u00b7 ' + e + ' eventos \u00b7 ' + m + ' medicamentos';
+    pintaDiario();
+  }catch(err){ console.warn(err); }
+}
+
+function pintaTextos(){
+  document.getElementById('doc-intro').innerHTML =
+    'Saque el texto del documento. Si el PDF est\u00e1 escaneado, el OCR lo reconoce aqu\u00ed mismo '
+    + '\u2014 en su ordenador, sin que nada salga a Internet.';
+  document.getElementById('lle-intro').innerHTML = t('lle_expl');
+  document.getElementById('tra-intro').innerHTML = t('tra_expl');
+  document.getElementById('b-copiar').textContent = t('lle_copiar');
+  document.getElementById('b-abrir').textContent  = t('lle_abrir');
+  document.getElementById('b-guardar').textContent = t('tra_guardar');
+  document.getElementById('texto').placeholder     = t('doc_pegar');
+  document.getElementById('respuesta').placeholder = t('tra_pegar');
+  if(typeof MF!=='undefined' && MF.aplicaIdioma) MF.aplicaIdioma();
+}
+
+/* la zone de dépôt */
+(function(){
+  var z=document.getElementById('zona'), i=document.getElementById('fichero');
+  z.onclick=function(){ i.click(); };
+  i.onchange=function(){ if(i.files[0]) tomaPdf(i.files[0]); i.value=''; };
+  ['dragenter','dragover'].forEach(function(e){
+    z.addEventListener(e,function(ev){ ev.preventDefault(); z.classList.add('encima'); }); });
+  ['dragleave','drop'].forEach(function(e){
+    z.addEventListener(e,function(ev){ ev.preventDefault(); z.classList.remove('encima'); }); });
+  z.addEventListener('drop',function(ev){
+    var f=Array.from(ev.dataTransfer.files||[]).filter(function(x){ return /\.pdf$/i.test(x.name); })[0];
+    if(f) tomaPdf(f);
+  });
+  document.getElementById('texto').addEventListener('input', cuentaLetras);
+})();
+
+if(window.pdfjsLib)
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '../../herramientas/cotejo/lib/pdf.worker.min.js';
+
+MF.arranca({
+  alCargar: function(d){
+    _DATOS = (typeof SF_PLANTILLA!=='undefined') ? SF_PLANTILLA.completa(d, MF.paciente()) : d;
+    _ABIERTO = true;
+    var p = MF.paciente();
+    document.getElementById('x-pac').textContent = p.etiqueta || p.matricula || '';
+    pintaTextos(); cargaPrompt();
+    cargaDiario(function(){ refresca(); });
+    MF.ponVersion();
+  },
+  alFallar: function(){
+    document.getElementById('x-pac').textContent = t('sin_exp');
+    document.getElementById('x-pac').style.color = 'var(--warn)';
+    pintaTextos(); cargaPrompt(); pintaDiario(); MF.ponVersion();
+  }
+});
+</script>
+</body>
+</html>

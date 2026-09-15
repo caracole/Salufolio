@@ -1,0 +1,37 @@
+LOS PROMPTS DE SALUFOLIO
+════════════════════════
+
+Regla de P-H, del 11 de agosto de 2026:
+
+  « NE JAMAIS MÉLANGER LE CODE JAVASCRIPT AVEC LE PROMPT. Le prompt vit
+    dans un FICHIER .txt EXTÉRIEUR ; le code JS ne fait que le CHARGER.
+    UN SEUL CODE, PLUSIEURS PROMPTS possibles. »
+
+Aquel día el prompt estaba metido dentro de un template literal de un
+.js. Se cargó una versión equivocada — la de las 10h05 en vez de la de
+las 10h31 — y nadie lo vio. Si hubiera sido un .txt aparte, habría
+bastado con reemplazar un fichero.
+
+QUÉ HAY AQUÍ
+────────────
+  prompts.js                  la tabla: qué prompts existen
+  prompt-extraccion.txt       el prompt general
+  LEEME.txt                   esto
+
+CÓMO AÑADIR UNO
+───────────────
+  1. Escriba su fichero .txt aquí, con la fecha en el nombre si quiere
+     guardar las versiones anteriores.
+  2. Añádalo a la lista "prompts" de prompts.js: su id, su fichero,
+     para qué sirve.
+  3. El código no cambia. Nunca.
+
+CÓMO PROBARLO
+─────────────
+  Un prompt no se inventa: se prueba con documentos de verdad. El de
+  hoy nació cuando Ana volvió de urgencias con unas gasometrías
+  que nunca se habían tenido en cuenta — se escribió, se probó, se
+  corrigió. Haga lo mismo.
+
+  Y compruebe con Cotejo: pone el PDF al lado del .mf y marca en verde
+  lo que ha entrado. Lo que queda sin marcar es lo que se ha perdido.

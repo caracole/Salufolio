@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ayuda · Adquisición automática</title>
+<style>
+:root{--bg:#161b27;--text:#e8eaf0;--muted:#9aa3b8;--accent:#4a8fe8;--warn:#e8a44a;
+      --border:#2a3348;--surface:#1e2535;--serif:Georgia,serif}
+body{margin:0;padding:24px 28px 50px;background:var(--bg);color:var(--text);
+     font-family:system-ui,sans-serif;line-height:1.7}
+.env{max-width:720px;margin:0 auto}
+h1{font-family:var(--serif);font-size:21px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:12.5px;margin-bottom:20px}
+h2{font-family:var(--serif);font-size:15px;color:var(--accent);margin:22px 0 6px;
+   border-bottom:1px solid var(--border);padding-bottom:4px}
+p{margin:0 0 12px;font-size:14px}
+.aviso{background:var(--surface);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;
+       padding:11px 15px;font-size:13px;margin:16px 0}
+.nota{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
+      padding:11px 15px;font-size:13px;color:var(--muted);margin:16px 0}
+code{background:#0b0e14;padding:1px 6px;border-radius:4px;color:#e8a44a;font-size:12.5px}
+</style></head>
+<body><div class="env">
+<h1>⚙️ Adquisición automática</h1>
+<div class="sub">Leer los PDF con la clave API</div>
+
+<div class="aviso"><b>Este modo cuesta dinero.</b> Cada documento leído llama a Claude: unos céntimos. El modo <b>asistida</b> hace lo mismo sin clave y sin coste — se copia el texto en claude.ai y se trae la respuesta.</div>
+
+<h2>La clave</h2>
+<p>Se guarda en su aparato, en ningún otro sitio. Ni Salufolio ni nadie la ve pasar.</p>
+
+<h2>Leer documentos</h2>
+<p>Suelte los PDF en la zona, o tóquela para elegirlos. Se leen uno tras otro, y cada uno deja su línea en el diario.</p>
+
+<h2>El diario</h2>
+<p>Cuándo, qué fichero, con qué modelo, qué se sacó — y las <b>dudas</b> que Claude devuelve cuando algo no estaba claro. Esas dudas valen oro: señalan lo que hay que comprobar.</p>
+<p>El diario vive en el expediente del paciente. No se mezclan los diarios de dos personas.</p>
+
+<h2>Comprobar después</h2>
+<p>Leer no es comprobar. <b>Cotejo</b> pone el PDF al lado del expediente y marca en verde lo que ha entrado: lo que queda sin marcar es lo que se ha perdido.</p>
+
+<div class="nota">El prompt vive en <code>adquisicion/prompts/</code>, en su propio fichero .txt. Cambiarlo no toca el código — un solo código, varios prompts.</div>
+</div></body></html>

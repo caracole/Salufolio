@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Maqueta · el panal dirigido por tabla</title>
+<style>
+:root{--bg:#0e1117;--surface:#161b27;--text:#e8eaf0;--muted:#7a8499;--accent:#4a8fe8;--ok:#3dbf7f;--warn:#e8a44a;--serif:Georgia,serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;overflow-x:hidden}
+header{padding:6px 14px;border-bottom:1px solid #232a3a;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--serif);font-size:15px;margin:0}
+.ver{font-size:11px;color:var(--muted)}
+#escena{position:relative;width:100%;height:calc(100vh - 46px);overflow:hidden}
+/* ══ v16 — LE PANNEAU DE RÉGLAGE (P-H) : régler la cosmétique à vue,
+   sans allers-retours. Il écrit dans la table en mémoire ; le bouton
+   📋 copie le JSON complet, prêt à coller dans le fichier. ══ */
+#panel{position:fixed;left:0;top:46px;bottom:0;width:250px;background:var(--surface);border-right:1px solid #232a3a;overflow-y:auto;padding:10px 12px;z-index:70;transform:translateX(-100%);transition:transform .28s ease;font-size:12.5px}
+#panel.on{transform:translateX(0)}
+#panel h4{margin:12px 0 5px;font-family:var(--serif);font-size:13px;color:var(--accent);border-bottom:1px solid #232a3a;padding-bottom:3px}
+#panel label{display:flex;align-items:center;gap:7px;margin:5px 0;color:var(--muted)}
+#panel label span{flex:1}
+#panel input[type=color]{width:34px;height:22px;border:1px solid #2a3348;border-radius:4px;background:none;padding:0;cursor:pointer}
+#panel input[type=range]{width:96px}
+#panel input[type=number]{width:54px;background:#0b0e14;border:1px solid #2a3348;border-radius:5px;color:var(--text);padding:2px 5px}
+#panel select{background:#0b0e14;border:1px solid #2a3348;border-radius:5px;color:var(--text);padding:2px 5px;font-size:12px}
+.ficha-cel{border:1px solid #232a3a;border-radius:8px;padding:6px 8px;margin:6px 0;background:rgba(0,0,0,.15)}
+.ficha-cel .cab{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.ficha-cel .num{color:var(--warn);font-weight:700;min-width:14px}
+.ficha-cel input[type=text]{background:#0b0e14;border:1px solid #2a3348;border-radius:5px;color:var(--text);padding:3px 6px;font-size:12px;width:100%;box-sizing:border-box;margin:2px 0}
+.ficha-cel .ico{flex:0 0 34px;text-align:center;font-size:15px}
+.ficha-cel textarea{background:#0b0e14;border:1px solid #2a3348;border-radius:5px;color:var(--text);padding:4px 6px;font-size:11.5px;width:100%;box-sizing:border-box;min-height:52px;resize:vertical;font-family:inherit;line-height:1.45;margin:2px 0}
+#panel .val{color:var(--text);min-width:34px;text-align:right;font-variant-numeric:tabular-nums}
+#panel button{width:100%;margin:4px 0;padding:7px}
+#tirador{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:71;background:var(--surface);border:1px solid #232a3a;border-left:none;border-radius:0 8px 8px 0;padding:12px 5px;cursor:pointer;color:var(--muted);font-size:15px}
+#tirador.on{left:250px}
+body.conpanel #escena{margin-left:250px;width:calc(100% - 250px)}
+#svg{position:absolute;inset:0;width:100%;height:100%}
+/* v5 (P-H, la bonne lecture) : l'originale NE BOUGE PAS. On en fait une
+   COPIE au centre du panal (centre de la copie = centre de l'alvéole 0),
+   qui grandit en recouvrant la ruche — transparente, on la devine derrière. */
+/* ══ v25b — LE SURVOL, comme dans l'ancien panal ══
+   Là-bas : .hex{transition:all .3s} · .hex:hover{transform:scale(1.08)}
+   Le GROUPE entier grandit d'un bloc — polygone, icône et textes
+   ensemble, autour du centre de l'alvéole. Le transform est posé par le
+   code (il connaît le centre) ; le CSS ne fait que l'animer. */
+/* ══ v28 — LE SURVOL PAR LE CSS SEUL (P-H : « ça ne revient pas ») ══
+   Ma faute : je posais le transform par le code et je déplaçais le groupe
+   au premier plan (appendChild). Ce déplacement retire l'élément du DOM
+   et le remet — du coup il ne reçoit JAMAIS le mouseleave, et l'alvéole
+   restait agrandie. Le CSS, lui, n'a pas ce problème : l'origine du
+   grossissement est posée sur le groupe, et :hover fait le reste. */
+.celda{cursor:pointer;transition:transform .3s ease}
+.celda:hover{transform:scale(1.045)}
+.celda.obra{opacity:.55}
+.ctxt{pointer-events:none;text-anchor:middle;font-family:system-ui,sans-serif}
+.cico{font-size:30px}
+.clbl{font-size:13px;font-weight:600;fill:var(--text)}
+.csub{font-size:10px;fill:var(--muted)}
+.mando{cursor:pointer;text-anchor:middle;transition:transform .2s,filter .2s;transform-box:fill-box;transform-origin:center}
+.mando:hover{filter:drop-shadow(0 0 9px rgba(255,255,255,.85))}
+.abejita{cursor:pointer;font-size:15px;opacity:.75}
+.abejita:hover{opacity:1}
+footer{padding:12px 18px;border-top:1px solid #232a3a;font-size:12.5px;color:var(--muted);line-height:1.7}
+code{background:#0b0e14;padding:1px 6px;border-radius:5px;color:var(--warn);font-size:12px}
+button{padding:4px 10px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--text);font-size:13px;cursor:pointer;margin:2px}
+#carta{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+#carta.on{display:flex}
+#cbox{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:20px 22px;max-width:min(92vw,480px);position:relative}
+#cbox h3{font-family:var(--serif);margin:0 0 8px;font-size:19px}
+#cbox p{font-size:14px;line-height:1.65;margin:6px 0}
+#cbox .cerrar{position:absolute;top:8px;right:12px;cursor:pointer;color:var(--muted);font-size:19px}
+.chip{display:inline-block;font-size:10.5px;border:1px solid var(--muted);border-radius:6px;padding:1px 7px;color:var(--muted);margin-right:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🍯 Panal</h1>
+  <span class="ver" id="info"></span>
+  <span style="margin-left:auto;display:flex;gap:4px">
+    <button onclick="cargar('panal1.json')">1</button>
+    <button onclick="cargar('panal2.json')">2</button>
+  </span>
+</header>
+
+<div id="tirador" onclick="togglePanel()">⚙</div>
+<div id="panel">
+  <h4>Paleta general</h4>
+  <label><span>Fondo</span><input type="color" id="c-bg" oninput="setVar('--bg',this.value)"></label>
+  <label><span>Superficie</span><input type="color" id="c-surface" oninput="setVar('--surface',this.value)"></label>
+  <label><span>Texto</span><input type="color" id="c-text" oninput="setVar('--text',this.value)"></label>
+  <label><span>Apagado</span><input type="color" id="c-muted" oninput="setVar('--muted',this.value)"></label>
+  <label><span>Acento</span><input type="color" id="c-accent" oninput="setVar('--accent',this.value)"></label>
+
+  <h4>Colores de las alveolas</h4>
+  <div id="p-celdas"></div>
+
+  <h4>Textos de las alveolas</h4>
+  <div class="aviso">Icono · título · subtítulo · enlace. El <b>texto de la pantalla</b> se escribe en la alveola misma: ábrala y haga <b>clic derecho</b> dentro.</div>
+  <div id="p-textos"></div>
+
+  <h4>Tipografía</h4>
+  <label><span>Títulos</span><select id="f-serif" onchange="setVar('--serif',this.value)">
+    <option value="Georgia,serif">Georgia</option>
+    <option value="'Times New Roman',serif">Times</option>
+    <option value="'Palatino Linotype',Palatino,serif">Palatino</option>
+    <option value="system-ui,sans-serif">Sistema</option>
+  </select></label>
+
+  <h4>Geometría</h4>
+  <label><span>Hexágono</span><select id="g-rot" onchange="setGeo('rotacion',+this.value)">
+    <option value="30">sobre un lado</option>
+    <option value="0">punta arriba</option>
+  </select><span class="val" id="v-rot"></span></label>
+  <label><span>Opacidad</span><input type="range" id="g-op" min="0.5" max="1" step="0.01" oninput="setGeo('opacidad',+this.value)"><span class="val" id="v-op"></span></label>
+  <label><span>Zoom copia</span><input type="range" id="g-zoom" min="1.6" max="2.6" step="0.05" oninput="setZoom(+this.value)"><span class="val" id="v-zoom"></span></label>
+  <label><span>Icono Y</span><input type="range" id="g-icoy" min="0.4" max="0.85" step="0.01" oninput="setGeo('icono_y',+this.value)"><span class="val" id="v-icoy"></span></label>
+
+  <h4>Guardar</h4>
+  <button class="ok" onclick="guardaTabla()">💾 Guardar el fichero</button>
+  <button onclick="guardaComo()">📁 Guardar como perfil…</button>
+  <button onclick="abreTabla()">📂 Abrir un perfil…</button>
+  <button onclick="copiaJSON()">📋 Copiar el JSON</button>
+  <button onclick="resetPanel()">↺ Volver al fichero</button>
+  <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">
+    <b>Clic derecho</b> en una alveola: su menú (color, icono, zoom…), con ◀ ▶ para pasar a la vecina.<br><br>
+    Los ajustes viven en este navegador mientras trabaja. <b>Guardar</b> los escribe en el fichero; <b>Guardar como perfil</b> crea otra versión del mismo panal.
+  </div>
+</div>
+<div id="escena"><svg id="svg"></svg></div>
+
+<!-- v13 (P-H) : le bandeau retiré — le panal prend toute la place -->
+
+<div id="carta" onclick="if(event.target.id==='carta')cerrarCarta()">
+  <div id="cbox">
+    <span class="cerrar" onclick="cerrarCarta()">✕</span>
+    <div id="ccont"></div>
+  </div>
+</div>
+
+<script src="visita.js"></script>
+<script>
+/* ═══ PANAL — versión del motor : v2026.9.1.23 ═══
+   (P-H, 01/09 : « une chose oubliée importante, le n° de version du panal »
+   — sans numéro, on ne sait jamais ce qu'on regarde.) */
+/* ═══ MOTOR DEL PANAL — dirigido por tabla (maqueta, 31/08/2026) ═══
+   Doctrina de P-H : la TABLA declara (qué), la GEOMETRÍA deduce (dónde),
+   el CSS viste (cómo se ve). El motor no conoce ningún contenido.
+   Geometría del dibujo de P-H : a = 2R·sin(π/6) = R ; r = R·cos(π/6) ;
+   di = 2r ; β = 60°. Nada más hace falta. */
+
+var VERSION_MOTOR='2026.9.1.37';
+var TABLA=null, R_MULT=1;
+
+/* v2 (P-H) : la ROTACIÓN es un dato de la tabla — el motor dibuja las dos
+   familias de hexágono sin cambiar una línea. 30 = alveola posada sobre un
+   lado (lados verticales que se tocan, como el dibujo) ; 0 = punta arriba.
+   El mismo ángulo gira los vértices Y las vecinas: así siempre encajan. */
+function rot(){ return ((TABLA&&TABLA.geometria&&TABLA.geometria.rotacion)||0) * Math.PI/180; }
+/* REGLA GEOMÉTRICA (banco de pruebas, 31/08) : para que los LADOS se toquen,
+   los vértices y las vecinas deben diferir de 30°. La rotación gira los
+   VÉRTICES ; las vecinas conservan sus ángulos (1=E, 2=SE… en sentido horario).
+   rotacion:30 → alveola posada sobre un lado, como el dibujo de P-H. */
+function anguloDe(orden){ return (orden-1)*60*Math.PI/180; }
+/* zona nombrada → ángulo (para los mandos de la corona) */
+/* ══ LES SIX ZONES DU CONTOUR (dessin de P-H, 31/08) ══
+   Elles ne sont pas dans des « creux entre alvéoles » (il n'y en a pas :
+   les alvéoles sont jointives) mais dans les découpes du POURTOUR de la
+   fleur — calculées, chacune, comme centre de gravité de sa figure :
+
+   ISOCÈLE DU BAS (la Reine)  : sommets (0,R) · (0,2R) côté SE · côté SO
+        → G à 1,667 R, angle 90° (bas)
+   ISOCÈLE DU HAUT (Idiomas)  : son symétrique → 1,667 R, angle −90°
+   RECTANGLE GAUCHE (🔊)      : sommet bas-gauche du centre, pointe de
+        l'isocèle, point bas de l'alvéole SO → G à 1,764 R, angle 109,1°
+   RECTANGLE DROIT (❔)       : symétrique → 1,764 R, angle 70,9°
+   RECTANGLES DU HAUT         : réservés → symétriques, −109,1° et −70,9°
+   (en SVG, y descend : le bas est positif) */
+var ZONA_POS={
+  N:  {a:-90,   d:1.667},   /* isocèle du haut  — Idiomas */
+  S:  {a: 90,   d:1.667},   /* isocèle du bas   — la Reine */
+  SO: {a:109.1, d:1.764},   /* rectangle gauche — le son */
+  SE: {a: 70.9, d:1.764},   /* rectangle droit  — l'aide */
+  NO: {a:-109.1,d:1.764},   /* réservé */
+  NE: {a:-70.9, d:1.764}    /* réservé */
+};
+
+function centroDe(orden, cx, cy, R){
+  if(orden===0) return {x:cx, y:cy};
+  var r = R*Math.cos(Math.PI/6);      /* apotema */
+  var di = 2*r;                        /* distancia entre centros */
+  var th = anguloDe(orden);
+  return { x: cx + di*Math.cos(th), y: cy + di*Math.sin(th) };
+}
+function hexPuntos(cx, cy, R){
+  var p=[], g=rot();
+  for(var i=0;i<6;i++){
+    var a=(i*60)*Math.PI/180 + g;
+    p.push((cx+R*Math.cos(a)).toFixed(1)+','+(cy+R*Math.sin(a)).toFixed(1));
+  }
+  return p.join(' ');
+}
+
+function cargar(archivo, conVisita){
+  fetch(archivo).then(function(r){return r.json()}).then(function(d){
+    TABLA=d;
+    if(TABLA.paleta) PAL=TABLA.paleta;
+    recuperaPanel();      /* les réglages du navigateur reprennent la main */
+    pinta(); sincPanel();
+    if(conVisita) setTimeout(empiezaVisita, 400); })
+   .catch(function(e){ document.getElementById('info').textContent=' — no se pudo leer '+archivo+' (¿servidor local?)'; });
+}
+
+function pinta(){
+  if(!TABLA) return;
+  var esc=document.getElementById('escena'), svg=document.getElementById('svg');
+  var w=esc.clientWidth, h=esc.clientHeight;
+  var cx=w/2, cy=h/2;
+  /* R se deduce del espacio disponible : 3 apotemas de alto, 2 diámetros de ancho */
+  /* v13 : le panal remplit l'écran — la fleur mesure 2r+R/2 en hauteur
+     et 2r+R√3/2 en largeur ; on prend le R qui la fait tenir au plus juste,
+     plus la marge des mandos (2,4 R en bas, 2,35 en haut). */
+  var altoFlor = 2*Math.cos(Math.PI/6) + 0.5;      /* en unités de R */
+  var anchoFlor = 2*Math.cos(Math.PI/6) + Math.sqrt(3)/2;
+  var margenMandos = 2.75;                          /* mandos + leur taille */
+  var Rmax = Math.min(h/(2*margenMandos), w/(anchoFlor+1.2));
+  var R = Math.round(Rmax * R_MULT);
+  var r = R*Math.cos(Math.PI/6);
+  svg.setAttribute('viewBox','0 0 '+w+' '+h);
+
+  var s='';
+  /* — las celdas, ordenadas por su atributo orden — */
+  TABLA.celdas.slice().sort(function(a,b){return a.orden-b.orden}).forEach(function(c){
+    var p=centroDe(c.orden, cx, cy, R);
+    var obra = (c.estado==='obra');
+    var gp = c.rotacion? ' transform="rotate('+c.rotacion+','+p.x.toFixed(1)+','+p.y.toFixed(1)+')"' : '';
+    /* v18 : la marque du moteur de visites — data-visita. Le moteur trouve
+       l'objet par sa marque, où qu'il soit ; il ne connaît pas le panal. */
+    s+='<g id="celda'+c.orden+'" data-visita="celda-'+c.orden+'" class="celda'+(obra?' obra':'')+'"'+gp+' style="--ox:'+p.x.toFixed(1)+'px;--oy:'+p.y.toFixed(1)+'px;transform-origin:'+p.x.toFixed(1)+'px '+p.y.toFixed(1)+'px" onclick="abrir('+c.orden+')">'
+      +hexSVG(R, p.x, p.y, c.color, 'c'+c.orden, false)
+      +'<text class="ctxt cico" x="'+p.x+'" y="'+(p.y-R*0.16)+'">'+c.icono+'</text>'
+      +(c.sinTitulo? '' :
+        '<text class="ctxt clbl" x="'+p.x+'" y="'+(p.y+R*0.26)+'"'+(c.colorTexto?' fill="'+c.colorTexto+'"':'')+'>'+T(c.titulo)+'</text>'
+       +'<text class="ctxt csub" x="'+p.x+'" y="'+(p.y+R*0.45)+'"'+(c.colorTexto?' fill="'+c.colorTexto+'" opacity=".8"':'')+'>'+T(c.sub)+'</text>')
+      +(obra? '<text class="ctxt csub" x="'+p.x+'" y="'+(p.y+R*0.68)+'" fill="'+c.color+'">🚧</text>':'')
+      +'</g>';
+  });
+  /* — los mandos de la corona, en sus zonas nombradas — */
+  /* ── LES SIX CREUX (P-H, 31/08) : chacun son office ──
+     N = Idiomas · S = la Reina (de panal en panal) · SO = el sonido ·
+     SE = la ayuda · NO et NE réservés. Ils vivent dans le creux entre
+     deux alvéoles, à la distance R+di/2 du centre : hors de la ruche,
+     mais dans son ombre. */
+  /* ── LE CENTRE DE GRAVITÉ DU TRIANGLE VIDE (P-H : « mal placées ») ──
+     Chaque creux est un triangle dont les sommets sont : deux sommets de
+     l'alvéole centrale et le sommet extérieur commun aux deux voisines.
+     Son centre de gravité — la moyenne des trois — tombe sur la bissectrice
+     à la distance dG = (2r·cos30° + 2r)/3 = 1,077 R du centre.
+     Vérifié pour les six : même distance, angles réguliers de 60°.
+     (Ma valeur précédente, 2,07 R, jetait les icônes loin dehors.) */
+  /* ══ MÉTHODE EMPIRIQUE (P-H, 31/08) : les coordonnées viennent de la
+     TABLE, en unités de R depuis le centre. On pose, on regarde, on ajuste
+     — et l'ajustement se fait dans le JSON, jamais dans le code.
+       "x": 0, "y": -2.25   → 2,25 R au-dessus du centre
+     (en SVG, y descend : négatif = vers le haut) */
+  (TABLA.mandos||[]).forEach(function(m){
+    var x, y;
+    if(m.x!==undefined && m.y!==undefined){
+      x = cx + R*m.x;  y = cy + R*m.y;
+    } else {
+      var z=ZONA_POS[m.zona]||{a:0,d:1.6};
+      var th=z.a*Math.PI/180, d=R*(z.d + (m.desplaza||0));
+      x=cx+d*Math.cos(th); y=cy+d*Math.sin(th);
+    }
+    var libre=(m.accion==='libre');
+    var fs=m.grande? Math.round(R*0.30) : Math.round(R*0.21);
+    if(libre){
+      s+='<circle class="mando libre" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+Math.round(R*0.11)+'" fill="none" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3" opacity=".35"><title>'+m.etiqueta+'</title></circle>';
+    } else {
+      /* v14b (P-H) : les signes typographiques (⛶, ❔…) n'ont pas de couleur
+         propre — sans fill ils se perdent sur le fond sombre. La table peut
+         donner un "color" ; sinon on prend celle du texte. */
+      var col = m.color || 'var(--text)';
+      /* "escala" et "grueso" : la table règle la taille et la graisse —
+         les signes typographiques sont plus maigres que les emojis. */
+      var fs2 = Math.round(fs * (m.escala||1));
+      var pes = m.grueso? ' font-weight="700"' : '';
+      s+='<text class="mando" data-visita="mando-'+m.accion+'" x="'+x.toFixed(1)+'" y="'+(y+fs2/3).toFixed(1)+'" font-size="'+fs2+'" fill="'+col+'"'+pes+' onclick="mando(\''+m.accion+'\')"><title>'+m.etiqueta+'</title>'+m.icono+'</text>';
+    }
+  });
+  s+='</g><g id="copia" onclick="clicEnCopia(event)"></g>';
+  svg.innerHTML=s;
+  _CEN={cx:cx, cy:cy, R:R};
+  if(_FOCO>=0) dibujaCopia(_FOCO);
+  document.getElementById('info').textContent=' — v'+VERSION_MOTOR+' · tabla '+(TABLA.version||'?')+' · '+TABLA.nombre+' · R='+R+'px · alto de la flor ±'+( (2*r+R/2)/R ).toFixed(2)+' R · ancho ±'+((2*r+R*Math.sqrt(3)/2)/R).toFixed(2)+' R';
+}
+
+function celdaDe(orden){ return TABLA.celdas.filter(function(c){return c.orden===orden})[0]; }
+function abrir(orden){
+  var c=celdaDe(orden); if(!c) return;
+  /* « olvídeme » : celui qui connaît entre du premier coup */
+  if(c.lien && accesoDirecto(orden) && !VIS_PINTA){ accion('abrir', orden); return; }
+  /* v24 (P-H) : « le générique c'est pour toutes les pages » — le texte
+     d'une alvéole ouverte roule aussi, s'il déborde. On ouvre une porte,
+     et elle se raconte. */
+  setTimeout(arrancaRollo, 60);
+  enfoca(orden);   /* tout se lit DANS l'alvéole agrandie — plus de fenêtre par-dessus */
+  return;
+  var est = (c.estado==='obra')? '<p><span class="chip">🚧 en construcción</span></p>' : '';
+  var enl = c.lien? '<p><span class="chip">enlace</span> <code>'+c.lien+'</code></p>' : '';
+  mostrar('<h3>'+c.icono+' '+c.titulo+'</h3>'+est+'<p>'+(c.ayuda||'')+'</p>'+enl);
+}
+function ayuda(orden){
+  var c=celdaDe(orden); if(!c) return;
+  mostrar('<h3>🐝 '+c.titulo+'</h3><p>'+(c.ayuda||'(sin ayuda en la tabla)')+'</p>'
+    +'<p style="font-size:11.5px;color:var(--muted)">La abejita explica; la abeja grande hace viajar.</p>');
+}
+function mando(a){
+  if(a==='otroPanal'){ cargar(TABLA.id==='panal1'?'panal2.json':'panal1.json'); return; }
+  if(a==='voz'){ hablaCelda(_FOCO>=0? _FOCO : 0); return; }
+  if(a==='idiomas'){ cambiaIdioma(); return; }
+  if(a==='ayuda'){ muestraAyuda(); return; }
+  if(a==='pantalla'){ pantallaCompleta(); return; }
+  if(a==='libre'){ return; }
+  var m=(TABLA.mandos||[]).filter(function(x){return x.accion===a})[0]||{};
+  mostrar('<h3>'+(m.icono||'')+' '+(m.etiqueta||a)+'</h3><p>'+(m.ayuda||'Mando declarado en la tabla: <code>'+a+'</code>')+'</p>');
+}
+function mostrar(html){ document.getElementById('ccont').innerHTML=html; document.getElementById('carta').classList.add('on'); }
+function cerrarCarta(){ document.getElementById('carta').classList.remove('on'); suelta(); pararVoz(); }
+
+window.addEventListener('resize', pinta);
+cargar('panal1.json');
+
+/* ═══ v5 — LA COPIA AL CENTRO (lectura correcta de P-H) ═══
+   La alveola original NO se mueve. Se dibuja una COPIA cuyo centro es el
+   centro de la alveola 0, agrandada k veces, semitransparente: recubre el
+   panal y se adivina la colmena detrás. Cerrar la carta la retira. */
+var _CEN={cx:0,cy:0,R:0}, _FOCO=-1;
+/* v19 (P-H) : LE STRIPTEASE — pendant la visite, l'alvéole se dévoile
+   elle-même : le texte de la leçon s'inscrit dans SA fenêtre, et les
+   commandes de la visite prennent SON triangle. Le cadre étranger
+   disparaît : on enseigne le geste par le geste. */
+var VIS_PINTA=null, _ULT_COPIA=null;
+function dibujaCopia(orden){
+  var g=document.getElementById('copia'); if(!g) return;
+  var c=celdaDe(orden);
+  if(!c){ g.innerHTML=''; return; }
+  var cx=_CEN.cx, cy=_CEN.cy, R=_CEN.R;
+  var k=c.zoom||2.5;
+  var Rg=R*k;                          /* rayon de la copie */
+  var rg=Rg*Math.cos(Math.PI/6);       /* son apothème */
+  /* opacidad : réglable dans la table (geometria.opacidad).
+     1 = opaque · 0,95 = on devine à peine la ruche · 0,7 = très transparent */
+  var vel=(TABLA.geometria&&TABLA.geometria.opacidad)||0.88;
+
+  /* ── LA FENÊTRE D'AFFICHAGE (rectangle vert du dessin de P-H) ──
+     largeur = di = R√3 = 1,732 R · hauteur = R — le plus grand rectangle
+     inscriptible dans l'hexagone posé sur un côté : ses bords gauche et
+     droit sont les côtés verticaux, et les deux triangles restent libres. */
+  var fw=Rg*Math.sqrt(3), fh=Rg;
+  var fx=cx-fw/2, fy=cy-fh/2;
+
+  /* ── L'ICÔNE : à mi-hauteur du triangle supérieur ──
+     le triangle va du bord haut de la fenêtre (R/2) au sommet (r) ;
+     son milieu est donc à R/2 + (r−R/2)/2 ≈ 0,68 R du centre.
+     La table peut l'ajuster : geometria.icono_y (en unités de Rg). */
+  var iy = (TABLA.geometria && TABLA.geometria.icono_y) || 0.683;
+  var yIco = cy - Rg*iy;
+
+  var rr = c.rotacion? ' transform="rotate('+c.rotacion+','+cx.toFixed(1)+','+cy.toFixed(1)+')"' : '';
+  /* la classe .nueva n'est posée que si l'alvéole change : régler une
+     glissière ne relance plus l'éclosion. */
+  var nueva = (_ULT_COPIA !== orden);
+  _ULT_COPIA = orden;
+  var s='<g class="cp'+(nueva?' nueva':'')+'"'+rr+'>'
+   +(VIS_PINTA && VIS_PINTA.total? '<text class="ctxt" x="'+cx+'" y="'+(cy-Rg*0.42).toFixed(1)+'" font-size="'+Math.round(Rg*0.045)+'" fill="var(--muted)">'+VIS_PINTA.indice+' / '+VIS_PINTA.total+'</text>' : '')
+   +'<rect x="0" y="0" width="100%" height="100%" fill="var(--bg)" opacity="'+(1-vel).toFixed(2)+'"/>'
+   +hexSVG(Rg, cx, cy, c.color, 'pop', true)
+   /* la fenêtre, discrètement marquée pour la maquette */
+   +'<rect x="'+fx.toFixed(1)+'" y="'+fy.toFixed(1)+'" width="'+fw.toFixed(1)+'" height="'+fh.toFixed(1)+'" fill="none" stroke="none" stroke-width="0"/>'
+   /* l'icône, au centre de gravité du triangle supérieur */
+   +'<text class="ctxt" x="'+cx+'" y="'+(yIco+Rg*0.05).toFixed(1)+'" font-size="'+Math.round(Rg*0.20)+'">'+c.icono+'</text>'
+   /* le contenu, coulé DANS la fenêtre */
+   +'<foreignObject x="'+fx.toFixed(1)+'" y="'+fy.toFixed(1)+'" width="'+fw.toFixed(1)+'" height="'+fh.toFixed(1)+'">'
+   +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;overflow-y:auto;padding:'+Math.round(Rg*0.05)+'px '+Math.round(Rg*0.07)+'px;box-sizing:border-box;color:'+(c.colorTexto||'var(--text)')+';font-family:system-ui,sans-serif;text-align:center">'
+   + (VIS_PINTA
+      /* pendant la visite : le texte de la leçon, qui roule comme un
+         tambour derrière la fenêtre si le texte dépasse */
+      /* v22 (P-H) : LE GÉNÉRIQUE — le texte roule comme un tambour derrière
+         la fenêtre. Il s'arrête au survol (mouseover) et repart quand on
+         s'écarte (mouseout). La longueur n'importe plus. */
+      ? '<div style="font-family:Georgia,serif;font-size:'+Math.round(Rg*0.095)+'px;font-weight:700;color:var(--accent);margin-bottom:'+Math.round(Rg*0.025)+'px">'+VIS_PINTA.titulo+'</div>'
+        +'<div id="vis-rollo" style="font-size:'+Math.round(Rg*0.058)+'px;line-height:1.6;text-align:left">'+VIS_PINTA.texto+'</div>'
+      : (c.sinTitulo? '' : '<div style="font-family:Georgia,serif;font-size:'+Math.round(Rg*0.10)+'px;font-weight:700;margin-bottom:'+Math.round(Rg*0.02)+'px">'+T(c.titulo)+'</div>')
+        + (c.sinTitulo? '' : '<div style="font-size:'+Math.round(Rg*0.055)+'px;color:var(--muted);margin-bottom:'+Math.round(Rg*0.04)+'px">'+T(c.sub)+'</div>')
+        + '<div id="vis-rollo" oncontextmenu="event.preventDefault();editaEnPantalla('+orden+');return false" style="font-size:'+Math.round(Rg*0.062)+'px;line-height:1.6;text-align:left">'+T(c.ayuda)+'</div>'
+        + (c.estado==='obra'? '<div style="margin-top:'+Math.round(Rg*0.04)+'px;font-size:'+Math.round(Rg*0.055)+'px;color:#e8a44a">🚧 en construcción</div>' : ''))
+   + ((c.lien && !VIS_PINTA)
+      /* v35b (P-H) : le clic sur la case ne doit PAS ouvrir l'application.
+         stopPropagation seul ne suffit pas ici — le div entier arrête
+         l'événement, case et libellé compris. */
+      ? '<div onclick="event.stopPropagation()" style="margin-top:'+Math.round(Rg*0.04)+'px;font-size:'+Math.round(Rg*0.042)+'px;color:var(--muted);text-align:center">'
+        +'<label style="cursor:pointer" onclick="event.stopPropagation()"><input type="checkbox" '+(accesoDirecto(orden)?'checked':'')+' onclick="event.stopPropagation();marcaDirecto('+orden+',this.checked)" style="vertical-align:middle;margin-right:5px">'
+        + (({es:'ya conozco el camino — olvídeme',ca:'ja conec el camí — oblide\'m',fr:"je connais le chemin — oubliez-moi",en:'I know the way — forget me'})[LANG]||'olvídeme')
+        +'</label></div>'
+      : '')
+   +'</div></foreignObject>';
+
+  /* ── LE TRIANGLE INFÉRIEUR : la zone des boutons (P-H, 31/08) ──
+     Miroir du triangle supérieur : du bord bas de la fenêtre (−Rg/2) au
+     sommet bas (−rg), hauteur rg−Rg/2 ≈ 0,366 Rg. Les boutons viennent de
+     la TABLE : chacun son image ou son texte, et son action. */
+  /* les commandes de la visite prennent le triangle pendant la visite */
+  var bts = VIS_PINTA
+    ? (VIS_PINTA.final
+        ? [ (VIS_PINTA.siguiente? {icono:'🐝', texto:'Seguir', accion:'vis-seguir'} : null),
+            {icono:'↺', texto:'', accion:'vis-otra'},
+            {icono:'✕', texto:'', accion:'vis-salir'} ].filter(Boolean)
+        : [ {icono:'⏮', texto:'', accion:'vis-atras'},
+            {icono: VIS_PINTA.pausa?'▶':'⏸', texto:'', accion:'vis-pausa'},
+            {icono: VIS_PINTA.conVoz?'🔊':'🔇', texto:'', accion:'vis-voz'},
+            {icono:'⏭', texto:'', accion:'vis-adelante'},
+            {icono:'✕', texto:'', accion:'vis-salir'} ])
+    : (c.botones || []);
+  var hTri = rg - Rg/2;                       /* hauteur du triangle inférieur */
+  var di   = Rg*Math.sqrt(3);                 /* largeur à sa base */
+  /* ── LA CONTRAINTE DU TRIANGLE (P-H, 31/08) ──
+     La largeur disponible RÉTRÉCIT en descendant : à la profondeur p sous
+     la base, elle vaut di·(1 − p/hTri). C'est donc le BORD INFÉRIEUR des
+     boutons — leur point le plus bas — qui commande, pas leur milieu.
+     Rien ne doit sortir du triangle. */
+  var hb   = Math.round(Rg*0.105);            /* hauteur d'un bouton — resserrée */
+  var pMed = hTri*0.34;                       /* profondeur du milieu des boutons */
+  var yB   = cy + Rg/2 + pMed;
+  var pBajo = pMed + hb/2;                    /* profondeur du bord inférieur */
+  var anchoUtil = di * (1 - pBajo/hTri) * 0.94;   /* 6% de marge de sûreté */
+  /* la zone, marquée en pointillé tant qu'on est en maquette */
+  s+='<polygon points="'+(cx-Rg*Math.sqrt(3)/2).toFixed(1)+','+(cy+Rg/2).toFixed(1)
+    +' '+(cx+Rg*Math.sqrt(3)/2).toFixed(1)+','+(cy+Rg/2).toFixed(1)
+    +' '+cx.toFixed(1)+','+(cy+rg).toFixed(1)+'" fill="none" stroke="none" stroke-width="0"/>';
+  if(bts.length){
+    var sep = Rg*0.03;
+    var wb = Math.min((anchoUtil - (bts.length-1)*sep)/bts.length, Rg*0.62);
+    var x0 = cx - (bts.length*wb + (bts.length-1)*sep)/2;
+    bts.forEach(function(b,i){
+      var bx = x0 + i*(wb + sep);
+      s+='<g class="bot" onclick="event.stopPropagation();accion(\''+(b.accion||'')+'\','+orden+')" style="cursor:pointer">'
+        +'<rect x="'+bx.toFixed(1)+'" y="'+(yB-hb/2).toFixed(1)+'" width="'+wb.toFixed(1)+'" height="'+hb+'" rx="'+Math.round(hb*0.32)+'" fill="rgba(0,0,0,.35)" stroke="'+(b.color||'#e8eaf0')+'" stroke-width="1.5" opacity=".9"/>'
+        /* v15b (P-H) : texte centré verticalement dans le bouton —
+           dominant-baseline le cale sur le milieu, plus de décalage à l'œil ;
+           et la police remonte un peu (le padding paraissait trop lâche). */
+        +'<text x="'+(bx+wb/2).toFixed(1)+'" y="'+yB.toFixed(1)+'" text-anchor="middle" dominant-baseline="central" font-size="'+Math.round(hb*0.60)+'" fill="var(--text)" style="pointer-events:none">'+(b.icono||'')+(b.texto? ' '+b.texto : '')+'</text>'
+        +'</g>';
+    });
+  }
+  s+='</g>';
+  g.innerHTML=s;
+}
+/* ── L'ACTION d'un bouton : déclarée dans la table, exécutée ici ──
+   'voz' parle · 'cerrar' referme · 'abrir' lance le lien de la cellule ·
+   tout autre nom = une action que le moteur ne connaît pas encore. */
+function accion(a, orden){
+  var c=celdaDe(orden);
+  if(a==='visita'){ arrancaVisitaGuiada(); return; }
+  if(a==='vis-atras'){ Visita.paso(-1); return; }
+  if(a==='vis-adelante'){ Visita.paso(1); return; }
+  if(a==='vis-pausa'){ Visita.pausa(); repintaVisita(); return; }
+  if(a==='vis-voz'){ Visita.voz(); repintaVisita(); return; }
+  if(a==='vis-salir'){ Visita.sal(); return; }
+  if(a==='vis-otra'){ Visita.reinicia(); return; }
+  if(a==='vis-seguir'){ 
+    var sig=VIS_PINTA && VIS_PINTA.siguiente;
+    Visita.sal();
+    if(sig){ cargar(TABLA.id==='panal1'?'panal2.json':'panal1.json');
+             setTimeout(function(){ Visita.arranca(sig, opcionesVisita()); }, 500); }
+    return;
+  }
+  if(a==='voz'){ hablaCelda(orden); return; }
+  if(a==='cerrar'){ suelta(); return; }
+  /* v33 (P-H : « ça ne marche pas ») — la maquette se contentait
+     d'ANNONCER le lien. Maintenant elle l'ouvre : une adresse complète
+     (https://…) dans un nouvel onglet, un fichier voisin dans le même. */
+  if(a==='abrir'){
+    var u = c && c.lien;
+    if(!u){ hexAviso('Esta alveola no tiene enlace todavía.'); return; }
+    if(u.charAt(0)==='#'){ hexAviso('Enlace interno: '+u); return; }
+    /* v35 (P-H) : c'est la TABLE qui décide, plus le code — "nueva":true
+       ouvre dans un autre onglet. Par défaut, une adresse complète part
+       dans un nouvel onglet, un fichier voisin reste dans le même. */
+    /* v36b (P-H : « je me suis fait avoir ») — par DÉFAUT on ouvre dans
+       un autre onglet : le panal reste derrière, on ne se perd jamais.
+       Décocher la case est un choix délibéré. */
+    var otra = (c.nueva!==undefined) ? !!c.nueva : true;
+    /* v36 (P-H) : on referme l'alvéole DERRIÈRE soi. Au retour de
+       l'application, on retrouve le panal entier — pas une porte restée
+       grande ouverte. Vaut dans les deux cas : nouvel onglet ou non. */
+    suelta();
+    if(otra) window.open(u, '_blank');
+    else window.location.href = u;
+    return;
+  }
+  alert('Acción declarada en la tabla: "'+a+'" — el motor no la conoce todavía.');
+}
+function enfoca(orden){
+  _FOCO = (_FOCO===orden)? -1 : orden;
+  if(_FOCO<0){ var g=document.getElementById('copia'); if(g)g.innerHTML=''; }
+  else dibujaCopia(_FOCO);
+}
+function suelta(){ paraRollo(); _FOCO=-1; _ULT_COPIA=null; var g=document.getElementById('copia'); if(g)g.innerHTML=''; }
+
+/* la rotación del panal entero, dinámica — el dato de la tabla se mueve */
+function giraTodo(d){
+  if(!TABLA) return;
+  TABLA.geometria.rotacion = ((TABLA.geometria.rotacion||0) + d) % 360;
+  pinta();
+}
+
+/* ═══ v4 — LA MOLETTE : zoom continu du panal (P-H) ═══
+   La roulette agrandit ou réduit R — donc tout le panal, puisque tout
+   se déduit de R. Bornes douces pour ne jamais perdre la ruche. */
+document.getElementById('escena').addEventListener('wheel', function(ev){
+  ev.preventDefault();
+  var paso = ev.deltaY > 0 ? -0.08 : 0.08;
+  R_MULT = Math.max(0.4, Math.min(2.4, R_MULT + paso));
+  pinta();
+}, {passive:false});
+
+/* ═══ v4 — LAS DOS VOCES (P-H) ═══
+   La tabla declara, para cada alveola, la ruta de sus ficheros de sonido
+   por idioma:  "sonido": { "es": "voz/sabermas_es.mp3", "fr": "…" }
+   Si el fichero existe → se reproduce (Álvaro, Elvira: voces de verdad,
+   iguales en todos los aparatos, y suenan hasta en el ASUS mudo).
+   Si no → la síntesis del navegador lee el texto de la tabla.
+   Los dos tableros, cada uno donde es fuerte. */
+var LANG='es', _audio=null;
+function hablaCelda(orden){
+  var c=celdaDe(orden); if(!c) return;
+  pararVoz();
+  var ruta = c.sonido && c.sonido[LANG];
+  if(ruta){
+    _audio=new Audio(ruta);
+    _audio.play().catch(function(){ sintetiza(c); });   /* fichero ausente → síntesis */
+    return;
+  }
+  sintetiza(c);
+}
+function sintetiza(c){
+  if(!window.speechSynthesis) return;
+  var txt=T(c.titulo)+'. '+T(c.ayuda);
+  /* Chrome Android corta los textos largos: se trocea por frases */
+  var frases=txt.match(/[^.!?…]+[.!?…]*\s*/g)||[txt];
+  var trozos=[], cur='';
+  frases.forEach(function(f){ if((cur+f).length>180){ if(cur)trozos.push(cur); cur=f; } else cur+=f; });
+  if(cur)trozos.push(cur);
+  trozos.forEach(function(t){
+    var u=new SpeechSynthesisUtterance(t);
+    u.lang=({es:'es-ES',ca:'ca-ES',fr:'fr-FR',en:'en-US'})[LANG]||'es-ES';
+    speechSynthesis.speak(u);
+  });
+}
+function pararVoz(){
+  if(_audio){ _audio.pause(); _audio=null; }
+  if(window.speechSynthesis) speechSynthesis.cancel();
+}
+
+/* ═══ v9 — UNA ALVEOLA, UNA TABLA (doctrina de P-H, 31/08) ═══
+   Los idiomas viven CON la alveola: titulo/sub/ayuda son objetos por
+   idioma. Nada de tabla de traducciones aparte — cada celda lleva todo
+   lo que necesita para funcionar. Si falta un idioma, se cae en el
+   idioma por defecto declarado en la tabla. */
+function T(campo){
+  if(campo===null||campo===undefined) return '';
+  if(typeof campo==='string') return campo;
+  var def=(TABLA&&TABLA.idioma_defecto)||'es';
+  return campo[LANG] || campo[def] || '';
+}
+
+/* le choix de la langue : chaque toucher passe à la suivante */
+var NOMBRE_IDIOMA={es:'Español',ca:'Valencià',fr:'Français',en:'English'};
+function cambiaIdioma(){
+  var L=(TABLA&&TABLA.idiomas)||['es','ca','fr','en'];
+  var i=L.indexOf(LANG);
+  LANG = L[(i+1) % L.length];
+  pinta();
+  if(_FOCO>=0) dibujaCopia(_FOCO);
+  var inf=document.getElementById('info');
+  if(inf) inf.textContent=' — '+(NOMBRE_IDIOMA[LANG]||LANG);
+}
+/* l'aide : où suis-je, que puis-je faire ici */
+function muestraAyuda(){
+  var A={
+   es:'<h3>❔ ¿Dónde está usted?</h3><p>Está en el <b>'+(TABLA.nombre||'panal')+'</b>. Cada alveola es una puerta: tóquela y se abre en grande, con su texto y sus botones.</p><p>En los huecos de la corona: <b>🌐</b> cambia el idioma · <b>🐝</b> la Reina le lleva al otro panal y le trae de vuelta · <b>🔊</b> lee en voz alta · <b>❔</b> es esta ayuda.</p>',
+   ca:'<h3>❔ On està vosté?</h3><p>Està en el <b>'+(TABLA.nombre||'panal')+'</b>. Cada alvèola és una porta: toque-la i s\'obri en gran, amb el seu text i els seus botons.</p><p>En els buits de la corona: <b>🌐</b> canvia l\'idioma · <b>🐝</b> la Reina el porta a l\'altre panal i el torna · <b>🔊</b> llig en veu alta · <b>❔</b> és esta ajuda.</p>',
+   fr:'<h3>❔ Où êtes-vous ?</h3><p>Vous êtes dans le <b>'+(TABLA.nombre||'panal')+'</b>. Chaque alvéole est une porte : touchez-la, elle s\'ouvre en grand, avec son texte et ses boutons.</p><p>Dans les creux de la couronne : <b>🌐</b> change la langue · <b>🐝</b> la Reine vous mène à l\'autre panal et vous ramène · <b>🔊</b> lit à voix haute · <b>❔</b> c\'est cette aide.</p>',
+   en:'<h3>❔ Where are you?</h3><p>You are in the <b>'+(TABLA.nombre||'hive')+'</b>. Each cell is a door: touch it and it opens wide, with its text and its buttons.</p><p>In the hollows of the crown: <b>🌐</b> changes the language · <b>🐝</b> the Queen takes you to the other hive and back · <b>🔊</b> reads aloud · <b>❔</b> is this help.</p>'
+  };
+  mostrar(A[LANG]||A.es);
+}
+
+/* ═══ v14 — PANTALLA COMPLETA (P-H) ═══
+   El panal ocupa todo el aparato. Segundo toque: se vuelve. */
+function pantallaCompleta(){
+  var e=document.documentElement;
+  if(document.fullscreenElement){ document.exitFullscreen(); return; }
+  (e.requestFullscreen||e.webkitRequestFullscreen||e.msRequestFullscreen||function(){}).call(e);
+}
+document.addEventListener('fullscreenchange', function(){ setTimeout(pinta, 120); });
+
+/* ═══ v15 — LA VISITE : le panal se visite lui-même (idée de P-H) ═══
+   Rien de nouveau à écrire : la visite ouvre les alvéoles une à une,
+   exactement comme si une main les touchait — même agrandissement, même
+   texte, même voix. Le geste s'enseigne en se montrant.
+   Ordre : celui de la table ("visita":[...]) ou l'ordre naturel des orden.
+   Rythme : la voix commande ; à défaut, une minuterie proportionnelle au
+   texte. Commandes : ⏮ précédent · ⏸ pause · ⏭ suivant · ✕ terminer,
+   et au bout du panal : « continuer dans l'autre ? » */
+var VIS = { activa:false, i:0, orden:[], pausa:false, t:null };
+
+function empiezaVisita(){
+  VIS.orden = (TABLA.visita && TABLA.visita.length)? TABLA.visita.slice()
+            : TABLA.celdas.map(function(c){return c.orden}).sort(function(a,b){return a-b});
+  VIS.activa=true; VIS.i=0; VIS.pausa=false;
+  pasoVisita();
+}
+function pasoVisita(){
+  if(!VIS.activa) return;
+  clearTimeout(VIS.t);
+  if(VIS.i >= VIS.orden.length){ finVisita(); return; }
+  var o = VIS.orden[VIS.i];
+  _FOCO = o; dibujaCopia(o); pintaMandosVisita();
+  if(VIS.pausa) return;
+  hablaCelda(o);
+  /* la voix commande le rythme ; sinon, minuterie selon la longueur */
+  var c=celdaDe(o), txt=T(c.ayuda)||'';
+  var ms = 2600 + txt.length*62;
+  VIS.t = setTimeout(function(){ VIS.i++; pasoVisita(); }, ms);
+}
+function visitaPaso(d){
+  if(!VIS.activa) return;
+  clearTimeout(VIS.t); pararVoz();
+  VIS.i = Math.max(0, Math.min(VIS.orden.length, VIS.i + d));
+  VIS.pausa=false; pasoVisita();
+}
+function visitaPausa(){
+  VIS.pausa = !VIS.pausa;
+  if(VIS.pausa){ clearTimeout(VIS.t); pararVoz(); }
+  else pasoVisita();
+  pintaMandosVisita();
+}
+function finVisita(){
+  var otro = (TABLA.id==='panal1')? 'panal2.json' : 'panal1.json';
+  var M={
+   es:{t:'Fin de la visita',p:'Ha visto las siete puertas de este panal.',s:'Seguir en el otro panal',x:'Terminar'},
+   ca:{t:'Fi de la visita',p:'Ha vist les set portes d\'este panal.',s:'Seguir en l\'altre panal',x:'Acabar'},
+   fr:{t:'Fin de la visite',p:'Vous avez vu les sept portes de ce panal.',s:"Continuer dans l'autre panal",x:'Terminer'},
+   en:{t:'End of the tour',p:'You have seen the seven doors of this hive.',s:'Continue in the other hive',x:'Finish'}
+  };
+  var m=M[LANG]||M.es;
+  VIS.activa=false; suelta(); pintaMandosVisita();
+  mostrar('<h3>🎓 '+m.t+'</h3><p>'+m.p+'</p>'
+    +'<p><button onclick="cerrarCarta();cargar(\''+otro+'\',true)">🐝 '+m.s+'</button> '
+    +'<button onclick="cerrarCarta()">'+m.x+'</button></p>');
+}
+function paraVisita(){
+  VIS.activa=false; clearTimeout(VIS.t); pararVoz(); suelta(); pintaMandosVisita();
+}
+/* les commandes de la visite, dans le triangle des boutons de l'alvéole ouverte */
+function pintaMandosVisita(){
+  var z=document.getElementById('vis-mandos');
+  if(!VIS.activa){ if(z)z.remove(); return; }
+  if(!z){
+    z=document.createElement('div'); z.id='vis-mandos';
+    z.style.cssText='position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:60;display:flex;gap:8px;background:var(--surface);border:1px solid #2a3348;border-radius:10px;padding:6px 10px';
+    document.body.appendChild(z);
+  }
+  z.innerHTML='<button onclick="visitaPaso(-1)">⏮</button>'
+    +'<button onclick="visitaPausa()">'+(VIS.pausa?'▶':'⏸')+'</button>'
+    +'<button onclick="visitaPaso(1)">⏭</button>'
+    +'<button onclick="paraVisita()">✕</button>'
+    +'<span style="align-self:center;font-size:12px;color:var(--muted);margin-left:4px">'+(VIS.i+1)+'/'+VIS.orden.length+'</span>';
+}
+
+/* ══ v16 — LE PANNEAU : régler à vue, copier quand ça plaît ══ */
+var PAL={'--bg':'#0e1117','--surface':'#161b27','--text':'#e8eaf0','--muted':'#7a8499','--accent':'#4a8fe8','--serif':'Georgia,serif'};
+function togglePanel(){
+  var p=document.getElementById('panel'), t=document.getElementById('tirador');
+  var on=p.classList.toggle('on'); t.classList.toggle('on', on);
+  document.body.classList.toggle('conpanel', on);
+  setTimeout(pinta, 300);
+}
+function setVar(v, val){
+  PAL[v]=val; document.documentElement.style.setProperty(v, val);
+  guardaPanel(); pinta(); if(_FOCO>=0) dibujaCopia(_FOCO);
+}
+function setGeo(k, val){
+  if(!TABLA) return;
+  TABLA.geometria[k]=val; guardaPanel(); pinta(); if(_FOCO>=0) dibujaCopia(_FOCO);
+  var e=document.getElementById('v-'+({rotacion:'rot',opacidad:'op',icono_y:'icoy'})[k]);
+  if(e) e.textContent=val;
+}
+function setZoom(val){
+  if(!TABLA) return;
+  TABLA.celdas.forEach(function(c){ c.zoom=val; });
+  guardaPanel(); if(_FOCO>=0) dibujaCopia(_FOCO);
+  document.getElementById('v-zoom').textContent=val;
+}
+function setColorCelda(orden, val){
+  var c=celdaDe(orden); if(!c) return;
+  c.color=val; guardaPanel(); pinta(); if(_FOCO>=0) dibujaCopia(_FOCO);
+}
+function pintaPanelCeldas(){
+  /* la liste des textes se repeint a part, pour ne pas voler le curseur */
+  var z=document.getElementById('p-celdas'); if(!z||!TABLA) return;
+  z.innerHTML='';
+  TABLA.celdas.slice().sort(function(a,b){return a.orden-b.orden}).forEach(function(c){
+    /* v20 (P-H) : fond ET texte, une paire de pastilles par alvéole */
+    z.innerHTML+='<label><span>'+c.icono+' '+T(c.titulo)+'</span>'
+      +'<input type="color" value="'+c.color+'" oninput="setColorCelda('+c.orden+',this.value)" title="fondo">'
+      +'<input type="color" value="'+(c.colorTexto||'#e8eaf0')+'" oninput="setColorTexto('+c.orden+',this.value)" title="texto"></label>';
+  });
+}
+function sincPanel(){
+  if(!TABLA) return;
+  Object.keys(PAL).forEach(function(v){
+    var id={'--bg':'c-bg','--surface':'c-surface','--text':'c-text','--muted':'c-muted','--accent':'c-accent','--serif':'f-serif'}[v];
+    var e=document.getElementById(id); if(e) e.value=PAL[v];
+    document.documentElement.style.setProperty(v, PAL[v]);
+  });
+  var g=TABLA.geometria;
+  [['g-rot','v-rot',g.rotacion||0],['g-op','v-op',g.opacidad||0.95],
+   ['g-icoy','v-icoy',g.icono_y||0.683],['g-zoom','v-zoom',(TABLA.celdas[0]&&TABLA.celdas[0].zoom)||2.5]
+  ].forEach(function(t){
+    var e=document.getElementById(t[0]), v=document.getElementById(t[1]);
+    if(e) e.value=t[2]; if(v) v.textContent=t[2];
+  });
+  sincZoomLimites();
+  pintaPanelCeldas();
+  pintaTextos();
+}
+function guardaPanel(){
+  try{ localStorage.setItem('panal_panel_'+(TABLA&&TABLA.id||'x'), JSON.stringify({pal:PAL, tabla:TABLA})); }catch(e){}
+}
+function recuperaPanel(){
+  try{
+    var g=JSON.parse(localStorage.getItem('panal_panel_'+(TABLA&&TABLA.id||'x'))||'null');
+    if(g && g.tabla && g.tabla.id===TABLA.id){ TABLA=g.tabla; PAL=g.pal||PAL; return true; }
+  }catch(e){}
+  return false;
+}
+function copiaJSON(){
+  var t=JSON.parse(JSON.stringify(TABLA));
+  t.paleta=PAL;   /* la palette voyage avec la table */
+  var txt=JSON.stringify(t, null, 2);
+  navigator.clipboard.writeText(txt).then(function(){
+    mostrar('<h3>📋 Copiado</h3><p>El JSON completo está en el portapapeles. Péguelo en <code>'+TABLA.id+'.json</code> y guarde.</p>');
+  }).catch(function(){
+    mostrar('<h3>El JSON</h3><textarea style="width:100%;height:220px;background:#0b0e14;color:var(--text);border:1px solid #2a3348;border-radius:8px;padding:8px;font-size:11px">'+txt.replace(/</g,'&lt;')+'</textarea>');
+  });
+}
+function resetPanel(){
+  if(!confirm('¿Volver a los valores del fichero? Se pierden los ajustes de este navegador.')) return;
+  try{ localStorage.removeItem('panal_panel_'+(TABLA&&TABLA.id||'x')); }catch(e){}
+  location.reload();
+}
+
+/* ══ v17 — LE MENU CONTEXTUEL DE L'ALVÉOLE (P-H) ══
+   Clic droit (ou appui long) sur une alvéole : on règle CETTE alvéole —
+   couleur, icône, texte, zoom, rotation — puis on passe à la suivante.
+   Les réglages vont sur l'objet lui-même, dans la table. */
+
+/* ══ v17 — GUARDAR le fichier, comme Salufolio sauvegarde le patient ══
+   Si le navigateur sait écrire dans un fichier choisi (File System Access),
+   on écrit dedans directement. Sinon on retombe sur le téléchargement —
+   exactement ce que fait Salufolio pour le .sf. */
+var _FICHERO=null;
+function guardaTabla(){
+  var t=JSON.parse(JSON.stringify(TABLA));
+  t.paleta=PAL;
+  var txt=JSON.stringify(t, null, 2);
+  if(window.showSaveFilePicker){
+    (async function(){
+      try{
+        if(!_FICHERO){
+          _FICHERO = await window.showSaveFilePicker({
+            suggestedName: TABLA.id+'.json',
+            types:[{description:'Tabla del panal', accept:{'application/json':['.json']}}]
+          });
+        }
+        var w = await _FICHERO.createWritable();
+        await w.write(txt); await w.close();
+        mostrar('<h3>💾 Guardado</h3><p>La tabla se ha escrito en el fichero.</p>');
+      }catch(e){ if(e.name!=='AbortError') descargaTabla(txt); }
+    })();
+  } else descargaTabla(txt);
+}
+function descargaTabla(txt){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:'application/json'}));
+  a.download=TABLA.id+'.json'; document.body.appendChild(a); a.click(); a.remove();
+  mostrar('<h3>⬇ Descargado</h3><p>Muévalo a la carpeta de la maqueta, o guárdelo como otro perfil.</p>');
+}
+function guardaComo(){
+  var n=prompt('Nombre del perfil (sin .json):', TABLA.id+'-perfil');
+  if(!n) return;
+  var t=JSON.parse(JSON.stringify(TABLA)); t.paleta=PAL;
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(t,null,2)],{type:'application/json'}));
+  a.download=n+'.json'; document.body.appendChild(a); a.click(); a.remove();
+}
+function abreTabla(){
+  var i=document.createElement('input'); i.type='file'; i.accept='.json';
+  i.onchange=function(){
+    var f=i.files[0]; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(){ try{
+      TABLA=JSON.parse(r.result);
+      if(TABLA.paleta) PAL=TABLA.paleta;
+      pinta(); sincPanel();
+    }catch(e){ alert('JSON ilegible'); } };
+    r.readAsText(f);
+  };
+  i.click();
+}
+
+/* v17b (P-H : « le zoom part dans les décors ») — il règle la taille de la
+   COPIE, celle qui s'ouvre au clic : sans alvéole ouverte on ne voit rien.
+   Alors on l'ouvre. Et le maximum est borné à 2,6 R (au-delà elle sort). */
+
+/* v17e (P-H : « le maximum du zoom, il s'ajuste ou ? ») — il etait en dur,
+   ce qui contredisait toute la doctrine. Les bornes viennent de la table :
+   geometria.zoom_min et geometria.zoom_max. */
+function zMin(){ return (TABLA&&TABLA.geometria&&TABLA.geometria.zoom_min)||1.6; }
+function zMax(){ return (TABLA&&TABLA.geometria&&TABLA.geometria.zoom_max)||2.6; }
+function sincZoomLimites(){
+  var g=document.getElementById('g-zoom');
+  if(g){ g.min=zMin(); g.max=zMax(); }
+}
+
+/* ══ v18 — LA VISITE PASSE AU MOTEUR GÉNÉRIQUE (visita.js) ══
+   Le panal ne contient plus aucun texte de visite : ils vivent dans
+   visita_panal1.json. Le moteur est le même pour Salufolio et le
+   Protocolo — seule change la table. L'adaptateur ci-dessous est la
+   seule pièce propre au panal : il ouvre l'alvéole enseignée. */
+function opcionesVisita(){
+  return {
+    idioma: LANG,
+    /* ══ L'ACCUEIL DU PANAL (P-H, 01/09) ══
+       Le moteur nous donne le texte ; nous l'écrivons dans l'alvéole.
+       Quelle alvéole ? Celle que la leçon enseigne, si c'en est une ;
+       sinon le centre, qui sert de scène pour les leçons des commandes. */
+    al_pintar: function(p){
+      VIS_PINTA = p;
+      var m = /^celda-(\d+)$/.exec((p.leccion&&p.leccion.objeto)||'');
+      _FOCO = m? +m[1] : 0;
+      dibujaCopia(_FOCO);
+      arrancaRollo();
+    },
+    al_entrar: function(lec, el){
+      /* la commande enseignée bat doucement, même hors de l'alvéole */
+      document.querySelectorAll('.mando').forEach(function(x){ x.style.filter=''; });
+      if(el && el.classList.contains('mando')) el.style.filter='drop-shadow(0 0 12px var(--accent))';
+    },
+    al_salir: function(){ VIS_PINTA=null; paraRollo(); suelta();
+      document.querySelectorAll('.mando').forEach(function(x){ x.style.filter=''; }); },
+    al_final: function(){ }
+  };
+}
+function repintaVisita(){
+  if(!VIS_PINTA) return;
+  VIS_PINTA.pausa = Visita.enPausa();
+  VIS_PINTA.conVoz = Visita.conVoz();
+  dibujaCopia(_FOCO);
+}
+function arrancaVisitaGuiada(){
+  var fich = 'visita_' + (TABLA.id||'panal1') + '.json';
+  Visita.arranca(fich, opcionesVisita());
+}
+
+function setColorTexto(orden, val){
+  var c=celdaDe(orden); if(!c) return;
+  c.colorTexto=val; guardaPanel(); pinta(); if(_FOCO>=0) dibujaCopia(_FOCO);
+}
+
+/* ══ v23 — LE GÉNÉRIQUE, D'APRÈS LE SCRIPT DE P-H ══
+   Sa mécanique, adoptée telle quelle : la minuterie roule le texte, elle
+   est COUPÉE au survol (pas seulement mise en veille) et relancée quand
+   on s'écarte ; et arrivé en bas, le texte REPART EN HAUT — un vrai
+   générique, qui tourne tant qu'on le regarde. */
+var ROLLO_DELAI=100, ROLLO_PASO=1;
+var _rollo=null, _EDITANDO=null;
+function rueda(caja){
+  if(caja.scrollTop >= caja.scrollHeight - caja.clientHeight) caja.scrollTop = 0;
+  else caja.scrollTop += ROLLO_PASO;
+}
+function arrancaRollo(){
+  paraRollo();
+  /* v32b (P-H) : pendant qu'on écrit, le générique ne repart pas.
+     Il s'arrêtait bien, mais la minuterie de 900 ms le relançait — le
+     texte bougeait sous les doigts. */
+  if(typeof _EDITANDO!=='undefined' && _EDITANDO!==null) return;
+  var el=document.getElementById('vis-rollo');
+  if(!el) return;
+  var caja=el.parentNode;            /* la fenêtre de l'alvéole, qui défile */
+  caja.scrollTop=0;
+  setTimeout(function(){
+    if(typeof _EDITANDO!=='undefined' && _EDITANDO!==null) return;
+    if(caja.scrollHeight <= caja.clientHeight + 4) return;   /* rien à rouler */
+    _rollo=setInterval(function(){ rueda(caja); }, ROLLO_DELAI);
+    caja.onmouseover=function(){ clearInterval(_rollo); };
+    caja.onmouseout =function(){ _rollo=setInterval(function(){ rueda(caja); }, ROLLO_DELAI); };
+  }, 900);   /* un temps de lecture avant que ça commence à rouler */
+}
+function paraRollo(){ clearInterval(_rollo); _rollo=null; }
+
+
+
+/* ══════════════════════════════════════════════════════════════════
+   v27 — hexSVG : LA FONCTION DE P-H, adoptée telle quelle.
+   Cinq couches, dans cet ordre — c'est tout l'art de l'alvéole :
+     1. ombre portée (polygone sombre décalé 1.5/2.5)
+     2. fond plein, seulement pour l'alvéole agrandie ('pop')
+     3. dégradé radial 50%/40% (.3 au cœur, .06 aux bords) + flou gaussien
+     4. reflet blanc sur la moitié haute (les 3 premiers sommets + centre)
+     5. liseré intérieur à 0,91 R, trait de .4, opacité .25 — le fini
+   ══════════════════════════════════════════════════════════════════ */
+function hexSVG(R, cx, cy, color, id, conFondo){
+  var pts=hexPuntos(cx,cy,R), g='g_'+id, gl='gl_'+id;
+  /* v29 (P-H) : trois réglages, dans la table (geometria) —
+     op_centro / op_borde : la densité du dégradé (moins transparent)
+     desenfoque : le flou gaussien des bords, en pixels */
+  var G=(TABLA&&TABLA.geometria)||{};
+  var opC=G.op_centro||0.42, opB=G.op_borde||0.14, blur=G.desenfoque||3.4;
+  var s='<defs><radialGradient id="'+g+'" cx="50%" cy="40%" r="65%">'
+   +'<stop offset="0%" stop-color="'+color+'" stop-opacity="'+opC+'"/>'
+   +'<stop offset="100%" stop-color="'+color+'" stop-opacity="'+opB+'"/></radialGradient>';
+  s+='<filter id="'+gl+'" x="-20%" y="-20%" width="140%" height="140%">'
+   +'<feGaussianBlur in="SourceGraphic" stdDeviation="'+blur+'" result="b"/>'
+   +'<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+  s+='<polygon points="'+pts+'" fill="rgba(0,0,0,.25)" transform="translate(1.5,2.5)"/>';
+  if(conFondo) s+='<polygon points="'+pts+'" fill="var(--pop-fondo,rgba(14,17,23,.92))"/>';
+  s+='<polygon points="'+pts+'" fill="url(#'+g+')" stroke="'+color+'" stroke-width="1.8" filter="url(#'+gl+')"/>';
+  /* le reflet : les trois premiers sommets et le centre */
+  var v=[], gr=rot();
+  for(var i=0;i<3;i++){ var a=i*60*Math.PI/180+gr; v.push(Math.round(cx+R*Math.cos(a))+','+Math.round(cy+R*Math.sin(a))); }
+  v.push(Math.round(cx)+','+Math.round(cy));
+  s+='<polygon points="'+v.join(' ')+'" fill="rgba(255,255,255,.03)"/>';
+  /* le liseré intérieur — la couche qui manquait */
+  s+='<polygon points="'+hexPuntos(cx,cy,R*0.91)+'" fill="none" stroke="'+color+'" stroke-width=".4" opacity=".25"/>';
+  return s;
+}
+
+/* ══ v30 (P-H) — LA LISTE DES TEXTES : une ligne par alvéole ══
+   Icône · titre · texte · lien, saisis ici même. Plus besoin de xed.
+   Chaque frappe s'inscrit dans la table et se voit aussitôt. */
+function pintaTextos(){
+  var z=document.getElementById('p-textos'); if(!z||!TABLA) return;
+  var foco=document.activeElement, id=foco&&foco.id;
+  z.innerHTML='';
+  TABLA.celdas.slice().sort(function(a,b){return a.orden-b.orden}).forEach(function(c){
+    var o=c.orden;
+    z.innerHTML+='<div class="ficha-cel">'
+      +'<div class="cab"><span class="num">'+o+'</span>'
+      +'<input type="text" class="ico" id="tx-i'+o+'" value="'+esc(c.icono||'')+'" oninput="txtCelda('+o+',\'icono\',this.value)" title="icono">'
+      +'<input type="text" id="tx-t'+o+'" value="'+esc(T(c.titulo))+'" oninput="txtCelda('+o+',\'titulo\',this.value)" placeholder="título" style="flex:1">'
+      +'</div>'
+      +'<input type="text" id="tx-s'+o+'" value="'+esc(T(c.sub))+'" oninput="txtCelda('+o+',\'sub\',this.value)" placeholder="subtítulo">'
+      +'<input type="text" id="tx-l'+o+'" value="'+esc(c.lien||'')+'" oninput="txtCelda('+o+',\'lien\',this.value)" placeholder="enlace — https://… o fichero vecino">'
+      +'<label style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px">'
+      +'<input type="checkbox" '+((c.nueva!==undefined? c.nueva : true)?'checked':'')+' onchange="txtCelda('+o+',\'nueva\',this.checked)">'
+      +'abrir en otra ventana</label>'
+      +'<label style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px">'
+      +'<input type="checkbox" '+(c.directo?'checked':'')+' onchange="txtCelda('+o+',\'directo\',this.checked)">'
+      +'acceso directo (sin presentación)</label>'
+      +'</div>';
+  });
+  /* on rend la main au champ qu'on était en train de remplir */
+  if(id){ var e=document.getElementById(id); if(e){ e.focus();
+    if(e.setSelectionRange && e.value) try{ e.setSelectionRange(e.value.length,e.value.length); }catch(x){} } }
+}
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function txtCelda(orden, campo, val){
+  var c=celdaDe(orden); if(!c) return;
+  if(campo==='nueva'){ c.nueva=!!val; guardaPanel(); return; }
+  if(campo==='directo'){ if(val) c.directo=true; else delete c.directo; guardaPanel(); if(_FOCO>=0)dibujaCopia(_FOCO); return; }
+  if(campo==='icono' || campo==='lien'){
+    if(val==='') delete c[campo]; else c[campo]=val;
+  } else {
+    if(typeof c[campo]!=='object' || c[campo]===null) c[campo]={};
+    c[campo][LANG] = (campo==='ayuda')? aHTML(val) : val;
+  }
+  guardaPanel(); pinta();
+  if(_FOCO>=0) dibujaCopia(_FOCO);
+}
+
+/* ══ v31 (P-H) — LE RETOUR À LA LIGNE ══
+   On tape Entrée dans la zone, le texte va à la ligne : les retours
+   deviennent des <br> dans la table. Et à la relecture, les <br>
+   redeviennent des retours — pour qu'on écrive comme on lit.
+   Le reste du HTML (gras, listes, liens) passe intact. */
+function aHTML(t){
+  return String(t||'').replace(/\r/g,'').replace(/\n/g,'<br>');
+}
+function aTexto(h){
+  return String(h||'').replace(/<br\s*\/?>/gi,'\n');
+}
+
+/* ══ v32 — L'ÉDITION SUR PLACE (P-H) ══
+   Clic droit dans l'écran de l'alvéole agrandie : le texte devient
+   modifiable là où il est, à sa taille, avec ses retours à la ligne.
+   Ce qu'on tape s'inscrit dans la table. Échap ferme, un clic dehors
+   aussi. Pendant l'édition, le rouleau s'arrête et la copie reste. */
+function editaEnPantalla(orden){
+  if(_EDITANDO!==null) return;
+  var el=document.getElementById('vis-rollo'); if(!el) return;
+  var c=celdaDe(orden); if(!c) return;
+  paraRollo();
+  _EDITANDO=orden;
+  el.parentNode.scrollTop=0;
+  var tam=window.getComputedStyle(el).fontSize;
+  el.outerHTML='<textarea id="vis-edit" style="width:100%;height:100%;box-sizing:border-box;'
+    +'background:rgba(0,0,0,.35);border:1px dashed var(--accent);border-radius:6px;'
+    +'color:inherit;font-family:inherit;font-size:'+tam+';line-height:1.6;padding:6px;resize:none">'
+    + aTexto(T(c.ayuda)).replace(/</g,'&lt;') + '</textarea>';
+  var ta=document.getElementById('vis-edit');
+  if(!ta) return;
+  ta.focus();
+  ta.oninput=function(){
+    if(typeof c.ayuda!=='object'||c.ayuda===null) c.ayuda={};
+    c.ayuda[LANG]=aHTML(ta.value);
+    guardaPanel();
+    if(typeof pintaTextos==='function') pintaTextos();
+  };
+  ta.onkeydown=function(e){ if(e.key==='Escape') cierraEdicion(); };
+  ta.onblur=function(){ setTimeout(cierraEdicion, 120); };
+}
+function cierraEdicion(){
+  if(_EDITANDO===null) return;
+  var o=_EDITANDO; _EDITANDO=null;
+  dibujaCopia(o);
+  setTimeout(arrancaRollo, 60);
+}
+
+/* un mot bref au centre, sans fenêtre */
+function hexAviso(msg){
+  var d=document.getElementById('hex-aviso');
+  if(!d){
+    d=document.createElement('div'); d.id='hex-aviso';
+    d.style.cssText='position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:300;'
+      +'background:var(--surface);border:1px solid var(--accent);border-radius:10px;'
+      +'padding:9px 15px;font-size:13px;color:var(--text);box-shadow:0 6px 24px rgba(0,0,0,.5)';
+    document.body.appendChild(d);
+  }
+  d.textContent=msg; d.style.display='block';
+  clearTimeout(window._avisoT);
+  window._avisoT=setTimeout(function(){ d.style.display='none'; }, 3000);
+}
+
+/* ══ v34 (P-H) — LA COPIE ENSEIGNE, LE SECOND CLIC ENTRE ══
+   Premier clic : l'alvéole s'ouvre et se raconte. Second clic dans sa
+   copie : on entre pour de bon. Si elle n'a pas de lien, il ferme —
+   jamais bloquant. Échap ferme toujours.
+   Et la case « olvídeme » : celui qui connaît le chemin coupe court —
+   son choix vit dans son navigateur, alvéole par alvéole. */
+function clicEnCopia(ev){
+  if(_EDITANDO!==null) return;
+  /* un clic sur une case, un libellé ou un champ n'est pas un « j'entre » */
+  var t = ev && (ev.target||ev.srcElement);
+  if(t && t.closest && t.closest('input,label,textarea,button,a')) return;
+  var c=celdaDe(_FOCO);
+  if(c && c.lien && !VIS_PINTA) accion('abrir', _FOCO);
+  else suelta();
+}
+/* v37 (P-H) : « olvídeme » vit dans la TABLE, pas dans le navigateur —
+   chaque exemplaire de Salufolio est chez son propriétaire, avec ses
+   propres fichiers. Le choix survit donc à un nettoyage de cache, et
+   voyage avec le panal quand on le déplace. */
+function accesoDirecto(orden){
+  var c=celdaDe(orden);
+  return !!(c && c.directo);
+}
+function marcaDirecto(orden, si){
+  var c=celdaDe(orden); if(!c) return;
+  if(si) c.directo=true; else delete c.directo;
+  guardaPanel();
+  if(typeof pintaTextos==='function') pintaTextos();
+}
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape' && _FOCO>=0 && _EDITANDO===null) suelta();
+});
+</script>
+</body>
+</html>
