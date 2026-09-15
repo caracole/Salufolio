@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Empezar · Salufolio</title>
+<style>
+:root{
+  --bg:#0f0f12; --surface:#16161b; --surface2:#1c1c22; --border:#2a2a33;
+  --text:#e8e8ef; --muted:#9a9aa8; --accent:#4a9eff; --ok:#3ecf8e; --warn:#f5a623;
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+  --mono:'SF Mono',Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#f7f6f3; --surface:#fff; --surface2:#efede8; --border:#ddd9d0;
+         --text:#1a1a16; --muted:#6b6b60; --accent:#1a6abf; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);line-height:1.75;
+     font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px}
+
+header{padding:56px 24px 40px;text-align:center;border-bottom:1px solid var(--border)}
+.abeja{font-size:44px;display:block;margin-bottom:14px}
+h1{font-family:var(--serif);font-size:32px;font-weight:600;margin:0 0 8px;letter-spacing:-.4px}
+.lema{color:var(--muted);font-size:15px;max-width:520px;margin:0 auto;line-height:1.7}
+
+main{max-width:760px;margin:0 auto;padding:44px 24px 80px}
+h2{font-family:var(--serif);font-size:22px;font-weight:600;margin:48px 0 14px;
+   padding-bottom:8px;border-bottom:1px solid var(--border)}
+h2:first-child{margin-top:0}
+h3{font-family:var(--serif);font-size:17px;font-weight:600;margin:28px 0 8px;color:var(--accent)}
+p{margin:0 0 15px}
+.sordo{color:var(--muted);font-size:14.5px}
+
+.paso{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
+.paso-n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--surface2);
+        color:var(--accent);font-family:var(--mono);font-size:13px;
+        display:flex;align-items:center;justify-content:center;margin-top:2px}
+.paso-t{flex:1}
+.paso-t b{display:block;margin-bottom:2px}
+
+pre{background:var(--surface);border:1px solid var(--border);border-radius:9px;
+    padding:13px 16px;font-family:var(--mono);font-size:13px;line-height:1.6;
+    overflow-x:auto;margin:10px 0 18px}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface2);
+     padding:1px 6px;border-radius:4px}
+pre code{background:none;padding:0;font-size:inherit}
+
+.caja{background:var(--surface);border:1px solid var(--border);
+      border-radius:11px;padding:18px 22px;margin:22px 0}
+.caja.aviso{border-left:3px solid var(--warn);border-radius:0 11px 11px 0}
+.caja.nota{border-left:3px solid var(--accent);border-radius:0 11px 11px 0}
+.caja p:last-child{margin-bottom:0}
+.caja h3{margin-top:0}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:14px 0 22px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);
+      vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12.5px;text-transform:uppercase;
+   letter-spacing:.6px}
+td:first-child{white-space:nowrap;font-weight:500}
+
+.tres{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+      gap:14px;margin:20px 0 26px}
+.modo{background:var(--surface);border:1px solid var(--border);
+      border-radius:11px;padding:17px 19px}
+.modo .ico{font-size:24px;display:block;margin-bottom:8px}
+.modo b{display:block;margin-bottom:5px;font-size:15px}
+.modo span{font-size:13.5px;color:var(--muted);line-height:1.65}
+
+.cita{font-family:var(--serif);font-size:16.5px;font-style:italic;
+      color:var(--muted);border-left:2px solid var(--border);
+      padding-left:20px;margin:24px 0}
+.cita cite{display:block;font-size:13px;font-style:normal;margin-top:8px}
+
+.bot{display:inline-block;padding:11px 22px;border-radius:9px;
+     background:var(--accent);color:#fff;text-decoration:none;font-size:15px;
+     font-weight:500;margin:6px 8px 6px 0}
+.bot.suave{background:transparent;border:1px solid var(--border);color:var(--text)}
+.bot:hover{opacity:.88}
+
+footer{border-top:1px solid var(--border);padding:32px 24px 50px;
+       text-align:center;color:var(--muted);font-size:13.5px}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="abeja">🐝</span>
+  <h1>Empezar con Salufolio</h1>
+  <p class="lema">Un cuaderno de salud que vive en su ordenador.
+     Sus datos no salen de ahí — ni a una nube, ni a un servidor, ni a nosotros.</p>
+</header>
+
+<main>
+
+<h2>Qué es</h2>
+
+<p>Salufolio reúne en un solo sitio la historia médica de una persona:
+lo que le han medido, lo que le han recetado, lo que le ha pasado. Diez
+años de informes dispersos, en una tabla que se puede leer.</p>
+
+<p>Nació de una necesidad concreta. Nadie tenía la lista completa de lo
+que tomaba mi mujer — ni el hospital, ni el médico de cabecera, ni el
+especialista. Cada uno veía su trozo.</p>
+
+<div class="cita">
+  Todo en claro, a propósito: dentro de diez años se seguirá leyendo
+  sin programa.
+  <cite>— del <code>_leeme</code> que lleva cada expediente</cite>
+</div>
+
+<h2>Lo primero que hay que entender</h2>
+
+<div class="caja aviso">
+  <h3>Un navegador no puede escribir en su disco</h3>
+  <p>Es una regla de seguridad, y está bien que exista: si no, cualquier
+  página que abriera podría leer sus documentos.</p>
+  <p>Por eso Salufolio trae <b>un pequeño servidor</b> que corre en su
+  propio ordenador. No es un servidor en internet: es un programa local
+  que le da a la página el permiso de guardar donde usted le diga.</p>
+</div>
+
+<table>
+  <tr><th>Sin el servidor</th><th>Con el servidor</th></tr>
+  <tr>
+    <td>Mirar</td>
+    <td>Mirar</td>
+  </tr>
+  <tr>
+    <td>Escribir a mano</td>
+    <td>Escribir a mano</td>
+  </tr>
+  <tr>
+    <td>Descargar el expediente<br><span class="sordo">y colocarlo usted</span></td>
+    <td>Guardar donde toca<br><span class="sordo">solo</span></td>
+  </tr>
+  <tr>
+    <td><span class="sordo">—</span></td>
+    <td>Leer documentos escaneados (OCR)</td>
+  </tr>
+  <tr>
+    <td><span class="sordo">—</span></td>
+    <td>Crear la carpeta de un paciente</td>
+  </tr>
+</table>
+
+<p class="sordo">Para descubrir, basta con mirar. Para trabajar de verdad,
+hace falta el servidor.</p>
+
+<h2>Descubrir, sin instalar nada</h2>
+
+<p>Abra <a href="../panal/" style="color:var(--accent)">el panal</a> y
+déjese llevar: es una visita guiada. Después, la casa muestra los
+diecisiete programas.</p>
+
+<p><a class="bot" href="../panal/">🐝 Ver el panal</a>
+   <a class="bot suave" href="../casa/">🏠 Ir a la casa</a></p>
+
+<p class="sordo">Las tarjetas estarán apagadas: esperan a que haya un
+expediente abierto. El glosario funciona siempre — no necesita datos.</p>
+
+<h2>Instalarlo en su ordenador</h2>
+
+<p>Hace falta Python 3, que ya viene en Linux y en Mac.</p>
+
+<div class="paso">
+  <div class="paso-n">1</div>
+  <div class="paso-t"><b>Traer el programa</b>
+  <pre><code>git clone https://github.com/caracole/Salufolio.git ~/Salufolio</code></pre>
+  <span class="sordo">O descargue el ZIP desde GitHub y descomprímalo en su carpeta personal.</span></div>
+</div>
+
+<div class="paso">
+  <div class="paso-n">2</div>
+  <div class="paso-t"><b>Arrancar el servidor</b>
+  <pre><code>cd ~/Salufolio
+python3 salufolio</code></pre>
+  <span class="sordo">Abre solo el navegador en <code>localhost:8900</code>.
+  Déjelo corriendo mientras trabaje.</span></div>
+</div>
+
+<div class="paso">
+  <div class="paso-n">3</div>
+  <div class="paso-t"><b>Crear su paciente</b>
+  <span class="sordo">En la casa, toque <b>➕ Nuevo</b>. Nombre, apellidos
+  y SIP — la matrícula se forma sola con las iniciales y las cuatro
+  últimas cifras.</span></div>
+</div>
+
+<div class="paso">
+  <div class="paso-n">4</div>
+  <div class="paso-t"><b>Llenarlo</b>
+  <span class="sordo">Por la adquisición. Tres maneras, según lo que tenga
+  a mano — ver abajo.</span></div>
+</div>
+
+<h2>Las tres maneras de llenar un expediente</h2>
+
+<div class="tres">
+  <div class="modo">
+    <span class="ico">✍️</span>
+    <b>Manual</b>
+    <span>A mano, sin documento y sin internet. Diecisiete rúbricas:
+    tensión, peso, gasometría, medicamentos, escalas… Es el modo que
+    no depende de nada.</span>
+  </div>
+  <div class="modo">
+    <span class="ico">📋</span>
+    <b>Asistida</b>
+    <span>Se saca el texto de un PDF —con OCR si está escaneado—, se
+    lleva a claude.ai de un toque, y se trae la respuesta. Sin clave y
+    sin coste.</span>
+  </div>
+  <div class="modo">
+    <span class="ico">⚙️</span>
+    <b>Automática</b>
+    <span>Con una clave de la API de Anthropic. Lee los documentos
+    uno tras otro, solo. Rápido, pero se paga.</span>
+  </div>
+</div>
+
+<div class="caja nota">
+  <h3>El programa nunca decide por usted</h3>
+  <p>Cuando un documento no dice algo claramente —una fecha que falta,
+  dos números sin etiqueta, un valor que sorprende— Salufolio lo anota
+  en <code>dudas</code> y sigue. No inventa, y no descarta.</p>
+  <p class="sordo" style="margin-top:10px">Esas dudas se guardan con el
+  expediente: dentro de diez años alguien querrá saber por qué aquel
+  número nunca se asignó.</p>
+</div>
+
+<h2>Cómo está hecho</h2>
+
+<p>Todo es HTML y JavaScript. Ni marco, ni compilación, ni dependencias
+que haya que actualizar. Se abre un fichero y funciona.</p>
+
+<h3>El programa no sabe nada; la tabla sabe todo</h3>
+
+<p>Es una doctrina de 1966, de cuando los programas se escribían con
+tablas de direccionamiento indirecto. Aquí sigue valiendo: los
+formularios, las rúbricas, los límites de cada medida, los idiomas —
+nada de eso está en el código. Vive en tablas.</p>
+
+<p>Para añadir una rúbrica nueva, se añade a la tabla. El código no
+cambia.</p>
+
+<h3>El expediente es un fichero de texto</h3>
+
+<p>Un <code>.mf</code> es JSON, legible con cualquier editor. Empieza
+por decir de quién es, sigue con su historia —qué se corrigió, qué se
+enriqueció, cuándo y por qué— y después las tablas.</p>
+
+<pre><code>{
+ "_leeme": { … qué quieren decir los códigos de dentro … },
+ "formato": "SF1",
+ "patient_name": "…",
+ "patient_label": "AGL5678",
+ "sip": "…",
+ "historial": {
+   "creacion": "2026-09-15-18:52:11",
+   "modificacion": [],      ← se había escrito falso
+   "actualizacion": []      ← se enriquece con algo nuevo
+ },
+ "mesures": [ … ]
+}</code></pre>
+
+<p class="sordo">Cada expediente lleva su propio <code>_leeme</code>: lo
+que hay que saber para entenderlo, dentro del fichero mismo. Y
+<a href="../comun/patron-comentado.txt" style="color:var(--accent)">el
+patrón comentado</a> explica cada campo, uno por uno.</p>
+
+<h2>Lo que todavía no está</h2>
+
+<p>Salufolio se escribe mientras se usa. Esto falta:</p>
+
+<table>
+  <tr><td>Expediente de demostración</td>
+      <td class="sordo">Anonimizar uno de verdad lleva su tiempo — se está haciendo</td></tr>
+  <tr><td>Instalador</td>
+      <td class="sordo">Para no tener que escribir nada en un terminal</td></tr>
+  <tr><td>Manual</td>
+      <td class="sordo">Cada programa trae su ayuda con el ❔; falta el conjunto</td></tr>
+  <tr><td>Windows</td>
+      <td class="sordo">Funciona, pero hay que instalar Python a mano</td></tr>
+</table>
+
+<h2>De dónde viene</h2>
+
+<p>De un ictus mal diagnosticado en septiembre de 2021. La confusión de
+los síntomas con otra cosa retrasó el tratamiento veintisiete horas.</p>
+
+<p>Salufolio no habría evitado aquello. Pero una historia reunida y
+legible —lo que se tomaba, lo que se había medido, lo que ya había
+pasado— es lo que faltaba esa noche. Y sigue faltando en la mayoría de
+las casas donde alguien cuida a otro.</p>
+
+<div class="cita">
+  Es la diferencia entre poder seguir un tratamiento y no poder.
+</div>
+
+</main>
+
+<footer>
+  <p><a href="https://github.com/caracole/Salufolio">GitHub</a> ·
+     <a href="https://salufolio.com">salufolio.com</a></p>
+  <p style="margin-top:14px;font-size:12.5px">
+     Software libre. Sus datos son suyos y no salen de su ordenador.</p>
+</footer>
+
+</body>
+</html>
