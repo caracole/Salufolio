@@ -32,7 +32,7 @@
       "icono": "🩺",
       "color": "#125933",
       "estado": "activo",
-      "lien": "https://salufolio.com/Salufolio.html?tour=0",
+      "lien": "casa/",
       "ayuda": {
         "es": "El expediente completo. <p>Toda la historia clínica en un solo archivo, ordenada por fecha.",
         "fr": "Le dossier complet. Toute l'histoire médicale dans un seul fichier, classée par date.",
@@ -278,7 +278,7 @@
       "icono": "🧑",
       "color": "#13442f",
       "estado": "activo",
-      "lien": "Salufolio.html?tour=0&perfil=paciente",
+      "lien": "casa/?perfil=paciente",
       "avisoOrdenador": true,
       "ayuda": {
         "es": "Su propia historia clínica, presentada con claridad — para verla y para entenderla.",
@@ -324,7 +324,7 @@
       "icono": "👨‍⚕️",
       "color": "#ffffff",
       "estado": "activo",
-      "lien": "Salufolio.html?tour=0&perfil=medico",
+      "lien": "casa/?perfil=medico",
       "avisoOrdenador": true,
       "ayuda": {
         "es": "La vista del médico: todo el expediente, curvas, correlaciones y antecedentes.",

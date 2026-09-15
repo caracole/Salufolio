@@ -39,7 +39,7 @@
       "icono": "🩺",
       "color": "#2a9d5f",
       "estado": "activo",
-      "lien": "Salufolio.html?tour=0",
+      "lien": "casa/",
       "ayuda": {
         "es": "El expediente completo, el mismo centro que en el otro panal.",
         "ca": "El expediente completo, el mismo centro que en el otro panal.",
@@ -131,7 +131,7 @@
       "icono": "⚡",
       "color": "#e8a44a",
       "estado": "activo",
-      "lien": "Salufolio.html?tour=0&express=1",
+      "lien": "casa/",
       "avisoOrdenador": true,
       "ayuda": {
         "es": "Lo esencial en una página, listo para la consulta.",
