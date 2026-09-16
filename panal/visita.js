@@ -212,7 +212,29 @@ var Visita = (function(){
     arranca: function(fichero, opciones){
       opc = opciones||{};
       lang = opc.idioma || lang;
+
+      /* ══ v3 (P-H, 16/09) : UNE TABLE TOUTE FAITE, OU UN FICHIER ══
+         « El panal se visita a sí mismo: los textos son los mismos
+           "ayuda" de la tabla — nada que escribir aparte. »
+
+         C'était écrit dans panal1.json depuis le 1er septembre. Le
+         moteur, lui, ne savait lire qu'un fichier — alors on lui
+         demandait un visita_panal1.json qui n'a jamais existé, et qui
+         aurait recopié des textes déjà là.
+
+         Maintenant on peut lui tendre la table directement. Le moteur
+         ne sait toujours rien du contenu : il reçoit des leçons, d'où
+         qu'elles viennent. */
+      if(fichero && typeof fichero === 'object'){
+        arrancaCon(fichero);
+        return;
+      }
+
       fetch(fichero).then(function(r){return r.json()}).then(function(d){
+        arrancaCon(d);
+      }).catch(function(e){ console.error('Visita: no se pudo leer '+fichero, e); });
+
+      function arrancaCon(d){
         T=d; i=0; pausa=false; viva=true;
         var m=marco(); m.querySelector('.v-btns').innerHTML=
           '<button onclick="Visita.paso(-1)">⏮</button>'
@@ -221,7 +243,7 @@ var Visita = (function(){
           +'<button onclick="Visita.paso(1)">⏭</button>'
           +'<button class="v-x" onclick="Visita.sal()">✕</button>';
         muestra();
-      }).catch(function(e){ console.error('Visita: no se pudo leer '+fichero, e); });
+      }
     },
     paso: function(d){
       if(!viva) return;
