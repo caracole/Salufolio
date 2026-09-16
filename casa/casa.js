@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = window.SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.09.06-11:59:51",
+  "version": "2026.09.16-17:23:13",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -403,6 +403,12 @@ var SF_LANZADOR = window.SF_LANZADOR = {
         "id": "tema",
         "icono": "🌓",
         "titulo": "Paleta de colores"
+      },
+      {
+        "id": "tips",
+        "icono": "💬",
+        "titulo": "Burbujas de ayuda",
+        "_que": "Las burbujas se pueden apagar (P-H, 16/09/2026).\nEl ajuste vive en mf.js, con el idioma y el tema: no es de un\nprograma, es de quien mira. Vale para toda la casa y sobrevive\nde una sesion a otra."
       },
       {
         "id": "ayuda",

@@ -270,6 +270,49 @@ function t(campo){
 /* ── les deux bandes, dessinées d'après la table ── */
 /* ══ LE LOGO : une alvéole, et « Salu » droit / « folio » italique bleu ══ */
 function logoSVG(){ return ''; }   /* hexagone retiré (P-H, 04/09) */
+/* ══════════════════════════════════════════════════════════════════════
+   LAS BURBUJAS DE AYUDA (P-H, 16/09/2026)
+
+   « Dans la V1 il y a une option : afficher les tooltips. »
+
+   No es de un programa: es de quien mira. Vive en el navegador con la
+   clave « sf_tips », la misma que MF.tip consulta en los demás — así se
+   apaga una vez y vale para toda la casa.
+   ══════════════════════════════════════════════════════════════════════ */
+function tipsPuestas(v){
+  if(v !== undefined){
+    try{ localStorage.setItem('sf_tips', v ? 'si' : 'no'); }catch(e){}
+    if(!v){ var b = document.getElementById('mf-tip'); if(b) b.style.display='none'; }
+    return !!v;
+  }
+  try{ return localStorage.getItem('sf_tips') !== 'no'; }catch(e){ return true; }
+}
+
+/* el botón de las burbujas guarda la suya, aunque estén apagadas:
+   si no, no se sabría lo que hace (P-H, 16/09) */
+function tipDelBoton(){
+  var e = document.querySelector('[data-b="tips"]');
+  if(!e) return;
+  e.onmouseenter = function(){
+    var b = document.getElementById('mf-tip');
+    if(!b){ b = document.createElement('div'); b.id='mf-tip'; document.body.appendChild(b); }
+    b.style.cssText = 'position:fixed;z-index:9999;background:var(--surface,#161b27);'
+      + 'border:1px solid var(--warn,#e8a44a);border-radius:8px;padding:5px 11px;'
+      + 'font-size:12px;color:var(--text,#e8eaf0);box-shadow:0 5px 20px rgba(0,0,0,.5);'
+      + 'pointer-events:none;white-space:pre-line;max-width:250px';
+    b.textContent = tipsPuestas()
+      ? 'Burbujas de ayuda encendidas — tóquelo para apagarlas'
+      : 'Burbujas de ayuda apagadas — tóquelo para encenderlas';
+    var r = e.getBoundingClientRect();
+    b.style.left = Math.max(6, r.left - 120) + 'px';
+    b.style.top  = (r.bottom + 7) + 'px';
+    b.style.display = 'block';
+  };
+  e.onmouseleave = function(){
+    var b = document.getElementById('mf-tip'); if(b) b.style.display='none';
+  };
+}
+
 function pintaBandas(){
   var a=document.getElementById('banda-arr');
   var bts=(T.banda_arriba&&T.banda_arriba.botones)||[];
@@ -283,8 +326,21 @@ function pintaBandas(){
     +'<span class="b-sep"></span>'
     +'<span id="banderas" style="display:none;gap:4px"></span>'
     +'<span id="paleta" style="display:none"></span>'
-    + bts.filter(function(b){ return ['idioma','tema','ayuda','inicio'].indexOf(b.id)>=0; })
+    /* ══ LA TABLE DIT QUELS BOUTONS, PAS LE CODE (P-H, 16/09/2026) ══
+       Une liste en dur — ['idioma','tema','ayuda','inicio'] — écartait
+       tout bouton nouveau : le 💬 était dans la table et ne paraissait
+       pas. C'est exactement ce que la doctrine de 1966 interdit.
+
+       Maintenant : ce qui n'est pas dessiné ailleurs paraît ici. Pour
+       ajouter un bouton, on l'ajoute à la table. */
+    + bts.filter(function(b){ return ['panal','guardar','abrir'].indexOf(b.id) < 0; })
         .map(function(b){
+          if(b.id === 'tips'){
+            /* encendido o apagado — se ve de un vistazo */
+            var enc = tipsPuestas();
+            return '<span class="b-b" data-b="tips" style="opacity:'
+                 + (enc ? '1' : '.35') + '">' + b.icono + '</span>';
+          }
           return '<span class="b-b" data-b="'+b.id+'">'+b.icono+'</span>';
         }).join('');
   a.querySelectorAll('[data-b]').forEach(function(e){
@@ -309,6 +365,7 @@ function pintaBandas(){
   z.querySelectorAll('[data-doc]').forEach(function(e){
     e.onclick=function(ev){ ev.preventDefault(); abreDoc(+e.dataset.doc); };
   });
+  tipDelBoton();
 }
 
 /* ── un document dans l'écran ── */
@@ -666,6 +723,29 @@ function manda(id){
   if(id==='panal')   return (window.opener&&!window.opener.closed)? window.close() : (window.location.href='../index.html');
   if(id==='tema'){ togglePaleta(); return; }
   if(id==='idioma'){ toggleBanderas(); return; }
+  if(id==='tips'){
+    /* ══ casa no carga mf.js — lee la misma clave, sin él (P-H, 16/09) ══
+       Noventa kilos de comunes para un ajuste de tres líneas. La clave
+       es la misma —sf_tips— así MF.tip la respeta en los demás. */
+    /* ══════════════════════════════════════════════════════════════════
+       LAS BURBUJAS SE APAGAN Y SE ENCIENDEN (P-H, 16/09/2026)
+
+       « Dans la V1 il y a une option : afficher les tooltips. Où va-t-on
+         mettre cette option qui m'a échappé de la tête ? »
+
+       El ajuste vive en mf.js, con el idioma y el tema — no es de un
+       programa, es de quien mira. Vale para toda la casa, y sobrevive
+       de una sesión a otra.
+
+       Quien descubre las quiere; quien conoce la casa, no.
+       ══════════════════════════════════════════════════════════════════ */
+    var on = !tipsPuestas();
+    tipsPuestas(on);
+    ponEstado(on ? '💬 burbujas de ayuda encendidas'
+                 : '💬 burbujas de ayuda apagadas');
+    pintaBandas();
+    return;
+  }
   if(id==='ayuda'){ abreAyuda(); return; }
 }
 
