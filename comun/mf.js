@@ -806,6 +806,32 @@ var MF = (function(){
   }
 
   /* l'infobulle maison — si le programme n'a pas celle de Salufolio */
+
+  /* ══════════════════════════════════════════════════════════════════════
+     LAS BURBUJAS SE PUEDEN APAGAR (P-H, 16/09/2026)
+
+     « Dans la V1 il y a une option : afficher les tooltips (case à
+       cocher). Où va-t-on mettre cette option ? »
+
+     Aquí, con los demás ajustes del usuario — idioma, tema, paleta.
+     No es de un programa: es de quien mira. Vale para la casa, para las
+     curvas, para el panal, y sobrevive de una sesión a otra.
+
+     Quien descubre las quiere; quien conoce la casa, no. Y hay días en
+     que estorban.
+     ══════════════════════════════════════════════════════════════════════ */
+  var TIPS_CLAVE = 'sf_tips';
+
+  function tips(v){
+    if(v !== undefined){
+      try{ localStorage.setItem(TIPS_CLAVE, v ? 'si' : 'no'); }catch(e){}
+      /* la que estuviera abierta se va */
+      if(!v){ var b = document.getElementById('mf-tip'); if(b) b.style.display='none'; }
+      return !!v;
+    }
+    try{ return localStorage.getItem(TIPS_CLAVE) !== 'no'; }catch(e){ return true; }
+  }
+
   function tip(el, texto){
     if(!el || !texto) return;
     /* ══ v2 (P-H, 16/09) : LE CURSEUR NE CHANGE PLUS ══
@@ -814,6 +840,7 @@ var MF = (function(){
        bouton qu'on touche. La bulle paraît au survol de toute façon. */
     if(!el.style.cursor) el.style.cursor = '';
     el.onmouseenter=function(){
+      if(!tips()) return;              /* apagadas por el usuario */
       var b=document.getElementById('mf-tip');
       if(!b){ b=document.createElement('div'); b.id='mf-tip'; document.body.appendChild(b); }
       b.style.cssText='position:fixed;z-index:9999;background:var(--surface,#161b27);'
@@ -1808,7 +1835,7 @@ var MF = (function(){
            glosario:glosario, glosarioTodo:glosarioTodo, explica:explica, abreGlosario:abreGlosario,
            muestraGlosario:muestraGlosario, curvaEnGrande:curvaEnGrande,
            rubricas:rubricas, idiomas:idiomas, dice:dice, cierra:cierra,
-           ponVersion:ponVersion, tip:tip, popupTexto:popupTexto, config:config, cargaConfig:cargaConfig,
+           ponVersion:ponVersion, tip:tip, tips:tips, popupTexto:popupTexto, config:config, cargaConfig:cargaConfig,
            guarda:guarda, lista:lista, hayServidor:hayServidor, aviso:aviso,
            ventana:ventana,
            registro:registro, declara:declara, retira:retira, avisoDe:avisoDe,
