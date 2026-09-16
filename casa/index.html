@@ -101,6 +101,24 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
           border:1px solid var(--border);border-radius:7px;font-size:12.5px;
           display:flex;align-items:center;gap:9px}
 .ver-item.on{border-color:var(--ok)}
+
+/* ══ la burbuja que cubre la tarjeta (P-H, 16/09) ══
+   No es una etiqueta: es el reverso de la tarjeta. Se da la vuelta al
+   pasar por encima, y dice de verdad lo que el programa hace. */
+.tar{position:relative;overflow:hidden}
+.tar-det{position:absolute;inset:0;background:var(--surface2,#1c1c22);
+         border-radius:inherit;padding:13px 15px;display:flex;
+         flex-direction:column;gap:7px;opacity:0;pointer-events:none;
+         transition:opacity .16s ease;z-index:5;text-align:left}
+.tar:hover .tar-det{opacity:1}
+.tar.apagado:hover .tar-det{opacity:1}     /* apagada también — sobre todo */
+.tar-det-t{font-family:var(--serif,Georgia,serif);font-size:13px;font-weight:600;
+           color:var(--accent);flex:0 0 auto}
+.tar-det-c{font-size:11.5px;line-height:1.55;color:var(--text);flex:1;
+           overflow:hidden}
+.tar-det-a{font-size:10.5px;color:var(--warn);flex:0 0 auto;
+           border-top:1px solid var(--border);padding-top:6px}
+body.sin-burbujas .tar-det{display:none}
 </style>
 </head>
 <body>
@@ -282,6 +300,8 @@ function logoSVG(){ return ''; }   /* hexagone retiré (P-H, 04/09) */
 function tipsPuestas(v){
   if(v !== undefined){
     try{ localStorage.setItem('sf_tips', v ? 'si' : 'no'); }catch(e){}
+    /* les revers de carte suivent le même réglage */
+    document.body.classList.toggle('sin-burbujas', !v);
     if(!v){ var b = document.getElementById('mf-tip'); if(b) b.style.display='none'; }
     return !!v;
   }
@@ -366,6 +386,7 @@ function pintaBandas(){
     e.onclick=function(ev){ ev.preventDefault(); abreDoc(+e.dataset.doc); };
   });
   tipDelBoton();
+  document.body.classList.toggle('sin-burbujas', !tipsPuestas());
 }
 
 /* ── un document dans l'écran ── */
@@ -400,6 +421,17 @@ function ponPerfil(p){
   try{ localStorage.setItem('sf_perfil', p||''); }catch(e){}
 }
 
+/* le petit texte de la carte grisée, dans la langue du moment */
+function t2(k){
+  var D = {
+    falta_exp:{ es:'Necesita un expediente abierto',
+                fr:'Il faut un dossier ouvert',
+                ca:'Necessita un expedient obert',
+                en:'Needs an open record' }
+  };
+  return (D[k] && (D[k][LANG] || D[k].es)) || k;
+}
+
 function pintaModulos(){
   var z=document.getElementById('familias'); z.innerHTML='';
   (T.familias||[]).forEach(function(f){
@@ -414,10 +446,28 @@ function pintaModulos(){
       + ms.map(function(m){
           /* v2 (P-H, 11/09) : un programme qui dit « sin_expediente » n'a
              pas besoin de patient — le glosario n'est qu'une information. */
-          return '<div class="tar'+((DATOS||m.sin_expediente)?'':' apagado')+'" onclick="carga(\''+m.id+'\')">'
+          /* ══ LA BURBUJA CUBRE LA TARJETA (P-H, 16/09/2026) ══
+             « Il faudrait aussi des tooltips gros comme les pavés quand
+               on passe au-dessus d'un pavé, même s'il est grisé. »
+
+             Sobre todo si está apagada: es ahí que uno se pregunta para
+             qué sirve. El detalle vive en el <prog>.js del programa, con
+             su nombre y su descripción — una sola tabla que conocer. */
+          var apagada = !(DATOS || m.sin_expediente);
+          var det = m.detalle ? t(m.detalle) : '';
+          return '<div class="tar'+(apagada?' apagado':'')+'" onclick="carga(\''+m.id+'\')"'
+            + (det ? ' data-det="'+det.replace(/"/g,'&quot;')+'"' : '')
+            + (apagada ? ' data-apagada="1"' : '') + '>'
             +'<span class="ic">'+m.icono+'</span>'
             +'<span class="nm">'+t(m.nombre)+'</span>'
-            +'<div class="ds">'+t(m.descripcion)+'</div></div>';
+            +'<div class="ds">'+t(m.descripcion)+'</div>'
+            + (det
+               ? '<div class="tar-det"><div class="tar-det-t">'+m.icono+' '+t(m.nombre)+'</div>'
+                 + '<div class="tar-det-c">'+det+'</div>'
+                 + (apagada ? '<div class="tar-det-a">⚠ '+t2('falta_exp')+'</div>' : '')
+                 + '</div>'
+               : '')
+            + '</div>';
         }).join('')
       + '</div>';
   });
