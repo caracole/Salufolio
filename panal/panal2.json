@@ -131,7 +131,7 @@
       "icono": "⚡",
       "color": "#e8a44a",
       "estado": "activo",
-      "lien": "../casa/",
+      "lien": "../casa/&express=1",
       "avisoOrdenador": true,
       "ayuda": {
         "es": "Lo esencial en una página, listo para la consulta.",
