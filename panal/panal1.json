@@ -81,7 +81,7 @@
       "lien": "#visita",
       "ayuda": {
         "es": "Un recorrido completo por las siete puertas de este panal, con voz y a su ritmo.",
-        "fr": "Un parcours des sept portes de ce panal, avec la voix et à votre rythme.",
+        "fr": "Un parcours des sept portes de ce panal,<br>avec la voix et à votre rythme.",
         "ca": "Un recorregut per les set portes d'este panal, amb veu i al seu ritme.",
         "en": "A walk through the seven doors of this hive, with voice, at your own pace."
       },
@@ -101,10 +101,6 @@
         }
       ],
       "sinTitulo": false,
-      "tamIcono": 1.3,
-      "tamPanal": 1.45,
-      "tamTitulo": 1.55,
-      "tamSub": 1.35,
       "colorTexto": "#ffffff"
     },
     {
@@ -170,7 +166,7 @@
       "icono": "🤔",
       "color": "#caa068",
       "estado": "activo",
-      "lien": "../docs/empezar.html",
+      "lien": "#sabermas",
       "sinTitulo": false,
       "ayuda": {
         "es": "<center>Qué es <big><b> S</b>alu<i>folio </i>?<br><br><br>Qué significan sus cifras, <p>y por qué es libre y gratuito .?</center>",
