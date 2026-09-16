@@ -641,9 +641,12 @@ function dibujaCopia(orden){
    tout autre nom = une action que le moteur ne connaît pas encore. */
 function accion(a, orden){
   var c=celdaDe(orden);
-  /* ══ en édition, on règle — on ne voyage pas (P-H, 16/09) ══ */
+  /* ══ en édition, on règle — on ne voyage pas (P-H, 16/09) ══
+     Sans message : le clic referme (voir clicEnCopia), et un avis à
+     chaque geste finit par écraser l'écran. Le bouton ▶ d'une alvéole,
+     lui, le mérite : on l'a touché exprès. */
   if(a === 'abrir' && enEdicion()){
-    hexAviso('Modo edición: el enlace no se sigue. Repliegue el panel ⚙ para entrar.');
+    hexAviso('Modo edición — repliegue el panel ⚙ para entrar.');
     return;
   }
   if(a==='visita'){ arrancaVisitaGuiada(); return; }
@@ -905,6 +908,10 @@ function togglePanel(){
   document.body.classList.toggle('editando', on);
   var m = document.getElementById('p-modo');
   if(m) m.textContent = on ? '✏️ edición' : '';
+  /* v2 (P-H, 16/09) : changer de mode remet le panal à plat — sinon on
+     sort de l'édition avec une alvéole ouverte, et le clic suivant
+     emmène ailleurs sans qu'on l'ait voulu. */
+  suelta();
   setTimeout(pinta, 300);
 }
 function setVar(v, val){
@@ -1474,6 +1481,17 @@ function clicEnCopia(ev){
   /* un clic sur une case, un libellé ou un champ n'est pas un « j'entre » */
   var t = ev && (ev.target||ev.srcElement);
   if(t && t.closest && t.closest('input,label,textarea,button,a')) return;
+
+  /* ══ v2 (P-H, 16/09) : EN ÉDITION, LE CLIC REFERME ══
+     « Panneau fermé, je ne peux pas fermer l'alvéole agrandie, et si je
+       clique ailleurs je vais je ne sais où. »
+
+     Ma garde d'avant montrait un message et ne faisait RIEN : l'alvéole
+     restait ouverte, sans moyen d'en sortir. Un avertissement n'est pas
+     une porte. Ici le clic referme — c'est le geste qu'on attend quand
+     on ne veut pas voyager. */
+  if(enEdicion()){ suelta(); return; }
+
   var c=celdaDe(_FOCO);
   if(c && c.lien && !VIS_PINTA) accion('abrir', _FOCO);
   else suelta();
