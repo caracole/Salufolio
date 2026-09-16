@@ -23,6 +23,14 @@ main{padding:16px 20px 40px;max-width:900px;margin:0 auto}
 .fam-tit{font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:2px;
          color:var(--accent);margin-bottom:7px;text-transform:uppercase}
 .rubs{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px}
+.fam-nom{font-weight:600;letter-spacing:.8px;font-size:12.5px}
+.fam-ej{flex:1;font-size:11.5px;color:var(--muted);opacity:.8;
+        overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+        margin-left:10px;font-weight:400;letter-spacing:0}
+.sf-regla{font-size:10.5px;color:var(--muted);opacity:.7;margin-top:2px;
+          line-height:1.45}
+.sf-expl{font-size:12px;color:var(--muted);line-height:1.7;
+         margin:2px 0 10px;padding-left:2px}
 .rubs button{padding:9px 14px;border-radius:9px;border:1px solid var(--border);
              background:var(--surface);color:var(--text);cursor:pointer;
              font-size:13px;font-family:inherit;transition:all .18s}
@@ -53,7 +61,23 @@ main{padding:16px 20px 40px;max-width:900px;margin:0 auto}
 .sf-paso{font-family:var(--mono,monospace);font-size:10.5px;color:var(--accent);
          letter-spacing:2px;margin-bottom:12px}
 .sf-sino{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:13.5px}
+.sf-donde{background:var(--bg);border:1px solid var(--border);border-radius:8px;
+          padding:11px 14px;margin-top:12px}
+.sf-donde-t{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;
+            color:var(--muted);margin-bottom:5px}
+.sf-donde code{font-family:var(--mono,monospace);font-size:12.5px;color:var(--warn)}
+.sf-donde-n{font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:8px}
 .sf-momentos{display:flex;gap:10px;flex-wrap:wrap}
+/* ══ LE CURSEUR RESTE LE DOIGT (P-H, 16/09) ══
+   MF.tip pose « cursor:help » — la flèche au point d'interrogation.
+   Sur un bouton qu'on touche, elle dit le contraire de ce qu'on fait.
+   L'infobulle paraît de toute façon au survol. */
+[data-tiptext]{cursor:pointer !important}
+button[data-tiptext],.rubs button,.btn,summary{cursor:pointer !important}
+.sf-campo-caja[data-tiptext]{cursor:auto !important}
+.sf-campo-caja[data-tiptext] input,.sf-campo-caja[data-tiptext] select,
+.sf-campo-caja[data-tiptext] textarea{cursor:auto !important}
+
 .sf-mom{display:inline-flex;align-items:center;gap:4px;cursor:pointer;
         padding:4px 9px;border:1px solid var(--border);border-radius:7px;
         font-size:16px;user-select:none;transition:all .18s}
@@ -107,7 +131,7 @@ main{padding:16px 20px 40px;max-width:900px;margin:0 auto}
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ADQUISICIÓN MANUAL — Salufolio
-   Versión 2026.09.14-18:18:31
+   Versión 2026.09.16-15:19:48
 
    « Ce système est universel, on peut saisir n'importe quoi. Il suffit
      d'une table bien renseignée. »                  — P-H, 14/09/2026
@@ -233,6 +257,42 @@ function pintaDiario(){
    ══════════════════════════════════════════════════════════════════════ */
 var TABLA_CARGADA = null;
 
+
+/* ══ LES INFOBULLES DU MENU (Mattieu, 16/09) ══
+   Chaque famille dit ce qu'on y trouve ; chaque rubrique, ce qu'elle
+   sert à noter. Les textes viennent de la table, pas d'ici. */
+var FAM_TIP = {
+  medir:  { es:'Lo que se ha medido: tensión, peso, saturación, análisis, gasometría…',
+            fr:'Ce qu\'on a mesuré : tension, poids, saturation, analyses, gaz du sang…',
+            ca:'El que s\'ha mesurat: tensió, pes, saturació, anàlisis…',
+            en:'What was measured: blood pressure, weight, saturation, labs…' },
+  tratar: { es:'Lo que se toma o se sigue: medicamentos, dieta, material.',
+            fr:'Ce qu\'on prend ou qu\'on suit : médicaments, régime, matériel.',
+            ca:'El que es pren o se segueix: medicaments, dieta, material.',
+            en:'What is taken or followed: medication, diet, equipment.' },
+  contar: { es:'Lo que ha pasado: una consulta, una caída — y lo que se arrastra de antes.',
+            fr:'Ce qui est arrivé : une consultation, une chute — et ce qu\'on traîne d\'avant.',
+            ca:'El que ha passat, i el que s\'arrossega d\'abans.',
+            en:'What happened: a visit, a fall — and what came before.' },
+  seguir: { es:'Lo que se sigue en el tiempo: escalas, citas, vacunas, cultivos.',
+            fr:'Ce qu\'on suit dans le temps : échelles, rendez-vous, vaccins, cultures.',
+            ca:'El que se segueix en el temps: escales, cites, vacunes.',
+            en:'What is followed over time: scales, appointments, vaccines.' }
+};
+
+function ponTipsMenu(T, fam){
+  if(typeof MF === 'undefined' || !MF.tip) return;
+  var lg = (MF.idioma && MF.idioma()) || 'es';
+  fam.forEach(function(f){
+    var e = document.getElementById('sum-' + f.id);
+    var d = FAM_TIP[f.id];
+    if(e && d) MF.tip(e, d[lg] || d.es);
+  });
+  document.querySelectorAll('.rubs button[data-tiptext]').forEach(function(b){
+    MF.tip(b, b.getAttribute("data-tiptext"));
+  });
+}
+
 function pintaMenu(){
   SF_FORM.carga(TABLA, function(T){
     if(!T){ document.getElementById('menu').innerHTML =
@@ -242,20 +302,36 @@ function pintaMenu(){
     var fam = T.familias || [{ id:'todo', titulo:'', rubricas:Object.keys(T.rubricas) }];
     /* ══ une famille, un volet — un seul ouvert (P-H, 14/09) ══
        Six volets valent mieux qu'un mur de dix-sept boutons. */
+    /* ══ LES TITRES DISENT CE QU'ON VA FAIRE (Mattieu, 16/09/2026) ══
+       « Medir, Tratamiento, Contar, Seguir devraient être plus
+         explicites — les mettre en majuscules et à côté, comme il y a
+         de la place, un petit texte et une infobulle qui explique bien. »
+
+       Un mot seul ne dit rien à qui découvre. « MEDIR · tensión, peso,
+       análisis… » se comprend sans ouvrir. */
     var COLOR = { medir:'var(--accent)', tratar:'var(--ok,#3ecf8e)',
                   contar:'var(--warn)', seguir:'#d97bff' };
     document.getElementById('menu').innerHTML = fam.map(function(f){
       var rs = f.rubricas.filter(function(r){ return T.rubricas[r]; });
+      /* le petit texte : les rubriques elles-mêmes, sans leur icône */
+      var ejemplos = rs.slice(0,3).map(function(r){
+        return String(T.rubricas[r].titulo||r).replace(/^[^\w\sáéíóúñÁÉÍÓÚÑ]+\s*/,'').toLowerCase();
+      }).join(' · ') + (rs.length > 3 ? '…' : '');
       return '<details class="sf-plegable" id="d-' + f.id + '">'
-        + '<summary style="color:' + (COLOR[f.id]||'var(--accent)') + '">'
-        + '<span>' + (f.titulo||'') + '</span>'
+        + '<summary style="color:' + (COLOR[f.id]||'var(--accent)') + '" '
+        + 'id="sum-' + f.id + '">'
+        + '<span class="fam-nom">' + (f.titulo||'').toUpperCase() + '</span>'
+        + '<span class="fam-ej">' + ejemplos + '</span>'
         + '<span class="cuenta">' + rs.length + '</span></summary>'
         + '<div class="rubs">' + rs.map(function(r){
-              return '<button onclick="pide(\'' + r + '\')">'
-                   + (T.rubricas[r].titulo || r) + '</button>'; }).join('')
+              var R = T.rubricas[r];
+              return '<button onclick="pide(\'' + r + '\')" data-tiptext="'
+                   + String((R.ayuda||'') || (R.titulo||r)).replace(/"/g,'&quot;') + '">'
+                   + (R.titulo || r) + '</button>'; }).join('')
         + '</div></details>';
     }).join('');
     unSoloAbierto();
+    ponTipsMenu(T, fam);
   });
 }
 
@@ -442,7 +518,7 @@ function linea(rubrica, R, destino, x, i){
     + (cuando || '—') + (x.hora && destino==='mesures' ? ' '+x.hora : '') + '</span>'
     + '<span style="flex:1">' + que + '</span>'
     + (x.escrito ? '<span style="flex:0 0 auto;color:var(--muted);font-size:10px;'
-        + 'font-family:var(--mono)" title="escrito el ' + x.escrito.replace('_',' ') + '">✍️</span>' : '')
+        + 'font-family:var(--mono)" data-tiptext="escrito el ' + x.escrito.replace('_',' ') + '">✍️</span>' : '')
     + '<span class="x" onclick="quita(\'' + destino + '\',' + i + ',event)">✕</span></div>';
 }
 
@@ -507,8 +583,17 @@ function guardaExpediente(){
 }
 function confirmaSobreEscribir(){
   var p = MF.paciente()||{};
+  var mat = p.matricula || '?';
   var cuerpo = '<div class="sf-sordo">' + t('conf_texto', {quien:'<b>'
-    + (p.etiqueta||p.matricula||'?') + '</b>'}) + '</div>';
+    + (p.etiqueta||mat) + '</b>'}) + '</div>'
+    /* ══ OÙ LE FICHIER VA ATTERRIR (Mattieu, 16/09) ══
+       « Dans la popup, bien expliquer qu'il faut s'assurer que le dossier
+         (matricule) est bien créé dans salufolio/pacientes. » */
+    + '<div class="sf-donde">'
+    + '<div class="sf-donde-t">' + t('donde_va') + '</div>'
+    + '<code>pacientes/' + mat + '/</code>'
+    + '<div class="sf-donde-n">' + t('donde_nota') + '</div>'
+    + '</div>';
   var pie = '<button class="sf-ventana-btn sf-suave" id="_g-no">' + t('no_guardar') + '</button>'
           + '<button class="sf-ventana-btn" id="_g-si">' + t('si_guardar') + '</button>';
   var v = MF.ventana('💾 ' + t('guardar'), cuerpo, { ancho:'460px', alPie:pie });
@@ -518,7 +603,7 @@ function confirmaSobreEscribir(){
 function pideIdentidad(){
   var cuerpo = '<div class="sf-sordo">' + t('id_texto') + '</div>'
     + '<label class="sf-etiqueta">' + t('id_nombre') + '</label>'
-    + '<input type="text" id="_i-nom" class="sf-campo" placeholder="Ana García López">'
+    + '<input type="text" id="_i-nom" class="sf-campo" placeholder="Joaquina Munarriz Eraso">'
     + '<div style="display:flex;gap:10px;margin-top:10px">'
     +   '<div style="flex:1"><label class="sf-etiqueta">SIP</label>'
     +     '<input type="text" id="_i-sip" class="sf-campo" maxlength="10"></div>'
@@ -584,7 +669,25 @@ function refresca(){
 
 function pintaTextos(){
   document.getElementById('intro').innerHTML = t('intro');
+  /* les deux cadres disent aussi ce qu'ils sont (Mattieu, 16/09) */
+  var pon = function(id, k){
+    var d = document.getElementById(id);
+    if(!d) return;
+    var y = d.querySelector('.sf-expl');
+    if(!y){
+      y = document.createElement('div');
+      y.className = 'sf-expl';
+      var c = d.querySelector('summary');
+      if(c && c.nextSibling) d.insertBefore(y, c.nextSibling);
+      else d.appendChild(y);
+    }
+    y.textContent = t(k);
+  };
+  pon('d-visto',  'expl_visto');
+  pon('d-diario', 'expl_diario');
   document.getElementById('b-guardar').textContent = '💾 ' + t('guardar');
+  if(typeof MF!=='undefined' && MF.tip)
+    MF.tip(document.getElementById('b-guardar'), t('tip_guardar'));
   if(typeof MF!=='undefined' && MF.aplicaIdioma) MF.aplicaIdioma();
 }
 

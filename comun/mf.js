@@ -60,8 +60,8 @@ var MF = (function(){
      v2 (P-H, 11/09) : « rien n'empêche la sélection manuelle comme elle
      est programmée » — mais le nom du fichier porte déjà la matricule,
      donc on accepte les deux :
-         carga('AGL5678', '../pacientes/AGL5678/')          la matricule
-         carga('AGL5678_2026-09-02_….mf')                   le fichier
+         carga('JME8986', '../pacientes/JME8986/')          la matricule
+         carga('JME8986_2026-09-02_….mf')                   le fichier
      Dans le second cas le dossier se déduit, et les deux ne peuvent
      plus se contredire. */
   function carga(mat, carpeta){
@@ -808,7 +808,11 @@ var MF = (function(){
   /* l'infobulle maison — si le programme n'a pas celle de Salufolio */
   function tip(el, texto){
     if(!el || !texto) return;
-    el.style.cursor='help';
+    /* ══ v2 (P-H, 16/09) : LE CURSEUR NE CHANGE PLUS ══
+       « Enlève ce curseur flèche avec ! — laisse le curseur normal. »
+       « cursor:help » posé en style direct s'imposait à tout, même à un
+       bouton qu'on touche. La bulle paraît au survol de toute façon. */
+    if(!el.style.cursor) el.style.cursor = '';
     el.onmouseenter=function(){
       var b=document.getElementById('mf-tip');
       if(!b){ b=document.createElement('div'); b.id='mf-tip'; document.body.appendChild(b); }
@@ -1632,7 +1636,7 @@ var MF = (function(){
   }
 
   /* ── le démarrage type d'un module ── */
-  /* ══ la forme courte : ?paciente=AGL5678_….mf  (P-H, 11/09) ══
+  /* ══ la forme courte : ?paciente=JME8986_….mf  (P-H, 11/09) ══
      Le nom du fichier porte la matricule, donc le dossier s'en déduit.
      Un seul paramètre au lieu de deux, et ils ne peuvent plus se
      contredire. L'ancienne forme ?mf=…&carpeta=… marche toujours, et
@@ -1649,7 +1653,7 @@ var MF = (function(){
 
   function arranca(opciones){
     var p=params();
-    /* la forme courte : ?paciente=AGL5678_….mf — le dossier se déduit */
+    /* la forme courte : ?paciente=JME8986_….mf — le dossier se déduit */
     if(!p.mf && p.paciente){
       p.mf = p.paciente;
       var _m = /^([A-Za-z]{2,4}\d{3,6})_/.exec(p.paciente);

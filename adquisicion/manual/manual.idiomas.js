@@ -5,7 +5,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
   "es": {
    "tit_visto": "✍️ Lo escrito a mano",
    "tit_diario": "📓 El diario",
-   "intro": "Escoja qué quiere escribir. El formulario se dibuja solo, con sus límites y sus unidades — todo viene de la tabla.",
+   "intro": "Escoja qué quiere escribir. El formulario se dibuja solo, con sus límites y sus unidades.",
    "guardar": "Guardar el expediente",
    "guardado": "Guardado",
    "guardado_linea": "✓ Añadido",
@@ -30,12 +30,17 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "id_mat": "Matrícula",
    "id_falta": "Hacen falta el nombre y el SIP.",
    "id_existe": "Ya existe un expediente con la matrícula {mat}. Se guardará ahí, junto a lo que ya hay.",
-   "crear_guardar": "Crear y guardar"
+   "crear_guardar": "Crear y guardar",
+   "tip_guardar": "Escribe todo lo anotado en el expediente del paciente, en un fichero nuevo. Lo de antes no se toca.",
+   "donde_va": "Dónde va a parar",
+   "donde_nota": "Con el servidor arrancado, la carpeta se crea sola si no existe. Sin servidor, el navegador descargará el fichero y tendrá que colocarlo usted en esa carpeta.",
+   "expl_visto": "Todo lo que ha escrito a mano en esta sesión y en las anteriores. Toque una línea para corregirla, la ✕ para quitarla.",
+   "expl_diario": "Una línea por sesión de trabajo: cuándo, y cuántas cosas se añadieron. No es un dato médico — es el cuaderno del trabajo."
   },
   "fr": {
    "tit_visto": "✍️ Ce qui est écrit à la main",
    "tit_diario": "📓 Le journal",
-   "intro": "Choisissez ce que vous voulez écrire. Le formulaire se dessine tout seul, avec ses bornes et ses unités — tout vient de la table.",
+   "intro": "Choisissez ce que vous voulez écrire. Le formulaire se dessine tout seul, avec ses bornes et ses unités.",
    "guardar": "Garder le dossier",
    "guardado": "Gardé",
    "guardado_linea": "✓ Ajouté",
@@ -60,12 +65,17 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "id_mat": "Matricule",
    "id_falta": "Il faut le nom et le SIP.",
    "id_existe": "Un dossier existe déjà avec la matricule {mat}. On y gardera, à côté de ce qui s'y trouve.",
-   "crear_guardar": "Créer et garder"
+   "crear_guardar": "Créer et garder",
+   "tip_guardar": "Écrit tout ce qui a été noté dans le dossier du patient, en un fichier neuf. Ce qu'il y avait avant n'est pas touché.",
+   "donde_va": "Où le fichier va atterrir",
+   "donde_nota": "Avec le serveur lancé, le dossier se crée tout seul s'il n'existe pas. Sans serveur, le navigateur téléchargera le fichier et il faudra le poser vous-même dans ce dossier.",
+   "expl_visto": "Tout ce que vous avez écrit à la main, dans cette séance et les précédentes. Touchez une ligne pour la corriger, la ✕ pour la retirer.",
+   "expl_diario": "Une ligne par séance de travail : quand, et combien de choses ont été ajoutées. Ce n'est pas une donnée médicale — c'est le cahier du travail."
   },
   "ca": {
    "tit_visto": "✍️ El que s'ha escrit a mà",
    "tit_diario": "📓 El diari",
-   "intro": "Triï què vol escriure. El formulari es dibuixa sol.",
+   "intro": "Triï què vol escriure. El formulari es dibuixa sol, amb els seus límits i les seves unitats.",
    "guardar": "Guardar l'expedient",
    "guardado": "Guardat",
    "guardado_linea": "✓ Afegit",
@@ -90,12 +100,17 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "id_mat": "Matrícula",
    "id_falta": "Calen el nom i el SIP.",
    "id_existe": "Ja existeix la matrícula {mat}.",
-   "crear_guardar": "Crear i guardar"
+   "crear_guardar": "Crear i guardar",
+   "tip_guardar": "Escriu tot el que s'ha anotat a l'expedient, en un fitxer nou.",
+   "donde_va": "On anirà a parar",
+   "donde_nota": "Amb el servidor arrencat, la carpeta es crea sola. Sense servidor, haurà de col·locar el fitxer vostè.",
+   "expl_visto": "Tot el que ha escrit a mà. Toqui una línia per corregir-la, la ✕ per treure-la.",
+   "expl_diario": "Una línia per sessió: quan, i quantes coses s'han afegit."
   },
   "en": {
    "tit_visto": "✍️ Written by hand",
    "tit_diario": "📓 The log",
-   "intro": "Pick what you want to write. The form draws itself, with its limits and units — it all comes from the table.",
+   "intro": "Pick what you want to write. The form draws itself, with its limits and units.",
    "guardar": "Save the record",
    "guardado": "Saved",
    "guardado_linea": "✓ Added",
@@ -120,7 +135,12 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "id_mat": "ID",
    "id_falta": "Name and SIP are needed.",
    "id_existe": "A record already exists with ID {mat}.",
-   "crear_guardar": "Create and save"
+   "crear_guardar": "Create and save",
+   "tip_guardar": "Writes everything noted into the patient's record, as a new file. What was there before is untouched.",
+   "donde_va": "Where it will land",
+   "donde_nota": "With the server running, the folder is created for you. Without it, the browser downloads the file and you must place it there yourself.",
+   "expl_visto": "Everything written by hand, this session and before. Tap a line to correct it, the ✕ to remove it.",
+   "expl_diario": "One line per working session: when, and how much was added. Not medical data — it's the work notebook."
   }
  }
 };

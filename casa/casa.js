@@ -336,7 +336,7 @@ var SF_LANZADOR = window.SF_LANZADOR = {
     {
       "id": "cielo",
       "nombre": "Cielo",
-      "_porque": "Ana la pidió: « ¿no hay un fondo azul como el cielo? » El cielo del DÍA, sin nubes. P-H dio el tono exacto: #74BBE4 — « no es bastante azul, no se pasa el invierno encima » dijo del primero, que era demasiado pálido.",
+      "_porque": "Joaquina la pidió: « ¿no hay un fondo azul como el cielo? » El cielo del DÍA, sin nubes. P-H dio el tono exacto: #74BBE4 — « no es bastante azul, no se pasa el invierno encima » dijo del primero, que era demasiado pálido.",
       "v": {
         "--bg": "#74BBE4",
         "--surface": "#9BD0EC",

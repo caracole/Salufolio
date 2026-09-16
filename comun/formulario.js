@@ -36,6 +36,65 @@
 
 var SF_FORM = window.SF_FORM = (function(){
 
+  /* ══════════════════════════════════════════════════════════════════
+     LOS TEXTOS DEL MÓDULO (P-H + Mattieu, 16/09/2026)
+
+     « "Uno a uno" ça ne veut rien dire. Plutôt "Mode de saisie :
+       [Conversationnel]". Et comme ce sont des questions, écrire
+       "Question 1 / 6". »
+
+     Mattieu découvrait ; il a vu ce qu'on ne voyait plus. Un bouton qui
+     dit « uno a uno » décrit la mécanique ; « conversacional » dit ce
+     qu'on va vivre.
+     ══════════════════════════════════════════════════════════════════ */
+  var TX = {
+    es:{ modo:'Modo:', conversa:'Conversacional', formulario:'Formulario',
+         tip_conversa:'Una pregunta por pantalla, como si alguien se las hiciera.',
+         tip_formulario:'Todos los campos a la vez, como un papel que se rellena.',
+         pregunta:'Pregunta', de:'de',
+         guardar:'Guardar', siguiente:'Siguiente',
+         tip_guardar:'Comprueba lo escrito y lo añade al expediente.',
+         tip_siguiente:'Pasa a la pregunta siguiente. Se comprueba antes de pasar.',
+         tip_atras:'Volver a la pregunta anterior.',
+         obligatorio:'Hace falta', opcional:'Puede quedar vacío',
+         entre:'entre', y:'y', habitual:'lo habitual está entre' },
+    fr:{ modo:'Mode :', conversa:'Conversationnel', formulario:'Formulaire',
+         tip_conversa:'Une question par écran, comme si quelqu\'un vous les posait.',
+         tip_formulario:'Tous les champs à la fois, comme un papier qu\'on remplit.',
+         pregunta:'Question', de:'sur',
+         guardar:'Garder', siguiente:'Suivante',
+         tip_guardar:'Vérifie ce qui est écrit et l\'ajoute au dossier.',
+         tip_siguiente:'Passe à la question suivante. On vérifie avant de passer.',
+         tip_atras:'Revenir à la question précédente.',
+         obligatorio:'Il le faut', opcional:'Peut rester vide',
+         entre:'entre', y:'et', habitual:'l\'habituel va de' },
+    ca:{ modo:'Mode:', conversa:'Conversacional', formulario:'Formulari',
+         tip_conversa:'Una pregunta per pantalla.',
+         tip_formulario:'Tots els camps alhora.',
+         pregunta:'Pregunta', de:'de',
+         guardar:'Guardar', siguiente:'Següent',
+         tip_guardar:'Comprova el que s\'ha escrit i ho afegeix a l\'expedient.',
+         tip_siguiente:'Passa a la pregunta següent.',
+         tip_atras:'Tornar a la pregunta anterior.',
+         obligatorio:'Cal', opcional:'Pot quedar buit',
+         entre:'entre', y:'i', habitual:'l\'habitual va de' },
+    en:{ modo:'Mode:', conversa:'Conversational', formulario:'Form',
+         tip_conversa:'One question per screen, as if someone were asking.',
+         tip_formulario:'All the fields at once, like a paper form.',
+         pregunta:'Question', de:'of',
+         guardar:'Save', siguiente:'Next',
+         tip_guardar:'Checks what you wrote and adds it to the record.',
+         tip_siguiente:'Move to the next question. It checks before moving on.',
+         tip_atras:'Back to the previous question.',
+         obligatorio:'Required', opcional:'May be left empty',
+         entre:'between', y:'and', habitual:'usually between' }
+  };
+  function tx(k){
+    var lg = 'es';
+    try{ if(typeof MF!=='undefined' && MF.idioma) lg = MF.idioma(); }catch(e){}
+    return (TX[lg] && TX[lg][k]) || TX.es[k] || k;
+  }
+
   var TABLAS = {};        /* las tablas ya cargadas */
   var MODO   = 'todo';    /* todo | uno_a_uno — se recuerda */
   try{ MODO = localStorage.getItem('sf_form_modo') || 'todo'; }catch(e){}
@@ -177,7 +236,7 @@ var SF_FORM = window.SF_FORM = (function(){
       var puesto = String(v||'').split('-');
       com = '<div class="sf-momentos" id="' + id + '">'
         + MOM.map(function(m,k){
-            return '<label class="sf-mom" title="' + m[2] + '">'
+            return '<label class="sf-mom" data-tiptext="' + m[2] + '">'
                  + '<input type="checkbox" data-mom="' + m[0] + '"'
                  + (puesto[k] === '1' ? ' checked' : '') + '><span>' + m[1] + '</span></label>';
           }).join('')
@@ -193,13 +252,36 @@ var SF_FORM = window.SF_FORM = (function(){
           + (campo.tipo === 'num' ? ' inputmode="decimal"' : '') + '>';
     }
 
-    return '<div class="sf-campo-caja" data-campo="' + campo.id + '">'
+    /* ══ CE QU'ON ATTEND DU CHAMP, ET CE QUI SERA VÉRIFIÉ ══
+       « Pour les champs à saisir, il me demande les tooltips explicatifs
+         et les contrôles effectués. »          — Mattieu, 16/09/2026
+
+       Ce qui se vérifie ne doit pas être une surprise. La table le sait ;
+       il suffit de le dire. */
+    var dice = [];
+    dice.push(campo.obligatorio ? tx('obligatorio') : tx('opcional'));
+    if(campo.min !== undefined && campo.max !== undefined)
+      dice.push(tx('entre') + ' ' + campo.min + ' ' + tx('y') + ' ' + campo.max
+              + (campo.unidad ? ' ' + campo.unidad : '')
+              + (campo.limite === 'bloquea' ? ' ·' : ''));
+    if(campo.normal)
+      dice.push(tx('habitual') + ' ' + campo.normal[0] + ' ' + tx('y') + ' ' + campo.normal[1]);
+    if(campo.libre) dice.push('lista abierta');
+    var tip = (campo.ayuda ? campo.ayuda + ' — ' : '') + dice.join(' · ');
+
+    return '<div class="sf-campo-caja" data-campo="' + campo.id + '" data-tiptext="'
+      + String(tip).replace(/"/g,'&quot;') + '">'
       + '<label class="sf-etiqueta" for="' + id + '">' + (campo.etiqueta || campo.id)
+      /* ══ v2 (P-H, 16/09) : PLUS DE « title » ══
+         C'était l'infobulle du navigateur — elle paraissait en haut de
+         l'écran et doublait la nôtre, encadrée, en bas. Deux bulles pour
+         la même chose. */
       + (campo.obligatorio ? ' <span style="color:var(--warn)">*</span>' : '')
       + (campo.unidad ? ' <span style="opacity:.6">(' + campo.unidad + ')</span>' : '')
       + '</label>'
       + com
       + (campo.ayuda ? '<div class="sf-ayuda">' + campo.ayuda + '</div>' : '')
+      + '<div class="sf-regla">' + dice.join(' · ') + '</div>'
       + '<div class="sf-aviso" id="' + id + '_av"></div>'
       + '</div>';
   }
@@ -259,7 +341,8 @@ var SF_FORM = window.SF_FORM = (function(){
     }
     function cuerpoUno(){
       var c = campos[paso];
-      return '<div class="sf-paso">' + (paso+1) + ' / ' + campos.length + '</div>'
+      return '<div class="sf-paso">' + tx('pregunta') + ' ' + (paso+1)
+           + ' ' + tx('de') + ' ' + campos.length + '</div>'
            + (c.ayuda ? '' : (R.ayuda && paso===0 ? '<div class="sf-sordo">'+R.ayuda+'</div>' : ''))
            + dibuja(c, valores[c.id]);
     }
@@ -280,13 +363,28 @@ var SF_FORM = window.SF_FORM = (function(){
 
     function pinta(){
       cuerpo.innerHTML = (MODO === 'todo') ? cuerpoTodo() : cuerpoUno();
-      bModo.textContent  = (MODO === 'todo') ? '⇅ uno a uno' : '⇅ todo a la vez';
+      /* « Mode : [Conversationnel] » dit ce qu'on va vivre ; « uno a
+         uno » décrivait la mécanique. (Mattieu, 16/09) */
+      bModo.innerHTML = '<span style="opacity:.65;font-size:.9em">' + tx('modo')
+        + '</span> ' + ((MODO === 'todo') ? tx('conversa') : tx('formulario'));
+      if(typeof MF!=='undefined' && MF.tip)
+        MF.tip(bModo, (MODO === 'todo') ? tx('tip_conversa') : tx('tip_formulario'));
       bAtras.style.display = (MODO === 'uno_a_uno' && paso > 0) ? 'inline-block' : 'none';
-      bOk.textContent = (MODO === 'todo' || paso === campos.length - 1)
-                        ? '✓ Guardar' : 'Siguiente ▶';
+      var ultimo = (MODO === 'todo' || paso === campos.length - 1);
+      bOk.textContent = ultimo ? ('✓ ' + tx('guardar')) : (tx('siguiente') + ' ▶');
+      if(typeof MF!=='undefined' && MF.tip){
+        MF.tip(bOk, ultimo ? tx('tip_guardar') : tx('tip_siguiente'));
+        MF.tip(bAtras, tx('tip_atras'));
+      }
       /* el primer campo, listo */
       var pr = cuerpo.querySelector('.sf-campo');
       if(pr && pr.focus) pr.focus();
+      /* chaque champ porte son infobulle */
+      if(typeof MF!=='undefined' && MF.tip)
+        cuerpo.querySelectorAll('[data-tiptext]').forEach(function(e){
+          var t2 = e.getAttribute("data-tiptext");
+          if(t2) MF.tip(e, t2);
+        });
       /* se comprueba al salir del campo */
       campos.forEach(function(c){
         var e = document.getElementById('_f_' + c.id);

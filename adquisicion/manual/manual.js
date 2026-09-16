@@ -1,7 +1,7 @@
 /* ADQUISICIÓN MANUAL — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "manual",
-  "version": "2026.09.14-18:18:31",
+  "version": "2026.09.16-15:19:48",
   "programa": "manual.html",
   "lanzador": "../../casa/casa.js",
   "carpeta": "adquisicion/manual/",
