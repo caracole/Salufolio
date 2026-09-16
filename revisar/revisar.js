@@ -140,5 +140,12 @@ var SF_CONFIG = window.SF_CONFIG = {
       },
       "color": "var(--ok)"
     }
-  ]
+  ],
+  "detalle": {
+    "es": "Ver y corregir lo que la adquisición ha metido: las fechas, las fuentes, los títulos. Es donde se arregla lo que una máquina ha leído mal.",
+    "fr": "Voir et corriger ce que l'acquisition a rangé : les dates, les sources, les titres. C'est là qu'on répare ce qu'une machine a mal lu.",
+    "ca": "Veure i corregir el que l'adquisició ha ficat: les dates, les fonts, els títols.",
+    "en": "See and fix what acquisition filed: dates, sources, titles. This is where a machine's misreading gets put right."
+  },
+  "_detalle": "Lo que dice la burbuja cuando se pasa por encima de la tarjeta en la casa. Vive aqui, con el programa que describe (P-H, 16/09/2026)."
 };

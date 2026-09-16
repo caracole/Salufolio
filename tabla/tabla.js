@@ -27,5 +27,12 @@ var SF_CONFIG = window.SF_CONFIG = {
   "escribe": false,
   "glosario": "../glosario/glosario.html",
   "principios": "../medicamentos/principios.js",
-  "_origen": "Extraido de la V1: core-table-js.js + core-panels-html.html (110-127)."
+  "_origen": "Extraido de la V1: core-table-js.js + core-panels-html.html (110-127).",
+  "detalle": {
+    "es": "Todos los valores, en columnas, con sus fechas y su procedencia. Para buscar un número exacto, o para comprobar de dónde sale.",
+    "fr": "Toutes les valeurs, en colonnes, avec leurs dates et leur provenance. Pour chercher un chiffre exact, ou vérifier d'où il vient.",
+    "ca": "Tots els valors, en columnes, amb les seues dates i la seua procedència.",
+    "en": "Every value, in columns, with its date and where it came from. To find an exact figure, or check its source."
+  },
+  "_detalle": "Lo que dice la burbuja cuando se pasa por encima de la tarjeta en la casa. Vive aqui, con el programa que describe (P-H, 16/09/2026)."
 };
