@@ -71,6 +71,66 @@ button{padding:4px 10px;border-radius:8px;border:1px solid var(--accent);backgro
 #cbox p{font-size:14px;line-height:1.65;margin:6px 0}
 #cbox .cerrar{position:absolute;top:8px;right:12px;cursor:pointer;color:var(--muted);font-size:19px}
 .chip{display:inline-block;font-size:10.5px;border:1px solid var(--muted);border-radius:6px;padding:1px 7px;color:var(--muted);margin-right:6px}
+
+/* ══ les volets du panneau de réglage (P-H, 16/09) ══ */
+.p-cab{display:flex;align-items:baseline;gap:8px;padding:2px 2px 12px;
+       border-bottom:1px solid var(--border,#2a2a33);margin-bottom:10px}
+.p-tit{font-family:var(--serif,Georgia,serif);font-size:16px;font-weight:600}
+.p-ver{font-family:'SF Mono',Menlo,monospace;font-size:9.5px;
+       color:var(--muted,#9a9aa8);letter-spacing:.3px}
+.p-modo{font-size:10px;color:var(--warn,#e8a44a);letter-spacing:.3px}
+body.editando .celda{cursor:crosshair}
+body.editando #escena{outline:1px dashed var(--warn,#e8a44a);outline-offset:-3px}
+.p-todo{margin-left:auto;background:transparent;border:1px solid var(--border,#2a2a33);
+        color:var(--muted,#9a9aa8);border-radius:6px;cursor:pointer;
+        font-size:13px;padding:1px 8px;line-height:1.5}
+.p-todo:hover{border-color:var(--accent,#4a9eff);color:var(--accent,#4a9eff)}
+
+.p-sec{border-bottom:1px solid var(--border,#2a2a33)}
+.p-sec > summary{cursor:pointer;padding:9px 4px;font-size:12.5px;
+       list-style:none;user-select:none;display:flex;align-items:center;gap:7px;
+       transition:color .15s}
+.p-sec > summary::-webkit-details-marker{display:none}
+.p-sec > summary::after{content:'›';margin-left:auto;color:var(--muted,#9a9aa8);
+       font-size:15px;transition:transform .2s}
+.p-sec[open] > summary::after{transform:rotate(90deg)}
+.p-sec > summary:hover{color:var(--accent,#4a9eff)}
+.p-sec[open] > summary{color:var(--accent,#4a9eff)}
+.p-cuerpo{padding:2px 2px 14px;animation:p-abre .18s ease;
+          max-width:100%;overflow-x:hidden}
+
+/* ══ RIEN NE DÉBORDE (P-H, 16/09) ══
+   « Ajuste bien la largeur de certains champs afin d'éviter un
+     ascenseur horizontal et débordement. »
+
+   Un champ qui ne dit pas sa largeur minimale prend celle de son
+   contenu, et pousse tout le panneau. min-width:0 le rend docile. */
+#panel{overflow-x:hidden}
+#panel label{display:flex;align-items:center;gap:6px;margin-bottom:5px;
+             max-width:100%}
+#panel label > span:first-child{flex:0 0 68px;font-size:11px;
+             color:var(--muted);overflow:hidden;text-overflow:ellipsis;
+             white-space:nowrap}
+#panel input[type=text]{min-width:0;flex:1 1 auto;box-sizing:border-box}
+#panel input[type=range]{min-width:0;flex:1 1 60px}
+#panel input[type=color]{flex:0 0 32px;padding:0;height:22px;min-width:0}
+#panel select{min-width:0;flex:1 1 auto;max-width:100%}
+#panel .val{flex:0 0 38px;text-align:right;font-family:'SF Mono',Menlo,monospace;
+            font-size:10px;color:var(--muted)}
+#panel .aviso{max-width:100%;overflow-wrap:anywhere}
+#panel .ico{flex:0 0 46px}
+.p-alv > summary{gap:9px}
+.alv-n{font-family:'SF Mono',Menlo,monospace;font-size:10px;color:var(--muted);
+       flex:0 0 12px;text-align:center}
+.alv-i{font-size:15px;flex:0 0 20px;text-align:center}
+.alv-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-check{display:flex;align-items:center;gap:6px;font-size:11px;
+         color:var(--muted);margin-top:3px}
+.p-check input{margin:0;flex:0 0 auto}
+.p-check span{flex:1}
+.p-sub{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;
+       color:var(--muted);margin:10px 0 3px;opacity:.75}
+@keyframes p-abre{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -85,47 +145,84 @@ button{padding:4px 10px;border-radius:8px;border:1px solid var(--accent);backgro
 
 <div id="tirador" onclick="togglePanel()">⚙</div>
 <div id="panel">
-  <h4>Paleta general</h4>
-  <label><span>Fondo</span><input type="color" id="c-bg" oninput="setVar('--bg',this.value)"></label>
-  <label><span>Superficie</span><input type="color" id="c-surface" oninput="setVar('--surface',this.value)"></label>
-  <label><span>Texto</span><input type="color" id="c-text" oninput="setVar('--text',this.value)"></label>
-  <label><span>Apagado</span><input type="color" id="c-muted" oninput="setVar('--muted',this.value)"></label>
-  <label><span>Acento</span><input type="color" id="c-accent" oninput="setVar('--accent',this.value)"></label>
 
-  <h4>Colores de las alveolas</h4>
-  <div id="p-celdas"></div>
+  <!-- ══════════════════════════════════════════════════════════════════
+       UN SEUL VOLET OUVERT (P-H, 16/09/2026)
 
-  <h4>Textos de las alveolas</h4>
-  <div class="aviso">Icono · título · subtítulo · enlace. El <b>texto de la pantalla</b> se escribe en la alveola misma: ábrala y haga <b>clic derecho</b> dentro.</div>
-  <div id="p-textos"></div>
+       « Je voudrais que ces rubriques soient dans un cadre dépliable ;
+         quand on en ouvre une, la précédente se ferme. »
 
-  <h4>Tipografía</h4>
-  <label><span>Títulos</span><select id="f-serif" onchange="setVar('--serif',this.value)">
-    <option value="Georgia,serif">Georgia</option>
-    <option value="'Times New Roman',serif">Times</option>
-    <option value="'Palatino Linotype',Palatino,serif">Palatino</option>
-    <option value="system-ui,sans-serif">Sistema</option>
-  </select></label>
+       Six rubriques déroulées d'un coup, c'est un mur. Une à la fois,
+       et le regard sait où il est.
+       ══════════════════════════════════════════════════════════════════ -->
 
-  <h4>Geometría</h4>
-  <label><span>Hexágono</span><select id="g-rot" onchange="setGeo('rotacion',+this.value)">
-    <option value="30">sobre un lado</option>
-    <option value="0">punta arriba</option>
-  </select><span class="val" id="v-rot"></span></label>
-  <label><span>Opacidad</span><input type="range" id="g-op" min="0.5" max="1" step="0.01" oninput="setGeo('opacidad',+this.value)"><span class="val" id="v-op"></span></label>
-  <label><span>Zoom copia</span><input type="range" id="g-zoom" min="1.6" max="2.6" step="0.05" oninput="setZoom(+this.value)"><span class="val" id="v-zoom"></span></label>
-  <label><span>Icono Y</span><input type="range" id="g-icoy" min="0.4" max="0.85" step="0.01" oninput="setGeo('icono_y',+this.value)"><span class="val" id="v-icoy"></span></label>
-
-  <h4>Guardar</h4>
-  <button class="ok" onclick="guardaTabla()">💾 Guardar el fichero</button>
-  <button onclick="guardaComo()">📁 Guardar como perfil…</button>
-  <button onclick="abreTabla()">📂 Abrir un perfil…</button>
-  <button onclick="copiaJSON()">📋 Copiar el JSON</button>
-  <button onclick="resetPanel()">↺ Volver al fichero</button>
-  <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">
-    <b>Clic derecho</b> en una alveola: su menú (color, icono, zoom…), con ◀ ▶ para pasar a la vecina.<br><br>
-    Los ajustes viven en este navegador mientras trabaja. <b>Guardar</b> los escribe en el fichero; <b>Guardar como perfil</b> crea otra versión del mismo panal.
+  <div class="p-cab">
+    <span class="p-tit">🍯 Panal</span>
+    <span class="p-ver" id="p-version"></span>
+    <span class="p-modo" id="p-modo"></span>
+    <button class="p-todo" id="b-todo" onclick="todoAbierto()">⊕</button>
   </div>
+
+  <details class="p-sec" id="s-paleta">
+    <summary>🎨 Paleta general</summary>
+    <div class="p-cuerpo">
+      <label><span>Fondo</span><input type="color" id="c-bg" oninput="setVar('--bg',this.value)"></label>
+      <label><span>Superficie</span><input type="color" id="c-surface" oninput="setVar('--surface',this.value)"></label>
+      <label><span>Texto</span><input type="color" id="c-text" oninput="setVar('--text',this.value)"></label>
+      <label><span>Apagado</span><input type="color" id="c-muted" oninput="setVar('--muted',this.value)"></label>
+      <label><span>Acento</span><input type="color" id="c-accent" oninput="setVar('--accent',this.value)"></label>
+    </div>
+  </details>
+
+  <!-- ══ UN VOLET PAR ALVÉOLE (P-H, 16/09) ══
+       « Je clique sur une alvéole et ça m'affiche dans le bandeau de
+         gauche le volet associé à l'alvéole cliquée. »
+
+       Avant, les couleurs d'un côté et les textes de l'autre : pour
+       régler une alvéole il fallait la chercher dans deux listes. Tout
+       ce qui la concerne vit maintenant ensemble. -->
+  <div id="p-alveolas"></div>
+
+  <details class="p-sec" id="s-tipo">
+    <summary>🔤 Tipografía</summary>
+    <div class="p-cuerpo">
+      <label><span>Títulos</span><select id="f-serif" onchange="setVar('--serif',this.value)">
+        <option value="Georgia,serif">Georgia</option>
+        <option value="'Times New Roman',serif">Times</option>
+        <option value="'Palatino Linotype',Palatino,serif">Palatino</option>
+        <option value="system-ui,sans-serif">Sistema</option>
+      </select></label>
+    </div>
+  </details>
+
+  <details class="p-sec" id="s-geo">
+    <summary>📐 Geometría</summary>
+    <div class="p-cuerpo">
+      <label><span>Hexágono</span><select id="g-rot" onchange="setGeo('rotacion',+this.value)">
+        <option value="30">sobre un lado</option>
+        <option value="0">punta arriba</option>
+      </select><span class="val" id="v-rot"></span></label>
+      <label><span>Opacidad</span><input type="range" id="g-op" min="0.5" max="1" step="0.01" oninput="setGeo('opacidad',+this.value)"><span class="val" id="v-op"></span></label>
+      <label><span>Zoom copia</span><input type="range" id="g-zoom" min="1.6" max="2.6" step="0.05" oninput="setZoom(+this.value)"><span class="val" id="v-zoom"></span></label>
+      <label><span>Icono Y</span><input type="range" id="g-icoy" min="0.4" max="0.85" step="0.01" oninput="setGeo('icono_y',+this.value)"><span class="val" id="v-icoy"></span></label>
+    </div>
+  </details>
+
+  <details class="p-sec" id="s-guardar">
+    <summary>💾 Guardar</summary>
+    <div class="p-cuerpo">
+      <button class="ok" onclick="guardaTabla()">💾 Guardar el fichero</button>
+      <button onclick="guardaComo()">📁 Guardar como perfil…</button>
+      <button onclick="abreTabla()">📂 Abrir un perfil…</button>
+      <button onclick="copiaJSON()">📋 Copiar el JSON</button>
+      <button onclick="resetPanel()">↺ Volver al fichero</button>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">
+        <b>Clic derecho</b> en una alveola: su menú (color, icono, zoom…), con ◀ ▶ para pasar a la vecina.<br><br>
+        Los ajustes viven en este navegador mientras trabaja. <b>Guardar</b> los escribe en el fichero; <b>Guardar como perfil</b> crea otra versión del mismo panal.
+      </div>
+    </div>
+  </details>
+
 </div>
 <div id="escena"><svg id="svg"></svg></div>
 
@@ -140,6 +237,64 @@ button{padding:4px 10px;border-radius:8px;border:1px solid var(--accent);backgro
 
 <script src="visita.js"></script>
 <script>
+/* ══════════════════════════════════════════════════════════════════════
+   LOS VOLETS DEL PANEL (P-H, 16/09/2026)
+
+   Un seul ouvert à la fois — sauf quand on demande tout, avec le ⊕.
+   Et le panal dit sa version sous son nom : sans numéro, impossible de
+   savoir quelle version cloche.
+   ══════════════════════════════════════════════════════════════════════ */
+var P_SECS = ['s-paleta','s-colores','s-textos','s-tipo','s-geo','s-guardar'];
+var P_TODO = false;
+
+function unSoloVolet(){
+  (typeof todosLosVolets === 'function' ? todosLosVolets() : P_SECS).forEach(function(id){
+    var d = document.getElementById(id);
+    if(!d || d._enganchado) return;
+    d._enganchado = true;
+    d.addEventListener('toggle', function(){
+      if(!d.open || P_TODO) return;
+      (typeof todosLosVolets === 'function' ? todosLosVolets() : P_SECS).forEach(function(o){
+        if(o === id) return;
+        var e = document.getElementById(o);
+        if(e && e.open) e.open = false;
+      });
+    });
+  });
+  /* au départ, le premier seul */
+  var pr = document.getElementById(P_SECS[0]);
+  if(pr) pr.open = true;
+}
+
+function todoAbierto(){
+  P_TODO = !P_TODO;
+  /* v2 (P-H, 16/09) : « c'est bien ça, pour tous » — les alvéoles
+     s'ouvrent avec le reste, elles sont des volets comme les autres. */
+  todosLosVolets().forEach(function(id){
+    var d = document.getElementById(id);
+    if(d) d.open = P_TODO;
+  });
+  var b = document.getElementById('b-todo');
+  if(b){
+    b.textContent = P_TODO ? '⊖' : '⊕';
+    b.title = P_TODO ? 'Cerrar todo' : 'Abrir todo';
+  }
+  if(!P_TODO){
+    todosLosVolets().forEach(function(id, k){
+      var d = document.getElementById(id);
+      if(d) d.open = (k === 0);
+    });
+  }
+}
+
+function ponVersionPanal(){
+  var z = document.getElementById('p-version');
+  if(!z) return;
+  var v = (typeof TABLA !== 'undefined' && TABLA && TABLA.version) || '';
+  z.textContent = v ? ('v' + v) : '';
+  z.title = 'la versión de la tabla abierta';
+}
+
 /* ═══ PANAL — versión del motor : v2026.9.1.23 ═══
    (P-H, 01/09 : « une chose oubliée importante, le n° de version du panal »
    — sans numéro, on ne sait jamais ce qu'on regarde.) */
@@ -238,10 +393,19 @@ function pinta(){
        l'objet par sa marque, où qu'il soit ; il ne connaît pas le panal. */
     s+='<g id="celda'+c.orden+'" data-visita="celda-'+c.orden+'" class="celda'+(obra?' obra':'')+'"'+gp+' style="--ox:'+p.x.toFixed(1)+'px;--oy:'+p.y.toFixed(1)+'px;transform-origin:'+p.x.toFixed(1)+'px '+p.y.toFixed(1)+'px" onclick="abrir('+c.orden+')">'
       +hexSVG(R, p.x, p.y, c.color, 'c'+c.orden, false)
-      +'<text class="ctxt cico" x="'+p.x+'" y="'+(p.y-R*0.16)+'">'+c.icono+'</text>'
+      /* ══ tamPanal : la taille de l'alvéole dans le panal (P-H, 16/09) ══
+         Les tailles viennent du CSS ; celle-ci les multiplie, pour
+         l'alvéole qui veut se faire voir un peu plus. */
+      +'<text class="ctxt cico" x="'+p.x+'" y="'+(p.y-R*0.16)+'"'
+        +(c.tamPanal&&c.tamPanal!==1? ' style="font-size:'+(c.tamPanal*100).toFixed(0)+'%"':'')
+        +'>'+c.icono+'</text>'
       +(c.sinTitulo? '' :
-        '<text class="ctxt clbl" x="'+p.x+'" y="'+(p.y+R*0.26)+'"'+(c.colorTexto?' fill="'+c.colorTexto+'"':'')+'>'+T(c.titulo)+'</text>'
-       +'<text class="ctxt csub" x="'+p.x+'" y="'+(p.y+R*0.45)+'"'+(c.colorTexto?' fill="'+c.colorTexto+'" opacity=".8"':'')+'>'+T(c.sub)+'</text>')
+        '<text class="ctxt clbl" x="'+p.x+'" y="'+(p.y+R*0.26)+'"'+(c.colorTexto?' fill="'+c.colorTexto+'"':'')
+        +(c.tamPanal&&c.tamPanal!==1? ' style="font-size:'+(c.tamPanal*100).toFixed(0)+'%"':'')
+        +'>'+T(c.titulo)+'</text>'
+       +'<text class="ctxt csub" x="'+p.x+'" y="'+(p.y+R*0.45)+'"'+(c.colorTexto?' fill="'+c.colorTexto+'" opacity=".8"':'')
+        +(c.tamPanal&&c.tamPanal!==1? ' style="font-size:'+(c.tamPanal*100).toFixed(0)+'%"':'')
+        +'>'+T(c.sub)+'</text>')
       +(obra? '<text class="ctxt csub" x="'+p.x+'" y="'+(p.y+R*0.68)+'" fill="'+c.color+'">🚧</text>':'')
       +'</g>';
   });
@@ -298,8 +462,10 @@ function pinta(){
 function celdaDe(orden){ return TABLA.celdas.filter(function(c){return c.orden===orden})[0]; }
 function abrir(orden){
   var c=celdaDe(orden); if(!c) return;
+  /* panneau déplié : le clic ouvre aussi son volet (P-H, 16/09) */
+  abreVoletDe(orden);
   /* « olvídeme » : celui qui connaît entre du premier coup */
-  if(c.lien && accesoDirecto(orden) && !VIS_PINTA){ accion('abrir', orden); return; }
+  if(c.lien && accesoDirecto(orden) && !VIS_PINTA && !enEdicion()){ accion('abrir', orden); return; }
   /* v24 (P-H) : « le générique c'est pour toutes les pages » — le texte
      d'une alvéole ouverte roule aussi, s'il déborde. On ouvre une porte,
      et elle se raconte. */
@@ -329,6 +495,7 @@ function mostrar(html){ document.getElementById('ccont').innerHTML=html; documen
 function cerrarCarta(){ document.getElementById('carta').classList.remove('on'); suelta(); pararVoz(); }
 
 window.addEventListener('resize', pinta);
+unSoloVolet();
 cargar('panal1.json');
 
 /* ═══ v5 — LA COPIA AL CENTRO (lectura correcta de P-H) ═══
@@ -367,6 +534,19 @@ function dibujaCopia(orden){
   var iy = (TABLA.geometria && TABLA.geometria.icono_y) || 0.683;
   var yIco = cy - Rg*iy;
 
+  /* ══ LES TAILLES DE L'ALVÉOLE (P-H, 16/09/2026) ══
+     « Je ne vois pas de zoom sur l'icône (ajuster la taille). »
+
+     Les proportions étaient en dur — 0,20 R pour l'icône, 0,10 pour le
+     titre. Justes en moyenne, mais une alvéole à titre long ou à icône
+     menue demande autre chose. Chaque alvéole peut maintenant dire les
+     siennes ; sans rien, tout reste comme avant.
+
+     panal1.json portait déjà tamIcono, tamTitulo, tamSub pour l'alvéole
+     1 depuis le 1er septembre — écrits par l'éditeur, jamais lus ici. */
+  var kIco = c.tamIcono || 1, kTit = c.tamTitulo || 1;
+  var kSub = c.tamSub   || 1, kTxt = c.tamTexto  || 1;
+
   var rr = c.rotacion? ' transform="rotate('+c.rotacion+','+cx.toFixed(1)+','+cy.toFixed(1)+')"' : '';
   /* la classe .nueva n'est posée que si l'alvéole change : régler une
      glissière ne relance plus l'éclosion. */
@@ -379,7 +559,7 @@ function dibujaCopia(orden){
    /* la fenêtre, discrètement marquée pour la maquette */
    +'<rect x="'+fx.toFixed(1)+'" y="'+fy.toFixed(1)+'" width="'+fw.toFixed(1)+'" height="'+fh.toFixed(1)+'" fill="none" stroke="none" stroke-width="0"/>'
    /* l'icône, au centre de gravité du triangle supérieur */
-   +'<text class="ctxt" x="'+cx+'" y="'+(yIco+Rg*0.05).toFixed(1)+'" font-size="'+Math.round(Rg*0.20)+'">'+c.icono+'</text>'
+   +'<text class="ctxt" x="'+cx+'" y="'+(yIco+Rg*0.05).toFixed(1)+'" font-size="'+Math.round(Rg*0.20*kIco)+'">'+c.icono+'</text>'
    /* le contenu, coulé DANS la fenêtre */
    +'<foreignObject x="'+fx.toFixed(1)+'" y="'+fy.toFixed(1)+'" width="'+fw.toFixed(1)+'" height="'+fh.toFixed(1)+'">'
    +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;overflow-y:auto;padding:'+Math.round(Rg*0.05)+'px '+Math.round(Rg*0.07)+'px;box-sizing:border-box;color:'+(c.colorTexto||'var(--text)')+';font-family:system-ui,sans-serif;text-align:center">'
@@ -391,9 +571,9 @@ function dibujaCopia(orden){
          s'écarte (mouseout). La longueur n'importe plus. */
       ? '<div style="font-family:Georgia,serif;font-size:'+Math.round(Rg*0.095)+'px;font-weight:700;color:var(--accent);margin-bottom:'+Math.round(Rg*0.025)+'px">'+VIS_PINTA.titulo+'</div>'
         +'<div id="vis-rollo" style="font-size:'+Math.round(Rg*0.058)+'px;line-height:1.6;text-align:left">'+VIS_PINTA.texto+'</div>'
-      : (c.sinTitulo? '' : '<div style="font-family:Georgia,serif;font-size:'+Math.round(Rg*0.10)+'px;font-weight:700;margin-bottom:'+Math.round(Rg*0.02)+'px">'+T(c.titulo)+'</div>')
-        + (c.sinTitulo? '' : '<div style="font-size:'+Math.round(Rg*0.055)+'px;color:var(--muted);margin-bottom:'+Math.round(Rg*0.04)+'px">'+T(c.sub)+'</div>')
-        + '<div id="vis-rollo" oncontextmenu="event.preventDefault();editaEnPantalla('+orden+');return false" style="font-size:'+Math.round(Rg*0.062)+'px;line-height:1.6;text-align:left">'+T(c.ayuda)+'</div>'
+      : (c.sinTitulo? '' : '<div style="font-family:Georgia,serif;font-size:'+Math.round(Rg*0.10*kTit)+'px;font-weight:700;margin-bottom:'+Math.round(Rg*0.02)+'px">'+T(c.titulo)+'</div>')
+        + (c.sinTitulo? '' : '<div style="font-size:'+Math.round(Rg*0.055*kSub)+'px;color:var(--muted);margin-bottom:'+Math.round(Rg*0.04)+'px">'+T(c.sub)+'</div>')
+        + '<div id="vis-rollo" oncontextmenu="event.preventDefault();editaEnPantalla('+orden+');return false" style="font-size:'+Math.round(Rg*0.062*kTxt)+'px;line-height:1.6;text-align:left">'+T(c.ayuda)+'</div>'
         + (c.estado==='obra'? '<div style="margin-top:'+Math.round(Rg*0.04)+'px;font-size:'+Math.round(Rg*0.055)+'px;color:#e8a44a">🚧 en construcción</div>' : ''))
    + ((c.lien && !VIS_PINTA)
       /* v35b (P-H) : le clic sur la case ne doit PAS ouvrir l'application.
@@ -461,6 +641,11 @@ function dibujaCopia(orden){
    tout autre nom = une action que le moteur ne connaît pas encore. */
 function accion(a, orden){
   var c=celdaDe(orden);
+  /* ══ en édition, on règle — on ne voyage pas (P-H, 16/09) ══ */
+  if(a === 'abrir' && enEdicion()){
+    hexAviso('Modo edición: el enlace no se sigue. Repliegue el panel ⚙ para entrar.');
+    return;
+  }
   if(a==='visita'){ arrancaVisitaGuiada(); return; }
   if(a==='vis-atras'){ Visita.paso(-1); return; }
   if(a==='vis-adelante'){ Visita.paso(1); return; }
@@ -483,7 +668,11 @@ function accion(a, orden){
   if(a==='abrir'){
     var u = c && c.lien;
     if(!u){ hexAviso('Esta alveola no tiene enlace todavía.'); return; }
-    if(u.charAt(0)==='#'){ hexAviso('Enlace interno: '+u); return; }
+    if(u.charAt(0)==='#'){
+      /* « #visita » lance la visite : le moteur est là, la table aussi */
+      if(u === '#visita'){ arrancaVisitaGuiada(); return; }
+      hexAviso('Enlace interno: '+u); return;
+    }
     /* v35 (P-H) : c'est la TABLE qui décide, plus le code — "nueva":true
        ouvre dans un autre onglet. Par défaut, une adresse complète part
        dans un nouvel onglet, un fichier voisin reste dans le même. */
@@ -682,10 +871,40 @@ function pintaMandosVisita(){
 
 /* ══ v16 — LE PANNEAU : régler à vue, copier quand ça plaît ══ */
 var PAL={'--bg':'#0e1117','--surface':'#161b27','--text':'#e8eaf0','--muted':'#7a8499','--accent':'#4a8fe8','--serif':'Georgia,serif'};
+
+/* ══════════════════════════════════════════════════════════════════════
+   DEUX MODES, ET LE PANNEAU LES DIT (P-H, 16/09/2026)
+
+   « Il faut distinguer mode ÉDITION du mode EXPLOITATION — or on édite
+     dans le mode exploitation : si je clique sur une alvéole, elle
+     s'ouvre, très bien ; et si dans l'alvéole ouverte je clique à
+     nouveau, le panal cherche à ouvrir un lien qui n'existe pas. »
+
+   Les deux gestes se marchaient dessus. Maintenant :
+
+     panneau replié   EXPLOITATION
+                      un clic ouvre l'alvéole ; dedans, il suit le lien
+
+     panneau déplié   ÉDITION
+                      un clic ouvre l'alvéole ET son volet ;
+                      dedans, il ne part plus — on règle, on ne voyage pas
+
+   Rien de nouveau à apprendre : le ⚙ qu'on tire déjà dit où l'on est.
+   ══════════════════════════════════════════════════════════════════════ */
+function enEdicion(){
+  var p = document.getElementById('panel');
+  return !!(p && p.classList.contains('on'));
+}
+
 function togglePanel(){
   var p=document.getElementById('panel'), t=document.getElementById('tirador');
   var on=p.classList.toggle('on'); t.classList.toggle('on', on);
   document.body.classList.toggle('conpanel', on);
+  /* le panal porte le mode : les alvéoles changent de curseur, et le
+     bandeau du panneau le dit en toutes lettres */
+  document.body.classList.toggle('editando', on);
+  var m = document.getElementById('p-modo');
+  if(m) m.textContent = on ? '✏️ edición' : '';
   setTimeout(pinta, 300);
 }
 function setVar(v, val){
@@ -708,17 +927,153 @@ function setColorCelda(orden, val){
   var c=celdaDe(orden); if(!c) return;
   c.color=val; guardaPanel(); pinta(); if(_FOCO>=0) dibujaCopia(_FOCO);
 }
-function pintaPanelCeldas(){
-  /* la liste des textes se repeint a part, pour ne pas voler le curseur */
-  var z=document.getElementById('p-celdas'); if(!z||!TABLA) return;
-  z.innerHTML='';
-  TABLA.celdas.slice().sort(function(a,b){return a.orden-b.orden}).forEach(function(c){
-    /* v20 (P-H) : fond ET texte, une paire de pastilles par alvéole */
-    z.innerHTML+='<label><span>'+c.icono+' '+T(c.titulo)+'</span>'
-      +'<input type="color" value="'+c.color+'" oninput="setColorCelda('+c.orden+',this.value)" title="fondo">'
-      +'<input type="color" value="'+(c.colorTexto||'#e8eaf0')+'" oninput="setColorTexto('+c.orden+',this.value)" title="texto"></label>';
+/* ══════════════════════════════════════════════════════════════════════
+   UN VOLET PAR ALVÉOLE (P-H, 16/09/2026)
+
+   Couleurs, icône, titre, sous-titre, lien : tout ce qui concerne une
+   alvéole dans un seul volet, qu'on ouvre en la touchant — dans le
+   panneau, ou sur le panal lui-même.
+
+   Les deux listes d'avant vivaient séparées : pour changer une alvéole
+   il fallait la trouver deux fois.
+   ══════════════════════════════════════════════════════════════════════ */
+function pintaPanelCeldas(){ pintaAlveolas(); }
+
+
+/* ══ les tailles d'une alvéole (P-H, 16/09) ══
+   Elles vivaient dans l'éditeur seulement ; l'alvéole 1 les porte
+   depuis le 1er septembre. On les règle ici, à vue. */
+function numCelda(orden, campo, val, el){
+  var c = celdaDe(orden); if(!c) return;
+  c[campo] = val;
+  if(el && el.nextElementSibling) el.nextElementSibling.textContent = val.toFixed(2);
+  guardaPanel(); pinta();
+  if(_FOCO >= 0) dibujaCopia(_FOCO);
+}
+
+function pintaAlveolas(){
+  var z = document.getElementById('p-alveolas');
+  if(!z || !TABLA) return;
+  /* on garde le champ qu'on remplissait, et le volet ouvert */
+  var foco = document.activeElement, idFoco = foco && foco.id;
+  var abierto = null;
+  z.querySelectorAll('details[open]').forEach(function(d){ abierto = d.id; });
+
+  z.innerHTML = TABLA.celdas.slice()
+    .sort(function(a,b){ return a.orden - b.orden; })
+    .map(function(c){
+      var o = c.orden;
+      return '<details class="p-sec p-alv" id="s-alv'+o+'">'
+        + '<summary><span class="alv-n">'+o+'</span>'
+        + '<span class="alv-i">'+(c.icono||'·')+'</span>'
+        + '<span class="alv-t">'+esc(T(c.titulo))+'</span></summary>'
+        + '<div class="p-cuerpo">'
+
+        + '<label><span>Fondo</span>'
+        + '<input type="color" value="'+(c.color||'#2a9d5f')+'" oninput="setColorCelda('+o+',this.value)" title="fondo">'
+        + '<span style="flex:0 0 38px;text-align:right;font-size:11px;color:var(--muted)">Texto</span>'
+        + '<input type="color" value="'+(c.colorTexto||'#e8eaf0')+'" oninput="setColorTexto('+o+',this.value)" title="texto">'
+        + '<span style="flex:1"></span></label>'
+
+        + '<label><span>Icono</span>'
+        + '<input type="text" class="ico" id="tx-i'+o+'" value="'+esc(c.icono||'')+'" oninput="txtCelda('+o+',\'icono\',this.value)" style="flex:0 0 46px;text-align:center;font-size:15px">'
+        + '<span style="flex:1"></span></label>'
+
+        + '<label><span>Título</span>'
+        + '<input type="text" id="tx-t'+o+'" value="'+esc(T(c.titulo))+'" oninput="txtCelda('+o+',\'titulo\',this.value)" style="flex:1"></label>'
+
+        + '<label><span>Subtítulo</span>'
+        + '<input type="text" id="tx-s'+o+'" value="'+esc(T(c.sub))+'" oninput="txtCelda('+o+',\'sub\',this.value)" style="flex:1"></label>'
+
+        + '<label><span>Enlace</span>'
+        + '<input type="text" id="tx-l'+o+'" value="'+esc(c.lien||'')+'" oninput="txtCelda('+o+',\'lien\',this.value)" placeholder="../casa/ · https://…" style="flex:1"></label>'
+
+        + '<div class="p-sub">Tamaños</div>'
+        + '<label><span>Icono</span>'
+        + '<input type="range" min="0.5" max="2" step="0.05" value="'+(c.tamIcono||1)+'" oninput="numCelda('+o+',\'tamIcono\',+this.value,this)">'
+        + '<span class="val">'+(c.tamIcono||1).toFixed(2)+'</span></label>'
+        + '<label><span>En panal</span>'
+        + '<input type="range" min="0.6" max="2" step="0.05" value="'+(c.tamPanal||1)+'" oninput="numCelda('+o+',\'tamPanal\',+this.value,this)">'
+        + '<span class="val">'+(c.tamPanal||1).toFixed(2)+'</span></label>'
+        + '<label><span>Título</span>'
+        + '<input type="range" min="0.5" max="2" step="0.05" value="'+(c.tamTitulo||1)+'" oninput="numCelda('+o+',\'tamTitulo\',+this.value,this)">'
+        + '<span class="val">'+(c.tamTitulo||1).toFixed(2)+'</span></label>'
+        + '<label><span>Subtítulo</span>'
+        + '<input type="range" min="0.5" max="2" step="0.05" value="'+(c.tamSub||1)+'" oninput="numCelda('+o+',\'tamSub\',+this.value,this)">'
+        + '<span class="val">'+(c.tamSub||1).toFixed(2)+'</span></label>'
+        + '<label><span>Texto</span>'
+        + '<input type="range" min="0.5" max="2" step="0.05" value="'+(c.tamTexto||1)+'" oninput="numCelda('+o+',\'tamTexto\',+this.value,this)">'
+        + '<span class="val">'+(c.tamTexto||1).toFixed(2)+'</span></label>'
+        + '<label><span>Zoom copia</span>'
+        + '<input type="range" min="1.6" max="2.8" step="0.05" value="'+(c.zoom||2.5)+'" oninput="numCelda('+o+',\'zoom\',+this.value,this)">'
+        + '<span class="val">'+(c.zoom||2.5).toFixed(2)+'</span></label>'
+
+        + '<label class="p-check">'
+        + '<input type="checkbox" '+((c.nueva!==undefined? c.nueva : true)?'checked':'')+' onchange="txtCelda('+o+',\'nueva\',this.checked)">'
+        + '<span>abrir en otra ventana</span></label>'
+        + '<label class="p-check">'
+        + '<input type="checkbox" '+(c.directo?'checked':'')+' onchange="txtCelda('+o+',\'directo\',this.checked)">'
+        + '<span>acceso directo (sin presentación)</span></label>'
+
+        + '<div class="aviso">El <b>texto de la pantalla</b> se escribe en la alveola '
+        + 'misma: ábrala y haga <b>clic derecho</b> dentro.</div>'
+        + '</div></details>';
+    }).join('');
+
+  /* on rouvre le volet qui l'était, et on rend la main au champ */
+  if(abierto){ var d = document.getElementById(abierto); if(d) d.open = true; }
+  if(idFoco){
+    var e = document.getElementById(idFoco);
+    if(e){ e.focus();
+      if(e.setSelectionRange && e.value)
+        try{ e.setSelectionRange(e.value.length, e.value.length); }catch(x){}
+    }
+  }
+  enganchaAlveolas();
+}
+
+/* le même « un seul ouvert » que les autres volets */
+function enganchaAlveolas(){
+  var todos = todosLosVolets();
+  todos.forEach(function(id){
+    var d = document.getElementById(id);
+    if(!d || d._enganchado) return;
+    d._enganchado = true;
+    d.addEventListener('toggle', function(){
+      if(!d.open || P_TODO) return;
+      todosLosVolets().forEach(function(o){
+        if(o === id) return;
+        var e = document.getElementById(o);
+        if(e && e.open) e.open = false;
+      });
+    });
   });
 }
+
+function todosLosVolets(){
+  var L = P_SECS.slice();
+  document.querySelectorAll('#p-alveolas details').forEach(function(d){
+    if(d.id) L.push(d.id); });
+  return L;
+}
+
+/* ══ toucher une alvéole ouvre son volet (P-H, 16/09) ══
+   Seulement quand le panneau est déplié — sinon le clic garde son
+   métier d'origine : ouvrir l'alvéole en grand. */
+function abreVoletDe(orden){
+  var p = document.getElementById('panel');
+  if(!p || !p.classList.contains('on')) return false;
+  var d = document.getElementById('s-alv' + orden);
+  if(!d) return false;
+  todosLosVolets().forEach(function(o){
+    var e = document.getElementById(o);
+    if(e && e.open && o !== d.id) e.open = false;
+  });
+  d.open = true;
+  d.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  return true;
+}
+
 function sincPanel(){
   if(!TABLA) return;
   Object.keys(PAL).forEach(function(v){
@@ -871,9 +1226,82 @@ function repintaVisita(){
   VIS_PINTA.conVoz = Visita.conVoz();
   dibujaCopia(_FOCO);
 }
+/* ══════════════════════════════════════════════════════════════════════
+   LA VISITE SE FABRIQUE DEPUIS LA TABLE DU PANAL (P-H, 16/09/2026)
+
+   « El panal se visita a sí mismo: la visita abre las alveolas una a
+     una, como si una mano las tocara. Los textos son los mismos "ayuda"
+     de la tabla — nada que escribir aparte. »   — panal1.json, 01/09
+
+   C'était conçu depuis le début, et écrit dans la table. Mais le code
+   cherchait un fichier « visita_panal1.json » qui n'a jamais existé —
+   et qui aurait recopié des textes déjà là.
+
+   Maintenant on assemble les leçons au moment de partir : le parcours
+   vient de « visita », les textes des « ayuda », la voix des « sonido ».
+   Ajouter une alvéole, c'est l'ajouter à la visite. Rien à tenir à jour.
+   ══════════════════════════════════════════════════════════════════════ */
+function tablaDeVisita(){
+  if(!TABLA) return null;
+  var orden = TABLA.visita;
+  if(!Array.isArray(orden) || !orden.length)
+    orden = (TABLA.celdas||[]).map(function(c){ return c.orden; });
+
+  var lecciones = [];
+  orden.forEach(function(o){
+    var c = celdaDe(o);
+    if(!c) return;
+    if(c.estado === 'obra' && !c.ayuda) return;   /* rien à dire encore */
+    lecciones.push({
+      objeto:  'celda-' + o,
+      titulo:  c.titulo,
+      texto:   c.ayuda || c.sub || c.titulo,
+      sonido:  c.sonido,
+      segundos: c.visita_segundos || null
+    });
+  });
+
+  /* les commandes de la couronne, si elles portent leur aide */
+  (TABLA.mandos||[]).forEach(function(m){
+    if(!m.ayuda || m.accion === 'libre') return;
+    lecciones.push({
+      objeto: 'mando-' + m.accion,
+      titulo: m.etiqueta || m.accion,
+      texto:  m.ayuda,
+      segundos: 7
+    });
+  });
+
+  return {
+    id: 'visita-' + (TABLA.id||'panal'),
+    marco: 'propio',                  /* le panal peint lui-même */
+    idioma_defecto: TABLA.idioma_defecto || 'es',
+    lecciones: lecciones,
+    final: {
+      titulo: { es:'Ya conoce la casa.', fr:'Vous connaissez la maison, maintenant.',
+                ca:'Ja coneix la casa.', en:'You know your way around now.' },
+      texto:  { es:'Toque la alveola que quiera — o la Reina 🐝 para pasar al otro panal.',
+                fr:'Touchez l\'alvéole que vous voulez — ou la Reine 🐝 pour passer à l\'autre panal.',
+                ca:'Toque l\'alvèola que vulga — o la Reina 🐝 per passar a l\'altre panal.',
+                en:'Touch whichever cell you like — or the Queen 🐝 for the other hive.' }
+    }
+  };
+}
+
 function arrancaVisitaGuiada(){
-  var fich = 'visita_' + (TABLA.id||'panal1') + '.json';
-  Visita.arranca(fich, opcionesVisita());
+  var T2 = tablaDeVisita();
+  if(!T2 || !T2.lecciones.length){
+    hexAviso('Esta tabla no declara ninguna visita.');
+    return;
+  }
+  var o = opcionesVisita();
+  var antes = o.al_final;
+  o.al_final = function(){
+    /* la visite faite, la porte mènera droit à la casa */
+    try{ localStorage.setItem('sf_visita_hecha','si'); }catch(e){}
+    if(antes) antes();
+  };
+  Visita.arranca(T2, o);
 }
 
 function setColorTexto(orden, val){
@@ -953,29 +1381,9 @@ function hexSVG(R, cx, cy, color, id, conFondo){
    Icône · titre · texte · lien, saisis ici même. Plus besoin de xed.
    Chaque frappe s'inscrit dans la table et se voit aussitôt. */
 function pintaTextos(){
-  var z=document.getElementById('p-textos'); if(!z||!TABLA) return;
-  var foco=document.activeElement, id=foco&&foco.id;
-  z.innerHTML='';
-  TABLA.celdas.slice().sort(function(a,b){return a.orden-b.orden}).forEach(function(c){
-    var o=c.orden;
-    z.innerHTML+='<div class="ficha-cel">'
-      +'<div class="cab"><span class="num">'+o+'</span>'
-      +'<input type="text" class="ico" id="tx-i'+o+'" value="'+esc(c.icono||'')+'" oninput="txtCelda('+o+',\'icono\',this.value)" title="icono">'
-      +'<input type="text" id="tx-t'+o+'" value="'+esc(T(c.titulo))+'" oninput="txtCelda('+o+',\'titulo\',this.value)" placeholder="título" style="flex:1">'
-      +'</div>'
-      +'<input type="text" id="tx-s'+o+'" value="'+esc(T(c.sub))+'" oninput="txtCelda('+o+',\'sub\',this.value)" placeholder="subtítulo">'
-      +'<input type="text" id="tx-l'+o+'" value="'+esc(c.lien||'')+'" oninput="txtCelda('+o+',\'lien\',this.value)" placeholder="enlace — https://… o fichero vecino">'
-      +'<label style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px">'
-      +'<input type="checkbox" '+((c.nueva!==undefined? c.nueva : true)?'checked':'')+' onchange="txtCelda('+o+',\'nueva\',this.checked)">'
-      +'abrir en otra ventana</label>'
-      +'<label style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px">'
-      +'<input type="checkbox" '+(c.directo?'checked':'')+' onchange="txtCelda('+o+',\'directo\',this.checked)">'
-      +'acceso directo (sin presentación)</label>'
-      +'</div>';
-  });
-  /* on rend la main au champ qu'on était en train de remplir */
-  if(id){ var e=document.getElementById(id); if(e){ e.focus();
-    if(e.setSelectionRange && e.value) try{ e.setSelectionRange(e.value.length,e.value.length); }catch(x){} } }
+  /* v31 (P-H, 16/09) : les textes vivent maintenant dans le volet de
+     chaque alvéole, avec ses couleurs. Une seule peinture. */
+  pintaAlveolas();
 }
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
 function txtCelda(orden, campo, val){

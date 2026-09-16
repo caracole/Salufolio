@@ -85,7 +85,7 @@
       "icono": "📋",
       "color": "#4a8fe8",
       "estado": "activo",
-      "lien": "protocolo/index.html",
+      "lien": "../protocolo/",
       "ayuda": {
         "es": "El cuaderno del cuidador en el teléfono: constantes, tomas, observaciones.",
         "ca": "El cuaderno del cuidador en el teléfono: constantes, tomas, observaciones.",

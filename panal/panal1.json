@@ -222,7 +222,7 @@
       "icono": "👨‍👩‍👧",
       "color": "#4c152b",
       "estado": "activo",
-      "lien": "protocolo/index.html",
+      "lien": "../protocolo/",
       "ayuda": {
         "es": "El cuaderno del día a día: constantes, tomas y observaciones, desde el teléfono.",
         "fr": "Le carnet du quotidien : constantes, prises et observations, depuis le téléphone.",
