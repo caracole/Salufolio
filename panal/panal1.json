@@ -170,7 +170,7 @@
       "icono": "🤔",
       "color": "#caa068",
       "estado": "activo",
-      "lien": "#sabermas",
+      "lien": "../docs/empezar.html",
       "sinTitulo": false,
       "ayuda": {
         "es": "<center>Qué es <big><b> S</b>alu<i>folio </i>?<br><br><br>Qué significan sus cifras, <p>y por qué es libre y gratuito .?</center>",
