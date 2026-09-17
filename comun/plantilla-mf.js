@@ -40,7 +40,7 @@
 
 var SF_PLANTILLA = window.SF_PLANTILLA = {
 
-  version: '2026.09.15',
+  version: '2026.09.17',
 
   fuentes: {
     A: { nombre:'API',        que:'lectura automática de un documento' },
@@ -54,6 +54,7 @@ var SF_PLANTILLA = window.SF_PLANTILLA = {
     '_leeme',
     'formato', 'version',
     'data_type', 'original_data_type', 'date_anonymized', 'exported',
+    'paciente',
     'patient_name', 'patient_label', 'sip', 'nhc', 'cip_sns',
     'nacimiento', 'sexo',
     'historial',
@@ -103,11 +104,51 @@ var SF_PLANTILLA = window.SF_PLANTILLA = {
       date_anonymized: null,
       exported: new Date().toISOString(),
 
-      /* ══ DE QUIÉN ES — en la cabeza, donde se busca ══
-         Sexo y nacimiento son del paciente, no de los datos. Se ponen
-         al crear el expediente; si una extracción devuelve otros, se
-         ignoran o se señalan — pero no se sobreescriben. */
-      patient_name:  paciente.etiqueta || paciente.nombre || '',
+      /* ══════════════════════════════════════════════════════════════
+         DE QUIÉN ES — UN SOLO BLOQUE (P-H, 17/09/2026)
+
+         « Ma première idée était la bonne. »
+
+         Lo era: todo lo de la persona en un sitio, bajo un solo nombre.
+         El 15/09 lo pusimos plano —patient_name, patient_label, sip…—
+         y a plano se queda la copia, porque DIECISIETE programas leen
+         « patient_label » y no se rompen diecisiete de golpe.
+
+         Así que las dos formas conviven:
+           · « paciente » es LA VERDAD — lo que se escribe
+           · los campos planos son EL ECO — para los diecisiete
+
+         completa() los mantiene de acuerdo en los dos sentidos. Se irán
+         mudando programa a programa, sin prisa, y el día que ninguno
+         lea el eco, el eco se va.
+
+         Sexo y nacimiento son del paciente, no de los datos: se ponen
+         al crear; si una extracción devuelve otros, se señalan — pero
+         no se sobreescriben.
+         ══════════════════════════════════════════════════════════════ */
+      paciente: {
+        /* ══ DOS CAMPOS, NO TRES (P-H, 17/09/2026) ══
+           « [nombre | prénom(s)] [apellidos | nom] — ça me va. »
+
+           « apellido1 » y « apellido2 » suponen la costumbre española.
+           Un francés lleva un nombre, un islandés un patronímico, y los
+           vascos recitaban OCHO apellidos para probar su linaje.
+
+           Dos campos aguantan todo: « María del Carmen » | « Gómez Ruiz »,
+           « Michèle » | « Rogues de Fursac ». Y nadie tiene que decidir
+           si « de » es un apellido o una partícula. */
+        nombre:     paciente.nombre     || '',
+        apellidos:  paciente.apellidos  || '',
+        matricula:  mat,
+        nacimiento: paciente.nacimiento || '',
+        sexo:       paciente.sexo       || '',
+        sip:        paciente.sip        || '',
+        nhc:        paciente.nhc        || '',
+        cip_sns:    paciente.cip_sns    || ''
+      },
+
+      /* el eco: « patient_name » lleva la suma, como P-H lo quiso */
+      patient_name:  SF_PLANTILLA.nombreEntero(paciente),
       patient_label: mat,
       sip:           paciente.sip        || '',
       nhc:           paciente.nhc        || '',
@@ -153,6 +194,16 @@ var SF_PLANTILLA = window.SF_PLANTILLA = {
     };
   },
 
+  /* ── el nombre entero: nombre + apellidos (P-H, 17/09) ── */
+  nombreEntero: function(p){
+    p = p || {};
+    var n = (String(p.nombre || '') + ' ' + String(p.apellidos || '')).trim();
+    if(n) return n;
+    /* sin nombre ni apellidos, la matrícula — « sinon on ne sait plus
+       où on est » (P-H, 17/09) */
+    return p.etiqueta || p.matricula || '';
+  },
+
   /* la date au format du dossier : 2026-09-15-16:24:07 */
   sello: function(d){
     d = d || new Date();
@@ -174,21 +225,65 @@ var SF_PLANTILLA = window.SF_PLANTILLA = {
       if(d[k] === undefined || d[k] === null) d[k] = m[k];
     });
 
-    /* les fichiers d'avant portaient un bloc « paciente » : on le remonte */
-    if(d.paciente && typeof d.paciente === 'object'){
-      var p = d.paciente;
-      if(!d.patient_name)  d.patient_name  = p.etiqueta || p.nombre || '';
-      if(!d.patient_label) d.patient_label = p.matricula || '';
-      if(!d.sip)           d.sip           = p.sip || '';
-      if(!d.nhc)           d.nhc           = p.nhc || '';
-      if(!d.cip_sns)       d.cip_sns       = p.cip_sns || '';
-      if(!d.nacimiento)    d.nacimiento    = p.nacimiento || '';
-      if(!d.sexo)          d.sexo          = p.sexo || '';
-      delete d.paciente;
+    /* ══════════════════════════════════════════════════════════════
+       LAS DOS FORMAS, DE ACUERDO (P-H, 17/09/2026)
+
+       En los DOS sentidos, a cada apertura:
+         · un fichero plano SUBE al bloque
+         · un fichero con bloque BAJA al eco
+
+       Ni uno ni otro se pierde, y los diecisiete programas siguen
+       leyendo lo que saben leer.
+       ══════════════════════════════════════════════════════════════ */
+    if(!d.paciente || typeof d.paciente !== 'object') d.paciente = {};
+    var P = d.paciente;
+
+    /* ① lo plano SUBE — un fichero de antes */
+    var SUBE = [['matricula','patient_label'],
+                ['sip','sip'], ['nhc','nhc'], ['cip_sns','cip_sns'],
+                ['nacimiento','nacimiento'], ['sexo','sexo']];
+    SUBE.forEach(function(par){
+      if(!P[par[0]] && d[par[1]]) P[par[0]] = d[par[1]];
+    });
+
+    /* ── el nombre: si el bloque no lo tiene, se parte el plano ──
+       Primera palabra el nombre, el resto los apellidos. Es una
+       propuesta, no una verdad: quien lo lea puede corregirlo. */
+    if(!P.nombre && !P.apellidos && d.patient_name){
+      var t = String(d.patient_name).trim().split(/\s+/);
+      if(t.length === 1){ P.nombre = t[0]; }
+      else { P.nombre = t[0]; P.apellidos = t.slice(1).join(' '); }
     }
-    /* et ceux qui n'avaient que patient_label */
-    if(!d.patient_name && paciente && paciente.etiqueta)
-      d.patient_name = paciente.etiqueta;
+    /* los bloques de antes llevaban apellido1 / apellido2 */
+    if(!P.apellidos && (P.apellido1 || P.apellido2))
+      P.apellidos = [P.apellido1, P.apellido2].filter(Boolean).join(' ');
+    if(!P.nombre && P.etiqueta) P.nombre = P.etiqueta;
+
+    /* ② lo que el llamador sabe, y el fichero no */
+    if(paciente){
+      if(!P.nombre)     P.nombre     = paciente.nombre || '';
+      if(!P.apellidos)  P.apellidos  = paciente.apellidos || '';
+      if(!P.matricula)  P.matricula  = paciente.matricula || '';
+      if(!P.sip)        P.sip        = paciente.sip || '';
+      if(!P.nacimiento) P.nacimiento = paciente.nacimiento || '';
+      if(!P.sexo)       P.sexo       = paciente.sexo || '';
+    }
+
+    /* ③ el bloque BAJA al eco — para los diecisiete */
+    SUBE.forEach(function(par){
+      if(P[par[0]]) d[par[1]] = P[par[0]];
+    });
+    var entero = SF_PLANTILLA.nombreEntero(P);
+    if(entero) d.patient_name = entero;
+
+    /* lo que falte, vacío pero presente: un campo ausente es una
+       pregunta más cada vez que se lee */
+    ['nombre','apellidos','matricula','nacimiento','sexo','sip','nhc',
+     'cip_sns'].forEach(function(k){
+      if(P[k] === undefined) P[k] = '';
+    });
+    /* los de antes se van, su contenido ya está en « apellidos » */
+    delete P.apellido1; delete P.apellido2;
 
     /* le _leeme se remet à jour, même sur un vieux fichier */
     d._leeme = m._leeme;

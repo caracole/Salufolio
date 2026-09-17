@@ -1,0 +1,2144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Informes para el médico · Salufolio</title>
+<script src="informe.js"></script>
+<script src="informe.idiomas.js"></script>
+<script src="prompt-informe.js"></script>
+<script src="../comun/mf.js"></script>
+<script src="../comun/plantilla-mf.js"></script>
+<!-- « Xarelto y Rivaroxaban son el mismo tratamiento. El programa no
+     puede adivinarlo: hace falta esta tabla. » — P-H, 07/09/2026 -->
+<script src="../medicamentos/principios.js"></script>
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   NADA EN DURO — los colores y los tamaños se ponen desde informe.js.
+   Aquí sólo hay variables y la forma de las cosas.
+
+   El informe NO sigue la paleta de la casa: se imprime, y se lee a la
+   luz de un hospital. Fondo blanco, tinta oscura.
+   ══════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--tinta);
+     font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(var(--base)*var(--zoom));line-height:1.5}
+
+.espacio{flex:1}
+.bot{padding:5px 12px;border:1px solid var(--linea);border-radius:5px;
+     background:var(--papel);color:var(--tinta);cursor:pointer;
+     font-family:inherit;font-size:calc(var(--menudo)*var(--zoom))}
+.bot:hover{border-color:var(--seccion)}
+
+main{max-width:900px;margin:0 auto;padding:16px 22px 60px}
+
+/* ── el escogedor ── */
+#elegir{max-width:720px;margin:26px auto;padding:0 22px}
+#elegir h2{font-size:calc(var(--titulo)*var(--zoom));margin:0 0 5px;
+           color:var(--seccion);font-weight:600}
+#elegir .sordo{font-size:calc(var(--menudo)*var(--zoom));
+               color:var(--tinta-suave);margin-bottom:20px}
+.forma{display:flex;gap:15px;align-items:flex-start;padding:14px 17px;
+       border:1px solid var(--linea);border-radius:8px;margin-bottom:10px;
+       cursor:pointer;background:var(--papel-suave);transition:all .15s}
+.forma:hover{border-color:var(--seccion);transform:translateY(-1px)}
+.forma .ic{font-size:24px;flex:0 0 30px;text-align:center}
+.forma .nom{font-weight:600;color:var(--seccion);margin-bottom:2px}
+.forma .que{font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave);
+            line-height:1.5}
+.anon{border:1px solid var(--linea);border-radius:8px;padding:13px 17px;
+      margin-top:16px}
+.anon label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.anon .que{font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave);
+           line-height:1.55;margin:6px 0 0 24px}
+.anon .niveles{margin:10px 0 0 24px;display:none}
+.anon.on .niveles{display:block}
+.anon .niveles label{font-size:calc(var(--menudo)*var(--zoom));margin-bottom:4px}
+
+/* ══ EL EXPRESS ══ */
+.x-cab{display:flex;align-items:center;gap:11px;flex-wrap:wrap;
+       border-bottom:2px solid var(--express);padding-bottom:6px;margin-bottom:3px}
+/* « le titre Informe Express plus grand » (P-H, 17/09) */
+.x-tit{font-size:calc(var(--titulo)*var(--zoom)*1.35);font-weight:700;
+       color:var(--express);letter-spacing:-.3px}
+.x-fecha{font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave)}
+.x-sip{font-weight:400;font-size:calc(var(--menudo)*var(--zoom));
+       color:var(--tinta-suave)}
+svg.logo{display:block;flex:0 0 auto}
+.x-pac{margin-left:auto;font-weight:600;color:var(--express)}
+.x-ver{font-size:calc(var(--menudo)*var(--zoom)*.9);color:var(--tinta-suave);
+       margin-bottom:14px}
+.x-sec{font-size:calc(var(--seccion)*var(--zoom));font-weight:700;
+       letter-spacing:.4px;margin:18px 0 7px;text-transform:uppercase}
+.x-sec .sub{font-weight:400;text-transform:none;letter-spacing:0;
+            font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave)}
+.x-lista{margin:0;padding-left:20px}
+.x-lista li{margin-bottom:3px}
+.x-lista .f{font-weight:700}
+.x-mat{font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave);
+       margin-top:6px}
+
+table.x-tab{width:100%;border-collapse:collapse;margin:6px 0 4px;
+            font-size:calc(var(--base)*var(--zoom)*.94)}
+table.x-tab th{text-align:left;padding:5px 8px;border-bottom:1px solid var(--linea);
+               color:var(--tinta-suave);font-weight:600;
+               font-size:calc(var(--menudo)*var(--zoom))}
+table.x-tab td{padding:4px 8px;border-bottom:1px solid var(--linea)}
+table.x-tab td.val{color:var(--grave);font-weight:700}
+table.x-tab td.ant{color:var(--tinta-suave);
+                   font-size:calc(var(--menudo)*var(--zoom))}
+table.x-tab td.ref{color:var(--tinta-suave);
+                   font-size:calc(var(--menudo)*var(--zoom))}
+
+.g-caja{border:1px solid var(--linea);border-radius:4px;padding:8px 10px;
+        margin:10px 0 4px;background:var(--papel)}
+.g-tit{font-size:calc(var(--seccion)*var(--zoom)*1.12);font-weight:700;
+       color:var(--tinta);margin-bottom:3px}
+.g-tit .ref{font-weight:400;color:var(--tinta-suave);
+            font-size:calc(var(--menudo)*var(--zoom))}
+.g-fuentes{font-size:calc(var(--menudo)*var(--zoom)*.8);color:var(--tinta-suave);
+           margin-top:7px;padding-top:5px;border-top:1px solid var(--linea);
+           line-height:1.4}
+.x-lista .donde{color:var(--tinta-suave);
+                font-size:calc(var(--menudo)*var(--zoom))}
+.x-lista .hasta{color:var(--tinta-suave);font-weight:600}
+.x-lista .cronico{color:var(--tinta-suave);font-style:italic;
+                  font-size:calc(var(--menudo)*var(--zoom))}
+.x-lista .cond{color:var(--tinta-suave);
+               font-size:calc(var(--menudo)*var(--zoom))}
+.x-otros{margin:12px 0 4px;padding:10px 13px;border-left:4px solid var(--aviso);
+         background:var(--papel-suave);
+         font-size:calc(var(--base)*var(--zoom)*.94);line-height:1.6}
+.x-otros b{color:var(--aviso)}
+.x-otros-pie{margin-top:7px;padding-top:6px;border-top:1px solid var(--linea);
+             font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave);
+             font-style:italic}
+svg.curva{display:block;width:100%;height:auto}
+
+.v-linea{margin:7px 0;padding:6px 11px;border-left:4px solid var(--grave);
+         background:var(--papel-suave);
+         font-size:calc(var(--base)*var(--zoom)*.94)}
+.v-linea .nota{font-style:italic;color:var(--tinta-suave)}
+
+.x-pie{font-size:calc(var(--menudo)*var(--zoom)*.85);color:var(--tinta-suave);
+       margin-top:22px;padding-top:8px;border-top:1px solid var(--linea);
+       line-height:1.5}
+
+textarea{width:100%;font-family:inherit;
+         font-size:calc(var(--base)*var(--zoom));line-height:1.5;
+         padding:9px 11px;border:1px solid var(--linea);border-radius:4px;
+         background:var(--papel);color:var(--tinta);resize:vertical}
+textarea:focus{outline:none;border-color:var(--seccion)}
+textarea::placeholder{color:var(--tinta-suave);font-style:italic}
+.guardado{font-size:calc(var(--menudo)*var(--zoom));color:var(--bien);
+          margin-top:3px;min-height:1.1em}
+
+/* ══ LOS INFORMES IMPRESOS ══ */
+.p-cab{display:flex;gap:26px;border-bottom:3px solid var(--express);
+       padding-bottom:13px;margin-bottom:18px;align-items:flex-start}
+.p-logo{flex:1}
+.p-tipo{font-size:calc(var(--menudo)*var(--zoom)*1.08);letter-spacing:2px;
+        color:var(--express);text-transform:uppercase;margin-top:7px;
+        line-height:1.5;font-weight:600}
+.p-datos{flex:0 0 auto;text-align:right;
+         font-size:calc(var(--menudo)*var(--zoom));line-height:1.65;
+         color:var(--tinta-suave)}
+.p-datos b{color:var(--tinta)}
+.p-aviso{color:var(--grave);margin-top:5px}
+
+/* ══ LOS TÍTULOS, DEL MISMO COLOR EN LAS TRES FORMAS (P-H, 17/09) ══
+   « Dans express c'est parfait en vert, dans détaillé et synthétique
+     c'est noir. Faut corriger et être cohérent. » */
+.p-sec{font-size:calc(var(--seccion)*var(--zoom)*1.1);font-weight:700;
+       letter-spacing:1.5px;text-transform:uppercase;color:var(--express);
+       margin:22px 0 9px;display:flex;align-items:baseline;gap:8px}
+.p-sec .sub{font-weight:400;letter-spacing:0;text-transform:none;
+            font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave)}
+
+.p-caja{border:1px solid var(--seccion);border-radius:5px;padding:14px 17px;
+        margin-bottom:6px}
+.p-caja .tit{font-size:calc(var(--seccion)*var(--zoom)*1.1);font-weight:700;
+             letter-spacing:1.5px;text-transform:uppercase;color:var(--express);
+             margin-bottom:8px}
+
+.p-fuera{color:var(--grave);font-weight:700;
+         font-size:calc(var(--menudo)*var(--zoom));
+         letter-spacing:.5px;margin:12px 0 5px}
+ul.p-lista{margin:0;padding-left:19px;
+           font-size:calc(var(--base)*var(--zoom)*.94)}
+ul.p-lista li{margin-bottom:2px}
+
+table.p-tab{width:100%;border-collapse:collapse;margin:6px 0 4px;
+            font-size:calc(var(--menudo)*var(--zoom))}
+/* « les titres des colonnes plus grands et en gras » (P-H, 17/09) */
+table.p-tab th{text-align:left;padding:7px 8px;
+               border-bottom:2px solid var(--seccion);
+               color:var(--tinta);font-weight:700;
+               font-size:calc(var(--base)*var(--zoom)*.96);
+               cursor:pointer;user-select:none;white-space:nowrap}
+table.p-tab th:hover{color:var(--seccion)}
+table.p-tab th .fl{opacity:.35;font-size:.85em;margin-left:3px}
+table.p-tab th.orden .fl{opacity:1;color:var(--seccion)}
+table.p-tab td{padding:5px 8px;border-bottom:1px solid var(--linea);
+               vertical-align:top}
+table.p-tab td.mal{color:var(--grave);font-weight:700}
+table.p-tab td.nada{color:var(--linea)}
+table.p-tab td b{font-weight:700}
+.p-nota{font-size:calc(var(--menudo)*var(--zoom)*.88);color:var(--tinta-suave);
+        margin-top:6px;line-height:1.5}
+.ant-cat{font-size:calc(var(--menudo)*var(--zoom)*1.05);font-weight:700;
+         letter-spacing:.8px;text-transform:uppercase;color:var(--express);
+         margin:13px 0 3px;opacity:.85}
+ul.p-lista .aprox{color:var(--tinta-suave);font-weight:400}
+ul.p-lista .cie{color:var(--tinta-suave);font-family:monospace;
+                font-size:calc(var(--menudo)*var(--zoom)*.9)}
+ul.p-lista li.inactivo{color:var(--tinta-suave)}
+.ant-cat .cuantos{font-weight:400;opacity:.7}
+table.ant td.anyos{white-space:nowrap;font-family:monospace;
+                   font-size:calc(var(--menudo)*var(--zoom));
+                   color:var(--tinta);width:1%}
+table.ant td.cap{white-space:nowrap;color:var(--tinta-suave);
+                 font-size:calc(var(--menudo)*var(--zoom)*.92);width:1%}
+table.ant .veces{color:var(--tinta-suave);font-weight:400;
+                 font-size:calc(var(--menudo)*var(--zoom)*.85)}
+table.ant tr.plegada{display:none}
+table.ant tr.plegada.abierta{display:table-row}
+table.ant tr.mas-fila td{color:var(--tinta-suave);font-style:italic;
+                         cursor:pointer;border-bottom:none}
+table.ant tr.mas-fila td:hover{color:var(--express)}
+table.ant td.pico{padding:5px 2px;text-align:center;width:16px}
+table.ant .cie{color:var(--tinta-suave);font-family:monospace;
+               font-size:calc(var(--menudo)*var(--zoom)*.88)}
+ul.p-lista .mas{color:var(--tinta-suave);font-style:italic;list-style:none;
+                margin-left:-14px}
+
+.fichas{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));
+        gap:8px;margin:8px 0 4px}
+.ficha{border:1px solid var(--linea);border-top:3px solid var(--bien);
+       border-radius:4px;padding:8px 10px}
+.ficha.mal{border-top-color:var(--grave)}
+.f-nom{font-size:calc(var(--menudo)*var(--zoom)*.9);color:var(--tinta-suave);
+       text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.f-val{font-size:calc(var(--ficha)*var(--zoom));font-weight:700;line-height:1.15}
+.f-uni{font-size:calc(var(--menudo)*var(--zoom));font-weight:400;
+       color:var(--tinta-suave)}
+.f-fecha{font-size:calc(var(--menudo)*var(--zoom)*.85);color:var(--tinta-suave);
+         margin-top:3px}
+.f-mal{font-size:calc(var(--menudo)*var(--zoom)*.85);color:var(--grave);
+       font-weight:600;margin-top:1px}
+
+.p-pie{font-size:calc(var(--menudo)*var(--zoom)*.82);color:var(--tinta-suave);
+       border-top:1px solid var(--linea);margin-top:8px;padding-top:5px;
+       display:flex;justify-content:space-between;gap:12px}
+
+.p-modulos{border:1px solid var(--linea);border-radius:5px;padding:8px 13px;
+           margin-top:18px;font-size:calc(var(--menudo)*var(--zoom)*.85);
+           line-height:1.8;color:var(--tinta-suave)}
+.p-modulos .tit{font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+                color:var(--tinta-suave);
+                font-size:calc(var(--menudo)*var(--zoom)*.9);
+                cursor:pointer;user-select:none}
+.p-modulos .tit:hover{color:var(--express)}
+.p-modulos .tit .cuantos{font-weight:400;opacity:.7}
+.p-modulos .cuerpo{display:none;margin-top:7px;padding-top:6px;
+                   border-top:1px solid var(--linea)}
+.p-modulos .cuerpo.abierto{display:block}
+
+.vacio{color:var(--tinta-suave);font-style:italic;padding:7px 0}
+
+.cmt{border:1px solid var(--linea);border-radius:5px;margin-top:12px;
+     background:var(--papel-suave)}
+.cmt-cab{display:flex;align-items:baseline;gap:6px;padding:7px 12px;
+         border-bottom:1px solid var(--linea);flex-wrap:wrap}
+.cmt-cab b{font-size:calc(var(--menudo)*var(--zoom));flex:0 0 auto}
+.cmt-cuerpo{padding:10px 13px;white-space:pre-wrap;
+            font-size:calc(var(--base)*var(--zoom)*.94)}
+.cmt-firma{padding:4px 13px 7px;font-size:calc(var(--menudo)*var(--zoom)*.88);
+           color:var(--tinta-suave);font-style:italic;
+           border-top:1px dashed var(--linea)}
+.cmt-falta{font-size:calc(var(--menudo)*var(--zoom)*.85);color:var(--aviso);
+           font-style:italic;margin-left:8px;line-height:1.4}
+.cmt-cuerpo.propio{color:var(--tinta-suave);font-style:italic;
+                   font-size:calc(var(--base)*var(--zoom)*.9)}
+.bot.listo{border-color:var(--bien);color:var(--bien);font-weight:600;
+           animation:llama 1.4s ease-in-out 3}
+.bot.anulando{border-color:var(--grave);color:var(--grave)}
+@keyframes llama{0%,100%{box-shadow:0 0 0 0 rgba(26,122,74,0)}
+                 50%{box-shadow:0 0 0 4px rgba(26,122,74,.18)}}
+
+/* ══ LA POPUP DE LA CLAVE (P-H, 17/09) ══ */
+.k-fondo{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.55);
+         display:flex;justify-content:center;align-items:center;padding:20px}
+.k-caja{background:var(--papel);border:2px solid var(--seccion);border-radius:10px;
+        padding:20px 22px;width:100%;max-width:470px;
+        box-shadow:0 14px 44px rgba(0,0,0,.4)}
+.k-tit{font-size:calc(var(--seccion)*var(--zoom)*1.15);font-weight:700;
+       color:var(--seccion);margin-bottom:9px}
+.k-que{font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave);
+       line-height:1.6;margin-bottom:12px}
+.k-caja input{width:100%;padding:9px 11px;border:1px solid var(--linea);
+              border-radius:5px;background:var(--papel-suave);color:var(--tinta);
+              font-family:monospace;font-size:calc(var(--base)*var(--zoom));
+              box-sizing:border-box}
+.k-caja input:focus{outline:none;border-color:var(--seccion)}
+.k-aviso{font-size:calc(var(--menudo)*var(--zoom));color:var(--grave);
+         min-height:1.2em;margin-top:5px}
+.k-botones{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.k-bot{padding:7px 13px;border:1px solid var(--linea);border-radius:6px;
+       background:var(--papel);color:var(--tinta);cursor:pointer;
+       font-family:inherit;font-size:calc(var(--menudo)*var(--zoom))}
+.k-bot:hover:not(:disabled){border-color:var(--seccion)}
+.k-bot.k-ok{border-color:var(--bien);color:var(--bien);font-weight:600}
+.k-bot:disabled{opacity:.38;cursor:not-allowed}
+.k-donde{font-size:calc(var(--menudo)*var(--zoom)*.88);color:var(--tinta-suave);
+         margin-top:11px;padding-top:9px;border-top:1px solid var(--linea)}
+.cmt-cuerpo.falta{color:var(--aviso);font-style:italic}
+.cmt-espera{font-family:monospace;color:var(--seccion);
+            font-size:calc(var(--base)*var(--zoom)*.95);
+            display:inline-flex;align-items:center;gap:7px}
+.cmt-espera ._seg{font-weight:700}
+.cmt-espera ._reloj{display:inline-block;font-size:1.2em;
+                    animation:gira 1.1s linear infinite;
+                    transform-origin:50% 54%}
+@keyframes gira{to{transform:rotate(360deg)}}
+.cmt-cab .espacio{flex:1}
+.bot:disabled{opacity:.38;cursor:not-allowed}
+.cmt-cuerpo textarea{font-size:calc(var(--base)*var(--zoom)*.92)}
+
+/* ══ la medicación plegada (P-H, 17/09) ══ */
+table.med tr.plegada{display:none}
+table.med tr.plegada.abierta{display:table-row}
+table.med td.pico{padding:5px 2px;text-align:center}
+table.med .pl{cursor:pointer;color:var(--seccion);font-size:1.1em;
+              user-select:none;display:inline-block;width:14px}
+table.med .pl:hover{opacity:.65}
+table.med tr.cabeza td{border-top:1px solid var(--linea)}
+table.med .cuantas{color:var(--tinta-suave);
+                   font-size:calc(var(--menudo)*var(--zoom)*.88)}
+table.med .marcas{color:var(--tinta-suave);font-weight:400;
+                  font-size:calc(var(--menudo)*var(--zoom)*.9)}
+
+@media print{
+  /* los tres botones flotantes de MF — « apparaît artefact des 3
+     boutons du bandeau supérieur » (P-H, 17/09) */
+  #mf-barra,#mf-guardar,#mf-abrir,#mf-abeja,#mf-tip,#mf-aviso,
+  header[data-cabecera],.no-imprimir{display:none !important}
+  body{background:#fff;font-size:10.5pt}
+  main{max-width:100%;padding:0}
+  .p-sec,.x-sec{break-after:avoid}
+  /* el comentario, en el papel: sin botones, pero entero */
+  .cmt{break-inside:avoid;border-color:#bbb;background:#fafafa}
+  .cmt-cab{border-bottom-color:#bbb}
+  .cmt-firma{border-top-style:solid}
+  /* « à l'impression dépliée » (P-H, 17/09) : un médecin sur papier ne
+     peut pas cliquer. */
+  table.med tr.plegada,table.ant tr.plegada{display:table-row !important}
+  table.ant tr.mas-fila{display:none}
+  table.med td.pico{display:none}
+  table.med th:first-child{display:none}
+  .g-caja,.ficha,.v-linea,.p-caja,tr{break-inside:avoid}
+  .salto{break-before:always}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SIN CABECERA PROPIA (P-H, 17/09/2026)
+
+     « 📋 Sintético  Ana Gómez Ruiz ← c'est ça qu'il faut retirer. »
+
+     Tenía razón: la barra de MF ya lo dice todo —el título, los botones,
+     el paciente. Mi cabecera lo repetía dos líneas más abajo.
+
+     La versión, que vivía en su tooltip, baja al pie: ahí no molesta a
+     nadie y se imprime con el informe, que es donde sirve.
+     ══════════════════════════════════════════════════════════════════ -->
+
+<div id="elegir" class="no-imprimir"></div>
+<main id="hoja"></main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   INFORMES PARA EL MÉDICO — Salufolio
+   Versión 2026.09.17-23:06:25
+
+   « Un bouton — PAS l'informe — un résumé à l'écran à montrer au toubib
+     sans détours ni ménagements. »        — P-H, 19/07/2026, desde la UCE
+
+   Tres formas detrás de una sola puerta (P-H, 17/09):
+     ⚡ express     en la pantalla, para enseñarlo ahí mismo
+     📑 detallado   en papel, con las curvas
+     📄 sintético   en papel, sin ellas
+
+   ── LO QUE CAMBIA DE LA V1 ──
+     · nada en duro: colores, tamaños, umbrales y columnas en informe.js
+     · los textos en informe.idiomas.js, cuatro lenguas
+     · el prompt en su fichero — la regla del 11/08
+     · NADA DE UNA PERSONA DE VERDAD en el código
+     · LAS CURVAS SE DIBUJAN, no se capturan de un canvas: la V1 pedía
+       « abra primero la pestaña Curvas », y si no se hacía, el informe
+       salía con las imágenes rotas
+   ═══════════════════════════════════════════════════════════════════════ */
+const VERSION_PROGRAMA = SF_CONFIG.version;
+
+var FORMA = null;
+var DIAS  = 90;
+var ZOOM  = 1;
+var ANON  = { puesta:false, nivel:SF_CONFIG.anonimizacion.nivel_defecto };
+var _CURVAS = [];
+
+/* ── los textos ── */
+function t(k, v){
+  var o;
+  try{
+    var T = (typeof SF_TEXTOS!=='undefined' && SF_TEXTOS.textos) || {};
+    var lg = (typeof MF!=='undefined' && MF.idioma) ? MF.idioma() : 'es';
+    o = (T[lg] && T[lg][k]) || (T.es && T.es[k]) || k;
+  }catch(e){ o = k; }
+  var d = v || {};
+  return String(o).replace(/\{(\w+)\}/g, function(m,x){
+    return (d[x]!==undefined) ? d[x] : m; });
+}
+function tt(o){
+  if(!o) return '';
+  if(typeof o === 'string') return o;
+  var lg = (typeof MF!=='undefined' && MF.idioma) ? MF.idioma() : 'es';
+  return o[lg] || o.es || '';
+}
+function esc(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ══ LOS COLORES, desde la tabla ══ */
+function ponEstilo(){
+  var C = SF_CONFIG.colores, T = SF_CONFIG.tamanos, r = document.documentElement;
+  Object.keys(C).forEach(function(k){
+    if(k.charAt(0) !== '_') r.style.setProperty('--' + k.replace(/_/g,'-'), C[k]);
+  });
+  r.style.setProperty('--base',    T.base + 'px');
+  r.style.setProperty('--titulo',  T.titulo + 'px');
+  r.style.setProperty('--seccion', T.seccion + 'px');
+  r.style.setProperty('--menudo',  T.menudo + 'px');
+  r.style.setProperty('--ficha',   T.ficha + 'px');
+  r.style.setProperty('--zoom',    ZOOM);
+}
+function zoom(d){
+  var T = SF_CONFIG.tamanos;
+  ZOOM = Math.max(T.zoom_min, Math.min(T.zoom_max, ZOOM + d*T.zoom_paso));
+  document.documentElement.style.setProperty('--zoom', ZOOM);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LOS PUENTES (P-H, 17/09/2026)
+
+   MF.mesures() NO devuelve lo que hay en el .mf: lo aplana. Una línea
+   por VALOR, no por fecha:
+
+       { fecha, clave, valor, unidad, fuente, pdf }
+
+   Yo esperaba { date, vals:{…} } — la forma cruda del fichero. De ahí
+   todo: ni valores, ni rangos, ni tabla, ni curvas. MF ya había hecho
+   el trabajo, y yo lo pedía dos veces.
+
+   Aquí se reagrupan por fecha, que es como se leen: una analítica es
+   un día con sus valores dentro.
+   ══════════════════════════════════════════════════════════════════════ */
+var _PORFECHA = null;
+
+function mesures(){
+  if(_PORFECHA) return _PORFECHA;
+  var L = [];
+  try{ L = MF.mesures() || []; }catch(e){ return []; }
+  var por = {}, unidades = {};
+  L.forEach(function(x){
+    var f = x.fecha || x.date || '';
+    if(!f) return;
+    if(!por[f]) por[f] = { date:f, vals:{}, unidades:{},
+                           src:x.fuente||'', pdf_id:x.pdf||'' };
+    por[f].vals[x.clave] = x.valor;
+    if(x.unidad) por[f].unidades[x.clave] = x.unidad;
+    if(x.unidad) unidades[x.clave] = x.unidad;
+    if(!por[f].src && x.fuente) por[f].src = x.fuente;
+    if(!por[f].pdf_id && x.pdf) por[f].pdf_id = x.pdf;
+  });
+  _UNIDADES = unidades;
+  _PORFECHA = Object.keys(por).sort().map(function(f){ return por[f]; });
+  return _PORFECHA;
+}
+var _UNIDADES = {};
+
+/* la serie de un parámetro, tal como MF la da — con su roca madre */
+function serieBruta(k){
+  var L = [];
+  try{ L = MF.mesures() || []; }catch(e){ return []; }
+  return L.filter(function(x){ return x.clave === k && x.valor != null; })
+    .map(function(x){ return { x:x.fecha, y:x.valor, src:x.fuente, pdf_id:x.pdf }; })
+    .sort(function(a,b){ return String(a.x).localeCompare(String(b.x)); });
+}
+
+function eventos(){ try{ return MF.eventos()||[]; }catch(e){ return []; } }
+function medicam(){ try{ return MF.medicamentos()||[]; }catch(e){ return []; } }
+function datos(){   try{ return MF.datos()||null;   }catch(e){ return null; } }
+
+function serieDe(k){ return serieBruta(k); }
+function nombrePdf(id){
+  if(!id) return '';
+  if(ANON.puesta && ANON.nivel === 'completa') return '';
+  if(String(id).indexOf('PDF') !== 0) return String(id).split('/').pop();
+  try{
+    var d = datos();
+    var A = (d && d.pdfs && d.pdfs.archivos) || {};
+    return String(A[id] || id).split('/').pop();
+  }catch(e){ return String(id); }
+}
+function desdeDias(n){
+  return new Date(Date.now() - (n||DIAS)*86400000).toISOString().slice(0,10);
+}
+/* ══════════════════════════════════════════════════════════════════════
+   LAS FECHAS SE LEEN COMO EN EL PAPEL (P-H, 17/09/2026)
+
+   « Les dates sur le papier dd-mm-aaaa, on les respecte ? — Bien sûr
+     on ne touche pas au fichier, seulement l'affichage. »
+
+   El fichero las guarda AAAA-MM-DD, y está bien: se ordenan solas y
+   nadie confunde el 3 de abril con el 4 de marzo. Pero un informe para
+   el médico no es un fichero — el papel español dice 12/08/2026.
+
+   Dentro, la regla del .mf. Fuera, la costumbre de quien lee.
+   ══════════════════════════════════════════════════════════════════════ */
+function fpapel(iso){
+  if(!iso) return '';
+  var s = String(iso);
+  if(!/^\d{4}-\d{2}-\d{2}/.test(s)) return s;
+  return s.slice(8,10) + '/' + s.slice(5,7) + '/' + s.slice(0,4);
+}
+
+function fdma(iso){ return iso ? (iso.slice(8,10)+'/'+iso.slice(5,7)) : '?'; }
+function fmd(iso){  return iso ? (iso.slice(5,7)+'-'+iso.slice(8,10)) : '?'; }
+function redondo(v){
+  if(typeof v !== 'number') return v;
+  return Math.abs(v) >= 100 ? Math.round(v) : Math.round(v*100)/100;
+}
+
+/* ── el glosario: etiqueta, unidad, rango ── */
+function param(k){
+  try{
+    var G = (typeof SF_GLOSARIO !== 'undefined') ? SF_GLOSARIO : null;
+    var e = G && (G[k] || (G.parametros && G.parametros[k]));
+    if(e) return { label: tt(e.nombre) || e.label || k,
+                   unit: e.unidad || e.unit || '',
+                   lo: (e.min!=null?e.min:e.lo), hi: (e.max!=null?e.max:e.hi) };
+  }catch(e){}
+  mesures();                       /* llena _UNIDADES */
+  return { label:k, unit:_UNIDADES[k] || '', lo:null, hi:null };
+}
+function fuera(k, v){
+  if(typeof v !== 'number') return false;
+  var p = param(k);
+  return (p.lo!=null && v<p.lo) || (p.hi!=null && v>p.hi);
+}
+function refTexto(p){
+  if(p.lo==null && p.hi==null) return '';
+  return (p.lo!=null?p.lo:'') + '–' + (p.hi!=null?p.hi:'');
+}
+
+/* ══ LO QUE SE MUEVE ══ */
+function loQueSeMueve(cuantos, dias){
+  var U = SF_CONFIG.umbrales, lim = desdeDias(dias), out = [], claves = {};
+  mesures().forEach(function(m){
+    if((m.date||'') < lim) return;
+    Object.keys(m.vals||{}).forEach(function(k){ claves[k]=1; });
+  });
+  Object.keys(claves).forEach(function(k){
+    var todo = serieDe(k).filter(function(p){ return typeof p.y === 'number'; });
+    var s = todo.filter(function(p){ return p.x >= lim; });
+    if(s.length < U.puntos_minimos) return;
+    var v0 = s[0].y, v1 = s[s.length-1].y;
+    if(!v0) return;
+    var pct = (v1-v0)/Math.abs(v0);
+    if(Math.abs(pct) < U.movimiento_minimo) return;
+    var p = param(k);
+    out.push({ k:k, label:p.label, unit:p.unit, lo:p.lo, hi:p.hi,
+               v0:v0, v1:v1, pct:pct, d0:s[0].x, d1:s[s.length-1].x,
+               fuera:fuera(k,v1), serie:todo });
+  });
+  out.sort(function(a,b){ return Math.abs(b.pct)-Math.abs(a.pct); });
+
+  /* ══ si nada se mueve lo bastante, se enseñan las series más llenas
+     (P-H, 17/09) : « curvas en evolución — rien ! ». Un informe sin
+     ninguna curva no dice nada; más vale la que hay. ══ */
+  if(!out.length){
+    Object.keys(claves).forEach(function(k){
+      var s = serieDe(k).filter(function(p){ return typeof p.y === 'number'; });
+      if(s.length < U.puntos_minimos) return;
+      var p = param(k);
+      out.push({ k:k, label:p.label, unit:p.unit, lo:p.lo, hi:p.hi,
+                 v0:s[0].y, v1:s[s.length-1].y,
+                 pct:(s[s.length-1].y - s[0].y)/Math.abs(s[0].y||1),
+                 d0:s[0].x, d1:s[s.length-1].x,
+                 fuera:fuera(k, s[s.length-1].y), serie:s });
+    });
+    out.sort(function(a,b){ return b.serie.length - a.serie.length; });
+  }
+  return out.slice(0, cuantos);
+}
+
+/* ══ LA CURVA — dibujada, nunca capturada ══ */
+function curvaSVG(c, alto){
+  /* mb: el sitio de abajo para las fechas inclinadas — la línea de
+     « Fuentes » las tapaba (P-H, 17/09) */
+  var W = 720, H = alto || 205, mx = 44, my = 14, mb = 42;
+  var s = c.serie;
+  if(s.length < 2) return '';
+  var ys = s.map(function(p){ return p.y; });
+  var lo = Math.min.apply(null, ys), hi = Math.max.apply(null, ys);
+  if(c.lo != null) lo = Math.min(lo, c.lo);
+  if(c.hi != null) hi = Math.max(hi, c.hi);
+  var m = (hi-lo)*0.12 || 1;
+  hi += m; lo = Math.max(0, lo - m);      /* el suelo a cero */
+  var X = function(i){ return mx + i*(W-mx-14)/(s.length-1); };
+  var Y = function(v){ return my + (H-my-mb)*(1-(v-lo)/(hi-lo||1)); };
+  var C = SF_CONFIG.colores;
+
+  var h = '<svg class="curva" viewBox="0 0 '+W+' '+H+'">';
+  if(c.lo!=null && c.hi!=null)
+    h += '<rect x="'+mx+'" y="'+Y(c.hi).toFixed(1)+'" width="'+(W-mx-14)
+       + '" height="'+Math.abs(Y(c.lo)-Y(c.hi)).toFixed(1)+'" fill="'+C.curva_fondo+'"/>';
+  [0,1,2,3,4].forEach(function(i){
+    var v = lo + (hi-lo)*i/4;
+    h += '<line x1="'+mx+'" y1="'+Y(v).toFixed(1)+'" x2="'+(W-14)+'" y2="'+Y(v).toFixed(1)
+       + '" stroke="'+C.linea+'" stroke-width=".5"/>'
+       + '<text x="'+(mx-5)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end" font-size="9" fill="'
+       + C.tinta_suave+'">'+redondo(v)+'</text>';
+  });
+  /* ══ LA CURVA SE SUAVIZA (P-H, 17/09) ══
+     « Lisser les courbes, plus beau. » Una polilínea de ángulos rectos
+     no engaña a nadie, pero cansa la vista. Se pasa una curva de Bézier
+     por los puntos — los valores no se tocan, sólo el trazo entre
+     ellos. Los círculos siguen marcando dónde está el dato de verdad. */
+  var pts = s.map(function(p,i){ return { x:X(i), y:Y(p.y) }; });
+  var d = 'M' + pts[0].x.toFixed(1) + ',' + pts[0].y.toFixed(1);
+  for(var i = 0; i < pts.length - 1; i++){
+    var p0 = pts[i>0 ? i-1 : 0], p1 = pts[i], p2 = pts[i+1];
+    var p3 = pts[i+2 < pts.length ? i+2 : i+1];
+    var k = 0.19;                    /* cuanto más alto, más redondo */
+    var c1x = p1.x + (p2.x - p0.x) * k, c1y = p1.y + (p2.y - p0.y) * k;
+    var c2x = p2.x - (p3.x - p1.x) * k, c2y = p2.y - (p3.y - p1.y) * k;
+    d += ' C' + c1x.toFixed(1) + ',' + c1y.toFixed(1)
+       + ' ' + c2x.toFixed(1) + ',' + c2y.toFixed(1)
+       + ' ' + p2.x.toFixed(1) + ',' + p2.y.toFixed(1);
+  }
+  h += '<path fill="none" stroke="'+C.curva+'" stroke-width="1.8" '
+     + 'stroke-linecap="round" stroke-linejoin="round" d="'+d+'"/>';
+  s.forEach(function(p,i){
+    h += '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(p.y).toFixed(1)+'" r="2.6" fill="'
+       + C.curva_punto+'"/>';
+  });
+  var cada = Math.max(1, Math.ceil(s.length/10));
+  s.forEach(function(p,i){
+    if(i % cada && i !== s.length-1) return;
+    var yf = H - mb + 13;
+    h += '<text x="'+X(i).toFixed(1)+'" y="'+yf+'" font-size="7" '
+       + 'text-anchor="end" fill="'+C.tinta_suave+'" '
+       + 'transform="rotate(-42 '+X(i).toFixed(1)+','+yf+')">'
+       + (p.x||'').slice(8,10)+'/'+(p.x||'').slice(5,7)+'/'+(p.x||'').slice(2,4)+'</text>';
+  });
+  h += '</svg>';
+  return h;
+}
+
+function lineaFuentes(c){
+  var U = SF_CONFIG.umbrales, vus = [], vistos = {};
+  c.serie.forEach(function(p){
+    var id = p.pdf_id || p.pdf;
+    if(!id || vistos[id]) return;
+    vistos[id] = 1; vus.push(id);
+  });
+  if(!vus.length) return '';
+  var m = vus.slice(0, U.fuentes_max).map(function(x){ return esc(x); }).join(' · ');
+  var mas = vus.length - U.fuentes_max;
+  return '<div class="g-fuentes">' + t('fuentes') + ': ' + m
+       + (mas > 0 ? ' (+' + mas + ')' : '') + '</div>';
+}
+
+function bloqueCurva(c, conComentario){
+  var p = param(c.k), r = refTexto(p);
+  return '<div class="g-caja"><div class="g-tit">' + esc(c.label)
+    + (r ? ' <span class="ref">- ' + t('col_ref') + ' ' + r + ' · ' + t('historico')
+         + '</span>' : ' <span class="ref">· ' + t('historico') + '</span>')
+    + '</div>' + curvaSVG(c) + lineaFuentes(c) + '</div>'
+    + (conComentario ? comentarioDeCurva(c) : '');
+}
+
+/* ══ CADA CURVA CON SU COMENTARIO DEBAJO (P-H, 17/09) ══
+   « Au lieu de rassembler tous les commentaires, mets le commentaire
+     associé à chaque courbe sous le cadre de la courbe. »
+
+   Tenía razón: un comentario a tres párrafos de su curva obliga a subir
+   y bajar los ojos. Debajo, se lee de un tirón. */
+function comentarioDeCurva(c){
+  var dias = Math.round((new Date(c.d1) - new Date(c.d0))/86400000);
+  var fl = c.pct > 0 ? '▲' : '▼';
+  return '<div class="v-linea"><b>' + esc(c.label) + '</b> : ' + fl + ' <b>'
+    + Math.abs(Math.round(c.pct*100)) + '%</b> ' + t('en_dias',{n:dias}) + ' — '
+    + redondo(c.v0) + ' → <b>' + redondo(c.v1) + ' ' + esc(c.unit) + '</b>'
+    + (c.fuera ? ' · <b>' + t('fuera_rango')
+       + (refTexto(c) ? ' (' + t('col_ref') + ' ' + refTexto(c) + ')' : '') + '</b>' : '')
+    + '. <span class="nota">' + t('vigilar_dice') + '</span></div>';
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL EXPRESS — lo que se enseña en la pantalla
+   ══════════════════════════════════════════════════════════════════════ */
+function xSituacion(){
+  var d = datos(), txt = (d && d.situacion) || '';
+  return '<div class="x-sec" style="color:var(--express)">📝 ' + t('sec_situacion')
+    + ' <span class="sub">— ' + t('situacion_sub') + '</span></div>'
+    + '<textarea id="situ" rows="2" placeholder="' + esc(t('situ_vacia')) + '" '
+    + 'onblur="guardaSituacion()">' + esc(txt) + '</textarea>'
+    + '<div class="guardado no-imprimir" id="situ-ok"></div>';
+}
+function guardaSituacion(){
+  var d = datos(); if(!d) return;
+  d.situacion = document.getElementById('situ').value;
+  MF.tocado();
+  var z = document.getElementById('situ-ok');
+  if(z){ z.textContent = t('guardado');
+         setTimeout(function(){ z.textContent=''; }, 2000); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL PRINCIPIO, NO LA CAJA (P-H, 17/09/2026)
+
+   « RIVAROXABAN, faut faire quelque chose ! Garder le dernier. »
+
+   El mismo medicamento se escribe de veinte maneras según el papel:
+
+       Rivaroxaban
+       RIVAROXABAN 20 MG / 28 COMPRIMIDOS RECUBIERTOS CON PELICULA
+       XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA (BAYER)
+
+   Yo cortaba a catorce letras — demasiado: el dosaje y la presentación
+   entraban en la comparación y cada papel parecía un tratamiento
+   distinto. El nombre acaba donde empieza la cifra.
+   ══════════════════════════════════════════════════════════════════════ */
+function principioDe(n){
+  var clave = _pela(n);
+  if(!clave) return '';
+  /* ══ LA TABLA SABE QUE XARELTO ES RIVAROXABÁN (P-H, 17/09/2026) ══
+     « Les médicaments équivalents ? Lixben, donepezilo, Xarelto,
+       rivaroxaban — on les regroupe sous le nom du principe actif. »
+
+     La tabla existe desde el 07/09: 240 nombres para un centenar de
+     tratamientos, construida con los medicamentos de Ana y de P-H.
+     Yo cortaba a la primera palabra, y « Xarelto » y « Rivaroxaban »
+     hacían dos líneas de lo mismo. */
+  var p = _buscaPrincipio(clave);
+  return p || clave;
+}
+
+/* la primera palabra, normalizada — es la clave de búsqueda */
+function _pela(n){
+  return String(n||'').toUpperCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/\(.*?\)/g, ' ')
+    .replace(/[^A-Z0-9 ]/g,' ')
+    .trim().split(/\s+/)[0] || '';
+}
+
+/* ¿esta palabra es un principio, o el nombre comercial de uno? */
+var _CACHE_PR = null;
+function _buscaPrincipio(clave){
+  if(typeof SF_PRINCIPIOS === 'undefined') return '';
+  if(!_CACHE_PR){
+    _CACHE_PR = {};
+    var P = SF_PRINCIPIOS.principios || {};
+    Object.keys(P).forEach(function(k){
+      var e = P[k] || {};
+      var nom = (e.nombre || k).toUpperCase();
+      _CACHE_PR[_pela(k)] = nom;
+      (e.comerciales || []).forEach(function(c){
+        _CACHE_PR[_pela(c)] = nom;
+      });
+    });
+  }
+  return _CACHE_PR[clave] || '';
+}
+
+/* los nombres comerciales que se han visto de este principio */
+function marcasDe(lista){
+  var pr = principioDe((lista[0] || {}).nombre || '');
+  var vistas = {}, out = [];
+  lista.forEach(function(m){
+    var n = String(m.nombre || m.nom || '').trim();
+    if(!n) return;
+    var primera = _pela(n);
+    /* si la primera palabra no es el principio, es una marca */
+    if(primera && primera !== _pela(pr) && !vistas[primera]){
+      vistas[primera] = 1;
+      out.push(n.split(/\s+/)[0]);
+    }
+  });
+  return out;
+}
+
+function xTratamiento(){
+  /* ══ LO QUE SE TOMA HOY, UNA VEZ CADA COSA (P-H, 17/09) ══
+     « Éviter les répétitions : dans l'exemple j'ai sept fois rivaroxaban
+       à des dates différentes. À ce niveau ce sont les courantes qui
+       intéressent. »
+
+     Cada documento vuelve a decir el mismo tratamiento. Siete líneas de
+     rivaroxabán no son siete tratamientos: son siete veces el mismo,
+     escrito en siete papeles. Se queda la más reciente. */
+  var U = SF_CONFIG.umbrales;
+  var hoy = new Date().toISOString().slice(0,10);
+  /* « et tout ce qui est antérieur à trois mois » (P-H, 17/09) : lo que
+     se recetó hace un año y no se ha vuelto a ver no es el tratamiento
+     de hoy. La borne vive en la tabla. */
+  var lim = U.tratamiento_meses
+          ? new Date(Date.now() - U.tratamiento_meses*30.5*86400000)
+              .toISOString().slice(0,10)
+          : '';
+  var vistos = {}, act = [], mat = {};
+
+  medicam().slice().sort(function(a,b){
+    return String(b.desde||b.date_debut||b.date||'')
+      .localeCompare(String(a.desde||a.date_debut||a.date||''));
+  }).forEach(function(m){
+    var n = (m.nombre || m.nom || '').trim();
+    if(!n) return;
+    if(/pants|panal|pañal|oxígeno|oxigeno|silla|andador|colchón|colchon|medias|espesante/i.test(n)){
+      if(!mat[n]) mat[n] = 1;
+      return;
+    }
+    if(m.hasta && m.hasta < hoy) return;
+    if(lim && (m.desde || m.date_debut || m.date || '') < lim) return;
+    var clave = principioDe(n);
+    if(vistos[clave]) return;
+    vistos[clave] = 1;
+    act.push(m);
+  });
+  act = act.slice(0, U.medicamentos_max);
+  var matL = Object.keys(mat).slice(0, U.material_max);
+  if(!act.length && !matL.length) return '';
+
+  var h = '<div class="x-sec" style="color:var(--express)">💊 ' + t('sec_tratamiento')
+        + ' <span class="sub">(' + t('tratamiento_sub') + ')</span></div><ul class="x-lista">';
+  act.forEach(function(m){
+    var ini = m.desde || m.date_debut || m.date || '';
+    var fin = m.hasta || m.date_fin || '';
+    var d = m.dosis || m.dose || '';
+    var p = m.frecuencia || m.pauta || m.frequence || '';
+    /* ══ EL PRINCIPIO Y EL FIN (P-H, 17/09) ══
+       « Ajouter la date de fin et, s'il existe, le commentaire. »
+       Un tratamiento sin fecha de fin es crónico — decirlo vale más que
+       dejar el hueco: el médico sabe entonces que no se olvidó. */
+    var fechas = '<span class="f">' + esc(fpapel(ini)) + '</span>'
+      + (fin ? ' <span class="hasta">→ ' + esc(fpapel(fin)) + '</span>'
+             : ' <span class="cronico">→ ' + t('sin_fin') + '</span>');
+    h += '<li>' + (ini ? fechas + ' — ' : '')
+       + '<b>' + esc(m.nombre || m.nom) + '</b>'
+       + (d ? ' — ' + esc(d) : '') + (p ? ' · ' + esc(p) : '')
+       + (m.condicion ? ' <span class="cond">· ' + esc(m.condicion) + '</span>' : '')
+       + (m.momentos_dia ? ' <span class="cond">' + iconosMomentos(m.momentos_dia)
+                         + '</span>' : '')
+       + '</li>';
+  });
+  h += '</ul>';
+  if(matL.length)
+    h += '<div class="x-mat">🩹 ' + t('material') + ': '
+       + matL.map(esc).join(' · ') + '</div>';
+  return h;
+}
+
+var ICO_MOM = ['\ud83c\udf05','\u2615','\ud83c\udf7d','\ud83c\udf06','\ud83c\udf19'];
+function iconosMomentos(v){
+  var p = String(v||'').split('-');
+  return ICO_MOM.filter(function(x,i){ return p[i] === '1'; }).join('');
+}
+
+function xEventos(){
+  var U = SF_CONFIG.umbrales;
+  var E = eventos().slice()
+    .sort(function(a,b){ return String(b.date||b.fecha).localeCompare(String(a.date||a.fecha)); })
+    .slice(0, U.eventos_max);
+  if(!E.length) return '';
+  var h = '<div class="x-sec" style="color:var(--express)">📅 ' + t('sec_eventos')
+        + '</div><ul class="x-lista">';
+  E.forEach(function(e){
+    var ti = e.title || e.titulo || '';
+    var ic = /urgenc|ingres/i.test(e.type||e.tipo||'') ? '🚨'
+           : /analit|analít|laborat/i.test(ti) ? '⚠️'
+           : /resumida|historia/i.test(ti) ? '📋' : '';
+    /* ══ ¿DÓNDE, Y CON QUIÉN? (P-H, 17/09) ══
+       « Pour les consultas, préciser où ? Magdalena, et le médecin si
+         possible. » Una consulta sin sitio no se puede volver a pedir,
+         y un médico sin nombre no se puede volver a ver. */
+    var donde = [];
+    if(e.centro)     donde.push(e.centro);
+    if(e.servicio)   donde.push(e.servicio);
+    if(!donde.length && (e.fuente || e.src)) donde.push(e.fuente || e.src);
+    var quien = e.medico || e.prescriptor || e.firmante || '';
+    var cola = donde.join(' — ') + (quien ? (donde.length?' · ':'') + quien : '');
+    h += '<li><span class="f">' + esc(fpapel(e.date||e.fecha||'')) + '</span> — '
+       + (ic ? ic + ' ' : '') + esc(ti)
+       + (cola ? ' <span class="donde">· ' + esc(fuenteVisible(cola)) + '</span>' : '')
+       + '</li>';
+  });
+  return h + '</ul>';
+}
+
+function xFueraTabla(){
+  var lim = desdeDias(DIAS), ultimos = {}, previos = {};
+  mesures().forEach(function(m){
+    Object.keys(m.vals||{}).forEach(function(k){
+      if((m.date||'') < lim) return;
+      if(!ultimos[k] || m.date > ultimos[k].date)
+        ultimos[k] = { v:m.vals[k], date:m.date };
+    });
+  });
+  Object.keys(ultimos).forEach(function(k){
+    var s = serieDe(k).filter(function(p){ return p.x < ultimos[k].date; });
+    if(s.length) previos[k] = s[s.length-1];
+  });
+
+  var malos = Object.keys(ultimos).filter(function(k){
+    return fuera(k, ultimos[k].v); });
+
+  var h = '<div class="x-sec" style="color:var(--grave)">🔴 ' + t('sec_fuera')
+        + ' <span class="sub">— ' + t('ultimos', {n:DIAS}) + '</span></div>';
+  if(!malos.length) return h + '<div class="vacio">' + t('nada_fuera') + '</div>';
+
+  h += '<table class="x-tab"><thead><tr>'
+     + '<th>' + t('col_param') + '</th><th>' + t('col_fecha') + '</th>'
+     + '<th>' + t('col_anterior') + '</th><th>' + t('col_valor') + '</th>'
+     + '<th>' + t('col_ref') + '</th></tr></thead><tbody>';
+  malos.forEach(function(k){
+    var p = param(k), u = ultimos[k], a = previos[k];
+    var flecha = '';
+    if(a && typeof a.y === 'number' && typeof u.v === 'number')
+      flecha = u.v > a.y ? '↗' : (u.v < a.y ? '↘' : '→');
+    h += '<tr><td>' + esc(p.label) + '</td>'
+       + '<td>' + fmd(u.date) + '</td>'
+       + '<td class="ant">' + (a ? flecha + ' ' + redondo(a.y) + ' (' + fmd(a.x) + ')' : '—') + '</td>'
+       + '<td class="val">' + redondo(u.v) + ' ' + esc(p.unit) + '</td>'
+       + '<td class="ref">' + refTexto(p) + '</td></tr>';
+  });
+  return h + '</tbody></table>';
+}
+
+function xVigilar(){
+  var F = SF_CONFIG.formas.express;
+  var dias = _VIGILAR_DIAS || F.dias_vigilar;
+  var top = loQueSeMueve(F.curvas, dias);
+  _CURVAS = top;
+  var h = '<div class="x-sec" style="color:var(--grave)">📉 ' + t('sec_vigilar')
+        + ' <span class="sub">— ' + t('vigilar_sub', {n:dias}) + '</span></div>';
+  /* « presentamos » en vez de un enunciado seco: se dice lo que se hace */
+  if(!top.length) return h + '<div class="vacio">' + t('nada_curvas') + '</div>';
+  top.forEach(function(c){ h += bloqueCurva(c, true); });
+  h += losQueNoEstan(top);
+  return h;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LO QUE NO SE ENSEÑA, SE NOMBRA (P-H, 17/09/2026)
+
+   « C'est un rapport express. Demain je le mets sur le bureau du
+     médecin ; il saura, sans que je le lui dise, qu'il existe un
+     rapport plus détaillé, et il me le demandera peut-être — dans ce
+     cas je le sors de ma carpeta et je le lui montre. »
+
+   Es fino, y cambia lo que el express es: ya no esconde, ANUNCIA.
+
+   Y resuelve algo que me preocupaba: un valor fuera de rango que NO se
+   mueve no salía nunca. Una creatinina quieta en 1,4 inquieta más que
+   un colesterol que oscila dentro de sus límites. Ahora se nombra,
+   aunque no tenga curva.
+
+   Sólo los fuera de rango: son los únicos que merecen molestar.
+   ══════════════════════════════════════════════════════════════════════ */
+function losQueNoEstan(mostrados){
+  var lim = desdeDias(DIAS), ultimos = {};
+  mesures().forEach(function(m){
+    if((m.date||'') < lim) return;
+    Object.keys(m.vals||{}).forEach(function(k){
+      if(!ultimos[k] || m.date > ultimos[k].date)
+        ultimos[k] = { v:m.vals[k], date:m.date };
+    });
+  });
+  var yaEstan = {};
+  (mostrados||[]).forEach(function(c){ yaEstan[c.k] = 1; });
+
+  var otros = Object.keys(ultimos)
+    .filter(function(k){ return !yaEstan[k] && fuera(k, ultimos[k].v); })
+    .map(function(k){ return param(k).label; });
+
+  if(!otros.length) return '';
+  return '<div class="x-otros">'
+    + '<b>⚠ ' + t('otros_fuera', {n:otros.length}) + '</b><br>'
+    + esc(otros.join(' · '))
+    + '<div class="x-otros-pie">' + t('hay_detallado') + '</div></div>';
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LOS INFORMES IMPRESOS
+   ══════════════════════════════════════════════════════════════════════ */
+function nombreVisible(){
+  var p = MF.paciente() || {};
+  var e = p.etiqueta || p.matricula || '';
+  if(!ANON.puesta) return e;
+  return e.replace(/,/g,' ').split(/\s+/).filter(function(w){ return w.length>1; })
+    .map(function(w){ return w[0].toUpperCase(); }).join('') || 'X';
+}
+function sipVisible(){
+  var p = MF.paciente() || {};
+  return p.sip || '';
+}
+function fuenteVisible(s){
+  if(ANON.puesta && ANON.nivel === 'completa') return '';
+  return s || '';
+}
+
+/* ══ EL ICONO DE UNA SECCIÓN, SIN TROPEZAR (P-H, 17/09/2026) ══
+   « Ça ne m'affiche plus rien. » — SF_CONFIG.secciones.antecedentes no
+   existía: yo había rehecho la tabla sobre la V1 y la entrada se quedó
+   fuera. Leer un campo ausente tira todo el programa.
+
+   Ahora se pregunta con cuidado: una tabla incompleta hace un informe
+   sin icono, no una página en blanco. */
+function ico(k){
+  try{ return (SF_CONFIG.secciones[k] || {}).icono || ''; }catch(e){ return ''; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL LOGO — UNA SOLA FUNCIÓN (P-H, 17/09/2026)
+
+   « Écris une fonction write logo ! »  Y: « On garde le logo original
+     que je t'ai envoyé, mais on l'agrandit dans le détaillé et le
+     synthétique. Ajoute-le dans express, plus petit. »
+
+   Es el blason_claro.svg de P-H, dibujado trazo a trazo en vez de
+   cargado: así queda vectorial en el PDF y no se pixela nunca — y no
+   hace falta un fichero más.
+
+   El hexágono de fuera es la casa; el de dentro, el expediente; el
+   punto en el centro, LA PERSONA.
+   ══════════════════════════════════════════════════════════════════════ */
+function escribeLogo(alto, conLema){
+  var h = alto || 54;
+  var k = h / 170;
+  var W = 560;
+  return '<svg class="logo" viewBox="0 0 ' + W + ' 170" '
+    + 'style="height:' + h + 'px;width:' + (W*k).toFixed(0) + 'px" '
+    + 'xmlns="http://www.w3.org/2000/svg">'
+
+    /* ── el blasón: la casa, el expediente, y la persona en el centro ── */
+    + '<g transform="translate(14,10) scale(0.62)">'
+    + '<polygon points="220,120 170,207 70,207 20,120 70,33 170,33" fill="none" '
+    + 'stroke="#1e7a46" stroke-width="11" stroke-linejoin="round"/>'
+    + '<polygon points="168,148 120,175 72,148 72,92 120,65 168,92" fill="none" '
+    + 'stroke="#4a8fe8" stroke-width="8.5" stroke-linejoin="round"/>'
+    + '<circle cx="120" cy="120" r="12" fill="#1e7a46"/></g>'
+
+    /* ── « Salu » en negro, « folio » en azul cursiva (P-H, 17/09) ── */
+    + '<text x="178" y="92" font-family="Georgia,\'Times New Roman\',serif" '
+    + 'font-size="54" letter-spacing="2">'
+    + '<tspan font-weight="bold" fill="#1a1a14">Salu</tspan>'
+    + '<tspan font-style="italic" fill="#1a6abf">folio</tspan></text>'
+
+    /* ── el © debajo, si hay sitio ── */
+    + (conLema !== false
+       ? '<text x="181" y="124" font-family="Georgia,serif" font-size="16" '
+       + 'font-style="italic" letter-spacing="1" fill="#667a6d">'
+       + 'el expediente que se explica solo</text>'
+       + '<text x="181" y="146" font-family="Georgia,serif" font-size="13" '
+       + 'letter-spacing=".5" fill="#8a9a90">'
+       + '\u00a9 2026 Pierre-Henri Giraud \u00b7 GNU GPL v3</text>'
+       : '')
+    + '</svg>';
+}
+
+function pCabecera(){
+  var I = SF_CONFIG.identidad, F = SF_CONFIG.formas[FORMA];
+  var M = mesures(), E = eventos();
+  var fechas = {}; M.forEach(function(m){ if(m.date) fechas[m.date]=1; });
+  var d0 = M.length ? M[0].date : '', d1 = M.length ? M[M.length-1].date : '';
+  return '<div class="p-cab"><div class="p-logo">'
+    + escribeLogo(62)
+    + '<div class="p-tipo">' + tt(F.titulo) + '</div></div>'
+    + '<div class="p-datos">'
+    + '<div>' + t('paciente') + ': <b>' + esc(nombreVisible()) + '</b></div>'
+    /* ══ EL SIP (P-H, 17/09/2026) ══
+       « Il lui faudra le SIP s'il veut retrouver. » Es el único número
+       que abre el expediente en Abucasis. Sin él, el informe se lee
+       pero no lleva a ninguna parte.
+       Anonimizado, no se pone: es lo que se quería ocultar. */
+    + (!ANON.puesta && sipVisible()
+       ? '<div>SIP: <b>' + esc(sipVisible()) + '</b></div>' : '')
+    + '<div>' + t('generado') + ': ' + new Date().toLocaleDateString() + '</div>'
+    + '<div>' + t('periodo') + ': ' + esc(fpapel(d0)) + ' → ' + esc(fpapel(d1)) + '</div>'
+    + '<div>' + t('datos') + ': ' + Object.keys(fechas).length + ' ' + t('fechas')
+    + ' · ' + E.length + ' ' + t('eventos') + '</div>'
+    + '<div>' + t('autor') + ': ' + esc(I.autor) + '</div>'
+    + (I.doi ? '<div>DOI: ' + esc(I.doi) + '</div>' : '')
+    + '<div class="p-aviso">⚠ ' + tt(I.aviso) + '</div>'
+    + (ANON.puesta ? '<div class="p-aviso">⚠ ' + t('anon_hecho') + '</div>' : '')
+    + '</div></div>';
+}
+
+function pAnamnesis(){
+  var F = SF_CONFIG.formas[FORMA];
+  var M = mesures(), fechas = {};
+  M.forEach(function(m){ if(m.date) fechas[m.date]=1; });
+  return '<div class="p-caja"><div class="tit">' + t('sec_anamnesis') + '</div>'
+    /* « la répétition du nom est peut-être superflue » (P-H, 17/09) —
+       lo era: ya está en la cabecera, dos líneas más arriba. */
+    + t('anamnesis', { f: Object.keys(fechas).length,
+                       e: eventos().length,
+                       m: medicam().length,
+                       meses: F.meses })
+    + pFueraLista() + '</div>';
+}
+
+function pFueraLista(){
+  var ultimos = {};
+  mesures().forEach(function(m){
+    Object.keys(m.vals||{}).forEach(function(k){
+      if(!ultimos[k] || m.date > ultimos[k].date)
+        ultimos[k] = { v:m.vals[k], date:m.date };
+    });
+  });
+  var malos = Object.keys(ultimos).filter(function(k){ return fuera(k, ultimos[k].v); });
+  if(!malos.length) return '<div class="vacio">' + t('nada_fuera') + '</div>';
+  var h = '<div class="p-fuera">⚠ ' + t('sec_fuera_lista', {n:malos.length})
+        + '</div><ul class="p-lista">';
+  malos.forEach(function(k){
+    var p = param(k);
+    h += '<li>' + esc(p.label) + ': ' + redondo(ultimos[k].v) + ' ' + esc(p.unit)
+       + ' ⚠ (' + t('col_ref').replace('.','') + ': ' + refTexto(p) + ')</li>';
+  });
+  return h + '</ul>';
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LAS TABLAS SE ORDENAN AL TOCAR SU TÍTULO (P-H, 17/09/2026)
+
+   « Un click sur titre de colonne ordonne dans un sens, autre click
+     dans l'autre sens. »
+
+   Vale para las dos tablas del informe detallado: la medicación y la
+   síntesis cronológica. Los números se ordenan como números, las
+   fechas como fechas, y el resto por su letra.
+   ══════════════════════════════════════════════════════════════════════ */
+var _ORDEN = {};          /* por tabla: { col, sentido } */
+
+function ordenaTabla(cual, col){
+  var o = _ORDEN[cual] || {};
+  _ORDEN[cual] = { col: col, sentido: (o.col === col && o.sentido === 1) ? -1 : 1 };
+  pinta();
+}
+
+/* el <th> que se puede tocar */
+function th(cual, col, texto){
+  var o = _ORDEN[cual] || {};
+  var esta = (o.col === col);
+  return '<th' + (esta ? ' class="orden"' : '')
+    + ' onclick="ordenaTabla(\'' + cual + '\',' + col + ')">'
+    + esc(texto) + '<span class="fl">'
+    + (esta ? (o.sentido === 1 ? '▲' : '▼') : '▲▼') + '</span></th>';
+}
+
+/* y el orden que se aplica a las filas */
+function aplicaOrden(cual, filas, saca){
+  var o = _ORDEN[cual];
+  if(!o || o.col == null) return filas;
+  var v = filas.slice();
+  v.sort(function(a, b){
+    var x = saca(a, o.col), y = saca(b, o.col);
+    var nx = parseFloat(String(x).replace(',','.'));
+    var ny = parseFloat(String(y).replace(',','.'));
+    var r;
+    if(!isNaN(nx) && !isNaN(ny)) r = nx - ny;
+    else r = String(x||'').localeCompare(String(y||''), 'es',
+                                        { numeric:true, sensitivity:'base' });
+    return r * o.sentido;
+  });
+  return v;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA MEDICACIÓN, PLEGADA (P-H, 17/09/2026)
+
+   « C'est 100 medications ! Pourquoi ne pas afficher une liste dépliante
+     où seul le premier est visible ? »
+
+   Cien líneas, y muchas son el mismo medicamento escrito en diez
+   papeles. Una línea por medicamento, y las demás al tocar.
+
+   En pantalla: una línea y el ▸. Al tocarlo, todas iguales — « pas
+   nécessaire de mettre le premier en noir et le plus ancien en gris ».
+
+   Al imprimir, todo desplegado: un médico en papel no puede tocar nada,
+   y es ahí que la primera y la última cuentan — la reciente dice lo que
+   se toma, la antigua desde cuándo.
+   ══════════════════════════════════════════════════════════════════════ */
+function pMedicacion(){
+  /* ══ EL PERIODO SE ELIGE (P-H, 17/09/2026) ══
+     « Ça fait quand même 10 pages à imprimer à cause des médications
+       depuis le début. Laisser le choix : tous, ou une période. »
+
+     La borne vive en la barra, con las demás órdenes. « Todo » sigue
+     estando, para el ingreso donde hace falta el recorrido entero. */
+  var M = medicam();
+  if(!M.length) return '';
+  if(MED_MESES){
+    var lim = new Date(Date.now() - MED_MESES*30.5*86400000)
+                .toISOString().slice(0,10);
+    M = M.filter(function(m){
+      var f = m.desde || m.date_debut || m.date || '';
+      var h = m.hasta || m.date_fin || '';
+      return (f >= lim) || (h && h >= lim) || (f && !h);
+    });
+    if(!M.length) return '';
+  }
+
+  /* por principio, del más reciente al más antiguo */
+  var fecha = function(m){ return m.desde || m.date_debut || m.date || ''; };
+  var por = {}, orden = [];
+  M.slice().sort(function(a,b){
+    return String(fecha(b)).localeCompare(String(fecha(a)));
+  }).forEach(function(m){
+    var k = principioDe(m.nombre || m.nom || '');
+    if(!k) return;
+    if(!por[k]){ por[k] = []; orden.push(k); }
+    por[k].push(m);
+  });
+
+  var marcas = '';
+  var h = '<div class="p-sec">💊 ' + t('sec_medicacion')
+    + ' <span class="sub">('
+    + (MED_MESES ? t('meses_ult', {n:MED_MESES}) + ' · ' : t('todo') + ' · ')
+    + M.length + ' · ' + orden.length + ' ' + t('principios')
+    + ')</span></div>'
+    + '<table class="p-tab med"><thead><tr>'
+    + '<th style="width:18px"></th>'
+    + th('med', 0, t('col_fechadoc')) + th('med', 1, t('col_medicamento'))
+    + th('med', 2, t('col_dosis'))    + th('med', 3, t('col_frecuencia'))
+    + th('med', 4, t('col_estado'))   + th('med', 5, t('col_prescriptor'))
+    + '</tr></thead><tbody>';
+
+  var CAM = [function(m){ return fecha(m); },
+             function(m){ return m.nombre||m.nom||''; },
+             function(m){ return m.dosis||m.dose||''; },
+             function(m){ return m.frecuencia||m.pauta||''; },
+             function(m){ return m.estado||m.origen||''; },
+             function(m){ return m.fuente||''; }];
+
+  /* el orden que se pide en la cabecera vale para los principios */
+  var claves = aplicaOrden('med', orden.map(function(k){
+    return { k:k, m:por[k][0] }; }), function(x, i){
+      return CAM[i](x.m); }).map(function(x){ return x.k; });
+
+  claves.forEach(function(k, n){
+    var L = por[k];
+    var reciente = L[0];
+    var varios = L.length > 1;
+    var id = 'g' + n;
+    /* las marcas comerciales que se han visto de este principio */
+    var _m = marcasDe(L);
+    marcas = _m.length ? _m.slice(0, 3).join(', ') : '';
+
+    /* ══ v2 (P-H, 17/09) : LO MISMO PARA TODAS ══
+       « Quand on déplie un médicament, le ▸ indique qu'il y en a plus
+         d'un, alors on les voit tous. Pas nécessaire de mettre le
+         premier en noir et le plus ancien en gris. »
+
+       Tenía razón: en pantalla una sola línea y el ▸; al tocarlo, todas
+       iguales. La distinción entre la primera y la última era para el
+       PAPEL, donde no se puede tocar nada. */
+    h += fila(reciente, varios ? id : null, varios, L.length, true);
+    if(varios)
+      L.slice(1).forEach(function(m){ h += fila(m, id, false, 0, false, true); });
+  });
+
+  return h + '</tbody></table><div class="p-nota">'
+    + t('nota_estado') + '<br>' + t('nota_plegada') + '</div>';
+
+  function fila(m, id, esCabeza, cuantas, primera, oculta){
+    var cls = [];
+    if(oculta)   cls.push('plegada g-' + id);
+    if(esCabeza) cls.push('cabeza');
+    return '<tr' + (cls.length ? ' class="' + cls.join(' ') + '"' : '') + '>'
+      + '<td class="pico">'
+      + (esCabeza ? '<span onclick="pliega(\'' + id + '\')" id="p-' + id
+                  + '" class="pl">▸</span>' : '')
+      + '</td>'
+      + '<td>' + esc(fpapel(fecha(m))) + '</td>'
+      + '<td>' + (primera ? '<b>' : '') + esc(m.nombre||m.nom||'')
+      + (primera ? '</b>' : '')
+      + (primera && marcas ? ' <span class="marcas">(' + esc(marcas) + ')</span>' : '')
+      + '</td>'
+      + '<td>' + esc(m.dosis||m.dose||'') + '</td>'
+      + '<td>' + esc(m.frecuencia||m.pauta||'') + '</td>'
+      + '<td>' + esc((m.estado||m.origen||'').toUpperCase()) + '</td>'
+      + '<td>' + esc(fuenteVisible(m.fuente||''))
+      + (cuantas > 1 ? ' <span class="cuantas">(' + cuantas + ' '
+                     + t('documentos') + ')</span>' : '')
+      + '</td></tr>';
+  }
+}
+
+/* ── plegar y desplegar ── */
+function pliega(id){
+  var abierto = false;
+  document.querySelectorAll('.g-' + id).forEach(function(tr){
+    abierto = tr.classList.toggle('abierta');
+  });
+  var p = document.getElementById('p-' + id);
+  if(p) p.textContent = abierto ? '▾' : '▸';
+}
+
+function pFichas(){
+  var F = SF_CONFIG.formas[FORMA];
+  var ultimos = {};
+  mesures().forEach(function(m){
+    Object.keys(m.vals||{}).forEach(function(k){
+      if(!ultimos[k] || m.date > ultimos[k].date)
+        ultimos[k] = { v:m.vals[k], date:m.date };
+    });
+  });
+  var K = Object.keys(ultimos).slice(0, F.fichas);
+  if(!K.length) return '';
+  var h = '<div class="p-sec">📊 ' + t('sec_fichas') + '</div><div class="fichas">';
+  K.forEach(function(k){
+    var p = param(k), u = ultimos[k], mal = fuera(k, u.v);
+    h += '<div class="ficha' + (mal?' mal':'') + '">'
+       + '<div class="f-nom">' + esc(p.label) + '</div>'
+       + '<div class="f-val">' + redondo(u.v) + ' <span class="f-uni">'
+       + esc(p.unit) + '</span></div>'
+       + '<div class="f-fecha">' + esc(fpapel(u.date)) + '</div>'
+       + (mal ? '<div class="f-mal">⚠ ' + t('fuera_rango').toLowerCase() + '</div>' : '')
+       + '</div>';
+  });
+  return h + '</div>';
+}
+
+function pTabla(){
+  var CT = SF_CONFIG.columnas_tabla;
+  var M = mesures().slice().reverse();
+  if(!M.length) return '';
+  /* ══ las columnas: las de la tabla, pero SOLO las que el expediente
+     lleva de verdad. Si no lleva ninguna, las nueve más frecuentes.
+     Una tabla de columnas vacías es peor que ninguna. (P-H, 17/09) ══ */
+  var cuenta = {};
+  M.forEach(function(m){ Object.keys(m.vals||{}).forEach(function(k){
+    cuenta[k] = (cuenta[k]||0) + 1; }); });
+  var claves = (CT.claves||[]).filter(function(k){ return cuenta[k]; });
+  if(claves.length < 3)
+    claves = Object.keys(cuenta).sort(function(a,b){ return cuenta[b]-cuenta[a]; })
+             .slice(0, 9);
+  var h = '<div class="p-sec salto">📋 ' + t('sec_tabla') + '</div>'
+    + '<table class="p-tab"><thead><tr>'
+    + th('cro', 0, t('col_fecha')) + th('cro', 1, t('col_fuente'))
+    + claves.map(function(k,i){
+        return th('cro', i+2, CT.cortos[k] || param(k).label); }).join('')
+    + '</tr></thead><tbody>';
+  var filas = M.filter(function(m){
+    return claves.some(function(k){ return (m.vals||{})[k] !== undefined; });
+  });
+  aplicaOrden('cro', filas, function(m, i){
+    if(i === 0) return m.date || '';
+    if(i === 1) return m.src || m.fuente || '';
+    var v = (m.vals||{})[claves[i-2]];
+    return v === undefined ? -Infinity : v;
+  }).forEach(function(m){
+    h += '<tr><td>' + esc(fpapel(m.date||'')) + '</td>'
+       + '<td>' + esc(fuenteVisible(m.src || m.fuente)) + '</td>'
+       + claves.map(function(k){
+           var v = (m.vals||{})[k];
+           if(v === undefined) return '<td class="nada">—</td>';
+           return '<td' + (fuera(k,v)?' class="mal"':'') + '>' + redondo(v) + '</td>';
+         }).join('') + '</tr>';
+  });
+  return h + '</tbody></table>';
+}
+
+function pCurvas(){
+  var F = SF_CONFIG.formas[FORMA];
+  if(!F.curvas) return '';
+  /* todo el historial: un informe detallado enseña la vida entera */
+  var top = loQueSeMueve(F.curvas, 365*30);
+  _CURVAS = top;
+  var h = '<div class="p-sec salto">📈 ' + t('sec_curvas')
+        + ' <span class="sub">— ' + t('curvas_sub') + '</span></div>';
+  if(!top.length) return h + '<div class="vacio">' + t('nada_curvas') + '</div>';
+  top.forEach(function(c){ h += bloqueCurva(c); });
+  return h;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LOS ANTECEDENTES (P-H, 17/09/2026)
+
+   « Il n'y a pas de résumé d'antécédents ? »
+
+   No lo había — ni en la V1. Y son ochenta y ocho en el expediente:
+   justo lo que un médico nuevo quiere leer antes de nada. Lo que el
+   paciente ARRASTRA, no lo que le pasó ayer.
+
+   Se agrupan por categoría cuando la llevan, y el año basta: un ictus
+   de 2021 no necesita el día para situarse.
+   ══════════════════════════════════════════════════════════════════════ */
+function pliegaModulos(){
+  var c = document.getElementById('mods-cuerpo');
+  var p = document.getElementById('mods-pico');
+  if(!c) return;
+  var abierto = c.classList.toggle('abierto');
+  if(p) p.textContent = abierto ? '▾' : '▸';
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LOS ANTECEDENTES, EN TABLA (P-H, 17/09/2026)
+
+   « Je vois qu'il y a des mêmes problèmes à des dates différentes. Je
+     propose présenter ACTIVOS dans un tableau de deux colonnes que
+     l'on peut ordonner. Cela offrirait au médecin la possibilité de
+     voir d'un coup d'œil toutes les caídas, etc. »
+
+   ── LO QUE CAMBIA ──
+
+   ① SE AGRUPAN POR CÓDIGO. « DOLOR EN RODILLA DERECHA » aparecía seis
+      veces, una por documento. Ahora una línea, con sus años:
+      « 2024 · 2025 · 2026 ». Setenta y ocho líneas se vuelven treinta,
+      y el médico VE que la rodilla duele desde hace tres años — que es
+      lo que una lista de duplicados escondía.
+
+   ② EL CAPÍTULO CIE-10. La letra del código dice de qué se trata: W
+      son las caídas, I el corazón, J el pulmón, F lo mental. Ordenando
+      por esa columna, todas las caídas salen juntas.
+
+   ③ SE ORDENA AL TOCAR, y las que no caben se despliegan.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* los capítulos del CIE-10 — la letra inicial del código */
+var CAPITULOS = {
+  A:'Infecciosas', B:'Infecciosas', C:'Tumores', D:'Sangre',
+  E:'Endocrino y metabólico', F:'Mental y conducta', G:'Sistema nervioso',
+  H:'Ojo y oído', I:'Circulatorio', J:'Respiratorio', K:'Digestivo',
+  L:'Piel', M:'Huesos y músculos', N:'Riñón y vías urinarias',
+  O:'Embarazo', P:'Perinatal', Q:'Congénito',
+  R:'Síntomas y hallazgos', S:'Traumatismos', T:'Intoxicaciones',
+  V:'Accidentes', W:'Caídas y golpes', X:'Causas externas',
+  Y:'Causas externas', Z:'Factores y antecedentes'
+};
+function capituloDe(codigo){
+  var c = String(codigo||'').trim().charAt(0).toUpperCase();
+  return CAPITULOS[c] || '';
+}
+
+function pAntecedentes(){
+  var U = SF_CONFIG.umbrales, d = datos();
+  var A = (d && d.antecedentes) || [];
+  if(!A.length) return '';
+
+  /* ── ① uno por código, con todos sus años ── */
+  var por = {}, orden = [];
+  A.forEach(function(a){
+    if(typeof a === 'string'){ a = { descripcion:a }; }
+    var txt = a.descripcion || a.label || a.texto || a.titulo || a.nombre || '';
+    if(!txt) return;
+    var cod = a.codigo || a.code || '';
+    var k = cod || txt.toUpperCase().slice(0, 30);
+    if(!por[k]){
+      por[k] = { txt:txt, code:cod, anyos:{},
+                 cap: capituloDe(cod) || a.categoria || '',
+                 activo: (a.estado || 'activo') !== 'inactivo',
+                 hasta: a.fecha_inactivacion || '', veces:0 };
+      orden.push(k);
+    }
+    var e = por[k];
+    e.veces++;
+    var F = Array.isArray(a.fechas) ? a.fechas
+          : (a.fechas ? [a.fechas] : [a.date || a.fecha || a.anyo || '']);
+    F.forEach(function(f){
+      var y = String(f||'').slice(0,4);
+      if(y) e.anyos[y] = 1;
+    });
+    /* si aparece activo en algún documento, está activo */
+    if((a.estado || 'activo') !== 'inactivo') e.activo = true;
+    if(a.fecha_inactivacion && !e.hasta) e.hasta = a.fecha_inactivacion;
+  });
+
+  var L = orden.map(function(k){
+    var e = por[k];
+    e.anyosL = Object.keys(e.anyos).sort();
+    e.ultimo = e.anyosL.length ? e.anyosL[e.anyosL.length-1] : '';
+    e.primero = e.anyosL.length ? e.anyosL[0] : '';
+    return e;
+  });
+
+  var act = L.filter(function(e){ return e.activo; });
+  var res = L.filter(function(e){ return !e.activo; });
+
+  var h = '<div class="p-sec salto">' + ico('antecedentes') + ' '
+        + t('sec_antecedentes') + ' <span class="sub">('
+        + A.length + ' → ' + L.length + ' ' + t('distintos') + ')</span></div>';
+
+  if(act.length) h += tablaAnt('act', act, t('ant_activos'));
+  if(res.length) h += tablaAnt('res', res, t('ant_inactivos'));
+  return h;
+
+  /* ── ② y ③ la tabla, ordenable y plegable ── */
+  function tablaAnt(cual, filas, titulo){
+    var max = U.antecedentes_max || 14;
+    var COL = ['col_anyos','col_antecedente','col_capitulo'];
+    var CAM = [function(e){ return e.ultimo; },
+               function(e){ return e.txt; },
+               function(e){ return e.cap; }];
+
+    var V = aplicaOrden('ant-'+cual, filas, function(e,i){ return CAM[i](e); });
+    /* sin orden pedido: los más recientes primero */
+    if(!_ORDEN['ant-'+cual])
+      V = filas.slice().sort(function(a,b){
+        return String(b.ultimo).localeCompare(String(a.ultimo)); });
+
+    var g = 'ant' + cual;
+    var hh = '<div class="ant-cat">' + esc(titulo)
+      + ' <span class="cuantos">(' + filas.length + ')</span></div>'
+      + '<table class="p-tab ant"><thead><tr>'
+      + '<th style="width:16px"></th>'
+      + COL.map(function(k,i){ return th('ant-'+cual, i, t(k)); }).join('')
+      + '</tr></thead><tbody>';
+
+    V.forEach(function(e, n){
+      hh += lineaAnt(e, n >= max ? g : null);
+    });
+
+    /* la línea que despliega el resto */
+    if(V.length > max)
+      hh += '<tr class="mas-fila"><td class="pico">'
+          + '<span class="pl" id="p-' + g + '" onclick="pliega(\'' + g + '\')">▸</span>'
+          + '</td><td colspan="3" class="mas-txt" onclick="pliega(\'' + g + '\')">'
+          + t('y_otros', {n: V.length - max}) + '</td></tr>';
+
+    return hh + '</tbody></table>';
+  }
+
+  function lineaAnt(e, g){
+    var anyos = e.anyosL.length > 3
+      ? e.primero + '…' + e.ultimo
+      : e.anyosL.join(' · ');
+    return '<tr' + (g ? ' class="plegada g-' + g + '"' : '') + '>'
+      + '<td class="pico"></td>'
+      + '<td class="anyos">' + esc(anyos)
+      + (e.veces > 1 ? ' <span class="veces">×' + e.veces + '</span>' : '')
+      + '</td>'
+      + '<td>' + esc(e.txt)
+      + (e.code ? ' <span class="cie">' + esc(e.code) + '</span>' : '')
+      + (e.hasta ? ' <span class="cie">→ ' + esc(fpapel(e.hasta)) + '</span>' : '')
+      + '</td>'
+      + '<td class="cap">' + esc(e.cap) + '</td></tr>';
+  }
+}
+
+function pModulos(){
+  var L = [];
+  try{
+    var R = MF.registro ? MF.registro() : null;
+    if(R) Object.keys(R).forEach(function(k){
+      L.push((R[k].icono||'') + ' ' + (tt(R[k].nombre)||k) + ' v' + (R[k].version||'?'));
+    });
+  }catch(e){}
+  if(!L.length) L.push('📦 Salufolio v' + VERSION_PROGRAMA);
+  /* ══ PLEGADO, Y FUERA DEL PAPEL (P-H, 17/09/2026) ══
+     « Le cadre modulos en bas de chaque informe c'est purement
+       technique. Peut-il être caché, voir le titre et un clic
+       l'affiche ? Il ne doit pas apparaître dans le document imprimé. »
+
+     Es el inventario de las piezas del programa: útil para decir « tengo
+     tal versión », inútil para un médico. Se pliega, y no se imprime. */
+  return '<div class="p-modulos no-imprimir" id="mods">'
+    + '<div class="tit" onclick="pliegaModulos()">'
+    + '<span id="mods-pico">▸</span> ' + t('sec_modulos')
+    + ' <span class="cuantos">(' + L.length + ')</span></div>'
+    + '<div class="cuerpo" id="mods-cuerpo">' + L.map(esc).join('  ·  ')
+    + '</div></div>';
+}
+
+/* ══ EL COMENTARIO DE LAS CURVAS ══ */
+/* ══════════════════════════════════════════════════════════════════════
+   EL CUADRO DEL COMENTARIO (P-H, 17/09/2026)
+
+   « Mets une copie des commentaires évoqués dans le cadre, au lieu de
+     "hace falta una clave de la API". Et mets plutôt ça à droite du
+     titre du cadre. »
+
+   El cuadro no debe estar vacío mientras se espera la clave: lo que
+   Salufolio ya sabe decir —lo que cada curva hace— se pone ahí. Claude
+   vendrá a decir lo que ellas dicen JUNTAS, que es otra cosa.
+   ══════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════════
+   EL CUADRO DEL COMENTARIO (P-H, 17/09/2026)
+
+   Sin clave, el cuadro no promete lo que no puede dar: dice lo que
+   falta, y el botón dice lo que hará.
+   ══════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════════
+   EL CUADRO DEL COMENTARIO (P-H, 17/09/2026)
+
+   Tres cosas, y las había puesto del revés:
+
+     ① el CUERPO lleva la copia de los comentarios de las curvas —
+        lo que Salufolio sabe decir solo, mientras espera
+     ② el AVISO de la clave va A LA DERECHA DEL TÍTULO, en la cabecera,
+        no dentro: ahí borraba los comentarios
+     ③ el botón dice lo que hará
+
+   « Au lieu de changer le texte » — tenía razón: el aviso no reemplaza
+   nada, se añade donde no estorba.
+   ══════════════════════════════════════════════════════════════════════ */
+function secComentario(){
+  var g = comentarioGuardado();
+  var hay = !!claveApi();
+  /* ══ EL COMENTARIO SE IMPRIME (P-H, 17/09/2026) ══
+     « Quand j'imprime, la réponse de Claude n'est pas imprimée. »
+
+     Mi culpa: había marcado el cuadro entero « no-imprimir », con los
+     botones. Justo para los botones, falso para el texto — un comentario
+     que se ha pagado debe figurar en el papel que se le da al médico.
+
+     Ahora sólo los botones y el aviso desaparecen; el comentario y su
+     firma se quedan. Y sin comentario, el cuadro no se imprime: no se
+     da al médico una caja vacía. */
+  return '<div class="cmt' + (g.texto ? '' : ' no-imprimir') + '" id="cmt">'
+    + '<div class="cmt-cab"><b>' + t('cmt_titulo') + '</b>'
+    + (hay ? '' : '<span class="cmt-falta no-imprimir" id="cmt-falta">'
+               + t('cmt_falta_clave') + '</span>')
+    + '<span class="espacio"></span>'
+    + '<span class="no-imprimir">'
+    + '<button class="bot" onclick="pideComentario()" id="b-cmt"></button>'
+    + '<button class="bot" onclick="copiaComentario()" id="b-copiar"'
+    + (g.texto ? '' : ' disabled') + '></button></span></div>'
+    + '<div class="cmt-cuerpo' + (g.texto ? '' : ' propio') + '" id="cmt-cuerpo">'
+    + (g.texto ? esc(g.texto) : copiaDeComentarios()) + '</div>'
+    + (g.fecha ? '<div class="cmt-firma">' + t('cmt_firma',{fecha:g.fecha}) + '</div>' : '')
+    + '</div>';
+}
+
+/* ── la copia de los comentarios de las curvas ──
+   Es lo que Salufolio sabe decir solo: cada curva, su pendiente, su
+   rango. Claude vendrá a decir lo que dicen JUNTAS, que es otra cosa. */
+function copiaDeComentarios(){
+  if(!_CURVAS.length) return '<i>' + esc(t('cmt_sin_curvas')) + '</i>';
+  return _CURVAS.map(function(c){
+    var dias = Math.round((new Date(c.d1) - new Date(c.d0))/86400000);
+    var fl = c.pct > 0 ? '▲' : '▼';
+    return '• ' + esc(c.label) + ' : ' + fl + ' '
+      + Math.abs(Math.round(c.pct*100)) + '% ' + t('en_dias',{n:dias})
+      + ' — ' + redondo(c.v0) + ' → ' + redondo(c.v1) + ' ' + esc(c.unit)
+      + (c.fuera ? ' · ' + t('fuera_rango') : '');
+  }).join('\n');
+}
+
+function claveApi(){
+  try{ return localStorage.getItem('sf_apikey')
+            || localStorage.getItem('mt_apikey') || ''; }catch(e){ return ''; }
+}
+function comentarioGuardado(){
+  var d = datos();
+  return (d && d.comentario_curvas) || {};
+}
+function huella(){
+  var m = mesures(), u = m.length ? m[m.length-1] : null;
+  return m.length + '|' + (u?(u.date||''):'') + '|'
+       + (u&&u.vals?Object.keys(u.vals).length:0) + '|' + DIAS;
+}
+function contextoDelPaciente(){
+  var d = datos();
+  if(!d) return '';
+  var tr = [];
+  if(d.sexo) tr.push(d.sexo);
+  if(d.nacimiento){
+    var a = Math.floor((Date.now()-new Date(d.nacimiento))/31557600000);
+    if(a>0 && a<120) tr.push(a + ' años');
+  }
+  var ant = (d.antecedentes||[]).map(function(x){
+    return typeof x==='string'?x:(x.texto||''); }).filter(Boolean);
+  var l = tr.length ? ('Paciente: ' + tr.join(', ') + '.') : '';
+  if(ant.length) l += (l?' ':'') + 'Antecedentes que constan en el expediente: '
+                    + ant.slice(0,8).join('; ') + '.';
+  return l;
+}
+/* ══════════════════════════════════════════════════════════════════════
+   LA CLAVE SE PIDE, NO SE REPROCHA (P-H, 17/09/2026)
+
+   « Si pas de clé API : présenter une popup maison déplaçable avec
+     demande de saisie de la clé, et boutons Annuler et Garder. À la
+     fermeture, rester sur le bouton qui aura changé de couleur pour
+     inviter à cliquer. »
+
+   Decir « hace falta una clave » y no hacer nada es dejar al usuario
+   solo. Aquí se le pide, se guarda bajo sf_apikey —la misma de la
+   adquisición automática, UNA SOLA VEZ— y el botón se enciende para
+   decir que ahora sí.
+   ══════════════════════════════════════════════════════════════════════ */
+function pideClave(alGuardar){
+  var fondo = document.createElement('div');
+  fondo.className = 'k-fondo';
+  var caja = document.createElement('div');
+  caja.className = 'k-caja';
+  caja.innerHTML =
+      '<div class="k-tit">🔑 ' + t('clave_titulo') + '</div>'
+    + '<div class="k-que">' + t('clave_que') + '</div>'
+    + '<input type="password" id="k-campo" autocomplete="off" spellcheck="false" '
+    + 'placeholder="sk-ant-api03-…">'
+    + '<div class="k-aviso" id="k-aviso"></div>'
+    + '<div class="k-botones">'
+    + '<button class="k-bot k-ok" id="k-ok" disabled>' + t('clave_ok') + '</button>'
+    + '<button class="k-bot" id="k-no">' + t('cancelar') + '</button>'
+    + '<button class="k-bot" id="k-obtener">' + t('clave_obtener') + '</button>'
+    + '<button class="k-bot" id="k-sin">' + t('clave_sin') + '</button>'
+    + '</div>'
+    + '<div class="k-donde">' + t('clave_donde') + '</div>';
+  fondo.appendChild(caja);
+  document.body.appendChild(fondo);
+
+  var campo = caja.querySelector('#k-campo');
+  var bOk   = caja.querySelector('#k-ok');
+  campo.focus();
+
+  /* ① el OK se enciende cuando la clave parece una clave */
+  campo.addEventListener('input', function(){
+    var v = campo.value.trim();
+    bOk.disabled = !(v.length >= 20);
+    caja.querySelector('#k-aviso').textContent = '';
+  });
+  campo.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' && !bOk.disabled) bOk.click();
+    if(e.key === 'Escape') cierra();
+  });
+
+  function cierra(){ if(fondo.parentNode) document.body.removeChild(fondo); }
+  fondo.onclick = function(e){ if(e.target === fondo) cierra(); };
+
+  /* ① se guarda y se vuelve donde se estaba */
+  bOk.onclick = function(){
+    var k = campo.value.trim();
+    if(k.length < 20){
+      caja.querySelector('#k-aviso').textContent = t('clave_corta'); return;
+    }
+    try{ localStorage.setItem('sf_apikey', k); }catch(e){}
+    cierra();
+    if(alGuardar) alGuardar(k);
+  };
+
+  /* ② se sale sin hacer nada */
+  caja.querySelector('#k-no').onclick = cierra;
+
+  /* ③ cómo conseguirla — se abre aparte, no se pierde lo escrito */
+  caja.querySelector('#k-obtener').onclick = function(){
+    MF.popupTexto(t('clave_obtener'), t('clave_como'), function(){});
+    setTimeout(function(){
+      window.open('https://console.anthropic.com/settings/keys', '_blank', 'noopener');
+    }, 200);
+  };
+
+  /* ④ sin clave: el prompt se lleva a claude.ai a mano, como en la
+     adquisición asistida — es más largo, pero no cuesta nada */
+  caja.querySelector('#k-sin').onclick = function(){
+    cierra();
+    llevaAClaude();
+  };
+
+  return { cierra: cierra };
+}
+
+/* ══ SIN CLAVE: EL CAMINO DE LA ASISTIDA (P-H, 17/09) ══
+   Se copia el prompt, se abre claude.ai, y se vuelve con la respuesta.
+   Lo mismo que en la adquisición asistida: su tiempo en vez de dinero. */
+function llevaAClaude(){
+  var p = construyePrompt();
+  if(!p){ avisa(t('cmt_sin_curvas')); return; }
+  navigator.clipboard.writeText(p).then(function(){
+    avisa(t('cmt_copiado_prompt'));
+    setTimeout(function(){
+      window.open('https://claude.ai/new', '_blank', 'noopener');
+    }, 300);
+    pegaRespuesta();
+  }).catch(function(){
+    MF.popupTexto(t('cmt_titulo'), p, function(){});
+  });
+}
+
+/* y se vuelve con la respuesta */
+function pegaRespuesta(){
+  var z = document.getElementById('cmt-cuerpo');
+  if(!z) return;
+  z.innerHTML = '<div class="k-que" style="margin:0 0 7px">'
+    + t('cmt_pega_aqui') + '</div>'
+    + '<textarea id="cmt-pega" rows="5" placeholder="{ … }"></textarea>'
+    + '<div style="display:flex;gap:7px;margin-top:7px">'
+    + '<button class="bot" onclick="guardaPegado()">' + t('guardar') + '</button>'
+    + '<button class="bot" onclick="pinta()">' + t('cancelar') + '</button></div>';
+  z.classList.remove('falta');
+  var ta = document.getElementById('cmt-pega');
+  if(ta) ta.focus();
+}
+function guardaPegado(){
+  var ta = document.getElementById('cmt-pega');
+  if(!ta || !ta.value.trim()) return;
+  var d = datos();
+  if(d){
+    d.comentario_curvas = { texto: ta.value.trim(),
+                            fecha: new Date().toLocaleString(),
+                            huella: huella(), via: 'claude.ai' };
+    MF.tocado();
+  }
+  pinta();
+}
+
+function avisa(txt){
+  var z = document.getElementById('cmt-cuerpo');
+  if(z){ z.textContent = txt; z.classList.add('falta'); }
+}
+
+/* el prompt, en un solo sitio — lo usan la API y el camino a mano */
+function construyePrompt(){
+  if(!_CURVAS.length) return '';
+  var lineas = _CURVAS.map(function(c){
+    var pts = c.serie.map(function(p){
+      var doc = nombrePdf(p.pdf_id||p.pdf);
+      return p.x + '=' + p.y + (doc ? ' [' + doc + ']' : ''); });
+    var r = refTexto(c);
+    return '• ' + c.label + (r ? ' (ref ' + r + ')' : '') + ' : ' + pts.join(' ; ');
+  });
+  return (typeof SF_PROMPT_INFORME === 'string' ? SF_PROMPT_INFORME : '')
+    .replace('{CONTEXTO}', contextoDelPaciente())
+    .replace('{SERIES}', lineas.join('\n'));
+}
+
+/* el botón se enciende: ahora sí se puede pedir */
+function botonListo(){
+  var b = document.getElementById('b-cmt');
+  if(!b) return;
+  b.classList.add('listo');
+  b.textContent = t('cmt_generar');
+  var f = document.getElementById('cmt-falta');
+  if(f) f.remove();
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL CRONÓMETRO DE LA ESPERA (P-H, 17/09/2026)
+
+   « Tu n'as pas mis le temporisateur ou le sablier pour rassurer que
+     c'est dans le tube. »
+
+   Tenía razón: un texto que no se mueve no dice si algo pasa. La misma
+   manera que en la adquisición automática —⏳ y los segundos que
+   suben— para que los dos programas se parezcan.
+   ══════════════════════════════════════════════════════════════════════ */
+var _RELOJ = null;
+var _CORTE = null;          /* para anular la llamada en curso */
+
+function arrancaReloj(){
+  paraReloj();
+  var z = document.getElementById('cmt-cuerpo');
+  if(!z) return;
+  var sec = 0;
+  /* el reloj gira: un sablier inmóvil no dice que algo pasa (P-H, 17/09) */
+  z.innerHTML = '<span class="cmt-espera"><span class="_reloj">⏳</span>'
+    + '<span>' + esc(t('cmt_pensando')) + ' <span class="_seg">0</span>s</span></span>';
+  z.classList.remove('propio','falta');
+  _RELOJ = setInterval(function(){
+    sec++;
+    var e = z.querySelector('._seg');
+    if(e) e.textContent = sec;
+    else paraReloj();
+  }, 1000);
+}
+function paraReloj(){
+  if(_RELOJ){ clearInterval(_RELOJ); _RELOJ = null; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA ESPERA SE PUEDE ANULAR (P-H, 17/09/2026)
+
+   « Est-ce qu'on peut arrêter pedir un commentaire ? »
+
+   Sí: el navegador sabe cortar una llamada en curso. Mientras espera, el
+   botón dice « Anular »; al tocarlo se corta, el reloj se para, y el
+   cuadro recobra su texto.
+
+   PERO LA FACTURA NO SE ANULA: la API ya ha empezado a trabajar, y según
+   el momento la llamada puede contarse igualmente. Se dice en la burbuja
+   del botón, para que nadie crea que anular es gratis.
+   ══════════════════════════════════════════════════════════════════════ */
+function anulaComentario(){
+  if(_CORTE){ _CORTE.abort(); _CORTE = null; }
+  paraReloj();
+  var z = document.getElementById('cmt-cuerpo');
+  if(z){
+    z.textContent = t('cmt_anulado');
+    z.classList.add('falta');
+    z.classList.remove('propio');
+  }
+  ponTextos2();
+}
+
+async function pideComentario(){
+  /* si ya está esperando, el botón anula */
+  if(_CORTE){ anulaComentario(); return; }
+
+  var z = document.getElementById('cmt-cuerpo');
+  var clave = claveApi();
+  if(!clave){
+    pideClave(function(){ botonListo(); });
+    return;
+  }
+  if(!_CURVAS.length){ z.textContent = t('cmt_sin_curvas'); return; }
+  var h = huella(), g = comentarioGuardado();
+  if(g.texto && g.huella === h && !confirm(t('cmt_sin_cambios',{fecha:g.fecha||''}))) return;
+  arrancaReloj();
+  _CORTE = new AbortController();
+  var b = document.getElementById('b-cmt');
+  if(b){
+    b.textContent = t('cmt_anular');
+    b.classList.add('anulando');
+    if(MF.tip) MF.tip(b, t('cmt_anular_que'));
+  }
+  var prompt = construyePrompt();
+  try{
+    var r = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':clave,
+               'anthropic-version':'2023-06-01',
+               'anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1500,
+                            messages:[{role:'user', content:prompt}]}),
+      signal: _CORTE.signal
+    });
+    if(!r.ok){ paraReloj(); _CORTE = null; throw new Error('HTTP ' + r.status); }
+    var data = await r.json();
+    paraReloj(); _CORTE = null;
+    var texto = (data.content||[]).map(function(c){ return c.text||''; }).join('');
+    var fecha = new Date().toLocaleString();
+    var d = datos();
+    if(d){ d.comentario_curvas = {texto:texto, fecha:fecha, huella:h}; MF.tocado(); }
+    z.textContent = texto;
+    z.classList.remove('propio');
+    var c = document.getElementById('cmt');
+    var f = c.querySelector('.cmt-firma');
+    if(!f){ f = document.createElement('div'); f.className='cmt-firma'; c.appendChild(f); }
+    f.textContent = t('cmt_firma',{fecha:fecha});
+    document.getElementById('b-cmt').textContent = t('cmt_regenerar');
+    var bc = document.getElementById('b-copiar');
+    if(bc) bc.disabled = false;
+  }catch(e){
+    paraReloj();
+    var anulado = (e.name === 'AbortError');
+    _CORTE = null;
+    if(!anulado){
+      z.textContent = t('cmt_error',{error:e.message});
+      z.classList.remove('propio');
+      z.classList.add('falta');
+    }
+    ponTextos2();
+  }
+}
+function copiaComentario(){
+  var z = document.getElementById('cmt-cuerpo');
+  if(!z || !z.textContent.trim()) return;
+  navigator.clipboard.writeText(z.textContent).then(function(){
+    var b = document.getElementById('b-copiar');
+    b.textContent = t('copiado');
+    setTimeout(function(){ b.textContent = t('copiar'); }, 2000);
+  }).catch(function(){});
+}
+
+/* ══ EL ESCOGEDOR ══ */
+function pintaEscogedor(){
+  var F = SF_CONFIG.formas, A = SF_CONFIG.anonimizacion;
+  var orden = Object.keys(F).sort(function(a,b){ return F[a].orden - F[b].orden; });
+  var h = '<h2>' + t('elegir') + '</h2><div class="sordo">' + t('elegir_sub') + '</div>';
+  orden.forEach(function(k){
+    var f = F[k];
+    h += '<div class="forma" onclick="haz(\'' + k + '\')"><div class="ic">'
+       + f.icono + '</div><div><div class="nom">' + tt(f.nombre) + '</div>'
+       + '<div class="que">' + tt(f.para) + '</div></div></div>';
+  });
+  h += '<div class="anon' + (ANON.puesta?' on':'') + '" id="caja-anon">'
+     + '<label><input type="checkbox"' + (ANON.puesta?' checked':'')
+     + ' onchange="ponAnon(this.checked)"><span>' + t('anon') + '</span></label>'
+     + '<div class="que">' + t('anon_que') + '</div><div class="niveles">'
+     + '<div class="que" style="margin:0 0 5px 0">' + t('anon_nivel') + '</div>'
+     + Object.keys(A.niveles).map(function(n){
+         var x = A.niveles[n];
+         return '<label><input type="radio" name="anon-nivel" value="' + n + '"'
+              + (n===ANON.nivel?' checked':'') + ' onchange="ANON.nivel=this.value">'
+              + '<span><b>' + tt(x.nombre) + '</b> — ' + tt(x.que) + '</span></label>';
+       }).join('') + '</div></div>';
+  document.getElementById('elegir').innerHTML = h;
+  document.getElementById('elegir').style.display = 'block';
+  document.getElementById('hoja').style.display = 'none';
+  MF.barra(t('elegir'), [], null);   /* sin órdenes mientras se elige */
+}
+function ponAnon(v){
+  ANON.puesta = v;
+  document.getElementById('caja-anon').classList.toggle('on', v);
+}
+function haz(f){
+  FORMA = f;
+  var F = SF_CONFIG.formas[f];
+  DIAS = F.dias || 90;
+  document.getElementById('elegir').style.display = 'none';
+  document.getElementById('hoja').style.display = 'block';
+  ponTextos(); pinta();
+  /* v2 (P-H, 17/09) : « ça affiche la page impression, je suis obligé de
+     quitter » — la impresión ya no salta sola. Se mira el informe, y se
+     imprime con el 🖨 si se quiere. */
+}
+function volverAElegir(){ pintaEscogedor(); }
+function cambiaDias(d){
+  /* ══ v2 (P-H, 17/09) : « la listbox ne rafraîchit rien sauf un texte » ══
+     Las curvas de « A vigilar » miraban dias_vigilar, un número fijo de
+     la tabla, en vez del que se acaba de elegir. Cambiar el periodo no
+     cambiaba nada. */
+  DIAS = d;
+  _VIGILAR_DIAS = d;
+  pinta();
+}
+var _VIGILAR_DIAS = null;
+
+/* ── el periodo de la medicación: 0 = todo ── */
+var MED_MESES = 12;
+function cambiaMed(m){ MED_MESES = m; pinta(); ponTextos(); }
+
+/* ══ LA HOJA ══ */
+var HACER = {
+  situacion:   xSituacion,   tratamiento: xTratamiento,
+  eventos:     xEventos,     fuera_tabla: xFueraTabla,
+  vigilar:     xVigilar,
+  cabecera:    pCabecera,    anamnesis:   pAnamnesis,
+  fuera_lista: function(){ return ''; },
+  medicacion:  pMedicacion,  fichas:      pFichas,
+  tabla:       pTabla,       curvas:      pCurvas,
+  antecedentes: pAntecedentes,
+  modulos:     pModulos
+};
+
+function pinta(){
+  var F = SF_CONFIG.formas[FORMA];
+  var h = '';
+  if(FORMA === 'express'){
+    var n = new Date();
+    h += '<div class="x-cab">' + escribeLogo(34, false)
+       + '<span class="x-tit">⚡ ' + t('titulo_express') + '</span>'
+       + '<span class="x-fecha">' + n.toLocaleDateString() + ' · '
+       + String(n.getHours()).padStart(2,'0') + ':'
+       + String(n.getMinutes()).padStart(2,'0') + '</span>'
+       + '<span class="x-pac">🧑 ' + esc(nombreVisible())
+       + (sipVisible() && !ANON.puesta
+          ? '<span class="x-sip"> · SIP ' + esc(sipVisible()) + '</span>' : '')
+       + '</span></div>'
+       + '<div class="x-ver">informe v' + VERSION_PROGRAMA + '</div>';
+  }
+  (F.secciones||[]).forEach(function(s){ if(HACER[s]) h += HACER[s](); });
+  if(FORMA === 'express'){
+    h += secComentario();
+    h += '<div class="x-pie">' + t('pie_express') + '</div>';
+  } else {
+    h += '<div class="p-pie"><span>Salufolio · informe v' + VERSION_PROGRAMA
+       + ' — ' + tt(F.titulo) + ' — ' + esc(nombreVisible()) + '</span>'
+       + '<span>' + tt(SF_CONFIG.identidad.pie) + '</span></div>';
+  }
+  document.getElementById('hoja').innerHTML = h;
+  ponTextos2();
+}
+
+/* ══ LAS ÓRDENES DEL MÓDULO, EN LA BARRA DE MF ══
+   MF las coloca: en el marco del lanzador, bajo su bandeau; solo, en
+   lo alto de la página. El módulo no se ocupa de dónde. */
+function ponTextos(){
+  var F = SF_CONFIG.formas[FORMA] || {};
+  var mandos = [];
+  if(FORMA === 'express'){
+    (SF_CONFIG.umbrales.dias_opciones||[]).forEach(function(d){
+      mandos.push({ id:'d'+d, texto:String(d)+'d', activo:(d===DIAS),
+                    titulo:t('ultimos',{n:d}) });
+    });
+    mandos.push({ tipo:'separador' });
+  }
+  if(FORMA !== 'express'){
+    [[3,'3m'], [12,'1a'], [24,'2a'], [0,'todo']].forEach(function(x){
+      mandos.push({ id:'m'+x[0], texto:x[1], activo:(MED_MESES===x[0]),
+                    titulo:t('sec_medicacion') + ' — '
+                         + (x[0] ? t('meses_ult',{n:x[0]}) : t('todo')) });
+    });
+    mandos.push({ tipo:'separador' });
+  }
+  mandos.push({ id:'menos', texto:t('menos'), titulo:t('zoom') });
+  mandos.push({ id:'mas',   texto:t('mas'),   titulo:t('zoom') });
+  mandos.push({ tipo:'separador' });
+  mandos.push({ id:'imprimir', icono:'🖨', texto:t('imprimir').replace('🖨 ',''),
+                titulo:t('imprimir') });
+  mandos.push({ id:'volver', texto:t('volver') });
+
+  MF.barra((F.icono||'') + ' ' + tt(F.nombre), mandos, function(id){
+    if(id === 'menos')    { zoom(-1); return; }
+    if(id === 'mas')      { zoom(1);  return; }
+    if(id === 'imprimir') { window.print(); return; }
+    if(id === 'volver')   { volverAElegir(); return; }
+    if(id.charAt(0) === 'd'){ cambiaDias(+id.slice(1)); ponTextos(); return; }
+    if(id.charAt(0) === 'm'){ cambiaMed(+id.slice(1)); return; }
+  });
+}
+function ponTextos2(){
+  var b, hay = !!claveApi(), g = comentarioGuardado();
+  if(_CORTE){                       /* esperando: el botón anula */
+    if((b = document.getElementById('b-cmt'))) b.textContent = t('cmt_anular');
+    return;
+  }
+  if((b = document.getElementById('b-cmt'))){
+    b.classList.remove('anulando');
+    /* el botón dice lo que hará, no lo que uno quisiera (P-H, 17/09) */
+    b.textContent = !hay ? t('cmt_pedir_clave')
+                  : (g.texto ? t('cmt_regenerar') : t('cmt_generar'));
+    b.classList.toggle('listo', hay && !g.texto);
+  }
+  if((b = document.getElementById('b-copiar'))){
+    b.textContent = t('copiar');
+    b.disabled = !g.texto;
+  }
+}
+
+function botonListo(){
+  var b = document.getElementById('b-cmt');
+  if(!b) return;
+  b.classList.add('listo');
+  b.textContent = t('cmt_generar');
+  var f = document.getElementById('cmt-falta');
+  if(f) f.remove();
+}
+
+ponEstilo();
+
+MF.arranca({
+  alCargar: function(d){
+    _PORFECHA = null;
+    if(typeof SF_PLANTILLA!=='undefined') SF_PLANTILLA.completa(d, MF.paciente());
+    var p = MF.paciente() || {};
+    pintaEscogedor(); MF.ponVersion();
+  },
+  alFallar: function(){
+    document.getElementById('elegir').style.display = 'none';
+    document.getElementById('hoja').innerHTML = '<div class="vacio">' + t('sin_exp') + '</div>';
+    MF.ponVersion();
+  }
+});
+</script>
+</body>
+</html>
