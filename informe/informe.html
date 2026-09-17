@@ -319,6 +319,50 @@ table.med .cuantas{color:var(--tinta-suave);
 table.med .marcas{color:var(--tinta-suave);font-weight:400;
                   font-size:calc(var(--menudo)*var(--zoom)*.9)}
 
+/* ══════════════════════════════════════════════════════════════════════
+   LA BARRA SE QUEDA CLARA (P-H, 18/09/2026, medianoche)
+
+   « Le bandeau de informe a son fond peint en obscur et on ne voit pas
+     les titres des boutons. »
+
+   La paleta de la casa se ponía encima de la barra, y el informe vive
+   en claro: tinta oscura sobre fondo oscuro, nada se leía.
+
+   Hay que elegir, y P-H eligió CLAIR: un informe se imprime, y su barra
+   con él. Las variables de la casa no llegan aquí.
+   ══════════════════════════════════════════════════════════════════════ */
+#mf-barra,#mf-barra *{
+  background:var(--papel) !important;
+  color:var(--tinta) !important;
+  border-color:var(--linea) !important;
+}
+#mf-barra{border-bottom:1px solid var(--linea) !important;
+          box-shadow:0 1px 6px rgba(0,0,0,.06) !important}
+#mf-barra button,#mf-barra .mf-b,#mf-barra span[data-m]{
+  background:var(--papel-suave) !important;
+  color:var(--tinta) !important;
+  border:1px solid var(--linea) !important;
+}
+#mf-barra button:hover,#mf-barra .mf-b:hover,#mf-barra span[data-m]:hover{
+  border-color:var(--express) !important;
+  color:var(--express) !important;
+}
+#mf-barra .on,#mf-barra .activo,#mf-barra [aria-pressed="true"]{
+  background:var(--express) !important;
+  color:var(--papel) !important;
+  border-color:var(--express) !important;
+}
+/* el título del módulo en la barra */
+#mf-barra b,#mf-barra strong,#mf-barra .mf-tit{
+  color:var(--express) !important;
+}
+/* los tres botones flotantes de MF, también */
+#mf-guardar,#mf-abrir,#mf-abeja{
+  background:var(--papel) !important;
+  border-radius:7px;padding:1px 5px;
+  box-shadow:0 1px 5px rgba(0,0,0,.14) !important;
+}
+
 @media print{
   /* los tres botones flotantes de MF — « apparaît artefact des 3
      boutons du bandeau supérieur » (P-H, 17/09) */
@@ -362,7 +406,7 @@ table.med .marcas{color:var(--tinta-suave);font-weight:400;
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    INFORMES PARA EL MÉDICO — Salufolio
-   Versión 2026.09.17-23:06:25
+   Versión 2026.09.18-00:23:02
 
    « Un bouton — PAS l'informe — un résumé à l'écran à montrer au toubib
      sans détours ni ménagements. »        — P-H, 19/07/2026, desde la UCE
@@ -733,7 +777,7 @@ function principioDe(n){
        rivaroxaban — on les regroupe sous le nom du principe actif. »
 
      La tabla existe desde el 07/09: 240 nombres para un centenar de
-     tratamientos, construida con los medicamentos de Ana y de P-H.
+     tratamientos, construida con los medicamentos de Joaquina y de P-H.
      Yo cortaba a la primera palabra, y « Xarelto » y « Rivaroxaban »
      hacían dos líneas de lo mismo. */
   var p = _buscaPrincipio(clave);
