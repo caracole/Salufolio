@@ -28,7 +28,7 @@ var SF_CONFIG = window.SF_CONFIG = {
   "principios": "../medicamentos/principios.js",
   "_escribe": "Es por aqui que entran los datos. El 💾 se enciende con cada documento leido.",
   "_cuesta": "Llama a la API de Claude: unos centimos por documento. El modo « asistida » no cuesta nada.",
-  "_corregido": "09/09/2026: el evento se construia SIN FUENTE — las nueve urgencias de Joaquina lo probaban.",
+  "_corregido": "09/09/2026: el evento se construia SIN FUENTE — las nueve urgencias de Ana lo probaban.",
   "detalle": {
     "es": "Lee los documentos uno tras otro, pero necesita una clave de la API. Rápido, pero se paga. Cada lectura deja su línea en el diario: qué fichero, qué se sacó, qué faltaba.",
     "fr": "Il lit les documents l'un après l'autre, mais il lui faut une clé de l'API. Rapide, mais ça se paie. Chaque lecture laisse sa ligne au journal : quel fichier, ce qui en est sorti, ce qui manquait.",

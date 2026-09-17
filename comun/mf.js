@@ -60,10 +60,69 @@ var MF = (function(){
      v2 (P-H, 11/09) : « rien n'empêche la sélection manuelle comme elle
      est programmée » — mais le nom du fichier porte déjà la matricule,
      donc on accepte les deux :
-         carga('JME8986', '../pacientes/JME8986/')          la matricule
-         carga('JME8986_2026-09-02_….mf')                   le fichier
+         carga('AGL5678', '../pacientes/AGL5678/')          la matricule
+         carga('AGL5678_2026-09-02_….mf')                   le fichier
      Dans le second cas le dossier se déduit, et les deux ne peuvent
      plus se contredire. */
+  /* ══════════════════════════════════════════════════════════════════
+     EL ECO VIVE EN MEMORIA, NUNCA EN EL DISCO (P-H, 17/09/2026)
+
+     « Moi ça ne me plaît pas du tout » — y tenía razón: cada campo
+     figuraba DOS veces en el fichero.
+
+         "paciente": { "nombre":"Ana", "matricula":"AGR0000", … }
+         "patient_name": "Ana Gómez Ruiz"      ← lo mismo
+         "patient_label": "AGR0000"            ← lo mismo
+         "sip": "12340000"                     ← lo mismo
+
+     El eco existía porque DIECISIETE programas leen « patient_label »,
+     y no se rompen diecisiete de golpe. Pero no tenía por qué estar en
+     el disco: el fichero es la VERDAD, el eco sólo una comodidad.
+
+     Así que se pone al cargar y se quita al guardar. El disco queda
+     limpio; los diecisiete leen lo que MF les da, sin saberlo. Y el día
+     que ninguno lo lea, estas dos funciones se van sin dejar rastro.
+     ══════════════════════════════════════════════════════════════════ */
+  var ECO = [['matricula','patient_label'], ['sip','sip'], ['nhc','nhc'],
+             ['cip_sns','cip_sns'], ['nacimiento','nacimiento'], ['sexo','sexo']];
+
+  function ponEco(d){
+    if(!d) return d;
+    var P = d.paciente;
+    /* un fichero de antes, sin bloque: se le hace uno */
+    if(!P || typeof P !== 'object'){
+      P = d.paciente = {};
+      ECO.forEach(function(par){ if(d[par[1]]) P[par[0]] = d[par[1]]; });
+      if(d.patient_name){
+        var t = String(d.patient_name).trim().split(/\s+/);
+        P.nombre = t[0] || '';
+        P.apellidos = t.slice(1).join(' ');
+      }
+    }
+    /* los apellidos de antes, en dos campos */
+    if(!P.apellidos && (P.apellido1 || P.apellido2))
+      P.apellidos = [P.apellido1, P.apellido2].filter(Boolean).join(' ');
+    delete P.apellido1; delete P.apellido2;
+
+    /* y el eco, para los diecisiete */
+    ECO.forEach(function(par){ if(P[par[0]]) d[par[1]] = P[par[0]]; });
+    var n = ((P.nombre||'') + ' ' + (P.apellidos||'')).trim();
+    d.patient_name = n || P.matricula || '';
+    return d;
+  }
+
+  function quitaEco(d){
+    if(!d || !d.paciente) return d;
+    /* lo que el bloque ya dice, no hace falta dos veces */
+    ECO.forEach(function(par){
+      if(d.paciente[par[0]] && par[1] !== 'sip') delete d[par[1]];
+      else if(par[1] === 'sip' && d.paciente.sip) delete d[par[1]];
+    });
+    delete d.patient_name;
+    delete d.patient_label;
+    return d;
+  }
+
   function carga(mat, carpeta){
     var m = /^([A-Za-z]{2,4}\d{3,6})_.*\.(mf|sf|json)$/i.exec(mat);
     if(m){
@@ -71,13 +130,13 @@ var MF = (function(){
       ruta = (carpeta || (_raizPacientes() + m[1] + '/')) + mat;
       return fetch(ruta)
         .then(function(r){ if(!r.ok) throw new Error('no se encuentra '+ruta); return r.json(); })
-        .then(function(d){ datos=d; return d; });
+        .then(function(d){ datos=ponEco(d); try{ letreroDemo(); }catch(e){} return datos; });
     }
     matricula = mat;
     ruta = (carpeta||'') + mat + '.mf';
     return fetch(ruta)
       .then(function(r){ if(!r.ok) throw new Error('no se encuentra '+ruta); return r.json(); })
-      .then(function(d){ datos=d; return d; });
+      .then(function(d){ datos=ponEco(d); try{ letreroDemo(); }catch(e){} return datos; });
   }
 
   /* le travail en cours reprend la main sur le fichier, s'il est du même
@@ -103,19 +162,44 @@ var MF = (function(){
      Todo módulo lo lee con MF.paciente() — para mostrarlo, imprimirlo,
      ponerlo en una receta.
      ══════════════════════════════════════════════════════════════════ */
+  /* ══ v3 (P-H, 17/09/2026) : DOS CAMPOS, NO TRES ══
+     « [nombre | prénom(s)] [apellidos | nom] »
+
+     « apellido1 » y « apellido2 » suponían la costumbre española. Un
+     francés lleva un nombre, y los vascos recitaban OCHO apellidos.
+     Dos campos aguantan todo — « Michèle | Rogues de Fursac ».
+
+     Y « etiqueta » es el nombre entero: nombre + apellidos. Si no hay
+     ninguno, la matrícula — « sinon on ne sait plus où on est » (P-H). */
   function paciente(){
-    if(!datos) return { matricula: matricula||'' };
+    if(!datos) return { matricula: matricula||'', etiqueta: matricula||'' };
     var p = datos.paciente || datos.perfil || {};
+
+    var nom = p.nombre || datos.nombre || '';
+    var ape = p.apellidos
+           || [p.apellido1, p.apellido2].filter(Boolean).join(' ')
+           || '';
+    /* un fichero de antes: patient_name lo llevaba todo junto */
+    if(!nom && !ape && datos.patient_name){
+      var t = String(datos.patient_name).trim().split(/\s+/);
+      nom = t[0] || '';
+      ape = t.slice(1).join(' ');
+    }
+    var mat = p.matricula || datos.patient_label || datos.matricula
+            || matricula || '';
+    var entero = (nom + ' ' + ape).trim();
+
     return {
-      matricula:  p.matricula  || datos.matricula || matricula || '',
-      nombre:     p.nombre     || datos.nombre    || '',
-      apellido1:  p.apellido1  || datos.apellido1 || '',
-      apellido2:  p.apellido2  || datos.apellido2 || '',
-      etiqueta:   p.etiqueta   || datos.patient_label || datos.paciente_label
-                  || [p.nombre||datos.nombre, p.apellido1||datos.apellido1,
-                      p.apellido2||datos.apellido2].filter(Boolean).join(' ')
-                  || matricula || '',
+      matricula:  mat,
+      nombre:     nom,
+      apellidos:  ape,
+      /* los dos de antes, para quien aún los lea */
+      apellido1:  p.apellido1 || ape.split(/\s+/)[0] || '',
+      apellido2:  p.apellido2 || ape.split(/\s+/).slice(1).join(' ') || '',
+      etiqueta:   entero || p.etiqueta || mat,
       sip:        p.sip        || datos.sip || '',
+      nhc:        p.nhc        || datos.nhc || '',
+      cip_sns:    p.cip_sns    || datos.cip_sns || '',
       nacimiento: p.nacimiento || datos.nacimiento || datos.birth || '',
       sexo:       p.sexo       || datos.sexo || datos.sex || '',
       version:    datos.version || '',
@@ -312,7 +396,13 @@ var MF = (function(){
        fois. L'historial fait mieux — il empile : quand, par quelle voie,
        et pourquoi. On n'écrase pas le passé.
        try{ datos.modificado = new Date().toISOString(); }catch(e){} */
-    var txt = JSON.stringify(datos, null, 1);
+    /* ══ EL ECO NO SE ESCRIBE (P-H, 17/09/2026) ══
+       Se quita de una COPIA: los diecisiete programas siguen leyéndolo
+       en memoria mientras la sesión dura. Sólo el disco queda limpio. */
+    var paraDisco = quitaEco(JSON.parse(JSON.stringify(datos)));
+    if(typeof SF_PLANTILLA !== 'undefined' && SF_PLANTILLA.ordena)
+      paraDisco = SF_PLANTILLA.ordena(paraDisco);
+    var txt = JSON.stringify(paraDisco, null, 1);
     var nombre = (matricula||'expediente') + '.mf';
 
     if(window.showSaveFilePicker){
@@ -822,6 +912,84 @@ var MF = (function(){
      ══════════════════════════════════════════════════════════════════════ */
   var TIPS_CLAVE = 'sf_tips';
 
+
+  /* ══════════════════════════════════════════════════════════════════════
+     EL MODO DEMOSTRACIÓN (P-H, 16/09/2026)
+
+     « Il faut que Salufolio sache qu'il est en mode démo. »
+
+     Lo sabe: el expediente lo dice — data_type: "demo". Falta que los
+     programas lo lean, y aquí tienen con qué.
+
+     ── LO QUE CAMBIA ──
+       · un letrero, para que nadie se confunda
+       · los documentos llevan a comun/demo.pdf, que explica por qué no
+         se muestran — en vez de un 404 seco
+
+     ── POR QUÉ NO SE MUESTRAN ──
+     Los datos clínicos de la demostración son REALES: las medidas, las
+     fechas, los tratamientos. Sólo la persona es inventada. Los PDF, en
+     cambio, llevan el membrete, el nombre, los números — y tacharlos no
+     basta: un rectángulo negro encima no borra el texto de debajo, se
+     recupera con un copiar y pegar. Es el error clásico de las
+     administraciones.
+
+     Así que no viajan. Se quedan en el ordenador de quien los tiene.
+     ══════════════════════════════════════════════════════════════════════ */
+
+  function esDemo(){
+    try{ return !!(datos && datos.data_type === 'demo'); }catch(e){ return false; }
+  }
+
+  /* la ruta de un documento — la de verdad, o la de la demostración */
+  function rutaPdf(nombre, carpeta){
+    if(esDemo()) return _raizComun() + 'demo.pdf';
+    var dir = carpeta || (datos && datos.pdfs && datos.pdfs.directorio) || '';
+    return dir + (nombre || '');
+  }
+
+  function _raizComun(){
+    if(location.protocol !== 'file:') return '/comun/';
+    var p = location.pathname.split('/').filter(Boolean);
+    p.pop();
+    var i = p.lastIndexOf('Salufolio');
+    var sube = '';
+    for(var k = 0; k < ((i>=0) ? (p.length-i-1) : 1); k++) sube += '../';
+    return sube + 'comun/';
+  }
+
+  /* ── el letrero, puesto una vez al abrir el expediente ── */
+  function letreroDemo(){
+    var v = document.getElementById('sf-demo');
+    if(!esDemo()){ if(v) v.remove(); return; }
+    if(v) return;
+
+    var T = {
+      es:['Expediente de demostración',
+          'Los datos clínicos son reales. La persona, no.'],
+      fr:['Dossier de démonstration',
+          'Les données cliniques sont réelles. La personne, non.'],
+      ca:['Expedient de demostració',
+          'Les dades clíniques són reals. La persona, no.'],
+      en:['Demonstration record',
+          'The clinical data are real. The person is not.']
+    };
+    var lg = (typeof LANG_SF !== 'undefined' && T[LANG_SF]) ? LANG_SF : 'es';
+
+    var d = document.createElement('div');
+    d.id = 'sf-demo';
+    d.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:8000;'
+      + 'background:var(--warn,#e8a44a);color:#1a1a14;'
+      + 'padding:5px 16px;font-size:12px;font-family:var(--sans,system-ui,sans-serif);'
+      + 'display:flex;align-items:baseline;gap:10px;justify-content:center;'
+      + 'box-shadow:0 -3px 14px rgba(0,0,0,.35)';
+    d.innerHTML = '<b>\ud83c\udfac ' + T[lg][0] + '</b>'
+      + '<span style="opacity:.78">' + T[lg][1] + '</span>';
+    document.body.appendChild(d);
+    /* que el letrero no tape la última línea de la página */
+    document.body.style.paddingBottom = '34px';
+  }
+
   function tips(v){
     if(v !== undefined){
       try{ localStorage.setItem(TIPS_CLAVE, v ? 'si' : 'no'); }catch(e){}
@@ -1239,7 +1407,16 @@ var MF = (function(){
   function ponFuente(){
     if(!datos) return;
 
-    var n = nombre || '(sin nombre)';
+    /* ══ v2 (P-H, 17/09/2026) ══
+       « nombre » n'existe pas ici : ce n'est qu'une variable locale
+       ailleurs dans le fichier. L'erreur cassait MF.arranca chez tout
+       programme, et rien ne se faisait après — ni les popups, ni le
+       reste. Elle ne se voyait que dans la console.
+
+       Le nom du fichier vit dans « ruta » ; à défaut, la matricule. */
+    var n = (typeof ruta !== 'undefined' && ruta)
+          ? String(ruta).replace(/^.*\//, '')
+          : (matricula || '(sin nombre)');
     var c = (p_carpeta || '') ;
     var txt = n
       + (c? String.fromCharCode(10) + c : '')
@@ -1663,7 +1840,7 @@ var MF = (function(){
   }
 
   /* ── le démarrage type d'un module ── */
-  /* ══ la forme courte : ?paciente=JME8986_….mf  (P-H, 11/09) ══
+  /* ══ la forme courte : ?paciente=AGL5678_….mf  (P-H, 11/09) ══
      Le nom du fichier porte la matricule, donc le dossier s'en déduit.
      Un seul paramètre au lieu de deux, et ils ne peuvent plus se
      contredire. L'ancienne forme ?mf=…&carpeta=… marche toujours, et
@@ -1680,7 +1857,7 @@ var MF = (function(){
 
   function arranca(opciones){
     var p=params();
-    /* la forme courte : ?paciente=JME8986_….mf — le dossier se déduit */
+    /* la forme courte : ?paciente=AGL5678_….mf — le dossier se déduit */
     if(!p.mf && p.paciente){
       p.mf = p.paciente;
       var _m = /^([A-Za-z]{2,4}\d{3,6})_/.exec(p.paciente);
@@ -1835,7 +2012,8 @@ var MF = (function(){
            glosario:glosario, glosarioTodo:glosarioTodo, explica:explica, abreGlosario:abreGlosario,
            muestraGlosario:muestraGlosario, curvaEnGrande:curvaEnGrande,
            rubricas:rubricas, idiomas:idiomas, dice:dice, cierra:cierra,
-           ponVersion:ponVersion, tip:tip, tips:tips, popupTexto:popupTexto, config:config, cargaConfig:cargaConfig,
+           ponVersion:ponVersion, tip:tip, tips:tips,
+           esDemo:esDemo, rutaPdf:rutaPdf, letreroDemo:letreroDemo, popupTexto:popupTexto, config:config, cargaConfig:cargaConfig,
            guarda:guarda, lista:lista, hayServidor:hayServidor, aviso:aviso,
            ventana:ventana,
            registro:registro, declara:declara, retira:retira, avisoDe:avisoDe,

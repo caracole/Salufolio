@@ -1,0 +1,5174 @@
+{
+ "_leeme": {
+  "que_es": "Expediente de Salufolio. Todo en claro, a propósito: dentro de diez años se seguirá leyendo sin programa.",
+  "fuentes": {
+   "A": "API — un documento leído por máquina",
+   "X": "Extractor — el PDF despojado, lleva su pdf_id",
+   "P": "Protocolo — observado a la cabecera y releído por un humano",
+   "S": "Salufolio — escrito a mano por quien cuida"
+  },
+  "historial": "modificacion = se había escrito falso · actualizacion = se enriquece con algo nuevo",
+  "fechas": "AAAA-MM-DD-HH:MM:SS, hora de donde se trabaja",
+  "el_patron": "comun/patron-comentado.txt — cada campo explicado"
+ },
+ "_demo": "Expediente de DEMOSTRACIÓN. Los datos clínicos son reales —las medidas, las fechas, los tratamientos— pero la persona no existe: nombre, SIP y NHC están cambiados. El sexo y la fecha de nacimiento se conservan: sin ellos las curvas y las escalas no dicen nada.",
+ "formato": "SF1",
+ "version": "Salufolio-2026.8.12.1",
+ "data_type": "demo",
+ "original_data_type": "real",
+ "date_anonymized": "2026-09-16-17:30:00",
+ "exported": "2026-08-24T09:17:36.329Z",
+ "paciente": {
+  "nombre": "Ana",
+  "apellidos": "Gómez Ruiz",
+  "matricula": "AGR0000",
+  "nacimiento": "1938-11-09",
+  "sexo": "mujer",
+  "sip": "12340000",
+  "nhc": "",
+  "cip_sns": ""
+ },
+ "historial": {
+  "creacion": "2026-08-06-23:14:20",
+  "creacion_nota": "historial iniciado aquí — no cubre lo anterior",
+  "modificacion": [
+   {
+    "src": "S",
+    "fecha": "2026-09-16-17:41:25"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-08-14-18:54:25"
+   }
+  ],
+  "actualizacion": [
+   {
+    "src": "S",
+    "fecha": "2026-08-13-16:41:25"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-08-14-18:54:25"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-08-15-23:36:48"
+   }
+  ]
+ },
+ "mesures": [
+  {
+   "date": "2012-09-12",
+   "vals": {
+    "hemoglobina": 13.7,
+    "hematocrito": 40.7,
+    "vcm": 92.9,
+    "hcm": 31.2,
+    "chcm": 33.6,
+    "rdw": 13.2,
+    "leucocitos": 8.1,
+    "neutrofilos": 54.6,
+    "linfocitos": 33.2,
+    "monocitos": 10.3,
+    "plaquetas": 234,
+    "vsg": 6,
+    "tp": 10,
+    "actividad_protrombina": 108,
+    "inr": 0.95,
+    "fibrinogeno": 455,
+    "ttpa": 31.2,
+    "glucosa": 105,
+    "urea": 45,
+    "acido_urico": 4.1,
+    "colesterol": 170,
+    "trigliceridos": 50,
+    "colesterol_hdl": 65,
+    "colesterol_ldl": 95,
+    "proteinas": 6.6,
+    "albumina": 58.4,
+    "hierro": 82,
+    "transferrina": 235,
+    "ferritina": 164,
+    "bilirrubina": 0.4,
+    "got": 30,
+    "gpt": 22,
+    "ggt": 69,
+    "fosfatasa": 90,
+    "tsh": 0.7,
+    "t4": 1.32
+   },
+   "pdf_id": "PDF007",
+   "src_id": "S003"
+  },
+  {
+   "date": "2016-07-04",
+   "vals": {},
+   "pdf_id": "PDF013",
+   "src_id": "S001"
+  },
+  {
+   "date": "2016-11-23",
+   "vals": {
+    "glucosa": 100,
+    "urea": 30,
+    "creatinina": 0.67,
+    "filtrado": 84.41,
+    "sodio": 139,
+    "potasio": 4.86,
+    "cloro": 106,
+    "proteinas": 6.38,
+    "albumina": 3.83,
+    "bilirrubina": 0.46,
+    "acido_urico": 3.9,
+    "colesterol": 207,
+    "colesterol_hdl": 59,
+    "colesterol_ldl": 127,
+    "trigliceridos": 105,
+    "gpt": 23,
+    "ggt": 102,
+    "fosfatasa": 156,
+    "cpk": 37,
+    "ldh": 346,
+    "hierro": 91,
+    "transferrina": 32,
+    "ferritina": 211,
+    "tsh": 0.424,
+    "t4": 1.2,
+    "folico": 8.75,
+    "vitamina_b12": 379,
+    "dimero_d": 465,
+    "tp": 15.2,
+    "ttpa": 36.6,
+    "fibrinogeno": 406,
+    "actividad_protrombina": 57,
+    "inr": 1.51,
+    "hemoglobina": 12.9,
+    "hematocrito": 40.5,
+    "vcm": 95.3,
+    "hcm": 30.3,
+    "chcm": 31.9,
+    "rdw": 12.8,
+    "leucocitos": 8.39,
+    "neutrofilos": 4.7,
+    "linfocitos": 2.54,
+    "monocitos": 0.57,
+    "plaquetas": 361,
+    "vsg": 34
+   },
+   "pdf_id": "PDF030",
+   "src_id": "S002"
+  },
+  {
+   "date": "2017-05-12",
+   "vals": {},
+   "pdf_id": "PDF020",
+   "src_id": "S003"
+  },
+  {
+   "date": "2017-08-04",
+   "vals": {},
+   "pdf_id": "PDF021",
+   "src_id": "S004"
+  },
+  {
+   "date": "2017-10-17",
+   "vals": {
+    "glucosa": 96,
+    "urea": 45,
+    "creatinina": 0.62,
+    "filtrado": 86.04,
+    "sodio": 144,
+    "potasio": 4.67,
+    "cloro": 110,
+    "bicarbonato": 29.5,
+    "calcio": 9.8,
+    "fosforo": 2.7,
+    "magnesio": 2.1,
+    "proteinas": 6.34,
+    "albumina": 3.9,
+    "bilirrubina": 0.64,
+    "acido_urico": 3.8,
+    "colesterol": 300,
+    "colesterol_hdl": 69,
+    "colesterol_ldl": 200,
+    "trigliceridos": 151,
+    "gpt": 18,
+    "ggt": 104,
+    "fosfatasa": 122,
+    "cpk": 52,
+    "ldh": 309,
+    "hierro": 119,
+    "ferritina": 130,
+    "tsh": 0.775,
+    "tp": 10.6,
+    "t4": 0.85,
+    "ttpa": 32.6,
+    "fibrinogeno": 316,
+    "inr": 1.06,
+    "actividad_protrombina": 92,
+    "hemoglobina": 13.4,
+    "hematocrito": 41.2,
+    "vcm": 95.8,
+    "hcm": 31.1,
+    "chcm": 32.4,
+    "rdw": 13.3,
+    "leucocitos": 7.88,
+    "neutrofilos": 50,
+    "linfocitos": 36.2,
+    "monocitos": 7.2,
+    "plaquetas": 291
+   },
+   "pdf_id": "PDF029",
+   "src_id": "S005"
+  },
+  {
+   "date": "2017-12-01",
+   "vals": {},
+   "pdf_id": "PDF022",
+   "src_id": "S007"
+  },
+  {
+   "date": "2018-09-21",
+   "vals": {},
+   "pdf_id": "PDF012",
+   "src_id": "S001"
+  },
+  {
+   "date": "2018-10-01",
+   "vals": {
+    "glucosa": 119,
+    "creatinina": 0.57,
+    "filtrado": 87.86,
+    "sodio": 140,
+    "potasio": 4.54,
+    "cloro": 106,
+    "bilirrubina": 0.71,
+    "acido_urico": 3.1,
+    "colesterol": 176,
+    "colesterol_hdl": 61,
+    "colesterol_ldl": 94,
+    "trigliceridos": 108,
+    "gpt": 37,
+    "got": 27,
+    "ggt": 107,
+    "fosfatasa": 115,
+    "hierro": 101,
+    "tsh": 1.53,
+    "folico": 11.57,
+    "vitamina_b12": 180,
+    "hemoglobina": 13.3,
+    "hematocrito": 40.5,
+    "vcm": 97.6,
+    "hcm": 32,
+    "chcm": 32.8,
+    "rdw": 13.7,
+    "leucocitos": 8.24,
+    "neutrofilos": 4.32,
+    "linfocitos": 2.79,
+    "monocitos": 0.65,
+    "plaquetas": 275
+   },
+   "pdf_id": "PDF028",
+   "src_id": "S007"
+  },
+  {
+   "date": "2018-11-19",
+   "vals": {},
+   "pdf_id": "PDF023",
+   "src_id": "S008"
+  },
+  {
+   "date": "2019-09-25",
+   "vals": {
+    "dimero_d": 872
+   },
+   "pdf_id": "PDF004",
+   "src_id": "S004"
+  },
+  {
+   "date": "2021-07-18",
+   "vals": {
+    "hemoglobina": 13.2,
+    "hematocrito": 38.7,
+    "vcm": 94.2,
+    "hcm": 32.2,
+    "chcm": 34.2,
+    "rdw": 13,
+    "leucocitos": 9.8,
+    "neutrofilos": 6.2,
+    "linfocitos": 2.4,
+    "monocitos": 1.1,
+    "plaquetas": 230,
+    "fibrinogeno": 375,
+    "inr": 0.94,
+    "tp": 0.94,
+    "ttpa": 0.96,
+    "actividad_protrombina": 115,
+    "dimero_d": 466,
+    "bicarbonato": 25.3
+   },
+   "pdf_id": "PDF011",
+   "src_id": "S009"
+  },
+  {
+   "date": "2021-09-01",
+   "vals": {
+    "glucosa": 117,
+    "urea": 30,
+    "creatinina": 0.66,
+    "filtrado": 81.99,
+    "sodio": 138,
+    "potasio": 3.98,
+    "cloro": 105,
+    "pcr": 6.97,
+    "tp": 10.4,
+    "actividad_protrombina": 120,
+    "inr": 0.9,
+    "ttpa": 28.3,
+    "fibrinogeno": 306,
+    "hemoglobina": 13.8,
+    "hematocrito": 40.3,
+    "vcm": 93.6,
+    "leucocitos": 9.7,
+    "neutrofilos": 5.2,
+    "linfocitos": 3,
+    "monocitos": 1.3,
+    "plaquetas": 211
+   },
+   "pdf_id": "PDF010",
+   "src_id": "S010"
+  },
+  {
+   "date": "2021-09-14",
+   "vals": {},
+   "pdf_id": "PDF002",
+   "src_id": "S011"
+  },
+  {
+   "date": "2021-12-23",
+   "vals": {
+    "glucosa": 93
+   },
+   "pdf_id": "PDF006",
+   "src_id": "S005"
+  },
+  {
+   "date": "2022-01-06",
+   "vals": {
+    "hemoglobina": 15.2,
+    "hematocrito": 47.3,
+    "vcm": 92.9,
+    "hcm": 29.8,
+    "chcm": 32,
+    "rdw": 13.6,
+    "leucocitos": 14.3,
+    "neutrofilos": 8.9,
+    "linfocitos": 3.4,
+    "monocitos": 1.8,
+    "plaquetas": 305,
+    "glucosa": 264,
+    "creatinina": 1.01,
+    "filtrado": 51.52,
+    "urea": 51,
+    "sodio": 137,
+    "potasio": 4.37,
+    "cloro": 102,
+    "bilirrubina": 0.62,
+    "gpt": 47,
+    "got": 55,
+    "ggt": 219,
+    "fosfatasa": 175,
+    "cpk": 48,
+    "ldh": 274,
+    "pcr": 66.44,
+    "ferritina": 222,
+    "bnp": 11924,
+    "troponina": 65.34,
+    "dimero_d": 3831,
+    "fibrinogeno": 777,
+    "inr": 1.02,
+    "ttpa": 1.01,
+    "tp": 1.02,
+    "actividad_protrombina": 97
+   },
+   "pdf_id": "PDF009",
+   "src_id": "S012"
+  },
+  {
+   "date": "2022-01-14",
+   "vals": {
+    "hemoglobina": 14.5,
+    "hematocrito": 43.5,
+    "vcm": 90,
+    "hcm": 30,
+    "chcm": 33.4,
+    "rdw": 12.7,
+    "leucocitos": 8.3,
+    "neutrofilos": 4.9,
+    "linfocitos": 2,
+    "monocitos": 1,
+    "plaquetas": 347,
+    "glucosa": 120,
+    "urea": 56,
+    "creatinina": 0.62,
+    "filtrado": 83.56,
+    "sodio": 138,
+    "potasio": 3.8,
+    "cloro": 96,
+    "bilirrubina": 0.4,
+    "gpt": 42,
+    "got": 36,
+    "ggt": 301,
+    "fosfatasa": 261,
+    "cpk": 15,
+    "ldh": 168,
+    "pcr": 56.5,
+    "ferritina": 285,
+    "troponina": 20.4,
+    "bnp": 114,
+    "fibrinogeno": 807,
+    "dimero_d": 1631,
+    "inr": 1,
+    "tp": 11.5,
+    "ttpa": 1.3,
+    "actividad_protrombina": 100,
+    "bicarbonato": 33.5
+   },
+   "pdf_id": "PDF004",
+   "src_id": "S013"
+  },
+  {
+   "date": "2022-01-16",
+   "vals": {
+    "hemoglobina": 14.8,
+    "hematocrito": 44.9,
+    "vcm": 90.3,
+    "hcm": 29.8,
+    "chcm": 33,
+    "rdw": 12.5,
+    "leucocitos": 10.3,
+    "neutrofilos": 6.32,
+    "linfocitos": 2.34,
+    "monocitos": 1.4,
+    "plaquetas": 363,
+    "glucosa": 91,
+    "urea": 47,
+    "creatinina": 0.78,
+    "sodio": 140,
+    "potasio": 4.1,
+    "cloro": 96,
+    "filtrado": 83.56,
+    "inr": 0.9,
+    "tp": 12.2,
+    "ttpa": 22.3,
+    "actividad_protrombina": 120,
+    "gpt": 42,
+    "got": 36,
+    "ggt": 301,
+    "fosfatasa": 261,
+    "ldh": 168,
+    "cpk": 15,
+    "bilirrubina": 0.4,
+    "pcr": 56.5,
+    "ferritina": 285,
+    "troponina": 20.4,
+    "bnp": 114
+   },
+   "pdf_id": "PDF035",
+   "src_id": "S015"
+  },
+  {
+   "date": "2022-07-07",
+   "vals": {
+    "hemoglobina": 14.1,
+    "hematocrito": 43,
+    "vcm": 95.2,
+    "hcm": 31.1,
+    "chcm": 32.7,
+    "rdw": 13.5,
+    "leucocitos": 6.9,
+    "neutrofilos": 58.2,
+    "linfocitos": 30.5,
+    "monocitos": 9,
+    "plaquetas": 239,
+    "vsg": 9,
+    "glucosa": 120.6,
+    "hba1c": 5.66,
+    "creatinina": 0.77,
+    "filtrado": 71.27,
+    "urea": 40.48,
+    "acido_urico": 3.98,
+    "colesterol": 230.2,
+    "colesterol_hdl": 54.09,
+    "colesterol_ldl": 151,
+    "trigliceridos": 124.8,
+    "sodio": 142,
+    "potasio": 4.22,
+    "cloro": 107,
+    "calcio": 9.74,
+    "fosforo": 2.38,
+    "proteinas": 6.05,
+    "albumina": 3.6,
+    "gpt": 13,
+    "ggt": 56,
+    "fosfatasa": 83,
+    "bilirrubina": 0.66,
+    "ferritina": 66,
+    "hierro": 136,
+    "transferrina": 47,
+    "vitamina_d": 27.1,
+    "vitamina_b12": 152,
+    "folico": 10.24,
+    "tsh": 0.6,
+    "t4": 0.94,
+    "pcr": 0.62,
+    "bnp": 95.3
+   },
+   "pdf_id": "PDF027",
+   "src_id": "S017"
+  },
+  {
+   "date": "2022-08-19",
+   "vals": {
+    "proteinas": 25,
+    "hemoglobina_orina": 0.06
+   },
+   "pdf_id": "PDF026",
+   "src_id": "S018"
+  },
+  {
+   "date": "2022-09-13",
+   "vals": {},
+   "pdf_id": "PDF019",
+   "src_id": "S019"
+  },
+  {
+   "date": "2022-10-28",
+   "vals": {
+    "hemoglobina": 13.9,
+    "hematocrito": 42.3,
+    "vcm": 92.6,
+    "hcm": 30.5,
+    "chcm": 32.9,
+    "rdw": 13.7,
+    "leucocitos": 6.2,
+    "neutrofilos": 4.7,
+    "linfocitos": 1.1,
+    "monocitos": 0.4,
+    "plaquetas": 214,
+    "glucosa": 156,
+    "creatinina": 0.81,
+    "filtrado": 66.89,
+    "urea": 48,
+    "sodio": 137,
+    "potasio": 4.77,
+    "cloro": 101,
+    "gpt": 13,
+    "pcr": 22.9,
+    "bnp": 101,
+    "fibrinogeno": 701,
+    "inr": 1.24,
+    "tp": 14.3,
+    "ttpa": 31,
+    "actividad_protrombina": 74
+   },
+   "pdf_id": "PDF008",
+   "src_id": "S020"
+  },
+  {
+   "date": "2023-01-16",
+   "vals": {},
+   "pdf_id": "PDF018",
+   "src_id": "S021"
+  },
+  {
+   "date": "2023-02-09",
+   "vals": {},
+   "pdf_id": "PDF017",
+   "src_id": "S022"
+  },
+  {
+   "date": "2023-03-09",
+   "vals": {
+    "glucosa": 101.4,
+    "hba1c": 6.17,
+    "vitamina_d": 15.11,
+    "t4": 0.99,
+    "tsh": 1.25,
+    "vitamina_b12": 520,
+    "dimero_d": 335
+   },
+   "pdf_id": "PDF025",
+   "src_id": "S023"
+  },
+  {
+   "date": "2024-01-23",
+   "vals": {},
+   "pdf_id": "PDF007",
+   "src_id": "S012"
+  },
+  {
+   "date": "2024-04-25",
+   "vals": {
+    "hemoglobina": 13.8,
+    "hematocrito": 41.7,
+    "vcm": 92.1,
+    "hcm": 30.4,
+    "chcm": 33,
+    "rdw": 13.5,
+    "leucocitos": 8.4,
+    "neutrofilos": 3.7,
+    "linfocitos": 3.4,
+    "monocitos": 1,
+    "plaquetas": 236,
+    "vsg": 20,
+    "glucosa": 102.2,
+    "hba1c": 6.01,
+    "creatinina": 0.85,
+    "filtrado": 62.45,
+    "urea": 45.3,
+    "acido_urico": 4.82,
+    "colesterol": 281.7,
+    "colesterol_hdl": 54.93,
+    "colesterol_ldl": 202,
+    "trigliceridos": 126.2,
+    "sodio": 139,
+    "potasio": 4.26,
+    "cloro": 104,
+    "proteinas": 6.12,
+    "albumina": 3.7,
+    "gpt": 11,
+    "ggt": 46,
+    "fosfatasa": 89,
+    "ferritina": 77,
+    "hierro": 105,
+    "vitamina_d": 15.96,
+    "vitamina_b12": 234,
+    "folico": 9.55,
+    "tsh": 1.16,
+    "pcr": 4.16,
+    "bnp": 73.6
+   },
+   "pdf_id": "PDF024",
+   "src_id": "S024"
+  },
+  {
+   "date": "2025-03-10",
+   "vals": {
+    "hemoglobina": 14.5,
+    "hematocrito": 46.8,
+    "vcm": 98.1,
+    "hcm": 30.4,
+    "chcm": 31,
+    "rdw": 13.2,
+    "leucocitos": 8.6,
+    "neutrofilos": 4.96,
+    "linfocitos": 2.45,
+    "monocitos": 0.9,
+    "plaquetas": 263,
+    "tp": 13.2,
+    "inr": 1,
+    "ttpa": 26.7,
+    "actividad_protrombina": 100,
+    "urea": 37,
+    "creatinina": 0.76,
+    "filtrado": 70.8,
+    "folico": 7.9,
+    "vitamina_b12": 269,
+    "got": 19,
+    "gpt": 12,
+    "ggt": 40,
+    "fosfatasa": 87,
+    "tsh": 1.45
+   },
+   "pdf_id": "PDF036",
+   "src_id": "S025"
+  },
+  {
+   "date": "2025-07-19",
+   "vals": {
+    "tp": 10.8,
+    "inr": 0.94,
+    "actividad_protrombina": 100,
+    "ttpa": 27.7,
+    "fibrinogeno": 556,
+    "dimero_d": 2583,
+    "hemoglobina": 13.8,
+    "hematocrito": 40.7,
+    "vcm": 92.3,
+    "hcm": 31.3,
+    "chcm": 33.9,
+    "rdw": 13.5,
+    "leucocitos": 9.7,
+    "neutrofilos": 5.8,
+    "linfocitos": 2.5,
+    "monocitos": 1.2,
+    "plaquetas": 235,
+    "glucosa": 116,
+    "urea": 37,
+    "creatinina": 0.95,
+    "filtrado": 53.85,
+    "sodio": 142,
+    "potasio": 4.52,
+    "cloro": 108,
+    "pcr": 14.9,
+    "bnp": 220
+   },
+   "pdf_id": "PDF006",
+   "src_id": "S026"
+  },
+  {
+   "date": "2025-09-23",
+   "vals": {},
+   "pdf_id": "PDF015",
+   "src_id": "S019"
+  },
+  {
+   "date": "2026-01-06",
+   "vals": {},
+   "pdf_id": "PDF014",
+   "src_id": "S028"
+  },
+  {
+   "date": "2026-01-13",
+   "vals": {},
+   "pdf_id": "PDF001",
+   "src_id": "S029"
+  },
+  {
+   "date": "2026-01-24",
+   "vals": {},
+   "pdf_id": "PDF005",
+   "src_id": "S030"
+  },
+  {
+   "date": "2026-02-24",
+   "vals": {},
+   "pdf_id": "PDF005",
+   "src_id": "S007"
+  },
+  {
+   "date": "2026-02-24",
+   "vals": {},
+   "pdf_id": "PDF008",
+   "src_id": "S007"
+  },
+  {
+   "date": "2026-02-27",
+   "vals": {},
+   "pdf_id": "PDF033",
+   "src_id": "S031"
+  },
+  {
+   "date": "2026-03-10",
+   "vals": {},
+   "pdf_id": "PDF003",
+   "src_id": "S008"
+  },
+  {
+   "date": "2026-06-04",
+   "vals": {
+    "glucosa": 149,
+    "urea": 29,
+    "creatinina": 0.84,
+    "filtrado": 62.51,
+    "sodio": 141,
+    "potasio": 4.73,
+    "cloro": 102,
+    "calcio": 9.8,
+    "magnesio": 2.2,
+    "proteinas": 6.15,
+    "albumina": 3.96,
+    "bilirrubina": 0.36,
+    "gpt": 15,
+    "got": 21,
+    "ggt": 42,
+    "fosfatasa": 99,
+    "cpk": 28,
+    "ldh": 181,
+    "pcr": 9.4,
+    "troponina": 22.4,
+    "bnp": 86
+   },
+   "pdf_id": "PDF031",
+   "src_id": "S032"
+  },
+  {
+   "date": "2026-06-04",
+   "vals": {
+    "hemoglobina": 14.8,
+    "hematocrito": 46,
+    "vcm": 91.2,
+    "hcm": 29.4,
+    "chcm": 32.2,
+    "rdw": 13.8,
+    "leucocitos": 7.6,
+    "neutrofilos": 4.9,
+    "linfocitos": 1.8,
+    "monocitos": 0.7,
+    "plaquetas": 241,
+    "fibrinogeno": 429,
+    "inr": 1.67,
+    "tp": 19,
+    "ttpa": 51,
+    "dimero_d": 605,
+    "actividad_protrombina": 48
+   },
+   "pdf_id": "PDF032",
+   "src_id": "S033"
+  },
+  {
+   "date": "2026-07-16",
+   "vals": {
+    "hemoglobina": 14.4,
+    "hematocrito": 43.8,
+    "vcm": 91.3,
+    "hcm": 30,
+    "chcm": 32.9,
+    "rdw": 14.2,
+    "leucocitos": 11.9,
+    "neutrofilos": 9.7,
+    "linfocitos": 0.8,
+    "monocitos": 1.4,
+    "plaquetas": 187,
+    "glucosa": 239,
+    "urea": 52,
+    "creatinina": 1.09,
+    "filtrado": 45.51,
+    "sodio": 136,
+    "potasio": 4.95,
+    "cloro": 106,
+    "bicarbonato": 23.5,
+    "calcio": 5.33,
+    "bilirrubina": 2,
+    "pcr": 80.5,
+    "bnp": 260
+   },
+   "pdf_id": "PDF001",
+   "src_id": "S001"
+  },
+  {
+   "date": "2026-07-20",
+   "vals": {
+    "hemoglobina": 14.4,
+    "hematocrito": 43.8,
+    "vcm": 91.3,
+    "hcm": 30,
+    "chcm": 32.9,
+    "rdw": 14.2,
+    "leucocitos": 11.9,
+    "neutrofilos": 9.7,
+    "linfocitos": 0.8,
+    "monocitos": 1.4,
+    "plaquetas": 187,
+    "glucosa": 239,
+    "creatinina": 1.09,
+    "filtrado": 45.51,
+    "urea": 52,
+    "sodio": 136,
+    "potasio": 4.95,
+    "cloro": 106,
+    "calcio": 5.33,
+    "bicarbonato": 23.5,
+    "bilirrubina": 2,
+    "pcr": 80.5,
+    "bnp": 260
+   },
+   "pdf_id": "PDF011",
+   "src_id": "S009"
+  },
+  {
+   "date": "2026-08-12",
+   "vals": {
+    "filtrado": 78.11
+   },
+   "pdf_id": "PDF001",
+   "src_id": "S010"
+  }
+ ],
+ "events": [
+  {
+   "date": "2012-09-12",
+   "type": "neumologia",
+   "title": "⚠️ Patología restrictiva por parálisis diafragmática derecha",
+   "text": "Paciente de 73 años con disnea de esfuerzo y elevación de hemidiafragma derecho en Rx tórax, con espirometría restrictiva (FVC 48%, FEV1 54%). Antecedente de elevación aislada de GGT (69 U/L) en probable relación con esteatosis hepática no alcohólica (2010-2011).",
+   "pdf_id": "PDF007",
+   "diagnostics": [
+    "Patologia restrictiva secundaria a paralisis diafragmatica",
+    "Elevación aislada de GGT, en probable relación con esteatosis no alcohólica"
+   ],
+   "antecedents": [
+    "Pleuritis a los 12 años",
+    "Hipercolesterolemia",
+    "Hiperglucemia",
+    "Intervenida quirúrgicamente de amígdalas",
+    "Fumadora esporádica sin inhalar, 30 gr al día hasta agosto 2010",
+    "Trabajo en hostelería (recepción de hotel)",
+    "Padre fallecido de tumor de pulmón"
+   ],
+   "signes_vitaux": {
+    "fc": 56,
+    "spo2": 96,
+    "peso_kg": 62
+   },
+   "alertes": [
+    "GGT 69 U/L ⚠️ elevada (ref 5-36)",
+    "Fibrinógeno 455 mg/dL ⚠️ elevado (ref 150-400)",
+    "Alfa-2-Globulina 12.3% ⚠️ elevada (ref 7.1-11.8)",
+    "Espirometría restrictiva: FVC 48%, FEV1 54% ⚠️",
+    "Tiempo de protrombina 10 seg ⚠️ bajo (ref 11-16)"
+   ]
+  },
+  {
+   "date": "2016-07-04",
+   "type": "urgencias",
+   "title": "Paciente fugado antes de finalizar atención",
+   "text": "Paciente acudió por sensación de cuerpo extraño en la garganta desde el día anterior, procedente de Atención Primaria. El episodio se cierra como 'FUGADO', constando que la paciente abandonó el servicio de Urgencias antes de completar la atención.",
+   "pdf_id": "PDF013",
+   "alertes": [
+    "Paciente fugado del Servicio de Urgencias sin finalizar la atención médica"
+   ]
+  },
+  {
+   "date": "2016-11-23",
+   "type": "laboratorio",
+   "title": "⚠️ Analítica: INR elevado (1.51), GGT y fosfatasa alcalina altas, VSG muy elevada",
+   "text": "Analítica de bioquímica y hematología con hipocoagulación evidente (TP 15.2 seg, INR 1.51, Índice de Quick 57%), colestasis leve (GGT 102 UI/L, fosfatasa alcalina 156 UI/L), VSG muy elevada (34 mm/h) y ferritina discretamente elevada (211 ng/mL). Resto de parámetros dentro de rangos normales o con leves desviaciones (cloruro, proteínas totales, bilirrubina, VCM, CHCM).",
+   "pdf_id": "PDF030",
+   "alertes": [
+    "TIEMPO DE PROTROMBINA 15.2 seg ⚠️ prolongado (9.0 - 13.0)",
+    "INR 1.51 ⚠️ elevado (0.80 - 1.20)",
+    "ÍNDICE DE QUICK 57% ⚠️ bajo (80.0 - 105.0)",
+    "GGT 102 UI/L ⚠️ elevado (7 - 50)",
+    "FOSFATASA ALCALINA 156 UI/L ⚠️ elevada (40 - 145)",
+    "VSG 34 mm/h ⚠️ muy elevada (0 - 10)",
+    "FERRITINA 211 ng/mL ⚠️ ligeramente elevada (20 - 200)"
+   ]
+  },
+  {
+   "date": "2017-05-12",
+   "type": "imagen",
+   "title": "⚠️ TC tórax: bocio endotorácico, TEP crónico y atrofia renal",
+   "text": "TC tórax con contraste que muestra tractos apicales post-TBC, defecto de repleción en arteria pulmonar derecha sugestivo de tromboembolismo pulmonar crónico, bocio endotorácico de 3x3x5 cm y atrofia del polo inferior del riñón derecho por probable infarto isquémico.",
+   "pdf_id": "PDF020",
+   "diagnostics": [
+    "Tractos engrosados apicales bilaterales, compatibles con cambios post TBC",
+    "Elevación diafragmática derecha, probable relajación diafragmática",
+    "Defecto de repleción en arteria pulmonar derecha, sugestivo de tromboembolismo pulmonar crónico",
+    "Bocio endotorácico a expensas del LTI de 3 x 3 x 5 cm",
+    "Atrofia del polo inferior del riñón derecho, probable infarto isquémico"
+   ],
+   "antecedents": [
+    "Embolismo pulmonar diagnosticado en noviembre de 2016",
+    "TBC en infancia con paquipleuritis derecha residual"
+   ],
+   "alertes": [
+    "⚠️ Tromboembolismo pulmonar crónico residual en arteria pulmonar derecha",
+    "⚠️ Bocio endotorácico de 3 x 3 x 5 cm que llega hasta la salida de los troncos supraaórticos",
+    "⚠️ Atrofia del polo inferior del riñón derecho por probable infarto isquémico"
+   ]
+  },
+  {
+   "date": "2017-08-04",
+   "type": "imagen",
+   "title": "TC vascular arterias pulmonares - Control TEP crónico",
+   "text": "Angio-TC pulmonar de control de TEP crónico: no se observan defectos de repleción sugestivos de TEP. Gran elevación del hemidiafragma derecho. Persiste bocio endotorácico izquierdo e hipoplasia del polo inferior del riñón derecho.",
+   "pdf_id": "PDF021",
+   "diagnostics": [
+    "Gran elevación del hemidiafragma derecho",
+    "No defectos de repleción en arterias pulmonares sugestivos de TEP",
+    "Bocio endotorácico izquierdo",
+    "Hipoplasia del polo inferior del riñón D"
+   ],
+   "antecedents": [
+    "TEP crónico",
+    "Bocio endotorácico izquierdo",
+    "Hipoplasia del polo inferior del riñón derecho"
+   ]
+  },
+  {
+   "date": "2017-10-17",
+   "type": "laboratorio",
+   "title": "⚠️ Analítica: dislipemia mixta, hipercolesterolemia y GGT elevada",
+   "text": "Colesterol total 300 mg/dL, LDL 200 mg/dL, HDL 69 mg/dL y triglicéridos 151 mg/dL elevados; GGT 104 UI/L elevada; cloro 110 mmol/L y CO2 total 29.5 mmol/L levemente elevados; proteínas totales 6.34 g/dL bajas. Hemograma con VCM 95.8 fL y HCM 31.1 pg discretamente elevados y CHCM 32.4 g/dL baja, resto de parámetros hematológicos y de coagulación dentro de límites normales.",
+   "pdf_id": "PDF029",
+   "alertes": [
+    "Colesterol total 300 mg/dL ⚠️ muy elevado",
+    "Colesterol LDL calculado 200 mg/dL ⚠️ muy elevado",
+    "Colesterol HDL 69 mg/dL ⚠️ elevado",
+    "Triglicéridos 151 mg/dL ⚠️ elevado",
+    "GGT 104 UI/L ⚠️ elevada",
+    "Cloruro 110 mmol/L ⚠️ elevado",
+    "CO2 total 29.5 mmol/L ⚠️ elevado",
+    "Proteínas totales 6.34 g/dL ⚠️ bajas",
+    "VCM 95.8 fL ⚠️ macrocitosis leve",
+    "CHCM 32.4 g/dL ⚠️ baja"
+   ]
+  },
+  {
+   "date": "2017-12-01",
+   "type": "imagen",
+   "title": "ECO Doppler venoso MMII: descarta insuficiencia venosa profunda bilateral",
+   "text": "Paciente con antecedente de TVP sin foco en MMII, asintomática, estudiada para valorar funcionalidad. Sistema venoso profundo permeable y competente a nivel femoral común y poplíteo, sin trombo antiguo ni restos de fibrosis. Se descarta insuficiencia venosa profunda bilateral.",
+   "pdf_id": "PDF022",
+   "diagnostics": [
+    "Se descarta Insuficiencia Venosa profunda bilateral"
+   ],
+   "antecedents": [
+    "TVP sin foco en MMII"
+   ]
+  },
+  {
+   "date": "2018-09-21",
+   "type": "urgencias",
+   "title": "⚠️ Paciente fugado tras derivación por alucinaciones",
+   "text": "Paciente remitida desde Atención Primaria por cuadro agudo con alucinaciones. Buscada por megafonía y celadores en dos ocasiones sin ser localizada. Se registra como fugada.",
+   "pdf_id": "PDF012",
+   "diagnostics": [
+    "FUGADO"
+   ],
+   "alertes": [
+    "Paciente fugado del servicio de Urgencias antes de ser valorado"
+   ]
+  },
+  {
+   "date": "2018-10-01",
+   "type": "laboratorio",
+   "title": "⚠️ Analítica: hiperglucemia leve, gGT elevada, macrocitosis",
+   "text": "Glucosa 119 mg/dL (leve hiperglucemia), gGT 107 UI/L marcadamente elevada, cloro 106 mmol/L levemente alto. Hematimetría con macrocitosis (VCM 97.6 fL, HCM 32 pg, CHCM 32.8 g/dL) y hematíes levemente disminuidos (4.15 x). Resto de parámetros bioquímicos, hormonales y de orina dentro de normalidad.",
+   "pdf_id": "PDF028",
+   "alertes": [
+    "GLUCOSA (SANGRE) 119 mg/dL ⚠️ por encima del rango (70-110)",
+    "CLORURO 106 mmol/L ⚠️ ligeramente elevado (95-105)",
+    "GAMMA-GLUTAMIL-TRANSPEPTIDASA (gGT) 107 UI/L ⚠️ notablemente elevada (7-50)",
+    "HEMATÍES (EN SANGRE) 4.15 x ⚠️ ligeramente bajo (4.20-6.10)",
+    "VOLUMEN CORPUSCULAR MEDIO 97.6 fL ⚠️ macrocitosis (80.0-94.0)",
+    "HEMOGLOBINA CORPUSCULAR MEDIA 32 pg ⚠️ elevada (27.0-31.0)",
+    "CHCM 32.8 g/dL ⚠️ por debajo del rango (33.0-37.0)",
+    "VITAMINA B12 180 pg/mL ⚠️ en límite inferior de la normalidad (180.0-914.0)"
+   ]
+  },
+  {
+   "date": "2018-11-19",
+   "type": "imagen",
+   "title": "TC cerebro: foco hipodensidad crónico, sin isquemia/hemorragia aguda",
+   "text": "Episodio transitorio de alucinación sin clínica focal neurológica, ahora asintomática. TC craneal sin CIV sin signos de trastorno isquémico ni hemorrágico agudo. Foco de hipodensidad tálamo capsular anterior derecho en relación con lesión hipóxica de características crónicas.",
+   "pdf_id": "PDF023",
+   "diagnostics": [
+    "Foco de hipodensidad tálamo capsular anterior derecho en relación con lesión hipóxica características crónicas"
+   ]
+  },
+  {
+   "date": "2019-09-25",
+   "type": "urgencias",
+   "title": "Dolor en EID, se descarta TVP",
+   "text": "Paciente de 80 años con dolor en extremidad inferior derecha de 5 días de evolución. Dímero D elevado (872), se realiza eco-doppler que descarta TVP. Rx tibia sin alteraciones.",
+   "pdf_id": "PDF004",
+   "diagnostics": [
+    "Dolor EID. Se descarta TVP"
+   ],
+   "antecedents": [
+    "Pleuritis a los 12 años",
+    "Elevacion diafragmática derecha idiopática",
+    "Hipercolesterolemia",
+    "Hiperglucemia",
+    "Síndrome de hipoventilación nocturna por parálisis idiopática del diafragma derecho. Inicio de VMNI con BiPAP en 12/2014",
+    "TEP en el 2017, anticoagulada con xarelto durante 1 año",
+    "Amigdalectomía",
+    "No fumadora. Bebedora vino en la comida",
+    "Trabajo en hosteleria (recepcion de hotel)",
+    "Padre fallecido de tumor de pulmon"
+   ],
+   "alertes": [
+    "Dímero D 872 ⚠️ elevado, se descarta TVP tras eco-doppler"
+   ]
+  },
+  {
+   "date": "2021-07-18",
+   "type": "neumologia",
+   "title": "⚠️ Disnea progresiva por elevación de hemidiafragma derecho",
+   "text": "Mujer de 82 años con disnea progresiva de un mes de evolución, empeorada tras viaje reciente, con SatO2 en domicilio del 85%. Se descarta TEP (Dímeros D 466 ng/mL normal, sin alteraciones en Rx salvo elevación de hemidiafragma derecho ya conocida). Alta estable con tratamiento broncodilatador y diurético.",
+   "pdf_id": "PDF011",
+   "diagnostics": [
+    "ELEVACION DIAFRAGMA DERECHO"
+   ],
+   "antecedents": [
+    "No RAMc",
+    "Antecedente de TEP bilateral en 2016, en tratamiento una temporada con Xarelto",
+    "Puestas 2 vacunas para SARS-2"
+   ],
+   "signes_vitaux": {
+    "ta_sys": 151,
+    "ta_dia": 75,
+    "fc": 66,
+    "spo2": 97,
+    "temperatura": 37.5
+   },
+   "alertes": [
+    "Dímero D 466 ng/mL dentro de rango, descarta TEP",
+    "Hematíes 4.11 x10^6/µL ⚠️ levemente bajo",
+    "VCM 94.2 fL ⚠️ levemente elevado",
+    "HCM 32.2 pg ⚠️ levemente elevado",
+    "Monocitos 1.10 x10^3/µL ⚠️ levemente elevado",
+    "RX tórax: Elevación de hemidiafragma derecho ya conocida"
+   ]
+  },
+  {
+   "date": "2021-09-01",
+   "type": "neurologia",
+   "title": "🚨 Ictus isquémico - Síndrome lacunar motor puro, oclusión ACI I",
+   "text": "Mujer de 82 años con hemiparesia izquierda 4/5, disartria moderada y NIHSS 5. AngioTC muestra oclusión de ACI I sin sangrado ni lesión isquémica aguda establecida. No se administra fibrinolítico por tiempo de evolución >4,5h y perfusión no significativa; ingresa en Neurología con código ictus activado.",
+   "pdf_id": "PDF010",
+   "diagnostics": [
+    "ICTUS ISQUEMICO. SD LACUNAR MOTOR PURO",
+    "OCLUSION ACI I"
+   ],
+   "antecedents": [
+    "No FRCV",
+    "Elevación hemidiafragma derecho",
+    "Portadora de BIPAP"
+   ],
+   "signes_vitaux": {
+    "ta_sys": 142,
+    "ta_dia": 57,
+    "fc": 50,
+    "spo2": 100,
+    "temperatura": 36.9
+   },
+   "alertes": [
+    "🚨 Oclusión ACI I con síndrome lacunar motor puro — ictus isquémico agudo",
+    "⚠️ Glucosa 117 mg/dL — hiperglucemia leve",
+    "⚠️ Cloro 105 mmol/L — límite superior de la normalidad",
+    "⚠️ Monocitos 1,30 x10^3/µL — por encima del rango de referencia",
+    "No se realizó tratamiento fibrinolítico por tiempo de evolución > 4,5h y perfusión no significativa"
+   ]
+  },
+  {
+   "date": "2021-09-14",
+   "type": "neurologia",
+   "title": "⚠️ Alta tras Ictus isquémico. SD lacunar motor puro",
+   "text": "Paciente ingresada el 01/09/2021 a cargo de Neurología por ICTUS ISQUEMICO, SD LACUNAR MOTOR PURO. Barthel al ingreso 15/100 (dependencia total) frente a Barthel 100 previo al episodio; Downton 5/12 (riesgo alto de caídas). Dada de alta el 14/09/2021 tras exploraciones pertinentes.",
+   "pdf_id": "PDF002",
+   "diagnostics": [
+    "ICTUS ISQUEMICO. SD LACUNAR MOTOR PURO"
+   ],
+   "antecedents": [
+    "No FRCV",
+    "Elevación hemidiafragma derecho",
+    "Portadora de BIPAP"
+   ],
+   "alertes": [
+    "BARTHEL 15/100 - DEPENDENCIA TOTAL al ingreso (01/09/2021) ⚠️ frente a Barthel 100 previo al episodio",
+    "J.H. DOWNTON HGC 5/12 - RIESGO ALTO de caídas ⚠️",
+    "ESCALA NEUROLÓGICA CANADIENSE 3.5/10 (03/09/2021 09:43) ⚠️ empeoramiento respecto a valores previos"
+   ]
+  },
+  {
+   "date": "2021-12-23",
+   "type": "imagen",
+   "title": "⚠️ PET/CT cerebral: hipometabolismo frontal y cerebeloso",
+   "text": "Estudio PET/CT cerebral con 18FDG en paciente de 83 años con deterioro cognitivo tras ictus isquémico vertebro-basilar. Hipometabolismo irregular de la corteza frontal de predominio dorsolateral e hipometabolismo difuso simétrico de ambos hemisferios cerebelosos; se plantea diagnóstico diferencial con DFT.",
+   "pdf_id": "PDF006",
+   "diagnostics": [
+    "Hipometabolismo de ambos hemisferios cerebelosos, a valorar en el contexto de antecedente de ictus isquémico vertebro-basilar",
+    "Hipometabolismo frontal a correlacionar con la sintomatología clínica. Diagnóstico diferencial con DFT"
+   ],
+   "antecedents": [
+    "Ictus isquémico vertebro-basilar",
+    "Deterioro cognitivo"
+   ],
+   "alertes": [
+    "⚠️ Hipometabolismo frontal dorsolateral de predominio izquierdo",
+    "⚠️ Hipometabolismo difuso simétrico de ambos hemisferios cerebelosos",
+    "Diagnóstico diferencial con Demencia Frontotemporal (DFT)"
+   ]
+  },
+  {
+   "date": "2022-01-06",
+   "type": "urgencias",
+   "title": "🚨 TEP agudo bilateral con hipoxemia severa",
+   "text": "Paciente de 83 años con disnea brusca y SatO2 70% al ingreso. TAC vascular pulmonar confirma TEP agudo bilateral con signos de sobrecarga de cavidades derechas. Dímero D 3831 ng/mL, NT-proBNP 11924 pg/mL y troponina 76.68 ng/L muy elevados. Ingresa en Neumología.",
+   "pdf_id": "PDF009",
+   "diagnostics": [
+    "TEP AGUDO BILATERAL"
+   ],
+   "antecedents": [
+    "Ex-fumadora desde hace mas de 40 años de 4 cig/dia",
+    "TVP + TEP bilateral en Francia en 2016, en tratamiento con Xarelto",
+    "TBC en la infancia (TAC del 2017 hallazgos compatibles con cambios post TBC)",
+    "Portadora de VMNI por SAOS (BiPAP puesta en Navarra)",
+    "Dislipemia",
+    "Ictus vertebrobasilar en sept 2021",
+    "Deterioro cognitivo desde ingreso por ictus vertebrobasilar en estudio por Neurología",
+    "Elevación hemidiafragma derecho",
+    "Insuficiencia tricuspídea moderada"
+   ],
+   "signes_vitaux": {
+    "fc": 97,
+    "spo2": 70,
+    "temperatura": 35.6
+   },
+   "alertes": [
+    "🚨 SatO2 70% al ingreso sin oxígeno — hipoxemia severa",
+    "🚨 TEP agudo bilateral confirmado por Angio-TAC",
+    "⚠️ Dímero D 3831 ng/mL (VN 0-500) muy elevado",
+    "⚠️ NT-proBNP 11924 pg/mL (VN 20-125) muy elevado",
+    "⚠️ Troponina ultrasensible 76.68 ng/L (VN 0.02-14.00) elevada",
+    "⚠️ Fibrinógeno 777 mg/dL elevado",
+    "⚠️ Leucocitosis 14.30 x10^3/µL con neutrofilia",
+    "⚠️ LDH 274 UI/L elevada",
+    "⚠️ PCR 66.44 mg/L elevada",
+    "⚠️ GGT 219 UI/L muy elevada",
+    "⚠️ Filtrado glomerular estimado 51.52 ml/min/sup (deterioro función renal)"
+   ]
+  },
+  {
+   "date": "2022-01-14",
+   "type": "ingreso",
+   "title": "🚨 TEP bilateral riesgo intermedio-alto con insuficiencia respiratoria",
+   "text": "Mujer de 83 años ingresa por disnea brusca y SatO2 70% al ingreso. TAC confirma TEP bilateral agudo con sobrecarga de cavidades derechas (ecocardio). Dímero D 3831 ng/mL, NT-proBNP 11924 pg/mL, troponina 76,68 ng/L. Tratada con anticoagulación (enoxaparina), evolución favorable, alta con oxígeno domiciliario.",
+   "pdf_id": "PDF004",
+   "diagnostics": [
+    "TEP RIESGO INTERMEDIO ALTO",
+    "SEGUNDO EPISODIO TEP",
+    "INSUFICIENCIA RESPIRATORIA AGUDA CON HIPOXEMIA"
+   ],
+   "antecedents": [
+    "Ex-fumadora desde hace más de 40 años de 4 cig/día",
+    "TVP + TEP bilateral en Francia en 2016, tratada con Xarelto",
+    "TBC en la infancia (cambios post TBC en TAC 2017)",
+    "Portadora de VMNI por SAOS (BiPAP)",
+    "Dislipemia",
+    "Ictus vertebrobasilar en sept 2021",
+    "Deterioro cognitivo en estudio por Neurología",
+    "Elevación hemidiafragma derecho",
+    "Insuficiencia tricuspídea moderada"
+   ],
+   "signes_vitaux": {
+    "fc": 97,
+    "spo2": 70,
+    "temperatura": 35.6
+   },
+   "alertes": [
+    "🚨 SatO2 70% sin oxígeno al ingreso — hipoxemia severa",
+    "🚨 TEP bilateral agudo confirmado por TAC con signos de sobrecarga de cavidades derechas",
+    "⚠️ Dímero D 3831 ng/mL (VN 0-500) al ingreso",
+    "⚠️ NT-proBNP 11.924 pg/mL (VN 20-125) al ingreso — normalizado al alta (114 pg/mL)",
+    "⚠️ Troponina ultrasensible 76,68 ng/L (VN 0,02-14,00) al ingreso",
+    "⚠️ Fibrinógeno elevado 777-807 mg/dL",
+    "⚠️ PCR elevada 66,44 mg/L al ingreso",
+    "⚠️ Gasometría al alta: alcalosis respiratoria compensada (pH 7.51, HCO3 33.5) con hipoxemia persistente (PO2 53 mmHg, SatO2 86.9%)"
+   ]
+  },
+  {
+   "date": "2022-01-16",
+   "type": "urgencias",
+   "title": "⚠️ MEG: sangrado en punción de Enoxaparina tras ingreso por TEP",
+   "text": "Paciente de 83 años con antecedente reciente de TEP agudo bilateral en tratamiento con Enoxaparina, acude por sangrado en zona de punción desde el día anterior. Sin dolor torácico, disnea ni fiebre. TTPA y TTPA-Ratio ligeramente bajos, resto de analítica y hemostasia sin alteraciones significativas. Alta con control analítico y seguimiento por Hematología.",
+   "pdf_id": "PDF034",
+   "diagnostics": [
+    "Control analítico"
+   ],
+   "antecedents": [
+    "TBC en la infancia (TAC 2017 compatible con cambios post TBC)",
+    "Portadora de VMNI por SAOS (VIPAP)",
+    "Dislipemia",
+    "ICTUS vertebrobasilar 2021",
+    "Deterioro cognitivo por ICTUS",
+    "Insuficiencia tricúspide moderada",
+    "TEP/Insuficiencia respiratoria aguda con Hipoxemia"
+   ],
+   "signes_vitaux": {
+    "fc": 70,
+    "spo2": 94
+   },
+   "alertes": [
+    "Monocitos % 13.6% ⚠️ (ref 3.8-10.8)",
+    "Monocitos 1.40 x10^9/L ⚠️ (ref 0.20-0.80)",
+    "Volumen plaquetar medio 10.4 fL ⚠️ (ref 8.0-10.2)",
+    "TTPA 22.3 seg ⚠️ (ref 26.4-32.0) — bajo",
+    "TTPA-Ratio 0.74 ⚠️ (ref 0.80-1.20) — bajo"
+   ]
+  },
+  {
+   "date": "2022-07-07",
+   "type": "laboratorio",
+   "title": "⚠️ Analítica: déficit vit. B12/D, hiperglucemia, leucocituria",
+   "text": "Hemograma sin alteraciones significativas salvo VCM 95.2 fL levemente elevado. Bioquímica con hiperglucemia (120.6 mg/dL), hipercolesterolemia (230.2 mg/dL, LDL 151 mg/dL), GGT elevada (56 UI/L), hipofosfatemia leve, hipoproteinemia (6.05 g/dL) y déficit de vitamina D (27.1 ng/mL) y vitamina B12 (152 pg/mL). Sedimento urinario con leucocituria (75) y proteinuria (25 mg/dL). BNP normal (95.3 pg/mL).",
+   "pdf_id": "PDF027",
+   "alertes": [
+    "VCM 95.2 fL (80-94) ⚠️ macrocitosis leve",
+    "Cloruro 107 mmol/L (95-105) ⚠️ hipercloremia leve",
+    "Colesterol total 230.2 mg/dL (140-220) ⚠️ hipercolesterolemia",
+    "Colesterol LDL 151 mg/dL (50-150) ⚠️ elevado",
+    "Fosfato 2.38 mg/dL (2.5-4.5) ⚠️ hipofosfatemia leve",
+    "GGT 56 UI/L (7.0-50) ⚠️ elevada",
+    "Glucosa 120.6 mg/dL (70-110) ⚠️ hiperglucemia",
+    "Proteínas totales 6.05 g/dL (6.60-8.00) ⚠️ hipoproteinemia",
+    "Calcidiol (Vitamina D) 27.1 ng/mL (≥30) ⚠️ déficit",
+    "Vitamina B12 152 pg/mL (≥180) ⚠️ déficit",
+    "Leucocitos en orina 75 (0-0) ⚠️ leucocituria",
+    "Proteínas en orina 25 mg/dL (0-10) ⚠️ proteinuria"
+   ]
+  },
+  {
+   "date": "2022-08-19",
+   "type": "laboratorio",
+   "title": "⚠️ Análisis de orina: proteinuria y hematuria leve",
+   "text": "Bioquímica de orina con proteínas elevadas (25, ref 0-10) y hemoglobina detectada (0.06, ref 0-0), resto de parámetros (glucosa, cetónicos, nitritos, leucocitos, bilirrubina) dentro de la normalidad.",
+   "pdf_id": "PDF026",
+   "alertes": [
+    "PROTEÍNAS (EN ORINA) 25 ⚠️ por encima del rango de referencia (0 - 10)",
+    "HEMOGLOBINA (EN ORINA) 0.06 ⚠️ presente, cuando el valor de referencia es 0 - 0"
+   ]
+  },
+  {
+   "date": "2022-09-13",
+   "type": "imagen",
+   "title": "Ecografía muscular-tendinosa: hematoma glúteo en resolución",
+   "text": "Ecografía muscular tendinosa por hematoma encapsulado en región glútea izquierda de aparición espontánea. No se objetiva ya imagen de hematoma encapsulado, solo persiste pequeña hipoecogenicidad de 9.5 x 3.2 mm en relación con lesión fibrótica residual.",
+   "pdf_id": "PDF019",
+   "diagnostics": [
+    "Hematoma encapsulado en región glútea izquierda de aparición espontánea"
+   ]
+  },
+  {
+   "date": "2022-10-28",
+   "type": "urgencias",
+   "title": "⚠️ Bronquitis aguda en EPOC con hiperfibrinogenemia y PCR elevada",
+   "text": "Mujer de 83 años con EPOC, portadora de OCD y VMNI, acude por disnea y tos de 4-5 días con dificultad de contacto con Oximesa. GSA sin insuficiencia respiratoria. Glucosa 156 mg/dL, PCR 22.90 mg/L, fibrinógeno 701 mg/dL e INR 1.24 elevados. Mejora tras salbutamol/atrovent y Actocortina IV; alta con Symbicort añadido.",
+   "pdf_id": "PDF008",
+   "diagnostics": [
+    "BRONQUITIS AGUDA"
+   ],
+   "antecedents": [
+    "Ex-fumadora desde hace mas de 40 años de 4 cig/dia",
+    "TVP + TEP bilateral en Francia en 2016 y en 2022, en tratamiento con Rivaroxaban",
+    "TBC en la infancia (TAC 2017 con cambios post TBC)",
+    "EPOC",
+    "Portadora de VMNI por SAOS (BiPAP puesta en Navarra)",
+    "Portadora de OCD 16 h 2 lpm",
+    "Dislipemia",
+    "Ictus vertebrobasilar en septiembre 2021",
+    "Deterioro cognitivo desde ictus vertebrobasilar, en estudio por Neurología",
+    "Elevación hemidiafragma derecho",
+    "Insuficiencia tricuspídea moderada"
+   ],
+   "signes_vitaux": {
+    "ta_sys": 119,
+    "ta_dia": 57,
+    "fc": 55,
+    "spo2": 92,
+    "temperatura": null
+   },
+   "alertes": [
+    "Glucosa 156 mg/dL ⚠️ (ref 70-110)",
+    "PCR 22.90 mg/L ⚠️ (ref 1.00-10.0)",
+    "Fibrinógeno 701 mg/dL ⚠️ (ref 200-400)",
+    "INR 1.24 ⚠️ (ref 0.80-1.20) en paciente anticoagulada con Rivaroxaban",
+    "TP 14.3 seg ⚠️ (ref 9.0-13.0)",
+    "CHCM 32.9 g/dL ligeramente bajo (ref 33.0-37.0)"
+   ]
+  },
+  {
+   "date": "2023-01-16",
+   "type": "imagen",
+   "title": "Ecografía tiroidea sin cambios significativos",
+   "text": "Ecografía de cuello (tiroides, parótidas, submaxilares) sin cambios respecto a estudio previo de 22/09/2021. No se evidencian adenopatías laterocervicales significativas.",
+   "pdf_id": "PDF018",
+   "diagnostics": [
+    "ECOGRAFÍA TIROIDEA sin cambios valorables"
+   ]
+  },
+  {
+   "date": "2023-02-09",
+   "type": "imagen",
+   "title": "⚠️ TC cervicotorácico: bocio endotorácico con compresión traqueal",
+   "text": "TC cuello y tórax en mujer de 83 años con bocio endotorácico: nódulo dependiente del lóbulo tiroideo izquierdo de 4.2 x 4.3 x 6.25 cm con calcificaciones groseras, extensión endotorácica, desplazamiento traqueal derecho y reducción del calibre traqueal (1.5 cm previo a la compresión, 1.15 cm en zona de máxima compresión). Lóbulo tiroideo derecho normal.",
+   "pdf_id": "PDF017",
+   "diagnostics": [
+    "Bocio endotorácico con compromiso traqueal"
+   ],
+   "alertes": [
+    "Bocio endotorácico de 4.2 x 4.3 x 6.25 cm con desplazamiento y compresión traqueal (calibre reducido a 1.15 cm en zona de máxima compresión) ⚠️"
+   ]
+  },
+  {
+   "date": "2023-03-09",
+   "type": "laboratorio",
+   "title": "⚠️ Analítica: déficit de Vitamina D",
+   "text": "Analítica de bioquímica y hematología con glucosa 101.4 mg/dL y HbA1c 6.17% dentro de rango. Se detecta calcidiol (25-OH-Vitamina D) de 15.11 ng/mL, por debajo del valor de referencia (>30), compatible con déficit de vitamina D. Resto de parámetros (TSH, T4 libre, Vitamina B12, Dímero D) dentro de la normalidad.",
+   "pdf_id": "PDF025",
+   "alertes": [
+    "Calcidiol (Vitamina D) 15.11 ng/mL ⚠️ deficit (valor ref. >30,00)"
+   ]
+  },
+  {
+   "date": "2024-01-23",
+   "type": "urgencias",
+   "title": "Flemón dentario - reagudización de dolor",
+   "text": "Mujer de 85 años con flemón dentario en 3er cuadrante, área radiolúcida apical en pieza 36, valorada por odontólogo y comentada con Maxilofacial (Dr. Soler), tratamiento farmacológico indicado en espera de cita.",
+   "pdf_id": "PDF007",
+   "diagnostics": [
+    "FLEMON DENTARIO"
+   ],
+   "antecedents": [
+    "Ex-fumadora desde hace mas de 40 años de 4 cig/dia",
+    "TVP + TEP bilateral en Francia en 2016 y en 2022, en tratamiento con Rivaroxaban",
+    "TBC en la infancia (TAC del 2017 hallazgos compatibles con cambios post TBC)",
+    "EPOC",
+    "Portadora de VMNI por SAOS (BiPAP puesta en Navarra)",
+    "Portadora de OCD 16 h 2 lpm",
+    "Dislipemia",
+    "Ictus vertebrobasilar en septiembre 2021",
+    "Deterioro cognitivo desde ingreso por ictus vertebrobasilar en estudio por Neurología",
+    "Elevación hemidiafragma derecho",
+    "Insuficiencia tricuspídea moderada"
+   ],
+   "signes_vitaux": {
+    "ta_sys": 150,
+    "ta_dia": 62,
+    "fc": 71,
+    "spo2": 95,
+    "temperatura": 36.5
+   }
+  },
+  {
+   "date": "2024-04-25",
+   "type": "laboratorio",
+   "title": "⚠️ Analítica: dislipemia, déficit de vitamina D, VSG y monocitos elevados",
+   "text": "Hemograma y bioquímica generales con VSG elevada (20 mm/h) y monocitosis relativa (11,5%). Perfil lipídico alterado con colesterol total 281,7 mg/dL y LDL calculado 202 mg/dL. Déficit severo de vitamina D (calcidiol 15,96 ng/mL) y proteínas totales ligeramente bajas (6,12 g/dL). Resto de parámetros dentro de rangos normales, incluyendo función renal, glucosa, HbA1c y BNP.",
+   "pdf_id": "PDF024",
+   "alertes": [
+    "VSG 20 mm/h ⚠️ elevada (VR 0-10)",
+    "Monocitos 11.5% ⚠️ elevados (VR 3,4-9,0)",
+    "Colesterol total 281.7 mg/dL ⚠️ elevado",
+    "Colesterol LDL calculado 202 mg/dL ⚠️ elevado",
+    "Calcidiol (Vitamina D) 15.96 ng/mL 🚨 déficit severo (VR >30)",
+    "Proteínas totales 6.12 g/dL ⚠️ ligeramente bajas (VR 6,60-8,00)"
+   ]
+  },
+  {
+   "date": "2025-03-10",
+   "type": "laboratorio",
+   "title": "⚠️ Analítica: macrocitosis leve, CHCM baja, monocitosis y VPM elevado",
+   "text": "Hemograma con VCM 98.1 fL (elevado), CHCM 31.0 g/dL (baja), monocitos 0.90x10^9/L (elevados) y volumen plaquetar medio 10.9 fL (elevado). TTPA discretamente bajo (26.7 s). Resto de bioquímica, función tiroidea (TSH 1.45) y serología de Treponema pallidum (negativa) dentro de la normalidad.",
+   "pdf_id": "PDF036",
+   "alertes": [
+    "VCM 98.1 fL ⚠️ (macrocitosis leve, VR 80.0-96.0)",
+    "CHCM 31.0 g/dL ⚠️ (baja, VR 33.0-36.0)",
+    "Monocitos 0.90 10^9/L ⚠️ (elevados, VR 0.20-0.80)",
+    "Volumen plaquetar medio 10.9 fL ⚠️ (elevado, VR 8.0-10.2)",
+    "TTPA 26.7 segundos ⚠️ (bajo, VR 27.0-41.0)",
+    "Gamma-GT 40 UI/L ⚠️ (límite superior, VR 0-40)"
+   ],
+   "bacteriologie": {
+    "prelevement": "autre",
+    "date_prelevement": "2025-03-10",
+    "germe": "negativo",
+    "quantite": "",
+    "commentaire": "Treponema pallidum RPR: Negativo"
+   }
+  },
+  {
+   "date": "2025-07-19",
+   "type": "urgencias",
+   "title": "🚨 TEP bilateral crónico (agudización disnea) - Disnea multifactorial",
+   "text": "Mujer de 86 años con TEP bilateral crónico, EPOC y elevación diafragmática derecha acude por disnea con SpO2 82% en domicilio (87% al ingreso sin O2). Angio-TC confirma defectos de repleción en arteria lobar de LID y ramas segmentarias de LSI e LII compatibles con TEP crónico conocido; Dímero D 2583 ng/mL y NT-proBNP 220 pg/mL elevados. Valorada por Neumología, se descarta ingreso y se decide alta con tratamiento ambulatorio.",
+   "pdf_id": "PDF006",
+   "diagnostics": [
+    "DISNEA MULTIFACTORIAL",
+    "TEP CRONICO",
+    "ELEVACION DIAFRAGMATICA DERECHA",
+    "DEMENCIA"
+   ],
+   "antecedents": [
+    "Ex-fumadora desde hace mas de 40 años de 4 cig/dia",
+    "TVP + TEP bilateral en Francia en 2016 y en 2022, en tratamiento con Rivaroxaban",
+    "TBC en la infancia (TAC 2017 con cambios post TBC)",
+    "EPOC",
+    "Portadora de VMNI por SAOS (BiPAP)",
+    "Portadora de OCD 2 lpm de rescate",
+    "Dislipemia",
+    "Ictus vertebrobasilar en septiembre 2021",
+    "Deterioro cognitivo desde ictus vertebrobasilar, en estudio por Neurología",
+    "Elevación hemidiafragma derecho",
+    "Insuficiencia tricuspídea moderada"
+   ],
+   "signes_vitaux": {
+    "ta_sys": 141,
+    "ta_dia": 75,
+    "fc": 69,
+    "spo2": 87,
+    "temperatura": 37.6
+   },
+   "alertes": [
+    "SpO2 82% en domicilio y 87% al ingreso (sin oxígeno) ⚠️ desaturación",
+    "Dímero D 2583 ng/mL 🚨 muy elevado (TEP bilateral crónico confirmado por Angio-TC)",
+    "Fibrinógeno 556 mg/dL ⚠️ elevado",
+    "PCR 14.90 mg/L ⚠️ elevada",
+    "NT-proBNP 220 pg/mL ⚠️ elevado",
+    "Glucosa 116 mg/dL ⚠️ hiperglucemia leve",
+    "Filtrado glomerular 53.85 ml/min/sup ⚠️ deterioro función renal",
+    "Cloro 108 mmol/L ⚠️ elevado"
+   ]
+  },
+  {
+   "date": "2025-09-23",
+   "type": "imagen",
+   "title": "⚠️ RM cerebro: demencia mixta Alzheimer + multiinfarto",
+   "text": "RM cerebral por deterioro cognitivo progresivo tipo Alzheimer: atrofia cortical global grado 3, atrofia parietal posterior grado 3, atrofia temporal medial grado 2 con leve pérdida de volumen hipocampal. Enfermedad de pequeño vaso Fazekas grado II e infartos en áreas estratégicas (ganglios basales, tálamo, núcleo caudado, tegmento protuberancial derecho). Conclusión: demencia mixta de tipo Alzheimer junto a demencia multiinfarto.",
+   "pdf_id": "PDF015",
+   "diagnostics": [
+    "ENFERMEDAD ALZHEIMER",
+    "Demencia mixta de tipo Alzheimer junto a demencia multiinfarto"
+   ],
+   "antecedents": [
+    "Ictus (AP ictus)",
+    "TEP (tromboembolismo pulmonar)",
+    "Anticoagulación suspendida"
+   ],
+   "alertes": [
+    "⚠️ Atrofia cortical global grado 3 y atrofia parietal posterior grado 3",
+    "⚠️ Enfermedad de pequeño vaso Fazekas grado II con infartos en áreas estratégicas (ganglios basales, tálamo, núcleo caudado, protuberancia)",
+    "⚠️ Diagnóstico de demencia mixta Alzheimer + multiinfarto"
+   ]
+  },
+  {
+   "date": "2026-01-06",
+   "type": "imagen",
+   "title": "TC craneal: sin hemorragia ni isquemia aguda",
+   "text": "Mujer de 87 años con IRA por bronquitis aguda y somnolencia marcada, reactiva solo a estímulos dolorosos. TC craneal sin contraste: no se observan imágenes sugestivas de hemorragia intracraneal ni isquemia aguda. Leucoaraiosis periventricular, resto sin hallazgos relevantes para la edad.",
+   "pdf_id": "PDF014",
+   "diagnostics": [
+    "somnolencia"
+   ]
+  },
+  {
+   "date": "2026-01-13",
+   "type": "ingreso",
+   "title": "⚠️ Alta tras acidosis respiratoria por bronquitis aguda, traslado a HACLE",
+   "text": "Mujer de 87 años con demencia avanzada, AOS y sospecha de EPOC, ingresada por acidosis respiratoria resuelta en Urgencias secundaria a bronquitis aguda. Tratada con VNI y oxigenoterapia OAF con mejoría progresiva, permitiendo retirada de ambos soportes; se solicita traslado a HACLE por demencia avanzada y previsión de larga convalecencia.",
+   "pdf_id": "PDF001",
+   "diagnostics": [
+    "Acidosis respiratoria secundaria a bronquitis aguda",
+    "Demencia",
+    "AOS",
+    "Sospecha de EPOC",
+    "Elevación diafragmática crónica"
+   ],
+   "antecedents": [
+    "Demencia",
+    "AOS (llevó VMNI pero lleva 1 año sin usarla)",
+    "Portadora de OCD",
+    "Sospecha de EPOC",
+    "Elevación diafragmática crónica"
+   ],
+   "alertes": [
+    "BARTHEL 5/100 ⚠️ dependencia total",
+    "J.H. DOWNTON 7/12 ⚠️ riesgo alto de caídas",
+    "BRADEN-BERGSTROM 14/23 riesgo moderado de úlceras por presión",
+    "Disnea de reposo, dependiente de ventilación mecánica no invasiva y oxigenoterapia"
+   ]
+  },
+  {
+   "date": "2026-01-24",
+   "type": "urgencias",
+   "title": "Coxalgia derecha postraumática tras caída, sin fractura",
+   "text": "Mujer de 87 años remitida desde AP por posible fractura de cadera derecha tras caída en domicilio. Rx cadera derecha y pelvis sin trazos de fractura aguda. Diagnóstico: coxalgia derecha postraumática, tratada de forma conservadora.",
+   "pdf_id": "PDF005",
+   "diagnostics": [
+    "COXALGIA DERECHA POSTRAUMATICA"
+   ],
+   "antecedents": [
+    "Dislipemia",
+    "Ictus vertebrobasilar en septiembre 2021",
+    "Deterioro cognitivo desde ingreso por ictus vertebrobasilar en estudio por Neurología",
+    "Elevación hemidiafragma derecho",
+    "Insuficiencia tricuspídea moderada",
+    "TEP (varios) en seguimiento por Neumo (anticoagulada)",
+    "TVP",
+    "SAOS",
+    "EPOC"
+   ]
+  },
+  {
+   "date": "2026-02-24",
+   "type": "neurologia",
+   "title": "⚠️ Demencia a estudio con MMSE 10/30 y parkinsonismo farmacológico",
+   "text": "Paciente de 87 años con antecedente de ictus vertebrobasilar (2021) presenta deterioro cognitivo marcado (MMSE 10/30) tras ingreso reciente por bronquitis, asociado a afasia mixta leve y signos extrapiramidales atribuidos a Haloperidol crónico. Se sospecha variante logopénica de Enfermedad de Alzheimer, se retira Haloperidol y se solicita AngioRM cerebral para descartar nuevo ictus.",
+   "pdf_id": "PDF005",
+   "diagnostics": [
+    "Demencia a estudio. Asocia importante alteración del lenguaje. La primera posibilidad es que se trate de variante logopénica de Enfermedad de Alzheimer. Es importante descartar ictus isquémico de territorio de ACM izq.",
+    "Parkinsonismo farmacológico"
+   ],
+   "antecedents": [
+    "No RAM",
+    "Exfumadora >40 años 4 cig/día",
+    "FRCV: DL",
+    "TVP",
+    "TEP",
+    "SAOS",
+    "TBC en la infancia",
+    "EPOC. Oxígeno domiciliario",
+    "Ictus isquémico vertebrobasilar (septiembre 2021)",
+    "Insuficiencia tricuspídea moderada"
+   ],
+   "alertes": [
+    "⚠️ MMSE 10/30 — deterioro cognitivo severo",
+    "⚠️ Parkinsonismo farmacológico secundario a Haloperidol crónico — se indica retirada",
+    "Sospecha de variante logopénica de Enfermedad de Alzheimer, pendiente de descartar ictus isquémico en territorio ACM izquierda"
+   ]
+  },
+  {
+   "date": "2026-02-27",
+   "type": "imagen",
+   "title": "Presupuesto RM cerebral y vascular endocraneal",
+   "text": "Presupuesto emitido para estudio de RM CEREBRAL, RM VASCULAR ENDOCRANEAL + TSA sin y con contraste, RM PLUS CONTRASTE y RM DOBLE, por un importe total de 524,00 €.",
+   "pdf_id": "PDF033"
+  },
+  {
+   "date": "2026-03-10",
+   "type": "imagen",
+   "title": "🚨 Oclusión completa carótida interna izquierda + atrofia cerebral",
+   "text": "RM cerebral por sospecha de ictus isquémico ACM izquierda: no hay focos de isquemia aguda/subaguda, pero se objetiva obstrucción completa desde el origen de la arteria carótida interna izquierda con vicariación por la cerebral media izquierda. Atrofia cerebral corticosubcortical marcada, leucoaraiosis Fazekas II-III y lesiones isquémicas secuelares en ganglios basales, tálamos y protuberancia.",
+   "pdf_id": "PDF003",
+   "diagnostics": [
+    "Obstrucción completa desde origen de arteria carótida interna izquierda",
+    "Atrofia cerebral corticosubcortical",
+    "Leucoaraiosis",
+    "Espondilodiscartrosis"
+   ],
+   "antecedents": [
+    "Ictus isquémico en 2021, en territorio vertebrobasilar",
+    "Disfagia a líquidos como secuela",
+    "Hospitalización enero 2026 por bronquitis aguda",
+    "Deterioro cognitivo empeorado marcadamente desde el último ingreso"
+   ],
+   "alertes": [
+    "🚨 Obstrucción completa desde origen de arteria carótida interna izquierda",
+    "⚠️ Atrofia cerebral corticosubcortical marcada con leucoaraiosis Fazekas II-III"
+   ]
+  },
+  {
+   "date": "2026-06-04",
+   "type": "laboratorio",
+   "title": "⚠️ Analítica con troponina, PCR y GGT elevados en contexto de TEP",
+   "text": "Paciente de 87 años con diagnóstico de TEP presenta hiperglucemia (149 mg/dL), troponina ultrasensible elevada (22,40 ng/L), PCR elevada (9,40 mg/L), GGT ligeramente elevada (42 UI/L) y prealbúmina baja (18,4 mg/dL) sugerente de desnutrición. NT-proBNP normal (86 pg/mL) descarta insuficiencia cardíaca probable.",
+   "pdf_id": "PDF031",
+   "diagnostics": [
+    "tep"
+   ],
+   "alertes": [
+    "Glucosa 149 mg/dL ⚠️ hiperglucemia",
+    "Proteínas totales 6,15 g/dL ⚠️ discretamente bajas",
+    "GGT 42 UI/L ⚠️ ligeramente elevada",
+    "Proteína C reactiva 9,40 mg/L ⚠️ elevada",
+    "Troponina ultrasensible 22,40 ng/L ⚠️ elevada",
+    "Prealbúmina 18,4 mg/dL ⚠️ baja (posible desnutrición)"
+   ]
+  },
+  {
+   "date": "2026-07-08",
+   "type": "consulta",
+   "title": "📋 Historia Clínica Resumida",
+   "text": "79 problemas activos, 11 inactivos, 5 vacunas, 10 diagnósticos NANDA, 54 intervenciones NIC.",
+   "pdf_id": "PDF003",
+   "diagnostics": [
+    "R73.01 — GLUCEMIA BASAL ALTERADA (2026-07-08)",
+    "G45.9 — ACCIDENTE ISQUEMICO CEREBRAL TRANSITORIO, NO ESPECIFICADO (2026-04-20)",
+    "F09 — TRASTORNO MENTAL NO ESPECIFICADO DEBIDO A AFECCION FISIOLOGICA CONOCIDA (2026-02-12)",
+    "J96.90 — INSUFICIENCIA RESPIRATORIA NO ESPECIFICADA, SIN ESPECIFICAR SI CON HIPOXIA O CON HIPERCAPNIA (2026-02-12)",
+    "R26.9 — ALTERACIONES DE LA MARCHA Y DE LA MOVILIDAD NO ESPECIFICADAS (2026-01-27)",
+    "M25.551 — DOLOR EN CADERA DERECHA (2026-01-24)",
+    "W19.XXXD — CAIDA NO ESPECIFICADA, CONTACTO SUCESIVO (2026-01-24)",
+    "W13.3XXD — CAIDA POR EL SUELO, CONTACTO SUCESIVO (2026-01-17)",
+    "R26.2 — DIFICULTAD PARA CAMINAR, NO CLASIFICADA BAJO OTRO CONCEPTO (2026-01-15)",
+    "J96.92 — INSUFICIENCIA RESPIRATORIA NO ESPECIFICADA, CON HIPERCAPNIA (2026-01-13)",
+    "S20.219D — CONTUSION DE PARED ANTERIOR NO ESPECIFICADA DEL TORAX, CONTACTO SUCESIVO (2025-12-29)",
+    "R13.10 — DISFAGIA, NO ESPECIFICADA (2025-12-10)",
+    "F28 — OTROS TRASTORNOS PSICOTICOS NO DEBIDOS A SUSTANCIA NI AFECCION FISIOLOGICA CONOCIDAS (2025-11-21)",
+    "I10 — HIPERTENSION ESENCIAL (PRIMARIA) (2025-11-21)",
+    "F01.50 — DEMENCIA VASCULAR, GRAVEDAD NO ESPECIFICADA, SIN ALTERACIÓN DEL COMPORTAMIENTO, ALTERACIÓN PSICÓTICA, ALTERACIÓN DEL ESTADO DE ÁNIMO NI ANSIEDAD (2025-10-10)",
+    "I27.82 — TEP CRONICO (2025-09-01)",
+    "W10.8XXA — CAIDA (EN) (DE) OTRAS ESCALERAS Y ESCALONES, CONTACTO INICIAL (2025-07-06)",
+    "N84.0 — POLIPO DEL CUERPO UTERINO (2025-06-10)",
+    "N30.00 — CISTITIS AGUDA SIN HEMATURIA (2025-06-05)",
+    "F91.1 — TRASTORNO DE CONDUCTA, TIPO DE INICIO EN LA NIÑEZ (2025-02-28)",
+    "B37.9 — CANDIDIASIS, NO ESPECIFICADA (2025-02-17)",
+    "R05 — TOS (2024-11-13)",
+    "B37.2 — CANDIDIASIS DE LA PIEL Y LAS UÑAS (2024-09-06)",
+    "M54.5 — DOLOR EN LA PARTE INFERIOR DE LA ESPALDA (2024-08-13)",
+    "R45.1 — INQUIETUD Y AGITACION (2024-02-15)",
+    "K04.7 — ABSCESO PERIAPICAL SIN SINUS (2024-01-22)",
+    "S93.402D — ESGUINCE DE LIGAMENTO NO ESPECIFICADO DE TOBILLO IZQUIERDO, CONTACTO SUCESIVO (2023-12-15)",
+    "S60.042D — CONTUSION DE DEDO ANULAR IZQUIERDO, SIN DAÑOS EN LA UÑA, CONTACTO SUCESIVO (2023-11-06)",
+    "F03.91 — DEMENCIA NO ESPECIFICADA CON ALTERACION DE LA CONDUCTA (2023-06-28)",
+    "I45.10 — BLOQUEO DE RAMA DERECHA NO ESPECIFICADO (2023-06-05)",
+    "K76.9 — ENFERMEDAD HEPATICA, NO ESPECIFICADA (2023-06-05)",
+    "E55.9 — CARENCIA DE VITAMINA D, NO ESPECIFICADA (2023-03-15)",
+    "R42 — MAREO Y DESVANECIMIENTO (2023-03-15)",
+    "E04.1 — NODULO TIROIDEO UNICO NO TOXICO (2023-02-28)",
+    "F03.90 — DEMENCIA NO ESPECIFICADA SIN ALTERACION DE LA CONDUCTA (2022-12-22)",
+    "I83.229 — VENAS VARICOSAS DE EXTREMIDAD INFERIOR IZQUIERDA CON ULCERA E INFLAMACION DE LOCALIZACION NO ESPECIFICADA (2022-12-22)",
+    "S80.12XD — CONTUSION DE PIERNA IZQUIERDA, CONTACTO SUCESIVO (2022-12-18)",
+    "S80.922D — TRAUMATISMO SUPERFICIAL NO ESPECIFICADO DE PIERNA IZQUIERDA, CONTACTO SUCESIVO (2022-12-04)",
+    "J40 — BRONQUITIS, NO ESPECIFICADA COMO AGUDA O CRONICA (2022-10-27)",
+    "R00.1 — BRADICARDIA, NO ESPECIFICADA (2022-10-21)",
+    "F32.9 — TRASTORNO DEPRESIVO MAYOR, EPISODIO ÚNICO, NO ESPECIFICADO (2022-07-26)",
+    "G30.9 — ENFERMEDAD ALZHEIMER (2022-07-26)",
+    "N30.90 — CISTITIS, NO ESPECIFICADA, SIN HEMATURIA (2022-07-26)",
+    "M25.569 — DOLOR EN RODILLA NO ESPECIFICADA (2022-07-23)",
+    "E56.9 — CARENCIA DE VITAMINA, NO ESPECIFICADA (2022-07-12)",
+    "R32 — INCONTINENCIA URINARIA NO ESPECIFICADA (2022-07-12)",
+    "R82.71 — BACTERIURIA (2022-07-12)",
+    "S00.00XD — TRAUMATISMO SUPERFICIAL NO ESPECIFICADO DE CUERO CABELLUDO, CONTACTO SUCESIVO (2022-06-09)",
+    "S70.00XD — CONTUSIÓN DE CADERA NO ESPECIFICADA, CONTACTO SUCESIVO (2022-05-31)",
+    "S81.802D — HERIDA ABIERTA NO ESPECIFICADA DE PIERNA IZQUIERDA, CONTACTO SUCESIVO (2022-05-19)",
+    "S30.0XXD — CONTUSIÓN DE PARTE INFERIOR DE ESPALDA Y PELVIS, CONTACTO SUCESIVO (2022-05-17)",
+    "S61.209D — HERIDA ABIERTA NO ESPECIFICADA DE DEDO DE MANO NO ESPECIFICADO, SIN DAÑOS EN LA UÑA, CONTACTO SUCESIVO (2022-04-10)",
+    "S01.00XD — HERIDA CUERO CABELLUDO (2022-03-10)",
+    "S06.9X0D — TCE (2022-03-10)",
+    "Z79.01 — ANTICOAGULACION (2022-01-16)",
+    "I26.99 — TEP / TROMBOEMBOLISMO PULMONAR (2022-01-07)",
+    "R06.00 — DISNEA (2022-01-06)",
+    "G31.84 — DETERIORO COGNITIVO MODERADO (2022-01-05)",
+    "E04.9 — BOCIO ENDOTORACICO (2021-10-27)",
+    "K30 — DISPEPSIA FUNCIONAL (2021-10-27)",
+    "I63.219 — INFARTO VERTEBROBASILAR (2021-09-29)",
+    "I63.9 — ICTUS (2021-09-29)",
+    "F10.20 — ENOLISMO (2021-09-01)",
+    "M79.643 — DOLOR MANO (2021-09-01)",
+    "R29.818 — TRASTORNO NEUROLOGICO DEGLUCION (2021-09-01)",
+    "L98.9 — DERMATOSIS (2021-07-14)",
+    "H57.12 — DOLOR OCULAR, OJO IZQUIERDO (2021-06-18)",
+    "J20.9 — BRONQUITIS AGUDA O SUBAGUDA (2020-09-20)",
+    "K08.9 — DOLOR DENTAL Y PERIODONTAL (2020-04-08)",
+    "Z53.29 — PROCEDIMIENTO Y TRATAMIENTO NO REALIZADOS DEBIDO A DECISIÓN DEL PACIENTE POR OTRAS RAZONES (2019-12-09)",
+    "T23.079S — QUEMADURA DE GRADO NO ESPECIFICADO DE MUÑECA NO ESPECIFICADA, SECUELA (2019-11-05)",
+    "M25.519 — DOLOR EN HOMBRO NO ESPECIFICADO (2019-04-15)",
+    "R44.3 — ALUCINACIONES, NO ESPECIFICADAS (2018-09-21)",
+    "E78.00 — HIPERCOLESTEROLEMIA PURA, NO ESPECIFICADA (2017-11-13)",
+    "I82.409 — EMBOLIA Y TROMBOSIS AGUDAS DE VENAS PROFUNDAS NO ESPECIFICADAS DE EXTREMIDAD INFERIOR NO ESPECIFICADA (2016-11-17)",
+    "J44.9 — ENFERMEDAD PULMONAR OBSTRUCTIVA CRÓNICA, NO ESPECIFICADA (2016-11-17)",
+    "R03.0 — MEDIDA DE PRESIÓN ARTERIAL ELEVADA, SIN DIAGNÓSTICO DE HIPERTENSIÓN (2016-07-03)",
+    "F41.9 — TRASTORNO DE ANSIEDAD, NO ESPECIFICADO (2016-04-06)",
+    "J98.6 — TRASTORNOS DEL DIAFRAGMA (2016-04-06)"
+   ],
+   "antecedents": [
+    "J44.1 — EPOC AGUDIZADO (2021-07-18 → 2026-03-07)",
+    "J00 — NASOFARINGITIS AGUDA [RESFRIADO COMUN] (2024-11-13 → 2025-02-07)",
+    "R45.1 — INQUIETUD Y AGITACION (2023-12-11 → 2024-02-15)",
+    "I26.99 — OTRA EMBOLIA PULMONAR SIN COR PULMONALE AGUDO (2017-02-14 → 2022-01-07)",
+    "R06.00 — DISNEA (2022-01-02 → 2022-01-06)",
+    "R06.00 — DISNEA (2021-06-18 → 2022-01-03)",
+    "490 — BRONQUITIS (2016-02-24 → 2018-11-23)",
+    "780.4 — VERTIGO (2016-04-06 → 2018-11-23)",
+    "787.2 — ODINOFAGIA (2016-07-03 → 2018-11-23)",
+    "787.91 — DIARREA (2016-11-18 → 2018-11-23)",
+    "V58.61 — ANTICOAGULACION ORAL (2016-11-17 → 2018-11-23)"
+   ]
+  },
+  {
+   "date": "2026-07-16",
+   "type": "urgencias",
+   "title": "🚨 Insuficiencia respiratoria aguda + ITU con deterioro renal agudo",
+   "text": "Mujer de 87 años con múltiples antecedentes respiratorios (TEP crónico, EPOC, SAOS con VMNI, OCD) que consulta por disnea con hipoxemia (PO2 58 mmHg), tratada con nebulizaciones y corticoides. Se orienta como ITU con nitritos positivos y leucocituria, deterioro agudo de función renal (creatinina 1.09, FG 45.51), PCR 80.5 mg/L y procalcitonina 1.18 ng/mL (alta probabilidad de sepsis). Ingresa en Unidad de Corta Estancia.",
+   "pdf_id": "PDF001",
+   "diagnostics": [
+    "INSUFICIENCIA RESPIRATORIA AGUDA",
+    "Infección del tracto urinario (ITU)",
+    "Deterioro agudo de función renal"
+   ],
+   "antecedents": [
+    "Ex-fumadora desde hace más de 40 años de 4 cig/día",
+    "TVP + TEP bilateral en Francia en 2016 y 2022, en tratamiento con Rivaroxaban",
+    "TEP 2022 (ingreso en Neumología)",
+    "TBC en la infancia (cambios post TBC en TAC 2017)",
+    "EPOC referido por familiar, sin tratamiento broncodilatador",
+    "Portadora de VMNI por SAOS (BiPAP), sin uso hace más de 1 año",
+    "Portadora de oxigenoterapia crónica domiciliaria (OCD) 2 lpm 24h",
+    "Seguimiento en CCEE Neumología (NEM-VASC), angioTC julio 2025 con TEP, probable TEP crónico",
+    "Dislipemia",
+    "Ictus vertebrobasilar en septiembre 2021",
+    "Deterioro cognitivo desde ictus vertebrobasilar, en estudio por Neurología",
+    "Elevación hemidiafragma derecho",
+    "Insuficiencia tricuspídea moderada"
+   ],
+   "signes_vitaux": {
+    "ta_sys": 115,
+    "ta_dia": 74,
+    "fc": 86,
+    "spo2": 97,
+    "temperatura": 37.4
+   },
+   "alertes": [
+    "🚨 PO2 58 mmHg (corregido 54 mmHg) — hipoxemia significativa",
+    "⚠️ Oxihemoglobina 89.00% (déficit)",
+    "⚠️ Leucocitos 11.90 x10^3/µL con neutrofilia 81.6% y linfopenia 6.5%",
+    "⚠️ Creatinina 1.09 mg/dL y filtrado glomerular 45.51 ml/min — deterioro agudo función renal",
+    "⚠️ PCR 80.50 mg/L elevada",
+    "🚨 Procalcitonina 1.18 ng/mL — alta probabilidad de sepsis",
+    "⚠️ NT-proBNP 260 pg/mL elevado",
+    "⚠️ Nitritos en orina positivos, leucocituria 500 cel/µL, hematuria 250 cel/µL — sugestivo de ITU",
+    "⚠️ Glucosa 239-271 mg/dL — hiperglucemia"
+   ]
+  },
+  {
+   "date": "2026-07-20",
+   "type": "ingreso",
+   "title": "⚠️ Infección urinaria con insuficiencia respiratoria aguda en anciana pluripatológica",
+   "text": "Mujer de 87 años con antecedentes de TEP crónico, EPOC no filiado, SAOS y dislipemia, ingresada por debilidad generalizada e insuficiencia respiratoria aguda tras la cena. Hipoxemia (PO2 58 mmHg), PCR 80,50 mg/L, PCT 1,18 ng/mL, leucocitosis con neutrofilia y sedimento urinario patológico con nitritos positivos. Diagnóstico principal: infección urinaria, con buena evolución tras antibioterapia.",
+   "pdf_id": "PDF011",
+   "diagnostics": [
+    "INFECCION URINARIA",
+    "DEBILIDAD GENERALIZADA",
+    "LOS ARRIBA DESCRITOS"
+   ],
+   "antecedents": [
+    "Ex-fumadora desde hace más de 40 años de 4 cig/día",
+    "TVP + TEP bilateral en Francia en 2016 y en 2022, en tratamiento con Rivaroxaban",
+    "TEP 2022 con ingreso en Neumología",
+    "TBC en la infancia",
+    "Familiar refiere diagnóstico de EPOC",
+    "Portadora de VMNI por SAOS (BiPAP), sin usar máquina desde hace más de 1 año",
+    "Portadora de OCD 2 lpm las 24 horas",
+    "Seguimiento en CCEE Neumología (NEM-VASC), probable TEP crónico",
+    "Dislipemia",
+    "Ictus vertebrobasilar en septiembre 2021",
+    "Deterioro cognitivo desde ictus vertebrobasilar",
+    "Elevación hemidiafragma derecho",
+    "Insuficiencia tricuspídea moderada"
+   ],
+   "signes_vitaux": {
+    "ta_sys": 115,
+    "ta_dia": 74,
+    "fc": 86,
+    "spo2": 97,
+    "temperatura": 37.4
+   },
+   "alertes": [
+    "PO2 58 mmHg ⚠️ hipoxemia",
+    "PCR 80,50 mg/L ⚠️ elevada",
+    "Procalcitonina 1,18 ng/mL ⚠️ significado dudoso (0.5-2.0)",
+    "NT-proBNP 260 pg/mL ⚠️ elevado",
+    "Glucosa 271/239 mg/dL ⚠️ hiperglucemia",
+    "Filtrado glomerular 45,51 ml/min ⚠️ insuficiencia renal",
+    "Nitritos orina positivos ⚠️ sugestivo de infección urinaria",
+    "Leucocitos orina 2.300 células/µL ⚠️ leucocituria",
+    "Leucocitosis 11,90 x10^3/µL con neutrofilia 81,6% ⚠️"
+   ]
+  },
+  {
+   "date": "2026-08-12",
+   "type": "consulta",
+   "title": "⚠️ Consulta Memoria: Demencia mixta Alzheimer + multiinfarto",
+   "text": "Primera visita en Unidad de Memoria por sospecha de afasia progresiva primaria. MMSE 8/30 con deterioro cognitivo moderado-avanzado y dependencia funcional severa en instrumentales. RM cerebral muestra atrofia cortical global grado 3, atrofia parietal posterior grado 3 y hallazgos vasculares (Fazekas II, infartos estratégicos). Conclusión: demencia mixta tipo Alzheimer junto a demencia multiinfarto.",
+   "pdf_id": "PDF001",
+   "diagnostics": [
+    "DEMENCIA VASCULAR",
+    "ALZHEIMER, DE DEMENCIA SENIL SIN ALTERACION DE LA CONDUCTA",
+    "Demencia mixta de tipo Alzheimer junto a demencia multiinfarto"
+   ],
+   "antecedents": [
+    "HTA",
+    "DLP sin tratamiento actual",
+    "TVP-TEP hace años, en tratamiento con NACO",
+    "ACV isquémico VB en 2021 con hemiparesia/hemihipoestesia izquierda, mejoría posterior, oclusión en ACI",
+    "IRC",
+    "ITU de repetición"
+   ],
+   "alertes": [
+    "⚠️ MMSE 8/30: deterioro cognitivo severo",
+    "⚠️ Dependencia funcional moderada en básicas y severa en instrumentales, precisa supervisión continua",
+    "⚠️ Paciente en tratamiento anticoagulante con NACO por TVP-TEP previo: vigilar signos de sangrado",
+    "⚠️ Antecedente de ACV isquémico en 2021 con secuelas de hemiparesia/hemihipoestesia izquierda"
+   ]
+  }
+ ],
+ "medicaments": [
+  {
+   "date": "2019-09-25",
+   "nom": "SPIRIVA 18MCG",
+   "dose": "18MCG",
+   "frequence": "1 DOSIS cada 24 horas",
+   "statut": "terminado",
+   "source": "Complejo Hospitalario de Navarra — Servicio de Urgencias",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-20"
+  },
+  {
+   "date": "2019-09-25",
+   "nom": "SERETIDE ACCUHALER 50/500MCG/INH",
+   "dose": "50/500MCG/INH",
+   "frequence": "1 DOSIS cada 12 horas",
+   "statut": "terminado",
+   "source": "Complejo Hospitalario de Navarra — Servicio de Urgencias",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-21"
+  },
+  {
+   "date": "2019-09-25",
+   "nom": "PARACETAMOL",
+   "dose": "",
+   "frequence": "si precisa",
+   "statut": "nouveau",
+   "source": "Complejo Hospitalario de Navarra — Servicio de Urgencias",
+   "pdf_id": "PDF004"
+  },
+  {
+   "date": "2021-07-18",
+   "nom": "SEGURIL",
+   "dose": "40 mg",
+   "frequence": "1 comprimido al día VO",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias (Neumología)",
+   "pdf_id": "PDF011",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2021-07-18",
+   "nom": "VENTOLIN",
+   "dose": "2 puff",
+   "frequence": "cada 8 horas con cámara espaciadora si precisa",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias (Neumología)",
+   "pdf_id": "PDF011",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2021-07-18",
+   "nom": "ATROVENT",
+   "dose": "2 puff",
+   "frequence": "cada 8 horas con cámara espaciadora",
+   "statut": "suspendu",
+   "source": "Hospital General de Castellon - Urgencias (Neumología)",
+   "pdf_id": "PDF011",
+   "date_fin": "2026-08-15",
+   "motif_suspension": "Mejoría clínica"
+  },
+  {
+   "date": "2021-07-18",
+   "nom": "BUDESONIDA",
+   "dose": "2 puff",
+   "frequence": "cada 12 horas con cámara espaciadora",
+   "statut": "no_administrado",
+   "source": "Hospital General de Castellon - Urgencias (Neumología)",
+   "pdf_id": "PDF011",
+   "date_fin": "2026-07-15",
+   "motif_suspension": "Cambio de tratamiento"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "ADIRO",
+   "dose": "100MG",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "MELITRACENO CLORHIDRATO / FLUPENTIXOL DICLORHIDRATO",
+   "dose": "10MG/0,5MG grageas",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "DONEPEZILO",
+   "dose": "5MG comprimidos",
+   "frequence": "",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-08-14",
+   "motif_suspension": "Cambio de tratamiento"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "BROMURO DE TIOTROPIO",
+   "dose": "18MCG cápsulas + dispositivo",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "URIDINA TRIFOSFATO",
+   "dose": "1,33MG cápsulas",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "PANTOPRAZOL",
+   "dose": "20MG",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "THICK AND EASY SABOR NEUTRO",
+   "dose": "",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "SOLU-MODERIN",
+   "dose": "125mg",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "URBASON",
+   "dose": "60mg",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "ATROVENT",
+   "dose": "3 inhalaciones",
+   "frequence": "",
+   "statut": "suspendu",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-08-15",
+   "motif_suspension": "Mejoría clínica"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "BUDESONIDA",
+   "dose": "1 inhalación",
+   "frequence": "",
+   "statut": "no_administrado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15",
+   "motif_suspension": "Cambio de tratamiento"
+  },
+  {
+   "date": "2022-01-06",
+   "nom": "FUROSEMIDA",
+   "dose": "1 ampolla",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF009",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "ENOXAPARINA",
+   "dose": "60mg",
+   "frequence": "1 inyección sc cada 12 horas",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "OXÍGENO DOMICILIARIO",
+   "dose": "2 l/min",
+   "frequence": "24 horas al día",
+   "statut": "a_demanda",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "ADIRO",
+   "dose": "100MG",
+   "frequence": "habitual",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "MELITRACENO CLORHIDRATO / FLUPENTIXOL DICLORHIDRATO",
+   "dose": "10 MG / 0,5 MG",
+   "frequence": "habitual",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "DONEPEZILO",
+   "dose": "5 MG",
+   "frequence": "habitual",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-08-14",
+   "motif_suspension": "Cambio de tratamiento"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "BROMURO DE TIOTROPIO",
+   "dose": "18 MCG",
+   "frequence": "habitual",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "URIDINA TRIFOSFATO",
+   "dose": "1,33 MG",
+   "frequence": "habitual",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "PANTOPRAZOL",
+   "dose": "20 MG",
+   "frequence": "habitual",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-14",
+   "nom": "THICK AND EASY SABOR NEUTRO",
+   "dose": "",
+   "frequence": "habitual",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Neumología",
+   "pdf_id": "PDF004",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Adiro",
+   "dose": "100mg",
+   "frequence": "no especificada",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_debut": "2022-01-06",
+   "date_fin": "2026-07-15",
+   "dosis": "0",
+   "slots": [],
+   "comida": "",
+   "duracion": "0",
+   "frecuencia": "diario"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Melitraceno clorhidrato/Flupentixilo Diclorhidrato",
+   "dose": "10mg/0.5mg",
+   "frequence": "no especificada",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Donepezilo",
+   "dose": "5mg",
+   "frequence": "no especificada",
+   "statut": "abandonne",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_fin": "2026-08-14",
+   "motif_suspension": "Cambio de tratamiento"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Bromuro de Tiotropio + Dispositivo",
+   "dose": "18 mcg",
+   "frequence": "no especificada",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Uridina Trifosfato",
+   "dose": "1.33mg",
+   "frequence": "no especificada",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Pantoprazol",
+   "dose": "20mg",
+   "frequence": "no especificada",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Thick and Easy sabor neutro",
+   "dose": "",
+   "frequence": "no especificada",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Enoxaparina",
+   "dose": "60mg",
+   "frequence": "dos veces al día",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "Oxígeno domiciliario",
+   "dose": "2l",
+   "frequence": "24h",
+   "statut": "a_demanda",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna",
+   "pdf_id": "PDF034",
+   "date_debut": "2022-01-14",
+   "receta": "receta_publica",
+   "dosis": "2",
+   "slots": [],
+   "comida": "",
+   "duracion": "0",
+   "frecuencia": "diario"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "MELITRACENO CLORHIDRATO / FLUPENTIXOL DICLORHIDRATO",
+   "dose": "10mg/0,5mg",
+   "frequence": "grageas",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna (con antecedente de ingreso en Hospital General de Castellón — Neumología)",
+   "pdf_id": "PDF035",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "BROMURO DE TIOTROPIO + DISPOSITIVO",
+   "dose": "18mcg",
+   "frequence": "cápsulas inhaladas",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna (con antecedente de ingreso en Hospital General de Castellón — Neumología)",
+   "pdf_id": "PDF035",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "URIDINA TRIFOSFATO",
+   "dose": "1,33mg",
+   "frequence": "cápsulas",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna (con antecedente de ingreso en Hospital General de Castellón — Neumología)",
+   "pdf_id": "PDF035",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "XARELTO",
+   "dose": "",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna (con antecedente de ingreso en Hospital General de Castellón — Neumología)",
+   "pdf_id": "PDF035",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-01-16",
+   "nom": "HEPARINA",
+   "dose": "",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Vithas Castellón — Urgencias / Medicina Interna (con antecedente de ingreso en Hospital General de Castellón — Neumología)",
+   "pdf_id": "PDF035",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "MEPIRAMINA FRASCOS SOL ORAL 25 MG/5 ML DE 250 ML",
+   "dose": "25mg/5ml",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "PROTALON 10MG 112 COMPRIMIDOS RECUBIERTOS CON PELICULA EFG",
+   "dose": "10mg",
+   "frequence": "",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008",
+   "motif_suspension": "Decisión médica",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "BROMURO DE TIOTROPIO CAPSULAS + DISPOSITIVO 18 MCG",
+   "dose": "18mcg",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "PREDNISONA COMPRIMIDOS 30 MG",
+   "dose": "30mg",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "AUGMENTINE 500/125MG 30 COMPRIMIDOS RECUBIERTOS CON PELICULA",
+   "dose": "500/125mg",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "RIVAROXABAN 20 MG / 28 COMPRIMIDOS RECUBIERTOS CON PELICULA",
+   "dose": "20mg",
+   "frequence": "",
+   "statut": "en_cours",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "SALBUTAMOL + ATROVENT",
+   "dose": "2 puffs",
+   "frequence": "en tandas durante 1 hora",
+   "statut": "administrado en urgencias",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "ACTOCORTINA",
+   "dose": "200 mg IV",
+   "frequence": "",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008",
+   "date_fin": "2026-07-17",
+   "motif_suspension": "Decisión del paciente"
+  },
+  {
+   "date": "2022-10-28",
+   "nom": "SYMBICORT",
+   "dose": "",
+   "frequence": "1 inhalación cada 12 horas",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF008",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2024-01-23",
+   "nom": "AMOXICILINA + CLAVULANICO",
+   "dose": "500/125 MG",
+   "frequence": "30 sobres",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF007",
+   "date_fin": "2026-07-18"
+  },
+  {
+   "date": "2024-01-23",
+   "nom": "RIVAROXABAN",
+   "dose": "20 MG",
+   "frequence": "28 comprimidos recubiertos con película",
+   "statut": "en_cours",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF007"
+  },
+  {
+   "date": "2024-01-23",
+   "nom": "XUMADOL",
+   "dose": "1G",
+   "frequence": "1 sobre cada 8 horas",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF007",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2024-01-23",
+   "nom": "PREDNISONA",
+   "dose": "30 MG",
+   "frequence": "1 comprimido/día 3 días, luego 1/2 comprimido/día 3 días, luego 1/4 comprimido/día 3 días",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF007",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2024-01-23",
+   "nom": "AMOXICILINA + CLAVULANICO",
+   "dose": "875/125 MG",
+   "frequence": "1 comprimido cada 8 horas",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF007",
+   "date_fin": "2026-07-18"
+  },
+  {
+   "date": "2024-01-23",
+   "nom": "NOLOTIL",
+   "dose": "575MG",
+   "frequence": "1 cápsula cada 8 horas",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF007",
+   "date_fin": "2026-07-15",
+   "motif_suspension": "Decisión del paciente"
+  },
+  {
+   "date": "2024-01-23",
+   "nom": "AUGMENTINE",
+   "dose": "875/125MG",
+   "frequence": "1 sobre cada 8 horas",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
+   "pdf_id": "PDF007",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2024-05-16",
+   "nom": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT",
+   "dose": "-",
+   "frequence": "2 pañal día cada día",
+   "statut": "en_cours",
+   "source": "Historia Clínica Resumida",
+   "pdf_id": "PDF003"
+  },
+  {
+   "date": "2024-05-16",
+   "nom": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT",
+   "dose": "N/A",
+   "frequence": "2 pañal día cada día CRÓNICO",
+   "statut": "en_cours",
+   "source": "Historia Clínica Resumida",
+   "pdf_id": "PDF002"
+  },
+  {
+   "date": "2025-07-19",
+   "nom": "RIVAROXABAN 20 MG / 28 COMPRIMIDOS RECUBIERTOS CON PELICULA",
+   "dose": "20mg",
+   "frequence": "1 comprimido cada día",
+   "statut": "en_cours",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF006"
+  },
+  {
+   "date": "2025-07-19",
+   "nom": "ATROVENT 20MCG/DOS 200 DOSIS 10ML SOLUCION INHALACION ENV A PRESION",
+   "dose": "20mcg/dosis",
+   "frequence": "2 pulsaciones cada 6 horas",
+   "statut": "suspendu",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF006",
+   "date_fin": "2026-08-15",
+   "motif_suspension": "Mejoría clínica"
+  },
+  {
+   "date": "2025-07-19",
+   "nom": "FUROSEMIDA 40 MG / 30 COMPRIMIDOS",
+   "dose": "40mg",
+   "frequence": "1 comprimido cada día",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF006",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2025-07-19",
+   "nom": "CALCIFEDIOL AMPOLLAS BEBIBLES 0.266 MG/1.5 ML",
+   "dose": "0.266mg/1.5mL",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF006",
+   "date_fin": "2026-07-21"
+  },
+  {
+   "date": "2025-07-19",
+   "nom": "HALOPERIDOL 2 MG EN 1 ML / 1 FRASCO SOL GOTAS DE 30 ML",
+   "dose": "2mg/1mL",
+   "frequence": "",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF006",
+   "motif_suspension": "Decisión médica",
+   "date_fin": "2026-07-21"
+  },
+  {
+   "date": "2025-12-12",
+   "nom": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT",
+   "dose": "-",
+   "frequence": "1 envase cada 60 días",
+   "statut": "en_cours",
+   "source": "Historia Clínica Resumida",
+   "pdf_id": "PDF003"
+  },
+  {
+   "date": "2025-12-12",
+   "nom": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT",
+   "dose": "N/A",
+   "frequence": "1 envase cada 60 día/s CRÓNICO",
+   "statut": "en_cours",
+   "source": "Historia Clínica Resumida",
+   "pdf_id": "PDF002"
+  },
+  {
+   "date": "2026-01-24",
+   "nom": "HIDROFEROL (Vit D)",
+   "dose": "0,266mg, sol oral de 1,5ml",
+   "frequence": "1 sol oral/30 días",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias (Traumatología)",
+   "pdf_id": "PDF005",
+   "date_fin": "2026-08-15"
+  },
+  {
+   "date": "2026-01-24",
+   "nom": "RIVAROXABAN",
+   "dose": "20mg",
+   "frequence": "1 comp/24h",
+   "statut": "en_cours",
+   "source": "Hospital General de Castellon - Urgencias (Traumatología)",
+   "pdf_id": "PDF005",
+   "date_debut": "2022-10-28",
+   "receta": "receta_publica",
+   "dosis": "0",
+   "slots": [
+    "am"
+   ],
+   "comida": "durante",
+   "duracion": "-1",
+   "frecuencia": "diario"
+  },
+  {
+   "date": "2026-01-24",
+   "nom": "HALOPERIDOL",
+   "dose": "solución gotas",
+   "frequence": "10 gotas orales/24h",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias (Traumatología)",
+   "pdf_id": "PDF005",
+   "motif_suspension": "Decisión médica",
+   "date_fin": "2026-07-21"
+  },
+  {
+   "date": "2026-01-24",
+   "nom": "ACETILCISTEINA",
+   "dose": "600mg",
+   "frequence": "1 comp/24h",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias (Traumatología)",
+   "pdf_id": "PDF005",
+   "date_debut": "2026-01-24",
+   "date_fin": "2026-07-20",
+   "dosis": "0",
+   "slots": [],
+   "comida": "",
+   "duracion": "0",
+   "frecuencia": "diario",
+   "motif_suspension": "Decisión del paciente"
+  },
+  {
+   "date": "2026-01-24",
+   "nom": "CEFUROXIMA",
+   "dose": "500mg",
+   "frequence": "1 comp/12h",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias (Traumatología)",
+   "pdf_id": "PDF005",
+   "date_fin": "2026-07-20"
+  },
+  {
+   "date": "2026-01-24",
+   "nom": "METAMIZOL",
+   "dose": "575mg",
+   "frequence": "1 comprimido cada 8 horas",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias (Traumatología)",
+   "pdf_id": "PDF005",
+   "motif_suspension": "Decisión del paciente",
+   "date_fin": "2026-07-15"
+  },
+  {
+   "date": "2026-01-24",
+   "nom": "PARACETAMOL",
+   "dose": "1gr",
+   "frequence": "1 comprimido cada 8 horas (si más dolor, 4h tras Metamizol)",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias (Traumatología)",
+   "pdf_id": "PDF005",
+   "motif_suspension": "Decisión del paciente",
+   "date_fin": "2026-07-16",
+   "date_debut": "2026-01-24",
+   "dosis": "1",
+   "slots": [],
+   "comida": "",
+   "duracion": "0",
+   "frecuencia": "diario"
+  },
+  {
+   "date": "2026-02-24",
+   "nom": "Rivaroxabán",
+   "dose": "20mg",
+   "frequence": "cada 24h",
+   "statut": "en_cours",
+   "source": "Clínica Diago Muñoz",
+   "pdf_id": "PDF005"
+  },
+  {
+   "date": "2026-02-24",
+   "nom": "Hidroferol",
+   "dose": "",
+   "frequence": "mensual",
+   "statut": "terminado",
+   "source": "Clínica Diago Muñoz",
+   "pdf_id": "PDF005",
+   "date_fin": "2026-08-15"
+  },
+  {
+   "date": "2026-02-24",
+   "nom": "Haloperidol",
+   "dose": "10 gotas",
+   "frequence": "cada 24h (casi a diario), rescates puntuales de 5 gotas",
+   "statut": "abandonne",
+   "source": "Clínica Diago Muñoz",
+   "pdf_id": "PDF005",
+   "motif_suspension": "Decisión médica",
+   "date_fin": "2026-07-21"
+  },
+  {
+   "date": "2026-02-24",
+   "nom": "Acetilcisteína",
+   "dose": "1 comp",
+   "frequence": "cada 24h",
+   "statut": "abandonne",
+   "source": "Clínica Diago Muñoz",
+   "pdf_id": "PDF005",
+   "date_fin": "2026-07-20",
+   "motif_suspension": "Decisión del paciente"
+  },
+  {
+   "date": "2026-02-24",
+   "nom": "Cefuroxima",
+   "dose": "500mg",
+   "frequence": "cada 12h",
+   "statut": "terminado",
+   "source": "Clínica Diago Muñoz",
+   "pdf_id": "PDF005",
+   "date_fin": "2026-07-20"
+  },
+  {
+   "date": "2026-02-24",
+   "nom": "ACETILCISTEÍNA",
+   "dose": "1 comprimido",
+   "frequence": "cada 24h",
+   "statut": "abandonne",
+   "source": "Clínica Diago Muñoz",
+   "pdf_id": "PDF008",
+   "date_fin": "2026-07-20",
+   "motif_suspension": "Decisión del paciente"
+  },
+  {
+   "date": "2026-03-25",
+   "nom": "LIXBEN 10MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA EFG",
+   "dose": "10mg",
+   "frequence": "1 comprimido cada día",
+   "statut": "terminado",
+   "source": "Historia Clínica Resumida",
+   "pdf_id": "PDF003",
+   "date_debut": "2026-03-25",
+   "dosis": "20 comprimido",
+   "slots": [],
+   "comida": "lejos",
+   "duracion": "0",
+   "frecuencia": "diario",
+   "date_fin": "2026-08-14"
+  },
+  {
+   "date": "2026-05-21",
+   "nom": "XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA (BAYER)",
+   "dose": "20mg",
+   "frequence": "1 comprimido cada día durante 150 días",
+   "statut": "terminado",
+   "source": "Historia Clínica Resumida",
+   "pdf_id": "PDF003",
+   "date_fin": "2026-07-15",
+   "date_debut": "2022-01-16",
+   "receta": "no_financiado",
+   "dosis": "0",
+   "slots": [],
+   "comida": "",
+   "duracion": "0",
+   "frecuencia": "diario"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Hidroferol (Vitamina D)",
+   "dose": "0.266mg, sol oral 1.5ml",
+   "frequence": "1 sol oral/30 días",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001",
+   "date_fin": "2026-08-15"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Rivaroxaban",
+   "dose": "20mg",
+   "frequence": "1 comp/24h",
+   "statut": "en_cours",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Haloperidol",
+   "dose": "sol gotas 10 gotas orales",
+   "frequence": "24h",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001",
+   "date_fin": "2026-07-21",
+   "motif_suspension": "Decisión médica"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Voltadol",
+   "dose": "1%/g gel, 60g",
+   "frequence": "1 envase/7 días",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001",
+   "date_fin": "2026-07-21"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Atrovent (nebulización)",
+   "dose": "",
+   "frequence": "",
+   "statut": "suspendu",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001",
+   "motif_suspension": "Mejoría clínica",
+   "date_fin": "2026-08-15"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Budesonida (nebulización)",
+   "dose": "",
+   "frequence": "",
+   "statut": "no_administrado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001",
+   "motif_suspension": "Cambio de tratamiento"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Metilprednisolona",
+   "dose": "125mg IV",
+   "frequence": "",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001",
+   "date_fin": "2026-07-18"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Ceftriaxona",
+   "dose": "2g",
+   "frequence": "",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001",
+   "motif_suspension": "Cambio de tratamiento",
+   "date_fin": "2026-07-18"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Hidroferol (Vit D)",
+   "dose": "0.266mg",
+   "frequence": "1 sol oral/30 días",
+   "statut": "terminado",
+   "source": "Hospital General de Castellon - Urgencias",
+   "pdf_id": "PDF001",
+   "date_fin": "2026-08-15"
+  },
+  {
+   "date": "2026-07-16",
+   "nom": "Haloperidol",
+   "dose": "sol gotas",
+   "frequence": "10 gotas orales/24h",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellón — Urgencias",
+   "pdf_id": "PDF001",
+   "date_fin": "2026-07-21",
+   "motif_suspension": "Decisión médica"
+  },
+  {
+   "date": "2026-07-20",
+   "nom": "HIDROFEROL (Vit D)",
+   "dose": "0,266mg",
+   "frequence": "1 sol oral/30 días",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Unidad Corta Estancia",
+   "pdf_id": "PDF011",
+   "date_fin": "2026-08-15"
+  },
+  {
+   "date": "2026-07-20",
+   "nom": "RIVAROXABAN",
+   "dose": "20mg",
+   "frequence": "1 comp/24h",
+   "statut": "en_cours",
+   "source": "Hospital General de Castellón — Unidad Corta Estancia",
+   "pdf_id": "PDF011",
+   "slots": [
+    "am"
+   ]
+  },
+  {
+   "date": "2026-07-20",
+   "nom": "HALOPERIDOL",
+   "dose": "10 gotas",
+   "frequence": "1 vez/24h",
+   "statut": "abandonne",
+   "source": "Hospital General de Castellón — Unidad Corta Estancia",
+   "pdf_id": "PDF011",
+   "motif_suspension": "Decisión médica",
+   "date_fin": "2026-07-21"
+  },
+  {
+   "date": "2026-07-20",
+   "nom": "VOLTADOL",
+   "dose": "1%/g gel, 60g",
+   "frequence": "1 envase/7 días",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Unidad Corta Estancia",
+   "pdf_id": "PDF011",
+   "date_fin": "2026-07-21"
+  },
+  {
+   "date": "2026-07-20",
+   "nom": "ZINNAT",
+   "dose": "500mg",
+   "frequence": "1 sobre/12h",
+   "statut": "terminado",
+   "source": "Hospital General de Castellón — Unidad Corta Estancia",
+   "pdf_id": "PDF011",
+   "slots": [
+    "am",
+    "pm"
+   ],
+   "date_debut": "2026-07-20",
+   "prescriptor": "PR2",
+   "receta": "receta_publica",
+   "dosis": "500 mg",
+   "comida": "",
+   "duracion": "0",
+   "frecuencia": "diario",
+   "date_fin": "2026-08-14"
+  },
+  {
+   "date": "2026-08-12",
+   "nom": "DONEPEZILO",
+   "dose": "10mg",
+   "frequence": "1x/24h",
+   "statut": "abandonne",
+   "source": "Hospital de la Magdalena — Unidad Memoria y Demencias",
+   "pdf_id": "PDF001",
+   "date_fin": "2026-08-14",
+   "motif_suspension": "Cambio de tratamiento",
+   "desde": "2026-08-12"
+  },
+  {
+   "date": "2026-08-12",
+   "nom": "Neuralex 2 cápsula",
+   "dose": "",
+   "frequence": "",
+   "statut": "en_cours",
+   "source": "Hospital de la Magdalena — Unidad Memoria y Demencias",
+   "pdf_id": "PDF001",
+   "date_debut": "2026-08-12",
+   "dosis": "2 cápsula",
+   "concentracion": "",
+   "slots": [
+    "almuerzo",
+    "cena"
+   ],
+   "comida": "",
+   "duracion": "-1",
+   "frecuencia": "diario",
+   "prescriptor": "PR3",
+   "receta": "no_financiado"
+  },
+  {
+   "nom": "ARICEPT",
+   "statut": "en_cours",
+   "dosis": "1 comprimido",
+   "date_debut": "2026-08-12",
+   "prescriptor": "PR3",
+   "receta": "receta_publica",
+   "concentracion": "10",
+   "slots": [
+    "night"
+   ],
+   "comida": "despues",
+   "duracion": "-1",
+   "frecuencia": "diario"
+  }
+ ],
+ "antecedentes": [
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "Z87.440",
+   "descripcion": "HISTORIA PERSONAL DE INFECCIONES DEL TRACTO URINARIO",
+   "estado": "activo",
+   "fechas": [
+    "2026-07-16"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "M25.561",
+   "descripcion": "DOLOR EN RODILLA DERECHA",
+   "estado": "activo",
+   "fechas": [
+    "2026-07-13"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R73.01",
+   "descripcion": "GLUCEMIA BASAL ALTERADA",
+   "estado": "activo",
+   "fechas": [
+    "2026-07-08"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "G45.9",
+   "descripcion": "ACCIDENTE ISQUEMICO CEREBRAL TRANSITORIO, NO ESPECIFICADO",
+   "estado": "activo",
+   "fechas": [
+    "2026-04-20"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F09",
+   "descripcion": "TRASTORNO MENTAL NO ESPECIFICADO DEBIDO A AFECCION FISIOLOGICA CONOCIDA",
+   "estado": "activo",
+   "fechas": [
+    "2026-02-12"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "J96.90",
+   "descripcion": "INSUFICIENCIA RESPIRATORIA NO ESPECIFICADA, SIN ESPECIFICAR SI CON HIPOXIA O CON HIPERCAPNIA",
+   "estado": "activo",
+   "fechas": [
+    "2026-02-12"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R26.9",
+   "descripcion": "ALTERACIONES DE LA MARCHA Y DE LA MOVILIDAD NO ESPECIFICADAS",
+   "estado": "activo",
+   "fechas": [
+    "2026-01-27"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "M25.551",
+   "descripcion": "DOLOR EN CADERA DERECHA",
+   "estado": "activo",
+   "fechas": [
+    "2026-01-24"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "W19.XXXD",
+   "descripcion": "CAIDA NO ESPECIFICADA, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2026-01-24"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "W13.3XXD",
+   "descripcion": "CAIDA POR EL SUELO, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2026-01-17"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R26.2",
+   "descripcion": "DIFICULTAD PARA CAMINAR, NO CLASIFICADA BAJO OTRO CONCEPTO",
+   "estado": "activo",
+   "fechas": [
+    "2026-01-15"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "J96.92",
+   "descripcion": "INSUFICIENCIA RESPIRATORIA NO ESPECIFICADA, CON HIPERCAPNIA",
+   "estado": "activo",
+   "fechas": [
+    "2026-01-13"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S20.219D",
+   "descripcion": "CONTUSION DE PARED ANTERIOR NO ESPECIFICADA DEL TORAX, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2025-12-29"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R13.10",
+   "descripcion": "DISFAGIA, NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2025-12-10"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F28",
+   "descripcion": "OTROS TRASTORNOS PSICOTICOS NO DEBIDOS A SUSTANCIA NI AFECCION FISIOLOGICA CONOCIDAS",
+   "estado": "activo",
+   "fechas": [
+    "2025-11-21"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "I10",
+   "descripcion": "HIPERTENSION ESENCIAL (PRIMARIA)",
+   "estado": "activo",
+   "fechas": [
+    "2025-11-21"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F01.50",
+   "descripcion": "DEMENCIA VASCULAR, GRAVEDAD NO ESPECIFICADA, SIN ALTERACIÓN DEL COMPORTAMIENTO, ALTERACIÓN PSICÓTICA, ALTERACIÓN DEL ESTADO DE ÁNIMO NI ANSIEDAD",
+   "estado": "activo",
+   "fechas": [
+    "2025-10-10"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "I27.82",
+   "descripcion": "TEP CRONICO",
+   "estado": "activo",
+   "fechas": [
+    "2025-09-01"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "W10.8XXA",
+   "descripcion": "CAIDA (EN) (DE) OTRAS ESCALERAS Y ESCALONES, CONTACTO INICIAL",
+   "estado": "activo",
+   "fechas": [
+    "2025-07-06"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "N84.0",
+   "descripcion": "POLIPO DEL CUERPO UTERINO",
+   "estado": "activo",
+   "fechas": [
+    "2025-06-10"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "N30.00",
+   "descripcion": "CISTITIS AGUDA SIN HEMATURIA",
+   "estado": "activo",
+   "fechas": [
+    "2025-06-05"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F91.1",
+   "descripcion": "TRASTORNO DE CONDUCTA, TIPO DE INICIO EN LA NIÑEZ",
+   "estado": "activo",
+   "fechas": [
+    "2025-02-28"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "B37.9",
+   "descripcion": "CANDIDIASIS, NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2025-02-17"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R05",
+   "descripcion": "TOS",
+   "estado": "activo",
+   "fechas": [
+    "2024-11-13"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "B37.2",
+   "descripcion": "CANDIDIASIS DE LA PIEL Y LAS UÑAS",
+   "estado": "activo",
+   "fechas": [
+    "2024-09-06"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "M54.5",
+   "descripcion": "DOLOR EN LA PARTE INFERIOR DE LA ESPALDA",
+   "estado": "activo",
+   "fechas": [
+    "2024-08-13"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R45.1",
+   "descripcion": "INQUIETUD Y AGITACION",
+   "estado": "inactivo",
+   "fechas": [
+    "2023-12-11",
+    "2024-02-15"
+   ],
+   "pdf_id": "PDF002",
+   "fecha_inactivacion": "2024-02-15"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "K04.7",
+   "descripcion": "ABSCESO PERIAPICAL SIN SINUS",
+   "estado": "activo",
+   "fechas": [
+    "2024-01-22"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S93.402D",
+   "descripcion": "ESGUINCE DE LIGAMENTO NO ESPECIFICADO DE TOBILLO IZQUIERDO, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2023-12-15"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S60.042D",
+   "descripcion": "CONTUSION DE DEDO ANULAR IZQUIERDO, SIN DAÑOS EN LA UÑA, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2023-11-06"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F03.91",
+   "descripcion": "DEMENCIA NO ESPECIFICADA CON ALTERACION DE LA CONDUCTA",
+   "estado": "activo",
+   "fechas": [
+    "2023-06-28"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "I45.10",
+   "descripcion": "BLOQUEO DE RAMA DERECHA NO ESPECIFICADO",
+   "estado": "activo",
+   "fechas": [
+    "2023-06-05"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "K76.9",
+   "descripcion": "ENFERMEDAD HEPATICA, NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2023-06-05"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "E55.9",
+   "descripcion": "CARENCIA DE VITAMINA D, NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2023-03-15"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R42",
+   "descripcion": "MAREO Y DESVANECIMIENTO",
+   "estado": "activo",
+   "fechas": [
+    "2023-03-15"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "E04.1",
+   "descripcion": "NODULO TIROIDEO UNICO NO TOXICO",
+   "estado": "activo",
+   "fechas": [
+    "2023-02-28"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F03.90",
+   "descripcion": "DEMENCIA NO ESPECIFICADA SIN ALTERACION DE LA CONDUCTA",
+   "estado": "activo",
+   "fechas": [
+    "2022-12-22"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "I83.229",
+   "descripcion": "VENAS VARICOSAS DE EXTREMIDAD INFERIOR IZQUIERDA CON ULCERA E INFLAMACION DE LOCALIZACION NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2022-12-22"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S80.12XD",
+   "descripcion": "CONTUSION DE PIERNA IZQUIERDA, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2022-12-18"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S80.922D",
+   "descripcion": "TRAUMATISMO SUPERFICIAL NO ESPECIFICADO DE PIERNA IZQUIERDA, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2022-12-04"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "J40",
+   "descripcion": "BRONQUITIS, NO ESPECIFICADA COMO AGUDA O CRONICA",
+   "estado": "activo",
+   "fechas": [
+    "2022-10-27"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R00.1",
+   "descripcion": "BRADICARDIA, NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2022-10-21"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F32.9",
+   "descripcion": "TRASTORNO DEPRESIVO MAYOR, EPISODIO ÚNICO, NO ESPECIFICADO",
+   "estado": "activo",
+   "fechas": [
+    "2022-07-26"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "G30.9",
+   "descripcion": "ENFERMEDAD ALZHEIMER",
+   "estado": "activo",
+   "fechas": [
+    "2022-07-26"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "N30.90",
+   "descripcion": "CISTITIS, NO ESPECIFICADA, SIN HEMATURIA",
+   "estado": "activo",
+   "fechas": [
+    "2022-07-26"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "M25.569",
+   "descripcion": "DOLOR EN RODILLA NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2022-07-23"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "E56.9",
+   "descripcion": "CARENCIA DE VITAMINA, NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2022-07-12"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R32",
+   "descripcion": "INCONTINENCIA URINARIA NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2022-07-12"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R82.71",
+   "descripcion": "BACTERIURIA",
+   "estado": "activo",
+   "fechas": [
+    "2022-07-12"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S00.00XD",
+   "descripcion": "TRAUMATISMO SUPERFICIAL NO ESPECIFICADO DE CUERO CABELLUDO, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2022-06-09"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S70.00XD",
+   "descripcion": "CONTUSIÓN DE CADERA NO ESPECIFICADA, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2022-05-31"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S81.802D",
+   "descripcion": "HERIDA ABIERTA NO ESPECIFICADA DE PIERNA IZQUIERDA, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2022-05-19"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S30.0XXD",
+   "descripcion": "CONTUSIÓN DE PARTE INFERIOR DE ESPALDA Y PELVIS, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2022-05-17"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S61.209D",
+   "descripcion": "HERIDA ABIERTA NO ESPECIFICADA DE DEDO DE MANO NO ESPECIFICADO, SIN DAÑOS EN LA UÑA, CONTACTO SUCESIVO",
+   "estado": "activo",
+   "fechas": [
+    "2022-04-10"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S01.00XD",
+   "descripcion": "HERIDA CUERO CABELLUDO",
+   "estado": "activo",
+   "fechas": [
+    "2022-03-10"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "S06.9X0D",
+   "descripcion": "TCE",
+   "estado": "activo",
+   "fechas": [
+    "2022-03-10"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "Z79.01",
+   "descripcion": "ANTICOAGULACION",
+   "estado": "activo",
+   "fechas": [
+    "2022-01-16"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "I26.99",
+   "descripcion": "OTRA EMBOLIA PULMONAR SIN COR PULMONALE AGUDO",
+   "estado": "inactivo",
+   "fechas": [
+    "2017-02-14",
+    "2022-01-07"
+   ],
+   "pdf_id": "PDF002",
+   "fecha_inactivacion": "2022-01-07"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R06.00",
+   "descripcion": "DISNEA",
+   "estado": "inactivo",
+   "fechas": [
+    "2021-06-18",
+    "2022-01-02",
+    "2022-01-06"
+   ],
+   "pdf_id": "PDF002",
+   "fecha_inactivacion": "2022-01-03"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "G31.84",
+   "descripcion": "DETERIORO COGNITIVO MODERADO",
+   "estado": "activo",
+   "fechas": [
+    "2022-01-05"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "E04.9",
+   "descripcion": "BOCIO ENDOTORACICO",
+   "estado": "activo",
+   "fechas": [
+    "2021-10-27"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "K30",
+   "descripcion": "DISPEPSIA FUNCIONAL",
+   "estado": "activo",
+   "fechas": [
+    "2021-10-27"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "I63.219",
+   "descripcion": "INFARTO VERTEBROBASILAR",
+   "estado": "activo",
+   "fechas": [
+    "2021-09-29"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "I63.9",
+   "descripcion": "ICTUS",
+   "estado": "activo",
+   "fechas": [
+    "2021-09-29"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F10.20",
+   "descripcion": "ENOLISMO",
+   "estado": "activo",
+   "fechas": [
+    "2021-09-01"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "M79.643",
+   "descripcion": "DOLOR MANO",
+   "estado": "activo",
+   "fechas": [
+    "2021-09-01"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R29.818",
+   "descripcion": "TRASTORNO NEUROLOGICO DEGLUCION",
+   "estado": "activo",
+   "fechas": [
+    "2021-09-01"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "L98.9",
+   "descripcion": "DERMATOSIS",
+   "estado": "activo",
+   "fechas": [
+    "2021-07-14"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "H57.12",
+   "descripcion": "DOLOR OCULAR, OJO IZQUIERDO",
+   "estado": "activo",
+   "fechas": [
+    "2021-06-18"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "J20.9",
+   "descripcion": "BRONQUITIS AGUDA O SUBAGUDA",
+   "estado": "activo",
+   "fechas": [
+    "2020-09-20"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "K08.9",
+   "descripcion": "DOLOR DENTAL Y PERIODONTAL",
+   "estado": "activo",
+   "fechas": [
+    "2020-04-08"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "Z53.29",
+   "descripcion": "PROCEDIMIENTO Y TRATAMIENTO NO REALIZADOS DEBIDO A DECISIÓN DEL PACIENTE POR OTRAS RAZONES",
+   "estado": "activo",
+   "fechas": [
+    "2019-12-09"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "T23.079S",
+   "descripcion": "QUEMADURA DE GRADO NO ESPECIFICADO DE MUÑECA NO ESPECIFICADA, SECUELA",
+   "estado": "activo",
+   "fechas": [
+    "2019-11-05"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "M25.519",
+   "descripcion": "DOLOR EN HOMBRO NO ESPECIFICADO",
+   "estado": "activo",
+   "fechas": [
+    "2019-04-15"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R44.3",
+   "descripcion": "ALUCINACIONES, NO ESPECIFICADAS",
+   "estado": "activo",
+   "fechas": [
+    "2018-09-21"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "E78.00",
+   "descripcion": "HIPERCOLESTEROLEMIA PURA, NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2017-11-13"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "I82.409",
+   "descripcion": "EMBOLIA Y TROMBOSIS AGUDAS DE VENAS PROFUNDAS NO ESPECIFICADAS DE EXTREMIDAD INFERIOR NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2016-11-17"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "J44.9",
+   "descripcion": "ENFERMEDAD PULMONAR OBSTRUCTIVA CRÓNICA, NO ESPECIFICADA",
+   "estado": "activo",
+   "fechas": [
+    "2016-11-17"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "R03.0",
+   "descripcion": "MEDIDA DE PRESIÓN ARTERIAL ELEVADA, SIN DIAGNÓSTICO DE HIPERTENSIÓN",
+   "estado": "activo",
+   "fechas": [
+    "2016-07-03"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "F41.9",
+   "descripcion": "TRASTORNO DE ANSIEDAD, NO ESPECIFICADO",
+   "estado": "activo",
+   "fechas": [
+    "2016-04-06"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "J98.6",
+   "descripcion": "TRASTORNOS DEL DIAFRAGMA",
+   "estado": "activo",
+   "fechas": [
+    "2016-04-06"
+   ],
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "J44.1",
+   "descripcion": "EPOC AGUDIZADO",
+   "estado": "inactivo",
+   "fechas": [
+    "2021-07-18"
+   ],
+   "fecha_inactivacion": "2026-03-07",
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-10-ES",
+   "codigo": "J00",
+   "descripcion": "NASOFARINGITIS AGUDA [RESFRIADO COMUN]",
+   "estado": "inactivo",
+   "fechas": [
+    "2024-11-13"
+   ],
+   "fecha_inactivacion": "2025-02-07",
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-9-ES",
+   "codigo": "490",
+   "descripcion": "BRONQUITIS",
+   "estado": "inactivo",
+   "fechas": [
+    "2016-02-24"
+   ],
+   "fecha_inactivacion": "2018-11-23",
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-9-ES",
+   "codigo": "780.4",
+   "descripcion": "VERTIGO",
+   "estado": "inactivo",
+   "fechas": [
+    "2016-04-06"
+   ],
+   "fecha_inactivacion": "2018-11-23",
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-9-ES",
+   "codigo": "787.2",
+   "descripcion": "ODINOFAGIA",
+   "estado": "inactivo",
+   "fechas": [
+    "2016-07-03"
+   ],
+   "fecha_inactivacion": "2018-11-23",
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-9-ES",
+   "codigo": "787.91",
+   "descripcion": "DIARREA",
+   "estado": "inactivo",
+   "fechas": [
+    "2016-11-18"
+   ],
+   "fecha_inactivacion": "2018-11-23",
+   "pdf_id": "PDF002"
+  },
+  {
+   "codificacion": "CIE-9-ES",
+   "codigo": "V58.61",
+   "descripcion": "ANTICOAGULACION ORAL",
+   "estado": "inactivo",
+   "fechas": [
+    "2016-11-17"
+   ],
+   "fecha_inactivacion": "2018-11-23",
+   "pdf_id": "PDF002"
+  }
+ ],
+ "vacunas": {
+  "11": "dTpa (difteria-tétanos-tosferina)",
+  "19": "Hexavalente (DTPa-VPI-Hib-HB)",
+  "94": "DTPa-VPI",
+  "46233009": "Vacuna contra la gripe (anual)",
+  "covid19": "COVID-19",
+  "td": "Td (tétanos-difteria, recuerdo adulto)",
+  "tv": "Triple vírica (sarampión-rubeola-parotiditis)",
+  "var": "Varicela",
+  "vph": "Virus del papiloma humano",
+  "menc": "Meningococo C",
+  "menacwy": "Meningococo ACWY",
+  "menb": "Meningococo B",
+  "vnc": "Neumococo conjugada (VNC13/15/20)",
+  "vnp23": "Neumococo polisacárida (VNP23)",
+  "hb": "Hepatitis B",
+  "ha": "Hepatitis A",
+  "hz": "Herpes zóster",
+  "rota": "Rotavirus",
+  "19-1": "Hexavalente (Hexyon/Vaxelis/Infanrix hexa) — 1ª dosis",
+  "19-2": "Hexavalente (Hexyon/Vaxelis/Infanrix hexa) — 2ª dosis",
+  "19-3": "Hexavalente (Hexyon/Vaxelis/Infanrix hexa) — 3ª dosis",
+  "19-4": "Hexavalente (Hexyon/Vaxelis/Infanrix hexa) — 4ª dosis",
+  "11-1": "dTpa (Boostrix/Triaxis) — 1ª dosis",
+  "11-2": "dTpa (Boostrix/Triaxis) — 2ª dosis",
+  "11-3": "dTpa (Boostrix/Triaxis) — 3ª dosis",
+  "11-4": "dTpa (Boostrix/Triaxis) — 4ª dosis",
+  "11-5": "dTpa (Boostrix/Triaxis) — 5ª dosis",
+  "11-6": "dTpa (Boostrix/Triaxis) — 6ª dosis",
+  "11-E": "dTpa (Boostrix/Triaxis) — embarazadas",
+  "94-1": "DTPa-VPI (Infanrix-IPV/Tetraxim) — 1ª dosis",
+  "94-2": "DTPa-VPI (Infanrix-IPV/Tetraxim) — 2ª dosis",
+  "94-3": "DTPa-VPI (Infanrix-IPV/Tetraxim) — 3ª dosis",
+  "94-4": "DTPa-VPI (Infanrix-IPV/Tetraxim) — 4ª dosis",
+  "8-1": "Td (Diftavax/Ditanrix/dITebooster/Anatoxal Tedi) — 1ª dosis",
+  "8-2": "Td (Diftavax/Ditanrix/dITebooster/Anatoxal Tedi) — 2ª dosis",
+  "8-3": "Td (Diftavax/Ditanrix/dITebooster/Anatoxal Tedi) — 3ª dosis",
+  "8-4": "Td (Diftavax/Ditanrix/dITebooster/Anatoxal Tedi) — 4ª dosis",
+  "8-5": "Td (Diftavax/Ditanrix/dITebooster/Anatoxal Tedi) — 5ª dosis",
+  "8-6": "Td (Diftavax/Ditanrix/dITebooster/Anatoxal Tedi) — 6ª dosis",
+  "2N-A": "Neumococo conjugada 20-valente (Prevenar 20) — vacunación por edad",
+  "2N-L": "Neumococo conjugada 20-valente (Prevenar 20) — menor 65 años con patología",
+  "2N-I3": "Neumococo conjugada 20-valente (Prevenar 20) — residentes centros mayores",
+  "2N-I4": "Neumococo conjugada 20-valente (Prevenar 20) — residentes centros discapacidad",
+  "66-CS1": "Meningococo ACWY (Nimenrix) — calendario sistemático, 1ª dosis",
+  "66-CS2": "Meningococo ACWY (Nimenrix) — calendario sistemático, 2ª dosis",
+  "66-MT1": "Meningococo ACWY (Nimenrix/Menveo) — indicación privada, 1ª dosis",
+  "66-MT2": "Meningococo ACWY (Nimenrix/Menveo) — indicación privada, 2ª dosis",
+  "49-1": "Meningococo ACWY (Mencevax A+C+W+Y) — dosis única",
+  "73-CS1": "Meningococo B (Bexsero) — calendario sistemático, 1ª dosis",
+  "73-CS2": "Meningococo B (Bexsero) — calendario sistemático, 2ª dosis",
+  "73-CS3": "Meningococo B (Bexsero) — calendario sistemático, 3ª dosis",
+  "73-MB1": "Meningococo B (Bexsero/Trumenba) — prescripción privada, 1ª dosis",
+  "73-MB2": "Meningococo B (Bexsero/Trumenba) — prescripción privada, 2ª dosis",
+  "73-MB3": "Meningococo B (Bexsero) — prescripción privada, 3ª dosis",
+  "4-1": "Triple vírica (MMR Vaxpro/Priorix) — 1ª dosis",
+  "4-2": "Triple vírica (MMR Vaxpro/Priorix) — 2ª dosis",
+  "4-3": "Triple vírica (MMR Vaxpro/Priorix) — 3ª dosis",
+  "4-4": "Triple vírica (MMR Vaxpro/Priorix) — 4ª dosis",
+  "41-2": "Tetravírica (Proquad) — 2ª dosis",
+  "26-1": "Varicela (Varivax/Varilrix) — 1ª dosis",
+  "26-2": "Varicela (Varivax/Varilrix) — 2ª dosis",
+  "52-1": "VPH (Cervarix/Gardasil 9) — 1ª dosis",
+  "52-2": "VPH (Cervarix/Gardasil 9) — 2ª dosis",
+  "52-3": "VPH (Cervarix/Gardasil 9) — 3ª dosis",
+  "40-1": "Rotavirus (Rotarix) — 1ª dosis",
+  "40-2": "Rotavirus (Rotarix) — 2ª dosis",
+  "50-1": "Rotavirus (Rotateq) — 1ª dosis",
+  "50-2": "Rotavirus (Rotateq) — 2ª dosis",
+  "50-3": "Rotavirus (Rotateq) — 3ª dosis",
+  "96-X11": "Mpox / viruela símica (Jynneos/Imvanex) — 1ª dosis",
+  "96-X12": "Mpox / viruela símica (Jynneos/Imvanex) — 2ª dosis",
+  "7-1": "Haemophilus influenzae B (Hiberix) — 1ª dosis",
+  "7-2": "Haemophilus influenzae B (Hiberix) — 2ª dosis",
+  "7-3": "Haemophilus influenzae B (Hiberix) — 3ª dosis",
+  "7-4": "Haemophilus influenzae B (Hiberix) — 4ª dosis",
+  "13-1": "Poliomielitis (Imovax Polio) — 1ª dosis",
+  "13-2": "Poliomielitis (Imovax Polio) — 2ª dosis",
+  "13-3": "Poliomielitis (Imovax Polio) — 3ª dosis",
+  "13-4": "Poliomielitis (Imovax Polio) — 4ª dosis",
+  "13-5": "Poliomielitis (Imovax Polio) — 5ª dosis",
+  "3-1": "Poliomielitis oral — 1ª dosis",
+  "3-2": "Poliomielitis oral — 2ª dosis",
+  "3-3": "Poliomielitis oral — 3ª dosis",
+  "3-4": "Poliomielitis oral — 4ª dosis",
+  "3-5": "Poliomielitis oral — 5ª dosis",
+  "3-6": "Poliomielitis oral — 6ª dosis",
+  "24-1": "BCG — dosis única",
+  "5-1": "Hepatitis B (HB Vaxpro 5/Engerix-B 10) — 1ª dosis",
+  "5-2": "Hepatitis B (HB Vaxpro 5/Engerix-B 10) — 2ª dosis",
+  "5-3": "Hepatitis B (HB Vaxpro 5/Engerix-B 10) — 3ª dosis",
+  "5-4": "Hepatitis B (HB Vaxpro 5/Engerix-B 10) — 4ª dosis",
+  "5-5": "Hepatitis B (HB Vaxpro 5/Engerix-B 10) — 5ª dosis",
+  "5-6": "Hepatitis B (HB Vaxpro 5/Engerix-B 10) — 6ª dosis",
+  "27-1": "Hepatitis B (HB Vaxpro 10/Engerix-B 20) — 1ª dosis",
+  "27-2": "Hepatitis B (HB Vaxpro 10/Engerix-B 20) — 2ª dosis",
+  "27-3": "Hepatitis B (HB Vaxpro 10/Engerix-B 20) — 3ª dosis",
+  "27-4": "Hepatitis B (HB Vaxpro 10/Engerix-B 20) — 4ª dosis",
+  "27-5": "Hepatitis B (HB Vaxpro 10/Engerix-B 20) — 5ª dosis",
+  "27-6": "Hepatitis B (HB Vaxpro 10/Engerix-B 20) — 6ª dosis",
+  "58-1": "Hepatitis B (Fendrix) — 1ª dosis",
+  "58-2": "Hepatitis B (Fendrix) — 2ª dosis",
+  "58-3": "Hepatitis B (Fendrix) — 3ª dosis",
+  "58-4": "Hepatitis B (Fendrix) — 4ª dosis",
+  "47-1": "Hepatitis B (HB Vaxpro 40) — 1ª dosis",
+  "47-2": "Hepatitis B (HB Vaxpro 40) — 2ª dosis",
+  "47-3": "Hepatitis B (HB Vaxpro 40) — 3ª dosis",
+  "47-4": "Hepatitis B (HB Vaxpro 40) — 4ª dosis",
+  "47-5": "Hepatitis B (HB Vaxpro 40) — 5ª dosis",
+  "47-6": "Hepatitis B (HB Vaxpro 40) — 6ª dosis",
+  "21-1": "Hepatitis A (Havrix 720/Vaqta 25) — 1ª dosis",
+  "21-2": "Hepatitis A (Havrix 720/Vaqta 25) — 2ª dosis",
+  "22-1": "Hepatitis A (Havrix 1440/Avaxim 160/Vaqta 50) — 1ª dosis",
+  "22-2": "Hepatitis A (Havrix 1440/Avaxim 160/Vaqta 50) — 2ª dosis",
+  "38-1": "Hepatitis A (Epaxal) — 1ª dosis",
+  "38-2": "Hepatitis A (Epaxal) — 2ª dosis",
+  "33-1": "Hepatitis A+B infantil (Twinrix infantil) — 1ª dosis",
+  "33-2": "Hepatitis A+B infantil (Twinrix infantil) — 2ª dosis",
+  "33-3": "Hepatitis A+B infantil (Twinrix infantil) — 3ª dosis",
+  "39-1": "Hepatitis A+B (Twinrix) — 1ª dosis",
+  "39-2": "Hepatitis A+B (Twinrix) — 2ª dosis",
+  "39-3": "Hepatitis A+B (Twinrix) — 3ª dosis",
+  "92-A1": "Herpes zóster (Shingrix) — vacunación por edad, 1ª dosis",
+  "92-A2": "Herpes zóster (Shingrix) — vacunación por edad, 2ª dosis",
+  "92-S21": "Herpes zóster (Shingrix) — leucemia aguda, 1ª dosis",
+  "92-S22": "Herpes zóster (Shingrix) — leucemia aguda, 2ª dosis",
+  "92-S31": "Herpes zóster (Shingrix) — linfomas, 1ª dosis",
+  "92-S32": "Herpes zóster (Shingrix) — linfomas, 2ª dosis",
+  "92-S41": "Herpes zóster (Shingrix) — neoplasias, 1ª dosis",
+  "92-S42": "Herpes zóster (Shingrix) — neoplasias, 2ª dosis",
+  "92-S61": "Herpes zóster (Shingrix) — trasplante progenitores hematopoyéticos, 1ª dosis",
+  "92-S62": "Herpes zóster (Shingrix) — trasplante progenitores hematopoyéticos, 2ª dosis",
+  "92-S71": "Herpes zóster (Shingrix) — tratamiento inmunosupresor, 1ª dosis",
+  "92-S72": "Herpes zóster (Shingrix) — tratamiento inmunosupresor, 2ª dosis",
+  "92-S81": "Herpes zóster (Shingrix) — infección por VIH, 1ª dosis",
+  "92-S82": "Herpes zóster (Shingrix) — infección por VIH, 2ª dosis",
+  "92-S91": "Herpes zóster (Shingrix) — trasplante órgano sólido, 1ª dosis",
+  "92-S92": "Herpes zóster (Shingrix) — trasplante órgano sólido, 2ª dosis",
+  "92-T31": "Herpes zóster (Shingrix) — otras neoplasias hematológicas, 1ª dosis",
+  "92-T32": "Herpes zóster (Shingrix) — otras neoplasias hematológicas, 2ª dosis",
+  "92-HZ1": "Herpes zóster (Shingrix) — prescripción privada, 1ª dosis",
+  "92-HZ2": "Herpes zóster (Shingrix) — prescripción privada, 2ª dosis",
+  "92-Z11": "Herpes zóster (Shingrix) — antecedente ≥2 episodios de zóster, 1ª dosis",
+  "92-Z12": "Herpes zóster (Shingrix) — antecedente ≥2 episodios de zóster, 2ª dosis",
+  "35-1": "Rabia (Rabipur/Verorab) — 1ª dosis",
+  "35-2": "Rabia (Rabipur/Verorab) — 2ª dosis",
+  "35-3": "Rabia (Rabipur/Verorab) — 3ª dosis",
+  "35-4": "Rabia (Rabipur/Verorab) — 4ª dosis",
+  "35-5": "Rabia (Rabipur/Verorab) — 5ª dosis",
+  "35P": "Rabia (Berirab P/Imogam rabia) — inmunoglobulina",
+  "42-1": "Fiebre tifoidea oral (Vivotif) — 1ª dosis",
+  "42-2": "Fiebre tifoidea oral (Vivotif) — 2ª dosis",
+  "42-3": "Fiebre tifoidea oral (Vivotif) — 3ª dosis",
+  "43-1": "Fiebre tifoidea (Typhim Vi/Typherix) — 1ª dosis",
+  "43-2": "Fiebre tifoidea (Typhim Vi/Typherix) — 2ª dosis",
+  "43-3": "Fiebre tifoidea (Typhim Vi/Typherix) — 3ª dosis",
+  "45-1": "Cólera (Dukoral) — 1ª dosis",
+  "45-2": "Cólera (Dukoral) — 2ª dosis",
+  "45-3": "Cólera (Dukoral) — 3ª dosis",
+  "4C-1": "Cólera (Vaxchora) — dosis única",
+  "23-1": "Fiebre amarilla (Stamaril) — dosis única",
+  "4D-1": "Dengue (Qdenga) — 1ª dosis",
+  "4D-2": "Dengue (Qdenga) — 2ª dosis",
+  "3C": "Chikungunya (Vimkunya) — dosis única",
+  "51-1": "Encefalitis japonesa (Ixiaro) — 1ª dosis",
+  "51-2": "Encefalitis japonesa (Ixiaro) — 2ª dosis",
+  "70-1": "Encefalitis por garrapatas (Ticovac) — 1ª dosis",
+  "70-2": "Encefalitis por garrapatas (Ticovac) — 2ª dosis",
+  "70-3": "Encefalitis por garrapatas (Ticovac) — 3ª dosis",
+  "5R-I1": "Anticuerpo monoclonal VRS 50mg (Beyfortus) — inmunización por edad",
+  "5R-P1": "Anticuerpo monoclonal VRS 50mg (Beyfortus) — prematuridad <12 meses",
+  "5R-O1": "Anticuerpo monoclonal VRS 50mg (Beyfortus) — otros grupos de riesgo <24 meses",
+  "1R-I1": "Anticuerpo monoclonal VRS 100mg (Beyfortus) — inmunización por edad",
+  "1R-P1": "Anticuerpo monoclonal VRS 100mg (Beyfortus) — prematuros <12 meses",
+  "1R-O1": "Anticuerpo monoclonal VRS 100mg (Beyfortus) — otros grupos de riesgo <24 meses",
+  "1R-O2": "Anticuerpo monoclonal VRS 100mg (Beyfortus) — otros grupos de riesgo <24 meses, doble dosis",
+  "2R-A1": "Vacuna VRS (Abrysvo) — vacunación por grupo de edad",
+  "2R-B1": "Vacuna VRS (Abrysvo) — menores de 60 años con patología crónica",
+  "2R-E1": "Vacuna VRS (Abrysvo) — embarazadas",
+  "2R-I31": "Vacuna VRS (Abrysvo) — residentes centros personas mayores",
+  "2R-RS1": "Vacuna VRS (Abrysvo) — prescripción privada",
+  "3R-A1": "Vacuna VRS (Arexvy) — vacunación por grupo de edad",
+  "3R-B1": "Vacuna VRS (Arexvy) — menores de 60 años con patología crónica",
+  "3R-I31": "Vacuna VRS (Arexvy) — residentes centros personas mayores",
+  "3R-RS1": "Vacuna VRS (Arexvy) — prescripción privada",
+  "4R-A1": "Vacuna VRS (mResvia) — vacunación por grupo de edad",
+  "4R-B1": "Vacuna VRS (mResvia) — menores de 60 años con patología crónica",
+  "4R-I31": "Vacuna VRS (mResvia) — residentes centros personas mayores",
+  "4R-RS1": "Vacuna VRS (mResvia) — prescripción privada"
+ },
+ "vacunaciones": [
+  {
+   "fecha": "2014-10-30",
+   "codigo": "46233009",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-12-02",
+   "codigo": "46233009",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2017-11-13",
+   "codigo": "46233009",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2018-12-03",
+   "codigo": "46233009",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2019-12-10",
+   "codigo": "46233009",
+   "pdf_id": "PDF002"
+  }
+ ],
+ "enfermeria_dx": {
+  "00004": "RIESGO DE INFECCION",
+  "00155": "RIESGO DE CAIDAS",
+  "00047": "RIESGO DE DETERIORO DE LA INTEGRIDAD CUTANEA",
+  "00084": "CONDUCTAS GENERADORAS DE SALUD (ESPECIFICAR)",
+  "00046.72": "DETERIORO DE LA INTEGRIDAD CUTANEA - HERIDAS ABIERTAS NO ESPECIFICADAS DEL MIEMBRO INFERIOR",
+  "00046.70": "DETERIORO DE LA INTEGRIDAD CUTANEA - HERIDAS ABIERTAS DE TRONCO Y OTRAS LOCALIZACIONES NO ESPECIFICADAS SALVO MIEMBROS INFERIORES",
+  "00046.71": "DETERIORO DE LA INTEGRIDAD CUTANEA - HERIDAS ABIERTAS NO ESPECIFICADAS DEL MIEMBRO SUPERIOR",
+  "00046": "DETERIORO DE LA INTEGRIDAD CUTANEA",
+  "00032": "PATRON RESPIRATORIO INEFICAZ",
+  "0008N": "DISPOSICION PARA MEJORAR EL ESTADO INMUNITARIO"
+ },
+ "enfermeria_int": {
+  "1100": "MANEJO DE LA NUTRICION",
+  "2311": "ADMINISTRACION DE MEDICACION:INHALACION",
+  "2313": "ADMINISTRACION DE MEDICACION: INTRAMUSCULAR (IM)",
+  "2317": "ADMINISTRACION DE MEDICACION: SUBCUTANEA (SC)",
+  "3350": "MONITORIZACION RESPIRATORIA, ESPIROMETRIA Y PULSIOXIMETRIA",
+  "3440": "CUIDADOS DEL SITIO DE INCISION",
+  "3660": "CUIDADOS DE LAS HERIDAS",
+  "4028": "DISMINUCION DE LA HEMORRAGIA: HERIDAS",
+  "4380": "ESTABLECER LIMITES",
+  "4920": "ESCUCHA ACTIVA",
+  "5240": "ASESORAMIENTO",
+  "6200": "CUIDADOS EN LA EMERGENCIA",
+  "6460": "MANEJO DE LA DEMENCIA",
+  "6530": "MANEJO DE LA INMUNIZACION / VACUNACION",
+  "6680": "MONITORIZACION DE LOS SIGNOS VITALES",
+  "7680": "AYUDA EN LA EXPLORACION",
+  "8100": "DERIVACION",
+  "8180": "CONSULTA POR TELÉFONO.",
+  "8190": "SEGUIMIENTO TELEFONICO",
+  "8990": "CONCERTAR CITA"
+ },
+ "enfermeria_dx_registro": [
+  {
+   "fecha": "2017-11-13",
+   "codigo": "0008N",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-01-03",
+   "codigo": "00032",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-06-09",
+   "codigo": "00046",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-07-22",
+   "codigo": "00046.71",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-12-04",
+   "codigo": "00046.72",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-12-04",
+   "codigo": "00046.70",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-03-25",
+   "codigo": "00084",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-05-22",
+   "codigo": "00047",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-07-06",
+   "codigo": "00155",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-07-10",
+   "codigo": "00004",
+   "pdf_id": "PDF002"
+  }
+ ],
+ "enfermeria_int_registro": [
+  {
+   "fecha": "2014-10-30",
+   "codigo": "2313",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2015-09-22",
+   "codigo": "3440",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2015-09-22",
+   "codigo": "8990",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2015-09-24",
+   "codigo": "3660",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2015-09-24",
+   "codigo": "8990",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2015-09-29",
+   "codigo": "3660",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2015-09-29",
+   "codigo": "8990",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2015-10-27",
+   "codigo": "2317",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2015-10-27",
+   "codigo": "6530",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-02-24",
+   "codigo": "2311",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-02-24",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-02-24",
+   "codigo": "6680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-02-24",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-07-03",
+   "codigo": "2313",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-07-03",
+   "codigo": "4920",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-07-03",
+   "codigo": "6680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-07-03",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-12-02",
+   "codigo": "2313",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2016-12-02",
+   "codigo": "6530",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2017-06-22",
+   "codigo": "3350",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2017-06-22",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2020-09-20",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2021-07-18",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2021-08-31",
+   "codigo": "4920",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2021-08-31",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2021-08-31",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2021-09-01",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2021-09-03",
+   "codigo": "1100",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-01-06",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-01-16",
+   "codigo": "4028",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-01-16",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-01-16",
+   "codigo": "6200",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-01-16",
+   "codigo": "8100",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-03-10",
+   "codigo": "4920",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-03-10",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-03-10",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-03-28",
+   "codigo": "8990",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-03-31",
+   "codigo": "8990",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-05-17",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-05-22",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-06-14",
+   "codigo": "8190",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-06-15",
+   "codigo": "8180",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-07-27",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-12-04",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2022-12-10",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2023-06-27",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2024-02-15",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-03-26",
+   "codigo": "6460",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-05-06",
+   "codigo": "5240",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-05-22",
+   "codigo": "8990",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-07-06",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-07-21",
+   "codigo": "8990",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2025-12-29",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2026-03-26",
+   "codigo": "4380",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2026-07-16",
+   "codigo": "4920",
+   "pdf_id": "PDF002"
+  },
+  {
+   "fecha": "2026-07-16",
+   "codigo": "7680",
+   "pdf_id": "PDF002"
+  }
+ ],
+ "servicios": [
+  {
+   "id": "SV1",
+   "nombre": "Urgencias"
+  },
+  {
+   "id": "SV2",
+   "nombre": "Servicio de Radiología General"
+  },
+  {
+   "id": "SV3",
+   "nombre": "Servicio de Cirugía Vascular"
+  },
+  {
+   "id": "SV4",
+   "nombre": "Departament de Salut de Castelló (Laboratorio) / Centro de Salud de Vall d'Alba"
+  },
+  {
+   "id": "SV5",
+   "nombre": "Servicio de Urgencia Hospitalaria (Neumología)"
+  },
+  {
+   "id": "SV6",
+   "nombre": "Servicio 4C-NER (Neurología)"
+  },
+  {
+   "id": "SV7",
+   "nombre": "Servicio de Urgencia Hospitalaria"
+  },
+  {
+   "id": "SV8",
+   "nombre": "Neumología"
+  },
+  {
+   "id": "SV9",
+   "nombre": "Urgencias / Medicina Interna"
+  },
+  {
+   "id": "SV10",
+   "nombre": "Urgencias / Medicina Interna (con antecedente de ingreso en Hospital General de Castellón"
+  },
+  {
+   "id": "SV11",
+   "nombre": "Servicio de Laboratorio (HRJ - URGENCIAS)"
+  },
+  {
+   "id": "SV12",
+   "nombre": "Departament de Salut de Castelló (Laboratorio, muestra remitida desde Centro de Salud de Atzeneta del Maestrat)"
+  },
+  {
+   "id": "SV13",
+   "nombre": "Departament de Salut de Castelló (analítica solicitada por Centro de Salud de Atzeneta del Maestrat)"
+  },
+  {
+   "id": "SV14",
+   "nombre": "Servicio de RADIOLOGIA"
+  },
+  {
+   "id": "SV15",
+   "nombre": "Departament de Salut de Castelló (Bioquímica/Hematología)"
+  },
+  {
+   "id": "SV16",
+   "nombre": "Servicio de Laboratorio"
+  },
+  {
+   "id": "SV17",
+   "nombre": "Servicio de Radiología"
+  },
+  {
+   "id": "SV18",
+   "nombre": "Servicio 6B-NEM (Neumología)"
+  },
+  {
+   "id": "SV19",
+   "nombre": "Servicio de Urgencia Hospitalaria (Traumatología)"
+  },
+  {
+   "id": "SV20",
+   "nombre": "Neumología CEXT"
+  },
+  {
+   "id": "SV21",
+   "nombre": "Servicio de Laboratorio (Neumología CEXT)"
+  }
+ ],
+ "centros": [
+  {
+   "id": "CT1",
+   "nombre": "Hospital General de Castellon"
+  },
+  {
+   "id": "CT2",
+   "nombre": "Hospital General Universitario de Castellón"
+  },
+  {
+   "id": "CT3",
+   "nombre": "Hospital General de Castellón"
+  },
+  {
+   "id": "CT4",
+   "nombre": "Hospital General de Castellón - Servicio de RADIOLOGIA"
+  },
+  {
+   "id": "CT5",
+   "nombre": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLON"
+  },
+  {
+   "id": "CT6",
+   "nombre": "Hospital General de Castellón - Servicio de RADIOLOGIA"
+  },
+  {
+   "id": "CT7",
+   "nombre": "Vithas Castellón"
+  },
+  {
+   "id": "CT8",
+   "nombre": "Hospital General Universitario de Castelló"
+  },
+  {
+   "nombre": "Hospital General de Castellon - Urgencias",
+   "abrev": "CHU-CS-URG"
+  },
+  {
+   "id": "CT10",
+   "nombre": "Hospital General de Castellón - Servicio de RADIOLOGIA"
+  },
+  {
+   "id": "CT11",
+   "nombre": "Hospital General Universitario de Castelló - Departament de Salut de Castelló (Laboratorio)"
+  },
+  {
+   "id": "CT12",
+   "nombre": "ASCIRES CASTELLÓN"
+  },
+  {
+   "id": "CT13",
+   "nombre": "Hospital General Universitari de Castelló"
+  },
+  {
+   "nombre": "Hospital de la Magdalena — Unidad Memoria y Demencias",
+   "abrev": "HSP-MAG-DEM"
+  },
+  {
+   "nombre": "Hospital General de Castellón — Unidad Corta Estancia",
+   "abrev": "CHU-CS-UCE"
+  },
+  {
+   "nombre": "Historia Clínica Resumida",
+   "abrev": "HCS-CLÍ-RES"
+  },
+  {
+   "nombre": "Clínica Diago Muñoz",
+   "abrev": "CLÍ-DIE-MUÑ"
+  },
+  {
+   "nombre": "Hospital General de Castellon - Urgencias (Traumatología)",
+   "abrev": "CHU-CS-URG"
+  },
+  {
+   "nombre": "Hospital General de Castellon - Urgencias",
+   "abrev": "CHU-CS-URG"
+  },
+  {
+   "nombre": "Vithas Castellón — Urgencias / Medicina Interna (con antecedente de ingreso en Hospital General de Castellón — Neumología)",
+   "abrev": "VIT-CS-URG"
+  },
+  {
+   "nombre": "Vithas Castellón — Urgencias / Medicina Interna",
+   "abrev": "VIT-CS-URG"
+  },
+  {
+   "nombre": "Hospital General de Castellón — Neumología",
+   "abrev": "CHU-CS-NEU"
+  },
+  {
+   "nombre": "Hospital General de Castellon - Urgencias (Neumología)",
+   "abrev": "CHU-CS-URG"
+  },
+  {
+   "nombre": "Complejo Hospitalario de Navarra — Servicio de Urgencias",
+   "abrev": "CHU-NAV-URG"
+  }
+ ],
+ "prescriptores": {
+  "PR1": "Neumología)",
+  "PR2": "AGUÑA LEAL CONSOLACION Adjunto",
+  "PR3": "ARNAU BARNES JAVIER"
+ },
+ "fuentes": {
+  "S001": "Hospital General de Castellon - Urgencias",
+  "S002": "Hospital General de Castellón — Urgencias",
+  "S003": "Complejo Hospitalario de Navarra — Servicio de Neumología HVC",
+  "S004": "Complejo Hospitalario de Navarra — Servicio de Urgencias",
+  "S005": "Clínica Universidad de Navarra — Medicina Nuclear-P.E.T.",
+  "S007": "Clínica Diago Muñoz",
+  "S008": "ASCIRES Castelló",
+  "S009": "Hospital General de Castellón — Unidad Corta Estancia",
+  "S010": "Hospital de la Magdalena — Unidad Memoria y Demencias"
+ },
+ "extracciones": {
+  "IC de Urgencias_18072026024428.pdf|42184": {
+   "archivo": "IC de Urgencias_18072026024428.pdf",
+   "bytes": 42184,
+   "modelo": "claude-sonnet-5",
+   "fecha": "18/7/2026, 15:11:06"
+  },
+  "Historia Clínica Resumida_17072026065532.pdf|56603": {
+   "archivo": "Historia Clínica Resumida_17072026065532.pdf",
+   "bytes": 56603,
+   "modelo": "claude-sonnet-5",
+   "fecha": "18/7/2026, 16:24:59"
+  },
+  "Ascires Scanne 2026-05-06 2 Radiologia (informe clinica).pdf|1044779": {
+   "archivo": "Ascires Scanne 2026-05-06 2 Radiologia (informe clinica).pdf",
+   "bytes": 1044779,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:13:07"
+  },
+  "Navarra_atencion_en_urgencias _25-09-2019.pdf|168194": {
+   "archivo": "Navarra_atencion_en_urgencias _25-09-2019.pdf",
+   "bytes": 168194,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:14:24"
+  },
+  "Scanne 2026-05-06 2 Neurologia DM.pdf|780951": {
+   "archivo": "Scanne 2026-05-06 2 Neurologia DM.pdf",
+   "bytes": 780951,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:16:36"
+  },
+  "Scanne 2026-05-06 5 Neurologia CUN.pdf|615552": {
+   "archivo": "Scanne 2026-05-06 5 Neurologia CUN.pdf",
+   "bytes": 615552,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:17:10"
+  },
+  "Navarra consulta_externa_especializada.pdf|238970": {
+   "archivo": "Navarra consulta_externa_especializada.pdf",
+   "bytes": 238970,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:18:44"
+  },
+  "Scanne 2026-05-06 2 Neurologia DM.pdf|774828": {
+   "archivo": "Scanne 2026-05-06 2 Neurologia DM.pdf",
+   "bytes": 774828,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:19:22"
+  },
+  "Scanne 2026-05-06 2 Radiologia (informe clinica).pdf|1046335": {
+   "archivo": "Scanne 2026-05-06 2 Radiologia (informe clinica).pdf",
+   "bytes": 1046335,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:20:55"
+  },
+  "Scanne 2026-05-06 5 Neurologia CUN.pdf|613750": {
+   "archivo": "Scanne 2026-05-06 5 Neurologia CUN.pdf",
+   "bytes": 613750,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:21:18"
+  },
+  "ICA-IC de Alta_200720265790683.pdf|5553952": {
+   "archivo": "ICA-IC de Alta_200720265790683.pdf",
+   "bytes": 5553952,
+   "modelo": "claude-sonnet-5",
+   "fecha": "21/7/2026, 22:20:45"
+  },
+  "AGR0000-ICU362012296.pdf|1615771": {
+   "archivo": "AGR0000-ICU362012296.pdf",
+   "bytes": 1615771,
+   "modelo": "claude-sonnet-5",
+   "fecha": "13/8/2026, 11:02:04"
+  }
+ },
+ "custom_params": {},
+ "custom_sources": [],
+ "correcciones": [],
+ "auditoria_conformes": [
+  {
+   "fecha": "2022-08-19",
+   "param": "hemoglobina",
+   "valor": "0.06",
+   "motivo": "",
+   "fuente": "PDF026",
+   "verificado": "17/7/2026, 22:23:53"
+  },
+  {
+   "fecha": "2022-08-19",
+   "param": "proteinas",
+   "valor": "25",
+   "motivo": "",
+   "fuente": "PDF026",
+   "verificado": "17/7/2026, 22:23:55"
+  }
+ ],
+ "comentarios_curvas": {
+  "_express_general": {
+   "texto": "**Comentario clínico – evolución analítica conjunta**\n\nSe observa un patrón de elevación simultánea y coherente en el último control (2026-07-16/20): BNP 260 [PDF001/011], glucemia 239 [PDF001/011], PCR 80.5 [PDF001/011] y bilirrubina 2 (doble del límite superior) [PDF001/011], sugiriendo un proceso agudo concurrente con posible repercusión cardíaca, metabólica y hepática. Este patrón recuerda al episodio de enero 2022, donde BNP 11924, PCR 66.44 y glucemia 264 coincidieron [PDF009], con normalización posterior en días [PDF004/035]. Entre 2022 y 2025 los parámetros se mantuvieron mayormente en rango o discretamente alterados, con buena correlación entre sí. La bilirrubina, estable durante años (0.36–0.71), muestra ahora un salto aislado que no tiene precedente en la serie histórica.\n\n**Preguntas para la consulta:**\n1. ¿Existe un cuadro clínico agudo actual (infeccioso, cardíaco o hepatobiliar) que justifique esta elevación conjunta?\n2. ¿Se dispone de otros marcadores hepáticos o ecografía para contextualizar el ascenso brusco de bilirrubina?\n3. ¿Procede repetir la analítica a corto plazo para confirmar tendencia o transitoriedad, como ocurrió en el episodio de 2022?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:33:29"
+  },
+  "dimero_d": {
+   "texto": "Evolución de los D-dímeros: valores fluctuantes a lo largo de los años, con dos picos notables: enero 2022 (3831, luego bajó a 1631) y julio 2025 (2583). El valor más reciente (junio 2026) es 605, cercano al límite de referencia (500) tras el pico anterior.\n\nCabe destacar que, dado que la paciente ya tiene antecedente de TEP crónico y está anticoagulada, los D-dímeros elevados son de interpretación limitada en este contexto (pueden estar cronificados o influidos por otros factores como edad, inflamación, etc.), y su valor diagnóstico aislado es menor que en un paciente sin antecedentes trombóticos.\n\nPreguntas sugeridas para el médico:\n¿Cómo interpretar estos picos de D-dímeros en el contexto de su TEP crónico ya conocido?\n¿Este último valor (605) requiere alguna prueba adicional o solo seguimiento habitual?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:28:12",
+   "huella": "8|2026-06-04|605"
+  },
+  "neutrofilos": {
+   "texto": "Aquí tiene un resumen de la evolución de neutrófilos absolutos:\n\nLa mayoría de los valores se mantienen dentro del rango normal (1.9–8 x10³/μL), especialmente en los últimos años (2022-2026), con cifras entre 3.7 y 9.7.\n\nSin embargo, destacan tres valores extremadamente elevados y aislados: 54.6 (2012), 50 (2017) y 58.2 (2022-07-07). Estas cifras son muy superiores al resto de la serie y probablemente corresponden a un contexto clínico puntual (posible infección aguda severa u otra causa), ya que no se repiten ni mantienen en controles posteriores cercanos.\n\nEl resto de la serie reciente (2024-2026) muestra valores estables y normales, sin tendencia preocupante.\n\nPreguntas sugeridas para el médico:\n¿Qué situación clínica explicó los valores tan altos de 2012, 2017 y 2022, y quedó resuelta sin secuelas?\n¿Los valores actuales son adecuados considerando la anticoagulación y el estado general de la paciente?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 13:06:31",
+   "huella": "20|2026-07-20|9.7"
+  },
+  "combo:dimero_d+ferritina+leucocitos+plaquetas": {
+   "texto": "# Resumen evolutivo\n\n**Dímero D**: valores fluctuantes, con dos picos destacados: enero 2022 (3831, coincidiendo con leucocitosis de 14.3 y plaquetas 305-363) y julio 2025 (2583). El pico de 2022 se acompañó de elevación de leucocitos y plaquetas en fechas simultáneas, sugiriendo un episodio inflamatorio/trombótico agudo en esas fechas, congruente con el antecedente de TEP crónico. El valor más reciente (junio 2026=605) está cerca del límite de referencia, mostrando descenso respecto a picos previos.\n\n**Leucocitos**: mayoría dentro de rango normal-alto, con pico claro en enero 2022 (14.3) coincidente con el pico de dímero D. Nueva elevación en julio 2026 (11.9, repetida en varias determinaciones), lo que indica un posible proceso inflamatorio/infeccioso reciente que no tiene dímero D correlativo en esa fecha.\n\n**Plaquetas**: estables en rango normal-alto a lo largo de toda la serie, con ligero descenso en julio 2026 (187) coincidiendo con la leucocitosis de esas fechas.\n\n**Ferritina**: descenso progresivo desde valores altos en 2022 (222-285, coincidiendo con el episodio inflamatorio) hacia valores más bajos en 2024 (77), lo que podría reflejar res",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 14:49:42",
+   "huella": "dimero_d:9|2026-06-04|605,leucocitos:20|2026-07-20|11.9,plaquetas:20|2026-07-20|187,ferritina:8|2024-04-25|77"
+  },
+  "combo:dimero_d+leucocitos": {
+   "texto": "**Dímero D:** oscila entre normal-límite (2016-2021) y picos marcados:",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 14:51:39",
+   "huella": "dimero_d:9|2026-06-04|605,leucocitos:20|2026-07-20|11.9"
+  },
+  "leucocitos": {
+   "texto": "**Evolución de leucocitos:**\n\nDurante la mayor parte de la serie (2012-2025) los valores se mantuvieron dentro o cerca del rango normal (4.8–10.8), con fluctuaciones habituales.\n\nDestaca un pico puntual en enero 2022 (14.3), que se normalizó pocos días después (8.3–10.3), sugiriendo un episodio transitorio ya resuelto en su momento.\n\nMás reciente: en julio 2026 se observa una elevación sostenida y repetida (11.9 en tres determinaciones distintas, 16-20 julio), ligeramente por encima del límite superior, tras un valor normal en junio (7.6). Esta consistencia en varias muestras merece atención en la consulta.\n\nPreguntas sugeridas para el médico:\n¿La elevación repetida de leucocitos en julio 2026 requiere alguna prueba adicional o seguimiento cercano?\n¿Podría estar relacionada con algún proceso infeccioso o inflamatorio actual de la paciente?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 15:05:29",
+   "huella": "20|2026-07-20|11.9"
+  },
+  "combo:glucosa+hemoglobina": {
+   "texto": "**Glucosa:** Se mantuvo en rango normal/prediabético (96–120) entre 2012 y 2021. El 2022-01-06 hubo un pico agudo a 264 mg/dL, que se normalizó en días (120→91), sugiriendo un episodio puntual de hiperglucemia resuelto. Posteriormente osciló entre normal y prediabético (2022–2025). En 2026 se observa un nuevo ascenso progresivo: 149 (junio) y luego 239 mg/dL, valor que se repite en tres registros de julio 2026, lo que indica una hiperglucemia mantenida en ese periodo, a diferencia del episodio aislado de 2022.\n\n**Hemoglobina:** Estable dentro de rango normal en toda la serie (12.9–15.2). Coincidiendo con el pico de glucosa de enero 2022, la hemoglobina estaba en el extremo alto-normal (14.5–15.2), compatible con cierta hemoconcentración/deshidratación asociada al episodio hiperglucémico. Destaca un valor de 2022-08-19 (0.06 g/dL) claramente incompatible con la vida, probablemente error de registro o de unidades, sin relevancia clínica real. En el episodio de hiperglucemia de 2026, la hemoglobina permanece normal (14.4–14.8), sin signos de deshidratación asociada.\n\nPreguntas sugeridas para el médico:\n1. ¿El valor de hemoglobina de 0.06 en agosto 2022 es un error de registro que deba corregirse en el historial?\n2. ¿La hiperglucemia mantenida en julio 2026 (239 mg/dL) requiere ajuste de control glucémico o estudio adicional?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 15:13:06",
+   "huella": "glucosa:20|2026-07-20|239,hemoglobina:21|2026-07-20|14.4"
+  },
+  "combo:fibrinogeno+glucosa+hemoglobina": {
+   "texto": "**Evolución general:**\n\n**Glucosa:** Se mantuvo en rango normal-límite hasta 2021. El 2022-01-06 se registra un valor muy elevado (264 mg/dL), normalizándose días después (91-120). Posteriormente hay oscilaciones con valores en rango prediabético (117-156) y un nuevo pico marcado en 2026-07-16/20 (239 mg/dL, repetido en 3 tomas).\n\n**Hemoglobina:** Estable dentro de rango normal en toda la serie (12.9-15.2). Se observa un valor de 0.06 g/dL en 2022-08-19, biológicamente incompatible con la vida, por lo que probablemente corresponde a un error de registro o de laboratorio, no a un dato clínico real.\n\n**Fibrinógeno:** Ya en 2012 estaba por encima del límite superior (455), oscilando después entre normal y algo elevado. Coincidiendo con el pico de glucosa de enero 2022, el fibrinógeno alcanza sus valores más altos de toda la serie (777 y 807 mg/dL), sugiriendo un proceso inflamatorio/agudo concurrente en esas fechas. Se mantiene elevado en meses posteriores (701 en octubre 2022, 556 en 2025) y desciende a 429 en junio 2026, justo antes del nuevo pico de glucosa de julio 2026.\n\n**Relación temporal destacable:** El episodio de enero 2022 muestra elevación simultánea de glucosa y fibrinógeno, compatible con un evento agudo (posible infección u otro proceso inflamatorio) que afectó a ambos parámetros a la vez. El patrón de 2026 (fibrinógeno normalizándose mientras la glucosa vuelve a dispararse) no muestra la misma correlación tan clara.\n\nPreguntas sugeridas para el médico:\n1. ¿Qué ocurrió clínicamente en enero de 2022 que pueda explicar el pico conjunto de glucosa y fibrinógeno?\n2. ¿El valor de hemoglobina de agosto de 2022 (0.06) fue un error de laboratorio, y hay que repetir o descartar esa determinación?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 15:14:47",
+   "huella": "glucosa:20|2026-07-20|239,hemoglobina:21|2026-07-20|14.4,fibrinogeno:10|2026-06-04|429"
+  },
+  "combo:neutrofilos+urea": {
+   "texto": "**Urea:** Ha oscilado entre 30 y 56 mg/dL, mayormente dentro de rango (10–50). Se observan elevaciones leves puntuales en enero 2022 (51–56) y en julio 2026 (52), este último el valor más reciente, ligeramente por encima del límite superior.\n\n**Neutrófilos:** La mayoría de los valores están dentro de rango (4–9.7). Sin embargo, destacan tres registros muy atípicos y fuera de todo rango fisiológico (54.6 en 2012, 50 en 2017, 58.2 en 2022-07-07), que probablemente correspondan a un error de unidad o transcripción más que a un valor real; sería útil aclararlo con el laboratorio.\n\n**Relación temporal:** En enero 2022 coinciden una urea algo elevada (51–56) con neutrófilos en el límite alto (8.9), lo que podría sugerir un proceso agudo transitorio en esas fechas. Un patrón similar, más leve, se repite en julio 2026 (urea 52 y neutrófilos 9.7 el mismo día), ambos discretamente por encima de referencia.\n\nPreguntas sugeridas para el médico:\n1. ¿Los valores muy elevados de neutrófilos en 2012, 2017 y julio 2022 son errores de registro o reflejan episodios reales?\n2. ¿La ligera elevación conjunta de urea y neutrófilos en julio 2026 requiere seguimiento o nueva analítica?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 15:54:47",
+   "huella": "urea:18|2026-07-20|52,neutrofilos:20|2026-07-20|9.7"
+  },
+  "combo:hba1c+hematocrito": {
+   "texto": "**HbA1c:** Se mantiene en rango normal-alto (5.66% → 6.17% → 6.01%), sin superar el umbral diabético (6.5%). Ligera tendencia al alza que luego se estabiliza; sin cambios clínicamente relevantes en los últimos controles.\n\n**Hematocrito:** Valores estables entre 38-41% durante años (2012-2021), pero se observan **picos puntuales repetidos**: enero 2022 (hasta 47.3%), marzo 2025 (46.8%) y junio 2026 (46%), todos por encima del límite superior normal (52% es el tope, pero suponen una subida notable respecto a su basal). Tras cada pico, el valor vuelve a normalizarse en semanas/meses siguientes (ej. de 47.3% en enero-2022 a 43% en julio-2022).\n\nEste patrón de subidas transitorias y descensos posteriores podría relacionarse con episodios de deshidratación, procesos agudos intercurrentes o ajustes puntuales de anticoagulación, aunque no hay evidencia directa en los datos aportados. No se identifica relación temporal clara entre estos picos y los valores de HbA1c.\n\nPreguntas sugeridas para el médico:\n¿Los picos repetidos de hematocrito en 2022, 2025 y 2026 coinciden con algún episodio de deshidratación, infección o ajuste de tratamiento anticoagulante?\n¿Es necesario revisar la HbA1c con más frecuencia dado que se mantiene cerca del límite alto de la normalidad?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 16:44:48",
+   "huella": "hba1c:3|2024-04-25|6.01,hematocrito:20|2026-07-20|43.8"
+  },
+  "combo:calcio+fibrinogeno+glucosa+hemoglobina": {
+   "texto": "**Resumen evolutivo:**\n\n- **Glucosa:** Se mantuvo en rango normal/prediabético (96–120) hasta un pico marcado en enero 2022 (264), coincidiendo con una subida simultánea de **fibrinógeno** (777–807) — patrón compatible con un proceso agudo (infeccioso/inflamatorio) en esas fechas. Tras normalizarse, vuelve a elevarse en 2026 (149→239), coincidiendo esta vez con un **calcio muy bajo** (5.33, repetido en 3 determinaciones de julio 2026).\n\n- **Hemoglobina:** Estable en todo el seguimiento (12.9–15.2), salvo un valor de 0.06 en 2022-08-19, incompatible con la vida — sugiere error de muestra/técnico, no un dato clínico real.\n\n- **Fibrinógeno:** Pico muy marcado en enero 2022 (777–807) y descenso progresivo posterior, aunque sin volver del todo a valores basales (556 en 2025, 429 en 2026), lo que podría reflejar inflamación de bajo grado mantenida, relevante dado el antecedente de TEP.\n\n- **Calcio:** Estable y normal (9.7–9.8) durante años, con caída brusca y repetida a 5.33 en julio 2026, coincidiendo con la glucosa elevada de ese mismo periodo — esta combinación es llamativa y merece verificación urgente (podría ser hallazgo real o error analítico, dada la repetición idéntica en 3 fechas).\n\nPreguntas sugeridas para el médico:\n1. ¿La cifra de calcio de julio 2026 (5.33) es real o requiere repetición/confirmación urgente, dado el riesgo asociado a valores tan bajos?\n2. ¿Qué proceso pudo causar el pico conjunto de glucosa y fibrinógeno en enero 2022, y si existe relación con el episodio reciente de 2026?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 16:51:51",
+   "huella": "glucosa:20|2026-07-20|239,hemoglobina:21|2026-07-20|14.4,fibrinogeno:10|2026-06-04|429,calcio:6|2026-07-20|5.33"
+  },
+  "combo:chcm+creatinina": {
+   "texto": "**Creatinina:** Se mantuvo estable en rango normal (0.57–0.85) desde 2016 hasta 2025, con un pico puntual en 2022-01-06 (1.01) que se normalizó rápidamente días después. En los últimos controles (2026-07-16 y 2026-07-20) se observa una elevación a 1.09 mg/dL, ligeramente por encima del límite superior de referencia (0.95), sostenida en dos mediciones separadas por 4 días. Esto sugiere una tendencia ascendente reciente que merece seguimiento, especialmente dado el contexto de anticoagulación crónica (posibles interacciones o ajustes de dosis según función renal).\n\n**CHCM:** Se ha mantenido dentro de rango normal (31–34.2) durante todo el seguimiento, sin alteraciones relevantes ni relación aparente con los cambios de creatinina. La estabilidad de este parámetro no aporta signos de anemia asociada a la función renal.\n\n**Relación temporal:** El repunte de creatinina en 2026 no coincide con cambios en CHCM, por lo que no hay indicios de anemia concurrente en este momento.\n\nPreguntas sugeridas para el médico:\n¿Es necesario ajustar la dosis de anticoagulante ante el aumento reciente de creatinina?\n¿Conviene repetir la analítica renal a corto plazo para confirmar si la tendencia se mantiene?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 16:57:12",
+   "huella": "creatinina:18|2026-07-20|1.09,chcm:19|2026-07-20|32.9"
+  },
+  "hemoglobina": {
+   "texto": "# Comentario sobre la evolución de la Hemoglobina\n\nLa serie muestra valores **dentro del rango normal (12-18 g/dL) de forma consistente** desde 2012 hasta 2026, con oscilaciones habituales entre 12.9 y 15.2 g/dL. Esto sugiere una situación estable, sin signos de anemia ni de poliglobulia mantenidas en el tiempo, lo cual es relevante en una paciente anticoagulada por TEP crónico (el riesgo de sangrado suele vigilarse en parte mediante este parámetro).\n\n**Dato a destacar:** el valor del **2022-08-19 (0.06 g/dL)** es fisiológicamente incompatible con la vida y prácticamente seguro que corresponde a un **error de registro, transcripción o de unidades** (posiblemente mezclado con otro parámetro o mal introducido en la base de datos). No debe interpretarse como un dato clínico real, especialmente al ver que el valor previo y el posterior (14.1 y 13.9) son completamente normales.\n\nTambién se observan **registros duplicados** en varias fechas (2022-01-16, 2026-07-16), que podrían ser repeticiones de la misma extracción o entradas duplicadas en el sistema.\n\n---\n\nPreguntas sugeridas para el médico:\n¿Podría confirmar si el valor de hemoglobina del 19/08/2022 (0.06) es un error de registro?\n¿Es necesario revisar la hemoglobina con más frecuencia dado el tratamiento anticoagulante actual?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "8/8/2026, 18:48:19",
+   "huella": "21|2026-07-20|14.4"
+  },
+  "actividad_protrombina": {
+   "texto": "**Evolución de Actividad de Protrombina (%)**\n\nLa serie muestra fluctuaciones a lo largo de los años, mayormente dentro o cerca del rango de referencia (75-120%): valores estables entre 2021-2025 (92-120%, con una excepción puntual de 57% en 2016 y 74% en 2022).\n\nEl dato más reciente (2026-06-04) marca **48%**, notablemente por debajo del rango de referencia y del resto de la serie histórica. Este descenso representa un cambio significativo respecto a los valores previos (100% en 2025-07-19).\n\nDado el contexto de anticoagulación por TEP crónico, esta caída es un punto relevante para comentar con el equipo médico, especialmente considerando la relación entre este parámetro y el riesgo de sangrado mencionado en la descripción.\n\nPreguntas sugeridas para el médico:\n¿Este valor de 48% requiere ajuste de la dosis de anticoagulante o alguna acción inmediata?\n¿Podría este descenso estar relacionado con algún cambio reciente en medicación, alimentación o estado de salud general de la paciente?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:27:21",
+   "huella": "12|2026-06-04|48"
+  },
+  "bicarbonato": {
+   "texto": "**Evolución del bicarbonato (ref. 24–29 mmol/L):**\n\n- 2017: 29.5 (límite superior)\n- 2021: 25.3 (dentro de rango)\n- 2022: 33.5 (marcadamente elevado, fuera de rango)\n- 2026 (dos controles): 23.5 y 23.5 (ligeramente por debajo del rango, valores estables entre sí)\n\nLo destacable es el pico aislado de 2022, muy por encima del rango de referencia, seguido de una normalización y luego un descenso reciente que sitúa los dos últimos valores levemente por debajo del límite inferior, aunque de forma consistente entre ambas fechas (sin cambios entre ellas).\n\nPreguntas sugeridas para el médico:\n¿El valor elevado de 2022 se relacionó con algún evento clínico o cambio de tratamiento en ese momento?\n¿Los valores actuales, algo bajos, requieren ajuste o seguimiento adicional dado el contexto de anticoagulación crónica?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:29:01",
+   "huella": "5|2026-07-20|23.5"
+  },
+  "proteinas": {
+   "texto": "Evolución de proteínas totales: valores levemente por debajo del rango de referencia (6.6–8) desde 2016, con tendencia lenta a la baja hasta 2022, y estabilización posterior alrededor de 6.1 g/dL en los últimos controles (2024 y 2026).\n\nEl valor de 2022-08-19 (25 g/dL) es fisiológicamente incompatible con la vida y corresponde casi con certeza a un error de registro, transcripción o de unidades — no debe interpretarse como dato clínico real.\n\nLos valores bajos mantenidos podrían relacionarse con el estado nutricional en el contexto de edad avanzada y demencia, aunque esto requiere valoración conjunta con otros parámetros (albúmina, estado clínico general).\n\nPreguntas sugeridas para el médico:\n¿El valor de 25 g/dL en agosto 2022 fue un error de laboratorio o hay registro real que lo explique?\n¿Los niveles bajos de proteínas totales sostenidos ameritan evaluación nutricional adicional?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:29:55",
+   "huella": "7|2026-06-04|6.15"
+  },
+  "cpk": {
+   "texto": "**Evolución de CPK (2016–2026):**\nLos valores se han mantenido siempre por debajo del límite superior de referencia (195 UI/L), e incluso frecuentemente por debajo del límite inferior (50 UI/L): desde 37 en 2016 hasta 28 en 2026, con un mínimo de 15 en enero de 2022. No se observan elevaciones que sugieran daño muscular agudo; la tendencia es estable y baja a lo largo de los años.\n\nNo hay datos que indiquen alarma en este parámetro.\n\nPreguntas sugeridas para el médico:\n¿Los valores de CPK persistentemente bajos tienen alguna relevancia clínica en el contexto de la paciente (edad, masa muscular, medicación)?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:30:25",
+   "huella": "6|2026-06-04|28"
+  },
+  "bnp": {
+   "texto": "Evolución del NT-proBNP: tras un valor muy elevado en enero 2022 (11.924), los controles posteriores se mantuvieron dentro o cerca del rango de referencia (73–114) durante más de dos años, sugiriendo estabilidad. En julio 2025 subió a 220, volvió a 86 en junio 2026, y en julio 2026 se ubicó en 260 (dos mediciones consecutivas), superando el umbral orientativo de 300 pg/mL solo en aproximación. Este patrón de oscilación reciente al alza, tras un periodo estable, es lo más destacable para comentar con el equipo médico.\n\nPreguntas sugeridas para el médico:\n¿Qué significan estas oscilaciones recientes del NT-proBNP en el contexto de su TEP crónico?\n¿Es necesario ajustar el seguimiento cardiológico dado el aumento en julio 2026?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:30:57",
+   "huella": "10|2026-07-20|260"
+  },
+  "pcr": {
+   "texto": "**Evolución de la PCR (proteína C-reactiva):**\n\nLos valores muestran fluctuaciones marcadas a lo largo de los años, alternando entre rangos normales y elevaciones significativas:\n\n- **2021-09:** 6.97 (normal)\n- **2022-01:** pico elevado (66.44 → 56.5), compatible con inflamación severa según la referencia\n- **2022-07:** 0.62 (normal, descenso notable)\n- **2022-10:** 22.9 (elevación moderada)\n- **2024-04:** 4.16 (normal)\n- **2025-07:** 14.9 (elevación leve)\n- **2026-06:** 9.4 (normal-límite)\n- **2026-07 (dos mediciones):** 80.5 — el valor más alto de toda la serie, muy por encima de 50 (rango \"severo\" según la descripción)\n\n**Lo más destacable:** el salto reciente a 80.5 mg/L, confirmado en dos fechas consecutivas (16 y 20 de julio), representa el pico más alto registrado y contrasta con el valor normal de un mes antes (9.4). Esto sugiere un proceso inflamatorio/infeccioso activo y reciente que merece atención clínica, especialmente en el contexto de anticoagulación por TEP crónico.\n\n---\n\nPreguntas sugeridas para el médico:\n¿Qué podría explicar el aumento tan marcado y reciente de la PCR a 80.5, y hay signos clínicos de infección que lo acompañen? ¿Es necesario repetir la prueba o solicitar estudios adicionales para identificar la causa?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:32:01",
+   "huella": "11|2026-07-20|80.5"
+  },
+  "t4": {
+   "texto": "**Evolución de T4 libre (2012–2023):**\n\nLos valores se han mantenido, en general, dentro o cerca del rango de referencia (0.9–1.7 ng/dL):\n- 2012: 1.32 (normal)\n- 2016: 1.2 (normal)\n- 2017: 0.85 (ligeramente por debajo del límite inferior)\n- 2022: 0.94 (normal, límite bajo)\n- 2023: 0.99 (normal)\n\n**Lo destacable:** en 2017 hubo un valor puntual algo por debajo del rango de referencia, pero en controles posteriores (2022 y 2023) se normalizó y se ha mantenido estable en la parte baja del rango normal durante los últimos años.\n\nPreguntas sugeridas para el médico:\n¿Ese valor bajo de 2017 fue relevante o se consideró una fluctuación aislada sin seguimiento adicional necesario?\n¿Es recomendable seguir monitorizando la función tiroidea con la misma periodicidad dado el contexto actual de la paciente?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:35:01",
+   "huella": "5|2023-03-09|0.99"
+  },
+  "tsh": {
+   "texto": "**Evolución de TSH (2012-2025):**\n\nLos valores se han mantenido dentro del rango de referencia (0.38–5.33 mUI/L) a lo largo de toda la serie, con fluctuaciones menores sin un patrón de tendencia sostenida hacia valores altos o bajos. El último control (marzo 2025) fue 1.45 mUI/L, similar a los años previos, lo que indica una función tiroidea estable en el tiempo según estos datos.\n\nNo se observan valores fuera de rango que sugieran hipotiroidismo o hipertiroidismo en ningún punto de la serie.\n\n**Preguntas sugeridas para el médico:**\n¿Es necesario seguir controlando la TSH con esta frecuencia dado que se mantiene estable?\n¿Podría alguno de los medicamentos actuales influir en los niveles de TSH?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:35:22",
+   "huella": "8|2025-03-10|1.45"
+  },
+  "hematocrito": {
+   "texto": "**Evolución del hematocrito (2012–2026):**\nLos valores se han mantenido siempre dentro del rango de referencia (37–52%), oscilando entre 38.7% y 47.3%. Durante la mayor parte del seguimiento (2012–2021) los niveles fueron estables, en torno a 40–41%.\n\nA partir de 2022 se observan algunas oscilaciones hacia la parte alta del rango (47.3% en enero 2022; 46.8% en marzo 2025; 46% en junio 2026), intercaladas con valores más moderados (40–44%). Los últimos dos controles (julio 2026) muestran estabilidad en 43.8%.\n\nEn conjunto, es una serie sin valores fuera de rango, con variabilidad normal esperable en una paciente anticoagulada de edad avanzada.\n\nPreguntas sugeridas para el médico:\n¿Estas fluctuaciones del hematocrito dentro del rango normal requieren algún ajuste o seguimiento adicional dado el tratamiento anticoagulante?",
+   "modelo": "claude-sonnet-5",
+   "fecha": "15/8/2026, 23:36:38",
+   "huella": "17|2026-07-20|43.8"
+  }
+ },
+ "patrones_curvas": [
+  {
+   "id": "PT1786196489166",
+   "keys": [
+    "glucosa",
+    "hemoglobina",
+    "fibrinogeno"
+   ],
+   "fecha": "2026-08-08"
+  },
+  {
+   "id": "PT1786197290592",
+   "keys": [
+    "urea",
+    "neutrofilos"
+   ],
+   "fecha": "2026-08-08"
+  }
+ ],
+ "protocolo": [
+  {
+   "date": "2026-08-01",
+   "timestamp": "2026-08-15T19:47:57.519Z",
+   "who": "Protocolo móvil",
+   "takes": [],
+   "measures": {
+    "ta_sys": 140,
+    "ta_dia": 46,
+    "fc": 60,
+    "spo2": 96,
+    "peso": 58,
+    "temp": 35.2
+   },
+   "fx": [],
+   "note": "Confusa por la noche (17:32) · Enfermería (18:01) · Agitación al mediodía (18:38) · Caída sobre las nalgas (18:38) · Caída con rasguño (18:38) · Come solo si se insiste (18:39) · Lee (18:39) · Camina (18:39) · Dolor tobillo derecho (18:39) · Quiere irse a casa (18:39) · 💧 Hidratación, zumo de fruta (19:02) · 🚽 Deposición, aspecto normal (19:11) · 🚽 Deposición, aspecto normal (16:11) · 💧 Hidratación, agua (19:18) · 💧 Hidratación, zumo de fruta (19:24) · 💧 Hidratación, agua (17:00) · 💧 Hidratación, leche (19:48) · 💧 Hidratación, leche (19:48) · 🩹 Cambio de pañal (14:00) · 🩹 Cambio de pañal (19:49) · 💦 Micción, normal (19:59)"
+  }
+ ],
+ "protocolo_meta": {
+  "ultima_importacion": "15/8/2026, 21:47:57",
+  "archivo": "MFProtocolo_paciente_v2026-08-03_00h3326.json",
+  "patient_sip": "28091943",
+  "medicamentos_config": [
+   {
+    "id": "f2m0",
+    "nombre": "Xarelto",
+    "dosis": "",
+    "momento": "desayuno"
+   },
+   {
+    "id": "f2m1",
+    "nombre": "Lixben",
+    "dosis": "20mg",
+    "momento": "cena"
+   },
+   {
+    "id": "f2m2",
+    "nombre": "Memantina",
+    "dosis": "5mg",
+    "momento": "noche"
+   }
+  ]
+ },
+ "protocolo_obs": [
+  {
+   "fecha": "2026-08-01",
+   "hora": "17:32",
+   "tipos": [
+    "Confusa por la noche"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:01",
+   "tipos": [
+    "Enfermería"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:38",
+   "tipos": [
+    "Agitación al mediodía"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:38",
+   "tipos": [
+    "Caída sobre las nalgas"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:38",
+   "tipos": [
+    "Caída con rasguño"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:39",
+   "tipos": [
+    "Come solo si se insiste"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:39",
+   "tipos": [
+    "Lee"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:39",
+   "tipos": [
+    "Camina"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:39",
+   "tipos": [
+    "Dolor tobillo derecho"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "18:39",
+   "tipos": [
+    "Quiere irse a casa"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "19:02",
+   "tipos": [
+    "💧 Hidratación"
+   ],
+   "nota": "zumo de fruta"
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "19:11",
+   "tipos": [
+    "🚽 Deposición"
+   ],
+   "nota": "aspecto normal"
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "16:11",
+   "tipos": [
+    "🚽 Deposición"
+   ],
+   "nota": "aspecto normal"
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "19:18",
+   "tipos": [
+    "💧 Hidratación"
+   ],
+   "nota": "agua"
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "19:24",
+   "tipos": [
+    "💧 Hidratación"
+   ],
+   "nota": "zumo de fruta"
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "17:00",
+   "tipos": [
+    "💧 Hidratación"
+   ],
+   "nota": "agua"
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "19:48",
+   "tipos": [
+    "💧 Hidratación"
+   ],
+   "nota": "leche"
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "19:48",
+   "tipos": [
+    "💧 Hidratación"
+   ],
+   "nota": "leche"
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "14:00",
+   "tipos": [
+    "🩹 Cambio de pañal"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "19:49",
+   "tipos": [
+    "🩹 Cambio de pañal"
+   ],
+   "nota": null
+  },
+  {
+   "fecha": "2026-08-01",
+   "hora": "19:59",
+   "tipos": [
+    "💦 Micción"
+   ],
+   "nota": "normal"
+  }
+ ],
+ "bacteriologie": [
+  {
+   "date": "2025-03-10",
+   "source": "Vithas Castellón — Servicio de Laboratorio",
+   "prelevement": "autre",
+   "date_prelevement": "2025-03-10",
+   "germe": "negativo",
+   "quantite": "",
+   "commentaire": "Treponema pallidum RPR: Negativo",
+   "pdf_id": "PDF036"
+  }
+ ],
+ "pdfs": {
+  "directorio": "sources",
+  "archivos": {
+   "PDF001": "PDF001.pdf",
+   "PDF002": "PDF002.pdf",
+   "PDF003": "PDF003.pdf",
+   "PDF004": "PDF004.pdf",
+   "PDF005": "PDF005.pdf",
+   "PDF006": "PDF006.pdf",
+   "PDF007": "PDF007.pdf",
+   "PDF008": "PDF008.pdf",
+   "PDF009": "PDF009.pdf",
+   "PDF010": "PDF010.pdf",
+   "PDF011": "PDF011.pdf",
+   "PDF012": "PDF012.pdf",
+   "PDF013": "PDF013.pdf",
+   "PDF014": "PDF014.pdf",
+   "PDF015": "PDF015.pdf",
+   "PDF017": "PDF017.pdf",
+   "PDF018": "PDF018.pdf",
+   "PDF019": "PDF019.pdf",
+   "PDF020": "PDF020.pdf",
+   "PDF021": "PDF021.pdf",
+   "PDF022": "PDF022.pdf",
+   "PDF023": "PDF023.pdf",
+   "PDF024": "PDF024.pdf",
+   "PDF025": "PDF025.pdf",
+   "PDF026": "PDF026.pdf",
+   "PDF027": "PDF027.pdf",
+   "PDF028": "PDF028.pdf",
+   "PDF029": "PDF029.pdf",
+   "PDF030": "PDF030.pdf",
+   "PDF031": "PDF031.pdf",
+   "PDF032": "PDF032.pdf",
+   "PDF033": "PDF033.pdf",
+   "PDF034": "PDF034.pdf",
+   "PDF035": "PDF035.pdf",
+   "PDF036": "PDF036.pdf"
+  },
+  "_demo": "Cada documento es un CLON del mismo aviso: explica por que los originales no se publican. Los datos clinicos son reales; los PDF llevan el membrete y el nombre, y tacharlos no basta — un rectangulo negro no borra el texto de debajo."
+ },
+ "modificado": "2026-09-09T09:40:54.738Z"
+}

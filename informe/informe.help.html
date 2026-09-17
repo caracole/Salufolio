@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ayuda · Informe</title>
+<link rel="stylesheet" href="../comun/salufolio.css">
+<style>
+body{margin:0;padding:22px 26px 50px;background:var(--bg);color:var(--text);
+     font-family:var(--sans,system-ui,sans-serif);line-height:1.72}
+.env{max-width:660px;margin:0 auto}
+h1{font-family:var(--serif);font-size:21px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:12.5px;margin-bottom:22px}
+h2{font-family:var(--serif);font-size:15px;color:var(--accent);margin:24px 0 7px;
+   border-bottom:1px solid var(--border);padding-bottom:4px}
+p{margin:0 0 12px;font-size:14px}
+.sordo{color:var(--muted);font-size:13px}
+.nota{background:var(--surface);border-left:3px solid var(--accent);
+      border-radius:0 8px 8px 0;padding:11px 15px;font-size:13px;
+      color:var(--muted);margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 18px}
+td{padding:7px 10px 7px 0;border-bottom:1px solid var(--border);vertical-align:top}
+td:first-child{white-space:nowrap;width:1%;padding-right:16px;text-align:center;font-size:16px}
+#lg{position:fixed;top:12px;right:16px;display:flex;gap:5px;z-index:10}
+#lg button{border:1px solid var(--border);background:var(--surface);border-radius:7px;
+  padding:3px 8px;cursor:pointer;font-size:14px;opacity:.5;transition:all .18s}
+#lg button.on{opacity:1;border-color:var(--accent)}
+</style></head>
+<body><div id="lg"></div><div class="env" id="c"></div>
+<script>
+var A = {
+es:`<h1>📋 Informe para el médico</h1>
+<div class="sub">Lo esencial en una página, listo para la consulta</div>
+<p>Nació de una mañana en urgencias: un médico de guardia sin contexto, y
+la misma historia contada otra vez desde el principio. Este informe es lo
+que se le habría querido dar: noventa segundos de lectura, y ya sabe.</p>
+<h2>Dos formas</h2>
+<table>
+<tr><td>📄</td><td><b>Corta</b> — treinta días, cuatro curvas. Para una
+consulta de siempre. Cabe en una página.</td></tr>
+<tr><td>📑</td><td><b>Detallada</b> — noventa días, cinco curvas, más los
+eventos y las preguntas. Para un ingreso o un especialista nuevo.</td></tr>
+</table>
+<h2>Lo que trae</h2>
+<table>
+<tr><td>🏥</td><td><b>Episodio reciente</b> — ingreso, alta, y en qué día
+se está hoy.</td></tr>
+<tr><td>💊</td><td><b>Tratamiento actual</b> — con las fechas, y el día
+que va de una pauta con duración.</td></tr>
+<tr><td>🏠</td><td><b>Situación en casa</b> — lo escribe usted. Es la
+única parte que no sale de ningún documento, y a menudo la que más
+importa.</td></tr>
+<tr><td>📉</td><td><b>A vigilar</b> — los parámetros que más se han
+movido, con su curva y lo que la pendiente dice.</td></tr>
+</table>
+<h2>El comentario de las curvas</h2>
+<p>Si tiene una clave de la API, puede pedir un comentario. No es un
+diagnóstico: describe la evolución, señala coincidencias, y propone
+preguntas para la consulta.</p>
+<div class="nota">El comentario se guarda en el expediente con su fecha.
+Si los datos no han cambiado, no se vuelve a pedir: una llamada cuesta.</div>
+<h2>Imprimir</h2>
+<p>La página está hecha para el papel: fondo claro, letra grande, y los
+botones desaparecen al imprimir. A− y A+ cambian el tamaño.</p>`,
+fr:`<h1>📋 Rapport pour le médecin</h1>
+<div class="sub">L'essentiel sur une page, prêt pour la consultation</div>
+<p>Il est né d'une matinée aux urgences : un médecin de garde sans
+contexte, et la même histoire racontée encore une fois depuis le début.
+Ce rapport est ce qu'on aurait voulu lui tendre : quatre-vingt-dix
+secondes de lecture, et il sait.</p>
+<h2>Deux formes</h2>
+<table>
+<tr><td>📄</td><td><b>Courte</b> — trente jours, quatre courbes. Pour une
+consultation ordinaire. Tient sur une page.</td></tr>
+<tr><td>📑</td><td><b>Détaillée</b> — quatre-vingt-dix jours, cinq
+courbes, plus les événements et les questions. Pour une hospitalisation
+ou un spécialiste nouveau.</td></tr>
+</table>
+<h2>Ce qu'il porte</h2>
+<table>
+<tr><td>🏥</td><td><b>Épisode récent</b> — entrée, sortie, et où l'on en
+est aujourd'hui.</td></tr>
+<tr><td>💊</td><td><b>Traitement actuel</b> — avec les dates, et le jour
+où en est une cure à durée.</td></tr>
+<tr><td>🏠</td><td><b>À la maison</b> — c'est vous qui l'écrivez. La seule
+partie qui ne sort d'aucun document, et souvent celle qui compte le
+plus.</td></tr>
+<tr><td>📉</td><td><b>À surveiller</b> — les paramètres qui ont le plus
+bougé, avec leur courbe et ce que la pente dit.</td></tr>
+</table>
+<h2>Le commentaire des courbes</h2>
+<p>Si vous avez une clé de l'API, vous pouvez demander un commentaire.
+Ce n'est pas un diagnostic : il décrit l'évolution, signale les
+coïncidences, et propose des questions pour la consultation.</p>
+<div class="nota">Le commentaire est gardé dans le dossier avec sa date.
+Si les données n'ont pas changé, on ne le redemande pas : un appel
+coûte.</div>
+<h2>Imprimer</h2>
+<p>La page est faite pour le papier : fond clair, lettres grandes, et les
+boutons disparaissent à l'impression. A− et A+ changent la taille.</p>`,
+ca:`<h1>📋 Informe per al metge</h1>
+<div class="sub">L'essencial en una pàgina</div>
+<p>Va nàixer d'un matí a urgències: un metge de guàrdia sense context, i
+la mateixa història contada una altra vegada.</p>
+<h2>Dues formes</h2>
+<table>
+<tr><td>📄</td><td><b>Curta</b> — trenta dies, quatre corbes.</td></tr>
+<tr><td>📑</td><td><b>Detallada</b> — noranta dies, cinc corbes.</td></tr>
+</table>
+<h2>El que porta</h2>
+<table>
+<tr><td>🏥</td><td><b>Episodi recent</b></td></tr>
+<tr><td>💊</td><td><b>Tractament actual</b></td></tr>
+<tr><td>🏠</td><td><b>Situació a casa</b> — ho escriu vosté.</td></tr>
+<tr><td>📉</td><td><b>A vigilar</b></td></tr>
+</table>
+<div class="nota">El comentari es guarda a l'expedient amb la seua data.</div>`,
+en:`<h1>📋 Report for the doctor</h1>
+<div class="sub">The essentials on one page</div>
+<p>It came from a morning in A&amp;E: a doctor on call with no context, and
+the same story told again from the beginning. This report is what one
+would have wanted to hand over: ninety seconds, and they know.</p>
+<h2>Two forms</h2>
+<table>
+<tr><td>📄</td><td><b>Short</b> — thirty days, four curves. For an ordinary
+visit. Fits one page.</td></tr>
+<tr><td>📑</td><td><b>Detailed</b> — ninety days, five curves, plus events
+and questions. For an admission or a new specialist.</td></tr>
+</table>
+<h2>What it holds</h2>
+<table>
+<tr><td>🏥</td><td><b>Recent episode</b> — admission, discharge, and where
+today stands.</td></tr>
+<tr><td>💊</td><td><b>Current treatment</b> — with dates, and which day a
+timed course is on.</td></tr>
+<tr><td>🏠</td><td><b>At home</b> — you write this. The only part from no
+document, and often the one that matters most.</td></tr>
+<tr><td>📉</td><td><b>To watch</b> — the parameters that moved most, with
+their curve.</td></tr>
+</table>
+<div class="nota">The comment is kept in the record with its date. If the
+data haven't changed, it isn't asked again: a call costs.</div>`
+};
+var L=[['es','🇪🇸'],['ca','🏳️'],['fr','🇫🇷'],['en','🇬🇧']];
+function pon(l){
+  document.getElementById('c').innerHTML=A[l]||A.es;
+  document.documentElement.lang=l;
+  document.querySelectorAll('#lg button').forEach(function(b){
+    b.classList.toggle('on', b.dataset.l===l); });
+  try{ localStorage.setItem('sf_idioma', l); }catch(e){}
+}
+document.getElementById('lg').innerHTML = L.map(function(x){
+  return '<button data-l="'+x[0]+'" onclick="pon(\''+x[0]+'\')">'+x[1]+'</button>';
+}).join('');
+var l=''; try{ l=localStorage.getItem('sf_idioma')||''; }catch(e){}
+pon(A[l]?l:'es');
+</script></body></html>

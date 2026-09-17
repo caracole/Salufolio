@@ -101,24 +101,6 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
           border:1px solid var(--border);border-radius:7px;font-size:12.5px;
           display:flex;align-items:center;gap:9px}
 .ver-item.on{border-color:var(--ok)}
-
-/* ══ la burbuja que cubre la tarjeta (P-H, 16/09) ══
-   No es una etiqueta: es el reverso de la tarjeta. Se da la vuelta al
-   pasar por encima, y dice de verdad lo que el programa hace. */
-.tar{position:relative;overflow:hidden}
-.tar-det{position:absolute;inset:0;background:var(--surface2,#1c1c22);
-         border-radius:inherit;padding:13px 15px;display:flex;
-         flex-direction:column;gap:7px;opacity:0;pointer-events:none;
-         transition:opacity .16s ease;z-index:5;text-align:left}
-.tar:hover .tar-det{opacity:1}
-.tar.apagado:hover .tar-det{opacity:1}     /* apagada también — sobre todo */
-.tar-det-t{font-family:var(--serif,Georgia,serif);font-size:13px;font-weight:600;
-           color:var(--accent);flex:0 0 auto}
-.tar-det-c{font-size:11.5px;line-height:1.55;color:var(--text);flex:1;
-           overflow:hidden}
-.tar-det-a{font-size:10.5px;color:var(--warn);flex:0 0 auto;
-           border-top:1px solid var(--border);padding-top:6px}
-body.sin-burbujas .tar-det{display:none}
 </style>
 </head>
 <body>
@@ -177,11 +159,19 @@ body.sin-burbujas .tar-det{display:none}
            y las cuatro últimas cifras del SIP.</div>
 
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
-        <div style="flex:2;min-width:190px">
+        <div style="flex:1;min-width:130px">
           <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px"
-                 id="et-nombre">Nombre y apellidos</label>
-          <input type="text" id="n-nombre" placeholder="Joaquina Munarriz Eraso"
-                 oninput="calculaNuevo()" class="campo" style="width:100%">
+                 id="et-nombre">Nombre</label>
+          <input type="text" id="n-nombre" placeholder="María del Carmen"
+                 oninput="calculaNuevo()" class="campo" style="width:100%"
+                 autocomplete="off">
+        </div>
+        <div style="flex:1;min-width:150px">
+          <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px"
+                 id="et-apellidos">Apellidos</label>
+          <input type="text" id="n-apellidos" placeholder="Gómez Ruiz"
+                 oninput="calculaNuevo()" class="campo" style="width:100%"
+                 autocomplete="off">
         </div>
         <div style="flex:0 0 118px">
           <label style="font-size:11.5px;color:var(--muted);display:block;margin-bottom:3px"
@@ -288,51 +278,6 @@ function t(campo){
 /* ── les deux bandes, dessinées d'après la table ── */
 /* ══ LE LOGO : une alvéole, et « Salu » droit / « folio » italique bleu ══ */
 function logoSVG(){ return ''; }   /* hexagone retiré (P-H, 04/09) */
-/* ══════════════════════════════════════════════════════════════════════
-   LAS BURBUJAS DE AYUDA (P-H, 16/09/2026)
-
-   « Dans la V1 il y a une option : afficher les tooltips. »
-
-   No es de un programa: es de quien mira. Vive en el navegador con la
-   clave « sf_tips », la misma que MF.tip consulta en los demás — así se
-   apaga una vez y vale para toda la casa.
-   ══════════════════════════════════════════════════════════════════════ */
-function tipsPuestas(v){
-  if(v !== undefined){
-    try{ localStorage.setItem('sf_tips', v ? 'si' : 'no'); }catch(e){}
-    /* les revers de carte suivent le même réglage */
-    document.body.classList.toggle('sin-burbujas', !v);
-    if(!v){ var b = document.getElementById('mf-tip'); if(b) b.style.display='none'; }
-    return !!v;
-  }
-  try{ return localStorage.getItem('sf_tips') !== 'no'; }catch(e){ return true; }
-}
-
-/* el botón de las burbujas guarda la suya, aunque estén apagadas:
-   si no, no se sabría lo que hace (P-H, 16/09) */
-function tipDelBoton(){
-  var e = document.querySelector('[data-b="tips"]');
-  if(!e) return;
-  e.onmouseenter = function(){
-    var b = document.getElementById('mf-tip');
-    if(!b){ b = document.createElement('div'); b.id='mf-tip'; document.body.appendChild(b); }
-    b.style.cssText = 'position:fixed;z-index:9999;background:var(--surface,#161b27);'
-      + 'border:1px solid var(--warn,#e8a44a);border-radius:8px;padding:5px 11px;'
-      + 'font-size:12px;color:var(--text,#e8eaf0);box-shadow:0 5px 20px rgba(0,0,0,.5);'
-      + 'pointer-events:none;white-space:pre-line;max-width:250px';
-    b.textContent = tipsPuestas()
-      ? 'Burbujas de ayuda encendidas — tóquelo para apagarlas'
-      : 'Burbujas de ayuda apagadas — tóquelo para encenderlas';
-    var r = e.getBoundingClientRect();
-    b.style.left = Math.max(6, r.left - 120) + 'px';
-    b.style.top  = (r.bottom + 7) + 'px';
-    b.style.display = 'block';
-  };
-  e.onmouseleave = function(){
-    var b = document.getElementById('mf-tip'); if(b) b.style.display='none';
-  };
-}
-
 function pintaBandas(){
   var a=document.getElementById('banda-arr');
   var bts=(T.banda_arriba&&T.banda_arriba.botones)||[];
@@ -346,21 +291,8 @@ function pintaBandas(){
     +'<span class="b-sep"></span>'
     +'<span id="banderas" style="display:none;gap:4px"></span>'
     +'<span id="paleta" style="display:none"></span>'
-    /* ══ LA TABLE DIT QUELS BOUTONS, PAS LE CODE (P-H, 16/09/2026) ══
-       Une liste en dur — ['idioma','tema','ayuda','inicio'] — écartait
-       tout bouton nouveau : le 💬 était dans la table et ne paraissait
-       pas. C'est exactement ce que la doctrine de 1966 interdit.
-
-       Maintenant : ce qui n'est pas dessiné ailleurs paraît ici. Pour
-       ajouter un bouton, on l'ajoute à la table. */
-    + bts.filter(function(b){ return ['panal','guardar','abrir'].indexOf(b.id) < 0; })
+    + bts.filter(function(b){ return ['idioma','tema','ayuda','inicio'].indexOf(b.id)>=0; })
         .map(function(b){
-          if(b.id === 'tips'){
-            /* encendido o apagado — se ve de un vistazo */
-            var enc = tipsPuestas();
-            return '<span class="b-b" data-b="tips" style="opacity:'
-                 + (enc ? '1' : '.35') + '">' + b.icono + '</span>';
-          }
           return '<span class="b-b" data-b="'+b.id+'">'+b.icono+'</span>';
         }).join('');
   a.querySelectorAll('[data-b]').forEach(function(e){
@@ -385,8 +317,6 @@ function pintaBandas(){
   z.querySelectorAll('[data-doc]').forEach(function(e){
     e.onclick=function(ev){ ev.preventDefault(); abreDoc(+e.dataset.doc); };
   });
-  tipDelBoton();
-  document.body.classList.toggle('sin-burbujas', !tipsPuestas());
 }
 
 /* ── un document dans l'écran ── */
@@ -421,17 +351,6 @@ function ponPerfil(p){
   try{ localStorage.setItem('sf_perfil', p||''); }catch(e){}
 }
 
-/* le petit texte de la carte grisée, dans la langue du moment */
-function t2(k){
-  var D = {
-    falta_exp:{ es:'Necesita un expediente abierto',
-                fr:'Il faut un dossier ouvert',
-                ca:'Necessita un expedient obert',
-                en:'Needs an open record' }
-  };
-  return (D[k] && (D[k][LANG] || D[k].es)) || k;
-}
-
 function pintaModulos(){
   var z=document.getElementById('familias'); z.innerHTML='';
   (T.familias||[]).forEach(function(f){
@@ -446,28 +365,10 @@ function pintaModulos(){
       + ms.map(function(m){
           /* v2 (P-H, 11/09) : un programme qui dit « sin_expediente » n'a
              pas besoin de patient — le glosario n'est qu'une information. */
-          /* ══ LA BURBUJA CUBRE LA TARJETA (P-H, 16/09/2026) ══
-             « Il faudrait aussi des tooltips gros comme les pavés quand
-               on passe au-dessus d'un pavé, même s'il est grisé. »
-
-             Sobre todo si está apagada: es ahí que uno se pregunta para
-             qué sirve. El detalle vive en el <prog>.js del programa, con
-             su nombre y su descripción — una sola tabla que conocer. */
-          var apagada = !(DATOS || m.sin_expediente);
-          var det = m.detalle ? t(m.detalle) : '';
-          return '<div class="tar'+(apagada?' apagado':'')+'" onclick="carga(\''+m.id+'\')"'
-            + (det ? ' data-det="'+det.replace(/"/g,'&quot;')+'"' : '')
-            + (apagada ? ' data-apagada="1"' : '') + '>'
+          return '<div class="tar'+((DATOS||m.sin_expediente)?'':' apagado')+'" onclick="carga(\''+m.id+'\')">'
             +'<span class="ic">'+m.icono+'</span>'
             +'<span class="nm">'+t(m.nombre)+'</span>'
-            +'<div class="ds">'+t(m.descripcion)+'</div>'
-            + (det
-               ? '<div class="tar-det"><div class="tar-det-t">'+m.icono+' '+t(m.nombre)+'</div>'
-                 + '<div class="tar-det-c">'+det+'</div>'
-                 + (apagada ? '<div class="tar-det-a">⚠ '+t2('falta_exp')+'</div>' : '')
-                 + '</div>'
-               : '')
-            + '</div>';
+            +'<div class="ds">'+t(m.descripcion)+'</div></div>';
         }).join('')
       + '</div>';
   });
@@ -536,11 +437,50 @@ function volverInicio(){
 }
 
 /* ── la matricule se déduit du nom et du SIP ── */
+/* ══════════════════════════════════════════════════════════════════════
+   LA MATRÍCULA (P-H, 17/09/2026)
+
+   « Michèle Rogues de Fursac — OK. »  Y « María del Carmen Gómez Ruiz ».
+   Y los ocho apellidos vascos, que se recitaban para probar el linaje.
+
+   Ninguna regla aguanta. Así que dos campos y nada más:
+
+       nombre    « María del Carmen »   tantos nombres como haga falta
+       apellidos « Gómez Ruiz »         tantos apellidos como haya
+
+   LAS PARTÍCULAS SE DESCARTAN — de, del, la, von, van, bin… No dicen
+   nada de quién es la persona, y alargan la matrícula sin razón:
+   « Rogues de Fursac » da RF, no RDF.
+
+   « Escartar las particulas » — P-H. La matrícula debe quedarse corta
+   y estable: es lo que da nombre a la carpeta, y no cambia nunca.
+   ══════════════════════════════════════════════════════════════════════ */
+var PARTICULAS = ['de','del','la','las','los','le','du','des','da','dos',
+                  'van','von','der','den','bin','ben','ibn','al','el',
+                  'y','e','i','san','santa','saint','mc','mac','o'];
+
+function inicialesDe(txt, cuantas){
+  return String(txt||'').trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .split(/[\s,'-]+/)
+    .filter(function(p){
+      if(p.length < 2) return false;
+      return PARTICULAS.indexOf(p.toLowerCase()) < 0;
+    })
+    .slice(0, cuantas || 9)
+    .map(function(p){ return p.charAt(0).toUpperCase(); }).join('');
+}
+
+/* dos campos: una inicial del nombre, dos de los apellidos */
+function matriculaDe2(nombre, apellidos, sip){
+  var i = inicialesDe(nombre, 1) + inicialesDe(apellidos, 2);
+  var num = String(sip||'').replace(/\D/g,'').slice(-4);
+  return (i.length >= 2 && num.length === 4) ? i + num : '';
+}
+
+/* la de antes, para quien la llame con un solo campo */
 function matriculaDe(nombre, sip){
-  var ini=(nombre||'').trim().split(/\s+/).filter(function(p){return p.length>1;})
-      .slice(0,3).map(function(p){return p.charAt(0).toUpperCase();}).join('');
-  var num=String(sip||'').replace(/\D/g,'').slice(-4);
-  return (ini.length>=2 && num.length===4)? ini+num : '';
+  var p = String(nombre||'').trim().split(/\s+/);
+  return matriculaDe2(p[0]||'', p.slice(1).join(' '), sip);
 }
 function calcula(){
   /* le cadre « nuevo » a sa propre calculaNuevo() */
@@ -641,7 +581,8 @@ function ponEstado(extra){
 function abreNuevo(){
   document.getElementById('cuadro-conocidos').style.display = 'none';
   document.getElementById('cuadro-nuevo').style.display = 'block';
-  ['n-nombre','n-sip'].forEach(function(k){ document.getElementById(k).value = ''; });
+  ['n-nombre','n-apellidos','n-sip'].forEach(function(k){
+    var e = document.getElementById(k); if(e) e.value = ''; });
   document.getElementById('n-mat').textContent = '—';
   document.getElementById('nuevo-nota').innerHTML = '';
   document.getElementById('n-nombre').focus();
@@ -652,8 +593,9 @@ function cierraNuevo(){
 }
 function calculaNuevo(){
   var nom = document.getElementById('n-nombre').value;
+  var ape = document.getElementById('n-apellidos').value;
   var sip = document.getElementById('n-sip').value;
-  var m = matriculaDe(nom, sip);
+  var m = matriculaDe2(nom, ape, sip);
   var e = document.getElementById('n-mat');
   e.textContent = m || '—';
   e.style.color = m ? 'var(--ok)' : 'var(--warn)';
@@ -661,7 +603,9 @@ function calculaNuevo(){
 }
 function creaDesdeCuadro(){
   var nom = document.getElementById('n-nombre').value.trim();
+  var ape = document.getElementById('n-apellidos').value.trim();
   var sip = document.getElementById('n-sip').value.trim();
+  var entero = (nom + ' ' + ape).trim();
   var z   = document.getElementById('nuevo-nota');
   if(!nom || !sip){
     z.innerHTML = '<span style="color:var(--danger)">Hacen falta el nombre y el SIP.</span>';
@@ -679,13 +623,17 @@ function creaDesdeCuadro(){
     return;
   }
 
-  var p = { matricula:mat, nombre:nom, sip:sip, ficheros:[], _creado:true };
+  /* el bloque « paciente » como P-H lo quiso (17/09) : nombre y
+     apellidos aparte, y « patient_name » lleva la suma */
+  var p = { matricula:mat, nombre:nom, apellidos:ape, sip:sip,
+            etiqueta:entero, ficheros:[], _creado:true };
   recuerdaPaciente(p);
   PACIENTES_TODOS.push(p);
 
   /* un expediente vide, mais complet */
   DATOS = (typeof SF_PLANTILLA !== 'undefined')
-        ? SF_PLANTILLA.nuevo({ matricula:mat, etiqueta:nom, nombre:nom, sip:sip })
+        ? SF_PLANTILLA.nuevo({ matricula:mat, nombre:nom, apellidos:ape,
+                               etiqueta:entero, sip:sip })
         : { formato:'SF1', paciente:{matricula:mat, etiqueta:nom, sip:sip},
             mesures:[], events:[], medicaments:[] };
   NOMBRE = mat; CARPETA = null; SUCIO = true; ACTUAL = p;
@@ -695,7 +643,7 @@ function creaDesdeCuadro(){
   pintaPacientes();
   document.getElementById('sel-pac').value = String(PACIENTES_TODOS.length - 1);
   document.getElementById('caja-expedientes').style.display = 'none';
-  ponNota('<b>' + nom + '</b> creado. Todavía no tiene datos: '
+  ponNota('<b>' + entero + '</b> creado. Todavía no tiene datos: '
     + 'use la adquisición para llenarlo.');
   muestraExpediente();
   pintaModulos();
@@ -773,29 +721,6 @@ function manda(id){
   if(id==='panal')   return (window.opener&&!window.opener.closed)? window.close() : (window.location.href='../index.html');
   if(id==='tema'){ togglePaleta(); return; }
   if(id==='idioma'){ toggleBanderas(); return; }
-  if(id==='tips'){
-    /* ══ casa no carga mf.js — lee la misma clave, sin él (P-H, 16/09) ══
-       Noventa kilos de comunes para un ajuste de tres líneas. La clave
-       es la misma —sf_tips— así MF.tip la respeta en los demás. */
-    /* ══════════════════════════════════════════════════════════════════
-       LAS BURBUJAS SE APAGAN Y SE ENCIENDEN (P-H, 16/09/2026)
-
-       « Dans la V1 il y a une option : afficher les tooltips. Où va-t-on
-         mettre cette option qui m'a échappé de la tête ? »
-
-       El ajuste vive en mf.js, con el idioma y el tema — no es de un
-       programa, es de quien mira. Vale para toda la casa, y sobrevive
-       de una sesión a otra.
-
-       Quien descubre las quiere; quien conoce la casa, no.
-       ══════════════════════════════════════════════════════════════════ */
-    var on = !tipsPuestas();
-    tipsPuestas(on);
-    ponEstado(on ? '💬 burbujas de ayuda encendidas'
-                 : '💬 burbujas de ayuda apagadas');
-    pintaBandas();
-    return;
-  }
   if(id==='ayuda'){ abreAyuda(); return; }
 }
 
@@ -997,16 +922,16 @@ function ponIdioma(l){
 
 /* ══ LA TRADUCTION du cadre de sélection ══ */
 var TX={
-  es:{ ayuda_nuevo:'La matrícula se forma sola: las iniciales del nombre y las cuatro últimas cifras del SIP.', tit_nuevo:'🧑 Un paciente nuevo', crear:'Crear', cancelar:'Cancelar', extracciones:'extracciones', eventos:'eventos', medicamentos:'medicamentos',
+  es:{ apellidos:'Apellidos', ayuda_nuevo:'La matrícula se forma sola: las iniciales del nombre y las cuatro últimas cifras del SIP.', tit_nuevo:'🧑 Un paciente nuevo', crear:'Crear', cancelar:'Cancelar', extracciones:'extracciones', eventos:'eventos', medicamentos:'medicamentos',
        conocidos:'Pacientes conocidos', nombre:'Nombre y apellidos', mat:'Matrícula',
        buscar:'🔎 Buscar', nuevo:'➕ Nuevo', exp:'Expediente', quien:'¿Quién accede?', todo:'Todo' },
-  fr:{ ayuda_nuevo:'La matricule se forme toute seule : les initiales du nom et les quatre derniers chiffres du SIP.', tit_nuevo:'🧑 Un patient nouveau', crear:'Créer', cancelar:'Annuler', extracciones:'prélèvements', eventos:'événements', medicamentos:'médicaments',
+  fr:{ apellidos:'Nom(s)', ayuda_nuevo:'La matricule se forme toute seule : les initiales du nom et les quatre derniers chiffres du SIP.', tit_nuevo:'🧑 Un patient nouveau', crear:'Créer', cancelar:'Annuler', extracciones:'prélèvements', eventos:'événements', medicamentos:'médicaments',
        conocidos:'Patients connus', nombre:'Nom et prénoms', mat:'Matricule',
        buscar:'🔎 Chercher', nuevo:'➕ Nouveau', exp:'Dossier', quien:'Qui accède ?', todo:'Tout' },
-  ca:{ ayuda_nuevo:'La matrícula es forma sola.', tit_nuevo:'🧑 Un pacient nou', crear:'Crear', cancelar:'Cancel·lar', extracciones:'extraccions', eventos:'esdeveniments', medicamentos:'medicaments',
+  ca:{ apellidos:'Cognoms', ayuda_nuevo:'La matrícula es forma sola.', tit_nuevo:'🧑 Un pacient nou', crear:'Crear', cancelar:'Cancel·lar', extracciones:'extraccions', eventos:'esdeveniments', medicamentos:'medicaments',
        conocidos:'Pacients coneguts', nombre:'Nom i cognoms', mat:'Matrícula',
        buscar:'🔎 Buscar', nuevo:'➕ Nou', exp:'Expedient', quien:'Qui accedeix?', todo:'Tot' },
-  en:{ ayuda_nuevo:'The ID forms itself: initials of the name and the last four SIP digits.', tit_nuevo:'🧑 A new patient', crear:'Create', cancelar:'Cancel', extracciones:'tests', eventos:'events', medicamentos:'medications',
+  en:{ apellidos:'Surname(s)', ayuda_nuevo:'The ID forms itself: initials of the name and the last four SIP digits.', tit_nuevo:'🧑 A new patient', crear:'Create', cancelar:'Cancel', extracciones:'tests', eventos:'events', medicamentos:'medications',
        conocidos:'Known patients', nombre:'Name and surname', mat:'ID',
        buscar:'🔎 Search', nuevo:'➕ New', exp:'Record', quien:'Who is accessing?', todo:'All' }
 };
@@ -1021,6 +946,7 @@ function traduceFormulario(){
   pon('et-conocidos',   'conocidos');
   pon('et-expedientes', 'exp');
   pon('et-nombre',      'nombre');
+  pon('et-apellidos',   'apellidos');
   pon('et-mat',         'mat');
   pon('b-nuevo',        'nuevo');
   pon('b-cancelar',     'cancelar');

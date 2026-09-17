@@ -33,7 +33,7 @@
 var SF_FORM_ADQUISICION = window.SF_FORM_ADQUISICION = {
 
   nombre: "Adquisición manual",
-  version: "2026.09.14",
+  version: "2026.09.17-23:49:24",
 
   /* el menú, por familias — para que no sea una lista de veinte */
   familias: [
@@ -271,19 +271,52 @@ var SF_FORM_ADQUISICION = window.SF_FORM_ADQUISICION = {
       ayuda:"Lo que sabe de memoria, con los papeles que andan por ahí. "
           + "Una fecha aproximada vale más que ninguna.",
       campos:[
-        { id:"texto", etiqueta:"Qué pasó", tipo:"texto", obligatorio:true,
+        /* « descripcion » y no « texto »: es el campo que las
+           adquisiciones automática y asistida escriben, y lo que el
+           informe lee. Un mismo dato, un mismo nombre (P-H, 17/09) */
+        { id:"descripcion", etiqueta:"Qué pasó", tipo:"texto", obligatorio:true,
           fuente:"ya_dichos",
           ayuda:"Si ya lo ha escrito antes, la lista se lo propone." },
         { id:"categoria", etiqueta:"Categoría", tipo:"lista", libre:true,
           valores:[{valor:"personal",    etiqueta:"Personal"},
                    {valor:"respiratorio",etiqueta:"Respiratorio"},
                    {valor:"cardiaco",    etiqueta:"Cardíaco"},
+                   {valor:"neurologico", etiqueta:"Neurológico"},
                    {valor:"quirurgico",  etiqueta:"Quirúrgico"},
+                   {valor:"caida",       etiqueta:"Caída o golpe"},
                    {valor:"familiar",    etiqueta:"Familiar"},
                    {valor:"alergia",     etiqueta:"Alergia"}] },
         { id:"fecha", etiqueta:"Cuándo", tipo:"fecha", aproximada:true,
           ejemplo:"2016 · 2016-09 · 2016-09-14",
           ayuda:"El año solo vale, si no recuerda el día." },
+
+        /* ══════════════════════════════════════════════════════════════
+           EL CÓDIGO CIE-10, A MANO Y FACULTATIVO (P-H, 17/09/2026)
+
+           « Le CIE-10, on n'a pas la possibilité de saisir en manuel.
+             Donc s'il n'y a pas d'historial clínico ? »
+
+           Tenía razón: el código venía sólo de los documentos, y quien
+           empieza de cero no tenía dónde ponerlo.
+
+           Se miró la tabla oficial del Ministerio: 72 623 códigos, siete
+           megas. Y se dejó — « le + SIMPLE et le + RAPIDE et le +
+           ECONOMIQUE ». Un cuidador no conoce el CIE-10; elegir entre
+           W19.XXXA, W19.XXXD y W19.XXXS es trabajo de codificador.
+
+           Así que un campo libre: quien lo tiene en su papel lo copia,
+           quien no, lo deja vacío. Y la letra inicial basta para que el
+           informe agrupe — W son las caídas, I el corazón.
+           ══════════════════════════════════════════════════════════════ */
+        { id:"codigo", etiqueta:"Código CIE-10", tipo:"texto",
+          ejemplo:"I63.9 · M25.561 · W19.XXXD",
+          ayuda:"Si su informe lo lleva, cópielo tal cual. Si no, déjelo "
+              + "vacío: no hace falta. La primera letra sirve para agrupar." },
+
+        { id:"estado", etiqueta:"Estado", tipo:"lista",
+          valores:[{valor:"activo",   etiqueta:"Activo — sigue"},
+                   {valor:"inactivo", etiqueta:"Resuelto"}],
+          ayuda:"Lo activo es lo que el paciente arrastra hoy." },
         { id:"comentario", etiqueta:"Comentario", tipo:"texto" }
       ]
     },
