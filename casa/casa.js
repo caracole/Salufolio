@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = window.SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.09.17-15:09:03",
+  "version": "2026.09.18-10:03:27",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -343,7 +343,7 @@ var SF_LANZADOR = window.SF_LANZADOR = {
     {
       "id": "cielo",
       "nombre": "Cielo",
-      "_porque": "Ana la pidió: « ¿no hay un fondo azul como el cielo? » El cielo del DÍA, sin nubes. P-H dio el tono exacto: #74BBE4 — « no es bastante azul, no se pasa el invierno encima » dijo del primero, que era demasiado pálido.",
+      "_porque": "Joaquina la pidió: « ¿no hay un fondo azul como el cielo? » El cielo del DÍA, sin nubes. P-H dio el tono exacto: #74BBE4 — « no es bastante azul, no se pasa el invierno encima » dijo del primero, que era demasiado pálido.",
       "v": {
         "--bg": "#74BBE4",
         "--surface": "#9BD0EC",
@@ -437,9 +437,9 @@ var SF_LANZADOR = window.SF_LANZADOR = {
       },
       {
         "texto": "DOI 10.5281/zenodo.21997587",
-        "fichero": "salufolio-zenodo.pdf",
         "titulo": "Ver el artículo",
-        "fuera": "https://doi.org/10.5281/zenodo.21997587"
+        "enlace": "https://doi.org/10.5281/zenodo.21997587",
+        "_que": "El articulo vive en Zenodo: no tiene por que viajar (P-H, 18/09)."
       },
       {
         "texto": "salufolio@proton.me",
