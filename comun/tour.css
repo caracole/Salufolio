@@ -109,10 +109,11 @@
   position:absolute; inset:0; border-radius:14px;
   overflow:hidden; pointer-events:none; z-index:0;
 }
-.sf-t-llena{
-  height:100%; width:0;
-  background:color-mix(in srgb, var(--accent, #4a9eff) 7%, transparent);
-}
+/* ══ SIN CORTINA (P-H, 18/09/2026) ══
+   « Le feutre marche en même temps que le rideau ? C'est bizarre. »
+   Lo era: dos cosas diciendo lo mismo. La pluma sobre las palabras basta
+   — se ve dónde va y cuánto queda. El fondo se queda quieto. */
+.sf-t-llena{ display:none; }
 /* el contenido pasa por encima de la jauge */
 .sf-t-cab, .sf-t-texto, .sf-t-mandos, .sf-t-lista-caja{ position:relative; z-index:1; }
 
