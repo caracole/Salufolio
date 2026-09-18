@@ -1,0 +1,201 @@
+/* ══════════════════════════════════════════════════════════════════════
+   LA VISITA — su aspecto · /Salufolio/comun/tour.css
+
+   Nada en duro en el motor: los colores vienen de la paleta de la casa,
+   y cambian con ella.
+   ══════════════════════════════════════════════════════════════════════ */
+
+#sf-tour{
+  position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
+  z-index:9995; width:min(520px, calc(100vw - 32px));
+  opacity:0; pointer-events:none;
+  transition:opacity .3s, left .34s cubic-bezier(.4,0,.2,1),
+             top .34s cubic-bezier(.4,0,.2,1), transform .3s;
+}
+#sf-tour.on{ opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(0); }
+/* mientras se coloca, no se ve — ni un parpadeo abajo (P-H, 18/09) */
+#sf-tour.naciendo{ opacity:0; pointer-events:none; }
+/* una vez colocada junto al objeto, ya no se centra a mano */
+#sf-tour[style*="top"]{ transform:none; }
+
+/* ── el suspiro entre etapas (P-H, 18/09) ── */
+#sf-tour.respirando{ opacity:.55; }
+#sf-tour.respirando .sf-t-caja{ transform:scale(.985); }
+.sf-t-caja{ transition:transform .3s; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA PROFUNDIDAD SOBRE FONDO OSCURO (P-H, 18/09/2026)
+
+   « Le blur ne se distingue pas sur fond obscur. »
+
+   Claro que no: difuminar lo oscuro sobre lo oscuro no da nada que ver.
+   El difuminado sirve cuando hay algo detrás — una foto, un texto. Sobre
+   un fondo liso, no dice nada.
+
+   En la oscuridad, una cosa flota por otras tres razones:
+
+     ① ESTÁ MÁS CERCA DE LA LUZ — su fondo es más claro que la página.
+     ② TIENE UN FILO ARRIBA — la luz viene de arriba y pega en el borde.
+        Es lo que hace que un objeto real se despegue del fondo.
+     ③ SU SOMBRA SE ESTIRA DEBAJO — larga y difusa, no dura y pegada.
+
+   Las tres juntas, y el cuadro se levanta. El difuminado se queda, pero
+   discreto: cuando hay algo detrás, ayuda; cuando no, no estorba.
+   ══════════════════════════════════════════════════════════════════════ */
+.sf-t-caja{
+  position:relative;
+  /* ① más cerca de la luz que la página */
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--surface2, #1c1c22) 96%, white) 0%,
+      var(--surface, #16161b) 62%);
+  border:1px solid color-mix(in srgb, var(--accent, #4a9eff) 60%, transparent);
+  border-radius:14px; padding:15px 18px 12px;
+  font-family:var(--sans, system-ui, sans-serif);
+  /* ③ la sombra se estira, en capas */
+  box-shadow:
+    0  2px  4px rgba(0,0,0,.28),
+    0  6px 14px rgba(0,0,0,.34),
+    0 16px 34px rgba(0,0,0,.40),
+    0 32px 70px rgba(0,0,0,.46);
+}
+
+/* ② el filo de arriba: la luz pega en el borde */
+.sf-t-caja::before{
+  content:''; position:absolute; inset:0;
+  border-radius:14px; pointer-events:none;
+  box-shadow:
+    inset 0  1px 0 rgba(255,255,255,.13),
+    inset 0 -1px 0 rgba(0,0,0,.30);
+}
+
+/* el difuminado, discreto: ayuda cuando hay algo detrás */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)){
+  .sf-t-caja{
+    -webkit-backdrop-filter: blur(9px) saturate(1.2);
+            backdrop-filter: blur(9px) saturate(1.2);
+  }
+}
+
+.sf-t-cab{ display:flex; align-items:baseline; gap:10px; margin-bottom:7px; }
+.sf-t-ico{ font-size:21px; line-height:1; }
+.sf-t-tit{
+  flex:1; font-family:var(--serif, Georgia, serif);
+  font-size:16px; font-weight:600; color:var(--accent, #4a9eff);
+}
+.sf-t-n{
+  font-family:var(--mono, monospace); font-size:11px;
+  color:var(--muted, #9a9aa8);
+}
+
+.sf-t-texto{
+  font-size:13.5px; line-height:1.68; color:var(--text, #e8e8ef);
+  margin-bottom:11px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA JAUGE DANS LE RECTANGLE (P-H, 18/09/2026)
+
+   « Si on faisait déjà voir la longueur de l'étape par une barre qui
+     progresse dans le rectangle ? »
+
+   La había, pero de dos píxeles: no se veía. Ahora es EL FONDO de la
+   caja el que se llena, de izquierda a derecha, como un vaso. Se ve sin
+   buscarlo, y se sabe cuánto queda sin contar los segundos.
+
+   Va detrás del texto, muy tenue — no debe estorbar la lectura.
+   ══════════════════════════════════════════════════════════════════════ */
+.sf-t-barra{
+  position:absolute; inset:0; border-radius:14px;
+  overflow:hidden; pointer-events:none; z-index:0;
+}
+.sf-t-llena{
+  height:100%; width:0;
+  background:color-mix(in srgb, var(--accent, #4a9eff) 7%, transparent);
+}
+/* el contenido pasa por encima de la jauge */
+.sf-t-cab, .sf-t-texto, .sf-t-mandos, .sf-t-lista-caja{ position:relative; z-index:1; }
+
+.sf-t-mandos{ display:flex; align-items:center; gap:5px; }
+.sf-t-mandos button{
+  background:transparent; border:1px solid transparent; border-radius:7px;
+  padding:4px 8px; cursor:pointer; font-size:15px; line-height:1.3;
+  opacity:.65; transition:all .15s;
+}
+.sf-t-mandos button:hover:not(:disabled){
+  opacity:1; border-color:var(--border, #2a2a33);
+  background:var(--surface2, #1c1c22);
+}
+.sf-t-mandos button:disabled{ opacity:.22; cursor:not-allowed; }
+.sf-t-sep{ flex:1; }
+
+/* ── la lista de etapas ── */
+.sf-t-lista-caja{
+  display:none; margin-top:10px; padding-top:9px;
+  border-top:1px solid var(--border, #2a2a33);
+  max-height:240px; overflow-y:auto;
+}
+.sf-t-lista-caja.on{ display:block; }
+.sf-t-item{
+  display:flex; align-items:center; gap:9px;
+  padding:5px 7px; border-radius:6px; cursor:pointer;
+  font-size:12.5px; color:var(--muted, #9a9aa8); transition:all .12s;
+}
+.sf-t-item:hover{ background:var(--surface2, #1c1c22); color:var(--text, #e8e8ef); }
+.sf-t-item.on{ color:var(--accent, #4a9eff); font-weight:600; }
+.sf-t-item-n{
+  font-family:var(--mono, monospace); font-size:10px;
+  flex:0 0 16px; text-align:right; opacity:.6;
+}
+.sf-t-item-i{ font-size:14px; flex:0 0 20px; text-align:center; }
+.sf-t-item-t{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* ══ LA PUNTA — señala el objeto del que se habla ══
+   « La boîte devrait suivre les éléments commentés avec une flèche »
+   (Mattieu, 18/09). En CSS puro: un triángulo en el borde, que cambia
+   de lado según dónde esté la caja. */
+/* la punta vive en ::after — ::before lleva ahora el filo de luz */
+.sf-t-caja::after{
+  content:''; position:absolute; left:var(--punta, 50%);
+  margin-left:-9px; width:0; height:0;
+  border-left:9px solid transparent; border-right:9px solid transparent;
+  display:none; filter:drop-shadow(0 0 1px rgba(0,0,0,.4));
+}
+/* la caja está DEBAJO del objeto: la punta mira hacia arriba */
+.sf-t-caja.punta-arriba::after{
+  display:block; top:-9px;
+  border-bottom:10px solid color-mix(in srgb, var(--surface2, #1c1c22) 96%, white);
+}
+/* la caja está ENCIMA: la punta mira hacia abajo */
+.sf-t-caja.punta-abajo::after{
+  display:block; bottom:-9px;
+  border-top:10px solid var(--surface, #16161b);
+}
+
+/* ══ SIN DESLIZAMIENTO (P-H, 18/09/2026) ══
+   « Ça glisse, mais à mon avis c'est gênant, on a l'impression d'un
+     bogue. » Tenía razón: un recuadro que viaja por la pantalla parece
+     una avería, no una explicación. Ahora salta, limpio. Solo la
+     opacidad se suaviza, para que no aparezca de golpe. */
+#sf-t-halo{ transition:opacity .22s !important; }
+
+/* ══ LA PLUMA: las palabras se encienden una tras otra ══
+   « Comme un feutre qui se déplace sur les mots du texte » (P-H, 18/09).
+   El texto entero está ahí desde el principio, apagado; la pluma lo
+   recorre al ritmo del reloj. */
+.sf-t-p{
+  color:color-mix(in srgb, var(--text, #e8e8ef) 34%, transparent);
+  transition:color .22s;
+}
+.sf-t-p.dicha{
+  color:var(--text, #e8e8ef);
+}
+
+/* ── el objeto que se enseña ── */
+.sf-t-visto{ position:relative; z-index:9991 !important; }
+
+@media (max-width: 560px){
+  #sf-tour{ bottom:12px; }
+  .sf-t-caja{ padding:12px 14px 10px; }
+  .sf-t-texto{ font-size:13px; }
+}
