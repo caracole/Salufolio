@@ -227,6 +227,17 @@ var PALETAS=[], PALETA='oscuro', PAL_MOD=null, MODULOS=[];
 var T=null, LANG='es', PERFIL=null, DATOS=null, NOMBRE=null, MANIJA=null,
     SUCIO=false, ACTUAL=null, CARPETA=null, _versiones=[];
 
+/* ══ DOS COSAS, DOS VARIABLES (P-H, 18/09/2026) ══
+   « Quand je clique sur ❔ ça va vers /casa/ et 404. »
+
+   ACTUAL guardaba EL PROGRAMA abierto desde el principio: abreAyuda()
+   lee ACTUAL.ayuda para saber qué página mostrar. Y el 15/09, al rehacer
+   el cuadro del paciente, metí EL PACIENTE en la misma variable. Desde
+   entonces el ❔ buscaba « ayuda/undefined.html ».
+
+   Un nombre para una cosa. */
+var PACIENTE_ACTUAL = null;
+
 /* ══ L'ARCHITECTURE DE P-H (dessin du 04/09/2026) ══
    1 lanceur, 1 json : casa.json ne fait que POINTER vers les json
    des applications. N programmes, N json : chacun pointe vers son html,
@@ -484,7 +495,7 @@ function matriculaDe(nombre, sip){
 }
 function calcula(){
   /* le cadre « nuevo » a sa propre calculaNuevo() */
-  return (ACTUAL && ACTUAL.matricula) || '';
+  return (PACIENTE_ACTUAL && PACIENTE_ACTUAL.matricula) || '';
 }
 function carpetaDe(mat){ return ((T&&T.carpeta_expedientes)||'../pacientes/') + mat + '/'; }
 
@@ -655,7 +666,7 @@ function creaDesdeCuadro(){
                                etiqueta:entero, sip:sip })
         : { formato:'SF1', paciente:{matricula:mat, etiqueta:nom, sip:sip},
             mesures:[], events:[], medicaments:[] };
-  NOMBRE = mat; CARPETA = null; SUCIO = true; ACTUAL = p;
+  NOMBRE = mat; CARPETA = null; SUCIO = true; PACIENTE_ACTUAL = p;
   SIP_OCULTO = sip;
 
   cierraNuevo();
@@ -897,7 +908,7 @@ function eligeDeLista(){
 
   /* on garde ce qu'il faut pour travailler, sans le montrer */
   SIP_OCULTO = p.sip || '';
-  ACTUAL = p;
+  PACIENTE_ACTUAL = p;
 
   if(!(p.ficheros||[]).length){
     /* un patient neuf : rien à choisir */
