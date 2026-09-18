@@ -103,6 +103,63 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
           border:1px solid var(--border);border-radius:7px;font-size:12.5px;
           display:flex;align-items:center;gap:9px}
 .ver-item.on{border-color:var(--ok)}
+
+/* ══ el aviso de la visita (P-H + Mattieu, 18/09) ══ */
+/* ══ SIN ASCENSOR (P-H, 18/09) ══ todo cabe de una vez */
+.op-donde{font-size:12px;color:var(--muted);margin-bottom:9px;
+          padding-bottom:7px;border-bottom:1px solid var(--border)}
+.op-lin{font-size:10.5px;letter-spacing:1.1px;text-transform:uppercase;
+        color:var(--muted);margin:9px 0 4px}
+.op-perfiles{display:flex;gap:2px 14px;flex-wrap:wrap}
+.op-p{display:flex;align-items:center;gap:6px;padding:3px 5px;
+      border-radius:6px;cursor:pointer;font-size:12.5px;color:var(--text);
+      transition:background .12s}
+.op-p:hover{background:var(--surface2)}
+.op-p input{margin:0;accent-color:var(--accent);cursor:pointer}
+.op-p input:checked + span{color:var(--accent);font-weight:600}
+.op-caras{display:flex;gap:6px}
+.op-c{font-size:24px;background:transparent;border:2px solid transparent;
+      border-radius:9px;padding:2px 6px;cursor:pointer;opacity:.45;
+      transition:all .16s;line-height:1.2}
+.op-c:hover{opacity:.85;transform:scale(1.12)}
+.op-c.on{opacity:1;border-color:var(--accent);transform:scale(1.16)}
+.op-pregunta{display:none;font-size:12.5px;color:var(--accent);
+             margin:10px 0 5px;font-weight:600;line-height:1.4}
+.op-pregunta.on{display:block}
+.op-casillas{display:none;margin:0 0 8px}
+.op-casillas.on{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));
+                gap:1px 12px}
+.op-cas{display:flex;align-items:flex-start;gap:6px;padding:2px 5px;
+        border-radius:6px;cursor:pointer;font-size:12.5px;line-height:1.38;
+        color:var(--text);transition:background .12s}
+.op-cas:hover{background:var(--surface2)}
+.op-cas input{margin:2px 0 0;accent-color:var(--accent);cursor:pointer;
+              flex:0 0 auto}
+.op-cas input:checked + span{color:var(--accent);font-weight:600}
+#op-texto{width:100%;padding:9px 11px;border:1px solid var(--border);
+          border-radius:7px;background:var(--bg);color:var(--text);
+          font-family:inherit;font-size:13px;line-height:1.6;resize:vertical;
+          box-sizing:border-box}
+#op-texto:focus{outline:none;border-color:var(--accent)}
+.op-btn{padding:7px 16px;border-radius:8px;border:1px solid var(--accent);
+        background:rgba(74,158,255,.14);color:var(--text);cursor:pointer;
+        font-family:inherit;font-size:13px}
+.op-btn.suave{border-color:var(--border);background:transparent;color:var(--muted)}
+.op-btn:hover{opacity:.85}
+.op-quien{font-size:12.5px;color:var(--muted);margin:10px 0 0;
+          cursor:pointer;user-select:none;transition:color .15s;
+          display:inline-block}
+.op-quien::before{content:'▸ ';font-size:.9em;opacity:.7}
+.op-quien:hover{color:var(--accent)}
+.op-quien.abierto{color:var(--accent);margin-bottom:8px}
+.op-quien.abierto::before{content:'▾ '}
+.op-firma{display:none;gap:7px;flex-wrap:wrap}
+.op-firma.on{display:flex}
+.op-firma input{flex:1;min-width:150px;padding:7px 10px;
+                border:1px solid var(--border);border-radius:7px;
+                background:var(--bg);color:var(--text);
+                font-family:inherit;font-size:12.5px;box-sizing:border-box}
+.op-firma input:focus{outline:none;border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -209,7 +266,10 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
 
 <script>document.write('<script src="../comun/plantilla-mf.js?'+Date.now()+'"><\/script>');</script>
 <script>document.write('<script src="../pacientes/pacientes.js?'+Date.now()+'"><\/script>');</script>
+<link rel="stylesheet" href="../comun/tour.css">
 <script src="casa.js"></script>
+<script src="tour.js"></script>
+<script src="../comun/tour-motor.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    LANZADOR — el marco de Salufolio (P-H + Claude, 03/09/2026)
@@ -304,10 +364,17 @@ function pintaBandas(){
     +'<span class="b-sep"></span>'
     +'<span id="banderas" style="display:none;gap:4px"></span>'
     +'<span id="paleta" style="display:none"></span>'
-    + bts.filter(function(b){ return ['idioma','tema','ayuda','inicio'].indexOf(b.id)>=0; })
-        .map(function(b){
-          return '<span class="b-b" data-b="'+b.id+'">'+b.icono+'</span>';
-        }).join('');
+    /* ══ LA TABLA DICE QUIÉN VA EN LA BANDA (P-H, 18/09/2026) ══
+       « Il ne se passe rien. » Y no podía pasar nada: había CUATRO
+       identificadores EN DURO. La tabla podía declarar el 🧭 cuanto
+       quisiera: no se dibujaba. Es lo que la doctrina del 05/09
+       prohíbe — nada en duro, todo en la tabla. */
+    + bts.filter(function(b){
+        if(b.id === 'tips' && !(window.MF && MF.tips)) return false;
+        return true;
+      }).map(function(b){
+        return '<span class="b-b" data-b="'+b.id+'">'+b.icono+'</span>';
+      }).join('');
   a.querySelectorAll('[data-b]').forEach(function(e){
     e.onclick=function(ev){ ev.stopPropagation(); manda(e.dataset.b); };
     ponTip(e, tipDe(e.dataset.b));
@@ -388,6 +455,303 @@ function pintaModulos(){
 }
 
 /* ── charger un module dans l'iframe ── */
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA VISITA DE LA CASA (P-H + Mattieu, 18/09/2026)
+
+   « Dans la V1 il y avait une option tour pour découvrir tous les
+     boutons. Un bouton permettait de voir toutes les étapes et de faire
+     un saut dessus. »
+
+   Aquí están las ocho de la banda. El motor no sabe nada: tour.js dice
+   qué se enseña y dónde está.
+
+   ── Y EL AVISO, COMO EN LA V1 ──
+
+   Al interrumpir, se pregunta por qué. Mattieu sugirió cuatro
+   cuestionarios según el humor: no se le pregunta lo mismo a quien está
+   encantado y a quien abandona.
+
+       😡  ¿qué le ha bloqueado?        el obstáculo
+       😞  ¿qué faltaba?                 la carencia
+       😐  ¿qué haría inclinarse?        la duda
+       😊  ¿qué le ha servido?           lo que funciona
+       🤩  ¿se lo diría a alguien?       el boca a boca
+
+   Y se manda por « mailto: » — sin servidor, sin servicio ajeno, con el
+   gestor de correo de la máquina. Como en la V1.
+   ══════════════════════════════════════════════════════════════════════ */
+var _TOUR_T0 = 0;
+
+function arrancaTour(){
+  if(typeof SF_TOUR === 'undefined' || typeof SF_TOUR_MOTOR === 'undefined'){
+    ponEstado('la visita no está cargada');
+    return;
+  }
+  _TOUR_T0 = Date.now();
+  SF_TOUR_MOTOR.arranca(SF_TOUR, {
+    idioma: LANG,
+    al_interrumpir: function(etapa, total, e){
+      pideOpinion(etapa, total, e, false);
+    },
+    al_final: function(ok, total){
+      setTimeout(function(){ pideOpinion(total, total, null, true); }, 2200);
+    },
+    al_salir: function(){}
+  });
+}
+
+/* ══ EL AVISO — cuatro cuestionarios según el humor ══ */
+
+/* ══════════════════════════════════════════════════════════════════════
+   LAS RESPUESTAS DEL CUESTIONARIO (Mattieu + P-H, 18/09/2026)
+
+   Cinco juegos, uno por cara. No se le pregunta lo mismo a quien está
+   encantado y a quien se va. Sus textos viven en la tabla de idiomas,
+   con todo lo demás.
+   ══════════════════════════════════════════════════════════════════════ */
+var OP_CASILLAS = {
+ "1": [
+  "dificil",
+  "no_para_mi",
+  "no_entiendo",
+  "no_encuentro",
+  "feo",
+  "lento"
+ ],
+ "2": [
+  "falta_algo",
+  "poco_claro",
+  "esperaba_mas",
+  "sin_datos",
+  "sin_ayuda"
+ ],
+ "3": [
+  "curioso",
+  "no_convence",
+  "falta_probar",
+  "para_otros",
+  "quizas"
+ ],
+ "4": [
+  "claro",
+  "util",
+  "rapido",
+  "bien_hecho",
+  "justo_lo_que"
+ ],
+ "5": [
+  "muy_util",
+  "bien_pensado",
+  "lo_recomiendo",
+  "me_sirve",
+  "sigo"
+ ]
+};
+
+var CARAS = [
+  { n:1, cara:'😡', clase:'muy-mal' },
+  { n:2, cara:'😞', clase:'mal' },
+  { n:3, cara:'😐', clase:'asi-asi' },
+  { n:4, cara:'😊', clase:'bien' },
+  { n:5, cara:'🤩', clase:'muy-bien' }
+];
+
+function pideOpinion(etapa, total, e, terminada){
+  var titulo = terminada ? tx('op_gracias') : tx('op_interrumpida');
+  var cuerpo =
+      '<div class="op-donde">'
+    + (terminada ? tx('op_completa', {n:total})
+                 : tx('op_etapa', {n:etapa, total:total}))
+    + (e ? ' — ' + (e.icono||'') + ' <i>' + esc(ttx(e.titulo)) + '</i>' : '')
+    + '</div>'
+
+    /* ══ CINCO OPCIONES, NO CINCO BOTONES (P-H, 18/09/2026) ══
+       « Plutôt que mettre des boutons sur les profils (faut deviner
+         qu'il faut cliquer), cinq options exclusives suffiraient. »
+
+       Un botón parece que hace algo; una casilla dice que hay que
+       elegir. Y exclusivas: no se es médico y paciente a la vez —
+       aquí, al menos. */
+    + '<div class="op-lin">' + tx('op_perfil') + '</div>'
+    + '<div class="op-perfiles" id="op-perfiles">'
+    + ['medico','paciente','familia','investigador','otro'].map(function(p){
+        return '<label class="op-p"><input type="radio" name="op-perfil" value="'
+             + p + '"><span>' + tx('op_p_' + p) + '</span></label>'; }).join('')
+    + '</div>'
+
+    + '<div class="op-lin">' + tx('op_nota') + '</div>'
+    + '<div class="op-caras" id="op-caras">'
+    + CARAS.map(function(c){
+        return '<button class="op-c" data-n="' + c.n + '" title="'
+             + tx('op_c_' + c.n) + '">' + c.cara + '</button>'; }).join('')
+    + '</div>'
+
+    /* ══ EL CUESTIONARIO, SEGÚN EL HUMOR (Mattieu, 18/09/2026) ══
+       « Ce que demandait Mattieu c'était par exemple 😡 que le ha
+         bloqueado : complicado, no es para mí, etc. Une case à cocher
+         en regard de chaque texte, et en bas la zone libre moins haute. »
+
+       Es mucho mejor que una pregunta abierta: quien abandona no tiene
+       ganas de redactar, pero marca una casilla. Y las casillas se
+       cuentan — cinco « demasiado complicado » dicen más que cinco
+       párrafos distintos.
+
+       VARIAS a la vez: uno puede estar bloqueado por dos cosas.
+       Las respuestas viven en la tabla OPCIONES, abajo. */
+    + '<div class="op-pregunta" id="op-pregunta"></div>'
+    + '<div class="op-casillas" id="op-casillas"></div>'
+    + '<textarea id="op-texto" rows="2" placeholder="'
+    + esc(tx('op_libre')) + '"></textarea>'
+    /* ══ QUIÉN LO DICE — SI QUIERE (P-H, 18/09/2026) ══
+       « Ce n'est pas obligatoire ! On pose la question et le visiteur
+         répond s'il veut. » Un aviso anónimo vale más que uno que no se
+         escribe — y quien abandona a la tercera etapa no dejará su
+         nombre. Se pregunta, y ya está. */
+    /* ══ SIN INQUISICIÓN (P-H, 18/09/2026) ══
+       « Click sur "qui êtes-vous ?" fait apparaître les zones de saisie.
+         Ça fait moins inquisiteur. »
+
+       Dos campos puestos ahí de entrada parecen un formulario que hay
+       que rellenar. Plegados tras una pregunta, son una oferta: quien
+       quiera decir quién es, la abre; quien no, ni la ve. */
+    + '<div class="op-quien" id="op-quien">' + tx('op_quien') + '</div>'
+    + '<div class="op-firma" id="op-firma">'
+    + '<input type="text" id="op-nombre" placeholder="' + esc(tx('op_nombre')) + '">'
+    + '<input type="email" id="op-correo" placeholder="' + esc(tx('op_correo')) + '">'
+    + '</div>';
+
+  var pie = '<button class="op-btn suave" id="op-no">' + tx('op_sin_decir') + '</button>'
+          + '<button class="op-btn" id="op-si">' + tx('op_mandar') + '</button>';
+
+  /* ══ LA VENTANA, PROPIA DE CASA (P-H, 18/09/2026) ══
+     Yo llamaba a MF.ventana por costumbre — pero « MF is not defined »:
+     casa es el lanzador, no carga mf.js. Los módulos lo tienen; la casa
+     no. Así que su propia ventana, de doce líneas. */
+  var v = ventanaCasa('💬 ' + titulo, cuerpo, pie,
+    function(){ if(!terminada) SF_TOUR_MOTOR.sigue(); });
+
+  var elegido = { perfil:'', nota:0 };
+
+  v.caja.querySelectorAll('input[name="op-perfil"]').forEach(function(r){
+    r.onchange = function(){ elegido.perfil = r.value; };
+  });
+
+  /* ── la pregunta cambia con la cara: cuatro cuestionarios ── */
+  v.caja.querySelectorAll('.op-c').forEach(function(b){
+    b.onclick = function(){
+      v.caja.querySelectorAll('.op-c').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      elegido.nota = parseInt(b.dataset.n, 10);
+      var z = v.caja.querySelector('#op-pregunta');
+      z.textContent = tx('op_q_' + elegido.nota);
+      z.classList.add('on');
+
+      /* las casillas de esta cara */
+      var c = v.caja.querySelector('#op-casillas');
+      c.innerHTML = (OP_CASILLAS[elegido.nota]||[]).map(function(k){
+        return '<label class="op-cas"><input type="checkbox" value="' + k + '">'
+             + '<span>' + tx('op_r_' + k) + '</span></label>'; }).join('');
+      c.classList.add('on');
+
+      var t = v.caja.querySelector('#op-texto');
+      t.placeholder = tx('op_ph_' + elegido.nota);
+    };
+  });
+
+  /* la pregunta despliega los campos */
+  v.caja.querySelector('#op-quien').onclick = function(){
+    var f = v.caja.querySelector('#op-firma');
+    var abierto = f.classList.toggle('on');
+    this.classList.toggle('abierto', abierto);
+    if(abierto) v.caja.querySelector('#op-nombre').focus();
+  };
+
+  v.caja.querySelector('#op-no').onclick = function(){
+    v.cierra();
+    if(!terminada) SF_TOUR_MOTOR.sal();
+  };
+  v.caja.querySelector('#op-si').onclick = function(){
+    elegido.marcado = [].slice.call(
+      v.caja.querySelectorAll('#op-casillas input:checked')).map(function(x){
+        return tx('op_r_' + x.value); });
+    elegido.nombre = (v.caja.querySelector('#op-nombre').value||'').trim();
+    elegido.correo = (v.caja.querySelector('#op-correo').value||'').trim();
+    mandaOpinion(elegido, v.caja.querySelector('#op-texto').value,
+                 etapa, total, e, terminada);
+    v.cierra();
+    if(!terminada) SF_TOUR_MOTOR.sal();
+  };
+}
+
+/* ══ EL CORREO — como en la V1 ══ */
+function mandaOpinion(el, texto, etapa, total, e, terminada){
+  var seg = _TOUR_T0 ? Math.round((Date.now() - _TOUR_T0)/1000) : 0;
+  var cara = (CARAS.filter(function(c){ return c.n === el.nota; })[0]||{}).cara || '';
+  var R = String.fromCharCode(10);
+  var L = '═══════════════════════════════════════';
+
+  var asunto = '[Salufolio Feedback] '
+    + (terminada ? 'Visita completa' : 'Abandono en etapa ' + etapa + '/' + total)
+    + (el.nota ? ' — Nota: ' + el.nota + '/5 ' + cara : '');
+
+  var m = [L, 'Salufolio — Feedback de la visita', L, '',
+    (terminada ? '✓ Visita COMPLETA (' + total + ' etapas)'
+               : '⏸ Visita INTERRUMPIDA en la etapa ' + etapa + '/' + total),
+    (e ? 'Última etapa vista : "' + (e.icono||'') + ' ' + ttx(e.titulo) + '"' : ''),
+    '⏱ Duración : ' + seg + ' segundos',
+    (el.nota ? cara + ' Nota : ' + el.nota + '/5' : '(sin nota)'),
+    '🌐 Idioma : ' + String(LANG).toUpperCase(),
+    '👤 Perfil : ' + (el.perfil ? tx('op_p_' + el.perfil) : '(no indicado)'),
+    ((el.marcado||[]).length ? '☑ Marcado : ' + el.marcado.join(' · ') : ''),
+    (el.nombre ? '✍ Nombre : ' + el.nombre : ''),
+    (el.correo ? '✉ Correo : ' + el.correo : ''),
+    '📅 Fecha : ' + new Date().toISOString(),
+    '📱 Versión : Salufolio v' + (T.version || '?'),
+    '', '───────────────────────────────────────',
+    'COMENTARIO DEL USUARIO',
+    '───────────────────────────────────────', '',
+    (texto.trim() || '(sin comentario)'),
+    '', L, 'Enviado desde Salufolio',
+    'https://salufolio.com', ''].join(R);
+
+  var a = document.createElement('a');
+  a.href = 'mailto:salufolio@proton.me?subject=' + encodeURIComponent(asunto)
+         + '&body=' + encodeURIComponent(m);
+  a.click();
+  ponEstado(tx('op_gracias_corto'));
+}
+
+/* ── escapar lo que va en HTML — no existía en casa (P-H, 18/09) ── */
+function ventanaCasa(titulo, cuerpo, pie, alCerrar){
+  var f = document.createElement('div');
+  f.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.6);'
+    + 'display:flex;justify-content:center;align-items:center;padding:20px';
+  var c = document.createElement('div');
+  c.style.cssText = 'background:var(--surface);border:2px solid var(--accent);'
+    + 'border-radius:13px;padding:16px 20px 14px;width:100%;max-width:560px;'
+    + 'max-height:92vh;overflow-y:auto;box-shadow:0 14px 44px rgba(0,0,0,.5)';
+  c.innerHTML = '<div style="font-size:14.5px;font-weight:600;color:var(--accent);'
+    + 'margin-bottom:9px">' + titulo + '</div>' + cuerpo
+    + '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">'
+    + pie + '</div>';
+  f.appendChild(c); document.body.appendChild(f);
+  function cierra(){ if(f.parentNode) document.body.removeChild(f); if(alCerrar) alCerrar(); }
+  f.onclick = function(e){ if(e.target === f) cierra(); };
+  return { caja:c, cierra:cierra };
+}
+
+function esc(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function ttx(o){
+  if(!o) return '';
+  if(typeof o === 'string') return o;
+  return o[LANG] || o.es || '';
+}
+
 function carga(id, clave){
   var m=MODULOS.filter(function(x){return x.id===id})[0];
   if(!m) return;
@@ -788,6 +1152,7 @@ function manda(id){
   if(id==='panal')   return (window.opener&&!window.opener.closed)? window.close() : (window.location.href='../index.html');
   if(id==='tema'){ togglePaleta(); return; }
   if(id==='idioma'){ toggleBanderas(); return; }
+  if(id==='tour'){ arrancaTour(); return; }
   if(id==='ayuda'){ abreAyuda(); return; }
 }
 
@@ -1025,20 +1390,30 @@ function ponIdioma(l){
 
 /* ══ LA TRADUCTION du cadre de sélection ══ */
 var TX={
-  es:{ demo_titulo:"Expediente de demostración", demo_que:"Un caso real anonimizado, {anyos} años de historia. Los datos clínicos son auténticos — las medidas, las fechas, los tratamientos. La persona, no: nombre, SIP y documentos están cambiados.", apellidos:'Apellidos', ayuda_nuevo:'La matrícula se forma sola: las iniciales del nombre y las cuatro últimas cifras del SIP.', tit_nuevo:'🧑 Un paciente nuevo', crear:'Crear', cancelar:'Cancelar', extracciones:'extracciones', eventos:'eventos', medicamentos:'medicamentos',
+  es:{ op_r_dificil:"Demasiado complicado", op_r_no_para_mi:"No es para mí", op_r_no_entiendo:"No entiendo para qué sirve", op_r_no_encuentro:"No encuentro lo que busco", op_r_feo:"Se ve mal en mi pantalla", op_r_lento:"Va lento", op_r_falta_algo:"Falta algo que necesito", op_r_poco_claro:"Poco claro", op_r_esperaba_mas:"Esperaba más", op_r_sin_datos:"Sin mis datos no sirve", op_r_sin_ayuda:"Me he perdido sin ayuda", op_r_curioso:"Curioso, pero nada más", op_r_no_convence:"No acaba de convencerme", op_r_falta_probar:"Tendría que probarlo de verdad", op_r_para_otros:"Quizá para otros, no para mí", op_r_quizas:"Tal vez más adelante", op_r_claro:"Claro de entender", op_r_util:"Me parece útil", op_r_rapido:"Rápido de ver", op_r_bien_hecho:"Bien hecho", op_r_justo_lo_que:"Justo lo que buscaba", op_r_muy_util:"Muy útil para mi caso", op_r_bien_pensado:"Bien pensado", op_r_lo_recomiendo:"Se lo diría a alguien", op_r_me_sirve:"Lo voy a usar", op_r_sigo:"Quiero seguir viendo más", op_quien:"✉ Gracias por su opinión — ¿y usted, quién es?", op_nombre:"Su nombre (opcional)", op_correo:"Su correo, si quiere respuesta", tour:"Visita guiada", op_interrumpida:"¿Por qué interrumpe la visita?", op_gracias:"Ha visto toda la banda", op_etapa:"Abandono en la etapa {n} de {total}", op_completa:"Visita completa — {n} etapas", op_perfil:"Perfil", op_nota:"¿Qué le ha parecido?", op_p_medico:"👨‍⚕️ Médico", op_p_paciente:"🧑 Paciente", op_p_familia:"👨‍👩‍👧 Familia", op_p_investigador:"🔬 Investigador", op_p_otro:"💻 Otro", op_c_1:"Muy mal", op_c_2:"Mal", op_c_3:"Ni fu ni fa", op_c_4:"Bien", op_c_5:"Muy bien", op_q_1:"¿Qué le ha bloqueado?", op_q_2:"¿Qué le faltaba?", op_q_3:"¿Qué le haría inclinarse?", op_q_4:"¿Qué le ha servido?", op_q_5:"¿Se lo diría a alguien? ¿A quién?", op_ph_1:"Dígalo sin rodeos: es lo que más sirve.", op_ph_2:"Lo que esperaba encontrar y no estaba.", op_ph_3:"Lo que le decidiría a volver.", op_ph_4:"Lo que le ha parecido útil de verdad.", op_ph_5:"A quién, y por qué.", op_libre:"Escriba lo que quiera — o nada.", op_mandar:"Mandar", op_sin_decir:"Salir sin decir nada", op_gracias_corto:"Gracias — su correo se está abriendo.", demo_titulo:"Expediente de demostración", demo_que:"Un caso real anonimizado, {anyos} años de historia. Los datos clínicos son auténticos — las medidas, las fechas, los tratamientos. La persona, no: nombre, SIP y documentos están cambiados.", apellidos:'Apellidos', ayuda_nuevo:'La matrícula se forma sola: las iniciales del nombre y las cuatro últimas cifras del SIP.', tit_nuevo:'🧑 Un paciente nuevo', crear:'Crear', cancelar:'Cancelar', extracciones:'extracciones', eventos:'eventos', medicamentos:'medicamentos',
        conocidos:'Pacientes conocidos', nombre:'Nombre y apellidos', mat:'Matrícula',
        buscar:'🔎 Buscar', nuevo:'➕ Nuevo', exp:'Expediente', quien:'¿Quién accede?', todo:'Todo' },
-  fr:{ demo_titulo:"Dossier de démonstration", demo_que:"Un cas réel anonymisé, {anyos} ans d'histoire. Les données cliniques sont authentiques — les mesures, les dates, les traitements. La personne, non : nom, SIP et documents ont été changés.", apellidos:'Nom(s)', ayuda_nuevo:'La matricule se forme toute seule : les initiales du nom et les quatre derniers chiffres du SIP.', tit_nuevo:'🧑 Un patient nouveau', crear:'Créer', cancelar:'Annuler', extracciones:'prélèvements', eventos:'événements', medicamentos:'médicaments',
+  fr:{ op_r_dificil:"Trop compliqué", op_r_no_para_mi:"Ce n'est pas pour moi", op_r_no_entiendo:"Je ne vois pas à quoi ça sert", op_r_no_encuentro:"Je ne trouve pas ce que je cherche", op_r_feo:"Ça s’affiche mal chez moi", op_r_lento:"C’est lent", op_r_falta_algo:"Il manque ce dont j’ai besoin", op_r_poco_claro:"Peu clair", op_r_esperaba_mas:"J’en attendais plus", op_r_sin_datos:"Sans mes données ça ne sert à rien", op_r_sin_ayuda:"Je me suis perdu sans aide", op_r_curioso:"Curieux, mais sans plus", op_r_no_convence:"Ça ne me convainc pas tout à fait", op_r_falta_probar:"Il faudrait que je l’essaie vraiment", op_r_para_otros:"Peut-être pour d’autres, pas pour moi", op_r_quizas:"Plus tard peut-être", op_r_claro:"Clair à comprendre", op_r_util:"Ça me paraît utile", op_r_rapido:"Rapide à voir", op_r_bien_hecho:"Bien fait", op_r_justo_lo_que:"Exactement ce que je cherchais", op_r_muy_util:"Très utile pour mon cas", op_r_bien_pensado:"Bien pensé", op_r_lo_recomiendo:"Je le dirais à quelqu’un", op_r_me_sirve:"Je vais m’en servir", op_r_sigo:"Je veux en voir davantage", op_quien:"✉ Merci pour votre avis — et vous, qui êtes-vous ?", op_nombre:"Votre nom (facultatif)", op_correo:"Votre courriel, si vous voulez une réponse", tour:"Visite guidée", op_interrumpida:"Pourquoi interrompez-vous la visite ?", op_gracias:"Vous avez vu toute la bande", op_etapa:"Abandon à l'étape {n} sur {total}", op_completa:"Visite complète — {n} étapes", op_perfil:"Profil", op_nota:"Qu'en avez-vous pensé ?", op_p_medico:"👨‍⚕️ Médecin", op_p_paciente:"🧑 Patient", op_p_familia:"👨‍👩‍👧 Famille", op_p_investigador:"🔬 Chercheur", op_p_otro:"💻 Autre", op_c_1:"Très mal", op_c_2:"Mal", op_c_3:"Mitigé", op_c_4:"Bien", op_c_5:"Très bien", op_q_1:"Qu'est-ce qui vous a bloqué ?", op_q_2:"Qu'est-ce qui manquait ?", op_q_3:"Qu'est-ce qui ferait pencher ?", op_q_4:"Qu'est-ce qui vous a servi ?", op_q_5:"Le diriez-vous à quelqu'un ? À qui ?", op_ph_1:"Dites-le sans détour : c'est ce qui sert le plus.", op_ph_2:"Ce que vous espériez trouver et qui n'y était pas.", op_ph_3:"Ce qui vous déciderait à revenir.", op_ph_4:"Ce qui vous a paru vraiment utile.", op_ph_5:"À qui, et pourquoi.", op_libre:"Écrivez ce que vous voulez — ou rien.", op_mandar:"Envoyer", op_sin_decir:"Sortir sans rien dire", op_gracias_corto:"Merci — votre courrier s'ouvre.", demo_titulo:"Dossier de démonstration", demo_que:"Un cas réel anonymisé, {anyos} ans d'histoire. Les données cliniques sont authentiques — les mesures, les dates, les traitements. La personne, non : nom, SIP et documents ont été changés.", apellidos:'Nom(s)', ayuda_nuevo:'La matricule se forme toute seule : les initiales du nom et les quatre derniers chiffres du SIP.', tit_nuevo:'🧑 Un patient nouveau', crear:'Créer', cancelar:'Annuler', extracciones:'prélèvements', eventos:'événements', medicamentos:'médicaments',
        conocidos:'Patients connus', nombre:'Nom et prénoms', mat:'Matricule',
        buscar:'🔎 Chercher', nuevo:'➕ Nouveau', exp:'Dossier', quien:'Qui accède ?', todo:'Tout' },
-  ca:{ demo_titulo:"Expedient de demostració", demo_que:"Un cas real anonimitzat, {anyos} anys d'història. Les dades clíniques són autèntiques; la persona, no.", apellidos:'Cognoms', ayuda_nuevo:'La matrícula es forma sola.', tit_nuevo:'🧑 Un pacient nou', crear:'Crear', cancelar:'Cancel·lar', extracciones:'extraccions', eventos:'esdeveniments', medicamentos:'medicaments',
+  ca:{ op_r_dificil:"Massa complicat", op_r_no_para_mi:"No és per a mi", op_r_no_entiendo:"No entenc per a què servix", op_r_no_encuentro:"No trobe el que busque", op_r_feo:"Es veu mal", op_r_lento:"Va lent", op_r_falta_algo:"Falta alguna cosa", op_r_poco_claro:"Poc clar", op_r_esperaba_mas:"Esperava més", op_r_sin_datos:"Sense les meues dades no servix", op_r_sin_ayuda:"M’he perdut", op_r_curioso:"Curiós, però res més", op_r_no_convence:"No acaba de convéncer-me", op_r_falta_probar:"Hauria de provar-ho", op_r_para_otros:"Potser per a altres", op_r_quizas:"Tal vegada més avant", op_r_claro:"Clar d’entendre", op_r_util:"Em sembla útil", op_r_rapido:"Ràpid de veure", op_r_bien_hecho:"Ben fet", op_r_justo_lo_que:"Just el que buscava", op_r_muy_util:"Molt útil", op_r_bien_pensado:"Ben pensat", op_r_lo_recomiendo:"L’hi diria a algú", op_r_me_sirve:"El vaig a usar", op_r_sigo:"Vull vore’n més", op_quien:"✉ Gràcies per la seua opinió — i vosté, qui és?", op_nombre:"El seu nom (opcional)", op_correo:"El seu correu, si vol resposta", tour:"Visita guiada", op_interrumpida:"Per què interromp la visita?", op_gracias:"Ha vist tota la banda", op_etapa:"Abandó en l'etapa {n} de {total}", op_completa:"Visita completa — {n} etapes", op_perfil:"Perfil", op_nota:"Què li ha paregut?", op_p_medico:"👨‍⚕️ Metge", op_p_paciente:"🧑 Pacient", op_p_familia:"👨‍👩‍👧 Família", op_p_investigador:"🔬 Investigador", op_p_otro:"💻 Altre", op_c_1:"Molt mal", op_c_2:"Mal", op_c_3:"Així així", op_c_4:"Bé", op_c_5:"Molt bé", op_q_1:"Què li ha bloquejat?", op_q_2:"Què li faltava?", op_q_3:"Què el faria decidir?", op_q_4:"Què li ha servit?", op_q_5:"L'hi diria a algú?", op_ph_1:"Diga-ho sense embuts.", op_ph_2:"El que esperava trobar.", op_ph_3:"El que el faria tornar.", op_ph_4:"El que li ha semblat útil.", op_ph_5:"A qui, i per què.", op_libre:"Escriga el que vullga — o res.", op_mandar:"Enviar", op_sin_decir:"Eixir sense dir res", op_gracias_corto:"Gràcies.", demo_titulo:"Expedient de demostració", demo_que:"Un cas real anonimitzat, {anyos} anys d'història. Les dades clíniques són autèntiques; la persona, no.", apellidos:'Cognoms', ayuda_nuevo:'La matrícula es forma sola.', tit_nuevo:'🧑 Un pacient nou', crear:'Crear', cancelar:'Cancel·lar', extracciones:'extraccions', eventos:'esdeveniments', medicamentos:'medicaments',
        conocidos:'Pacients coneguts', nombre:'Nom i cognoms', mat:'Matrícula',
        buscar:'🔎 Buscar', nuevo:'➕ Nou', exp:'Expedient', quien:'Qui accedeix?', todo:'Tot' },
-  en:{ demo_titulo:"Demonstration record", demo_que:"A real case, anonymised, {anyos} years of history. The clinical data are genuine — measurements, dates, treatments. The person is not: name, SIP and documents have been changed.", apellidos:'Surname(s)', ayuda_nuevo:'The ID forms itself: initials of the name and the last four SIP digits.', tit_nuevo:'🧑 A new patient', crear:'Create', cancelar:'Cancel', extracciones:'tests', eventos:'events', medicamentos:'medications',
+  en:{ op_r_dificil:"Too complicated", op_r_no_para_mi:"Not for me", op_r_no_entiendo:"I don't see what it is for", op_r_no_encuentro:"I can't find what I need", op_r_feo:"It looks wrong on my screen", op_r_lento:"It is slow", op_r_falta_algo:"Something I need is missing", op_r_poco_claro:"Not clear enough", op_r_esperaba_mas:"I expected more", op_r_sin_datos:"Useless without my own data", op_r_sin_ayuda:"I got lost with no help", op_r_curioso:"Interesting, but no more", op_r_no_convence:"Not quite convinced", op_r_falta_probar:"I would need to really try it", op_r_para_otros:"Maybe for others, not me", op_r_quizas:"Perhaps later", op_r_claro:"Easy to understand", op_r_util:"Looks useful", op_r_rapido:"Quick to see", op_r_bien_hecho:"Well made", op_r_justo_lo_que:"Exactly what I was after", op_r_muy_util:"Very useful for my case", op_r_bien_pensado:"Well thought out", op_r_lo_recomiendo:"I would tell someone", op_r_me_sirve:"I will use it", op_r_sigo:"I want to see more", op_quien:"✉ Thank you for your feedback — and you, who are you?", op_nombre:"Your name (optional)", op_correo:"Your email, if you want a reply", tour:"Guided tour", op_interrumpida:"Why are you leaving the tour?", op_gracias:"You have seen the whole bar", op_etapa:"Left at step {n} of {total}", op_completa:"Tour complete — {n} steps", op_perfil:"Profile", op_nota:"What did you think?", op_p_medico:"👨‍⚕️ Doctor", op_p_paciente:"🧑 Patient", op_p_familia:"👨‍👩‍👧 Family", op_p_investigador:"🔬 Researcher", op_p_otro:"💻 Other", op_c_1:"Very poor", op_c_2:"Poor", op_c_3:"So-so", op_c_4:"Good", op_c_5:"Very good", op_q_1:"What blocked you?", op_q_2:"What was missing?", op_q_3:"What would tip the balance?", op_q_4:"What helped?", op_q_5:"Would you tell someone? Who?", op_ph_1:"Say it plainly: that is what helps most.", op_ph_2:"What you hoped to find and did not.", op_ph_3:"What would bring you back.", op_ph_4:"What you found genuinely useful.", op_ph_5:"Who, and why.", op_libre:"Write what you like — or nothing.", op_mandar:"Send", op_sin_decir:"Leave without saying", op_gracias_corto:"Thank you — your mail is opening.", demo_titulo:"Demonstration record", demo_que:"A real case, anonymised, {anyos} years of history. The clinical data are genuine — measurements, dates, treatments. The person is not: name, SIP and documents have been changed.", apellidos:'Surname(s)', ayuda_nuevo:'The ID forms itself: initials of the name and the last four SIP digits.', tit_nuevo:'🧑 A new patient', crear:'Create', cancelar:'Cancel', extracciones:'tests', eventos:'events', medicamentos:'medications',
        conocidos:'Known patients', nombre:'Name and surname', mat:'ID',
        buscar:'🔎 Search', nuevo:'➕ New', exp:'Record', quien:'Who is accessing?', todo:'All' }
 };
-function tx(k){ return (TX[LANG]&&TX[LANG][k]) || TX.es[k] || k; }
+/* ══ tx() SABE RELLENAR (P-H, 18/09/2026) ══
+   « Tu n'affiches pas le nr de l'étape, par contre dans l'email OUI. »
+
+   Porque el correo los ponía a mano y tx() no: devolvía « etapa {n} de
+   {total} » tal cual. Ahora rellena lo que se le da. */
+function tx(k, v){
+  var t = (TX[LANG]&&TX[LANG][k]) || TX.es[k] || k;
+  if(!v) return t;
+  return String(t).replace(/\{(\w+)\}/g, function(m, x){
+    return (v[x] !== undefined) ? v[x] : m; });
+}
 function traduceFormulario(){
   /* v2 (P-H, 15/09) : chaque étiquette a son identifiant — on ne les
      compte plus par leur rang, qui changeait au premier remaniement. */

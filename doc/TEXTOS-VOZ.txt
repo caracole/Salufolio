@@ -1,0 +1,352 @@
+══════════════════════════════════════════════════════════════════════════
+  LOS TEXTOS DE LA VISITA — para grabar las voces
+  Salufolio · casa · 2026.09.18-19:29:26
+══════════════════════════════════════════════════════════════════════════
+
+  8 etapas mas el final, cuatro lenguas: 36 ficheros.
+
+  ── COMO SE NOMBRAN ──
+
+      voz/t01_es.mp3   etapa 1, castellano
+      voz/t09_en.mp3   el final, ingles
+
+  Se ponen en  casa/voz/. Lo que falte, la sintesis del navegador lo
+  dice — fea pero se entiende, y ya es algo (P-H, 18/09).
+
+  ── LAS VOCES ──
+
+      Castellano : Alvaro (masculina) o Elvira (femenina)
+      Las demas  : la voz que mejor suene en cada lengua
+
+  Sin prisa en la diccion: quien escucha mira la pantalla al mismo
+  tiempo. Una pausa entre frases vale mas que la velocidad.
+
+
+
+══════════════════════════════════════════════════════════════════════════
+  CASTELLANO   —   Álvaro (masculina) · Elvira (femenina)
+══════════════════════════════════════════════════════════════════════════
+
+
+──────────────────────────────────────────────────────────────────────────
+  t01_es.mp3   🐝  Acaba de llegar
+  (11 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Bienvenido a la casa de Salufolio. La abeja, arriba a la izquierda,
+  lleva al panal — la entrada, donde se explica qué es todo esto y para
+  quién. Puede volver allí cuando quiera.
+
+──────────────────────────────────────────────────────────────────────────
+  t02_es.mp3   📖  Dónde está
+  (11 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Salufolio, y debajo su número de versión: pase el dedo por encima y lo
+  verá. Parece un detalle, no lo es. Sin número, nunca se sabe qué se
+  está mirando — ni qué falla cuando algo falla.
+
+──────────────────────────────────────────────────────────────────────────
+  t03_es.mp3   🧑  De quién se habla
+  (13 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Aquí se ve de quién es el expediente abierto — ahora mismo, el de
+  demostración. Tóquelo y podrá cambiar de persona. Salufolio sirve a
+  varios: su madre, su padre, usted mismo. Cada uno tiene su carpeta, y
+  nunca se mezclan.
+
+──────────────────────────────────────────────────────────────────────────
+  t04_es.mp3   💾  Guardar lo que se escribe
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  El disquete escribe el expediente en su disco. Si lleva un asterisco,
+  hay algo escrito que todavía no se ha guardado. Cada vez se escribe un
+  fichero nuevo, con su fecha: el anterior sigue donde estaba.
+
+──────────────────────────────────────────────────────────────────────────
+  t05_es.mp3   🌐  Su idioma
+  (9 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Castellano, valenciano, francés, inglés. Toda la casa lo sigue: los
+  menús, las ayudas, los informes. Se elige una vez y se recuerda.
+
+──────────────────────────────────────────────────────────────────────────
+  t06_es.mp3   🎨  Sus colores
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Once paletas, claras y oscuras. No es un capricho: quien lee de noche,
+  quien tiene la vista cansada, quien trabaja a la luz de un hospital no
+  necesitan lo mismo.
+
+──────────────────────────────────────────────────────────────────────────
+  t07_es.mp3   ❔  Y si se pierde
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Cada programa trae su ayuda, y dice lo que se hace donde uno está. No
+  es un manual que hay que leer entero: es una página corta, en su
+  idioma, sobre la pantalla que tiene delante. A su lado, la casa lo
+  trae de vuelta.
+
+──────────────────────────────────────────────────────────────────────────
+  t08_es.mp3   🏠  Volver a la casa
+  (10 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Cuando se está dentro de un programa, la casa lo trae de vuelta. Las
+  tarjetas siguen ahí, y el expediente también: no se pierde nada al ir
+  y venir.
+
+──────────────────────────────────────────────────────────────────────────
+  t09_es.mp3   ✓  Ya conoce la casa  (el final)
+──────────────────────────────────────────────────────────────────────────
+
+  Eso es todo. Ahora toque una tarjeta y mire: es su expediente, en su
+  ordenador, y nada sale de ahí. Si algo le ha parecido mal, dígalo — el
+  ❌ de esta visita abre una hoja para contarlo.
+
+══════════════════════════════════════════════════════════════════════════
+  FRANÇAIS   —   voix française
+══════════════════════════════════════════════════════════════════════════
+
+
+──────────────────────────────────────────────────────────────────────────
+  t01_fr.mp3   🐝  Vous venez d'arriver
+  (11 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Bienvenue dans la maison de Salufolio. L'abeille, en haut à gauche,
+  mène au panal — l'entrée, où l'on explique ce qu'est tout ceci et pour
+  qui. Vous pouvez y revenir quand vous voulez.
+
+──────────────────────────────────────────────────────────────────────────
+  t02_fr.mp3   📖  Où vous êtes
+  (11 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Salufolio, et dessous son numéro de version : passez le doigt dessus
+  et vous le verrez. Cela semble un détail, ce n'en est pas un. Sans
+  numéro, on ne sait jamais ce qu'on regarde — ni ce qui cloche quand
+  quelque chose cloche.
+
+──────────────────────────────────────────────────────────────────────────
+  t03_fr.mp3   🧑  De qui l'on parle
+  (13 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Ici on voit de qui est le dossier ouvert — pour l'instant, celui de
+  démonstration. Touchez-le et vous pourrez changer de personne.
+  Salufolio sert à plusieurs : votre mère, votre père, vous-même. Chacun
+  a son dossier, et ils ne se mélangent jamais.
+
+──────────────────────────────────────────────────────────────────────────
+  t04_fr.mp3   💾  Garder ce qu'on écrit
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  La disquette écrit le dossier sur votre disque. Si elle porte une
+  étoile, il y a du travail qui n'est pas encore gardé. Chaque fois un
+  fichier neuf s'écrit, avec sa date : le précédent reste où il était.
+
+──────────────────────────────────────────────────────────────────────────
+  t05_fr.mp3   🌐  Votre langue
+  (9 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Espagnol, valencien, français, anglais. Toute la maison suit : les
+  menus, les aides, les rapports. On choisit une fois et c'est retenu.
+
+──────────────────────────────────────────────────────────────────────────
+  t06_fr.mp3   🎨  Vos couleurs
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Onze palettes, claires et sombres. Ce n'est pas un caprice : celui qui
+  lit la nuit, celui qui a la vue fatiguée, celui qui travaille à la
+  lumière d'un hôpital n'ont pas les mêmes besoins.
+
+──────────────────────────────────────────────────────────────────────────
+  t07_fr.mp3   ❔  Et si vous vous perdez
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Chaque programme a son aide, et dit ce qu'on fait là où l'on est. Ce
+  n'est pas un manuel à lire en entier : c'est une page courte, dans
+  votre langue, sur l'écran que vous avez devant vous. À côté, la maison
+  vous ramène.
+
+──────────────────────────────────────────────────────────────────────────
+  t08_fr.mp3   🏠  Revenir à la maison
+  (10 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Quand on est dans un programme, la maison vous ramène. Les cartes sont
+  toujours là, et le dossier aussi : on ne perd rien à aller et venir.
+
+──────────────────────────────────────────────────────────────────────────
+  t09_fr.mp3   ✓  Vous connaissez la maison  (el final)
+──────────────────────────────────────────────────────────────────────────
+
+  Voilà tout. Touchez maintenant une carte et regardez : c'est votre
+  dossier, sur votre ordinateur, et rien n'en sort. Si quelque chose
+  vous a déplu, dites-le — le ❌ de cette visite ouvre une feuille pour
+  le raconter.
+
+══════════════════════════════════════════════════════════════════════════
+  VALENCIÀ   —   veu valenciana
+══════════════════════════════════════════════════════════════════════════
+
+
+──────────────────────────────────────────────────────────────────────────
+  t01_ca.mp3   🐝  Acaba d'arribar
+  (11 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Benvingut a la casa de Salufolio. L'abella porta al panal, l'entrada.
+
+──────────────────────────────────────────────────────────────────────────
+  t02_ca.mp3   📖  On està
+  (11 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Salufolio, i davall el seu número de versió. Sense número, mai se sap
+  què s'està mirant.
+
+──────────────────────────────────────────────────────────────────────────
+  t03_ca.mp3   🧑  De qui es parla
+  (13 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Ací es veu de qui és l'expedient obert. Toque'l i podrà canviar de
+  persona. Cada u té la seua carpeta.
+
+──────────────────────────────────────────────────────────────────────────
+  t04_ca.mp3   💾  Guardar el que s'escriu
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  El disquet escriu l'expedient al seu disc. Si porta un asterisc, hi ha
+  alguna cosa sense guardar.
+
+──────────────────────────────────────────────────────────────────────────
+  t05_ca.mp3   🌐  El seu idioma
+  (9 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Castellà, valencià, francés, anglés. Tota la casa ho seguix.
+
+──────────────────────────────────────────────────────────────────────────
+  t06_ca.mp3   🎨  Els seus colors
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Onze paletes, clares i fosques. Qui llig de nit i qui té la vista
+  cansada no necessiten el mateix.
+
+──────────────────────────────────────────────────────────────────────────
+  t07_ca.mp3   ❔  I si es perd
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Cada programa porta la seua ajuda. Al seu costat, la casa el torna.
+
+──────────────────────────────────────────────────────────────────────────
+  t08_ca.mp3   🏠  Tornar a la casa
+  (10 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Quan s'està dins d'un programa, la casa el torna.
+
+──────────────────────────────────────────────────────────────────────────
+  t09_ca.mp3   ✓  Ja coneix la casa  (el final)
+──────────────────────────────────────────────────────────────────────────
+
+  Això és tot. Ara toque una targeta i mire: és el seu expedient, en el
+  seu ordinador.
+
+══════════════════════════════════════════════════════════════════════════
+  ENGLISH   —   English voice
+══════════════════════════════════════════════════════════════════════════
+
+
+──────────────────────────────────────────────────────────────────────────
+  t01_en.mp3   🐝  You have just arrived
+  (11 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Welcome to the house of Salufolio. The bee, top left, leads to the
+  hive — the entrance, where it is explained what all this is and for
+  whom.
+
+──────────────────────────────────────────────────────────────────────────
+  t02_en.mp3   📖  Where you are
+  (11 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Salufolio, and beneath it the version number. Hover over it and you
+  will see. Without a number you never know what you are looking at.
+
+──────────────────────────────────────────────────────────────────────────
+  t03_en.mp3   🧑  Whose record
+  (13 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Here you see whose record is open — right now, the demonstration one.
+  Tap it to change person. Salufolio serves several: your mother, your
+  father, yourself. Each has their own folder.
+
+──────────────────────────────────────────────────────────────────────────
+  t04_en.mp3   💾  Saving what you write
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  The disk writes the record to your drive. If it carries a star,
+  something is not yet saved.
+
+──────────────────────────────────────────────────────────────────────────
+  t05_en.mp3   🌐  Your language
+  (9 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Spanish, Valencian, French, English. The whole house follows. Choose
+  once and it is remembered.
+
+──────────────────────────────────────────────────────────────────────────
+  t06_en.mp3   🎨  Your colours
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Eleven palettes, light and dark. Not a whim: reading at night, tired
+  eyes, hospital lighting — none need the same.
+
+──────────────────────────────────────────────────────────────────────────
+  t07_en.mp3   ❔  And if you get lost
+  (12 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  Each program has its help, telling you what happens where you are.
+  Beside it, the house brings you back.
+
+──────────────────────────────────────────────────────────────────────────
+  t08_en.mp3   🏠  Back to the house
+  (10 segundos previstos)
+──────────────────────────────────────────────────────────────────────────
+
+  When you are inside a program, the house brings you back.
+
+──────────────────────────────────────────────────────────────────────────
+  t09_en.mp3   ✓  You know the house now  (el final)
+──────────────────────────────────────────────────────────────────────────
+
+  That is all. Now tap a card and look: it is your record, on your
+  computer, and nothing leaves it.
+
+
+══════════════════════════════════════════════════════════════════════════
+  Cuando esten grabados, se ponen en casa/voz/ y la visita los usa.
+  Mientras tanto, la sintesis habla — y eso ya funciona.
+══════════════════════════════════════════════════════════════════════════
