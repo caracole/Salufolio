@@ -29,6 +29,18 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 #g-barra .btn.on{border-color:var(--accent);background:rgba(74,143,232,.14);color:var(--text)}
 #glosario-content{padding:16px 20px 50px;max-width:900px;margin:0 auto}
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
+
+/* ══ la ficha de un término ══ */
+.glos-card{
+  background:var(--surface2);
+  border-radius:8px;
+  padding:var(--glos-card-pad);
+  margin-bottom:var(--glos-gap);
+  /* el trait: un filete arriba, que separa sin encerrar */
+  border-top:2px solid var(--accent);
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+}
+.glos-card + .glos-card{margin-top:calc(var(--glos-gap) * .5)}
 </style>
 </head>
 <body>
@@ -58,7 +70,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    GLOSARIO — programa autónomo de Salufolio V2
-   Versión 2026.09.07-12:40:39
+   Versión 2026.09.18-09:04:42
 
    Las definiciones NO están aquí: viven en ../comun/glosario-datos.js,
    porque sirven a varios programas — Resumen, Curvas, Tabla las piden con
@@ -1242,7 +1254,13 @@ function renderGlosario() {
       ? (GLOSARIO_DETALLE[claveDetalle][glosarioLang] || GLOSARIO_DETALLE[claveDetalle].es)
       : null;
     const card = document.createElement('div');
-    card.style.cssText = 'background:var(--surface2);border-radius:8px;padding:var(--glos-card-pad);margin-bottom:var(--glos-gap)';
+    /* ══ UN TRAIT ENTRE CHAQUE TERME (P-H, 18/09/2026) ══
+       « Mets une séparation entre chaque terme, un trait horizontal par
+         exemple, ça facilite la lecture. »
+
+       Y el estilo sale del código: vive en la hoja, con los demás. Era
+       la regla del 05/09 — « RIEN EN DUR ». */
+    card.className = 'glos-card';
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:4px;margin-bottom:2px">
         <div style="font-size:14px;font-weight:600;color:var(--text)">${p.nombre} <span style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-left:6px">${p.sigla}</span></div>
