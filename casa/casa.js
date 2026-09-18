@@ -18,7 +18,7 @@ var SF_LANZADOR = window.SF_LANZADOR = {
   ],
   "carpeta_expedientes": "../pacientes/",
   "carpeta_doc": "../../doc/Salufolio/",
-  "ayuda": "lanzador.help.html",
+  "ayuda": "casa.help.html",
   "paleta_defecto": "cielo",
   "acceso_defecto": "todos",
   "tablas": {
