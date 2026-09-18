@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ayuda · La casa</title>
+<link rel="stylesheet" href="../comun/salufolio.css">
+<style>
+body{margin:0;padding:22px 26px 50px;background:var(--bg);color:var(--text);
+     font-family:var(--sans,system-ui,sans-serif);line-height:1.72}
+.env{max-width:680px;margin:0 auto}
+h1{font-family:var(--serif);font-size:21px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:12.5px;margin-bottom:22px}
+h2{font-family:var(--serif);font-size:15px;color:var(--accent);margin:24px 0 7px;
+   border-bottom:1px solid var(--border);padding-bottom:4px}
+p{margin:0 0 12px;font-size:14px}
+.sordo{color:var(--muted);font-size:13px}
+.nota{background:var(--surface);border-left:3px solid var(--accent);
+      border-radius:0 8px 8px 0;padding:11px 15px;font-size:13px;
+      color:var(--muted);margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 18px}
+td{padding:7px 10px 7px 0;border-bottom:1px solid var(--border);vertical-align:top}
+td:first-child{white-space:nowrap;width:1%;padding-right:16px;font-size:16px;
+               text-align:center}
+.b{font-weight:600}
+
+/* ── les drapeaux, en haut à droite ── */
+#lenguas{position:fixed;top:12px;right:16px;display:flex;gap:5px;z-index:10}
+#lenguas button{border:1px solid var(--border);background:var(--surface);
+  border-radius:7px;padding:3px 8px;cursor:pointer;font-size:14px;line-height:1.4;
+  opacity:.5;transition:all .18s}
+#lenguas button:hover{opacity:.85}
+#lenguas button.on{opacity:1;border-color:var(--accent)}
+[data-lg]{display:none}
+[data-lg].on{display:block}
+</style>
+</head>
+<body>
+
+<div id="lenguas"></div>
+<div class="env" id="cuerpo"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA AYUDA DE LA CASA — en las cuatro lenguas (P-H, 16/09/2026)
+
+   « Dans les langues supportées. »
+
+   UN SOLO FICHERO, cuatro lenguas dentro. Cuando la casa cambia, se
+   corrige un documento, no cuatro — y ninguno se queda atrás.
+
+   La lengua viene de donde la dejó el usuario (sf_idioma); si no hay
+   nada, del navegador; si tampoco, castellano.
+   ══════════════════════════════════════════════════════════════════════ */
+
+var LENGUAS = [
+  { id:'es', bandera:'🇪🇸', nombre:'Castellano' },
+  { id:'ca', bandera:'🏳️',  nombre:'Valencià'   },
+  { id:'fr', bandera:'🇫🇷', nombre:'Français'   },
+  { id:'en', bandera:'🇬🇧', nombre:'English'    }
+];
+
+var AYUDA = {
+
+es: `
+<h1>🏠 La casa</h1>
+<div class="sub">Aquí se elige a quién se mira, y con qué se mira</div>
+
+<p>Esta pantalla no muestra datos: los reparte. Elija un paciente arriba,
+y las tarjetas de abajo se encienden.</p>
+
+<h2>Arriba — de quién se trata</h2>
+<p>La lista de <b>pacientes conocidos</b> trae los que ya tienen
+expediente. Elija uno: debajo aparecen sus expedientes, el más reciente
+primero.</p>
+<table>
+  <tr><td>➕</td><td><span class="b">Nuevo</span><br>
+      <span class="sordo">Nombre, apellidos y SIP — la matrícula se forma
+      sola con las iniciales y las cuatro últimas cifras. Se crea su
+      carpeta y se empieza de cero.</span></td></tr>
+  <tr><td>📂</td><td><span class="b">Un fichero suelto</span><br>
+      <span class="sordo">Para abrir un expediente que esté en otro sitio
+      — una llave USB, la carpeta de descargas.</span></td></tr>
+</table>
+<div class="nota">Mientras no haya expediente abierto, las tarjetas que
+necesitan datos esperan apagadas. El <b>glosario</b> funciona siempre:
+no necesita ninguno.</div>
+
+<h2>Abajo — con qué mirarlo</h2>
+<table>
+  <tr><td>👁</td><td><span class="b">Ver</span><br>
+      <span class="sordo">Consultan y no tocan nada: el resumen, las
+      curvas, la cronología, el radar, las correlaciones.</span></td></tr>
+  <tr><td>✍️</td><td><span class="b">Ver y modificar</span><br>
+      <span class="sordo">Escriben en el expediente: los tratamientos,
+      la revisión, la auditoría, y las tres adquisiciones.</span></td></tr>
+</table>
+<p class="sordo">Toque una tarjeta y el programa se abre aquí mismo, con
+el expediente ya cargado. El 🏠 lo trae de vuelta.</p>
+
+<h2>La banda de arriba</h2>
+<table>
+  <tr><td>🐝</td><td>Volver al panal — la entrada de la casa</td></tr>
+  <tr><td>💾</td><td>Guardar el expediente. Se escribe un fichero nuevo:
+      lo de antes no se toca</td></tr>
+  <tr><td>🌐</td><td>El idioma — toda la casa lo sigue</td></tr>
+  <tr><td>🌓</td><td>La paleta de colores</td></tr>
+  <tr><td>💬</td><td>Las burbujas de ayuda: encendidas o apagadas.
+      Vale para todos los programas</td></tr>
+  <tr><td>❔</td><td>Esta página</td></tr>
+</table>
+
+<h2>Lo que hay que saber</h2>
+<p><b>Nada sale de su ordenador.</b> Ni a una nube, ni a un servidor, ni
+a nosotros. El expediente es un fichero suyo, en su disco.</p>
+<p><b>Guardar no borra.</b> Cada vez se escribe un fichero nuevo, con su
+fecha. El anterior sigue donde estaba — si algo sale mal, se vuelve.</p>
+<p><b>Con el servidor, todo se coloca solo.</b> Sin él, el navegador
+descarga el fichero y hay que ponerlo usted en la carpeta del paciente:
+un navegador no puede escribir en el disco, y está bien que sea así.</p>
+<div class="nota">Si una tarjeta está apagada y cree que no debería,
+mire arriba: casi siempre es que falta elegir el expediente.</div>
+`,
+
+fr: `
+<h1>🏠 La maison</h1>
+<div class="sub">Ici l'on choisit qui l'on regarde, et avec quoi</div>
+
+<p>Cet écran ne montre pas de données : il les répartit. Choisissez un
+patient en haut, et les cartes du bas s'allument.</p>
+
+<h2>En haut — de qui il s'agit</h2>
+<p>La liste des <b>patients connus</b> porte ceux qui ont déjà un
+dossier. Choisissez-en un : ses dossiers paraissent dessous, le plus
+récent en tête.</p>
+<table>
+  <tr><td>➕</td><td><span class="b">Nouveau</span><br>
+      <span class="sordo">Nom, prénoms et SIP — la matricule se forme
+      toute seule avec les initiales et les quatre derniers chiffres.
+      Son dossier est créé et l'on part de rien.</span></td></tr>
+  <tr><td>📂</td><td><span class="b">Un fichier posé ailleurs</span><br>
+      <span class="sordo">Pour ouvrir un dossier qui est autre part —
+      une clé USB, le dossier des téléchargements.</span></td></tr>
+</table>
+<div class="nota">Tant qu'aucun dossier n'est ouvert, les cartes qui ont
+besoin de données attendent, éteintes. Le <b>glossaire</b> marche
+toujours : il n'en demande aucune.</div>
+
+<h2>En bas — avec quoi le regarder</h2>
+<table>
+  <tr><td>👁</td><td><span class="b">Consulter</span><br>
+      <span class="sordo">Elles regardent et ne touchent à rien : le
+      résumé, les courbes, la chronologie, le radar, les
+      corrélations.</span></td></tr>
+  <tr><td>✍️</td><td><span class="b">Voir et modifier</span><br>
+      <span class="sordo">Elles écrivent dans le dossier : les
+      traitements, la révision, l'audit, et les trois
+      acquisitions.</span></td></tr>
+</table>
+<p class="sordo">Touchez une carte et le programme s'ouvre ici même, le
+dossier déjà chargé. Le 🏠 vous ramène.</p>
+
+<h2>La bande du haut</h2>
+<table>
+  <tr><td>🐝</td><td>Revenir au panal — l'entrée de la maison</td></tr>
+  <tr><td>💾</td><td>Garder le dossier. Un fichier neuf s'écrit : ce
+      qu'il y avait avant n'est pas touché</td></tr>
+  <tr><td>🌐</td><td>La langue — toute la maison la suit</td></tr>
+  <tr><td>🌓</td><td>La palette de couleurs</td></tr>
+  <tr><td>💬</td><td>Les bulles d'aide : allumées ou éteintes. Vaut pour
+      tous les programmes</td></tr>
+  <tr><td>❔</td><td>Cette page</td></tr>
+</table>
+
+<h2>Ce qu'il faut savoir</h2>
+<p><b>Rien ne sort de votre ordinateur.</b> Ni vers un nuage, ni vers un
+serveur, ni vers nous. Le dossier est un fichier à vous, sur votre
+disque.</p>
+<p><b>Garder n'efface pas.</b> Chaque fois un fichier neuf s'écrit, avec
+sa date. Le précédent reste où il était — si quelque chose tourne mal,
+on revient.</p>
+<p><b>Avec le serveur, tout se range tout seul.</b> Sans lui, le
+navigateur télécharge le fichier et c'est à vous de le poser dans le
+dossier du patient : un navigateur ne peut pas écrire sur le disque, et
+c'est bien ainsi.</p>
+<div class="nota">Si une carte est éteinte et que vous croyez qu'elle ne
+devrait pas, regardez en haut : c'est presque toujours qu'il manque le
+choix du dossier.</div>
+`,
+
+ca: `
+<h1>🏠 La casa</h1>
+<div class="sub">Ací es tria a qui es mira, i amb què</div>
+
+<p>Esta pantalla no mostra dades: les reparteix. Trie un pacient dalt, i
+les targetes de baix s'encenen.</p>
+
+<h2>Dalt — de qui es tracta</h2>
+<p>La llista de <b>pacients coneguts</b> porta els que ja tenen
+expedient. Trie'n un: a sota apareixen els seus expedients, el més
+recent primer.</p>
+<table>
+  <tr><td>➕</td><td><span class="b">Nou</span><br>
+      <span class="sordo">Nom, cognoms i SIP — la matrícula es forma sola
+      amb les inicials i les quatre últimes xifres.</span></td></tr>
+  <tr><td>📂</td><td><span class="b">Un fitxer solt</span><br>
+      <span class="sordo">Per obrir un expedient que estiga en un altre
+      lloc.</span></td></tr>
+</table>
+<div class="nota">Mentre no hi haja expedient obert, les targetes que
+necessiten dades esperen apagades. El <b>glossari</b> funciona sempre.</div>
+
+<h2>Baix — amb què mirar-lo</h2>
+<table>
+  <tr><td>👁</td><td><span class="b">Veure</span><br>
+      <span class="sordo">Consulten i no toquen res: el resum, les
+      corbes, la cronologia, el radar.</span></td></tr>
+  <tr><td>✍️</td><td><span class="b">Veure i modificar</span><br>
+      <span class="sordo">Escriuen a l'expedient: els tractaments, la
+      revisió, l'auditoria, i les tres adquisicions.</span></td></tr>
+</table>
+<p class="sordo">Toque una targeta i el programa s'obri ací mateix. El 🏠
+el torna.</p>
+
+<h2>La banda de dalt</h2>
+<table>
+  <tr><td>🐝</td><td>Tornar al panal</td></tr>
+  <tr><td>💾</td><td>Guardar l'expedient. S'escriu un fitxer nou</td></tr>
+  <tr><td>🌐</td><td>L'idioma</td></tr>
+  <tr><td>🌓</td><td>La paleta de colors</td></tr>
+  <tr><td>💬</td><td>Les bombolles d'ajuda: enceses o apagades</td></tr>
+  <tr><td>❔</td><td>Esta pàgina</td></tr>
+</table>
+
+<h2>El que cal saber</h2>
+<p><b>Res no ix del seu ordinador.</b> L'expedient és un fitxer seu, al
+seu disc.</p>
+<p><b>Guardar no esborra.</b> Cada vegada s'escriu un fitxer nou, amb la
+seua data.</p>
+<p><b>Amb el servidor, tot es col·loca sol.</b> Sense ell, el navegador
+descarrega el fitxer i l'ha de posar vostè.</p>
+<div class="nota">Si una targeta està apagada, mire dalt: quasi sempre
+és que falta triar l'expedient.</div>
+`,
+
+en: `
+<h1>🏠 The house</h1>
+<div class="sub">Here you pick whom to look at, and with what</div>
+
+<p>This screen shows no data: it hands it out. Pick a patient at the
+top, and the cards below light up.</p>
+
+<h2>Top — whose record</h2>
+<p>The <b>known patients</b> list holds those who already have a record.
+Pick one: their records appear below, the most recent first.</p>
+<table>
+  <tr><td>➕</td><td><span class="b">New</span><br>
+      <span class="sordo">Name and SIP — the ID forms itself from the
+      initials and the last four digits. The folder is created and you
+      start from nothing.</span></td></tr>
+  <tr><td>📂</td><td><span class="b">A file from elsewhere</span><br>
+      <span class="sordo">To open a record kept somewhere else — a USB
+      stick, the downloads folder.</span></td></tr>
+</table>
+<div class="nota">While no record is open, the cards that need data wait,
+dimmed. The <b>glossary</b> always works: it needs none.</div>
+
+<h2>Bottom — what to look with</h2>
+<table>
+  <tr><td>👁</td><td><span class="b">View</span><br>
+      <span class="sordo">They read and touch nothing: the summary, the
+      curves, the timeline, the radar, the correlations.</span></td></tr>
+  <tr><td>✍️</td><td><span class="b">View and edit</span><br>
+      <span class="sordo">They write into the record: treatments,
+      review, audit, and the three acquisition modes.</span></td></tr>
+</table>
+<p class="sordo">Tap a card and the program opens right here, with the
+record already loaded. The 🏠 brings you back.</p>
+
+<h2>The top bar</h2>
+<table>
+  <tr><td>🐝</td><td>Back to the hive — the way in</td></tr>
+  <tr><td>💾</td><td>Save the record. A new file is written: what was
+      there before is untouched</td></tr>
+  <tr><td>🌐</td><td>The language — the whole house follows</td></tr>
+  <tr><td>🌓</td><td>The colour palette</td></tr>
+  <tr><td>💬</td><td>Help bubbles: on or off. Applies everywhere</td></tr>
+  <tr><td>❔</td><td>This page</td></tr>
+</table>
+
+<h2>What you should know</h2>
+<p><b>Nothing leaves your computer.</b> Not to a cloud, not to a server,
+not to us. The record is your own file, on your own disk.</p>
+<p><b>Saving doesn't erase.</b> Each time a new file is written, with its
+date. The previous one stays — if something goes wrong, you go back.</p>
+<p><b>With the server running, everything files itself.</b> Without it,
+the browser downloads the file and you must place it in the patient's
+folder yourself: a browser cannot write to disk, and that is as it
+should be.</p>
+<div class="nota">If a card is dimmed and you think it shouldn't be,
+look up: almost always a record just needs picking.</div>
+`
+};
+
+/* ── la lengua : la que dejó el usuario, o la del navegador ── */
+function lenguaDe(){
+  var l = '';
+  try{ l = localStorage.getItem('sf_idioma') || localStorage.getItem('mf_idioma') || ''; }catch(e){}
+  if(!l) l = (navigator.language || 'es').substring(0,2).toLowerCase();
+  return AYUDA[l] ? l : 'es';
+}
+
+function pon(l){
+  document.getElementById('cuerpo').innerHTML = AYUDA[l] || AYUDA.es;
+  document.documentElement.lang = l;
+  document.querySelectorAll('#lenguas button').forEach(function(b){
+    b.classList.toggle('on', b.dataset.l === l);
+  });
+  try{ localStorage.setItem('sf_idioma', l); }catch(e){}
+}
+
+document.getElementById('lenguas').innerHTML = LENGUAS.map(function(x){
+  return '<button data-l="' + x.id + '" onclick="pon(\'' + x.id + '\')" '
+       + 'title="' + x.nombre + '">' + x.bandera + '</button>';
+}).join('');
+
+pon(lenguaDe());
+</script>
+</body>
+</html>
