@@ -233,7 +233,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
   }
 
-  function habla(e, alTerminar){
+  function habla(e, alTerminar, alSaberDuracion){
     calla();
     if(opc.sin_voz || !conVoz){ if(alTerminar) alTerminar(false); return; }
 
@@ -241,8 +241,29 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     if(!s){ sintetiza(e, alTerminar); return; }
 
     audio = new Audio((opc.carpeta || '') + s);
+
+    /* ══════════════════════════════════════════════════════════════
+       EL MP3 SABE CUÁNTO DURA (P-H, 18/09/2026)
+
+       « Problème de synchronisation. »
+
+       Claro: los « segundos » de la tabla eran una estimación, hecha
+       antes de que las voces existieran. Oscar habla a su ritmo, no al
+       que yo había supuesto.
+
+       Pero el fichero lleva su duración escrita. En cuanto el navegador
+       la conoce —loadedmetadata, antes incluso de empezar a sonar— se
+       la damos al reloj y a la pluma. Ya no se adivina nada: la etapa
+       dura lo que dura la voz.
+
+       Sin mp3, los segundos de la tabla siguen mandando.
+       ══════════════════════════════════════════════════════════════ */
+    audio.onloadedmetadata = function(){
+      var d = audio.duration;
+      if(d && isFinite(d) && d > 0.5 && alSaberDuracion) alSaberDuracion(d);
+    };
+
     audio.onended = function(){ audio = null; if(alTerminar) alTerminar(true); };
-    /* el fichero no está: la síntesis toma el relevo */
     audio.onerror = function(){ audio = null; sintetiza(e, alTerminar); };
     audio.play().catch(function(){ audio = null; sintetiza(e, alTerminar); });
   }
@@ -344,12 +365,22 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     clearTimeout(relojEtapa);
     relojEtapa = setTimeout(pasaUnaVez, seg*1000);
 
-    /* la voz puede adelantar el paso, nunca retrasarlo */
-    habla(e, function(hablo){
-      if(!hablo || pausa || !viva) return;
-      clearTimeout(relojEtapa);
-      relojEtapa = setTimeout(pasaUnaVez, 350);
-    });
+    habla(e,
+      /* la voz acabó: se pasa enseguida */
+      function(hablo){
+        if(!hablo || pausa || !viva) return;
+        clearTimeout(relojEtapa);
+        relojEtapa = setTimeout(pasaUnaVez, 350);
+      },
+      /* el mp3 dice cuánto dura: el reloj y la pluma se ajustan a él */
+      function(dur){
+        if(pausa || !viva) return;
+        seg = dur;
+        llena(dur);
+        pluma(m.querySelector('#sf-t-texto'), tt(e.texto), dur);
+        clearTimeout(relojEtapa);
+        relojEtapa = setTimeout(pasaUnaVez, dur*1000 + 250);
+      });
     pintaLista();
   }
 

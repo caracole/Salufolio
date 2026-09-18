@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Las voces de la visita · Salufolio</title>
+<!-- la tabla de verdad, no una copia: si se corrige una etapa alli,
+     aqui se corrige sola (P-H, doctrina del 05/09) -->
+<script src="../casa/tour.js"></script>
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   LAS VOCES DE LA VISITA — el taller (P-H, 18/09/2026)  v2026.09.18-20:24:56
+
+   « Beaucoup plus facile, un outil, comme disait mon père. Ça m'affiche
+     les textes où j'en ajoute ou je peux corriger. J'envoie ça à
+     ElevenLabs, je récupère le mp3 et je le range là où il doit être.
+     Point final. »
+
+   Eso es lo que hace esta página. Sin clave de API no se puede mandar
+   nada desde aquí — hay que pasar por su sitio, a mano. Pero todo lo
+   demás se puede quitar de en medio: el texto listo, el nombre del
+   fichero escrito, un botón que copia, y una marca de lo que ya está
+   hecho.
+
+   NADA EN DURO: los textos vienen de tour.js, la tabla de la visita. Si
+   se corrige una etapa allí, aquí se corrige sola.
+   ══════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+:root{
+  --bg:#12141c; --sup:#1a1d28; --sup2:#222634; --bor:#333849;
+  --tex:#d8dbe4; --sordo:#8b93a6; --acc:#5b9bd5; --ok:#4caf7d; --avi:#e8a44a;
+}
+body{margin:0;background:var(--bg);color:var(--tex);
+     font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-size:14px;
+     line-height:1.6}
+header{position:sticky;top:0;z-index:10;background:var(--bg);
+       border-bottom:1px solid var(--bor);padding:13px 22px 11px}
+h1{margin:0 0 3px;font-family:Georgia,serif;font-size:19px;font-weight:600;
+   color:var(--acc)}
+.sordo{color:var(--sordo);font-size:12.5px}
+.mandos{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:10px}
+select,button{font-family:inherit;font-size:13px;padding:6px 12px;
+              border:1px solid var(--bor);border-radius:7px;
+              background:var(--sup);color:var(--tex);cursor:pointer}
+select:focus,button:hover{border-color:var(--acc)}
+.cuenta{margin-left:auto;font-size:12px;color:var(--sordo);
+        font-family:monospace}
+main{max-width:860px;margin:0 auto;padding:18px 22px 70px}
+
+.bloque{border:1px solid var(--bor);border-radius:11px;margin-bottom:14px;
+        background:var(--sup);overflow:hidden;transition:border-color .18s}
+.bloque.hecho{border-color:var(--ok)}
+.b-cab{display:flex;align-items:center;gap:11px;padding:10px 15px;
+       background:var(--sup2);border-bottom:1px solid var(--bor)}
+.b-ico{font-size:20px;line-height:1}
+.b-nom{font-family:monospace;font-size:13px;color:var(--avi);font-weight:600}
+.b-tit{flex:1;font-size:13px;color:var(--sordo)}
+.b-seg{font-size:11.5px;color:var(--sordo);font-family:monospace}
+.b-hecho{color:var(--ok);font-size:15px;display:none}
+.bloque.hecho .b-hecho{display:inline}
+
+textarea{width:100%;border:0;background:transparent;color:var(--tex);
+         font-family:inherit;font-size:14.5px;line-height:1.72;
+         padding:14px 16px;resize:vertical;min-height:88px;display:block}
+textarea:focus{outline:none;background:rgba(91,155,213,.04)}
+
+.b-pie{display:flex;gap:8px;align-items:center;padding:9px 15px;
+       border-top:1px solid var(--bor)}
+.b-pie .largo{font-size:11.5px;color:var(--sordo);font-family:monospace;
+              margin-left:auto}
+.copiar{border-color:var(--acc);color:var(--acc)}
+.copiar.ok{border-color:var(--ok);color:var(--ok)}
+.marca{border-color:var(--bor);color:var(--sordo)}
+.bloque.hecho .marca{border-color:var(--ok);color:var(--ok)}
+
+.ayuda{border:1px solid var(--bor);border-left:3px solid var(--acc);
+       border-radius:9px;padding:13px 17px;margin-bottom:20px;
+       background:var(--sup);font-size:13px;line-height:1.75}
+.ayuda b{color:var(--acc)}
+.ayuda code{font-family:monospace;background:var(--sup2);padding:1px 6px;
+            border-radius:4px;font-size:12.5px;color:var(--avi)}
+.ayuda ol{margin:8px 0 0;padding-left:20px}
+.ayuda li{margin-bottom:4px}
+.aviso{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
+       background:var(--ok);color:#06210f;padding:9px 20px;border-radius:9px;
+       font-size:13px;font-weight:600;opacity:0;pointer-events:none;
+       transition:opacity .25s;z-index:99}
+.aviso.on{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎙 Las voces de la visita</h1>
+  <div class="sordo" id="sub"></div>
+  <div class="mandos">
+    <select id="lang" onchange="pinta()"></select>
+    <button onclick="copiaTodo()">📋 Copiar todos</button>
+    <button onclick="bajaTexto()">💾 Guardar el texto</button>
+    <button onclick="olvida()" class="marca">↺ Empezar de nuevo</button>
+    <span class="cuenta" id="cuenta"></span>
+  </div>
+</header>
+
+<main>
+  <div class="ayuda">
+    <b>Cómo se hace</b> — sin clave de API hay que pasar por su sitio, pero
+    lo demás ya está listo.
+    <ol>
+      <li>Toque <b>📋</b> en un bloque: el texto se copia.</li>
+      <li>Péguelo en ElevenLabs, elija la voz, y baje el mp3.</li>
+      <li>Renómbrelo con el nombre naranja — <code>t01_es.mp3</code> — y
+          póngalo en <code>casa/voz/</code>.</li>
+      <li>Toque <b>✓</b> para marcarlo hecho. Se recuerda entre sesiones.</li>
+    </ol>
+    El texto se puede corregir aquí antes de copiarlo. Para guardarlo de
+    verdad, hay que cambiarlo en <code>casa/tour.js</code>.
+  </div>
+  <div id="bloques"></div>
+</main>
+
+<div class="aviso" id="aviso"></div>
+
+<script>
+const LG = { es:'Castellano', fr:'Français', ca:'Valencià', en:'English' };
+let HECHOS = {};
+try{ HECHOS = JSON.parse(localStorage.getItem('sf_voces')||'{}'); }catch(e){}
+
+function tt(o, l){ return (o && (o[l] || o.es)) || ''; }
+
+/* las etapas, más el final — que es una más */
+function lista(){
+  const E = (SF_TOUR.etapas||[]).map(e => ({
+    n:e.n, icono:e.icono, titulo:e.titulo, texto:e.texto,
+    seg:e.segundos || SF_TOUR.segundos_defecto || 10 }));
+  const f = SF_TOUR.final || {};
+  E.push({ n:E.length+1, icono:'✓', titulo:f.titulo, texto:f.texto, seg:10 });
+  return E;
+}
+
+function pinta(){
+  const l = document.getElementById('lang').value;
+  const E = lista();
+  document.getElementById('sub').textContent =
+    E.length + ' textos · ' + LG[l] + ' · los ficheros van en casa/voz/';
+
+  document.getElementById('bloques').innerHTML = E.map(e => {
+    const f = 't' + String(e.n).padStart(2,'0') + '_' + l + '.mp3';
+    const hecho = HECHOS[f] ? ' hecho' : '';
+    return '<div class="bloque' + hecho + '" id="b-' + f + '">'
+      + '<div class="b-cab">'
+      + '<span class="b-ico">' + (e.icono||'') + '</span>'
+      + '<span class="b-nom">' + f + '</span>'
+      + '<span class="b-tit">' + tt(e.titulo, l) + '</span>'
+      + '<span class="b-seg">~' + e.seg + 's</span>'
+      + '<span class="b-hecho">✓</span>'
+      + '</div>'
+      + '<textarea id="t-' + f + '" oninput="cuentaLargo(\'' + f + '\')">'
+      + tt(e.texto, l) + '</textarea>'
+      + '<div class="b-pie">'
+      + '<button class="copiar" onclick="copia(\'' + f + '\')">📋 Copiar</button>'
+      + '<button class="marca" onclick="marca(\'' + f + '\')">✓ Hecho</button>'
+      + '<span class="largo" id="l-' + f + '"></span>'
+      + '</div></div>';
+  }).join('');
+
+  E.forEach(e => cuentaLargo('t' + String(e.n).padStart(2,'0') + '_' + l + '.mp3'));
+  cuenta();
+}
+
+/* cuántas letras — para saber si el texto cabe en los segundos previstos */
+function cuentaLargo(f){
+  const t = document.getElementById('t-' + f);
+  const z = document.getElementById('l-' + f);
+  if(!t || !z) return;
+  const n = t.value.trim().length;
+  const seg = Math.round(n / 14);        /* unas 14 letras por segundo */
+  z.textContent = n + ' letras · ~' + seg + 's al hablar';
+}
+
+function copia(f){
+  const t = document.getElementById('t-' + f);
+  navigator.clipboard.writeText(t.value.trim()).then(() => {
+    avisa('Copiado — péguelo en ElevenLabs y llame al mp3 « ' + f + ' »');
+    const b = document.querySelector('#b-' + f + ' .copiar');
+    b.classList.add('ok'); b.textContent = '✓ Copiado';
+    setTimeout(() => { b.classList.remove('ok'); b.textContent = '📋 Copiar'; }, 2200);
+  }).catch(() => { t.select(); avisa('Seleccionado — copie con Ctrl+C'); });
+}
+
+function marca(f){
+  HECHOS[f] = !HECHOS[f];
+  if(!HECHOS[f]) delete HECHOS[f];
+  try{ localStorage.setItem('sf_voces', JSON.stringify(HECHOS)); }catch(e){}
+  document.getElementById('b-' + f).classList.toggle('hecho', !!HECHOS[f]);
+  cuenta();
+}
+
+function cuenta(){
+  const l = document.getElementById('lang').value;
+  const E = lista();
+  const n = E.filter(e =>
+    HECHOS['t' + String(e.n).padStart(2,'0') + '_' + l + '.mp3']).length;
+  document.getElementById('cuenta').textContent = n + ' / ' + E.length + ' hechos';
+}
+
+/* todos de una vez, para quien prefiera un solo pegado */
+function copiaTodo(){
+  const l = document.getElementById('lang').value;
+  const txt = lista().map(e => {
+    const f = 't' + String(e.n).padStart(2,'0') + '_' + l + '.mp3';
+    return '=== ' + f + ' — ' + tt(e.titulo, l) + ' ===\n'
+         + document.getElementById('t-' + f).value.trim();
+  }).join('\n\n');
+  navigator.clipboard.writeText(txt).then(() => avisa('Los ' + lista().length + ' textos copiados'));
+}
+
+function bajaTexto(){
+  const l = document.getElementById('lang').value;
+  const txt = lista().map(e => {
+    const f = 't' + String(e.n).padStart(2,'0') + '_' + l + '.mp3';
+    return '─'.repeat(66) + '\n  ' + f + '   ' + (e.icono||'') + '  '
+         + tt(e.titulo, l) + '\n' + '─'.repeat(66) + '\n\n'
+         + document.getElementById('t-' + f).value.trim();
+  }).join('\n\n\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([txt], {type:'text/plain;charset=utf-8'}));
+  a.download = 'voces-' + l + '.txt';
+  a.click();
+}
+
+function olvida(){
+  if(!confirm('¿Olvidar qué ficheros están hechos?')) return;
+  HECHOS = {};
+  try{ localStorage.removeItem('sf_voces'); }catch(e){}
+  pinta();
+}
+
+function avisa(t){
+  const z = document.getElementById('aviso');
+  z.textContent = t; z.classList.add('on');
+  clearTimeout(z._t);
+  z._t = setTimeout(() => z.classList.remove('on'), 3200);
+}
+
+document.getElementById('lang').innerHTML =
+  (SF_TOUR.idiomas || ['es']).map(l =>
+    '<option value="' + l + '">' + (LG[l]||l) + '</option>').join('');
+pinta();
+</script>
+</body>
+</html>
