@@ -499,23 +499,74 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
   }
 
   /* ══ EL FINAL, Y LA DESPEDIDA ══ */
+  /* ══════════════════════════════════════════════════════════════════
+     EL FINAL TAMBIÉN HABLA (P-H, 18/09/2026)
+
+     « Eso es todo… il n'y est pas ! »
+
+     Y no podía estar: final() escribía su texto pero no llamaba nunca a
+     la voz. El noveno mp3 —t09— se grabó para nada, y encima el aviso
+     lo tapaba dos segundos después.
+
+     Ahora el final es una etapa como las demás: tiene su voz, su pluma,
+     y su tiempo. El aviso espera a que acabe de hablar.
+     ══════════════════════════════════════════════════════════════════ */
   function final(){
-    calla(); clearTimeout(tmr); clearTimeout(relojEtapa); clearTimeout(plumaTmr); apaga();
+    calla(); clearTimeout(tmr); clearTimeout(relojEtapa); clearTimeout(plumaTmr);
+    apaga();
+
     var m = marco();
     var f = T.final || {};
+    var n = (T.etapas||[]).length;
+
     m.querySelector('#sf-t-ico').textContent = '✓';
     m.querySelector('#sf-t-tit').textContent = tt(f.titulo);
     m.querySelector('#sf-t-n').textContent   = '';
-    m.querySelector('#sf-t-texto').innerHTML = '<span class="sf-t-p dicha">'
-      + tt(f.texto) + '</span>';
-    /* al final, la caja vuelve al centro: ya no señala nada */
+    m.querySelector('#sf-t-atras').disabled  = false;
+
+    /* la caja vuelve al centro: ya no señala nada */
     m.style.cssText = '';
+    m.classList.remove('naciendo');
     m.classList.add('on');
     var c = m.querySelector('.sf-t-caja');
     c.classList.remove('punta-arriba','punta-abajo');
-    var b = document.getElementById('sf-t-llena'); if(b) b.style.width='100%';
-    viva = false;
-    if(opc.al_final) opc.al_final(true, (T.etapas||[]).length);
+
+    /* el final lleva su sonido como cualquier etapa: t<n+1> */
+    var eF = { icono:'✓', titulo:f.titulo, texto:f.texto,
+               segundos: f.segundos || 10, sonido: f.sonido };
+    if(!eF.sonido){
+      eF.sonido = {};
+      (T.idiomas||['es']).forEach(function(l){
+        eF.sonido[l] = (T.voz_carpeta||'voz/') + 't'
+          + String(n+1).padStart(2,'0') + '_' + l + '.mp3'; });
+    }
+
+    var seg = eF.segundos;
+    llena(seg);
+    pluma(m.querySelector('#sf-t-texto'), tt(f.texto), seg);
+
+    /* el aviso espera a que el final acabe de hablar */
+    var acabado = false;
+    var acaba = function(){
+      if(acabado) return;
+      acabado = true;
+      viva = false;
+      if(opc.al_final) opc.al_final(true, n);
+    };
+
+    relojEtapa = setTimeout(acaba, seg*1000 + 600);
+    habla(eF,
+      function(hablo){
+        if(!hablo) return;
+        clearTimeout(relojEtapa);
+        relojEtapa = setTimeout(acaba, 900);
+      },
+      function(dur){
+        llena(dur);
+        pluma(m.querySelector('#sf-t-texto'), tt(f.texto), dur);
+        clearTimeout(relojEtapa);
+        relojEtapa = setTimeout(acaba, dur*1000 + 900);
+      });
   }
 
   function pideAdios(){

@@ -495,7 +495,9 @@ function arrancaTour(){
       pideOpinion(etapa, total, e, false);
     },
     al_final: function(ok, total){
-      setTimeout(function(){ pideOpinion(total, total, null, true); }, 2200);
+      /* el motor avisa cuando el final ha acabado de hablar (P-H, 18/09):
+         antes se le echaba el aviso encima a los dos segundos */
+      setTimeout(function(){ pideOpinion(total, total, null, true); }, 700);
     },
     al_salir: function(){}
   });
