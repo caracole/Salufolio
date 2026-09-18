@@ -512,6 +512,25 @@ function pintaVersiones(dir, nombres){
 }
 function tomaVersion(i){
   var n=_versiones[i]; if(!n) return;
+
+  /* ══ SIN SERVIDOR, LA LISTA NO ABRE NADA (P-H, 18/09/2026) ══
+     « Elle devrait dire "Sin servidor no puedo abrirlo — use el 📂". »
+
+     Un navegador no lee un fichero local con fetch: es una regla de
+     seguridad, y está bien que exista. Pero callarse es peor que negarse
+     — se toca, no pasa nada, y no se sabe por qué.
+
+     Se dice, y se señala el camino: el 📂 abre el mismo fichero. */
+  if(location.protocol.indexOf('file') === 0){
+    var z = document.getElementById('exp-nota');
+    if(z) z.innerHTML = '<b>Sin servidor no puedo abrirlo.</b> '
+        + 'Use el <b>📂</b> para elegir <code>' + n + '</code> a mano — '
+        + 'o arranque el servidor, y la lista funcionará sola.';
+    var ok = document.getElementById('exp-ok');
+    if(ok) ok.style.display = 'none';
+    return;
+  }
+
   fetch(CARPETA+encodeURIComponent(n)).then(function(r){return r.json()})
     .then(function(d){
       DATOS=d; NOMBRE=n.replace(/\.(sf|mf|json)$/i,''); MANIJA=null; SUCIO=false;
@@ -771,7 +790,7 @@ function abreModulos(si){
 /* ══════════════════════════════════════════════════════════════════════
    LA LISTE DES PATIENTS (P-H, 03/09)
 
-   Elle vit dans pacientes/pacientes.json — AVEC les données, pas avec le
+   Elle vit dans pacientes/pacientes.js — AVEC les données, pas avec le
    code : les noms et les SIP ne voyagent pas si Salufolio est publié.
    Le lanceur la lit si elle existe, et s'en passe sinon.
 
@@ -780,18 +799,54 @@ function abreModulos(si){
 var PACIENTES=[];
 
 function cargaPacientes(){
-  var dir=(T&&T.carpeta_expedientes)||'../pacientes/';
-  fetch(dir+'pacientes.json')
-    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-    .then(function(d){
-      PACIENTES = (d.pacientes || []).concat(pacientesCreados());
-      pintaPacientes();
-    })
-    .catch(function(){
-      /* pas de fichier : il reste ceux qu'on a créés ici */
-      PACIENTES = pacientesCreados();
-      if(PACIENTES.length) pintaPacientes();
-    });
+  /* ══════════════════════════════════════════════════════════════════════
+     LA TABLA SE CARGA POR <script>, NO POR fetch (P-H, 18/09/2026)
+
+     « Pourquoi ça ne s'affiche pas au démarrage ? »
+
+     Porque esta función buscaba « pacientes.json » con fetch — el camino
+     de antes, abandonado el 15/09. El fichero ya no existe: es
+     « pacientes.js », cargado por <script src>, justamente para que
+     funcione SIN SERVIDOR.
+
+     El fetch fallaba, se caía en el catch, y sólo quedaban los pacientes
+     creados en el navegador — ninguno. SF_PACIENTES estaba ahí, cargada,
+     y nadie la leía.
+
+     Dos días buscando en la lista, y la lista nunca se llenaba.
+     ══════════════════════════════════════════════════════════════════════ */
+  var de = [];
+  try{
+    if(typeof SF_PACIENTES !== 'undefined' && SF_PACIENTES.pacientes)
+      de = SF_PACIENTES.pacientes;
+  }catch(e){}
+
+  /* los creados aquí, si no están ya en la tabla */
+  var creados = pacientesCreados().filter(function(c){
+    return !de.some(function(p){ return p.matricula === c.matricula; });
+  });
+  PACIENTES = de.concat(creados);
+  pintaPacientes();
+
+  /* con servidor se puede refrescar, pero no hace falta esperarlo */
+  if(location.protocol.indexOf('file') !== 0){
+    var dir = (T && T.carpeta_expedientes) || '../pacientes/';
+    fetch(dir + 'pacientes.js', { cache:'no-store' })
+      .then(function(r){ if(!r.ok) throw 0; return r.text(); })
+      .then(function(txt){
+        var i = txt.indexOf('{'), j = txt.lastIndexOf(';');
+        if(i < 0 || j < i) return;
+        var d = JSON.parse(txt.slice(i, j));
+        if(!d.pacientes || !d.pacientes.length) return;
+        /* si la tabla del disco es más nueva, se toma */
+        if(d.version && SF_PACIENTES && d.version === SF_PACIENTES.version) return;
+        PACIENTES = d.pacientes.concat(pacientesCreados().filter(function(c){
+          return !d.pacientes.some(function(p){ return p.matricula === c.matricula; });
+        }));
+        pintaPacientes();
+      })
+      .catch(function(){ /* la tabla del <script> basta */ });
+  }
 }
 
 /* v9 (P-H) : une liste déroulante plutôt que des pastilles — la

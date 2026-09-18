@@ -63,7 +63,7 @@ for d in sorted(os.listdir(AQUI)):
     ruta=os.path.join(AQUI,d)
     if not os.path.isdir(ruta) or d.startswith('.'): continue
     fich=[x for x in os.listdir(ruta)
-          if re.search(r'\.(mf|sf|json)$', x, re.I)
+          if re.search(r'\.(mf|sf)$', x, re.I)   # ya no .json: un diccionario no es un expediente (P-H, 18/09)
           and not x.endswith('~') and '(copia)' not in x]
     fich.sort(reverse=True)          # le plus récent d'abord
     nom, sip = nombreDe(d, antes)
