@@ -1,7 +1,7 @@
 /* INFORMES PARA EL MÉDICO — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "informe",
-  "version": "2026.09.17-23:06:25",
+  "version": "2026.09.18-10:24:55",
   "programa": "informe.html",
   "lanzador": "../casa/casa.js",
   "carpeta": "informe/",
@@ -208,7 +208,10 @@ var SF_CONFIG = window.SF_CONFIG = {
     "tratamiento_meses": 3,
     "_tratamiento": "Lo recetado hace mas de tres meses y no vuelto a ver no es el tratamiento de hoy. Se cambia aqui (P-H, 17/09).",
     "antecedentes_max": 14,
-    "_antecedentes": "Por categoria, los mas recientes primero. El resto se cuenta sin nombrarse — 88 en una pagina no se leen (P-H, 17/09)."
+    "_antecedentes": "Por categoria, los mas recientes primero. El resto se cuenta sin nombrarse — 88 en una pagina no se leen (P-H, 17/09).",
+    "tabla_presencia": 0.25,
+    "tabla_columnas": 9,
+    "_tabla": "Un parametro entra en la tabla cronologica si figura en al menos una cuarta parte de las fechas. Las mas llenas primero (P-H, 18/09)."
   },
   "columnas_tabla": {
     "_que": "Las columnas de la tabla cronologica. Se cambian aqui.",
