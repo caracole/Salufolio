@@ -114,7 +114,9 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "col_anyos": "Años",
    "col_antecedente": "Antecedente",
    "col_capitulo": "Capítulo",
-   "distintos": "distintos"
+   "distintos": "distintos",
+   "mas_llenos": "los más presentes",
+   "demo_corto": "Demostración — caso real anonimizado, 14 años"
   },
   "fr": {
    "titulo_express": "Rapport express",
@@ -228,7 +230,9 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "col_anyos": "Années",
    "col_antecedente": "Antécédent",
    "col_capitulo": "Chapitre",
-   "distintos": "distincts"
+   "distintos": "distincts",
+   "mas_llenos": "les plus présents",
+   "demo_corto": "Démonstration — cas réel anonymisé, 14 ans"
   },
   "ca": {
    "titulo_express": "Informe express",
@@ -342,7 +346,9 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "col_anyos": "Anys",
    "col_antecedente": "Antecedent",
    "col_capitulo": "Capítol",
-   "distintos": "distints"
+   "distintos": "distints",
+   "mas_llenos": "els més presents",
+   "demo_corto": "Demostració — cas real anonimitzat, 14 anys"
   },
   "en": {
    "titulo_express": "Express report",
@@ -456,7 +462,9 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "col_anyos": "Years",
    "col_antecedente": "Condition",
    "col_capitulo": "Chapter",
-   "distintos": "distinct"
+   "distintos": "distinct",
+   "mas_llenos": "most present",
+   "demo_corto": "Demonstration — real case, anonymised, 14 years"
   }
  }
 };

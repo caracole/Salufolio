@@ -78,7 +78,9 @@ body{display:flex;flex-direction:column}
 .exp select option{background:var(--surface);color:var(--text)}
 .exp button{width:100%;padding:10px;border-radius:9px;border:1px solid var(--ok);background:transparent;color:var(--ok);font-size:14.5px;cursor:pointer}
 .exp .ok{display:none;margin-top:10px;padding:9px 12px;background:rgba(61,191,127,.1);border:1px solid var(--ok);border-radius:8px;font-size:13px}
-.exp .nota{font-size:11.5px;color:var(--muted);margin-top:7px;line-height:1.5}
+.exp .nota.demo{color:var(--text);opacity:.92;line-height:1.7}
+    .demo-marca{color:var(--warn);font-weight:600}
+    .nota{font-size:11.5px;color:var(--muted);margin-top:7px;line-height:1.5}
 
 /* v2 (P-H, 11/09) : la barre des profils reste en haut quand on fait
    défiler les cartes — sinon, pour changer de profil, il faut remonter. */
@@ -387,17 +389,24 @@ function pintaModulos(){
 
 /* ── charger un module dans l'iframe ── */
 function carga(id, clave){
-  /* « ne pas tenter le diable » (P-H) : les cartes se voient mais ne
-     s'ouvrent pas tant qu'aucun expediente n'est choisi. */
-  if(!DATOS){
+  var m=MODULOS.filter(function(x){return x.id===id})[0];
+  if(!m) return;
+
+  /* ══ SALVO LOS QUE NO LO NECESITAN (P-H, 18/09/2026) ══
+     « Avant l'élection d'un patient on voit glosario accessible, mais
+       il ne l'est plus. »
+
+     La tarjeta lo sabía —se dibuja encendida si el programa declara
+     « sin_expediente »— pero carga() lo ignoraba y los negaba a todos.
+     El glosario no necesita expediente: funciona siempre, para
+     cualquiera. Es lo que dice su propia tabla. */
+  if(!DATOS && !m.sin_expediente){
     var n=document.getElementById('exp-nota');
-    n.textContent='Elija primero un expediente — nombre, SIP, y 🔎 Buscar.';
+    n.textContent='Elija primero un expediente.';
     n.style.color='var(--warn)';
     setTimeout(function(){ n.style.color=''; }, 2200);
     return;
   }
-  var m=MODULOS.filter(function(x){return x.id===id})[0];
-  if(!m) return;
   ACTUAL=m;
   var f=document.getElementById('marco-mod');
   var q='?enMarco=1';
@@ -591,6 +600,17 @@ function leeCarpeta(input){
   r.readAsText(f[0]);
 }
 
+/* combien d'années le dossier couvre-t-il ? */
+function anyosDelExpediente(){
+  var f = [];
+  (DATOS.mesures||[]).forEach(function(m){ if(m.date) f.push(m.date); });
+  (DATOS.events||[]).forEach(function(e){ var d=e.date||e.fecha; if(d) f.push(d); });
+  if(f.length < 2) return 0;
+  f.sort();
+  var a = parseInt(f[0].slice(0,4),10), b = parseInt(f[f.length-1].slice(0,4),10);
+  return (b > a) ? (b - a + 1) : 0;
+}
+
 function muestraExpediente(){
   document.getElementById('exp-ok').style.display='block';
   var _p=DATOS.paciente||{};
@@ -598,7 +618,24 @@ function muestraExpediente(){
   var n=(DATOS.mesures||[]).length, e=(DATOS.events||[]).length, m=(DATOS.medicaments||[]).length;
   var det=' · '+n+' '+tx('extracciones')+' · '+e+' '+tx('eventos')+' · '+m+' '+tx('medicamentos');
   document.getElementById('exp-det').textContent=det;
-  document.getElementById('exp-nota').textContent='';
+
+  /* ══ LA DEMOSTRACIÓN SE DICE (P-H, 18/09/2026) ══
+     « Il faut signaler que c'est une démonstration à partir d'un cas
+       réel anonymisé sur 14 années. »
+
+     El expediente lo lleva escrito —data_type: "demo"— y nadie lo leía
+     aquí. Quien abre AGR0000 debe saber lo que mira: los datos son de
+     verdad, la persona no. */
+  var nota = document.getElementById('exp-nota');
+  if(DATOS.data_type === 'demo'){
+    var a = anyosDelExpediente();
+    nota.innerHTML = '<span class="demo-marca">🎬 ' + tx('demo_titulo') + '</span> '
+      + tx('demo_que').replace('{anyos}', a || '');
+    nota.className = 'nota demo';
+  } else {
+    nota.textContent = '';
+    nota.className = 'nota';
+  }
   abreModulos(true);
   document.getElementById('b-pac').textContent = (_p.matricula || DATOS.matricula || NOMBRE || 'DEMO');
   ponEstado('');
@@ -988,16 +1025,16 @@ function ponIdioma(l){
 
 /* ══ LA TRADUCTION du cadre de sélection ══ */
 var TX={
-  es:{ apellidos:'Apellidos', ayuda_nuevo:'La matrícula se forma sola: las iniciales del nombre y las cuatro últimas cifras del SIP.', tit_nuevo:'🧑 Un paciente nuevo', crear:'Crear', cancelar:'Cancelar', extracciones:'extracciones', eventos:'eventos', medicamentos:'medicamentos',
+  es:{ demo_titulo:"Expediente de demostración", demo_que:"Un caso real anonimizado, {anyos} años de historia. Los datos clínicos son auténticos — las medidas, las fechas, los tratamientos. La persona, no: nombre, SIP y documentos están cambiados.", apellidos:'Apellidos', ayuda_nuevo:'La matrícula se forma sola: las iniciales del nombre y las cuatro últimas cifras del SIP.', tit_nuevo:'🧑 Un paciente nuevo', crear:'Crear', cancelar:'Cancelar', extracciones:'extracciones', eventos:'eventos', medicamentos:'medicamentos',
        conocidos:'Pacientes conocidos', nombre:'Nombre y apellidos', mat:'Matrícula',
        buscar:'🔎 Buscar', nuevo:'➕ Nuevo', exp:'Expediente', quien:'¿Quién accede?', todo:'Todo' },
-  fr:{ apellidos:'Nom(s)', ayuda_nuevo:'La matricule se forme toute seule : les initiales du nom et les quatre derniers chiffres du SIP.', tit_nuevo:'🧑 Un patient nouveau', crear:'Créer', cancelar:'Annuler', extracciones:'prélèvements', eventos:'événements', medicamentos:'médicaments',
+  fr:{ demo_titulo:"Dossier de démonstration", demo_que:"Un cas réel anonymisé, {anyos} ans d'histoire. Les données cliniques sont authentiques — les mesures, les dates, les traitements. La personne, non : nom, SIP et documents ont été changés.", apellidos:'Nom(s)', ayuda_nuevo:'La matricule se forme toute seule : les initiales du nom et les quatre derniers chiffres du SIP.', tit_nuevo:'🧑 Un patient nouveau', crear:'Créer', cancelar:'Annuler', extracciones:'prélèvements', eventos:'événements', medicamentos:'médicaments',
        conocidos:'Patients connus', nombre:'Nom et prénoms', mat:'Matricule',
        buscar:'🔎 Chercher', nuevo:'➕ Nouveau', exp:'Dossier', quien:'Qui accède ?', todo:'Tout' },
-  ca:{ apellidos:'Cognoms', ayuda_nuevo:'La matrícula es forma sola.', tit_nuevo:'🧑 Un pacient nou', crear:'Crear', cancelar:'Cancel·lar', extracciones:'extraccions', eventos:'esdeveniments', medicamentos:'medicaments',
+  ca:{ demo_titulo:"Expedient de demostració", demo_que:"Un cas real anonimitzat, {anyos} anys d'història. Les dades clíniques són autèntiques; la persona, no.", apellidos:'Cognoms', ayuda_nuevo:'La matrícula es forma sola.', tit_nuevo:'🧑 Un pacient nou', crear:'Crear', cancelar:'Cancel·lar', extracciones:'extraccions', eventos:'esdeveniments', medicamentos:'medicaments',
        conocidos:'Pacients coneguts', nombre:'Nom i cognoms', mat:'Matrícula',
        buscar:'🔎 Buscar', nuevo:'➕ Nou', exp:'Expedient', quien:'Qui accedeix?', todo:'Tot' },
-  en:{ apellidos:'Surname(s)', ayuda_nuevo:'The ID forms itself: initials of the name and the last four SIP digits.', tit_nuevo:'🧑 A new patient', crear:'Create', cancelar:'Cancel', extracciones:'tests', eventos:'events', medicamentos:'medications',
+  en:{ demo_titulo:"Demonstration record", demo_que:"A real case, anonymised, {anyos} years of history. The clinical data are genuine — measurements, dates, treatments. The person is not: name, SIP and documents have been changed.", apellidos:'Surname(s)', ayuda_nuevo:'The ID forms itself: initials of the name and the last four SIP digits.', tit_nuevo:'🧑 A new patient', crear:'Create', cancelar:'Cancel', extracciones:'tests', eventos:'events', medicamentos:'medications',
        conocidos:'Known patients', nombre:'Name and surname', mat:'ID',
        buscar:'🔎 Search', nuevo:'➕ New', exp:'Record', quien:'Who is accessing?', todo:'All' }
 };

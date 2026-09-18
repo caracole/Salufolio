@@ -65,6 +65,7 @@ main{max-width:900px;margin:0 auto;padding:16px 22px 60px}
 .x-fecha{font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave)}
 .x-sip{font-weight:400;font-size:calc(var(--menudo)*var(--zoom));
        color:var(--tinta-suave)}
+.x-demo{color:var(--aviso);font-weight:600}
 svg.logo{display:block;flex:0 0 auto}
 .x-pac{margin-left:auto;font-weight:600;color:var(--express)}
 .x-ver{font-size:calc(var(--menudo)*var(--zoom)*.9);color:var(--tinta-suave);
@@ -146,6 +147,7 @@ textarea::placeholder{color:var(--tinta-suave);font-style:italic}
          color:var(--tinta-suave)}
 .p-datos b{color:var(--tinta)}
 .p-aviso{color:var(--grave);margin-top:5px}
+.p-demo{color:var(--aviso);margin-top:4px;font-weight:600}
 
 /* ══ LOS TÍTULOS, DEL MISMO COLOR EN LAS TRES FORMAS (P-H, 17/09) ══
    « Dans express c'est parfait en vert, dans détaillé et synthétique
@@ -406,7 +408,7 @@ table.med .marcas{color:var(--tinta-suave);font-weight:400;
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    INFORMES PARA EL MÉDICO — Salufolio
-   Versión 2026.09.18-00:23:02
+   Versión 2026.09.18-10:24:55
 
    « Un bouton — PAS l'informe — un résumé à l'écran à montrer au toubib
      sans détours ni ménagements. »        — P-H, 19/07/2026, desde la UCE
@@ -1032,6 +1034,14 @@ function losQueNoEstan(mostrados){
 /* ══════════════════════════════════════════════════════════════════════
    LOS INFORMES IMPRESOS
    ══════════════════════════════════════════════════════════════════════ */
+/* ══ ¿ES UNA DEMOSTRACIÓN? (P-H, 18/09) ══
+   « Il faut signaler que c'est une démonstration à partir d'un cas réel
+     anonymisé sur 14 années. » El expediente lo dice: data_type. */
+function esDemostracion(){
+  var d = datos();
+  return !!(d && d.data_type === 'demo');
+}
+
 function nombreVisible(){
   var p = MF.paciente() || {};
   var e = p.etiqueta || p.matricula || '';
@@ -1132,6 +1142,7 @@ function pCabecera(){
     + (I.doi ? '<div>DOI: ' + esc(I.doi) + '</div>' : '')
     + '<div class="p-aviso">⚠ ' + tt(I.aviso) + '</div>'
     + (ANON.puesta ? '<div class="p-aviso">⚠ ' + t('anon_hecho') + '</div>' : '')
+    + (esDemostracion() ? '<div class="p-demo">🎬 ' + t('demo_corto') + '</div>' : '')
     + '</div></div>';
 }
 
@@ -1376,17 +1387,37 @@ function pTabla(){
   var CT = SF_CONFIG.columnas_tabla;
   var M = mesures().slice().reverse();
   if(!M.length) return '';
-  /* ══ las columnas: las de la tabla, pero SOLO las que el expediente
-     lleva de verdad. Si no lleva ninguna, las nueve más frecuentes.
-     Una tabla de columnas vacías es peor que ninguna. (P-H, 17/09) ══ */
+  /* ══════════════════════════════════════════════════════════════════
+     LAS COLUMNAS QUE EL EXPEDIENTE LLEVA DE VERDAD (P-H, 18/09/2026)
+
+     « La table de síntesis cronológica, elle apporte quoi ? Moi j'y
+       comprends rien. Des dates et des colonnes avec Hb, Leuc, Gluc… »
+
+     Tenía razón, y el defecto era mío: el filtro guardaba una columna
+     que apareciera UNA SOLA VEZ. De ahí los guiones por todas partes —
+     nueve columnas y dos valores por línea.
+
+     Ahora se exige presencia: un parámetro entra si figura en al menos
+     una cuarta parte de las fechas. Las más llenas primero. Una tabla
+     de columnas vacías es peor que ninguna.
+     ══════════════════════════════════════════════════════════════════ */
   var cuenta = {};
   M.forEach(function(m){ Object.keys(m.vals||{}).forEach(function(k){
     cuenta[k] = (cuenta[k]||0) + 1; }); });
-  var claves = (CT.claves||[]).filter(function(k){ return cuenta[k]; });
-  if(claves.length < 3)
-    claves = Object.keys(cuenta).sort(function(a,b){ return cuenta[b]-cuenta[a]; })
-             .slice(0, 9);
-  var h = '<div class="p-sec salto">📋 ' + t('sec_tabla') + '</div>'
+
+  var minimo = Math.max(2, Math.ceil(M.length * (U.tabla_presencia || 0.25)));
+  var candidatas = Object.keys(cuenta)
+    .filter(function(k){ return cuenta[k] >= minimo; })
+    .sort(function(a,b){ return cuenta[b] - cuenta[a]; });
+
+  /* las declaradas en la tabla van primero, si están entre ellas */
+  var pedidas = (CT.claves||[]).filter(function(k){ return candidatas.indexOf(k) >= 0; });
+  var otras = candidatas.filter(function(k){ return pedidas.indexOf(k) < 0; });
+  var claves = pedidas.concat(otras).slice(0, U.tabla_columnas || 9);
+
+  if(!claves.length) return '';
+  var h = '<div class="p-sec salto">📋 ' + t('sec_tabla')
+    + ' <span class="sub">(' + claves.length + ' ' + t('mas_llenos') + ')</span></div>'
     + '<table class="p-tab"><thead><tr>'
     + th('cro', 0, t('col_fecha')) + th('cro', 1, t('col_fuente'))
     + claves.map(function(k,i){
@@ -2088,7 +2119,9 @@ function pinta(){
        + (sipVisible() && !ANON.puesta
           ? '<span class="x-sip"> · SIP ' + esc(sipVisible()) + '</span>' : '')
        + '</span></div>'
-       + '<div class="x-ver">informe v' + VERSION_PROGRAMA + '</div>';
+       + '<div class="x-ver">informe v' + VERSION_PROGRAMA
+       + (esDemostracion() ? ' · <span class="x-demo">🎬 ' + t('demo_corto')
+                           + '</span>' : '') + '</div>';
   }
   (F.secciones||[]).forEach(function(s){ if(HACER[s]) h += HACER[s](); });
   if(FORMA === 'express'){
