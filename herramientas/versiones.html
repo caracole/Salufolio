@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Versión 2026.09.19-19:44:13 -->
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Las versiones · Salufolio</title>
+<!-- ══ EL REGISTRO, COMO UN SCRIPT (P-H, 19/09/2026) ══
+     « Ca m'ennuie de devoir utiliser le serveur. »
+     Un navegador no lee un fichero local con fetch, pero si carga un
+     script. Es la doctrina del 05/09: sin JSON, todo funciona sin
+     servidor. Lo escribe herramientas/versiones.py en cada pasada. -->
+<script src="../doc/versiones.js"></script>
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   EL TABLERO DE LAS VERSIONES (P-H, 19/09/2026)
+
+   « Il faudra créer un fichier — page html — avec la liste
+     répertoire + nom + version. »
+
+   Doscientos ficheros, y hasta ayer cada número puesto a mano. Aquí se
+   ven todos de un vistazo: qué hay, de cuándo, y qué se movió la última
+   vez que pasó versiones.py.
+
+   Lee doc/versiones.js — el registro que el programa escribe, cargado
+   como script para que funcione sin servidor. Nada se calcula aquí: se
+   enseña lo que hay.
+   ══════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+:root{
+  --bg:#12141c; --sup:#1a1d28; --sup2:#222634; --bor:#333849;
+  --tex:#d8dbe4; --sordo:#8b93a6; --acc:#5b9bd5; --ok:#4caf7d; --avi:#e8a44a;
+  --mono:'SF Mono',Menlo,Consolas,monospace;
+}
+body{margin:0;background:var(--bg);color:var(--tex);
+     font-family:-apple-system,'Segoe UI',Roboto,sans-serif;font-size:13.5px}
+header{position:sticky;top:0;z-index:10;background:var(--bg);
+       border-bottom:1px solid var(--bor);padding:13px 22px 11px}
+h1{margin:0 0 2px;font-family:Georgia,serif;font-size:19px;font-weight:600;
+   color:var(--acc)}
+.sordo{color:var(--sordo);font-size:12px}
+.mandos{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:11px}
+input,select,button{font-family:inherit;font-size:12.5px;padding:6px 11px;
+       border:1px solid var(--bor);border-radius:7px;
+       background:var(--sup);color:var(--tex)}
+input{min-width:190px}
+input:focus,select:focus{outline:none;border-color:var(--acc)}
+button{cursor:pointer}
+button:hover{border-color:var(--acc)}
+.cifras{display:flex;gap:16px;margin-left:auto;font-size:12px;
+        font-family:var(--mono);color:var(--sordo)}
+.cifras b{color:var(--tex);font-weight:600}
+
+main{padding:16px 22px 60px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;padding:7px 10px;border-bottom:2px solid var(--bor);
+   color:var(--sordo);font-weight:600;cursor:pointer;user-select:none;
+   white-space:nowrap;position:sticky;top:0;background:var(--bg);z-index:5}
+th:hover{color:var(--acc)}
+th .fl{opacity:.3;font-size:.85em;margin-left:3px}
+th.orden .fl{opacity:1;color:var(--acc)}
+td{padding:5px 10px;border-bottom:1px solid var(--bor)}
+tr:hover td{background:var(--sup)}
+td.carp{color:var(--sordo);font-family:var(--mono);font-size:11.5px;
+        white-space:nowrap}
+td.fich{font-family:var(--mono);font-size:12px}
+td.ver{font-family:var(--mono);font-size:11.5px;color:var(--avi);
+       white-space:nowrap}
+td.suma{font-family:var(--mono);font-size:10.5px;color:var(--sordo)}
+td.dia{white-space:nowrap;font-size:11.5px}
+tr.hoy td.ver{color:var(--ok);font-weight:600}
+/* ══ los binarios: su version vive en el registro, no dentro ══
+   « Dans les classes, tu as oublié les sons » (P-H, 19/09). Un mp3 no
+   puede llevar su numero escrito — pero si se le puede seguir. */
+tr.muda td.ver{color:var(--sordo);font-style:italic}
+.ic-muda{opacity:.5;margin-right:5px;font-size:11px}
+.pt{display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--bor);margin-right:7px;vertical-align:middle}
+tr.hoy .pt{background:var(--ok)}
+
+.aviso{border:1px solid var(--bor);border-left:3px solid var(--avi);
+       border-radius:9px;padding:14px 18px;margin:0 22px 18px;
+       background:var(--sup);line-height:1.75}
+.aviso b{color:var(--avi)}
+.aviso code{font-family:var(--mono);background:var(--sup2);padding:2px 7px;
+            border-radius:4px;font-size:12px;color:var(--acc)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🔢 Las versiones de Salufolio</h1>
+  <div class="sordo" id="sub">leyendo el registro…</div>
+  <div class="mandos">
+    <input type="search" id="busca" placeholder="buscar…" oninput="pinta()">
+    <select id="carp" onchange="pinta()"></select>
+    <select id="clase" onchange="pinta()"></select>
+    <button onclick="soloHoy()" id="b-hoy">Sólo lo último</button>
+    <button onclick="soloMudas()" id="b-mudas" title="sonidos e imágenes">🔊</button>
+    <span class="cifras" id="cifras"></span>
+  </div>
+</header>
+
+<div id="fallo" style="display:none" class="aviso"></div>
+
+<main>
+  <table>
+    <thead><tr id="cab"></tr></thead>
+    <tbody id="filas"></tbody>
+  </table>
+</main>
+
+<script>
+/* Versión 2026.01.01-00:00:00 */
+var TODO = [], ORDEN = { col:2, sen:-1 }, HOY = false, MUDAS = false, ULTIMA = '';
+
+var COL = [
+  { k:'carp',  t:'Carpeta' },
+  { k:'fich',  t:'Fichero' },
+  { k:'ver',   t:'Versión' },
+  { k:'dia',   t:'Cuándo' },
+  { k:'suma',  t:'Suma' }
+];
+
+/* el registro viene del <script>: nada que ir a buscar */
+if(typeof SF_VERSIONES !== 'undefined' && SF_VERSIONES.ficheros){
+  arranca(SF_VERSIONES);
+} else {
+  var z = document.getElementById('fallo');
+  z.style.display = 'block';
+  z.innerHTML = '<b>Todavía no hay registro.</b><br><br>'
+    + 'Se crea pasando el programa una vez:<br>'
+    + '<code>python3 herramientas/versiones.py --poner</code>'
+    + '<br><br>Escribe <code>doc/versiones.js</code>, que esta página lee.';
+  document.getElementById('sub').textContent = 'sin registro';
+}
+
+function arranca(R){
+  var F = R.ficheros || {};
+  ULTIMA = R._ultima_pasada || '';
+  TODO = Object.keys(F).map(function(p){
+    var i = p.lastIndexOf('/');
+    var v = F[p].version || '';
+    return {
+      camino: p,
+      carp: i > 0 ? p.slice(0, i) : '.',
+      fich: i > 0 ? p.slice(i+1) : p,
+      ver:  v,
+      dia:  bonito(v),
+      suma: F[p].suma || '',
+      clase: (p.match(/\.([a-z0-9]+)$/i) || ['',''])[1].toLowerCase(),
+      muda: !!F[p].muda,
+      hoy:  !!(ULTIMA && v && v.slice(0,10) === ULTIMA.slice(0,10))
+    };
+  });
+
+  document.getElementById('sub').textContent =
+    TODO.length + ' ficheros · última pasada ' + (ULTIMA || '—');
+
+  var C = {}, K = {};
+  TODO.forEach(function(x){ C[x.carp] = 1; K[x.clase] = 1; });
+  document.getElementById('carp').innerHTML =
+    '<option value="">todas las carpetas</option>'
+    + Object.keys(C).sort().map(function(c){
+        return '<option>' + c + '</option>'; }).join('');
+  document.getElementById('clase').innerHTML =
+    '<option value="">todas las clases</option>'
+    + Object.keys(K).sort().map(function(c){
+        return '<option>' + c + '</option>'; }).join('');
+
+  document.getElementById('cab').innerHTML = COL.map(function(c, i){
+    return '<th onclick="ordena(' + i + ')" id="th' + i + '">' + c.t
+         + '<span class="fl">▲▼</span></th>'; }).join('');
+  pinta();
+}
+
+/* « 2026.09.19-18:07:29 » → « hoy, 18:07 » o « hace 3 días » */
+function bonito(v){
+  if(!v) return '';
+  var m = v.match(/^(\d{4})\.(\d{2})\.(\d{2})-(\d{2}):(\d{2})/);
+  if(!m) return v;
+  var d = new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
+  var dias = Math.floor((new Date() - d) / 86400000);
+  var h = m[4] + ':' + m[5];
+  if(dias <= 0) return 'hoy, ' + h;
+  if(dias === 1) return 'ayer, ' + h;
+  if(dias < 30)  return 'hace ' + dias + ' días';
+  return m[3] + '/' + m[2] + '/' + m[1];
+}
+
+function ordena(i){
+  ORDEN = { col:i, sen: (ORDEN.col === i && ORDEN.sen === 1) ? -1 : 1 };
+  pinta();
+}
+function soloHoy(){
+  HOY = !HOY;
+  document.getElementById('b-hoy').style.borderColor = HOY ? 'var(--ok)' : '';
+  document.getElementById('b-hoy').style.color = HOY ? 'var(--ok)' : '';
+  pinta();
+}
+
+function soloMudas(){
+  MUDAS = !MUDAS;
+  var b = document.getElementById('b-mudas');
+  b.style.borderColor = MUDAS ? 'var(--acc)' : '';
+  b.style.color = MUDAS ? 'var(--acc)' : '';
+  pinta();
+}
+
+function pinta(){
+  var q = document.getElementById('busca').value.toLowerCase();
+  var c = document.getElementById('carp').value;
+  var k = document.getElementById('clase').value;
+
+  var V = TODO.filter(function(x){
+    if(c && x.carp !== c) return false;
+    if(k && x.clase !== k) return false;
+    if(HOY && !x.hoy) return false;
+    if(MUDAS && !x.muda) return false;
+    if(q && x.camino.toLowerCase().indexOf(q) < 0) return false;
+    return true;
+  });
+
+  var kk = COL[ORDEN.col].k;
+  V.sort(function(a, b){
+    var x = a[kk] || '', y = b[kk] || '';
+    if(kk === 'dia'){ x = a.ver; y = b.ver; }
+    return String(x).localeCompare(String(y), 'es', {numeric:true}) * ORDEN.sen;
+  });
+
+  COL.forEach(function(_, i){
+    var t = document.getElementById('th' + i);
+    if(!t) return;
+    t.classList.toggle('orden', i === ORDEN.col);
+    t.querySelector('.fl').textContent =
+      (i === ORDEN.col) ? (ORDEN.sen === 1 ? '▲' : '▼') : '▲▼';
+  });
+
+  document.getElementById('filas').innerHTML = V.map(function(x){
+    return '<tr class="' + (x.hoy ? 'hoy ' : '') + (x.muda ? 'muda' : '') + '">'
+      + '<td class="carp"><span class="pt"></span>' + esc(x.carp) + '</td>'
+      + '<td class="fich">' + (x.muda ? '<span class="ic-muda">🔊</span>' : '')
+      + esc(x.fich) + '</td>'
+      + '<td class="ver">' + esc(x.ver) + '</td>'
+      + '<td class="dia">' + esc(x.dia) + '</td>'
+      + '<td class="suma">' + esc(x.suma) + '</td></tr>';
+  }).join('');
+
+  var n = TODO.filter(function(x){ return x.hoy; }).length;
+  document.getElementById('cifras').innerHTML =
+    '<span><b>' + V.length + '</b> de ' + TODO.length + '</span>'
+    + '<span style="color:var(--ok)"><b>' + n + '</b> en la última pasada</span>'
+    + '<span><b>' + TODO.filter(function(x){ return x.muda; }).length
+    + '</b> 🔊</span>';
+}
+
+function esc(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
