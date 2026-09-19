@@ -1,7 +1,7 @@
 /* LA VISITA DE LA CASA — sus etapas */
 var SF_TOUR = window.SF_TOUR = {
   "id": "tour-casa",
-  "version": "2026.09.18-19:29:26",
+  "version": "2026.09.19-19:34:25",
   "_doctrina": "LA VISITA DE LA BANDA DE ARRIBA (P-H + Mattieu, 18/09/2026)\n\nSIETE ETAPAS, Y NADA MAS QUE LA BANDA. Lo que esta siempre ahi, pase\nlo que pase — ni un expediente abierto ni un cuadro desplegado.\n\nSe habian puesto trece, con el cuadro de expedientes y las tarjetas, y\nno podia funcionar: « caja-expedientes » esta oculto mientras no se\nelija a nadie. El halo apuntaba a objetos invisibles (P-H:\n« catastrophe »). Luego se dejo la eleccion de paciente, y tampoco:\nno es de esta visita, venia de la otra y rompia el orden.\n\nLO QUE FALTA, y es la buena solucion — la imagen es de P-H:\n  « C'est comme dans un musee : on ouvre une porte pour entrer dans\n    une salle, on visite les objets, on sort par une autre porte ou\n    la meme qu'on referme. A la fin de la visite du chateau, tout est\n    automatiquement remis en ordre et on peut travailler. »\n\nCada etapa dira lo que abre, y el motor guardara el orden para cerrar\nal reves. Quien tenia otro expediente abierto debe encontrarlo al\nacabar: la visita ensena, no cambia nada.\n\nLas trece etapas estan en tour-13.js, esperando ese motor.",
   "marco": "propio",
   "idiomas": [
@@ -31,12 +31,11 @@ var SF_TOUR = window.SF_TOUR = {
         "ca": "Benvingut a la casa de Salufolio. L'abella porta al panal, l'entrada.",
         "en": "Welcome to the house of Salufolio. The bee, top left, leads to the hive — the entrance, where it is explained what all this is and for whom."
       },
-      "segundos": 11,
-      "sonido": {
-        "es": "voz/t01_es.mp3",
-        "fr": "voz/t01_fr.mp3",
-        "ca": "voz/t01_ca.mp3",
-        "en": "voz/t01_en.mp3"
+      "grabado": {
+        "es": "703acaba",
+        "fr": "c724d289",
+        "ca": "20c0d66b",
+        "en": "85d780e8"
       }
     },
     {
@@ -55,18 +54,16 @@ var SF_TOUR = window.SF_TOUR = {
         "ca": "Salufolio, i davall el seu número de versió. Sense número, mai se sap què s'està mirant.",
         "en": "Salufolio, and beneath it the version number. Hover over it and you will see. Without a number you never know what you are looking at."
       },
-      "segundos": 11,
-      "sonido": {
-        "es": "voz/t02_es.mp3",
-        "fr": "voz/t02_fr.mp3",
-        "ca": "voz/t02_ca.mp3",
-        "en": "voz/t02_en.mp3"
+      "grabado": {
+        "es": "c21ea9a6",
+        "fr": "6610fff0",
+        "ca": "2dd1ea70",
+        "en": "e344dcaa"
       }
     },
     {
       "icono": "🧑",
       "objeto": "#b-pac",
-      "segundos": 13,
       "titulo": {
         "es": "De quién se habla",
         "fr": "De qui l'on parle",
@@ -80,11 +77,11 @@ var SF_TOUR = window.SF_TOUR = {
         "en": "Here you see whose record is open — right now, the demonstration one. Tap it to change person. Salufolio serves several: your mother, your father, yourself. Each has their own folder."
       },
       "n": 3,
-      "sonido": {
-        "es": "voz/t03_es.mp3",
-        "fr": "voz/t03_fr.mp3",
-        "ca": "voz/t03_ca.mp3",
-        "en": "voz/t03_en.mp3"
+      "grabado": {
+        "es": "889fbe96",
+        "fr": "39d683c7",
+        "ca": "d3aba1b2",
+        "en": "7498b630"
       }
     },
     {
@@ -103,12 +100,11 @@ var SF_TOUR = window.SF_TOUR = {
         "ca": "El disquet escriu l'expedient al seu disc. Si porta un asterisc, hi ha alguna cosa sense guardar.",
         "en": "The disk writes the record to your drive. If it carries a star, something is not yet saved."
       },
-      "segundos": 12,
-      "sonido": {
-        "es": "voz/t04_es.mp3",
-        "fr": "voz/t04_fr.mp3",
-        "ca": "voz/t04_ca.mp3",
-        "en": "voz/t04_en.mp3"
+      "grabado": {
+        "es": "5c493a4d",
+        "fr": "5c77ed4b",
+        "ca": "c67d825c",
+        "en": "d6df21dd"
       }
     },
     {
@@ -127,12 +123,11 @@ var SF_TOUR = window.SF_TOUR = {
         "ca": "Castellà, valencià, francés, anglés. Tota la casa ho seguix.",
         "en": "Spanish, Valencian, French, English. The whole house follows. Choose once and it is remembered."
       },
-      "segundos": 9,
-      "sonido": {
-        "es": "voz/t05_es.mp3",
-        "fr": "voz/t05_fr.mp3",
-        "ca": "voz/t05_ca.mp3",
-        "en": "voz/t05_en.mp3"
+      "grabado": {
+        "es": "03e9f12d",
+        "fr": "9052fad2",
+        "ca": "cb6e38ac",
+        "en": "5da7e342"
       }
     },
     {
@@ -151,12 +146,11 @@ var SF_TOUR = window.SF_TOUR = {
         "ca": "Onze paletes, clares i fosques. Qui llig de nit i qui té la vista cansada no necessiten el mateix.",
         "en": "Eleven palettes, light and dark. Not a whim: reading at night, tired eyes, hospital lighting — none need the same."
       },
-      "segundos": 12,
-      "sonido": {
-        "es": "voz/t06_es.mp3",
-        "fr": "voz/t06_fr.mp3",
-        "ca": "voz/t06_ca.mp3",
-        "en": "voz/t06_en.mp3"
+      "grabado": {
+        "es": "8eb8b890",
+        "fr": "06c67a89",
+        "ca": "471c1cd6",
+        "en": "d44cbd77"
       }
     },
     {
@@ -175,18 +169,16 @@ var SF_TOUR = window.SF_TOUR = {
         "ca": "Cada programa porta la seua ajuda. Al seu costat, la casa el torna.",
         "en": "Each program has its help, telling you what happens where you are. Beside it, the house brings you back."
       },
-      "segundos": 12,
-      "sonido": {
-        "es": "voz/t07_es.mp3",
-        "fr": "voz/t07_fr.mp3",
-        "ca": "voz/t07_ca.mp3",
-        "en": "voz/t07_en.mp3"
+      "grabado": {
+        "es": "83b6b437",
+        "fr": "df39c503",
+        "ca": "efe214d4",
+        "en": "145cfb0b"
       }
     },
     {
       "icono": "🏠",
       "objeto": "[data-b=\"inicio\"]",
-      "segundos": 10,
       "titulo": {
         "es": "Volver a la casa",
         "fr": "Revenir à la maison",
@@ -200,11 +192,11 @@ var SF_TOUR = window.SF_TOUR = {
         "en": "When you are inside a program, the house brings you back."
       },
       "n": 8,
-      "sonido": {
-        "es": "voz/t08_es.mp3",
-        "fr": "voz/t08_fr.mp3",
-        "ca": "voz/t08_ca.mp3",
-        "en": "voz/t08_en.mp3"
+      "grabado": {
+        "es": "019f426c",
+        "fr": "f8567fdd",
+        "ca": "4d70b07a",
+        "en": "1adcf300"
       }
     }
   ],
@@ -220,8 +212,16 @@ var SF_TOUR = window.SF_TOUR = {
       "fr": "Voilà tout. Touchez maintenant une carte et regardez : c'est votre dossier, sur votre ordinateur, et rien n'en sort. Si quelque chose vous a déplu, dites-le — le ❌ de cette visite ouvre une feuille pour le raconter.",
       "ca": "Això és tot. Ara toque una targeta i mire: és el seu expedient, en el seu ordinador.",
       "en": "That is all. Now tap a card and look: it is your record, on your computer, and nothing leaves it."
+    },
+    "grabado": {
+      "es": "c7039b6a",
+      "fr": "4666172b",
+      "ca": "cc2ab847",
+      "en": "306b806d"
     }
   },
   "suspiro": 500,
-  "_suspiro": "El respiro entre etapas, en milesimas (P-H, 18/09): el halo se apaga, se respira, y llega la siguiente. Cada etapa puede tener el suyo."
+  "_suspiro": "El respiro entre etapas, en milesimas (P-H, 18/09): el halo se apaga, se respira, y llega la siguiente. Cada etapa puede tener el suyo.",
+  "voz_nombre": "t{n}_{lang}.mp3",
+  "_voz": "EL NOMBRE DEL SONIDO SE DEDUCE DEL NUMERO (P-H, 19/09/2026):\n  etapa 1, castellano  →  voz/t01_es.mp3\n  el final (etapa n+1) →  voz/t09_es.mp3\n\nNo hace falta escribirlos: eran ocho lineas por etapa que no decian\nnada que el numero no dijera ya.\n\n« grabado » lleva la huella del texto el dia que se grabo. Si se\ncorrige una frase, la huella ya no cuadra — y el taller de las voces\nlo dice en rojo: ese mp3 hay que rehacerlo. Sin eso, un fichero puede\nseguir diciendo lo que el texto ya no dice, y nadie se entera.\n\nYa no hay « segundos »: cuando el mp3 existe, EL LLEVA SU DURACION y\nel reloj se ajusta a el. Solo la sintesis necesita una estimacion, y\npara eso basta el largo del texto. Ademas variaba de una lengua a\notra, lo que hacia el campo mentiroso (P-H)."
 };

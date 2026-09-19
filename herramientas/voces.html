@@ -58,6 +58,10 @@ main{max-width:860px;margin:0 auto;padding:18px 22px 70px}
 .b-seg{font-size:11.5px;color:var(--sordo);font-family:monospace}
 .b-hecho{color:var(--ok);font-size:15px;display:none}
 .bloque.hecho .b-hecho{display:inline}
+.b-viejo{display:none;color:var(--avi);font-size:11.5px;font-weight:600;
+         white-space:nowrap}
+.bloque.viejo{border-color:var(--avi)}
+.bloque.viejo .b-cab{background:rgba(232,164,74,.08)}
 
 textarea{width:100%;border:0;background:transparent;color:var(--tex);
          font-family:inherit;font-size:14.5px;line-height:1.72;
@@ -115,6 +119,10 @@ textarea:focus{outline:none;background:rgba(91,155,213,.04)}
     </ol>
     El texto se puede corregir aquí antes de copiarlo. Para guardarlo de
     verdad, hay que cambiarlo en <code>casa/tour.js</code>.
+    <br><br>
+    <b>⚠ el texto ha cambiado</b> — quiere decir que la frase ya no es la
+    que se grabó: ese mp3 hay que rehacerlo. La tabla guarda la huella
+    del texto el día de la grabación, y aquí se compara.
   </div>
   <div id="bloques"></div>
 </main>
@@ -122,9 +130,39 @@ textarea:focus{outline:none;background:rgba(91,155,213,.04)}
 <div class="aviso" id="aviso"></div>
 
 <script>
+/* Versión 2026.09.19-19:34:25 */
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA HUELLA DEL TEXTO GRABADO (P-H, 19/09/2026)
+
+   « Un texte converti en son mp3 — si on change le texte ? Il faudrait
+     associer aux mp3 les textes source. »
+
+   Es el mismo problema que las versiones, y la misma solución: la suma
+   de control. La tabla guarda la huella del texto el día que se grabó;
+   si la frase cambia, la huella ya no cuadra y aquí sale en rojo.
+
+   Se sabe entonces cuáles rehacer — y SOLO ésos.
+   ══════════════════════════════════════════════════════════════════════ */
+async function huella(t){
+  var n = String(t || '').trim().split(/\s+/).join(' ');
+  try{
+    var b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(n));
+    return Array.from(new Uint8Array(b)).map(function(x){
+      return x.toString(16).padStart(2,'0'); }).join('').slice(0, 8);
+  }catch(e){ return ''; }
+}
+
 const LG = { es:'Castellano', fr:'Français', ca:'Valencià', en:'English' };
 let HECHOS = {};
 try{ HECHOS = JSON.parse(localStorage.getItem('sf_voces')||'{}'); }catch(e){}
+
+/* la duracion, estimada del texto — varia con la lengua (P-H, 19/09) */
+function estima(o){
+  const l = document.getElementById('lang').value;
+  const n = String((o && (o[l]||o.es)) || '').trim().length;
+  return Math.max(4, Math.round(n / 13) + 1);
+}
 
 function tt(o, l){ return (o && (o[l] || o.es)) || ''; }
 
@@ -132,9 +170,11 @@ function tt(o, l){ return (o && (o[l] || o.es)) || ''; }
 function lista(){
   const E = (SF_TOUR.etapas||[]).map(e => ({
     n:e.n, icono:e.icono, titulo:e.titulo, texto:e.texto,
-    seg:e.segundos || SF_TOUR.segundos_defecto || 10 }));
+    grabado:e.grabado || {},
+    seg:e.segundos || estima(e.texto) }));
   const f = SF_TOUR.final || {};
-  E.push({ n:E.length+1, icono:'✓', titulo:f.titulo, texto:f.texto, seg:10 });
+  E.push({ n:E.length+1, icono:'✓', titulo:f.titulo, texto:f.texto,
+           grabado:f.grabado || {}, seg:estima(f.texto) });
   return E;
 }
 
@@ -153,9 +193,10 @@ function pinta(){
       + '<span class="b-nom">' + f + '</span>'
       + '<span class="b-tit">' + tt(e.titulo, l) + '</span>'
       + '<span class="b-seg">~' + e.seg + 's</span>'
+      + '<span class="b-viejo" id="v-' + f + '">⚠ el texto ha cambiado</span>'
       + '<span class="b-hecho">✓</span>'
       + '</div>'
-      + '<textarea id="t-' + f + '" oninput="cuentaLargo(\'' + f + '\')">'
+      + '<textarea id="t-' + f + '" oninput="alEscribir(\'' + f + '\')">'
       + tt(e.texto, l) + '</textarea>'
       + '<div class="b-pie">'
       + '<button class="copiar" onclick="copia(\'' + f + '\')">📋 Copiar</button>'
@@ -164,11 +205,32 @@ function pinta(){
       + '</div></div>';
   }).join('');
 
-  E.forEach(e => cuentaLargo('t' + String(e.n).padStart(2,'0') + '_' + l + '.mp3'));
+  E.forEach(e => {
+    const f = 't' + String(e.n).padStart(2,'0') + '_' + l + '.mp3';
+    cuentaLargo(f);
+    marcaViejo(f, e, l);
+  });
   cuenta();
 }
 
 /* cuántas letras — para saber si el texto cabe en los segundos previstos */
+function alEscribir(f){
+  cuentaLargo(f);
+  const l = document.getElementById('lang').value;
+  const e = lista().filter(x =>
+    ('t' + String(x.n).padStart(2,'0') + '_' + l + '.mp3') === f)[0];
+  if(!e) return;
+  /* lo que se escribe aquí no está en la tabla: se compara con lo vivo */
+  huella(document.getElementById('t-' + f).value).then(h => {
+    const z = document.getElementById('v-' + f);
+    const b = document.getElementById('b-' + f);
+    const g = (e.grabado||{})[l];
+    const viejo = !!(g && h && h !== g);
+    if(z) z.style.display = viejo ? 'inline' : 'none';
+    if(b) b.classList.toggle('viejo', viejo);
+  });
+}
+
 function cuentaLargo(f){
   const t = document.getElementById('t-' + f);
   const z = document.getElementById('l-' + f);
@@ -176,6 +238,19 @@ function cuentaLargo(f){
   const n = t.value.trim().length;
   const seg = Math.round(n / 14);        /* unas 14 letras por segundo */
   z.textContent = n + ' letras · ~' + seg + 's al hablar';
+}
+
+/* ¿sigue el mp3 diciendo lo que el texto dice? */
+async function marcaViejo(f, e, l){
+  const z = document.getElementById('v-' + f);
+  const b = document.getElementById('b-' + f);
+  if(!z || !b) return;
+  const g = (e.grabado||{})[l];
+  if(!g){ z.style.display = 'none'; return; }
+  const h = await huella(tt(e.texto, l));
+  const viejo = (h && h !== g);
+  z.style.display = viejo ? 'inline' : 'none';
+  b.classList.toggle('viejo', viejo);
 }
 
 function copia(f){

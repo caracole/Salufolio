@@ -1,0 +1,1334 @@
+{
+ "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
+ "_ultima_pasada": "2026.09.19-19:44:13",
+ "ficheros": {
+  "20230915-thesaurus-differentiel-septembre-2023.pdf": {
+   "muda": true,
+   "suma": "9821b1da3518",
+   "version": "2026.09.19-19:42:02"
+  },
+  "20230915-thesaurus-index-des-classes-septembre-2023.pdf": {
+   "muda": true,
+   "suma": "3525e985af2d",
+   "version": "2026.09.19-19:42:02"
+  },
+  "20230915-thesaurus-index-des-substances-septembre-2023.pdf": {
+   "muda": true,
+   "suma": "f4b7947cc1f0",
+   "version": "2026.09.19-19:42:02"
+  },
+  "20230915-thesaurus-interactions-medicamenteuses-septembre-2023.pdf": {
+   "muda": true,
+   "suma": "0db64c85e805",
+   "version": "2026.09.19-19:42:02"
+  },
+  "2024_CIE10ES_Tomo_II_Procedimientos_3283113161732425776.pdf": {
+   "muda": true,
+   "suma": "382b76a145fb",
+   "version": "2026.09.19-19:42:02"
+  },
+  "CIE10ES_2016_norm_Manual_codificacion_Diagnosticos.pdf": {
+   "muda": true,
+   "suma": "a1f716557abd",
+   "version": "2026.09.19-19:42:02"
+  },
+  "Salufolio-Panal-Distribucion.pdf": {
+   "muda": true,
+   "suma": "6df4d34afa58",
+   "version": "2026.09.19-19:42:02"
+  },
+  "adquisicion/asistida/asistida.help.html": {
+   "suma": "c01ea9578b49",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/asistida/asistida.html": {
+   "suma": "9a9e8e608c20",
+   "version": "2026.09.19-18:12:56"
+  },
+  "adquisicion/asistida/asistida.idiomas.js": {
+   "suma": "a0aad06b8494",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/asistida/asistida.js": {
+   "suma": "d16da7f91d94",
+   "version": "2026.09.19-18:12:56"
+  },
+  "adquisicion/asistida/index.html": {
+   "suma": "45386ecebea9",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/automatica/automatica.help.html": {
+   "suma": "2f2e3b7fff8e",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/automatica/automatica.html": {
+   "suma": "5df6c3eeb135",
+   "version": "2026.09.19-18:12:56"
+  },
+  "adquisicion/automatica/automatica.idiomas.js": {
+   "suma": "4aabd570ee39",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/automatica/automatica.js": {
+   "suma": "16c5c8360bb5",
+   "version": "2026.09.19-18:12:56"
+  },
+  "adquisicion/automatica/index.html": {
+   "suma": "70778b7e6643",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/manual/index.html": {
+   "suma": "116a91a86eaf",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/manual/manual.help.html": {
+   "suma": "7366952a9591",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/manual/manual.html": {
+   "suma": "cfe7a9eb33cd",
+   "version": "2026.09.19-18:12:56"
+  },
+  "adquisicion/manual/manual.idiomas.js": {
+   "suma": "c5d84bfb1d95",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/manual/manual.js": {
+   "suma": "00c258c7b36a",
+   "version": "2026.09.19-18:12:56"
+  },
+  "adquisicion/prompts/LEEME.txt": {
+   "suma": "f77baf83fa1e",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/prompts/prompt-extraccion-ocr.js": {
+   "suma": "3d1760268fdb",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/prompts/prompt-extraccion-ocr.txt": {
+   "suma": "54cead42a5e4",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/prompts/prompt-extraccion.js": {
+   "suma": "1249872c1771",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/prompts/prompt-extraccion.txt": {
+   "suma": "ce9c84a8268a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "adquisicion/prompts/prompts.js": {
+   "suma": "d4b78dd2e986",
+   "version": "2026.09.19-18:12:56"
+  },
+  "antecedentes/antecedentes.help.html": {
+   "suma": "e5f23e70b695",
+   "version": "2026.09.19-18:15:47"
+  },
+  "antecedentes/antecedentes.html": {
+   "suma": "2735496f09d4",
+   "version": "2026.09.19-18:12:56"
+  },
+  "antecedentes/antecedentes.idiomas.js": {
+   "suma": "f616033c587d",
+   "version": "2026.09.19-18:15:47"
+  },
+  "antecedentes/antecedentes.js": {
+   "suma": "46e739c7448e",
+   "version": "2026.09.19-18:12:56"
+  },
+  "antecedentes/index.html": {
+   "suma": "8684fccc3dd6",
+   "version": "2026.09.19-18:15:47"
+  },
+  "auditoria/auditoria.html": {
+   "suma": "512a9631123b",
+   "version": "2026.09.19-18:12:56"
+  },
+  "auditoria/auditoria.idiomas.js": {
+   "suma": "69093cf6d7f6",
+   "version": "2026.09.19-18:15:47"
+  },
+  "auditoria/auditoria.js": {
+   "suma": "02db22fb2eb9",
+   "version": "2026.09.19-18:12:56"
+  },
+  "auditoria/index.html": {
+   "suma": "bfa7deaebe3c",
+   "version": "2026.09.19-18:15:47"
+  },
+  "bacteriologia/bacteriologia.help.html": {
+   "suma": "d3478505a5ba",
+   "version": "2026.09.19-18:15:47"
+  },
+  "bacteriologia/bacteriologia.html": {
+   "suma": "579350678c4b",
+   "version": "2026.09.19-18:12:56"
+  },
+  "bacteriologia/bacteriologia.idiomas.js": {
+   "suma": "377a417faa4d",
+   "version": "2026.09.19-18:15:47"
+  },
+  "bacteriologia/bacteriologia.js": {
+   "suma": "42cd67a09bd6",
+   "version": "2026.09.19-18:12:56"
+  },
+  "bacteriologia/index.html": {
+   "suma": "50a013d51956",
+   "version": "2026.09.19-18:15:47"
+  },
+  "casa/casa.help.html": {
+   "suma": "c61fa6b4b3ff",
+   "version": "2026.09.19-18:15:47"
+  },
+  "casa/casa.js": {
+   "suma": "f8fd8cdc87d0",
+   "version": "2026.09.19-18:12:56"
+  },
+  "casa/index.html": {
+   "suma": "69718799273b",
+   "version": "2026.09.19-18:15:47"
+  },
+  "casa/tour-13.js": {
+   "suma": "590ab7660c05",
+   "version": "2026.09.19-18:12:56"
+  },
+  "casa/tour.js": {
+   "suma": "cd1a9f73c305",
+   "version": "2026.09.19-19:34:25"
+  },
+  "casa/voz/LEEME.txt": {
+   "suma": "c7cabb791768",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t01_es.mp3": {
+   "muda": true,
+   "suma": "15e66009608d",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t01_fr.mp3": {
+   "muda": true,
+   "suma": "2dec12967bfc",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t02_es.mp3": {
+   "muda": true,
+   "suma": "a547d24491b2",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t02_fr.mp3": {
+   "muda": true,
+   "suma": "9db7421c4c82",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t03_es.mp3": {
+   "muda": true,
+   "suma": "e983ec7ff1dd",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t03_fr.mp3": {
+   "muda": true,
+   "suma": "c31cf93e6160",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t04_es.mp3": {
+   "muda": true,
+   "suma": "5a2bcbaf07f3",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t04_fr.mp3": {
+   "muda": true,
+   "suma": "59bbfd29e182",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t05_es.mp3": {
+   "muda": true,
+   "suma": "b8babdabdd7a",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t05_fr.mp3": {
+   "muda": true,
+   "suma": "4b47d57e557b",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t06_es.mp3": {
+   "muda": true,
+   "suma": "879a52a80f6e",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t06_fr.mp3": {
+   "muda": true,
+   "suma": "247ea88d4623",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t07_es.mp3": {
+   "muda": true,
+   "suma": "9e9a3b5f0c87",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t07_fr.mp3": {
+   "muda": true,
+   "suma": "227589d137fd",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t08_es.mp3": {
+   "muda": true,
+   "suma": "fa3d446c7a6b",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t08_fr.mp3": {
+   "muda": true,
+   "suma": "91876b2e0560",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t09_es.mp3": {
+   "muda": true,
+   "suma": "c6e995cb6c13",
+   "version": "2026.09.19-19:42:02"
+  },
+  "casa/voz/t09_fr.mp3": {
+   "muda": true,
+   "suma": "77a3951e2aa8",
+   "version": "2026.09.19-19:42:02"
+  },
+  "comun/chart.umd.min.js": {
+   "suma": "f2cea52ad0c5",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/demo.pdf": {
+   "muda": true,
+   "suma": "ac6397557a5b",
+   "version": "2026.09.19-19:42:02"
+  },
+  "comun/formulario.js": {
+   "suma": "06b1ce05d0c0",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/formularios/adquisicion.js": {
+   "suma": "4d7044807381",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/formularios/mediciones.js": {
+   "suma": "423ae95d9c9f",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/glosario-datos.js": {
+   "suma": "c5e87c2b340a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/guarda-paciente.js": {
+   "suma": "92eaa6f2657b",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/mf.js": {
+   "suma": "334e6d0f524a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/mf_save.js": {
+   "suma": "823bf02e67d8",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/patron-comentado.txt": {
+   "suma": "42dcc760db88",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/plantilla-mf.js": {
+   "suma": "7c8b2661b49c",
+   "version": "2026.09.19-18:12:56"
+  },
+  "comun/salufolio.css": {
+   "suma": "1b24ba703ca8",
+   "version": "2026.09.19-18:15:47"
+  },
+  "comun/tour-motor.js": {
+   "suma": "36ead2b9344b",
+   "version": "2026.09.19-19:34:25"
+  },
+  "comun/tour.css": {
+   "suma": "868a934d022f",
+   "version": "2026.09.19-18:12:56"
+  },
+  "correlaciones/correlaciones.help.html": {
+   "suma": "c25d1a0623c2",
+   "version": "2026.09.19-18:15:47"
+  },
+  "correlaciones/correlaciones.html": {
+   "suma": "df47d510eecd",
+   "version": "2026.09.19-18:12:56"
+  },
+  "correlaciones/correlaciones.idiomas.js": {
+   "suma": "4dcaca7d1b04",
+   "version": "2026.09.19-18:15:47"
+  },
+  "correlaciones/correlaciones.js": {
+   "suma": "f41039d137f4",
+   "version": "2026.09.19-18:12:56"
+  },
+  "correlaciones/index.html": {
+   "suma": "72f321289dad",
+   "version": "2026.09.19-18:15:47"
+  },
+  "cronologia/cronologia.help.html": {
+   "suma": "5e90a455b34a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "cronologia/cronologia.html": {
+   "suma": "751350e33902",
+   "version": "2026.09.19-18:12:56"
+  },
+  "cronologia/cronologia.idiomas.js": {
+   "suma": "0546750e7fc5",
+   "version": "2026.09.19-18:15:47"
+  },
+  "cronologia/cronologia.js": {
+   "suma": "e5b43c46c7cb",
+   "version": "2026.09.19-18:12:56"
+  },
+  "cronologia/index.html": {
+   "suma": "2cad4db93925",
+   "version": "2026.09.19-18:15:47"
+  },
+  "curvas/curvas.help.html": {
+   "suma": "45caed93f566",
+   "version": "2026.09.19-18:15:47"
+  },
+  "curvas/curvas.html": {
+   "suma": "086d27e21659",
+   "version": "2026.09.19-18:12:56"
+  },
+  "curvas/curvas.idiomas.js": {
+   "suma": "c61f8638d2db",
+   "version": "2026.09.19-18:15:47"
+  },
+  "curvas/curvas.js": {
+   "suma": "f45d5d583cc8",
+   "version": "2026.09.19-18:12:56"
+  },
+  "curvas/index.html": {
+   "suma": "02d1b107ab70",
+   "version": "2026.09.19-18:15:47"
+  },
+  "datos/datos.help.html": {
+   "suma": "3d6df45641eb",
+   "version": "2026.09.19-18:15:47"
+  },
+  "datos/datos.html": {
+   "suma": "59d2aeaf9532",
+   "version": "2026.09.19-18:12:56"
+  },
+  "datos/datos.idiomas.js": {
+   "suma": "6c33e1933cd3",
+   "version": "2026.09.19-18:15:47"
+  },
+  "datos/datos.js": {
+   "suma": "adab0413671d",
+   "version": "2026.09.19-18:12:56"
+  },
+  "doc/Protocolo/ES/Academico/Pdf/ES_Documento_academico_v0.9_v2026-08-04_13h48.pdf": {
+   "muda": true,
+   "suma": "2b768b34f900",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h00_primer_arranque_es.png": {
+   "muda": true,
+   "suma": "49ffed52f66e",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h00_primer_arranque_fr.png": {
+   "muda": true,
+   "suma": "3cfd0093e441",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h01_bienvenida_es.png": {
+   "muda": true,
+   "suma": "8131dfe9b8fb",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h01_bienvenida_fr.png": {
+   "muda": true,
+   "suma": "dc519b26ff3f",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h02_medicacion_es.png": {
+   "muda": true,
+   "suma": "1dbf6b6ccf22",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h02_medicacion_fr.png": {
+   "muda": true,
+   "suma": "e9743d82a56c",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h03_toma_momentos_es.png": {
+   "muda": true,
+   "suma": "683f8c283371",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h03_toma_momentos_fr.png": {
+   "muda": true,
+   "suma": "4387c435b50e",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h04_toma_demanda_es.png": {
+   "muda": true,
+   "suma": "2b9897dd50ec",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h04_toma_demanda_fr.png": {
+   "muda": true,
+   "suma": "c9c729fe08bc",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h05_calendario_es.png": {
+   "muda": true,
+   "suma": "00d9ae2a8530",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h05_calendario_fr.png": {
+   "muda": true,
+   "suma": "a894618fd95b",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h06_constantes_es.png": {
+   "muda": true,
+   "suma": "2e4844bd7daf",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h06_constantes_fr.png": {
+   "muda": true,
+   "suma": "81c5e33d51a0",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h07_notas_es.png": {
+   "muda": true,
+   "suma": "8dc6fa10f641",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h07_notas_fr.png": {
+   "muda": true,
+   "suma": "021dad8b8dca",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h08_datos_es.png": {
+   "muda": true,
+   "suma": "9529e8144c01",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h08_datos_fr.png": {
+   "muda": true,
+   "suma": "708dd34fb57e",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h09_medicamentos_es.png": {
+   "muda": true,
+   "suma": "1009409e66b6",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h09_medicamentos_fr.png": {
+   "muda": true,
+   "suma": "32fb91b7be06",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h10_ficha_nueva_es.png": {
+   "muda": true,
+   "suma": "f1888df96455",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h10_ficha_nueva_fr.png": {
+   "muda": true,
+   "suma": "39bba27c737f",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h11_ficha_editar_es.png": {
+   "muda": true,
+   "suma": "589fd0ba8ab1",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h11_ficha_editar_fr.png": {
+   "muda": true,
+   "suma": "ac2a75e963dd",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h12_avisos_es.png": {
+   "muda": true,
+   "suma": "17b7a6b36364",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h12_avisos_fr.png": {
+   "muda": true,
+   "suma": "70eff3f88b4a",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h13_resumen_periodo_es.png": {
+   "muda": true,
+   "suma": "dd59a229f923",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h13_resumen_periodo_fr.png": {
+   "muda": true,
+   "suma": "93d6187b7267",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h14_resumen_hoja_es.png": {
+   "muda": true,
+   "suma": "a2f1cb535995",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v50/h14_resumen_hoja_fr.png": {
+   "muda": true,
+   "suma": "b80179dedd8f",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h00_primer_arranque_es.png": {
+   "muda": true,
+   "suma": "0f6d0252f0eb",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h00_primer_arranque_fr.png": {
+   "muda": true,
+   "suma": "ac0315e812d1",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h01_bienvenida_es.png": {
+   "muda": true,
+   "suma": "35d98414a11f",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h01_bienvenida_fr.png": {
+   "muda": true,
+   "suma": "2ea04da8a229",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h02_medicacion_es.png": {
+   "muda": true,
+   "suma": "70f7fb23b076",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h02_medicacion_fr.png": {
+   "muda": true,
+   "suma": "4c1334660e38",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h03_toma_momentos_es.png": {
+   "muda": true,
+   "suma": "f43f087fc5f5",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h03_toma_momentos_fr.png": {
+   "muda": true,
+   "suma": "6df2761b6752",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h04_toma_demanda_es.png": {
+   "muda": true,
+   "suma": "6131ba745a2a",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h04_toma_demanda_fr.png": {
+   "muda": true,
+   "suma": "1747a7bc2a9f",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h05_calendario_es.png": {
+   "muda": true,
+   "suma": "d7e10c77efc6",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h05_calendario_fr.png": {
+   "muda": true,
+   "suma": "3239bec03b19",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h06_constantes_es.png": {
+   "muda": true,
+   "suma": "05788e2cd46a",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h06_constantes_fr.png": {
+   "muda": true,
+   "suma": "1f06eed7e8d4",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h07_notas_es.png": {
+   "muda": true,
+   "suma": "68c2e29ec4fb",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h07_notas_fr.png": {
+   "muda": true,
+   "suma": "8c5a44ce9ca9",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h08_datos_es.png": {
+   "muda": true,
+   "suma": "af72a63c10e6",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h08_datos_fr.png": {
+   "muda": true,
+   "suma": "cf91d591cad3",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h09_medicamentos_es.png": {
+   "muda": true,
+   "suma": "839ca219d1e5",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h09_medicamentos_fr.png": {
+   "muda": true,
+   "suma": "d34d985a23ea",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h10_ficha_nueva_es.png": {
+   "muda": true,
+   "suma": "4583473af9b3",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h10_ficha_nueva_fr.png": {
+   "muda": true,
+   "suma": "3af3bdcc1c91",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h11_ficha_editar_es.png": {
+   "muda": true,
+   "suma": "589fd0ba8ab1",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h11_ficha_editar_fr.png": {
+   "muda": true,
+   "suma": "ac2a75e963dd",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h12_avisos_es.png": {
+   "muda": true,
+   "suma": "7231b4b246f4",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h12_avisos_fr.png": {
+   "muda": true,
+   "suma": "dcb72bd3b163",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h13_resumen_periodo_es.png": {
+   "muda": true,
+   "suma": "adc5967221e2",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h13_resumen_periodo_fr.png": {
+   "muda": true,
+   "suma": "0bcb376aaa98",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h14_resumen_hoja_es.png": {
+   "muda": true,
+   "suma": "0e2a8543c08b",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Fotos/fotos-ES_v52/h14_resumen_hoja_fr.png": {
+   "muda": true,
+   "suma": "753388c46eb9",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Instalacion/Pdf/0-ES_Instalacion_v1.1_v2026-08-03_22h14.pdf": {
+   "muda": true,
+   "suma": "4ded4212aaef",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Presentacion/Pdf/01-ES_Presentacion.pdf": {
+   "muda": true,
+   "suma": "077046d50af2",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Tecnica/pdf/2-ES_Documentacion_tecnica_v1.2_v2026-08-03_22h14.pdf": {
+   "muda": true,
+   "suma": "ef5b52584633",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/ES/Usuario/pdf/3-ES_Manual_de_uso_v1.2_v2026-08-03_22h36.pdf": {
+   "muda": true,
+   "suma": "ef52b269043a",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Academico/FR_Document_academique_v0.9_v2026-08-04_13h48.pdf": {
+   "muda": true,
+   "suma": "34e651475059",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Academico/Pdf/ES_Documento_academico_v0.9_v2026-08-04_13h48.pdf": {
+   "muda": true,
+   "suma": "2b768b34f900",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Instalacion/0-FR_Installation_v1.1_v2026-08-03_22h14.pdf": {
+   "muda": true,
+   "suma": "5397b0d510a8",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Instalacion/Pdf/0-ES_Instalacion_v1.1_v2026-08-03_22h14.pdf": {
+   "muda": true,
+   "suma": "4ded4212aaef",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Presentacion/Pdf/01-ES_Presentacion.pdf": {
+   "muda": true,
+   "suma": "077046d50af2",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Tecnica/2-FR_Documentation_technique_v1.2_v2026-08-03_22h14.pdf": {
+   "muda": true,
+   "suma": "73ed2e11d3b5",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Tecnica/pdf/2-ES_Documentacion_tecnica_v1.2_v2026-08-03_22h14.pdf": {
+   "muda": true,
+   "suma": "ef5b52584633",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Usuario/3-FR_Manuel_utilisation_v1.2_v2026-08-03_22h36.pdf": {
+   "muda": true,
+   "suma": "3565c583ce13",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/FR/Usuario/pdf/3-ES_Manual_de_uso_v1.2_v2026-08-03_22h36.pdf": {
+   "muda": true,
+   "suma": "ef52b269043a",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/Protocolo/Salufolio_cahier_doc_v2026-08-03_15h16.md": {
+   "suma": "b9f3df460926",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/TEXTOS-VOZ.txt": {
+   "suma": "d239d72f67b6",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/banco_de_pruebas_presentacion_2026-08-24_21h43.md": {
+   "suma": "fbd8c98171a5",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/borrador_GVA_v2026-09-10_09h56.md": {
+   "suma": "3cc782279eb6",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/borrador_GVA_v2026-09-10_09h56.pdf": {
+   "muda": true,
+   "suma": "65f3f11877c1",
+   "version": "2026.09.19-19:42:02"
+  },
+  "doc/cahiers/salufolio_cahier_2026-08-22_22h36.md": {
+   "suma": "73ea7a728958",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/nota_Abraham_v2026-09-10_16h02.md": {
+   "suma": "79d6ca8d18ff",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/nota_documentacion_v2026-09-10_15h51.md": {
+   "suma": "4b4fc399f46c",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/respuesta_Luis_v2026-09-15_10h42.md": {
+   "suma": "247786de1520",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/respuesta_Luis_v2026-09-15_12h13.md": {
+   "suma": "4a73530175b9",
+   "version": "2026.09.19-18:15:47"
+  },
+  "doc/versiones.js": {
+   "suma": "216ee9cb8ff8",
+   "version": "2026.09.19-19:42:02"
+  },
+  "farmacovigilancia/farmacovigilancia.html": {
+   "suma": "f6e03a0519fc",
+   "version": "2026.09.19-18:12:56"
+  },
+  "farmacovigilancia/farmacovigilancia.idiomas.js": {
+   "suma": "4d8182df19d9",
+   "version": "2026.09.19-18:15:47"
+  },
+  "farmacovigilancia/farmacovigilancia.js": {
+   "suma": "2be09900507b",
+   "version": "2026.09.19-18:12:56"
+  },
+  "farmacovigilancia/index.html": {
+   "suma": "a3637c517b5f",
+   "version": "2026.09.19-18:15:47"
+  },
+  "glosario/glosario.help.html": {
+   "suma": "994ae2b9b48c",
+   "version": "2026.09.19-18:15:47"
+  },
+  "glosario/glosario.html": {
+   "suma": "38d2eecbadba",
+   "version": "2026.09.19-18:12:56"
+  },
+  "glosario/glosario.js": {
+   "suma": "77dcbb139aa0",
+   "version": "2026.09.19-18:12:56"
+  },
+  "glosario/index.html": {
+   "suma": "c9dde5f8b468",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/Conversor.html": {
+   "suma": "2767c6076d45",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/Maqueta.html": {
+   "suma": "4b5dca33710f",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/anonimiza.py": {
+   "suma": "77d189250587",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/anonimizador.html": {
+   "suma": "6092ce987a2b",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/banco.html": {
+   "suma": "45241ea630aa",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/buscar_correcto_pdf.py": {
+   "suma": "934ddbe9bb56",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/carnet_2026-08-18_09h52.txt": {
+   "suma": "a8b84994d53e",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/Cotejo.html": {
+   "suma": "0c858151bbb8",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/doc/Cotejo_v2.1_origine.html": {
+   "suma": "4124efb5b66f",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/doc/LISEZMOI.txt": {
+   "suma": "ae3070d37fa9",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/lib/pdf.min.js": {
+   "suma": "f985f450a379",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/lib/pdf.worker.min.js": {
+   "suma": "e3459b9cee03",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/lib/tesseract-core-lstm.wasm.js": {
+   "suma": "c8ba581350b2",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/lib/tesseract-core-simd-lstm.wasm.js": {
+   "suma": "8723cf497c56",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/lib/tesseract-core-simd.wasm.js": {
+   "suma": "b2c514c5432e",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/lib/tesseract-core.wasm.js": {
+   "suma": "484d3de78a9e",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/lib/tesseract.min.js": {
+   "suma": "c66022127b11",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/lib/worker.min.js": {
+   "suma": "d69eb8acdc72",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/cotejo/prompts/prompt-extraccion.txt": {
+   "suma": "6f077fbe3ef3",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/diagnostico_pdf.py": {
+   "suma": "867688b1e556",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/editor/index.html": {
+   "suma": "d9b9552c54f2",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/fusionar_pdfid.py": {
+   "suma": "040cbfde5ad4",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/hacer-demo-pdf.py": {
+   "suma": "5283432ef5ae",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/inspector_originales.py": {
+   "suma": "038b7a4e243d",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/limpiar_extracciones.py": {
+   "suma": "75295438e3fc",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/maqueta_momentos.html": {
+   "suma": "9c6be2dc601f",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/maqueta_panal/_editor.html": {
+   "suma": "c270dc783332",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/maqueta_panal/editor.html": {
+   "suma": "80eff7350f0b",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/maqueta_panal/iconos/LEEME.txt": {
+   "suma": "a4ef1c57684a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/maqueta_panal/index.html": {
+   "suma": "a77d9ca83f97",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/maqueta_panal/visita.js": {
+   "suma": "7c2fcf3e8693",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/maqueta_panal/voz/p1-saber-mas_es.mp3": {
+   "muda": true,
+   "suma": "e74e55394607",
+   "version": "2026.09.19-19:42:02"
+  },
+  "herramientas/normalizar_rangos.py": {
+   "suma": "f1d3d3f79181",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/poner-version.py": {
+   "suma": "72550d47e76b",
+   "version": "2026.09.19-19:42:02"
+  },
+  "herramientas/poner_identidad.py": {
+   "suma": "4e2356a98972",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/quitar_duplicados.py": {
+   "suma": "10cce95af919",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/quitar_gemelas.py": {
+   "suma": "c621baf23683",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/reconstructor_pdf.py": {
+   "suma": "a6f94990f968",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/refde_nivel2.py": {
+   "suma": "92c455e7ff24",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/refde_nivel2_v2026-08-11_15h11 (1).py": {
+   "suma": "7f14b42109e2",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/renombrar_pdfs.py": {
+   "suma": "247d6b7478c4",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/separar_orina.py": {
+   "suma": "b5481642e737",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/tabla_archivos.py": {
+   "suma": "b6ccf0781f27",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/terminaux.js": {
+   "suma": "701b8e1fb5bb",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/troceador_pdf.py": {
+   "suma": "e249e88111e5",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/versiones.html": {
+   "suma": "ebd4ae6aeb0c",
+   "version": "2026.09.19-19:44:13"
+  },
+  "herramientas/versiones.py": {
+   "suma": "8008429fc8ea",
+   "version": "2026.09.19-19:44:13"
+  },
+  "herramientas/visita_maqueta.html": {
+   "suma": "95f02b2a6504",
+   "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/voces.html": {
+   "suma": "a594fbb8d9db",
+   "version": "2026.09.19-19:34:25"
+  },
+  "index.html": {
+   "suma": "3bd3b067c0f7",
+   "version": "2026.09.19-18:15:47"
+  },
+  "informe/index.html": {
+   "suma": "d87773d9eeae",
+   "version": "2026.09.19-18:15:47"
+  },
+  "informe/informe.help.html": {
+   "suma": "3ac95acd8d66",
+   "version": "2026.09.19-18:15:47"
+  },
+  "informe/informe.html": {
+   "suma": "0aae45e8d1de",
+   "version": "2026.09.19-18:12:56"
+  },
+  "informe/informe.idiomas.js": {
+   "suma": "b47c267249a2",
+   "version": "2026.09.19-18:15:47"
+  },
+  "informe/informe.js": {
+   "suma": "e4ce9c1db24e",
+   "version": "2026.09.19-18:12:56"
+  },
+  "informe/prompt-informe-v0.js": {
+   "suma": "edc43a99165a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "informe/prompt-informe.js": {
+   "suma": "edc43a99165a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "maqueta/index.html": {
+   "suma": "55caf1bbc8b0",
+   "version": "2026.09.19-18:12:56"
+  },
+  "medicamentos/cima.js": {
+   "suma": "892e75e93f84",
+   "version": "2026.09.19-18:15:47"
+  },
+  "medicamentos/interacciones.js": {
+   "suma": "b7f1fc0c1aca",
+   "version": "2026.09.19-18:15:47"
+  },
+  "medicamentos/principios.js": {
+   "suma": "7e4e6e2a4bca",
+   "version": "2026.09.19-18:12:56"
+  },
+  "modular_server.py": {
+   "suma": "4172b8efef62",
+   "version": "2026.09.19-18:15:47"
+  },
+  "observancia/index.html": {
+   "suma": "e16a97b214c3",
+   "version": "2026.09.19-18:15:47"
+  },
+  "observancia/observancia.help.html": {
+   "suma": "dc0f482f258a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "observancia/observancia.html": {
+   "suma": "492f1b7e4188",
+   "version": "2026.09.19-18:12:56"
+  },
+  "observancia/observancia.idiomas.js": {
+   "suma": "425e758c15a9",
+   "version": "2026.09.19-18:15:47"
+  },
+  "observancia/observancia.js": {
+   "suma": "9776d5169139",
+   "version": "2026.09.19-18:12:56"
+  },
+  "paciente/index.html": {
+   "suma": "ebb64ffb8331",
+   "version": "2026.09.19-18:12:56"
+  },
+  "paciente/paciente.js": {
+   "suma": "303ff0c58ae1",
+   "version": "2026.09.19-18:12:56"
+  },
+  "panal/iconos/LEEME.txt": {
+   "suma": "a4ef1c57684a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "panal/index.html": {
+   "suma": "d22111ca318f",
+   "version": "2026.09.19-18:15:47"
+  },
+  "panal/visita.js": {
+   "suma": "7c0707342e18",
+   "version": "2026.09.19-18:15:47"
+  },
+  "panal/voz/p1-saber-mas_es.mp3": {
+   "muda": true,
+   "suma": "e74e55394607",
+   "version": "2026.09.19-19:42:02"
+  },
+  "prompts/prompt-extraccion (copia).js": {
+   "suma": "b3775cfe07f5",
+   "version": "2026.09.19-18:15:47"
+  },
+  "prompts/prompt-extraccion.txt": {
+   "suma": "5f79fc116528",
+   "version": "2026.09.19-18:15:47"
+  },
+  "prompts/prompt-extraccion_ANTES_realizado_20260812_22h48.txt": {
+   "suma": "864d3c927fb8",
+   "version": "2026.09.19-18:15:47"
+  },
+  "prompts/prompt-extraccion_v2026-08-11_11h41.txt": {
+   "suma": "864d3c927fb8",
+   "version": "2026.09.19-18:15:47"
+  },
+  "prompts/prompt-extraccion_v2026-09-09_16h30.txt": {
+   "suma": "ac60e65a84c3",
+   "version": "2026.09.19-18:15:47"
+  },
+  "protocolo/doc.pdf": {
+   "muda": true,
+   "suma": "ef52b269043a",
+   "version": "2026.09.19-19:42:02"
+  },
+  "protocolo/index.html": {
+   "suma": "222ed4c77079",
+   "version": "2026.09.19-18:15:47"
+  },
+  "protocolo/protocolo.html": {
+   "suma": "d02c3f63bc45",
+   "version": "2026.09.19-18:15:47"
+  },
+  "protocolo/sw.js": {
+   "suma": "e76c73a2169c",
+   "version": "2026.09.19-18:15:47"
+  },
+  "prueba-form/index.html": {
+   "suma": "96f85c9a7866",
+   "version": "2026.09.19-18:15:47"
+  },
+  "prueba/prueba.html": {
+   "suma": "10ec3562761f",
+   "version": "2026.09.19-18:15:47"
+  },
+  "prueba/prueba.js": {
+   "suma": "850d27b50b2a",
+   "version": "2026.09.19-18:12:56"
+  },
+  "radar/index.html": {
+   "suma": "afcc7ce5c5a4",
+   "version": "2026.09.19-18:15:47"
+  },
+  "radar/radar.help.html": {
+   "suma": "692ea0fc4031",
+   "version": "2026.09.19-18:15:47"
+  },
+  "radar/radar.html": {
+   "suma": "baff59a17d3f",
+   "version": "2026.09.19-18:12:56"
+  },
+  "radar/radar.idiomas.js": {
+   "suma": "024652aa23d7",
+   "version": "2026.09.19-18:15:47"
+  },
+  "radar/radar.js": {
+   "suma": "4ca2417b039f",
+   "version": "2026.09.19-18:12:56"
+  },
+  "resumen/index.html": {
+   "suma": "97dafde504a7",
+   "version": "2026.09.19-18:15:47"
+  },
+  "resumen/resumen.help.html": {
+   "suma": "f308bdd5b780",
+   "version": "2026.09.19-18:15:47"
+  },
+  "resumen/resumen.html": {
+   "suma": "1fd5904096c1",
+   "version": "2026.09.19-18:12:56"
+  },
+  "resumen/resumen.idiomas.js": {
+   "suma": "398c7752c8fc",
+   "version": "2026.09.19-18:15:47"
+  },
+  "resumen/resumen.js": {
+   "suma": "4447743a5235",
+   "version": "2026.09.19-18:12:56"
+  },
+  "revisar/index.html": {
+   "suma": "3c6649ebd88a",
+   "version": "2026.09.19-18:15:47"
+  },
+  "revisar/revisar.html": {
+   "suma": "952a2f86eb28",
+   "version": "2026.09.19-18:12:56"
+  },
+  "revisar/revisar.idiomas.js": {
+   "suma": "c780e7d629c4",
+   "version": "2026.09.19-18:15:47"
+  },
+  "revisar/revisar.js": {
+   "suma": "79f74f1ca218",
+   "version": "2026.09.19-18:12:56"
+  },
+  "tabla/index.html": {
+   "suma": "b37218f6e137",
+   "version": "2026.09.19-18:15:47"
+  },
+  "tabla/tabla.help.html": {
+   "suma": "417be82ac4e4",
+   "version": "2026.09.19-18:15:47"
+  },
+  "tabla/tabla.html": {
+   "suma": "97c49cd0f418",
+   "version": "2026.09.19-18:12:56"
+  },
+  "tabla/tabla.idiomas.js": {
+   "suma": "c8ea9a04ca59",
+   "version": "2026.09.19-18:15:47"
+  },
+  "tabla/tabla.js": {
+   "suma": "75080bf6bb3f",
+   "version": "2026.09.19-18:12:56"
+  },
+  "tratamientos/index.html": {
+   "suma": "1825782dc917",
+   "version": "2026.09.19-18:15:47"
+  },
+  "tratamientos/tratamientos.help.html": {
+   "suma": "dc9cbd1260d9",
+   "version": "2026.09.19-18:15:47"
+  },
+  "tratamientos/tratamientos.html": {
+   "suma": "1adfc1addebc",
+   "version": "2026.09.19-18:12:56"
+  },
+  "tratamientos/tratamientos.idiomas.js": {
+   "suma": "d478bcb41cc4",
+   "version": "2026.09.19-18:15:47"
+  },
+  "tratamientos/tratamientos.js": {
+   "suma": "881bfebccf47",
+   "version": "2026.09.19-18:12:56"
+  },
+  "vascular/index.html": {
+   "suma": "1fd75d6a2852",
+   "version": "2026.09.19-18:15:47"
+  },
+  "vascular/vascular.help.html": {
+   "suma": "2c12e7bd84c2",
+   "version": "2026.09.19-18:15:47"
+  },
+  "vascular/vascular.html": {
+   "suma": "6b5f7e4010d1",
+   "version": "2026.09.19-18:12:56"
+  },
+  "vascular/vascular.idiomas.js": {
+   "suma": "954699ba96c4",
+   "version": "2026.09.19-18:15:47"
+  },
+  "vascular/vascular.js": {
+   "suma": "0412ffeea1ef",
+   "version": "2026.09.19-18:12:56"
+  }
+ }
+}

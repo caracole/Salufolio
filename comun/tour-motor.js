@@ -1,5 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    EL MOTOR DE LA VISITA — /Salufolio/comun/tour-motor.js
+   Versión 2026.09.19-19:34:25
 
    « On commence par casa seul, c'est-à-dire le bandeau supérieur. »
                                           — P-H + Mattieu, 18/09/2026
@@ -26,6 +27,14 @@
    ══════════════════════════════════════════════════════════════════════ */
 
 var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
+
+  /* ══ SU NÚMERO DE VERSIÓN (P-H, 18/09/2026) ══
+     « Tu es sûr que tu mets à jour le numéro de version ? »
+
+     No lo hacía: tour-motor.js y tour.css no llevaban ninguno. Y es la
+     doctrina del 05/09 — sin número, imposible decir qué versión falla.
+     Ahora lo llevan, y se ve en la burbuja del contador de etapas. */
+  var VERSION = '2026.09.18-21:29:32';
 
   var T = null, i = 0, viva = false, pausa = false;
   var tmr = null, audio = null, opc = {}, conVoz = true;
@@ -68,7 +77,8 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       + '  <div class="sf-t-cab">'
       + '    <span class="sf-t-ico" id="sf-t-ico"></span>'
       + '    <span class="sf-t-tit" id="sf-t-tit"></span>'
-      + '    <span class="sf-t-n"   id="sf-t-n"></span>'
+      + '    <span class="sf-t-n"   id="sf-t-n" title="visita v' + VERSION
+      + '"></span>'
       + '  </div>'
       + '  <div class="sf-t-texto" id="sf-t-texto"></div>'
       + '  <div class="sf-t-barra"><div class="sf-t-llena" id="sf-t-llena"></div></div>'
@@ -228,6 +238,18 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      —piper, mbrola— la oirá bien: la calidad viene del sistema, no de
      Salufolio.
      ══════════════════════════════════════════════════════════════════ */
+  /* ══ EL NOMBRE DEL SONIDO SE DEDUCE (P-H, 19/09/2026) ══
+     « Ça fait une grosse table. » Y era verdad: ocho líneas por etapa
+     para escribir « voz/t01_es.mp3 », que el número ya decía.
+
+     El patrón vive en la tabla —voz_nombre— por si un día cambia. */
+  function sonidoDe(n, l){
+    if(!T) return '';
+    var pat = T.voz_nombre || 't{n}_{lang}.mp3';
+    return (T.voz_carpeta || 'voz/')
+      + pat.replace('{n}', String(n).padStart(2, '0')).replace('{lang}', l);
+  }
+
   function calla(){
     if(audio){ try{ audio.pause(); }catch(e){} audio = null; }
     try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
@@ -237,7 +259,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     calla();
     if(opc.sin_voz || !conVoz){ if(alTerminar) alTerminar(false); return; }
 
-    var s = e.sonido && e.sonido[lg()];
+    var s = (e.sonido && e.sonido[lg()]) || sonidoDe(e.n, lg());
     if(!s){ sintetiza(e, alTerminar); return; }
 
     audio = new Audio((opc.carpeta || '') + s);
@@ -340,7 +362,11 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       if(c0) c0.classList.remove('punta-arriba','punta-abajo');
     }
 
-    var seg = e.segundos || T.segundos_defecto || 9;
+    /* ══ SIN MP3, EL LARGO DEL TEXTO MANDA (P-H, 19/09/2026) ══
+       « La durée par défaut varie selon la langue ! » Claro: un campo
+       fijo mentía en tres lenguas de cuatro. Ahora se estima del texto
+       mismo — y en cuanto el mp3 dice su duración, ella manda. */
+    var seg = e.segundos || estima(tt(e.texto));
     /* ══ EL SUSPIRO (P-H, 18/09) ══
        « Avant de passer à l'item suivant, un petit soupir (ajustable). »
        El halo se apaga, se respira, y llega la siguiente. Sin eso, las
@@ -422,6 +448,12 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       k++;
       plumaTmr = setTimeout(siguiente, paso);
     })();
+  }
+
+  /* unas trece letras por segundo, y un respiro al final */
+  function estima(txt){
+    var n = String(txt || '').trim().length;
+    return Math.max(4, Math.round(n / 13) + 1);
   }
 
   function llena(seg){
@@ -532,14 +564,9 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     c.classList.remove('punta-arriba','punta-abajo');
 
     /* el final lleva su sonido como cualquier etapa: t<n+1> */
-    var eF = { icono:'✓', titulo:f.titulo, texto:f.texto,
-               segundos: f.segundos || 10, sonido: f.sonido };
-    if(!eF.sonido){
-      eF.sonido = {};
-      (T.idiomas||['es']).forEach(function(l){
-        eF.sonido[l] = (T.voz_carpeta||'voz/') + 't'
-          + String(n+1).padStart(2,'0') + '_' + l + '.mp3'; });
-    }
+    /* el final es la etapa n+1: su sonido se deduce como los demás */
+    var eF = { n: n+1, icono:'✓', titulo:f.titulo, texto:f.texto,
+               segundos: f.segundos || estima(tt(f.texto)), sonido: f.sonido };
 
     var seg = eF.segundos;
     llena(seg);
