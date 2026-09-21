@@ -1,7 +1,7 @@
 /* EL MUSEO — las salas y los objetos */
 var SF_TOUR = window.SF_TOUR = {
   "id": "tour",
-  "version": "2026.09.21-22:43:16",
+  "version": "2026.09.21-23:21:34",
   "_doctrina": "EL MUSEO (P-H, 18-21/09/2026)\n\n  « On ouvre la porte d'une salle, on parcourt les étapes, et quand on a\n    terminé on sort en fermant la porte, et on va visiter une autre\n    salle. Ce n'est pas plus compliqué. »\n\nSALAS    una sala es UN CUADRO de la pantalla. Tiene su puerta: como se\n         encuentra al entrar (abierta o cerrada) y que se hace al salir\n         (cerrar, dejar, o como_estaba). La sala sin puerta es el\n         VESTIBULO: la banda de arriba, donde se esta nada mas entrar.\n\nOBJETOS  lo que se ensena, sin orden. Un objeto se describe UNA VEZ —su\n         texto, su voz, su fichero— y puede salir en varias salas.\n\nAntes la sala « El paciente » cubria DOS cuadros, y hacian falta puertas\nque abrir y cerrar a mitad de camino. Una sala, un cuadro: el problema\ndesaparece.\n\nAl acabar una sala —n/n, o salida anticipada— se cierra su puerta, y se\npasa a la siguiente, se elige otra en la carta, o se sale del museo.",
   "idiomas": [
     "es",
@@ -22,22 +22,28 @@ var SF_TOUR = window.SF_TOUR = {
       "icono": "🐝",
       "objeto": "[data-b=\"panal\"]",
       "titulo": {
-        "es": "Acaba de llegar",
-        "fr": "Vous venez d'arriver",
-        "ca": "Acaba d'arribar",
-        "en": "You have just arrived"
+        "es": "Bienvenido",
+        "fr": "Bienvenue",
+        "ca": "Benvingut",
+        "en": "Welcome"
       },
       "texto": {
-        "es": "Bienvenido a la casa de Salufolio. La abeja, arriba a la izquierda, lleva al panal — la entrada, donde se explica qué es todo esto y para quién. Puede volver allí cuando quiera.",
-        "fr": "Bienvenue dans la maison de Salufolio. L'abeille, en haut à gauche, mène au panal — l'entrée, où l'on explique ce qu'est tout ceci et pour qui. Vous pouvez y revenir quand vous voulez.",
-        "ca": "Benvingut a la casa de Salufolio. L'abella porta al panal, l'entrada.",
-        "en": "Welcome to the house of Salufolio. The bee, top left, leads to the hive — the entrance, where it is explained what all this is and for whom."
+        "es": "Bienvenido a Salufolio. El nombre viene del latín: salus, la salud —estar sano y salvo— y folium, la hoja. Hojas de salud, reunidas alrededor de una sola persona. El blasón lleva una concha del Camino de Santiago: todas sus estrías convergen hacia un punto, y ese punto se ha quitado, porque el punto es el paciente. La concha es también la señal del hospitalero, que acoge al peregrino, lo cuida y lo deja seguir su camino: es lo que hace quien cuida, y lleva el cuaderno de cuidados del Protocolo. La abeja, arriba a la izquierda, lleva al panal: la entrada.",
+        "fr": "Bienvenue dans Salufolio. Le nom vient du latin : salus, la santé — être sain et sauf — et folium, la feuille. Des feuilles de santé, rassemblées autour d'une seule personne. Le blason porte une coquille de Compostelle : toutes ses stries convergent vers un point, et ce point a été ôté, parce que le point, c'est le patient. La coquille est aussi le signe de l'hospitalier, qui accueille le pèlerin, le soigne et le laisse repartir : c'est ce que fait l'aidant qui tient le carnet de soins du Protocolo. L'abeille, en haut à gauche, mène au panal : l'entrée.",
+        "ca": "Benvingut a Salufolio. El nom ve del llatí: salus, la salut, i folium, la fulla. Fulles de salut, reunides al voltant d'una sola persona. El blasó porta una petxina del Camí de Sant Jaume: totes les seues estries convergixen cap a un punt, i eixe punt s'ha llevat, perquè el punt és el pacient. La petxina és també el senyal de l'hospitaler, que acull el pelegrí, el cuida i el deixa seguir: és el que fa qui cuida, i porta el quadern de cures del Protocol.",
+        "en": "Welcome to Salufolio. The name comes from Latin: salus, health — being safe and sound — and folium, the leaf. Leaves of health, gathered around one single person. The crest bears a scallop shell from the Way of Saint James: all its ridges converge towards one point, and that point has been removed, because the point is the patient. The shell is also the sign of the hospitalero, who welcomes the pilgrim, cares for them and lets them go on: that is what a carer does, keeping the care notebook of the Protocolo."
       },
       "grabado": {
-        "es": "703acaba",
-        "fr": "c724d289",
-        "ca": "20c0d66b",
-        "en": "85d780e8"
+        "es": "18131c28",
+        "fr": "68909355",
+        "ca": "624412f1",
+        "en": "b72eb515"
+      },
+      "dicho": {
+        "es": "Bienvenido a Salufolio. El nombre viene del latín: salus, la salud, estar sano y salvo, y fólium, la hoja. Hojas de salud, reunidas alrededor de una sola persona. El blasón lleva una concha del Camino de Santiago: todas sus estrías convergen hacia un punto, y ese punto se ha quitado, porque el punto es el paciente. La concha es también la señal del hospitalero, que acoge al peregrino, lo cuida y lo deja seguir su camino: es lo que hace quien cuida, y lleva el cuaderno de cuidados del Protocolo. La abeja, arriba a la izquierda, lleva al panal: la entrada.",
+        "fr": "Bienvenue dans Salufolio. Le nom vient du latin : salus, la santé, être sain et sauf, et fólium, la feuille. Des feuilles de santé, rassemblées autour d'une seule personne. Le blason porte une coquille de Compostelle : toutes ses stries convergent vers un point, et ce point a été ôté, parce que le point, c'est le patient. La coquille est aussi le signe de l'hospitalier, qui accueille le pèlerin, le soigne et le laisse repartir : c'est ce que fait l'aidant qui tient le carnet de soins du Protocolo. L'abeille, en haut à gauche, mène au panal : l'entrée.",
+        "ca": "Benvingut a Salufolio. El nom ve del llatí: salus, la salut, i folium, la fulla. Fulles de salut, reunides al voltant d'una sola persona. El blasó porta una petxina del Camí de Sant Jaume: totes les seues estries convergixen cap a un punt, i eixe punt s'ha llevat, perquè el punt és el pacient. La petxina és també el senyal de l'hospitaler, que acull el pelegrí, el cuida i el deixa seguir: és el que fa qui cuida, i porta el quadern de cures del Protocol.",
+        "en": "Welcome to Salufolio. The name comes from Latin: salus, health — being safe and sound — and folium, the leaf. Leaves of health, gathered around one single person. The crest bears a scallop shell from the Way of Saint James: all its ridges converge towards one point, and that point has been removed, because the point is the patient. The shell is also the sign of the hospitalero, who welcomes the pilgrim, cares for them and lets them go on: that is what a carer does, keeping the care notebook of the Protocolo."
       }
     },
     "logo": {
@@ -424,23 +430,23 @@ var SF_TOUR = window.SF_TOUR = {
         "en": "Who made it"
       },
       "texto": {
-        "es": "Salufolio es obra de Pierre-Henri Giraud, asistido por Claude (Anthropic). Está publicado en Zenodo con un identificador de objeto digital (DOI): un número que no cambia nunca y que permite citarlo. Lo que hay detrás del programa —por qué, para quién, cómo— está escrito allí.",
-        "fr": "Salufolio est l'œuvre de Pierre-Henri Giraud, assisté de Claude (Anthropic). Il est publié sur Zenodo avec un identifiant d'objet numérique (DOI) : un numéro qui ne change jamais et qui permet de le citer. Ce qu'il y a derrière le programme — pourquoi, pour qui, comment — est écrit là.",
-        "ca": "Salufolio és obra de Pierre-Henri Giraud, assistit per Claude (Anthropic). Està publicat en Zenodo amb un identificador d'objecte digital (DOI): un número que no canvia mai i que permet citar-lo.",
-        "en": "Salufolio is the work of Pierre-Henri Giraud, assisted by Claude (Anthropic). It is published on Zenodo with a Digital Object Identifier (DOI): a number that never changes and lets it be cited."
+        "es": "Salufolio es obra de Pierre-Henri Giraud, asistido por Claude (Anthropic). Está publicado en Zenodo, el archivo científico abierto del CERN, con un identificador de objeto digital (DOI): un número que no cambia nunca y que permite citarlo. Lo que hay detrás del programa —por qué, para quién, cómo— está escrito allí.",
+        "fr": "Salufolio est l'œuvre de Pierre-Henri Giraud, assisté de Claude (Anthropic). Il est publié sur Zenodo, l'archive scientifique ouverte du CERN, avec un identifiant d'objet numérique (DOI) : un numéro qui ne change jamais et qui permet de le citer. Ce qu'il y a derrière le programme — pourquoi, pour qui, comment — est écrit là.",
+        "ca": "Salufolio és obra de Pierre-Henri Giraud, assistit per Claude (Anthropic). Està publicat en Zenodo, l'arxiu científic obert del CERN, amb un identificador d'objecte digital (DOI): un número que no canvia mai i que permet citar-lo.",
+        "en": "Salufolio is the work of Pierre-Henri Giraud, assisted by Claude (Anthropic). It is published on Zenodo, CERN's open science archive, with a Digital Object Identifier (DOI): a number that never changes and lets it be cited."
       },
       "dicho": {
-        "es": "Salufolio es obra de Pierre-Henri Giraud, asistido por Claude, de Anthropic. Está publicado en Zénodo con un identificador de objeto digital: un número que no cambia nunca y que permite citarlo. Lo que hay detrás del programa, por qué, para quién, cómo, está escrito allí.",
-        "fr": "Salufolio est l'œuvre de Pierre-Henri Giraud, assisté de Claude, d'Anthropic. Il est publié sur Zénodo avec un identifiant d'objet numérique : un numéro qui ne change jamais et qui permet de le citer. Ce qu'il y a derrière le programme, pourquoi, pour qui, comment, est écrit là.",
-        "ca": "Salufolio és obra de Pierre-Henri Giraud, assistit per Claude, d'Anthropic. Està publicat en Zénodo amb un identificador d'objecte digital: un número que no canvia mai i que permet citar-lo.",
-        "en": "Salufolio is the work of Pierre-Henri Giraud, assisted by Claude, from Anthropic. It is published on Zenodo with a digital object identifier: a number that never changes and lets it be cited."
+        "es": "Salufolio es obra de Pierre-Henri Giraud, asistido por Claude, de Anthropic. Está publicado en Zénodo, el archivo científico abierto del CERN, con un identificador de objeto digital: un número que no cambia nunca y que permite citarlo. Lo que hay detrás del programa, por qué, para quién, cómo, está escrito allí.",
+        "fr": "Salufolio est l'œuvre de Pierre-Henri Giraud, assisté de Claude, d'Anthropic. Il est publié sur Zénodo, l'archive scientifique ouverte du CERN, avec un identifiant d'objet numérique : un numéro qui ne change jamais et qui permet de le citer. Ce qu'il y a derrière le programme, pourquoi, pour qui, comment, est écrit là.",
+        "ca": "Salufolio és obra de Pierre-Henri Giraud, assistit per Claude, d'Anthropic. Està publicat en Zénodo, l'arxiu científic obert del CERN, amb un identificador d'objecte digital: un número que no canvia mai i que permet citar-lo.",
+        "en": "Salufolio is the work of Pierre-Henri Giraud, assisted by Claude, from Anthropic. It is published on Zenodo, CERN's open science archive, with a digital object identifier: a number that never changes and lets it be cited."
       },
       "_dicho": "Lo que dice la voz, cuando no es lo que se lee. « DOI » escrito se lee bien; dicho de un tiron suena « doi ». En pantalla sale « texto »; se graba « dicho ».",
       "grabado": {
-        "es": "fb701dcf",
-        "fr": "42693f71",
-        "ca": "480e6e3b",
-        "en": "a951fbad"
+        "es": "3dd87f8d",
+        "fr": "2817fc80",
+        "ca": "4a469da4",
+        "en": "4e7528e8"
       }
     },
     "correo": {
@@ -953,10 +959,10 @@ var SF_TOUR = window.SF_TOUR = {
       "icono": "🤝",
       "objeto": "[data-mod=\"asistida\"]",
       "titulo": {
-        "es": "Con ayuda, sin clave",
-        "fr": "Avec aide, sans clé",
-        "ca": "Amb ajuda, sense clau",
-        "en": "Assisted, no key"
+        "es": "Con ayuda, sin pagar",
+        "fr": "Avec aide, sans payer",
+        "ca": "Amb ajuda, sense pagar",
+        "en": "Assisted, free"
       },
       "texto": {
         "es": "Para leer un informe en PDF sin pagar nada: el texto se lleva a Claude a mano, y se trae su respuesta. Cuesta un poco más de tiempo, y nada de dinero.",
@@ -981,16 +987,16 @@ var SF_TOUR = window.SF_TOUR = {
         "en": "Automatic reading"
       },
       "texto": {
-        "es": "Con una clave de la API, los PDF se leen solos: se eligen, y los valores, los tratamientos y los eventos se colocan en su sitio. Lo leído se puede revisar siempre antes de darlo por bueno.",
-        "fr": "Avec une clé d'API, les PDF se lisent tout seuls : on les choisit, et les valeurs, les traitements et les événements se rangent à leur place. Ce qui a été lu peut toujours être revu avant d'être tenu pour bon.",
-        "ca": "Amb una clau de l'API, els PDF es lligen sols. El que s'ha llegit es pot revisar sempre.",
-        "en": "With an API key, PDFs read themselves: values, treatments and events fall into place. What was read can always be reviewed before it is accepted."
+        "es": "Con un acceso de pago a Claude, la inteligencia artificial de Anthropic, los PDF se leen solos. De pago quiere decir: se abre una cuenta en Anthropic, se depositan unos euros, y cada documento leído consume una pequeña parte. Los valores, los tratamientos y los eventos se colocan en su sitio — y lo leído se puede revisar siempre antes de darlo por bueno.",
+        "fr": "Avec un accès payant à Claude, l'intelligence artificielle d'Anthropic, les PDF se lisent tout seuls. Payant veut dire : on ouvre un compte chez Anthropic, on y dépose quelques euros, et chaque document lu en consomme une petite part. Les valeurs, les traitements et les événements se rangent à leur place — et ce qui a été lu peut toujours être revu avant d'être tenu pour bon.",
+        "ca": "Amb un accés de pagament a Claude, la intel·ligència artificial d'Anthropic, els PDF es lligen sols. De pagament vol dir: s'obri un compte en Anthropic, s'hi deposen uns euros, i cada document llegit en consumix una xicoteta part.",
+        "en": "With paid access to Claude, Anthropic's artificial intelligence, PDFs read themselves. Paid means: you open an account with Anthropic, deposit a few euros, and each document read uses up a small part of it. What was read can always be reviewed before it is accepted."
       },
       "grabado": {
-        "es": "357fe10d",
-        "fr": "f9cd73bd",
-        "ca": "9ebe03f4",
-        "en": "aab5f3b3"
+        "es": "a310f19d",
+        "fr": "90a27ca7",
+        "ca": "f810c0d4",
+        "en": "e91f2c3d"
       }
     },
     "revisar": {
@@ -1325,5 +1331,105 @@ var SF_TOUR = window.SF_TOUR = {
     "ca": "Què li ha paregut esta sala?",
     "en": "What did you think of this room?"
   },
-  "_dicho": "Un objeto puede llevar « dicho »: el texto escrito para el OIDO. La pantalla ensena « texto »; la voz —grabada o sintetizada— dice « dicho » si lo hay. Para las siglas, los nombres de medicamentos, todo lo que se lee bien y se pronuncia mal (P-H, 21/09/2026)."
+  "_dicho": "Un objeto puede llevar « dicho »: el texto escrito para el OIDO. La pantalla ensena « texto »; la voz —grabada o sintetizada— dice « dicho » si lo hay. Para las siglas, los nombres de medicamentos, todo lo que se lee bien y se pronuncia mal (P-H, 21/09/2026).",
+  "_mandos": "Lo que dice cada boton al pasar por encima. « Je pense que la boussole c'est pour recommencer la visite » (P-H) — no lo era: sin estas lineas, nadie lo sabia.",
+  "mandos": {
+    "x": {
+      "es": "Salir de la visita",
+      "fr": "Quitter la visite",
+      "ca": "Eixir de la visita",
+      "en": "Leave the tour"
+    },
+    "otra": {
+      "es": "Volver a empezar esta sala",
+      "fr": "Recommencer cette salle",
+      "ca": "Tornar a començar esta sala",
+      "en": "Restart this room"
+    },
+    "lista": {
+      "es": "Las etapas de esta sala",
+      "fr": "Les étapes de cette salle",
+      "ca": "Les etapes d'esta sala",
+      "en": "Steps of this room"
+    },
+    "salta": {
+      "es": "Saltar esta sala — ir a su puerta",
+      "fr": "Passer cette salle — aller à sa porte",
+      "ca": "Saltar esta sala",
+      "en": "Skip this room — go to its door"
+    },
+    "atras": {
+      "es": "Etapa anterior",
+      "fr": "Étape précédente",
+      "ca": "Etapa anterior",
+      "en": "Previous step"
+    },
+    "pausa": {
+      "es": "Pausa — y seguir",
+      "fr": "Pause — et reprendre",
+      "ca": "Pausa — i seguir",
+      "en": "Pause — and resume"
+    },
+    "otra_vez": {
+      "es": "Volver a oír esta etapa",
+      "fr": "Réentendre cette étape",
+      "ca": "Tornar a sentir esta etapa",
+      "en": "Hear this step again"
+    },
+    "voz": {
+      "es": "Callar la voz — y devolverla",
+      "fr": "Couper la voix — et la rendre",
+      "ca": "Callar la veu",
+      "en": "Mute the voice — and back"
+    },
+    "sig": {
+      "es": "Etapa siguiente",
+      "fr": "Étape suivante",
+      "ca": "Etapa següent",
+      "en": "Next step"
+    },
+    "p_sig": {
+      "es": "Seguir con: {sala}",
+      "fr": "Continuer avec : {sala}",
+      "ca": "Seguir amb: {sala}",
+      "en": "Go on with: {sala}"
+    },
+    "p_carta": {
+      "es": "Volver a la carta de las salas",
+      "fr": "Revenir à la carte des salles",
+      "ca": "Tornar a la carta de les sales",
+      "en": "Back to the room map"
+    },
+    "p_salir": {
+      "es": "Salir del museo",
+      "fr": "Sortir du musée",
+      "ca": "Eixir del museu",
+      "en": "Leave the museum"
+    }
+  },
+  "sabido": {
+    "es": "Ya lo conozco",
+    "fr": "Je connais déjà",
+    "ca": "Ja ho conec",
+    "en": "I already know this"
+  },
+  "carta_conocidos": {
+    "es": "{n} conocidos",
+    "fr": "{n} connus",
+    "ca": "{n} coneguts",
+    "en": "{n} known"
+  },
+  "carta_todo_conocido": {
+    "es": "✓ todo conocido",
+    "fr": "✓ tout connu",
+    "ca": "✓ tot conegut",
+    "en": "✓ all known"
+  },
+  "carta_ver_todo": {
+    "es": "Ver también lo que ya conozco",
+    "fr": "Revoir aussi ce que je connais",
+    "ca": "Veure també el que ja conec",
+    "en": "Also show what I already know"
+  },
+  "_sabido": "« Une case à cocher : je sais déjà — si on repasse tout, on ne revient plus sur le connu » (P-H, 21/09). Lo marcado vale para la proxima visita, no para la que esta en curso. Se guarda en el navegador: nada sale del ordenador."
 };

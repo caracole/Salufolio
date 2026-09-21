@@ -1,9 +1,9 @@
 /* LO GRABADO — escrito por herramientas/voces-registra.py
-   el 2026-09-21 22:43. No se toca a mano. */
+   el 2026-09-21 23:22. No se toca a mano. */
 var SF_GRABADOS = window.SF_GRABADOS = {
  "ES-abeja": {
-  "fecha": "2026-09-18 20:58",
-  "texto": "Bienvenido a la casa de Salufolio. La abeja, arriba a la izquierda, lleva al panal — la entrada, donde se explica qué es todo esto y para quién. Puede volver allí cuando quiera."
+  "fecha": "2026-09-21 23:21",
+  "texto": "Bienvenido a Salufolio. El nombre viene del latín: salus, la salud, estar sano y salvo, y fólium, la hoja. Hojas de salud, reunidas alrededor de una sola persona. El blasón lleva una concha del Camino de Santiago: todas sus estrías convergen hacia un punto, y ese punto se ha quitado, porque el punto es el paciente. La concha es también la señal del hospitalero, que acoge al peregrino, lo cuida y lo deja seguir su camino: es lo que hace quien cuida, y lleva el cuaderno de cuidados del Protocolo. La abeja, arriba a la izquierda, lleva al panal: la entrada."
  },
  "ES-abrir": {
   "fecha": "2026-09-21 22:25",
@@ -22,8 +22,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "De dónde sale cada dato: de qué documento, en qué fecha, leído cómo. Un expediente en el que no se puede comprobar nada no vale nada; aquí todo se puede seguir hasta su papel."
  },
  "ES-automatica": {
-  "fecha": "2026-09-21 22:27",
-  "texto": "Con una clave de la API, los PDF se leen solos: se eligen, y los valores, los tratamientos y los eventos se colocan en su sitio. Lo leído se puede revisar siempre antes de darlo por bueno."
+  "fecha": "2026-09-21 23:22",
+  "texto": "Con un acceso de pago a Claude, la inteligencia artificial de Anthropic, los PDF se leen solos. De pago quiere decir: se abre una cuenta en Anthropic, se depositan unos euros, y cada documento leído consume una pequeña parte. Los valores, los tratamientos y los eventos se colocan en su sitio — y lo leído se puede revisar siempre antes de darlo por bueno."
  },
  "ES-ayuda": {
   "fecha": "2026-09-18 20:58",
@@ -58,8 +58,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "Cada valor de los análisis, dibujado a lo largo de los años. La banda verde es lo normal; lo que sale de ella se ve de un vistazo. Dos curvas se pueden poner juntas, para ver si una arrastra a la otra."
  },
  "ES-doi": {
-  "fecha": "2026-09-21 22:43",
-  "texto": "Salufolio es obra de Pierre-Henri Giraud, asistido por Claude, de Anthropic. Está publicado en Zénodo con un identificador de objeto digital: un número que no cambia nunca y que permite citarlo. Lo que hay detrás del programa, por qué, para quién, cómo, está escrito allí."
+  "fecha": "2026-09-21 23:22",
+  "texto": "Salufolio es obra de Pierre-Henri Giraud, asistido por Claude, de Anthropic. Está publicado en Zénodo, el archivo científico abierto del CERN, con un identificador de objeto digital: un número que no cambia nunca y que permite citarlo. Lo que hay detrás del programa, por qué, para quién, cómo, está escrito allí."
  },
  "ES-elegir": {
   "fecha": "2026-09-21 22:25",
@@ -190,8 +190,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "El corazón y las arterias: la tensión, el colesterol, el riñón, lo que pesa en el riesgo vascular. Reunido en un sitio, porque se leen juntos."
  },
  "FR-abeja": {
-  "fecha": "2026-09-18 20:58",
-  "texto": "Bienvenue dans la maison de Salufolio. L'abeille, en haut à gauche, mène au panal — l'entrée, où l'on explique ce qu'est tout ceci et pour qui. Vous pouvez y revenir quand vous voulez."
+  "fecha": "2026-09-21 23:22",
+  "texto": "Bienvenue dans Salufolio. Le nom vient du latin : salus, la santé, être sain et sauf, et fólium, la feuille. Des feuilles de santé, rassemblées autour d'une seule personne. Le blason porte une coquille de Compostelle : toutes ses stries convergent vers un point, et ce point a été ôté, parce que le point, c'est le patient. La coquille est aussi le signe de l'hospitalier, qui accueille le pèlerin, le soigne et le laisse repartir : c'est ce que fait l'aidant qui tient le carnet de soins du Protocolo. L'abeille, en haut à gauche, mène au panal : l'entrée."
  },
  "FR-abrir": {
   "fecha": "2026-09-21 22:27",
@@ -210,8 +210,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "D'où vient chaque donnée : de quel document, à quelle date, lue comment. Un dossier où l'on ne peut rien vérifier ne vaut rien ; ici tout se suit jusqu'à son papier."
  },
  "FR-automatica": {
-  "fecha": "2026-09-21 22:29",
-  "texto": "Avec une clé d'API, les PDF se lisent tout seuls : on les choisit, et les valeurs, les traitements et les événements se rangent à leur place. Ce qui a été lu peut toujours être revu avant d'être tenu pour bon."
+  "fecha": "2026-09-21 23:22",
+  "texto": "Avec un accès payant à Claude, l'intelligence artificielle d'Anthropic, les PDF se lisent tout seuls. Payant veut dire : on ouvre un compte chez Anthropic, on y dépose quelques euros, et chaque document lu en consomme une petite part. Les valeurs, les traitements et les événements se rangent à leur place — et ce qui a été lu peut toujours être revu avant d'être tenu pour bon."
  },
  "FR-ayuda": {
   "fecha": "2026-09-18 20:58",
@@ -246,8 +246,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "Chaque valeur des analyses, dessinée au fil des années. La bande verte, c'est la norme ; ce qui en sort se voit d'un coup d'œil. On peut superposer deux courbes, pour voir si l'une entraîne l'autre."
  },
  "FR-doi": {
-  "fecha": "2026-09-21 22:43",
-  "texto": "Salufolio est l'œuvre de Pierre-Henri Giraud, assisté de Claude, d'Anthropic. Il est publié sur Zénodo avec un identifiant d'objet numérique : un numéro qui ne change jamais et qui permet de le citer. Ce qu'il y a derrière le programme, pourquoi, pour qui, comment, est écrit là."
+  "fecha": "2026-09-21 23:22",
+  "texto": "Salufolio est l'œuvre de Pierre-Henri Giraud, assisté de Claude, d'Anthropic. Il est publié sur Zénodo, l'archive scientifique ouverte du CERN, avec un identifiant d'objet numérique : un numéro qui ne change jamais et qui permet de le citer. Ce qu'il y a derrière le programme, pourquoi, pour qui, comment, est écrit là."
  },
  "FR-elegir": {
   "fecha": "2026-09-21 22:27",
