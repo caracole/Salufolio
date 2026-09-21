@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    EL MOTOR DE LA VISITA — /Salufolio/comun/tour-motor.js
-   Versión 2026.09.21-22:36:53
+   Versión 2026.09.21-23:00:18
 
    « On commence par casa seul, c'est-à-dire le bandeau supérieur. »
                                           — P-H + Mattieu, 18/09/2026
@@ -34,7 +34,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      No lo hacía: tour-motor.js y tour.css no llevaban ninguno. Y es la
      doctrina del 05/09 — sin número, imposible decir qué versión falla.
      Ahora lo llevan, y se ve en la burbuja del contador de etapas. */
-  var VERSION = '2026.09.21-22:35:46';
+  var VERSION = '2026.09.21-22:59:05';
 
   var T = null, i = 0, viva = false, pausa = false;
   /* ══ DECLARADAS, POR FIN (P-H, 21/09/2026) ══
@@ -518,11 +518,21 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      para escribir « voz/t01_es.mp3 », que el número ya decía.
 
      El patrón vive en la tabla —voz_nombre— por si un día cambia. */
-  function sonidoDe(n, l){
-    if(!T) return '';
-    var pat = T.voz_nombre || 't{n}_{lang}.mp3';
+  /* ══ EL SONIDO SE LLAMA POR EL OBJETO (P-H, 19/09 — repuesto el 21/09) ══
+     ES-abeja.mp3, y no t01_es.mp3: el nombre no cambia cuando cambia el
+     orden. La lengua delante, en mayusculas, para que un listado los
+     agrupe.
+
+     Esta funcion se perdio el 19/09: cayo en un recorte mio que fallo a
+     medio camino, y nada de el se escribio. El motor siguio buscando el
+     nombre viejo — « es-{objeto}.mp3 » — y las 94 voces no sonaban, ni
+     aqui ni en linea. (P-H: « tu as dû oublier de publier les sons ! ») */
+  function sonidoDe(nombre, l){
+    if(!T || !nombre) return '';
+    var pat = T.voz_nombre || '{lang}-{objeto}.mp3';
     return (T.voz_carpeta || 'voz/')
-      + pat.replace('{n}', String(n).padStart(2, '0')).replace('{lang}', l);
+      + pat.replace('{lang}', String(l).toUpperCase())
+           .replace('{objeto}', nombre);
   }
 
   /* ══════════════════════════════════════════════════════════════════
@@ -888,7 +898,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     calla();
     if(opc.sin_voz || !conVoz){ if(alTerminar) alTerminar(false); return; }
 
-    var s = (e.sonido && e.sonido[lg()]) || sonidoDe(e.n, lg());
+    var s = (e.sonido && e.sonido[lg()]) || sonidoDe(e.nombre, lg());
     if(!s){ sintetiza(e, alTerminar); return; }
 
     audio = new Audio((opc.carpeta || '') + s);
