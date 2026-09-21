@@ -1,0 +1,1 @@
+Y si se arrepiente, Cancelar cierra el cuadro sin crear nada. No queda ni rastro: ni carpeta, ni fichero.

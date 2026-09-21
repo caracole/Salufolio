@@ -1,0 +1,1 @@
+Si la persona no está en la lista, este botón abre el cuadro para crearla. Lo veremos en la sala siguiente.

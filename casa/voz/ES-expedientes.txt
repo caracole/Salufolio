@@ -1,0 +1,1 @@
+Una persona tiene varios expedientes: uno por cada vez que se ha guardado, con su fecha. Guardar no borra nunca. Si algo sale mal, se vuelve al de antes — y el de antes sigue donde estaba.

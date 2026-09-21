@@ -1,0 +1,1 @@
+Escriba. Un fallo encontrado por quien lo usa vale más que diez horas de pruebas: quien hace el programa nunca lo mira con los mismos ojos que quien lo necesita.

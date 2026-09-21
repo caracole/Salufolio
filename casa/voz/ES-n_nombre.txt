@@ -1,0 +1,1 @@
+El nombre de pila, tal como viene en la tarjeta. Puede llevar varios — María del Carmen es un solo nombre, no tres. Escríbalo entero: el programa no lo corta.

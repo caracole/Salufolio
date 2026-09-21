@@ -1,0 +1,1 @@
+GNU GPL v3. N'importe qui peut lire le code, le copier, le changer. Ce n'est pas de la générosité : c'est la seule garantie qu'un programme qui garde votre santé ne vous cache rien.

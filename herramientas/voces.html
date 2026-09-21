@@ -7,6 +7,9 @@
 <!-- la tabla de verdad, no una copia: si se corrige una etapa alli,
      aqui se corrige sola (P-H, doctrina del 05/09) -->
 <script src="../casa/tour.js"></script>
+<!-- lo grabado: el texto que se leyo para cada mp3. Lo escribe
+     herramientas/voces-registra.py; si todavia no existe, no pasa nada -->
+<script src="../casa/voz/grabados.js" onerror="window.SF_GRABADOS={}"></script>
 <style>
 /* ══════════════════════════════════════════════════════════════════════
    LAS VOCES DE LA VISITA — el taller (P-H, 18/09/2026)  v2026.09.18-20:24:56
@@ -56,8 +59,25 @@ main{max-width:860px;margin:0 auto;padding:18px 22px 70px}
 .b-nom{font-family:monospace;font-size:13px;color:var(--avi);font-weight:600}
 .b-tit{flex:1;font-size:13px;color:var(--sordo)}
 .b-seg{font-size:11.5px;color:var(--sordo);font-family:monospace}
-.b-hecho{color:var(--ok);font-size:15px;display:none}
-.bloque.hecho .b-hecho{display:inline}
+.b-estado{font-size:11.5px;font-family:monospace;color:var(--sordo);white-space:nowrap}
+.bloque.hecho .b-estado{color:var(--ok);font-weight:600}
+.bloque.falta{opacity:.78}
+.b-oido{font-size:12px;opacity:.8;cursor:help}
+.dif{font-size:12.5px;line-height:1.7;padding:0 16px;color:var(--sordo)}
+.dif:not(:empty){padding:9px 16px;border-top:1px dashed var(--bor)}
+.dif-tit{color:var(--avi);font-weight:600;margin-right:4px}
+.dif del{color:#e07a6e;text-decoration:line-through}
+.dif ins{color:var(--ok);text-decoration:none;font-weight:600}
+#orden:not(:empty){border:1px solid var(--acc);border-radius:10px;padding:12px 16px;
+       margin-bottom:16px;background:var(--sup)}
+.o-tit{color:var(--acc);font-weight:600;margin-bottom:7px}
+#orden pre{background:var(--sup2);padding:9px 12px;border-radius:7px;margin:0 0 9px;
+           font-size:12.5px;white-space:pre-wrap;word-break:break-all}
+.o-pie{display:flex;gap:8px}
+.o-des{margin-top:8px;font-size:12.5px;color:var(--sordo);line-height:1.6}
+.o-des code{background:var(--sup2);padding:1px 6px;border-radius:4px;color:var(--avi)}
+.tocar{min-width:38px;font-size:14px;border-color:var(--ok);color:var(--ok)}
+.tocar:disabled{opacity:.3;cursor:not-allowed;border-color:var(--bor);color:var(--sordo)}
 .b-viejo{display:none;color:var(--avi);font-size:11.5px;font-weight:600;
          white-space:nowrap}
 .bloque.viejo{border-color:var(--avi)}
@@ -101,21 +121,26 @@ textarea:focus{outline:none;background:rgba(91,155,213,.04)}
     <select id="lang" onchange="pinta()"></select>
     <button onclick="copiaTodo()">📋 Copiar todos</button>
     <button onclick="bajaTexto()">💾 Guardar el texto</button>
-    <button onclick="olvida()" class="marca">↺ Empezar de nuevo</button>
+    <button onclick="olvida()" class="marca" title="se ha anadido un fichero: volver a mirar">↻ Volver a mirar</button>
+    <button onclick="graba()" class="copiar" title="ElevenLabs los graba solo, con la clave">🎙 Grabar con ElevenLabs</button>
     <span class="cuenta" id="cuenta"></span>
   </div>
 </header>
 
 <main>
+  <div id="orden"></div>
   <div class="ayuda">
     <b>Cómo se hace</b> — sin clave de API hay que pasar por su sitio, pero
     lo demás ya está listo.
+    <b>Lo más sencillo: 🎙</b> — una orden en el terminal, y ElevenLabs lo graba todo.
+    O a mano, uno por uno:
     <ol>
       <li>Toque <b>📋</b> en un bloque: el texto se copia.</li>
       <li>Péguelo en ElevenLabs, elija la voz, y baje el mp3.</li>
       <li>Renómbrelo con el nombre naranja — <code>t01_es.mp3</code> — y
           póngalo en <code>casa/voz/</code>.</li>
-      <li>Toque <b>✓</b> para marcarlo hecho. Se recuerda entre sesiones.</li>
+      <li>Toque <b>↻ Volver a mirar</b>: el bloque se pone verde solo, con su
+          duración. Con <b>▶</b> se oye — <b>‖</b> lo para, <b>▶</b> sigue.</li>
     </ol>
     El texto se puede corregir aquí antes de copiarlo. Para guardarlo de
     verdad, hay que cambiarlo en <code>casa/tour.js</code>.
@@ -130,7 +155,7 @@ textarea:focus{outline:none;background:rgba(91,155,213,.04)}
 <div class="aviso" id="aviso"></div>
 
 <script>
-/* Versión 2026.09.19-19:34:25 */
+/* Versión 2026.09.21-22:36:53 */
 
 /* ══════════════════════════════════════════════════════════════════════
    LA HUELLA DEL TEXTO GRABADO (P-H, 19/09/2026)
@@ -154,8 +179,74 @@ async function huella(t){
 }
 
 const LG = { es:'Castellano', fr:'Français', ca:'Valencià', en:'English' };
-let HECHOS = {};
-try{ HECHOS = JSON.parse(localStorage.getItem('sf_voces')||'{}'); }catch(e){}
+/* ══════════════════════════════════════════════════════════════════════
+   EL DIRECTORIO DICE LA VERDAD (P-H, 21/09/2026)
+
+   « Comment je sais les voix qui sont faites ? » — antes, solo si se
+   marcaba ✓ a mano. Ahora la pagina intenta abrir cada fichero de voz:
+   si carga, esta hecho, y se sabe cuanto dura; si falla, falta.
+
+   Funciona sin servidor: un navegador puede tocar un sonido que esta al
+   lado, aunque no pueda leer un fichero. Nada que marcar, nada que
+   olvidar.
+
+   Y el ▶ lo toca, para oir si Oscar dice lo que el texto dice. Un segundo
+   toque lo para — ‖ — y otro lo reanuda donde estaba.
+   ══════════════════════════════════════════════════════════════════════ */
+const CASA = '../casa/';          /* donde vive tour.js — y su carpeta de voz */
+let ESTADO = {}, AUD = {}, SONANDO = null;
+
+function rutaVoz(f){ return CASA + (SF_TOUR.voz_carpeta || 'voz/') + f; }
+
+/* se intenta abrir el fichero: si carga esta hecho, si no falta */
+function detecta(f){
+  const a = new Audio();
+  a.preload = 'metadata';
+  AUD[f] = a;
+  ESTADO[f] = 'mirando';
+  a.onloadedmetadata = function(){
+    ESTADO[f] = 'si';
+    pintaEstado(f, a.duration);
+  };
+  a.onerror = function(){
+    ESTADO[f] = 'no';
+    pintaEstado(f, 0);
+  };
+  a.onended = function(){ a.currentTime = 0; boton(f, '▶'); SONANDO = null; };
+  a.src = rutaVoz(f);
+}
+
+function pintaEstado(f, dur){
+  const b = document.getElementById('b-' + cid(f));
+  const z = document.getElementById('s-' + cid(f));
+  const p = document.getElementById('p-' + cid(f));
+  const si = ESTADO[f] === 'si';
+  if(b){ b.classList.toggle('hecho', si); b.classList.toggle('falta', !si); }
+  if(z) z.textContent = si ? ('✓ ' + Math.round(dur) + ' s') : '· por hacer';
+  if(p) p.disabled = !si;
+  cuenta();
+}
+
+function boton(f, txt){
+  const p = document.getElementById('p-' + cid(f));
+  if(p) p.textContent = txt;
+}
+
+/* ▶ toca · ‖ para · ▶ reanuda donde estaba */
+function toca(f){
+  const a = AUD[f];
+  if(!a || ESTADO[f] !== 'si'){ avisa('Todavía no hay fichero: ' + f); return; }
+  if(SONANDO && SONANDO !== f && AUD[SONANDO]){
+    AUD[SONANDO].pause(); AUD[SONANDO].currentTime = 0; boton(SONANDO, '▶');
+  }
+  if(a.paused){ a.play().catch(function(){}); SONANDO = f; boton(f, '‖'); }
+  else        { a.pause(); boton(f, '▶'); }
+}
+
+function callaTodo(){
+  Object.keys(AUD).forEach(function(k){ try{ AUD[k].pause(); }catch(e){} });
+  SONANDO = null;
+}
 
 /* la duracion, estimada del texto — varia con la lengua (P-H, 19/09) */
 function estima(o){
@@ -164,18 +255,42 @@ function estima(o){
   return Math.max(4, Math.round(n / 13) + 1);
 }
 
+/* el nombre del fichero, deducido del objeto */
+/* un identificador sin punto ni guion, para getElementById */
+function cid(f){ return f.replace(/[^A-Za-z0-9]/g, '_'); }
+
+function nombreDe(nom, l){
+  const pat = SF_TOUR.voz_nombre || '{lang}-{objeto}.mp3';
+  return pat.replace('{lang}', String(l).toUpperCase()).replace('{objeto}', nom);
+}
+
 function tt(o, l){ return (o && (o[l] || o.es)) || ''; }
 
 /* las etapas, más el final — que es una más */
 function lista(){
-  const E = (SF_TOUR.etapas||[]).map(e => ({
-    n:e.n, icono:e.icono, titulo:e.titulo, texto:e.texto,
-    grabado:e.grabado || {},
-    seg:e.segundos || estima(e.texto) }));
-  const f = SF_TOUR.final || {};
-  E.push({ n:E.length+1, icono:'✓', titulo:f.titulo, texto:f.texto,
-           grabado:f.grabado || {}, seg:estima(f.texto) });
-  return E;
+  /* ══ DOS TABLAS (P-H, 19/09/2026) ══
+     Los objetos dicen qué hay; la visita, en qué orden. El fichero se
+     llama por el OBJETO — ES-abeja.mp3 — y ya no cambia de nombre
+     cuando el orden cambia. */
+  /* ══ TODAS LAS SALAS DEL MUSEO (P-H, 21/09/2026) ══
+     Se recorren en su orden, y cada objeto sale una sola vez — aunque
+     aparezca en dos salas, su fichero de voz es uno. */
+  const S = SF_TOUR.salas || SF_TOUR.visitas || {};
+  const O = SF_TOUR.objetos || {};
+  const vistos = {}, out = [];
+  Object.keys(S).forEach(function(k){
+    const v = S[k] || {};
+    (v.pasos || []).forEach(function(nom){
+      if(vistos[nom]) return;
+      vistos[nom] = 1;
+      const o = O[nom] || {};
+      /* se graba « dicho » si lo hay — lo escrito para el oido */
+      const t = o.dicho || ((v.texto === 'corto' && o.corto) ? o.corto : o.texto);
+      out.push({ nombre:nom, icono:o.icono || '·', titulo:o.titulo, sala:k,
+                 texto:t, oido:!!o.dicho, grabado:o.grabado || {}, seg:estima(t) });
+    });
+  });
+  return out;
 }
 
 function pinta(){
@@ -185,30 +300,35 @@ function pinta(){
     E.length + ' textos · ' + LG[l] + ' · los ficheros van en casa/voz/';
 
   document.getElementById('bloques').innerHTML = E.map(e => {
-    const f = 't' + String(e.n).padStart(2,'0') + '_' + l + '.mp3';
-    const hecho = HECHOS[f] ? ' hecho' : '';
-    return '<div class="bloque' + hecho + '" id="b-' + f + '">'
+    const f = nombreDe(e.nombre, l);
+    return '<div class="bloque" id="b-' + cid(f) + '">'
       + '<div class="b-cab">'
       + '<span class="b-ico">' + (e.icono||'') + '</span>'
       + '<span class="b-nom">' + f + '</span>'
-      + '<span class="b-tit">' + tt(e.titulo, l) + '</span>'
+      + '<span class="b-tit">' + tt(e.titulo, l)
+      + (e.oido ? ' <span class="b-oido" title="texto escrito para el oido: en pantalla se lee otro">👂</span>' : '')
+      + '</span>'
       + '<span class="b-seg">~' + e.seg + 's</span>'
-      + '<span class="b-viejo" id="v-' + f + '">⚠ el texto ha cambiado</span>'
-      + '<span class="b-hecho">✓</span>'
+      + '<span class="b-viejo" id="v-' + cid(f) + '">⚠ el texto ha cambiado</span>'
+      + '<span class="b-estado" id="s-' + cid(f) + '">…</span>'
       + '</div>'
-      + '<textarea id="t-' + f + '" oninput="alEscribir(\'' + f + '\')">'
+      + '<textarea id="t-' + cid(f) + '" oninput="alEscribir(\'' + f + '\')">'
       + tt(e.texto, l) + '</textarea>'
+      + '<div class="dif" id="d-' + cid(f) + '"></div>'
       + '<div class="b-pie">'
       + '<button class="copiar" onclick="copia(\'' + f + '\')">📋 Copiar</button>'
-      + '<button class="marca" onclick="marca(\'' + f + '\')">✓ Hecho</button>'
-      + '<span class="largo" id="l-' + f + '"></span>'
+      + '<button class="tocar" id="p-' + cid(f) + '" disabled onclick="toca(\'' + f + '\')"'
+      + ' title="▶ oír · ‖ parar · ▶ seguir">▶</button>'
+      + '<span class="largo" id="l-' + cid(f) + '"></span>'
       + '</div></div>';
   }).join('');
 
+  callaTodo(); ESTADO = {}; AUD = {};
   E.forEach(e => {
-    const f = 't' + String(e.n).padStart(2,'0') + '_' + l + '.mp3';
+    const f = nombreDe(e.nombre, l);
     cuentaLargo(f);
     marcaViejo(f, e, l);
+    detecta(f);
   });
   cuenta();
 }
@@ -216,14 +336,18 @@ function pinta(){
 /* cuántas letras — para saber si el texto cabe en los segundos previstos */
 function alEscribir(f){
   cuentaLargo(f);
+  if(grabadoDe(f)){
+    var l0 = document.getElementById('lang').value;
+    var e0 = lista().filter(x => nombreDe(x.nombre, l0) === f)[0];
+    if(e0){ marcaViejo(f, e0, l0); return; }
+  }
   const l = document.getElementById('lang').value;
-  const e = lista().filter(x =>
-    ('t' + String(x.n).padStart(2,'0') + '_' + l + '.mp3') === f)[0];
+  const e = lista().filter(x => nombreDe(x.nombre, l) === f)[0];
   if(!e) return;
   /* lo que se escribe aquí no está en la tabla: se compara con lo vivo */
-  huella(document.getElementById('t-' + f).value).then(h => {
-    const z = document.getElementById('v-' + f);
-    const b = document.getElementById('b-' + f);
+  huella(document.getElementById('t-' + cid(f)).value).then(h => {
+    const z = document.getElementById('v-' + cid(f));
+    const b = document.getElementById('b-' + cid(f));
     const g = (e.grabado||{})[l];
     const viejo = !!(g && h && h !== g);
     if(z) z.style.display = viejo ? 'inline' : 'none';
@@ -232,18 +356,69 @@ function alEscribir(f){
 }
 
 function cuentaLargo(f){
-  const t = document.getElementById('t-' + f);
-  const z = document.getElementById('l-' + f);
+  const t = document.getElementById('t-' + cid(f));
+  const z = document.getElementById('l-' + cid(f));
   if(!t || !z) return;
   const n = t.value.trim().length;
   const seg = Math.round(n / 14);        /* unas 14 letras por segundo */
   z.textContent = n + ' letras · ~' + seg + 's al hablar';
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   LO QUE CAMBIO, PALABRA POR PALABRA (P-H, 21/09/2026)
+
+   Si el texto que se grabo esta al lado del mp3, se compara con el de
+   la tabla y se ensena la diferencia: lo quitado tachado, lo nuevo en
+   verde. Mas util que un « ha cambiado »: se ve si es una coma o una
+   frase entera — y si merece la pena volver a grabar.
+   ══════════════════════════════════════════════════════════════════════ */
+function grabadoDe(f){
+  var G = window.SF_GRABADOS || {};
+  return G[f.replace(/\.mp3$/, '')] || null;
+}
+
+function diferencia(viejo, nuevo){
+  var a = String(viejo||'').split(/\s+/).filter(Boolean);
+  var b = String(nuevo||'').split(/\s+/).filter(Boolean);
+  var m = a.length, n = b.length, L = [];
+  for(var i = 0; i <= m; i++){ L[i] = new Array(n+1).fill(0); }
+  for(var i = m-1; i >= 0; i--) for(var j = n-1; j >= 0; j--)
+    L[i][j] = (a[i] === b[j]) ? L[i+1][j+1] + 1 : Math.max(L[i+1][j], L[i][j+1]);
+  var out = [], i = 0, j = 0;
+  while(i < m && j < n){
+    if(a[i] === b[j]){ out.push(esc(a[i])); i++; j++; }
+    else if(L[i+1][j] >= L[i][j+1]){ out.push('<del>' + esc(a[i]) + '</del>'); i++; }
+    else { out.push('<ins>' + esc(b[j]) + '</ins>'); j++; }
+  }
+  while(i < m) out.push('<del>' + esc(a[i++]) + '</del>');
+  while(j < n) out.push('<ins>' + esc(b[j++]) + '</ins>');
+  return out.join(' ');
+}
+
+function esc(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 /* ¿sigue el mp3 diciendo lo que el texto dice? */
 async function marcaViejo(f, e, l){
-  const z = document.getElementById('v-' + f);
-  const b = document.getElementById('b-' + f);
+  var gr = grabadoDe(f);
+  var d = document.getElementById('d-' + cid(f));
+  if(gr){
+    var ahora = document.getElementById('t-' + cid(f));
+    var txt = ahora ? ahora.value : tt(e.texto, l);
+    var igual = txt.trim().split(/\s+/).join(' ') === gr.texto.trim().split(/\s+/).join(' ');
+    var zv = document.getElementById('v-' + cid(f));
+    var bv = document.getElementById('b-' + cid(f));
+    if(zv) zv.style.display = igual ? 'none' : 'inline';
+    if(bv) bv.classList.toggle('viejo', !igual);
+    if(d) d.innerHTML = igual ? ''
+      : '<span class="dif-tit">Grabado el ' + esc(gr.fecha) + ' — lo que cambio:</span> '
+        + diferencia(gr.texto, txt);
+    return;
+  }
+  if(d) d.innerHTML = '';
+  const z = document.getElementById('v-' + cid(f));
+  const b = document.getElementById('b-' + cid(f));
   if(!z || !b) return;
   const g = (e.grabado||{})[l];
   if(!g){ z.style.display = 'none'; return; }
@@ -254,38 +429,30 @@ async function marcaViejo(f, e, l){
 }
 
 function copia(f){
-  const t = document.getElementById('t-' + f);
+  const t = document.getElementById('t-' + cid(f));
   navigator.clipboard.writeText(t.value.trim()).then(() => {
     avisa('Copiado — péguelo en ElevenLabs y llame al mp3 « ' + f + ' »');
-    const b = document.querySelector('#b-' + f + ' .copiar');
+    const b = document.querySelector('#b-' + cid(f) + ' .copiar');
     b.classList.add('ok'); b.textContent = '✓ Copiado';
     setTimeout(() => { b.classList.remove('ok'); b.textContent = '📋 Copiar'; }, 2200);
   }).catch(() => { t.select(); avisa('Seleccionado — copie con Ctrl+C'); });
 }
 
-function marca(f){
-  HECHOS[f] = !HECHOS[f];
-  if(!HECHOS[f]) delete HECHOS[f];
-  try{ localStorage.setItem('sf_voces', JSON.stringify(HECHOS)); }catch(e){}
-  document.getElementById('b-' + f).classList.toggle('hecho', !!HECHOS[f]);
-  cuenta();
-}
-
 function cuenta(){
   const l = document.getElementById('lang').value;
   const E = lista();
-  const n = E.filter(e =>
-    HECHOS['t' + String(e.n).padStart(2,'0') + '_' + l + '.mp3']).length;
-  document.getElementById('cuenta').textContent = n + ' / ' + E.length + ' hechos';
+  const n = E.filter(e => ESTADO[nombreDe(e.nombre, l)] === 'si').length;
+  document.getElementById('cuenta').textContent =
+    (LG[l] || l) + ': ' + n + ' / ' + E.length + ' hechos';
 }
 
 /* todos de una vez, para quien prefiera un solo pegado */
 function copiaTodo(){
   const l = document.getElementById('lang').value;
   const txt = lista().map(e => {
-    const f = 't' + String(e.n).padStart(2,'0') + '_' + l + '.mp3';
+    const f = nombreDe(e.nombre, l);
     return '=== ' + f + ' — ' + tt(e.titulo, l) + ' ===\n'
-         + document.getElementById('t-' + f).value.trim();
+         + document.getElementById('t-' + cid(f)).value.trim();
   }).join('\n\n');
   navigator.clipboard.writeText(txt).then(() => avisa('Los ' + lista().length + ' textos copiados'));
 }
@@ -293,10 +460,10 @@ function copiaTodo(){
 function bajaTexto(){
   const l = document.getElementById('lang').value;
   const txt = lista().map(e => {
-    const f = 't' + String(e.n).padStart(2,'0') + '_' + l + '.mp3';
+    const f = nombreDe(e.nombre, l);
     return '─'.repeat(66) + '\n  ' + f + '   ' + (e.icono||'') + '  '
          + tt(e.titulo, l) + '\n' + '─'.repeat(66) + '\n\n'
-         + document.getElementById('t-' + f).value.trim();
+         + document.getElementById('t-' + cid(f)).value.trim();
   }).join('\n\n\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([txt], {type:'text/plain;charset=utf-8'}));
@@ -304,11 +471,112 @@ function bajaTexto(){
   a.click();
 }
 
-function olvida(){
-  if(!confirm('¿Olvidar qué ficheros están hechos?')) return;
-  HECHOS = {};
-  try{ localStorage.removeItem('sf_voces'); }catch(e){}
-  pinta();
+/* se ha anadido un fichero: se vuelve a mirar el directorio */
+function olvida(){ pinta(); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   UN FICHERO POR TEXTO (P-H, 21/09/2026)
+
+   « Est-ce possible d'avoir les textes des voix chacun dans un fichier
+     individuel ? » — Los que faltan por grabar, o cuyo texto cambio, se
+   empaquetan en un solo fichero .tar: una sola descarga, una sola orden
+   para desempaquetarlo en casa/voz/a-grabar/. Una pagina no puede
+   escribir en las carpetas; puede prepararlo todo, y decir la orden.
+   ══════════════════════════════════════════════════════════════════════ */
+function tar(ficheros){
+  var enc = new TextEncoder(), trozos = [], ahora = Math.floor(Date.now()/1000);
+  function campo(buf, off, len, txt){
+    var b = enc.encode(txt);
+    for(var i = 0; i < Math.min(len, b.length); i++) buf[off+i] = b[i];
+  }
+  function oct(v, len){ return v.toString(8).padStart(len-1, '0') + '\0'; }
+  ficheros.forEach(function(f){
+    var datos = enc.encode(f.texto);
+    var h = new Uint8Array(512);
+    campo(h, 0, 100, f.nombre);
+    campo(h, 100, 8, '0000644\0');
+    campo(h, 108, 8, '0000000\0');
+    campo(h, 116, 8, '0000000\0');
+    campo(h, 124, 12, oct(datos.length, 12));
+    campo(h, 136, 12, oct(ahora, 12));
+    campo(h, 148, 8, '        ');
+    h[156] = 48;                                   /* '0': fichero */
+    campo(h, 257, 6, 'ustar\0');
+    campo(h, 263, 2, '00');
+    var suma = 0; for(var i = 0; i < 512; i++) suma += h[i];
+    campo(h, 148, 8, suma.toString(8).padStart(6, '0') + '\0 ');
+    trozos.push(h, datos);
+    var resto = (512 - (datos.length % 512)) % 512;
+    if(resto) trozos.push(new Uint8Array(resto));
+  });
+  trozos.push(new Uint8Array(1024));
+  return new Blob(trozos, { type:'application/x-tar' });
+}
+
+function sello(){
+  var d = new Date(), p = function(x){ return String(x).padStart(2,'0'); };
+  return d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate())
+       + '_' + p(d.getHours()) + 'h' + p(d.getMinutes());
+}
+
+function preparaPaquete(){
+  var l = document.getElementById('lang').value;
+  var F = [];
+  lista().forEach(function(e){
+    var f = nombreDe(e.nombre, l), base = f.replace(/\.mp3$/, '');
+    var txt = document.getElementById('t-' + cid(f)).value.trim();
+    var g = grabadoDe(f);
+    var falta = ESTADO[f] !== 'si';
+    var cambio = g && g.texto.trim().split(/\s+/).join(' ') !== txt.split(/\s+/).join(' ');
+    if(falta || cambio) F.push({ nombre:'voz/a-grabar/' + base + '.txt', texto: txt + '\n' });
+  });
+  if(!F.length){ avisa('No falta nada por grabar en ' + (LG[l]||l)); return; }
+  var nom = 'voces-a-grabar_' + l.toUpperCase() + '_' + sello() + '.tar';
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(tar(F));
+  a.download = nom;
+  a.click();
+  muestraOrden('📦 ' + F.length + ' textos por grabar, cada uno en su fichero',
+    'cd ~/Salufolio/casa && tar xf ~/Descargas/' + nom
+    + ' && ls voz/a-grabar/ && rm -f ~/Descargas/' + nom,
+    'Luego <b>🎙 Grabar con ElevenLabs</b>: los graba todos de una vez. '
+    + 'O a mano, uno por uno, y despues <b>✅ Registrar lo grabado</b>.');
+}
+
+/* ══ ELEVENLABS GRABA SOLO (P-H, 21/09/2026) ══
+   « J'ai une clé API — est-ce que tu peux me terminer tout ça ? »
+   La clave vive FUERA de ~/Salufolio: no se publica nunca. Antes de
+   gastar, el programa dice cuantas letras y espera un « s ». */
+function graba(){
+  /* « Trop de travail à coller » (P-H): una sola orden, siempre la misma.
+     El programa encuentra solo lo que falta o ha cambiado. */
+  muestraOrden('🎙 Grabar lo que falta',
+    'python3 ~/Salufolio/herramientas/voces-graba.py',
+    'Una sola orden, siempre la misma. Busca sola lo que falta o ha cambiado, '
+    + 'pide la clave la primera vez (la guarda fuera de Salufolio), dice cuantas '
+    + 'letras antes de gastar nada, y deja cada texto al lado de su mp3. '
+    + 'Despues, <b>↻ Volver a mirar</b>.');
+}
+
+function registra(){
+  muestraOrden('✅ Poner cada texto al lado de su mp3',
+    'python3 ~/Salufolio/herramientas/voces-registra.py',
+    'Despues, <b>↻ Volver a mirar</b> — o recarga la pagina.');
+}
+
+/* la orden que hay que pegar, con su boton de copiar */
+function muestraOrden(titulo, orden, despues){
+  var z = document.getElementById('orden');
+  z.innerHTML = '<div class="o-tit">' + titulo + '</div>'
+    + '<pre id="o-txt">' + esc(orden) + '</pre>'
+    + '<div class="o-pie"><button class="copiar" onclick="copiaOrden()">📋 Copiar la orden</button>'
+    + '<button class="marca" onclick="document.getElementById(\'orden\').innerHTML=\'\'">✕</button></div>'
+    + (despues ? '<div class="o-des">' + despues + '</div>' : '');
+  z.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+function copiaOrden(){
+  navigator.clipboard.writeText(document.getElementById('o-txt').textContent)
+    .then(function(){ avisa('Orden copiada — pégala en el terminal'); });
 }
 
 function avisa(t){

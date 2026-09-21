@@ -1,0 +1,1 @@
+Con una clave de la API, los PDF se leen solos: se eligen, y los valores, los tratamientos y los eventos se colocan en su sitio. Lo leído se puede revisar siempre antes de darlo por bueno.

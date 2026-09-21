@@ -1,0 +1,1 @@
+Mire: se escribe sola mientras usted teclea. Una inicial del nombre, dos de los apellidos, y los cuatro últimos dígitos del SIP. Así dos personas del mismo nombre nunca se confunden — y ese es el nombre de su carpeta en el disco.
