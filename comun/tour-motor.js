@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    EL MOTOR DE LA VISITA — /Salufolio/comun/tour-motor.js
-   Versión 2026.09.21-23:00:18
+   Versión 2026.09.21-23:21:34
 
    « On commence par casa seul, c'est-à-dire le bandeau supérieur. »
                                           — P-H + Mattieu, 18/09/2026
@@ -34,7 +34,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      No lo hacía: tour-motor.js y tour.css no llevaban ninguno. Y es la
      doctrina del 05/09 — sin número, imposible decir qué versión falla.
      Ahora lo llevan, y se ve en la burbuja del contador de etapas. */
-  var VERSION = '2026.09.21-22:59:05';
+  var VERSION = '2026.09.21-23:20:23';
 
   var T = null, i = 0, viva = false, pausa = false;
   /* ══ DECLARADAS, POR FIN (P-H, 21/09/2026) ══
@@ -169,6 +169,8 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       + '"></span>'
       + '  </div>'
       + '  <div class="sf-t-texto" id="sf-t-texto"></div>'
+      + '  <label class="sf-t-sabe" id="sf-t-sabe-l"><input type="checkbox" id="sf-t-sabe">'
+      + '<span id="sf-t-sabe-t"></span></label>'
       + '  <div class="sf-t-barra"><div class="sf-t-llena" id="sf-t-llena"></div></div>'
       + '  <div class="sf-t-mandos">'
       + '    <button id="sf-t-x"     title="">❌</button>'
@@ -186,10 +188,20 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       + '</div>';
     document.body.appendChild(m);
 
+    /* ══ LO QUE DICE CADA BOTON (P-H, 21/09/2026) ══
+       « Manque tooltips — je pense que la boussole c'est pour recommencer
+         la visite. » No lo era. Los textos viven en la tabla (mandos). */
+    ponTitulo(m, '#sf-t-x', 'x');         ponTitulo(m, '#sf-t-otra', 'otra');
+    ponTitulo(m, '#sf-t-lista', 'lista'); ponTitulo(m, '#sf-t-salta', 'salta');
+    ponTitulo(m, '#sf-t-atras', 'atras'); ponTitulo(m, '#sf-t-pausa', 'pausa');
+    ponTitulo(m, '#sf-t-otra-vez', 'otra_vez'); ponTitulo(m, '#sf-t-voz', 'voz');
+    ponTitulo(m, '#sf-t-sig', 'sig');
+
     m.querySelector('#sf-t-x').onclick     = function(){ pideAdios(); };
     m.querySelector('#sf-t-otra').onclick  = function(){ i = 0; muestra(); };
     m.querySelector('#sf-t-lista').onclick = function(){ pliegaLista(); };
-    m.querySelector('#sf-t-salta').onclick = function(){ paso(1); };
+    /* ⏭️ ya no repite ➡️: salta el resto de la sala y lleva a su puerta */
+    m.querySelector('#sf-t-salta').onclick = function(){ saltaSala(); };
     m.querySelector('#sf-t-atras').onclick = function(){ paso(-1); };
     m.querySelector('#sf-t-sig').onclick   = function(){ paso(1); };
     m.querySelector('#sf-t-pausa').onclick = function(){ alterna(); };
@@ -699,6 +711,32 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      nada. Ahora cada una esta una sola vez, y se comprueba al entregar. */
   var CUAL = '', SEGUIDO = false;
 
+  /* ══════════════════════════════════════════════════════════════════
+     LO QUE YA SE CONOCE (P-H, 21/09/2026)
+
+     « À chaque objet visité, une case à cocher : je sais déjà. Comme ça,
+       si on repasse tout, on ne revient plus sur le connu. »
+
+     Es la biblioteca de la que hablaba: los cuadernos que se guardan a
+     medida que se aprende. Cada objeto tiene un nombre fijo; su casilla
+     se recuerda en el navegador — nada sale del ordenador.
+
+     La casilla no cambia la visita EN CURSO: lo marcado ahora vale para
+     la proxima. Al entrar en una sala se hace una foto de lo conocido,
+     y solo eso se salta. Y la carta ofrece « ver tambien lo conocido »,
+     sin borrar nada: se desmarca a mano lo que se ha olvidado.
+     ══════════════════════════════════════════════════════════════════ */
+  var CLAVE_SABIDOS = 'sf_tour_sabidos';
+  var SABIDOS = {}, CONOCIDOS = {}, VER_TODO = false;
+  try{ SABIDOS = JSON.parse(localStorage.getItem(CLAVE_SABIDOS) || '{}'); }catch(e){}
+
+  function marcaSabido(nombre, si){
+    if(!nombre) return;
+    if(si) SABIDOS[nombre] = new Date().toISOString().slice(0,10);
+    else   delete SABIDOS[nombre];
+    try{ localStorage.setItem(CLAVE_SABIDOS, JSON.stringify(SABIDOS)); }catch(e){}
+  }
+
   /* las salas — « salas », o el nombre de antes */
   function salas(){ return (T && (T.salas || T.visitas)) || {}; }
   function tituloSala(k){ var v = salas()[k] || {}; return tt(v.titulo || v.nombre) || k; }
@@ -763,8 +801,18 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       return;
     }
     CUAL = cual; SEGUIDO = !!seguido;
+    CONOCIDOS = JSON.parse(JSON.stringify(SABIDOS));   /* la foto de lo conocido */
     i = 0; DIR = 1; pausa = false; viva = true;
     entraSala(VIS, function(){ if(viva) muestra(); });
+  }
+
+  /* « 5 conocidos » · « ✓ todo conocido » — lo que dice la carta de cada sala */
+  function cuentaSabidos(v){
+    var P = (v && v.pasos) || [];
+    var k = P.filter(function(p){ return SABIDOS[p]; }).length;
+    if(!k) return '';
+    if(k === P.length) return esc(tt(T.carta_todo_conocido) || '✓');
+    return esc((tt(T.carta_conocidos) || '{n}').replace('{n}', k));
   }
 
   function carta(alElegir){
@@ -785,16 +833,24 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
           return '<div class="sf-c-sala' + (hecha ? ' hecha' : '') + '" data-v="' + k + '">'
             + '<span class="sf-c-ico">' + (v.icono || '▸') + '</span>'
             + '<span class="sf-c-nom">' + esc(tituloSala(k)) + '</span>'
+            + '<span class="sf-c-sab">' + cuentaSabidos(v) + '</span>'
             + '<span class="sf-c-n">' + n + '</span>'
             + '<span class="sf-c-ok">✓</span></div>';
         }).join('')
-      + '</div><div class="sf-c-pie">'
+      + '</div>'
+      + '<label class="sf-c-ver"><input type="checkbox" id="sf-c-ver"> '
+      + esc(tt(T.carta_ver_todo) || '') + '</label>'
+      + '<div class="sf-c-pie">'
       + '<button class="sf-c-btn" data-todo="1">' + esc(tt(T.carta_todo) || 'Todo seguido') + '</button>'
       + '<button class="sf-c-btn sf-suave" data-salir="1">' + esc(tt(T.carta_salir) || 'Salir') + '</button>'
       + '</div></div>';
     document.body.appendChild(f);
 
-    function cierra(){ if(f.parentNode) document.body.removeChild(f); }
+    function cierra(){
+      var cv = f.querySelector('#sf-c-ver');
+      VER_TODO = !!(cv && cv.checked);          /* esta visita, tambien lo conocido */
+      if(f.parentNode) document.body.removeChild(f);
+    }
     f.onclick = function(e){ if(e.target === f){ cierra(); if(opc.al_salir) opc.al_salir(); } };
 
     f.querySelectorAll('.sf-c-sala').forEach(function(d){
@@ -844,6 +900,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     var nom = function(x){ return tituloSala(x); };
 
     m.querySelector('#sf-t-ico').textContent = v.icono || '✓';
+    var clp = m.querySelector('#sf-t-sabe-l'); if(clp) clp.style.display = 'none';
     m.querySelector('#sf-t-tit').textContent =
       (tt(T.puerta_hecha) || '{sala}').replace('{sala}', nom(CUAL));
     m.querySelector('#sf-t-n').textContent = '';
@@ -881,6 +938,9 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       + '<span class="sf-t-sep"></span>'
       + '<button id="sf-p-salir">❌</button>';
 
+    if(sig) ponTitulo(m, '#sf-p-sig', 'p_sig', nom(sig));
+    ponTitulo(m, '#sf-p-carta', 'p_carta');
+    ponTitulo(m, '#sf-p-salir', 'p_salir');
     if(sig) b.querySelector('#sf-p-sig').onclick = function(){ arrancaVisita(sig, false); };
     b.querySelector('#sf-p-carta').onclick = function(){
       var mm = document.getElementById('sf-tour'); if(mm) mm.remove();
@@ -1003,6 +1063,13 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
        pagina. Se salta, en el sentido de la marcha — hacia delante si se
        avanzaba, hacia atras si se retrocedia. Si la sala entera esta
        escondida, se llega al final y se sale por la puerta. */
+    /* lo que ya se conocia al entrar en la sala se salta */
+    if(!VER_TODO && CONOCIDOS[e.nombre]){
+      i += DIR;
+      if(i < 0){ i = 0; DIR = 1; }
+      muestra(); return;
+    }
+
     if(e.objeto && !document.querySelector(e.objeto) && !e.accion){
       i += DIR;
       if(i < 0){ i = 0; DIR = 1; }
@@ -1041,6 +1108,14 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     if(!m.classList.contains('on')) m.classList.add('naciendo');
     m.querySelector('#sf-t-ico').textContent  = e.icono || '';
     m.querySelector('#sf-t-tit').textContent  = tt(e.titulo);
+    /* la casilla « ya lo conozco », de este objeto */
+    var cs = m.querySelector('#sf-t-sabe'), cl = m.querySelector('#sf-t-sabe-l');
+    if(cs && cl){
+      cl.style.display = '';
+      m.querySelector('#sf-t-sabe-t').textContent = tt(T.sabido) || '';
+      cs.checked = !!SABIDOS[e.nombre];
+      cs.onchange = function(){ marcaSabido(e.nombre, cs.checked); };
+    }
     m.querySelector('#sf-t-n').textContent    = (i+1) + ' / ' + PASOS.length;
     var bA = m.querySelector('#sf-t-atras');
     if(bA) bA.disabled = (i === 0);
@@ -1161,6 +1236,22 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     void b.offsetWidth;
     b.style.transition = 'width ' + seg + 's linear';
     b.style.width = '100%';
+  }
+
+  /* ── el titulo de un boton, sacado de la tabla ── */
+  function ponTitulo(m, sel, clave, sala){
+    var b = m.querySelector(sel);
+    var t = T && T.mandos && T.mandos[clave];
+    if(b && t) b.title = tt(t).replace('{sala}', sala || '');
+  }
+
+  /* ── ⏭️ : lo que queda de la sala no se ve; se va a su puerta ── */
+  function saltaSala(){
+    if(!viva) return;
+    corta(); calla(); apaga();
+    saleSala();
+    viva = false;
+    luego(puerta, 250);
   }
 
   /* ── el suspiro: el halo se apaga, se respira, y se pasa ── */

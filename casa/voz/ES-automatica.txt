@@ -1,1 +1,1 @@
-Con una clave de la API, los PDF se leen solos: se eligen, y los valores, los tratamientos y los eventos se colocan en su sitio. Lo leído se puede revisar siempre antes de darlo por bueno.
+Con un acceso de pago a Claude, la inteligencia artificial de Anthropic, los PDF se leen solos. De pago quiere decir: se abre una cuenta en Anthropic, se depositan unos euros, y cada documento leído consume una pequeña parte. Los valores, los tratamientos y los eventos se colocan en su sitio — y lo leído se puede revisar siempre antes de darlo por bueno.
