@@ -1,0 +1,1 @@
+Le dossier ouvre un fichier qui serait n'importe où sur votre disque — une sauvegarde, un qu'on vous a passé, un venu d'un autre ordinateur. Salufolio n'exige pas qu'ils soient tous au même endroit.

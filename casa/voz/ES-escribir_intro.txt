@@ -1,0 +1,1 @@
+Las tarjetas que ESCRIBEN en el expediente. Son las únicas que lo cambian, y por eso están aparte: todo lo que entra se puede revisar, y todo lo que se corrige queda anotado.

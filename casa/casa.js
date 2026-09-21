@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = window.SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.09.18-17:17:13",
+  "version": "2026.09.19-23:37:32",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -439,17 +439,20 @@ var SF_LANZADOR = window.SF_LANZADOR = {
     "izquierda": "© 2026 Pierre-Henri Giraud · Salufolio",
     "centro": [
       {
-        "texto": "Software libre · GNU GPL v3"
+        "texto": "Software libre · GNU GPL v3",
+        "marca": "licencia"
       },
       {
         "texto": "DOI 10.5281/zenodo.21997587",
         "fichero": "salufolio-zenodo.pdf",
         "titulo": "Ver el artículo",
-        "fuera": "https://doi.org/10.5281/zenodo.21997587"
+        "fuera": "https://doi.org/10.5281/zenodo.21997587",
+        "marca": "doi"
       },
       {
         "texto": "salufolio@proton.me",
-        "enlace": "mailto:salufolio@proton.me"
+        "enlace": "mailto:salufolio@proton.me",
+        "marca": "correo"
       }
     ]
   }

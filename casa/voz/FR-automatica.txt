@@ -1,0 +1,1 @@
+Avec une clé d'API, les PDF se lisent tout seuls : on les choisit, et les valeurs, les traitements et les événements se rangent à leur place. Ce qui a été lu peut toujours être revu avant d'être tenu pour bon.

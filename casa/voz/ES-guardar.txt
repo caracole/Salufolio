@@ -1,0 +1,1 @@
+El disquete escribe el expediente en su disco. Si lleva un asterisco, hay algo escrito que todavía no se ha guardado. Cada vez se escribe un fichero nuevo, con su fecha: el anterior sigue donde estaba.

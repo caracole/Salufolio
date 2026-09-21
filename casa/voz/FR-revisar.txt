@@ -1,0 +1,1 @@
+Une machine qui lit se trompe parfois. Ici on repasse ce qui a été lu, on corrige ce qui est faux, et il reste écrit qu'on a corrigé — une erreur ne se cache pas, elle se note.

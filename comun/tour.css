@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    LA VISITA — su aspecto · /Salufolio/comun/tour.css
-   Versión 2026.09.19-18:12:56
+   Versión 2026.09.21-20:56:11
 
    Nada en duro en el motor: los colores vienen de la paleta de la casa,
    y cambian con ella.
@@ -45,6 +45,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 .sf-t-caja{
   position:relative;
+  max-height:calc(100vh - 24px); overflow-y:auto;
   /* ① más cerca de la luz que la página */
   background:
     linear-gradient(180deg,
@@ -78,7 +79,10 @@
   }
 }
 
-.sf-t-cab{ display:flex; align-items:baseline; gap:10px; margin-bottom:7px; }
+/* la cabecera es el asa: se agarra ahi para mover la caja (P-H, 20/09) */
+.sf-t-cab{ display:flex; align-items:baseline; gap:10px; margin-bottom:7px;
+           cursor:grab; user-select:none; }
+.sf-t-cab:active{ cursor:grabbing; }
 .sf-t-ico{ font-size:21px; line-height:1; }
 .sf-t-tit{
   flex:1; font-family:var(--serif, Georgia, serif);
@@ -119,28 +123,38 @@
 .sf-t-cab, .sf-t-texto, .sf-t-mandos, .sf-t-lista-caja{ position:relative; z-index:1; }
 
 .sf-t-mandos{ display:flex; align-items:center; gap:5px; }
+/* ══ LOS MANDOS SE VEN (P-H, 19/09/2026) ══
+   « Le bouton Pause ne se voit pas sur fond obscur et est très petit. »
+   Eran caracteres de texto a quince píxeles, sin contorno. Ahora llevan
+   su cerco, y el de pausa —el que más se usa— es más grande. */
 .sf-t-mandos button{
-  background:transparent; border:1px solid transparent; border-radius:7px;
-  padding:4px 8px; cursor:pointer; font-size:15px; line-height:1.3;
-  opacity:.65; transition:all .15s;
+  background:var(--surface2, #1c1c22);
+  border:1px solid var(--border, #2a2a33); border-radius:8px;
+  padding:5px 9px; cursor:pointer; font-size:16px; line-height:1.25;
+  opacity:.82; transition:all .15s; min-width:34px;
+}
+.sf-t-mandos button.grande{
+  font-size:19px; padding:4px 13px; min-width:46px;
+  border-color:color-mix(in srgb, var(--accent, #4a9eff) 55%, transparent);
+  opacity:1;
 }
 .sf-t-mandos button:hover:not(:disabled){
-  opacity:1; border-color:var(--border, #2a2a33);
-  background:var(--surface2, #1c1c22);
+  opacity:1; border-color:var(--accent, #4a9eff);
+  background:color-mix(in srgb, var(--accent, #4a9eff) 14%, transparent);
 }
 .sf-t-mandos button:disabled{ opacity:.22; cursor:not-allowed; }
 .sf-t-sep{ flex:1; }
 
 /* ── la lista de etapas ── */
 .sf-t-lista-caja{
-  display:none; margin-top:10px; padding-top:9px;
+  display:none; margin-top:8px; padding-top:7px;
   border-top:1px solid var(--border, #2a2a33);
-  max-height:240px; overflow-y:auto;
+  max-height:min(210px, 34vh); overflow-y:auto;
 }
 .sf-t-lista-caja.on{ display:block; }
 .sf-t-item{
   display:flex; align-items:center; gap:9px;
-  padding:5px 7px; border-radius:6px; cursor:pointer;
+  padding:2px 7px; border-radius:6px; cursor:pointer;
   font-size:12.5px; color:var(--muted, #9a9aa8); transition:all .12s;
 }
 .sf-t-item:hover{ background:var(--surface2, #1c1c22); color:var(--text, #e8e8ef); }
@@ -185,13 +199,107 @@
    « Comme un feutre qui se déplace sur les mots du texte » (P-H, 18/09).
    El texto entero está ahí desde el principio, apagado; la pluma lo
    recorre al ritmo del reloj. */
+/* ══ EL CONTRASTE, SOBRE FONDO OSCURO (P-H, 19/09/2026) ══
+   « Les mots sous fond sombre ne se voient pas. »
+
+   Estaban al 34%: sobre un fondo claro se leen, sobre uno oscuro se
+   desvanecen. Ahora al 62% —se leen desde el principio, que es lo
+   suyo: el texto entero debe verse— y la pluma los levanta al pasar,
+   con un poco de peso y un halo tenue. La diferencia se nota sin que
+   lo que falta se pierda. */
 .sf-t-p{
-  color:color-mix(in srgb, var(--text, #e8e8ef) 34%, transparent);
-  transition:color .22s;
+  color:color-mix(in srgb, var(--text, #e8e8ef) 62%, transparent);
+  transition:color .2s, text-shadow .2s;
 }
 .sf-t-p.dicha{
   color:var(--text, #e8e8ef);
+  text-shadow:0 0 9px color-mix(in srgb, var(--acc, #5b9bd5) 38%, transparent);
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA CARTA DEL MUSEO (P-H, 19/09/2026)
+
+   « Quand j'entre visiter un musée, j'ai eu un dépliant avec les salles
+     à visiter. »  La brújula la abre; se elige una sala, o todas.
+   ══════════════════════════════════════════════════════════════════════ */
+#sf-carta{
+  position:fixed; inset:0; z-index:9996;
+  background:rgba(0,0,0,.62);
+  display:flex; align-items:center; justify-content:center; padding:22px;
+  -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
+}
+.sf-c-caja{
+  background:var(--surface, #16161b);
+  border:1px solid var(--accent, #4a9eff);
+  border-radius:15px; padding:15px 20px 12px;
+  width:100%; max-width:440px;
+  max-height:92vh; overflow-y:auto;       /* nunca mas alta que la pantalla */
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+  font-family:var(--sans, system-ui, sans-serif);
+}
+.sf-c-tit{
+  font-family:var(--serif, Georgia, serif); font-size:18px; font-weight:600;
+  color:var(--accent, #4a9eff); margin-bottom:4px;
+}
+.sf-c-sub{
+  font-size:12.5px; color:var(--muted, #9a9aa8);
+  line-height:1.5; margin-bottom:9px;
+}
+/* ══ MAS APRETADO (P-H, 21/09/2026) ══
+   « Diminue la hauteur des items, le padding est un peu grand. » */
+.sf-c-salas{ display:flex; flex-direction:column; gap:1px; }
+.sf-c-sala{
+  display:flex; align-items:center; gap:10px;
+  padding:5px 10px; border-radius:8px; cursor:pointer;
+  border:1px solid transparent; transition:all .14s;
+}
+.sf-c-sala:hover{
+  background:var(--surface2, #1c1c22);
+  border-color:var(--border, #2a2a33);
+}
+.sf-c-ico{ font-size:17px; flex:0 0 22px; text-align:center; }
+.sf-c-nom{ flex:1; font-size:13.5px; color:var(--text, #e8e8ef); }
+.sf-c-n{
+  font-family:var(--mono, monospace); font-size:11px;
+  color:var(--muted, #9a9aa8); opacity:.7;
+}
+.sf-c-ok{ color:var(--ok, #4caf7d); font-size:13px; opacity:0; flex:0 0 14px; }
+.sf-c-sala.hecha .sf-c-ok{ opacity:1; }
+.sf-c-sala.hecha .sf-c-nom{ color:var(--muted, #9a9aa8); }
+
+.sf-c-pie{
+  display:flex; gap:8px; margin-top:10px; padding-top:10px;
+  border-top:1px solid var(--border, #2a2a33);
+}
+.sf-c-btn{
+  flex:1; padding:8px 14px; border-radius:9px;
+  border:1px solid var(--accent, #4a9eff);
+  background:color-mix(in srgb, var(--accent, #4a9eff) 14%, transparent);
+  color:var(--text, #e8e8ef); cursor:pointer;
+  font-family:inherit; font-size:13px; transition:all .14s;
+}
+.sf-c-btn:hover{ background:color-mix(in srgb, var(--accent, #4a9eff) 24%, transparent); }
+.sf-c-btn.sf-suave{
+  flex:0 0 auto; border-color:var(--border, #2a2a33);
+  background:transparent; color:var(--muted, #9a9aa8);
+}
+
+/* ══ LAS CARAS EN LA PUERTA (P-H, 21/09/2026) ══
+   Pequenas, bajo « ¿Seguimos? »: se ofrecen, no se imponen. */
+.sf-p-opina{
+  display:flex; align-items:center; gap:4px; flex-wrap:wrap;
+  margin-top:10px; padding-top:8px;
+  border-top:1px dashed var(--border, #2a2a33);
+  font-size:12px; color:var(--muted, #9a9aa8);
+}
+.sf-p-opina span{ margin-right:6px; }
+.sf-p-cara{
+  background:transparent; border:1px solid transparent; border-radius:8px;
+  font-size:19px; line-height:1.2; padding:1px 5px; cursor:pointer;
+  opacity:.55; transition:all .14s;
+}
+.sf-p-cara:hover{ opacity:1; transform:scale(1.15); }
+.sf-p-cara.on{ opacity:1; border-color:var(--accent, #4a9eff); }
 
 /* ── el objeto que se enseña ── */
 .sf-t-visto{ position:relative; z-index:9991 !important; }

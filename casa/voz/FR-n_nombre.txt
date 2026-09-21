@@ -1,0 +1,1 @@
+Le prénom, tel qu'il figure sur la carte. Il peut en porter plusieurs — María del Carmen est un seul prénom, pas trois. Écrivez-le en entier : le programme ne le coupe pas.

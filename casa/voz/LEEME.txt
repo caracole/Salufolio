@@ -1,0 +1,3 @@
+Los mp3 de la visita van aqui: t01_es.mp3 … t09_en.mp3
+Los textos estan en doc/TEXTOS-VOZ.txt
+Lo que falte, la sintesis del navegador lo dice.

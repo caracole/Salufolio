@@ -1,0 +1,1 @@
+Si la personne n'est pas dans la liste, ce bouton ouvre le cadre pour la créer. Nous le verrons dans la salle suivante.

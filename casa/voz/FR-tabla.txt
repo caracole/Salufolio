@@ -1,0 +1,1 @@
+Toutes les valeurs, date par date, en colonnes. C'est la vue de qui veut les chiffres bruts, sans dessin : pour comparer, copier ou vérifier.

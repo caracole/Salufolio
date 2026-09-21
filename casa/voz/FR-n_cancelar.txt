@@ -1,0 +1,1 @@
+Et si l'on se ravise, Annuler ferme le cadre sans rien créer. Il n'en reste aucune trace : ni dossier, ni fichier.

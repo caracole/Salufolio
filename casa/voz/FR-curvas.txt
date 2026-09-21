@@ -1,0 +1,1 @@
+Chaque valeur des analyses, dessinée au fil des années. La bande verte, c'est la norme ; ce qui en sort se voit d'un coup d'œil. On peut superposer deux courbes, pour voir si l'une entraîne l'autre.

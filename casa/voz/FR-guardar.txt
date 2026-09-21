@@ -1,0 +1,1 @@
+La disquette écrit le dossier sur votre disque. Si elle porte une étoile, il y a du travail qui n'est pas encore gardé. Chaque fois un fichier neuf s'écrit, avec sa date : le précédent reste où il était.

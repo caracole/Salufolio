@@ -1,0 +1,1 @@
+Salufolio es obra de Pierre-Henri Giraud, asistido por Claude, de Anthropic. Está publicado en Zénodo con un identificador de objeto digital: un número que no cambia nunca y que permite citarlo. Lo que hay detrás del programa, por qué, para quién, cómo, está escrito allí.
