@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = window.SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.09.23-09:58:21",
+  "version": "2026.09.23-17:40:29",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -399,6 +399,50 @@ var SF_LANZADOR = window.SF_LANZADOR = {
       }
     }
   ],
+  "_bienvenida": "El recibimiento de la primera vez (P-H, 23/09/2026). Bertica y Mattieu, los dos por separado, buscaron el boton de la visita sin encontrarlo: la brujula sola dice « navegacion », no dice « le ensegno la casa ». Asi que la casa saluda ella misma, una sola vez, en la lengua del navegador, y le ensega DONDE vive la brujula para que la leccion sobreviva al cuadro. Los textos, aqui; la frase que dice Sofia, en casa/tour.js (objeto « bienvenida »).",
+  "bienvenida": {
+    "objeto": "bienvenida",
+    "_objeto": "el nombre del texto en tour.js — el que Sofia lee y la pluma subraya",
+    "recuerdo": "sf_bienvenida_vista",
+    "_recuerdo": "donde se anota que ya se ha visto. Borrarlo la hace volver.",
+    "_voz": "habla sola al abrirse. El boton solo sirve para cortarla — y para volver a oirla.",
+    "parar": {
+      "es": "Basta, gracias",
+      "fr": "Ça suffit, merci",
+      "ca": "Ja n'hi ha prou, gràcies",
+      "en": "That's enough, thanks"
+    },
+    "escuchar": {
+      "es": "Oírlo otra vez",
+      "fr": "Réécouter",
+      "ca": "Escoltar-ho una altra volta",
+      "en": "Hear it again"
+    },
+    "si": {
+      "es": "Sí, enséñemela",
+      "fr": "Oui, montrez-moi",
+      "ca": "Sí, mostre-me-la",
+      "en": "Yes, show me around"
+    },
+    "no": {
+      "es": "Ahora no, gracias",
+      "fr": "Pas maintenant, merci",
+      "ca": "Ara no, gràcies",
+      "en": "Not now, thanks"
+    },
+    "despues": {
+      "es": "Después, la brújula 🧭 de arriba se la vuelve a abrir cuando quiera.",
+      "fr": "Ensuite, la boussole 🧭 en haut vous la rouvrira quand vous voudrez.",
+      "ca": "Després, la brúixola 🧭 de dalt li la torna a obrir quan vullga.",
+      "en": "Afterwards, the compass 🧭 above will open it again whenever you like."
+    },
+    "lengua": {
+      "es": "¿Prefiere otra lengua?",
+      "fr": "Vous préférez une autre langue ?",
+      "ca": "Preferix una altra llengua?",
+      "en": "Would you rather another language?"
+    }
+  },
   "banda_arriba": {
     "_fijos": "Los cuatro elementos que el lanzador dibuja en su sitio (la abeja a la izquierda, el titulo, el paciente, el disquete) no pueden entrar en « botones »: su lugar es fijo. Pero su burbuja no tiene por que vivir en el codigo — vive aqui, como las demas. « Note-le pour tous les tooltips present et a venir » (P-H, 22/09/2026).",
     "fijos": {

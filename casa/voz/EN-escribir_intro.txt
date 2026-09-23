@@ -1,0 +1,1 @@
+The cards that WRITE into the record. They are the only ones that change it, which is why they stand apart.

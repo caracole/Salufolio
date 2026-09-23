@@ -110,6 +110,45 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
           padding-bottom:7px;border-bottom:1px solid var(--border)}
 .op-lin{font-size:10.5px;letter-spacing:1.1px;text-transform:uppercase;
         color:var(--muted);margin:9px 0 4px}
+/* ══════════════════════════════════════════════════════════════════════
+   EL RECIBIMIENTO — un cuadro, no una pastilla (P-H, 23/09/2026)
+   « C'est pas une carte discrète, un pavé dans la mare ! »
+   Todo sale de las variables de la paleta: cambia con el tema como el resto.
+   ══════════════════════════════════════════════════════════════════════ */
+.bv-velo{position:fixed;inset:0;z-index:9990;background:rgba(0,0,0,.66);
+  display:none;align-items:center;justify-content:center;padding:22px;
+  backdrop-filter:blur(3px)}
+.bv-velo.on{display:flex}
+.bv{background:var(--surface);border:1px solid var(--accent);border-radius:20px;
+  padding:30px 34px 24px;max-width:620px;width:100%;
+  box-shadow:0 26px 80px rgba(0,0,0,.55);animation:bvsube .34s cubic-bezier(.2,.9,.3,1)}
+@keyframes bvsube{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.bv-cab{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.bv-bandera{font-size:30px;line-height:1}
+.bv-logo{font-family:var(--serif,Georgia,serif);font-size:27px;font-weight:600;color:var(--text)}
+.bv-logo i{font-style:italic;color:var(--accent)}
+.bv-texto{font-size:18px;line-height:1.75;color:var(--text);margin:0 0 22px}
+/* la pluma: la palabra dicha se enciende — la misma clase que en la visita */
+.bv-texto .sf-t-p{opacity:.42;transition:opacity .25s,color .25s}
+.bv-texto .sf-t-p.dicha{opacity:1;color:var(--accent);font-weight:600}
+.bv-mandos{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bv-hueco{flex:1}
+.bv-mandos button{border-radius:11px;cursor:pointer;font:600 15px var(--sans,system-ui);
+  padding:11px 18px;border:1px solid var(--border);background:var(--surface2);color:var(--text)}
+.bv-oir{font-weight:400!important;color:var(--muted)!important}
+.bv-oir:hover{border-color:var(--accent)!important;color:var(--accent)!important}
+.bv-no{font-weight:400!important;color:var(--muted)!important;border-color:transparent!important}
+.bv-no:hover{color:var(--text)!important}
+.bv-si{background:var(--accent)!important;border-color:var(--accent)!important;
+  color:#fff!important;font-size:16px!important;padding:12px 24px!important}
+.bv-si:hover{filter:brightness(1.12)}
+.bv-pie{font-size:13.5px;color:var(--muted);margin:18px 0 0;
+  padding-top:14px;border-top:1px solid var(--border)}
+.bv-leng{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:10px;
+  font-size:13px;color:var(--muted)}
+.bv-leng span[data-l]{cursor:pointer;font-size:21px;opacity:.5;transition:opacity .15s}
+.bv-leng span[data-l]:hover,.bv-leng span[data-l].on{opacity:1}
+
 /* ══ EL RESUMEN DE LA VISITA (P-H, 22/09/2026) ══
    « Si on a déjà opiné sur la visite d'autres salles on peut les
      résumer — peut-être celles abandonnées. »
@@ -328,6 +367,8 @@ Promise.resolve(SF_LANZADOR).then(function(d){
   try{ var g=localStorage.getItem('sf_paleta'); if(g) PALETA=g; }catch(e){}
   aplicaPaleta(PALETA);
   pintaBandas(); cargaPacientes();
+  /* la casa se presenta, si es la primera vez */
+  setTimeout(function(){ try{ recibe(false); }catch(e){ console.warn(e); } }, 600);
   /* l'id générique suffit : curvas → curvas.json → curvas.html.
      L'accès vient du lanceur ; l'icône, le titre et la description
      viennent du module — c'est lui qui se décrit. */
@@ -502,6 +543,119 @@ function pintaModulos(){
    gestor de correo de la máquina. Como en la V1.
    ══════════════════════════════════════════════════════════════════════ */
 var _TOUR_T0 = 0;
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL RECIBIMIENTO DE LA PRIMERA VEZ (P-H, 23/09/2026)
+
+   « Bertica est perdue, elle cherchait le bouton Boussole ! Mattieu m'a
+     fait la même réflexion. » Dos personas capaces, cada una por su lado:
+   entonces el que falla es el botón, no ellas. Una brújula sola dice
+   « navegación »; no dice « le enseño la casa ».
+
+   Así que la casa se presenta. UNA sola vez, en la lengua del navegador,
+   con la voz de Sofía y la pluma corriendo sobre sus palabras. Y sobre
+   todo: le dice DÓNDE vive la brújula — así la lección sobrevive al
+   cuadro, y quien contesta « ahora no » ya sabe volver.
+
+   No se abre sola una visita: se OFRECE. « Ne pas asservir. »
+   Y el sonido no arranca al cargar la página —ningún navegador lo
+   permite— sino cuando se toca un botón.
+   ══════════════════════════════════════════════════════════════════════ */
+function lenguaDelNavegador(){
+  var L = (T.idiomas || ['es']);
+  var n = ((navigator.languages && navigator.languages[0]) || navigator.language || '')
+          .toLowerCase();
+  for(var i=0;i<L.length;i++) if(n.indexOf(L[i]) === 0) return L[i];
+  /* el valenciano se anuncia « ca » o « va » según el navegador */
+  if(n.indexOf('va') === 0 && L.indexOf('ca') >= 0) return 'ca';
+  return T.idioma_defecto || L[0];
+}
+
+function yaRecibido(B){
+  try{ return !!localStorage.getItem(B.recuerdo || 'sf_bienvenida_vista'); }
+  catch(e){ return false; }
+}
+function apuntaRecibido(B){
+  try{ localStorage.setItem(B.recuerdo || 'sf_bienvenida_vista', new Date().toISOString()); }
+  catch(e){}
+}
+
+function recibe(forzado){
+  var B = T.bienvenida;
+  if(!B || (!forzado && yaRecibido(B))) return;
+  if(typeof SF_TOUR === 'undefined' || !SF_TOUR.objetos ||
+     !SF_TOUR.objetos[B.objeto || 'bienvenida']) return;
+
+  if(!forzado) ponIdioma(lenguaDelNavegador());
+
+  var velo = document.getElementById('bv-velo');
+  var zona = document.getElementById('bv-texto');
+  var obj  = SF_TOUR.objetos[B.objeto || 'bienvenida'];
+
+  /* ══ ELLE PARLE D'OFFICE (P-H, 23/09/2026) ══
+     « je l'aurais fait parler d'office et arrêter — tout le contraire ».
+     J'avais mis un bouton « Écoutez-moi » : un popup qui a un bouton pour
+     parler n'est pas un popup qui parle. Le bouton ne sert plus qu'à la
+     COUPER — et à la rappeler. Il bascule, il ne demande rien.
+     Si le navigateur refuse le son (il le fait sans prévenir tant que
+     personne n'a cliqué), le moteur le signale et le bouton se retrouve
+     simplement sur 🔊 : le filet, pas la règle. */
+  var hablando = false;
+
+  function ponBoton(){
+    document.getElementById('bv-oir').textContent =
+      hablando ? ('⏹ ' + t(B.parar)) : ('🔊 ' + t(B.escuchar));
+  }
+
+  function pinta(){
+    document.getElementById('bv-bandera').textContent = BANDERAS[LANG] || '';
+    zona.textContent = t(obj.texto);
+    ponBoton();
+    document.getElementById('bv-si').textContent  = t(B.si);
+    document.getElementById('bv-no').textContent  = t(B.no);
+    document.getElementById('bv-pie').textContent = t(B.despues);
+    document.getElementById('bv-leng-t').textContent = t(B.lengua);
+    document.getElementById('bv-banderas').innerHTML =
+      (T.idiomas||['es']).map(function(l){
+        return '<span data-l="'+l+'"'+(l===LANG?' class="on"':'')+'>'+
+               (BANDERAS[l]||l)+'</span>'; }).join(' ');
+    document.querySelectorAll('#bv-banderas [data-l]').forEach(function(e){
+      /* changer de drapeau : elle se tait, se repeint, et reparle —
+         même règle qu'à l'ouverture, pas une exception */
+      e.onclick = function(){ calla(); ponIdioma(e.dataset.l); pinta(); di(); };
+    });
+  }
+
+  function calla(){ hablando = false; try{ SF_TOUR_MOTOR.calla(); }catch(e){} }
+
+  function di(){
+    hablando = true; ponBoton();
+    try{
+      SF_TOUR_MOTOR.saluda(SF_TOUR, zona, B.objeto || 'bienvenida', LANG,
+        function(){ hablando = false; ponBoton(); });
+    }catch(e){ hablando = false; ponBoton(); }
+  }
+
+  function cierra(){ calla(); velo.classList.remove('on'); apuntaRecibido(B); }
+
+  pinta();
+  velo.classList.add('on');
+
+  document.getElementById('bv-oir').onclick = function(){
+    if(hablando){ calla(); ponBoton(); } else di();
+  };
+  document.getElementById('bv-no').onclick = cierra;
+  document.getElementById('bv-si').onclick = function(){ cierra(); arrancaTour(); };
+
+  /* ══ MODALE (P-H, 23/09/2026) ══
+     « si on clique à côté ça ferme et c'est fini » — et c'était vrai au
+     pied de la lettre : la fermeture note « vu », donc un clic distrait
+     effaçait l'invitation pour toujours. Le voile ne répond plus.
+     Seuls les deux boutons ferment. */
+  velo.onclick = null;
+
+  di();
+}
 
 function arrancaTour(){
   if(typeof SF_TOUR === 'undefined' || typeof SF_TOUR_MOTOR === 'undefined'){
@@ -1761,5 +1915,30 @@ function olvidaPaciente(mat){
   try{ localStorage.setItem(PAC_CLAVE, JSON.stringify(L)); }catch(e){}
 }
 </script>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     EL RECIBIMIENTO (P-H, 23/09/2026)
+     « Un beau popup qui parle, oui monsieur, qui INVITE chaleureusement
+       à la découverte » — con la voz de Sofía y la pluma sobre las palabras.
+     Bertica y Mattieu, cada uno por su lado, buscaron la brújula sin
+     encontrarla. La casa se presenta ella misma, UNA sola vez.
+     ══════════════════════════════════════════════════════════════════════ -->
+<div class="bv-velo" id="bv-velo">
+  <div class="bv">
+    <div class="bv-cab">
+      <span class="bv-bandera" id="bv-bandera"></span>
+      <span class="bv-logo">Salu<i>folio</i></span>
+    </div>
+    <p class="bv-texto" id="bv-texto"></p>
+    <div class="bv-mandos">
+      <button class="bv-oir" id="bv-oir"></button>
+      <span class="bv-hueco"></span>
+      <button class="bv-no"  id="bv-no"></button>
+      <button class="bv-si"  id="bv-si"></button>
+    </div>
+    <p class="bv-pie" id="bv-pie"></p>
+    <div class="bv-leng"><span id="bv-leng-t"></span><span id="bv-banderas"></span></div>
+  </div>
+</div>
 </body>
 </html>

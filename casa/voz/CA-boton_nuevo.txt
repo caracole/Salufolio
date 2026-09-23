@@ -1,0 +1,1 @@
+Si la persona no està en la llista, este botó obri el quadre per crear-la.

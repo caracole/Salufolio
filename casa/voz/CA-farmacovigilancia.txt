@@ -1,0 +1,1 @@
+Posa costat a costat els medicaments i les anàlisis, en el temps. Quan un valor es torç poc després d'un tractament, es veu.

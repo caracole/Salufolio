@@ -1,0 +1,1 @@
+Sets medications and test results side by side over time. When a value turns shortly after a treatment starts, it shows — and one can ask whether they are linked.

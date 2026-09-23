@@ -61,6 +61,11 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      Una sala que no se abrio nunca no figura: no hay nada que contar.
      ═════════════════════════════════════════════════════════════════ */
   var NOTAS = {};              /* { sala: {cara|pasa|parada,de|vista} } */
+  /* ══ LA PLUMA FUERA DE LA VISITA (P-H, 23/09/2026) ══
+     El saludo de bienvenida habla y se subraya como una etapa, pero no
+     es una etapa: no hay visita en marcha, « viva » es falso. Esta
+     bandera le abre la puerta a la pluma, y solo a ella. */
+  var SUELTA = false;
 
   function apunta(sala, que){
     if(!sala) return;
@@ -355,7 +360,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
   }
 
   function ilumina(sel){
-    /* ══ EL VELO NO PARPADEA: SE DESLIZA (Joaquina + P-H, 18/09/2026) ══
+    /* ══ EL VELO NO PARPADEA: SE DESLIZA (P-H, 18/09/2026) ══
        « C'est le fond qui disparaît et revient. »
 
        Y era culpa mía: apaga() borraba el halo, y ilumina lo volvía a
@@ -1141,6 +1146,16 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
   }
 
+  /* ¿sale algo por el altavoz? —el mp3 que corre, o la voz del navegador */
+  function suena(){
+    try{
+      if(audio && !audio.paused && !audio.ended) return true;
+      if(window.speechSynthesis &&
+         (speechSynthesis.speaking || speechSynthesis.pending)) return true;
+    }catch(e){}
+    return false;
+  }
+
   function habla(e, alTerminar, alSaberDuracion){
     calla();
     if(opc.sin_voz || !conVoz){ if(alTerminar) alTerminar(false); return; }
@@ -1370,7 +1385,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
 
   /* ── la jauge du fond : elle dit combien il reste ── */
   /* ══════════════════════════════════════════════════════════════════
-     LA PLUMA SOBRE LAS PALABRAS (Joaquina + P-H, 18/09/2026)
+     LA PLUMA SOBRE LAS PALABRAS (P-H, 18/09/2026)
 
      « Je croyais que c'était comme un feutre qui se déplace sur les
        mots du texte. »
@@ -1400,7 +1415,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     var paso = (seg * 1000 * 0.92) / W.length;
     var k = 0;
     (function siguiente(){
-      if(pausa || !viva) return;
+      if(pausa || (!viva && !SUELTA)) return;
       if(k >= W.length) return;
       W[k].classList.add('dicha');
       k++;
@@ -1686,6 +1701,94 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
         || Object.keys(salas())[0], false); return; }
       carta(arrancaVisita);
     },
+    /* ══════════════════════════════════════════════════════════════
+       EL SALUDO DE LA PUERTA (P-H, 23/09/2026)
+
+       « Un beau popup qui parle, oui monsieur, qui INVITE chaleureusement
+         à la découverte » — « la voix de Sofía + karaoké ».
+
+       Quien recibe en la puerta no es el guía: es ella. Dice el saludo,
+       y la pluma corre sobre las palabras al ritmo de su voz — la misma
+       pluma que en las etapas, no una copia.
+
+       No es una visita: no hay salas, ni relojes, ni carta. Solo una
+       frase dicha bien. Por eso vive aquí, en la interfaz, y no dentro
+       de la mecánica de la visita.
+
+       El navegador NO deja sonar nada antes de un clic: quien llama a
+       esto lo hace desde un botón, nunca al cargar la página.
+       ══════════════════════════════════════════════════════════════ */
+    saluda: function(tabla, zona, nombre, idioma, alTerminar){
+      if(tabla) T = tabla;
+      var o = (T && T.objetos && T.objetos[nombre]) || null;
+      if(!o || !zona){ if(alTerminar) alTerminar(false); return; }
+
+      /* ══ EL NOMBRE VIAJA CON EL OBJETO (23/09/2026) ══
+         objetoDe() se lo pega a cada etapa porque es el que nombra su
+         mp3 — ES-abeja.mp3. Aquí no hay etapa: el saludo no está en la
+         lista de salas. Si no se lo pegamos a mano, sonidoDe() recibe
+         un nombre vacío, devuelve '' y la voz grabada no se pide
+         nunca: se sintetiza siempre. Se copia la misma forma. */
+      var e = { nombre: nombre, icono:o.icono, objeto:o.objeto,
+                titulo:o.titulo, texto:o.texto, dicho:o.dicho || null,
+                voz:o.voz || '', grabado:o.grabado || {},
+                segundos:o.segundos };
+
+      /* ══ EL IDIOMA DEL CUADRO, NO EL DE LA VISITA (23/09/2026) ══
+         lg() pregunta a la visita, y fuera de ella responde el idioma
+         por defecto: la pluma escribía en francés y la voz hablaba en
+         español. Quien llama sabe en qué idioma está su cuadro y lo
+         dice; se devuelve lo que había al terminar. */
+      var antes = opc.idioma;
+      if(idioma) opc.idioma = idioma;
+
+      var txt = tt(e.texto);
+      SUELTA = true;
+
+      /* ══ SI ELLE N'A PAS PU PARLER, QU'ELLE LE DISE (P-H, 23/09/2026) ══
+         « il parle par défaut ». Elle essaie donc sans qu'on le demande —
+         mais aucun navigateur ne laisse sortir un son avant un clic, et
+         quand il refuse, il refuse en silence : play() est rejeté, la
+         synthèse ne dit rien, et personne n'est prévenu. Un guetteur
+         écoute : si au bout du délai rien ne sonne ni ne parle, on rend
+         la main avec « non », et l'interface remet son bouton.
+         Une seule sortie, quoi qu'il arrive : acabado. */
+      var mirilla = null, tope = null, acabado = false;
+      var fin = function(bien){
+        if(acabado) return; acabado = true;
+        if(mirilla){ clearTimeout(mirilla); mirilla = null; }
+        if(tope){ clearTimeout(tope); tope = null; }
+        SUELTA = false; opc.idioma = antes;
+        if(alTerminar) alTerminar(bien); };
+
+      /* ══ LA BUTÉE HAUTE ══
+         Le guetteur ci-dessous demande « est-ce que ça sonne ? ». Sur une
+         machine sans voix installée, la synthèse ne dit rien et ne rend
+         jamais la main : ni onend, ni erreur. Le bouton restait sur ⏹
+         pour toujours. Donc une butée : une phrase ne peut pas durer plus
+         que sa durée, plus une marge. Passé ce délai on coupe et on rend
+         la main — l'écran, lui, a fini de s'écrire depuis longtemps. */
+      function baliza(seg){
+        if(tope) clearTimeout(tope);
+        tope = setTimeout(function(){
+          tope = null; if(!acabado){ calla(); fin(false); }
+        }, (Math.max(seg || 0, 2) + 4) * 1000);
+      }
+
+      pluma(zona, txt, estima(txt));
+      baliza(estima(txt));
+      habla(e, fin, function(dur){ pluma(zona, txt, dur); baliza(dur); });
+
+      if(!acabado) mirilla = setTimeout(function(){
+        mirilla = null;
+        if(!suena()){ clearTimeout(plumaTmr); fin(false); }
+      }, (T && T.saludo_espera) || 900);
+    },
+    /* ¿sale algo por el altavoz en este momento? */
+    suena: function(){ return suena(); },
+    /* para cortar el saludo si se cierra el cuadro antes de acabar */
+    calla: function(){ SUELTA = false; clearTimeout(plumaTmr); calla(); },
+
     paso: paso, pausa: alterna, sal: sal, sigue: sigue, voz: calladito,
     otraVez: otraVez,
     lista: pliegaLista,

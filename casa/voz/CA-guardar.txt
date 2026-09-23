@@ -1,0 +1,1 @@
+El disquet escriu l'expedient al seu disc. Si porta un asterisc, hi ha alguna cosa sense guardar.

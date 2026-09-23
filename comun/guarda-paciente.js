@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    LA GARDE DU PACIENTE — /Salufolio/comun/guarda-paciente.js
 
    « Si le PDF porte un nom ou un SIP qui ne correspond pas au dossier
@@ -45,7 +46,7 @@ var SF_GUARDA = window.SF_GUARDA = (function(){
   }
 
   /* ── le nom : on accepte que l'ordre change ──
-     « MUNARRIZ ERASO, JOAQUINA » et « JOAQUINA MUNARRIZ ERASO » sont la
+     « GÓMEZ RUIZ, MARÍA DEL CARMEN » et « MARÍA DEL CARMEN GÓMEZ RUIZ » sont la
      même personne. On demande que les mots longs y soient tous. */
   function buscaNombre(texto, nombre){
     var t = pela(texto);

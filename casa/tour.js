@@ -1,7 +1,7 @@
 /* EL MUSEO — las salas y los objetos */
 var SF_TOUR = window.SF_TOUR = {
   "id": "tour",
-  "version": "2026.09.23-10:51:28",
+  "version": "2026.09.23-17:40:29",
   "_doctrina": "EL MUSEO (P-H, 18-21/09/2026)\n\n  « On ouvre la porte d'une salle, on parcourt les étapes, et quand on a\n    terminé on sort en fermant la porte, et on va visiter une autre\n    salle. Ce n'est pas plus compliqué. »\n\nSALAS    una sala es UN CUADRO de la pantalla. Tiene su puerta: como se\n         encuentra al entrar (abierta o cerrada) y que se hace al salir\n         (cerrar, dejar, o como_estaba). La sala sin puerta es el\n         VESTIBULO: la banda de arriba, donde se esta nada mas entrar.\n\nOBJETOS  lo que se ensena, sin orden. Un objeto se describe UNA VEZ —su\n         texto, su voz, su fichero— y puede salir en varias salas.\n\nAntes la sala « El paciente » cubria DOS cuadros, y hacian falta puertas\nque abrir y cerrar a mitad de camino. Una sala, un cuadro: el problema\ndesaparece.\n\nAl acabar una sala —n/n, o salida anticipada— se cierra su puerta, y se\npasa a la siguiente, se elige otra en la carta, o se sale del museo.",
   "idiomas": [
     "es",
@@ -18,6 +18,23 @@ var SF_TOUR = window.SF_TOUR = {
   "_voz": "El nombre del sonido se deduce del OBJETO, no de su rango:\n  ES-abeja.mp3  FR-abeja.mp3  CA-abeja.mp3  EN-abeja.mp3\n\nLa lengua delante, para que un listado los agrupe por lengua: se ve de\nun vistazo lo que falta en frances (P-H).\n\n« grabado » lleva la huella del texto el dia que se grabo. Si se\ncorrige una frase, la huella ya no cuadra y el taller de las voces lo\ndice en rojo: ese fichero hay que rehacerlo.",
   "_objetos": "Lo que se puede ensenar. La clave es el nombre del objeto — da nombre a su fichero de voz. « objeto » dice donde esta en la pagina. Campos opcionales: « corto » (texto breve), « voz » (quien lo dice, si no la de la sala).",
   "objetos": {
+    "bienvenida": {
+      "icono": "\ud83e\udded",
+      "voz": "b2htR0pMe28pYwCY9gnP",
+      "_voz": "Sofia — la que recibe en la puerta, no el guia",
+      "texto": {
+        "es": "Bienvenido a Salufolio. Esta casa guarda su expediente m\u00e9dico en su propio ordenador, y de ah\u00ed no sale nada. \u00bfQuiere que se la ense\u00f1e? Son nueve salas, y cinco minutos.",
+        "fr": "Bienvenue dans Salufolio. Cette maison garde votre dossier m\u00e9dical sur votre propre ordinateur, et rien n'en sort. Voulez-vous que je vous la montre ? Neuf salles, et cinq minutes.",
+        "ca": "Benvingut a Salufolio. Esta casa guarda el seu expedient m\u00e8dic en el seu propi ordinador, i d'ac\u00ed no ix res. Vol que li la mostre? S\u00f3n nou sales, i cinc minuts.",
+        "en": "Welcome to Salufolio. This house keeps your medical record on your own computer, and nothing leaves it. Would you like me to show you around? Nine rooms, and five minutes."
+      },
+      "dicho": {
+        "es": "Bienvenido a Salufolio. Esta casa guarda su expediente m\u00e9dico en su propio ordenador, y de ah\u00ed no sale nada. \u00bfQuiere que se la ense\u00f1e? Son nueve salas, y cinco minutos.",
+        "fr": "Bienvenue dans Salufolio. Cette maison garde votre dossier m\u00e9dical sur votre propre ordinateur, et rien n'en sort. Voulez-vous que je vous la montre ? Neuf salles, et cinq minutes.",
+        "ca": "Benvingut a Salufolio. Esta casa guarda el seu expedient m\u00e8dic en el seu propi ordinador, i d'ac\u00ed no ix res. Vol que li la mostre? S\u00f3n nou sales, i cinc minuts.",
+        "en": "Welcome to Salufolio. This house keeps your medical record on your own computer, and nothing leaves it. Would you like me to show you around? Nine rooms, and five minutes."
+      }
+    },
     "abeja": {
       "icono": "🐝",
       "objeto": "[data-b=\"panal\"]",
@@ -1447,6 +1464,11 @@ var SF_TOUR = window.SF_TOUR = {
   "_sabido": "« Une case à cocher : je sais déjà — si on repasse tout, on ne revient plus sur le connu » (P-H, 21/09). Lo marcado vale para la proxima visita, no para la que esta en curso. Se guarda en el navegador: nada sale del ordenador.",
   "_puerta_respiro": "El silencio entre las dos frases de la puerta, en milesimas: la guardiana constata, respira, y luego propone. Pegadas suenan a una sola frase recitada. Se ajusta aqui.",
   "puerta_respiro": 420,
+  "_bienvenida": "El saludo de la puerta (P-H, 23/09/2026). « Un beau popup qui parle, oui monsieur, qui INVITE chaleureusement a la decouverte » — con la voz de Sofia y la pluma que corre sobre las palabras. No es una etapa ni una sala: es lo primero que se oye, una sola vez, y despues la brujula lo devuelve cuando se quiera. Lleva su « voz » propia porque no pertenece a ninguna sala.",
+  "_extras": "Textos que hay que grabar aunque no salgan en ninguna sala. El grabador los lee de aqui.",
+  "extras": [
+    "bienvenida"
+  ],
   "_voces": "Quien habla, por papel \u2014 no por nombre en el codigo. El GUIA le acompana dentro de la sala; la de la PUERTA le dice lo que acaba de ver. \u00ab Ca pourrait etre une voix de femme (celle qui surveille la porte ?) \u00bb (P-H, 23/09/2026): cuando la voz cambia, se sabe que la sala ha terminado sin leer nada. Se pone el IDENTIFICADOR de ElevenLabs y no el nombre: en la cuenta hay dos voces llamadas \u00ab Oscar \u00bb, y cual gana dependeria del orden en que ElevenLabs las devuelva. El nombre va al lado, para los humanos.",
   "voces": {
     "guia": "3mmJ2Z5SLZ9OkeZZcv5p",
