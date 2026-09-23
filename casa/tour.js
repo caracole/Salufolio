@@ -1,7 +1,7 @@
 /* EL MUSEO — las salas y los objetos */
 var SF_TOUR = window.SF_TOUR = {
   "id": "tour",
-  "version": "2026.09.21-23:21:34",
+  "version": "2026.09.23-10:51:28",
   "_doctrina": "EL MUSEO (P-H, 18-21/09/2026)\n\n  « On ouvre la porte d'une salle, on parcourt les étapes, et quand on a\n    terminé on sort en fermant la porte, et on va visiter une autre\n    salle. Ce n'est pas plus compliqué. »\n\nSALAS    una sala es UN CUADRO de la pantalla. Tiene su puerta: como se\n         encuentra al entrar (abierta o cerrada) y que se hace al salir\n         (cerrar, dejar, o como_estaba). La sala sin puerta es el\n         VESTIBULO: la banda de arriba, donde se esta nada mas entrar.\n\nOBJETOS  lo que se ensena, sin orden. Un objeto se describe UNA VEZ —su\n         texto, su voz, su fichero— y puede salir en varias salas.\n\nAntes la sala « El paciente » cubria DOS cuadros, y hacian falta puertas\nque abrir y cerrar a mitad de camino. Una sala, un cuadro: el problema\ndesaparece.\n\nAl acabar una sala —n/n, o salida anticipada— se cierra su puerta, y se\npasa a la siguiente, se elige otra en la carta, o se sale del museo.",
   "idiomas": [
     "es",
@@ -408,16 +408,23 @@ var SF_TOUR = window.SF_TOUR = {
         "en": "Free software"
       },
       "texto": {
-        "es": "GNU GPL v3. Cualquiera puede leer el código, copiarlo, cambiarlo. No es generosidad: es la única garantía de que un programa que guarda su salud no le esconda nada.",
-        "fr": "GNU GPL v3. N'importe qui peut lire le code, le copier, le changer. Ce n'est pas de la générosité : c'est la seule garantie qu'un programme qui garde votre santé ne vous cache rien.",
-        "ca": "GNU GPL v3. Qualsevol pot llegir el codi, copiar-lo, canviar-lo.",
-        "en": "GNU GPL v3. Anyone can read the code, copy it, change it."
+        "es": "Salufolio es software libre, bajo licencia GNU GPL versión 3 — la Licencia Pública General. Libre no quiere decir gratis, aunque éste también lo sea: libre quiere decir que cualquiera puede leer el código, usarlo, copiarlo y cambiarlo. Y que quien lo reparta tiene que dejar esas mismas libertades a los demás — nadie puede volver a cerrarlo. No es generosidad: es la única garantía de que un programa que guarda su salud no le esconda nada.",
+        "fr": "Salufolio est un logiciel libre, sous licence GNU GPL version 3 — la Licence Publique Générale. Libre ne veut pas dire gratuit, même si celui-ci l'est aussi : libre veut dire que n'importe qui peut lire le code, s'en servir, le copier et le changer. Et que celui qui le redistribue doit laisser ces mêmes libertés aux autres — personne ne peut le refermer. Ce n'est pas de la générosité : c'est la seule garantie qu'un programme qui garde votre santé ne vous cache rien.",
+        "ca": "Salufolio és programari lliure, sota llicència GNU GPL versió 3 — la Llicència Pública General. Lliure no vol dir gratis, encara que este també ho siga: lliure vol dir que qualsevol pot llegir el codi, usar-lo, copiar-lo i canviar-lo. I que qui el repartisca ha de deixar eixes mateixes llibertats als altres — ningú pot tornar a tancar-lo. No és generositat: és l'única garantia que un programa que guarda la seua salut no li amague res.",
+        "en": "Salufolio is free software, under the GNU GPL version 3 — the General Public License. Free does not mean free of charge, although this one is too: free means anyone may read the code, use it, copy it and change it. And whoever passes it on must leave those same freedoms to others — nobody can close it again. It is not generosity: it is the only guarantee that a program holding your health hides nothing from you."
       },
+      "dicho": {
+        "es": "Salufolio es software libre, bajo la Licencia Pública General de GNU, en su versión tres. Libre no quiere decir gratis, aunque éste también lo sea: libre quiere decir que cualquiera puede leer el código, usarlo, copiarlo y cambiarlo. Y que quien lo reparta tiene que dejar esas mismas libertades a los demás; nadie puede volver a cerrarlo. No es generosidad: es la única garantía de que un programa que guarda su salud no le esconda nada.",
+        "fr": "Salufolio est un logiciel libre, sous la Licence Publique Générale de GNU, dans sa version trois. Libre ne veut pas dire gratuit, même si celui-ci l'est aussi : libre veut dire que n'importe qui peut lire le code, s'en servir, le copier et le changer. Et que celui qui le redistribue doit laisser ces mêmes libertés aux autres ; personne ne peut le refermer. Ce n'est pas de la générosité : c'est la seule garantie qu'un programme qui garde votre santé ne vous cache rien.",
+        "ca": "Salufolio és programari lliure, sota la Llicència Pública General de GNU, en la seua versió tres. Lliure no vol dir gratis, encara que este també ho siga: lliure vol dir que qualsevol pot llegir el codi, usar-lo, copiar-lo i canviar-lo. I que qui el repartisca ha de deixar eixes mateixes llibertats als altres; ningú pot tornar a tancar-lo. No és generositat: és l'única garantia que un programa que guarda la seua salut no li amague res.",
+        "en": "Salufolio is free software, under the General Public License of GNU, in its version three. Free does not mean free of charge, although this one is too: free means anyone may read the code, use it, copy it and change it. And whoever passes it on must leave those same freedoms to others; nobody can close it again. It is not generosity: it is the only guarantee that a program holding your health hides nothing from you."
+      },
+      "_dicho": "« GNU GPL v3 » leído de un tirón no dice nada. Se dice su nombre entero (« que signifie GNU GPL ? » — un visitante de P-H, 22/09/2026).",
       "grabado": {
-        "es": "c6fc26b6",
-        "fr": "d7bb38c9",
-        "ca": "9ca38bac",
-        "en": "24963191"
+        "es": "7dc9e611",
+        "fr": "bc5e0209",
+        "ca": "b2f033a3",
+        "en": "b8a99c7e"
       }
     },
     "doi": {
@@ -1313,10 +1320,10 @@ var SF_TOUR = window.SF_TOUR = {
     "en": "Shall we go on with {sala}?"
   },
   "puerta_ultima": {
-    "es": "Ha visto toda la casa. Ahora toque una tarjeta y mire: es su expediente, en su ordenador, y nada sale de ahí.",
-    "fr": "Vous avez vu toute la maison. Touchez maintenant une carte et regardez : c'est votre dossier, sur votre ordinateur, et rien n'en sort.",
-    "ca": "Ha vist tota la casa. Ara toque una targeta i mire.",
-    "en": "You have seen the whole house. Now tap a card and look."
+    "es": "Ha visto toda la casa. Al salir de aquí, toque una tarjeta y mire: es su expediente, en su ordenador, y nada sale de ahí.",
+    "fr": "Vous avez vu toute la maison. En sortant d'ici, touchez une carte et regardez : c'est votre dossier, sur votre ordinateur, et rien n'en sort.",
+    "ca": "Ha vist tota la casa. En eixir d'ací, toque una targeta i mire: és el seu expedient, en el seu ordinador, i res no n'ix.",
+    "en": "You have seen the whole house. On leaving here, tap a card and look: it is your record, on your computer, and nothing leaves it."
   },
   "_puerta": "La puerta compone su frase sola (P-H, 19/09/2026): sabe que sala se acaba de ver y cual viene despues, asi que no hace falta un « fin » por sala. Menos textos que grabar, y funciona con toda sala que se anada.",
   "carta_texto": {
@@ -1395,16 +1402,22 @@ var SF_TOUR = window.SF_TOUR = {
       "en": "Go on with: {sala}"
     },
     "p_carta": {
-      "es": "Volver a la carta de las salas",
-      "fr": "Revenir à la carte des salles",
-      "ca": "Tornar a la carta de les sales",
-      "en": "Back to the room map"
+      "es": "Volver al principio — todas las salas",
+      "fr": "Revenir à l'accueil — toutes les salles",
+      "ca": "Tornar al principi — totes les sales",
+      "en": "Back to the start — every room"
     },
     "p_salir": {
       "es": "Salir del museo",
       "fr": "Sortir du musée",
       "ca": "Eixir del museu",
       "en": "Leave the museum"
+    },
+    "p_pasar": {
+      "es": "No tengo nada que decir de esta sala",
+      "fr": "Je n'ai rien à dire sur cette salle",
+      "ca": "No tinc res a dir d'esta sala",
+      "en": "I have nothing to say about this room"
     }
   },
   "sabido": {
@@ -1431,5 +1444,35 @@ var SF_TOUR = window.SF_TOUR = {
     "ca": "Veure també el que ja conec",
     "en": "Also show what I already know"
   },
-  "_sabido": "« Une case à cocher : je sais déjà — si on repasse tout, on ne revient plus sur le connu » (P-H, 21/09). Lo marcado vale para la proxima visita, no para la que esta en curso. Se guarda en el navegador: nada sale del ordenador."
+  "_sabido": "« Une case à cocher : je sais déjà — si on repasse tout, on ne revient plus sur le connu » (P-H, 21/09). Lo marcado vale para la proxima visita, no para la que esta en curso. Se guarda en el navegador: nada sale del ordenador.",
+  "_puerta_respiro": "El silencio entre las dos frases de la puerta, en milesimas: la guardiana constata, respira, y luego propone. Pegadas suenan a una sola frase recitada. Se ajusta aqui.",
+  "puerta_respiro": 420,
+  "_voces": "Quien habla, por papel \u2014 no por nombre en el codigo. El GUIA le acompana dentro de la sala; la de la PUERTA le dice lo que acaba de ver. \u00ab Ca pourrait etre une voix de femme (celle qui surveille la porte ?) \u00bb (P-H, 23/09/2026): cuando la voz cambia, se sabe que la sala ha terminado sin leer nada. Se pone el IDENTIFICADOR de ElevenLabs y no el nombre: en la cuenta hay dos voces llamadas \u00ab Oscar \u00bb, y cual gana dependeria del orden en que ElevenLabs las devuelva. El nombre va al lado, para los humanos.",
+  "voces": {
+    "guia": "3mmJ2Z5SLZ9OkeZZcv5p",
+    "_guia": "Oscar - Fluid pitch, easy to listen",
+    "puerta": "b2htR0pMe28pYwCY9gnP",
+    "_puerta": "Sof\u00eda - Natural and Conversational. Elegida de oido el 23/09/2026 entre Laura, Cristina y Sof\u00eda: \u00ab sofia va bien pour les deux, forte expressive \u00bb (P-H). Laura quedaba bien en castellano pero en frances tenia acento \u2014 \u00ab canadien ou belge \u00bb. Si un dia hiciera falta una voz DISTINTA por lengua, aqui cabe una tabla: { \"es\": \"...\", \"fr\": \"...\" }."
+  },
+  "_puerta_mandos": "Los botones de la puerta, iguales en TODAS las salas — « adopter la meme presentation du cadre pour tout le monde » (P-H, 22/09/2026). El nombre de la sala siguiente ya no es un boton: vive en el texto, con su icono, y se toca ahi. Asi el cuadro no cambia de ancho de una puerta a otra. Su texto esta en « mandos ».",
+  "puerta_mandos": [
+    {
+      "id": "carta",
+      "icono": "🧭",
+      "tip": "p_carta"
+    },
+    {
+      "id": "sep"
+    },
+    {
+      "id": "salir",
+      "icono": "❌",
+      "tip": "p_salir"
+    }
+  ],
+  "puerta_pasar": {
+    "icono": "🤐",
+    "tip": "p_pasar"
+  },
+  "_puerta_pasar": "El icono para no opinar. Vale SOLO para la sala que se acaba de ver — « le no quiero opinar d'accord mais que no me pregunta mas pas d'accord ! d'accord si ca concerne la salle visitee » (P-H, 22/09/2026). En la puerta siguiente se vuelve a ofrecer. El icono se cambia aqui, en una linea."
 };

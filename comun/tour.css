@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    LA VISITA — su aspecto · /Salufolio/comun/tour.css
-   Versión 2026.09.21-23:21:34
+   Versión 2026.09.23-10:30:57
 
    Nada en duro en el motor: los colores vienen de la paleta de la casa,
    y cambian con ella.
@@ -300,6 +300,63 @@
 }
 .sf-p-cara:hover{ opacity:1; transform:scale(1.15); }
 .sf-p-cara.on{ opacity:1; border-color:var(--accent, #4a9eff); }
+
+/* ══ EL QUE NO QUIERE OPINAR (P-H, 22/09/2026) ══
+   « Ajouter icone "passer" (sans opinion). »  Un hueco lo separa de las
+   caras: no es una sexta cara, es la puerta de al lado. Su tooltip dice
+   lo que hace — que no se vuelva a preguntar. */
+/* ══════════════════════════════════════════════════════════════════════
+   LA BURBUJA DE LA CASA (P-H, 22/09/2026)
+
+   « Quitte ce "Title" par défaut et met un tooltip maison — note-le pour
+     tous les tooltips présent et à venir. »
+
+   La del navegador sale tarde, con los colores del sistema, y no se deja
+   colocar. Esta lleva la paleta del programa: cambia con el tema, se lee
+   de noche, y el motor la aparta del borde de la pantalla él mismo.
+   ══════════════════════════════════════════════════════════════════════ */
+#sf-tip{
+  position:fixed; left:0; top:0; z-index:10050;
+  max-width:260px; padding:6px 10px;
+  background:var(--surface2, #1c1c22);
+  border:1px solid var(--border, #2a2a33); border-radius:8px;
+  color:var(--text, #e8e8ef);
+  font-family:var(--sans, system-ui, sans-serif);
+  font-size:12px; line-height:1.45; text-align:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.45);
+  opacity:0; pointer-events:none; transition:opacity .12s;
+}
+#sf-tip.on{ opacity:1; }
+
+.sf-p-hueco{ width:6px; flex:0 0 6px; }
+.sf-p-pasar{ font-size:17px; opacity:.4; margin-left:auto; }
+.sf-p-pasar:hover{ opacity:.95; transform:none; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA SALA SIGUIENTE, DENTRO DE LA FRASE (P-H, 22/09/2026)
+
+   « Le bouton > Sus expedientes a supprimer d'ici et mettre a coté du
+     texte : ¿Seguimos con 📁 Sus expedientes ? »
+
+   No es un boton mas: es la propia frase, y la parte que se puede tocar
+   lleva el icono de la sala. Subrayado punteado para que se vea que se
+   toca, sin gritarlo. Asi el cuadro mide siempre lo mismo, se llame la
+   sala « El vestibulo » o « Los pacientes conocidos ».
+   ══════════════════════════════════════════════════════════════════════ */
+.sf-p-ir{
+  display:inline-flex; align-items:center; gap:5px;
+  background:transparent; border:0; border-radius:7px;
+  padding:1px 5px; margin:0 1px; cursor:pointer;
+  font:inherit; color:var(--accent, #4a9eff);
+  border-bottom:1px dashed color-mix(in srgb, var(--accent, #4a9eff) 60%, transparent);
+  transition:background .14s, color .14s;
+}
+.sf-p-ir:hover{
+  background:color-mix(in srgb, var(--accent, #4a9eff) 15%, transparent);
+  border-bottom-color:var(--accent, #4a9eff);
+}
+.sf-p-ir-i{ font-size:1.15em; line-height:1; }
+.sf-p-ir-n{ font-weight:600; }
 
 /* ══ « JE CONNAIS DÉJÀ » (P-H, 21/09/2026) ══
    Discreta: se ofrece, no se impone. */
