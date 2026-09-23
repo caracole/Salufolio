@@ -1,0 +1,1 @@
+Watch: it writes itself as you type. One initial from the name, two from the surname, and the last four digits.

@@ -1,0 +1,1 @@
+A reading machine sometimes errs. Here what was read is checked, errors corrected, and the correction recorded — a mistake is not hidden, it is noted.

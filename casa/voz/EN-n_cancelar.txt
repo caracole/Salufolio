@@ -1,0 +1,1 @@
+And if you change your mind, Cancel closes the panel without creating anything. No trace is left.

@@ -1,0 +1,1 @@
+Write. A fault found by the user is worth more than ten hours of testing.

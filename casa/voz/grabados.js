@@ -1,6 +1,542 @@
 /* LO GRABADO — escrito por herramientas/voces-registra.py
-   el 2026-09-23 11:00. No se toca a mano. */
+   el 2026-09-23 17:55. No se toca a mano. */
 var SF_GRABADOS = window.SF_GRABADOS = {
+ "CA-abeja": {
+  "fecha": "2026-09-23 17:47",
+  "texto": "Benvingut a Salufolio. El nom ve del llatí: salus, la salut, i folium, la fulla. Fulles de salut, reunides al voltant d'una sola persona. El blasó porta una petxina del Camí de Sant Jaume: totes les seues estries convergixen cap a un punt, i eixe punt s'ha llevat, perquè el punt és el pacient. La petxina és també el senyal de l'hospitaler, que acull el pelegrí, el cuida i el deixa seguir: és el que fa qui cuida, i porta el quadern de cures del Protocol."
+ },
+ "CA-abrir": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "La carpeta obri un expedient que estiga en qualsevol part del seu disc."
+ },
+ "CA-antecedentes": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "El que la persona arrossega: malalties, operacions, caigudes. Agrupats pel seu codi, amb els anys en què apareixen."
+ },
+ "CA-asistida": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Per llegir un informe en PDF sense pagar res: el text es porta a Claude a mà. Costa una mica més de temps."
+ },
+ "CA-auditoria": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "D'on ix cada dada: de quin document, en quina data. Ací tot es pot seguir fins al seu paper."
+ },
+ "CA-automatica": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Amb un accés de pagament a Claude, la intel·ligència artificial d'Anthropic, els PDF es lligen sols. De pagament vol dir: s'obri un compte en Anthropic, s'hi deposen uns euros, i cada document llegit en consumix una xicoteta part."
+ },
+ "CA-ayuda": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Cada programa porta la seua ajuda. Al seu costat, la casa el torna."
+ },
+ "CA-bacteriologia": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Els cultius i els antibiogrames: quin microbi es va trobar, i a quins antibiòtics resistia."
+ },
+ "CA-bienvenida": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Benvingut a Salufolio. Esta casa guarda el seu expedient mèdic en el seu propi ordinador, i d'ací no ix res. Vol que li la mostre? Són nou sales, i cinc minuts."
+ },
+ "CA-boton_nuevo": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Si la persona no està en la llista, este botó obri el quadre per crear-la."
+ },
+ "CA-casa": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Quan s'està dins d'un programa, la casa el torna."
+ },
+ "CA-correlaciones": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Quins valors es mouen junts. No diu per què, però assenyala les parelles que convé mirar."
+ },
+ "CA-correo": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Escriga. Un fallo trobat per qui l'usa val més que deu hores de proves."
+ },
+ "CA-cronologia": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Tot el que ha passat, en l'orde en què va passar: urgències, ingressos, consultes, anàlisis. Quan un metge pregunta « i des de quan? », la resposta és ací."
+ },
+ "CA-curvas": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Cada valor de les anàlisis, dibuixat al llarg dels anys. La banda verda és el normal; el que n'ix es veu d'un colp d'ull."
+ },
+ "CA-doi": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Salufolio és obra de Pierre-Henri Giraud, assistit per Claude, d'Anthropic. Està publicat en Zénodo, l'arxiu científic obert del CERN, amb un identificador d'objecte digital: un número que no canvia mai i que permet citar-lo."
+ },
+ "CA-elegir": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Esta llista porta les persones que tenen expedient al seu ordinador."
+ },
+ "CA-escribir_intro": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Les targetes que ESCRIUEN en l'expedient. Són les úniques que el canvien, i per això estan a part."
+ },
+ "CA-expedientes": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Una persona té diversos expedients: un per cada vegada que s'ha guardat."
+ },
+ "CA-familias": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Les targetes que MIREN l'expedient sense tocar-lo. És la família que usa tothom."
+ },
+ "CA-farmacovigilancia": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Posa costat a costat els medicaments i les anàlisis, en el temps. Quan un valor es torç poc després d'un tractament, es veu."
+ },
+ "CA-glosario": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Quasi totes necessiten un expedient obert. El glossari no."
+ },
+ "CA-guardar": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "El disquet escriu l'expedient al seu disc. Si porta un asterisc, hi ha alguna cosa sense guardar."
+ },
+ "CA-idioma": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Castellà, valencià, francés, anglés. Tota la casa ho seguix."
+ },
+ "CA-informe": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Tres formes: express, detallat i sintètic. Tots es poden ensenyar en pantalla, imprimir o enviar per correu. Tot ix de l'expedient."
+ },
+ "CA-invita-conocidos": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb Els pacients coneguts?"
+ },
+ "CA-invita-escribir": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb Les targetes per escriure?"
+ },
+ "CA-invita-expedientes": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb Els seus expedients?"
+ },
+ "CA-invita-medico": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb Per al metge i l'investigador?"
+ },
+ "CA-invita-mirar": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb Les targetes per mirar?"
+ },
+ "CA-invita-nuevo": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb Un pacient nou?"
+ },
+ "CA-invita-perfiles": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb Qui accedix?"
+ },
+ "CA-invita-pie": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb La banda de baix?"
+ },
+ "CA-invita-vestibulo": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Continuem amb El vestíbul — la banda de dalt?"
+ },
+ "CA-licencia": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Salufolio és programari lliure, sota la Llicència Pública General de GNU, en la seua versió tres. Lliure no vol dir gratis, encara que este també ho siga: lliure vol dir que qualsevol pot llegir el codi, usar-lo, copiar-lo i canviar-lo. I que qui el repartisca ha de deixar eixes mateixes llibertats als altres; ningú pot tornar a tancar-lo. No és generositat: és l'única garantia que un programa que guarda la seua salut no li amague res."
+ },
+ "CA-logo": {
+  "fecha": "2026-09-23 17:47",
+  "texto": "Salufolio, i davall el seu número de versió. Sense número, mai se sap què s'està mirant."
+ },
+ "CA-manual": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "El que se sap de memòria o es té en un paper solt. Es tria la rúbrica, s'ompli, i queda amb la data."
+ },
+ "CA-medico_intro": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Estes són per a qui necessita anar més lluny: el metge, l'investigador. Si el seu perfil no és eixe, algunes no apareixen."
+ },
+ "CA-n_apellidos": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Ací caben tots: un, dos, o els huit que recitaven els bascos."
+ },
+ "CA-n_cancelar": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "I si es penedix, Cancel·lar tanca el quadre sense crear res."
+ },
+ "CA-n_crear": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Es crea la carpeta i l'expedient buit. Res s'envia a cap lloc."
+ },
+ "CA-n_mat": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Mire: s'escriu sola mentres vosté teclea. Així dos persones del mateix nom mai es confonen."
+ },
+ "CA-n_nombre": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "El nom de pila, tal com ve en la targeta. Pot portar-ne diversos."
+ },
+ "CA-n_sip": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "El SIP. És el número que obri l'expedient en Abucasis."
+ },
+ "CA-nuevo": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Ací s'obri el quadre. Quatre dades basten, i cap s'inventa."
+ },
+ "CA-observancia": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Si les preses es fan com es van manar. Un tractament que no funciona de vegades és un tractament que no es pren."
+ },
+ "CA-paciente": {
+  "fecha": "2026-09-23 17:47",
+  "texto": "Ací es veu de qui és l'expedient obert. Toque'l i podrà canviar de persona. Cada u té la seua carpeta."
+ },
+ "CA-paleta": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Onze paletes, clares i fosques. Qui llig de nit i qui té la vista cansada no necessiten el mateix."
+ },
+ "CA-perfil_cambia": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Canvie el perfil i vorà: unes targetes s'encenen, altres s'apaguen."
+ },
+ "CA-perfiles": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Pacient, professional, cuidador, investigador. No és un permís: és una manera de mirar."
+ },
+ "CA-puerta-conocidos": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat Els pacients coneguts."
+ },
+ "CA-puerta-escribir": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat Les targetes per escriure."
+ },
+ "CA-puerta-expedientes": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat Els seus expedients."
+ },
+ "CA-puerta-medico": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat Per al metge i l'investigador."
+ },
+ "CA-puerta-mirar": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat Les targetes per mirar."
+ },
+ "CA-puerta-nuevo": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat Un pacient nou."
+ },
+ "CA-puerta-perfiles": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat Qui accedix."
+ },
+ "CA-puerta-pie": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat La banda de baix."
+ },
+ "CA-puerta-vestibulo": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ja ha visitat El vestíbul — la banda de dalt."
+ },
+ "CA-puerta_ultima": {
+  "fecha": "2026-09-23 17:50",
+  "texto": "Ha vist tota la casa. En eixir d'ací, toque una targeta i mire: és el seu expedient, en el seu ordinador, i res no n'ix."
+ },
+ "CA-radar": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Diversos valors alhora, en una sola figura: el que està al seu lloc forma un cercle tranquil."
+ },
+ "CA-resumen": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Una sola pàgina per saber com va la persona hui: l'últim de cada cosa, sense haver de buscar."
+ },
+ "CA-revisar": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Una màquina que llig s'equivoca de vegades. Ací es repassa el que s'ha llegit i es corregix."
+ },
+ "CA-tabla": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "Tots els valors, data per data, en columnes. Per a qui vol els números sense dibuix."
+ },
+ "CA-tarjetas": {
+  "fecha": "2026-09-23 17:48",
+  "texto": "Dèsset programes, cada u amb la seua manera de mirar el mateix expedient."
+ },
+ "CA-tratamientos": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "El que es pren, des de quan i fins a quan, i qui ho va manar. Les marques s'agrupen pel seu principi actiu."
+ },
+ "CA-vascular": {
+  "fecha": "2026-09-23 17:49",
+  "texto": "El cor i les artèries: la tensió, el colesterol, el ronyó. Reunits en un lloc, perquè es lligen junts."
+ },
+ "EN-abeja": {
+  "fecha": "2026-09-23 17:52",
+  "texto": "Welcome to Salufolio. The name comes from Latin: salus, health — being safe and sound — and folium, the leaf. Leaves of health, gathered around one single person. The crest bears a scallop shell from the Way of Saint James: all its ridges converge towards one point, and that point has been removed, because the point is the patient. The shell is also the sign of the hospitalero, who welcomes the pilgrim, cares for them and lets them go on: that is what a carer does, keeping the care notebook of the Protocolo."
+ },
+ "EN-abrir": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "The folder opens a record from anywhere on your disk."
+ },
+ "EN-antecedentes": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "What the person carries: illnesses, operations, falls. Grouped by their code, with the years they appear in."
+ },
+ "EN-asistida": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "To read a PDF report without paying: the text is taken to Claude by hand, and the answer brought back. A little more time, no money."
+ },
+ "EN-auditoria": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Where every figure comes from: which document, what date, read how. A record where nothing can be checked is worthless; here everything leads back to its paper."
+ },
+ "EN-automatica": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "With paid access to Claude, Anthropic's artificial intelligence, PDFs read themselves. Paid means: you open an account with Anthropic, deposit a few euros, and each document read uses up a small part of it. What was read can always be reviewed before it is accepted."
+ },
+ "EN-ayuda": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Each program has its help, telling you what happens where you are. Beside it, the house brings you back."
+ },
+ "EN-bacteriologia": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Cultures and antibiograms: which germ was found, and which antibiotics it resisted. Over time you see whether the same bacterium returns."
+ },
+ "EN-bienvenida": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Welcome to Salufolio. This house keeps your medical record on your own computer, and nothing leaves it. Would you like me to show you around? Nine rooms, and five minutes."
+ },
+ "EN-boton_nuevo": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "If the person is not on the list, this button opens the panel to create them. We will see it in the next room."
+ },
+ "EN-casa": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "When you are inside a program, the house brings you back."
+ },
+ "EN-correlaciones": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Which values move together. It does not say why — that is the doctor's job — but it points to pairs worth looking at."
+ },
+ "EN-correo": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Write. A fault found by the user is worth more than ten hours of testing."
+ },
+ "EN-cronologia": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Everything that has happened, in the order it happened: emergencies, admissions, visits, tests. When a doctor asks \"since when?\", the answer is here."
+ },
+ "EN-curvas": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Each test value, drawn over the years. The green band is normal; whatever leaves it shows at a glance. Two curves can be laid together, to see whether one pulls the other."
+ },
+ "EN-doi": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Salufolio is the work of Pierre-Henri Giraud, assisted by Claude, from Anthropic. It is published on Zenodo, CERN's open science archive, with a digital object identifier: a number that never changes and lets it be cited."
+ },
+ "EN-elegir": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "This list holds the people whose record is on your computer. Ana Gómez Ruiz is the demonstration one."
+ },
+ "EN-escribir_intro": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "The cards that WRITE into the record. They are the only ones that change it, which is why they stand apart."
+ },
+ "EN-expedientes": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "A person has several records: one per save, with its date. Saving never erases."
+ },
+ "EN-familias": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "The cards that LOOK at the record without touching it. This is the family everyone uses — patient, carer, doctor."
+ },
+ "EN-farmacovigilancia": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Sets medications and test results side by side over time. When a value turns shortly after a treatment starts, it shows — and one can ask whether they are linked."
+ },
+ "EN-glosario": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Almost all need an open record. The glossary does not."
+ },
+ "EN-guardar": {
+  "fecha": "2026-09-23 17:52",
+  "texto": "The disk writes the record to your drive. If it carries a star, something is not yet saved."
+ },
+ "EN-idioma": {
+  "fecha": "2026-09-23 17:52",
+  "texto": "Spanish, Valencian, French, English. The whole house follows. Choose once and it is remembered."
+ },
+ "EN-informe": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Three forms: express, detailed and summary. All of them can be shown on screen, printed or sent by email. Everything comes from the record: nothing is invented."
+ },
+ "EN-invita-conocidos": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with Known patients?"
+ },
+ "EN-invita-escribir": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with Cards for writing?"
+ },
+ "EN-invita-expedientes": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with Their records?"
+ },
+ "EN-invita-medico": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with For doctor and researcher?"
+ },
+ "EN-invita-mirar": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with Cards for looking?"
+ },
+ "EN-invita-nuevo": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with A new patient?"
+ },
+ "EN-invita-perfiles": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with Who is looking?"
+ },
+ "EN-invita-pie": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with The bottom bar?"
+ },
+ "EN-invita-vestibulo": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "Shall we go on with The hall — the top bar?"
+ },
+ "EN-licencia": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Salufolio is free software, under the General Public License of GNU, in its version three. Free does not mean free of charge, although this one is too: free means anyone may read the code, use it, copy it and change it. And whoever passes it on must leave those same freedoms to others; nobody can close it again. It is not generosity: it is the only guarantee that a program holding your health hides nothing from you."
+ },
+ "EN-logo": {
+  "fecha": "2026-09-23 17:52",
+  "texto": "Salufolio, and beneath it the version number. Hover over it and you will see. Without a number you never know what you are looking at."
+ },
+ "EN-manual": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "What you know by heart or have on a loose sheet: a blood pressure taken at home, a past illness, a fall. Choose the section, fill it in, and it is kept with its date."
+ },
+ "EN-medico_intro": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "These are for those who go further: the doctor who wants numbers, the researcher looking for links. If your profile is different, some do not appear — and the tour skips them."
+ },
+ "EN-n_apellidos": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "All fit here: one, two, or the eight the Basques used to recite to prove their lineage."
+ },
+ "EN-n_cancelar": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "And if you change your mind, Cancel closes the panel without creating anything. No trace is left."
+ },
+ "EN-n_crear": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "The folder and the empty record are created. Nothing is sent anywhere: it stays on your computer."
+ },
+ "EN-n_mat": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Watch: it writes itself as you type. One initial from the name, two from the surname, and the last four digits."
+ },
+ "EN-n_nombre": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "The first name, as it appears on the card. It may hold several — María del Carmen is one name, not three."
+ },
+ "EN-n_sip": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "The health card number — the one a doctor recognises at a glance."
+ },
+ "EN-nuevo": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Here the panel opens. Four details are enough, and none is invented: they are what the health card carries."
+ },
+ "EN-observancia": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Whether doses are taken as prescribed. Not to police anyone: a treatment that fails is sometimes a treatment not taken, and the doctor needs to know."
+ },
+ "EN-paciente": {
+  "fecha": "2026-09-23 17:52",
+  "texto": "Here you see whose record is open — right now, the demonstration one. Tap it to change person. Salufolio serves several: your mother, your father, yourself. Each has their own folder."
+ },
+ "EN-paleta": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Eleven palettes, light and dark. Not a whim: reading at night, tired eyes, hospital lighting — none need the same."
+ },
+ "EN-perfil_cambia": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Change the profile and watch: some cards light up, others dim."
+ },
+ "EN-perfiles": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Patient, professional, carer, researcher. Not a permission: a way of looking."
+ },
+ "EN-puerta-conocidos": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited Known patients."
+ },
+ "EN-puerta-escribir": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited Cards for writing."
+ },
+ "EN-puerta-expedientes": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited Their records."
+ },
+ "EN-puerta-medico": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited For doctor and researcher."
+ },
+ "EN-puerta-mirar": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited Cards for looking."
+ },
+ "EN-puerta-nuevo": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited A new patient."
+ },
+ "EN-puerta-perfiles": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited Who is looking."
+ },
+ "EN-puerta-pie": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited The bottom bar."
+ },
+ "EN-puerta-vestibulo": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have visited The hall — the top bar."
+ },
+ "EN-puerta_ultima": {
+  "fecha": "2026-09-23 17:55",
+  "texto": "You have seen the whole house. On leaving here, tap a card and look: it is your record, on your computer, and nothing leaves it."
+ },
+ "EN-radar": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Several values at once in one figure: what is in range forms a calm circle, what strays pulls it out of shape."
+ },
+ "EN-resumen": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "A single page to see how the person is doing today: the latest of everything, without searching. It is the one you look at first each morning."
+ },
+ "EN-revisar": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "A reading machine sometimes errs. Here what was read is checked, errors corrected, and the correction recorded — a mistake is not hidden, it is noted."
+ },
+ "EN-tabla": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Every value, date by date, in columns. For whoever wants the raw numbers, without drawings: to compare, copy or check."
+ },
+ "EN-tarjetas": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "Nineteen programs, each with its way of reading the same record."
+ },
+ "EN-tratamientos": {
+  "fecha": "2026-09-23 17:53",
+  "texto": "What is being taken, since when and until when, and who prescribed it. Brand names are grouped under their active ingredient: Xarelto and rivaroxaban are the same drug."
+ },
+ "EN-vascular": {
+  "fecha": "2026-09-23 17:54",
+  "texto": "Heart and arteries: blood pressure, cholesterol, kidney — what weighs in vascular risk. Gathered in one place, because they are read together."
+ },
  "ES-abeja": {
   "fecha": "2026-09-21 23:21",
   "texto": "Bienvenido a Salufolio. El nombre viene del latín: salus, la salud, estar sano y salvo, y fólium, la hoja. Hojas de salud, reunidas alrededor de una sola persona. El blasón lleva una concha del Camino de Santiago: todas sus estrías convergen hacia un punto, y ese punto se ha quitado, porque el punto es el paciente. La concha es también la señal del hospitalero, que acoge al peregrino, lo cuida y lo deja seguir su camino: es lo que hace quien cuida, y lleva el cuaderno de cuidados del Protocolo. La abeja, arriba a la izquierda, lleva al panal: la entrada."
@@ -32,6 +568,10 @@ var SF_GRABADOS = window.SF_GRABADOS = {
  "ES-bacteriologia": {
   "fecha": "2026-09-21 22:26",
   "texto": "Los cultivos y los antibiogramas: qué microbio se encontró, y a qué antibióticos resistía. Con el tiempo se ve si una misma bacteria vuelve."
+ },
+ "ES-bienvenida": {
+  "fecha": "2026-09-23 17:25",
+  "texto": "Bienvenido a Salufolio. Esta casa guarda su expediente médico en su propio ordenador, y de ahí no sale nada. ¿Quiere que se la enseñe? Son nueve salas, y cinco minutos."
  },
  "ES-boton_nuevo": {
   "fecha": "2026-09-21 22:25",
@@ -296,6 +836,10 @@ var SF_GRABADOS = window.SF_GRABADOS = {
  "FR-bacteriologia": {
   "fecha": "2026-09-21 22:29",
   "texto": "Les cultures et les antibiogrammes : quel microbe a été trouvé, et à quels antibiotiques il résistait. Avec le temps, on voit si une même bactérie revient."
+ },
+ "FR-bienvenida": {
+  "fecha": "2026-09-23 17:25",
+  "texto": "Bienvenue dans Salufolio. Cette maison garde votre dossier médical sur votre propre ordinateur, et rien n'en sort. Voulez-vous que je vous la montre ? Neuf salles, et cinq minutes."
  },
  "FR-boton_nuevo": {
   "fecha": "2026-09-21 22:27",

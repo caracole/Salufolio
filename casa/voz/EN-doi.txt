@@ -1,0 +1,1 @@
+Salufolio is the work of Pierre-Henri Giraud, assisted by Claude, from Anthropic. It is published on Zenodo, CERN's open science archive, with a digital object identifier: a number that never changes and lets it be cited.

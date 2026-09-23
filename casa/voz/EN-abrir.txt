@@ -1,0 +1,1 @@
+The folder opens a record from anywhere on your disk.

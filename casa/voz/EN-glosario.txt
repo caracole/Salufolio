@@ -1,0 +1,1 @@
+Almost all need an open record. The glossary does not.

@@ -296,6 +296,11 @@ def main():
     for sala in (T.get('salas') or T.get('visitas') or {}).values():
         for p in sala.get('pasos') or []:
             if p in O and p not in usados: usados.append(p)
+    # y los que no salen en ninguna sala pero hay que grabar igual:
+    # el saludo de bienvenida, por ejemplo (P-H, 23/09/2026). La tabla los
+    # nombra en « extras »; aqui no hay ni un nombre escrito a mano.
+    for p in (T.get('extras') or []):
+        if p in O and p not in usados: usados.append(p)
 
     # las lenguas: las ya empezadas, mas las pedidas con --lang
     empezadas = sorted(set(os.path.basename(x)[:2].lower()

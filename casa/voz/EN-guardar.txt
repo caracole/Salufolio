@@ -1,0 +1,1 @@
+The disk writes the record to your drive. If it carries a star, something is not yet saved.

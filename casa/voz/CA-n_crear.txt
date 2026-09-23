@@ -1,0 +1,1 @@
+Es crea la carpeta i l'expedient buit. Res s'envia a cap lloc.

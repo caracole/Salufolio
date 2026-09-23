@@ -1,0 +1,1 @@
+What the person carries: illnesses, operations, falls. Grouped by their code, with the years they appear in.
