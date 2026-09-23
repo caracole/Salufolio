@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Versión 2026.09.21-22:36:53
+# Versión 2026.09.23-10:51:28
 # ══════════════════════════════════════════════════════════════════════
 #  GRABAR LAS VOCES — /Salufolio/herramientas/voces-graba.py
 #
@@ -35,9 +35,28 @@
 #  ElevenLabs cobra por letra. Antes de grabar, se dice cuantos textos y
 #  cuantas letras, y se espera un « s ».
 #
+#  ── LAS PUERTAS TAMBIEN HABLAN (P-H, 23/09/2026) ──
+#  « Tous les messages de fin de visite d'une salle sont muets. »
+#  Lo estaban. Ahora cada puerta dice LO QUE ACABA DE PASAR — « Ya ha
+#  visitado el vestibulo » — compuesto aqui de « puerta_hecha » y del
+#  titulo de la sala. La PREGUNTA (« ¿Seguimos con...? ») se queda muda
+#  a proposito: nombra la sala SIGUIENTE, y grabarla ataria el sonido al
+#  ORDEN de la tabla; el dia que se permutan dos lineas los nueve
+#  ficheros mentirian sin avisar. Diez textos por lengua:
+#     ES-puerta-vestibulo.mp3 ... ES-puerta_ultima.mp3
+#
+#  ── Y NO ES OSCAR QUIEN LAS DICE ──
+#  « Ca pourrait etre une voix de femme (celle qui surveille la porte ?) »
+#  En un museo el guia le acompana dentro; en la puerta es la guardiana
+#  quien le dice lo que acaba de ver. Cuando la voz cambia, se sabe que
+#  la sala ha terminado sin leer nada. Quien es cada uno lo dice la
+#  tabla, en « voces »:   { "guia": "...", "puerta": "..." }
+#
 #      python3 herramientas/voces-graba.py              grabar lo que falta
 #      python3 herramientas/voces-graba.py --lang ca    anadir una lengua
 #      python3 herramientas/voces-graba.py --voces      ver sus voces
+#      python3 herramientas/voces-graba.py --prueba Sarah,Cristina,Sofia
+#                                          escuchar candidatas antes de gastar
 # ══════════════════════════════════════════════════════════════════════
 
 import os, sys, re, json, glob, getpass, runpy, hashlib
@@ -101,15 +120,25 @@ def sus_voces(k):
 
 
 def busca_voz(nombre, voces):
-    """« oscar » → la primera de sus voces cuyo nombre lo contenga"""
+    """« oscar » → la primera de sus voces cuyo nombre lo contenga.
+
+    DOS VOCES CON EL MISMO NOMBRE (P-H, 23/09/2026): en su cuenta hay
+    « Oscar - Fluid pitch » Y « Oscar » a secas. Cual gana depende del
+    ORDEN en que ElevenLabs las devuelva — que no es cosa nuestra. Un
+    dia podria cambiar y la visita entera cambiaria de voz sin que nadie
+    lo pidiera. Asi que se avisa, y se recomienda poner el identificador
+    en la tabla: es lo unico que no se mueve."""
     n = nombre.lower().strip()
     for nom, vid in voces:
         if vid == nombre: return vid, nom          # ya es un identificador
-    for nom, vid in voces:
-        if nom.lower().startswith(n): return vid, nom
-    for nom, vid in voces:
-        if n in nom.lower(): return vid, nom
-    return None, None
+    cand = [(nom, vid) for nom, vid in voces if nom.lower().startswith(n)] \
+        or [(nom, vid) for nom, vid in voces if n in nom.lower()]
+    if len(cand) > 1:
+        print('\n  ⚠ « %s » corresponde a %d de sus voces:' % (nombre, len(cand)))
+        for nom, vid in cand: print('        %-44s %s' % (nom[:44], vid))
+        print('    Se toma la primera. Ponga el identificador en la tabla')
+        print('    (voces) para que no dependa del orden de ElevenLabs.\n')
+    return (cand[0][1], cand[0][0]) if cand else (None, None)
 
 
 def lee_tabla():
@@ -117,18 +146,133 @@ def lee_tabla():
     return json.loads(s[s.index('{'):s.rindex(';')])
 
 
+def es_puerta(nombre):
+    return (nombre == 'puerta_ultima' or nombre.startswith('puerta-')
+            or nombre.startswith('invita-'))
+
+
+def textos_puerta(T, lang):
+    """Las frases de las puertas, compuestas de la tabla.
+
+    DOS POR SALA, y las dos llevan el nombre de LA SALA QUE SE NOMBRAN a
+    si mismas — nunca el de la sala vecina:
+
+        puerta-<sala>    « Ya ha visitado el vestibulo. »
+        invita-<sala>    « ¿Seguimos con el vestibulo? »
+
+    La segunda se oye al SALIR DE LA ANTERIOR, pero no le pertenece: es
+    la invitacion a ESTA sala. Por eso permutar dos lineas en la tabla de
+    salas no rompe nada — el motor toca otra invitacion, y sigue siendo
+    verdad. (El 22/09 lo habia colgado del otro extremo, y entonces si
+    ataba el sonido al orden. « Ce serait bien d'entendre l'invitation a
+    poursuivre la visite », P-H, 23/09 — y tenia razon.)
+
+    Y la ultima, que es texto fijo y cierra la casa."""
+    out = []
+    V = T.get('salas') or T.get('visitas') or {}
+    hecha = (T.get('puerta_hecha') or {}).get(lang) or ''
+    sigue = (T.get('puerta_sigue') or {}).get(lang) or ''
+    for k, sala in V.items():
+        tit = sala.get('titulo') or sala.get('nombre') or {}
+        tit = tit.get(lang) if isinstance(tit, dict) else tit
+        if not tit: continue
+        if hecha: out.append(('puerta-' + k, hecha.replace('{sala}', str(tit)).strip()))
+        if sigue: out.append(('invita-' + k, sigue.replace('{sala}', str(tit)).strip()))
+    u = (T.get('puerta_ultima_dicho') or T.get('puerta_ultima') or {}).get(lang)
+    if u: out.append(('puerta_ultima', u.strip()))
+    return out
+
+
 def voz_de(obj, T):
     """quien dice este objeto: el propio objeto, o la sala donde sale"""
+    V = T.get('voces') or {}
+    if es_puerta(obj):                       # la guardiana, no el guia
+        return V.get('puerta') or V.get('guia') or T.get('voz_defecto', 'oscar')
     o = (T.get('objetos') or {}).get(obj, {})
     if o.get('voz'): return o['voz']
     for s in (T.get('salas') or T.get('visitas') or {}).values():
         if obj in (s.get('pasos') or []) and s.get('voz'):
             return s['voz']
-    return T.get('voz_defecto', 'oscar')
+    return V.get('guia') or T.get('voz_defecto', 'oscar')
 
 
 def main():
     k = clave()
+
+    # ══ ESCUCHAR ANTES DE GASTAR (P-H, 23/09/2026) ══
+    # « Le meme essai dans les deux langues »: una voz que va bien en
+    # castellano puede decepcionar en frances. Se graba UNA frase — la de
+    # la ultima puerta, la mas importante de la visita — con cada
+    # candidata, en cada lengua empezada, en una carpeta aparte.
+    if '--prueba' in sys.argv:
+        j = sys.argv.index('--prueba')
+        quienes = [x.strip() for x in (sys.argv[j+1] if j+1 < len(sys.argv) else '').replace(',', ' ').split() if x.strip()]
+        if not quienes:
+            sys.exit('\n  Diga a quien probar:  --prueba Sarah,Cristina,Sofia\n')
+        T = lee_tabla()
+        VOZ = os.path.join(CASA, T.get('voz_carpeta', 'voz/'))
+        PR  = os.path.join(VOZ, 'pruebas')
+        os.makedirs(PR, exist_ok=True)
+        emp = sorted(set(os.path.basename(x)[:2].lower()
+                         for x in glob.glob(os.path.join(VOZ, '*.mp3'))
+                         if re.match(r'^[A-Z]{2}-', os.path.basename(x))))
+        lenguas = [l for l in (T.get('idiomas') or ['es']) if l in emp] or ['es']
+        frases = []
+        for l in lenguas:
+            t = (T.get('puerta_ultima') or {}).get(l)
+            if t: frases.append((l, ' '.join(t.split())))
+        if not frases: sys.exit('\n  No encuentro el texto de la ultima puerta.\n')
+        voces = sus_voces(k)
+        elegidas = []
+        for q in quienes:
+            vid, nom = busca_voz(q, voces)
+            if not vid:
+                print('  ⚠ « %s » no esta en sus voces — se salta.' % q); continue
+            elegidas.append((q, vid, nom))
+        if not elegidas: sys.exit('\n  Ninguna candidata encontrada.\n')
+        letras = sum(len(f) for _, f in frases) * len(elegidas)
+        print()
+        print('  %d voces × %d lenguas = %d pruebas, %d letras en total.'
+              % (len(elegidas), len(frases), len(elegidas)*len(frases), letras))
+        for q, vid, nom in elegidas: print('     %-30s %s' % (nom[:30], vid))
+        if input('  ¿Grabar las pruebas? (s/n) ').strip().lower() not in ('s','si','s\u00ed','o','oui','y'):
+            print('  No se ha grabado nada.\n'); return
+        filas = []
+        for q, vid, nom in elegidas:
+            for l, txt in frases:
+                base = '%s-%s' % (l.upper(), re.sub(r'[^A-Za-z0-9]+', '_', q).strip('_'))
+                try:
+                    a = pide('/v1/text-to-speech/%s?output_format=%s' % (vid, FORMATO), k,
+                             {'text': txt, 'model_id': MODELO})
+                except RuntimeError as e:
+                    print('  ✗ %-22s %s' % (base, e)); continue
+                open(os.path.join(PR, base + '.mp3'), 'wb').write(a)
+                filas.append((nom, vid, l, txt, base + '.mp3'))
+                print('  ✓ %-22s %6d bytes' % (base + '.mp3', len(a)), flush=True)
+        if filas:
+            h = ['<!doctype html><html lang="es"><head><meta charset="utf-8">',
+                 '<title>Las candidatas</title><style>',
+                 'body{background:#14141a;color:#e8e8ef;font:15px system-ui;padding:26px;max-width:760px;margin:auto}',
+                 'h1{font:600 20px Georgia,serif;color:#4a9eff}',
+                 'p.f{color:#9a9aa8;font-size:13px;border-left:3px solid #2a2a33;padding-left:11px}',
+                 '.v{margin:18px 0;padding:13px 15px;background:#1c1c22;border:1px solid #2a2a33;border-radius:11px}',
+                 '.n{font-weight:600;margin-bottom:7px}.i{font-family:monospace;font-size:11px;color:#9a9aa8}',
+                 'audio{width:100%;margin-top:6px}',
+                 '</style></head><body><h1>🎧 Las candidatas a la puerta</h1>']
+            for l, txt in frases:
+                h.append('<p class="f"><b>%s</b> — %s</p>' % (l.upper(), txt))
+            for nom, vid, l, txt, f in filas:
+                h.append('<div class="v"><div class="n">%s <span class="i">%s · %s</span></div>'
+                         '<audio controls preload="none" src="%s"></audio></div>'
+                         % (nom, l.upper(), vid, f))
+            h.append('</body></html>')
+            open(os.path.join(PR, 'escuchar.html'), 'w', encoding='utf-8').write('\n'.join(h))
+            print('\n  Escuchelas aqui — abra este fichero:')
+            print('     ' + os.path.join(PR, 'escuchar.html'))
+            print('\n  Luego ponga a la elegida en casa/tour.js:')
+            print('     "voces": { "guia": "<id de Oscar>", "puerta": "<su id>" }')
+            print('  El identificador, no el nombre: es lo unico que no se mueve.\n')
+        return
 
     if '--voces' in sys.argv:
         print()
@@ -166,11 +310,15 @@ def main():
 
     tareas, recuperados = [], 0
     for lang in lenguas:
+        # los objetos de las salas, y despues las puertas
+        piezas = []
         for obj in usados:
             # « dicho » si lo hay: el texto escrito para el oido (P-H, 21/09)
             fuente = O[obj].get('dicho') or O[obj].get('texto') or {}
-            texto = (fuente.get(lang) or '').strip()
-            if not texto: continue
+            t = (fuente.get(lang) or '').strip()
+            if t: piezas.append((obj, t))
+        piezas += textos_puerta(T, lang)
+        for obj, texto in piezas:
             base = patron.replace('{lang}', lang.upper()).replace('{objeto}', obj)
             base = os.path.splitext(base)[0]
             mp3 = os.path.join(VOZ, base + '.mp3')
@@ -183,7 +331,9 @@ def main():
                     tareas.append((base, lang, obj, texto, 'cambiado'))
                 continue
             # mp3 de antes, sin su texto: la huella dice si es el mismo
-            g = ((O[obj].get('grabado') or {}).get(lang))
+            # (una puerta no esta en « objetos »: no tiene huella guardada,
+            #  su .txt de al lado basta — y si falta, se regraba)
+            g = ((O.get(obj, {}).get('grabado') or {}).get(lang))
             if g and g == huella(texto):
                 open(txt, 'w', encoding='utf-8').write(texto + '\n')
                 recuperados += 1

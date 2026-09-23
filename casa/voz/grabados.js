@@ -1,5 +1,5 @@
 /* LO GRABADO — escrito por herramientas/voces-registra.py
-   el 2026-09-21 23:22. No se toca a mano. */
+   el 2026-09-23 11:00. No se toca a mano. */
 var SF_GRABADOS = window.SF_GRABADOS = {
  "ES-abeja": {
   "fecha": "2026-09-21 23:21",
@@ -97,9 +97,45 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "fecha": "2026-09-21 22:26",
   "texto": "Tres formas: express, detallado y sintético. Todos se pueden enseñar en la pantalla, imprimir o enviar por correo. Todo sale del expediente: nada se inventa."
  },
+ "ES-invita-conocidos": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con Los pacientes conocidos?"
+ },
+ "ES-invita-escribir": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con Las tarjetas para escribir?"
+ },
+ "ES-invita-expedientes": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con Sus expedientes?"
+ },
+ "ES-invita-medico": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con Para el médico y el investigador?"
+ },
+ "ES-invita-mirar": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con Las tarjetas para mirar?"
+ },
+ "ES-invita-nuevo": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con Un paciente nuevo?"
+ },
+ "ES-invita-perfiles": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con Quién accede?"
+ },
+ "ES-invita-pie": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con La banda de abajo?"
+ },
+ "ES-invita-vestibulo": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "¿Seguimos con El vestíbulo — la banda de arriba?"
+ },
  "ES-licencia": {
-  "fecha": "2026-09-21 22:27",
-  "texto": "GNU GPL v3. Cualquiera puede leer el código, copiarlo, cambiarlo. No es generosidad: es la única garantía de que un programa que guarda su salud no le esconda nada."
+  "fecha": "2026-09-22 11:29",
+  "texto": "Salufolio es software libre, bajo la Licencia Pública General de GNU, en su versión tres. Libre no quiere decir gratis, aunque éste también lo sea: libre quiere decir que cualquiera puede leer el código, usarlo, copiarlo y cambiarlo. Y que quien lo reparta tiene que dejar esas mismas libertades a los demás; nadie puede volver a cerrarlo. No es generosidad: es la única garantía de que un programa que guarda su salud no le esconda nada."
  },
  "ES-logo": {
   "fecha": "2026-09-18 20:58",
@@ -160,6 +196,46 @@ var SF_GRABADOS = window.SF_GRABADOS = {
  "ES-perfiles": {
   "fecha": "2026-09-21 22:25",
   "texto": "Paciente, profesional, cuidador, investigador. No es un permiso: es una manera de mirar. Un cuidador quiere las tomas y las citas; un médico, los valores fuera de rango; un investigador, las series completas."
+ },
+ "ES-puerta-conocidos": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado Los pacientes conocidos."
+ },
+ "ES-puerta-escribir": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado Las tarjetas para escribir."
+ },
+ "ES-puerta-expedientes": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado Sus expedientes."
+ },
+ "ES-puerta-medico": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado Para el médico y el investigador."
+ },
+ "ES-puerta-mirar": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado Las tarjetas para mirar."
+ },
+ "ES-puerta-nuevo": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado Un paciente nuevo."
+ },
+ "ES-puerta-perfiles": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado Quién accede."
+ },
+ "ES-puerta-pie": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado La banda de abajo."
+ },
+ "ES-puerta-vestibulo": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ya ha visitado El vestíbulo — la banda de arriba."
+ },
+ "ES-puerta_ultima": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Ha visto toda la casa. Al salir de aquí, toque una tarjeta y mire: es su expediente, en su ordenador, y nada sale de ahí."
  },
  "ES-radar": {
   "fecha": "2026-09-21 22:26",
@@ -285,9 +361,45 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "fecha": "2026-09-21 22:28",
   "texto": "Trois formes : express, détaillé et synthétique. Tous peuvent se montrer à l'écran, s'imprimer ou s'envoyer par courriel. Tout vient du dossier : rien n'est inventé."
  },
+ "FR-invita-conocidos": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec Les patients connus ?"
+ },
+ "FR-invita-escribir": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec Les cartes pour écrire ?"
+ },
+ "FR-invita-expedientes": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec Ses dossiers ?"
+ },
+ "FR-invita-medico": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec Pour le médecin et le chercheur ?"
+ },
+ "FR-invita-mirar": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec Les cartes pour regarder ?"
+ },
+ "FR-invita-nuevo": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec Un patient nouveau ?"
+ },
+ "FR-invita-perfiles": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec Qui accède ?"
+ },
+ "FR-invita-pie": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec La bande du bas ?"
+ },
+ "FR-invita-vestibulo": {
+  "fecha": "2026-09-23 11:00",
+  "texto": "On continue avec Le hall — la bande du haut ?"
+ },
  "FR-licencia": {
-  "fecha": "2026-09-21 22:29",
-  "texto": "GNU GPL v3. N'importe qui peut lire le code, le copier, le changer. Ce n'est pas de la générosité : c'est la seule garantie qu'un programme qui garde votre santé ne vous cache rien."
+  "fecha": "2026-09-22 11:29",
+  "texto": "Salufolio est un logiciel libre, sous la Licence Publique Générale de GNU, dans sa version trois. Libre ne veut pas dire gratuit, même si celui-ci l'est aussi : libre veut dire que n'importe qui peut lire le code, s'en servir, le copier et le changer. Et que celui qui le redistribue doit laisser ces mêmes libertés aux autres ; personne ne peut le refermer. Ce n'est pas de la générosité : c'est la seule garantie qu'un programme qui garde votre santé ne vous cache rien."
  },
  "FR-logo": {
   "fecha": "2026-09-18 20:58",
@@ -348,6 +460,46 @@ var SF_GRABADOS = window.SF_GRABADOS = {
  "FR-perfiles": {
   "fecha": "2026-09-21 22:28",
   "texto": "Patient, professionnel, aidant, chercheur. Ce n'est pas une permission : c'est une façon de regarder. Un aidant veut les prises et les rendez-vous ; un médecin, les valeurs hors des bornes ; un chercheur, les séries entières."
+ },
+ "FR-puerta-conocidos": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Vous avez visité Les patients connus."
+ },
+ "FR-puerta-escribir": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Vous avez visité Les cartes pour écrire."
+ },
+ "FR-puerta-expedientes": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Vous avez visité Ses dossiers."
+ },
+ "FR-puerta-medico": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Vous avez visité Pour le médecin et le chercheur."
+ },
+ "FR-puerta-mirar": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Vous avez visité Les cartes pour regarder."
+ },
+ "FR-puerta-nuevo": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Vous avez visité Un patient nouveau."
+ },
+ "FR-puerta-perfiles": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Vous avez visité Qui accède."
+ },
+ "FR-puerta-pie": {
+  "fecha": "2026-09-23 10:46",
+  "texto": "Vous avez visité La bande du bas."
+ },
+ "FR-puerta-vestibulo": {
+  "fecha": "2026-09-23 10:45",
+  "texto": "Vous avez visité Le hall — la bande du haut."
+ },
+ "FR-puerta_ultima": {
+  "fecha": "2026-09-23 10:46",
+  "texto": "Vous avez vu toute la maison. En sortant d'ici, touchez une carte et regardez : c'est votre dossier, sur votre ordinateur, et rien n'en sort."
  },
  "FR-radar": {
   "fecha": "2026-09-21 22:29",

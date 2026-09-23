@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    EL MOTOR DE LA VISITA — /Salufolio/comun/tour-motor.js
-   Versión 2026.09.21-23:21:34
+   Versión 2026.09.23-10:51:28
 
    « On commence par casa seul, c'est-à-dire le bandeau supérieur. »
                                           — P-H + Mattieu, 18/09/2026
@@ -43,7 +43,30 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      habrian roto la visita sin decir por que. */
   var PASOS = [], VIS = null;
   var VISTOS = 0;              /* pasos vistos desde que se abrio la carta */
-  var DIO = false;             /* ya ha opinado en esta visita al museo */
+  /* ═════════════════════════════════════════════════════════════════
+     LO QUE SE HA DICHO DE CADA SALA (P-H, 22/09/2026)
+
+     « Les portes notent en silence, et ton questionnaire a la fin avec
+       le resume des visites — peut-etre celles abandonnees. »
+
+     Antes, tocar una cara abria el cuestionario en el acto: para opinar
+     de dos salas habia que cerrarlo dos veces. Ahora la puerta se limita
+     a APUNTAR, y al salir del museo se ensena la cosecha entera.
+
+     Una entrada por sala, y cuatro maneras de haberla dejado:
+       { cara:4 }              una cara tocada
+       { pasa:true }           el 🤐 — nada que decir de esta sala
+       { parada:3, de:8 }      dejada por el camino
+       { vista:true }          vista entera, sin opinar
+     Una sala que no se abrio nunca no figura: no hay nada que contar.
+     ═════════════════════════════════════════════════════════════════ */
+  var NOTAS = {};              /* { sala: {cara|pasa|parada,de|vista} } */
+
+  function apunta(sala, que){
+    if(!sala) return;
+    var n = NOTAS[sala] || (NOTAS[sala] = {});
+    Object.keys(que).forEach(function(k){ n[k] = que[k]; });
+  }
   var DIR = 1;                 /* hacia donde se va: +1 adelante, -1 atras */
 
   /* ══════════════════════════════════════════════════════════════════
@@ -165,24 +188,23 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       + '  <div class="sf-t-cab">'
       + '    <span class="sf-t-ico" id="sf-t-ico"></span>'
       + '    <span class="sf-t-tit" id="sf-t-tit"></span>'
-      + '    <span class="sf-t-n"   id="sf-t-n" title="visita v' + VERSION
-      + '"></span>'
+      + '    <span class="sf-t-n"   id="sf-t-n"></span>'
       + '  </div>'
       + '  <div class="sf-t-texto" id="sf-t-texto"></div>'
       + '  <label class="sf-t-sabe" id="sf-t-sabe-l"><input type="checkbox" id="sf-t-sabe">'
       + '<span id="sf-t-sabe-t"></span></label>'
       + '  <div class="sf-t-barra"><div class="sf-t-llena" id="sf-t-llena"></div></div>'
       + '  <div class="sf-t-mandos">'
-      + '    <button id="sf-t-x"     title="">❌</button>'
-      + '    <button id="sf-t-otra"  title="">🔄</button>'
-      + '    <button id="sf-t-lista" title="">📋</button>'
-      + '    <button id="sf-t-salta" title="">⏭️</button>'
+      + '    <button id="sf-t-x">❌</button>'
+      + '    <button id="sf-t-otra">🔄</button>'
+      + '    <button id="sf-t-lista">📋</button>'
+      + '    <button id="sf-t-salta">⏭️</button>'
       + '    <span class="sf-t-sep"></span>'
-      + '    <button id="sf-t-atras" title="">⬅️</button>'
-      + '    <button id="sf-t-pausa" class="grande" title="">⏸</button>'
-      + '    <button id="sf-t-otra-vez" title="">🔁</button>'
-      + '    <button id="sf-t-voz"   title="">🔊</button>'
-      + '    <button id="sf-t-sig"   title="">➡️</button>'
+      + '    <button id="sf-t-atras">⬅️</button>'
+      + '    <button id="sf-t-pausa" class="grande">⏸</button>'
+      + '    <button id="sf-t-otra-vez">🔁</button>'
+      + '    <button id="sf-t-voz">🔊</button>'
+      + '    <button id="sf-t-sig">➡️</button>'
       + '  </div>'
       + '  <div class="sf-t-lista-caja" id="sf-t-lista-caja"></div>'
       + '</div>';
@@ -196,6 +218,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     ponTitulo(m, '#sf-t-atras', 'atras'); ponTitulo(m, '#sf-t-pausa', 'pausa');
     ponTitulo(m, '#sf-t-otra-vez', 'otra_vez'); ponTitulo(m, '#sf-t-voz', 'voz');
     ponTitulo(m, '#sf-t-sig', 'sig');
+    burbuja(m.querySelector('#sf-t-n'), 'visita v' + VERSION);
 
     m.querySelector('#sf-t-x').onclick     = function(){ pideAdios(); };
     m.querySelector('#sf-t-otra').onclick  = function(){ i = 0; muestra(); };
@@ -742,6 +765,42 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
   function tituloSala(k){ var v = salas()[k] || {}; return tt(v.titulo || v.nombre) || k; }
 
   /* ══════════════════════════════════════════════════════════════════
+     CUANTAS ETAPAS TIENE LA CASA (P-H, 22/09/2026)
+
+     « Visite complète — 3 étapes ( etre intelligent ! ) »
+
+     Y tenia razon: se le daba el numero de etapas de LA SALA, no del
+     museo. Tres etapas era la sala de los expedientes, no la casa.
+     Aqui se suman las de todas las salas — la tabla manda, asi que
+     anadir una sala cambia el total sin tocar nada.
+     ══════════════════════════════════════════════════════════════════ */
+  function totalPasos(){
+    var V = salas(), n = 0;
+    Object.keys(V).forEach(function(k){ n += ((V[k] || {}).pasos || []).length; });
+    return n;
+  }
+
+  /* ── la cosecha de la visita, en el orden del museo ── */
+  function resumen(){
+    var V = salas();
+    var R = [];
+    Object.keys(V).forEach(function(k){
+      var n = NOTAS[k]; if(!n) return;          /* nunca abierta: nada que contar */
+      var v = V[k] || {};
+      R.push({ sala:k, icono:v.icono || '', titulo:v.titulo || v.nombre || k,
+               cara:n.cara || 0, pasa:!!n.pasa,
+               parada:n.parada || 0, de:n.de || 0, vista:!!n.vista });
+    });
+    return R;
+  }
+
+  /* ── quien es la sala: su icono y su nombre, para el aviso y el correo ── */
+  function infoSala(k){
+    var v = salas()[k] || {};
+    return { icono: v.icono || '', titulo: v.titulo || v.nombre || k };
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
      LA PUERTA DE LA SALA (P-H, 21/09/2026)
 
      « Une salle doit avoir son statut : porte fermée ou ouverte à
@@ -886,44 +945,99 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     if(SEGUIDO && sig){ arrancaVisita(sig, true); return; }
 
     /* ══ LA OPINION, A MANO EN LA PUERTA (P-H, 21/09/2026) ══
-       « À la sortie ça m'affiche Gracias por la visita, et en arrière-plan
-         Ya ha visitado Quién accede. »  — y eligio la B:
-
        Ninguna ventana se abre sola. La puerta lleva las cinco caras, en
        pequeno, bajo « ¿Seguimos? ». Quien quiera opinar sobre la sala,
        toca una; quien no, sigue sin que nadie le pregunte. Y el « Gracias »
        llega una sola vez: al salir del museo, si no se ha opinado ya. */
-    var sv = (salas()[CUAL]) || {};
-
+    var sv = V[CUAL] || {};
     var m = marco();
-    var v = V[CUAL] || {};
     var nom = function(x){ return tituloSala(x); };
 
-    m.querySelector('#sf-t-ico').textContent = v.icono || '✓';
+    m.querySelector('#sf-t-ico').textContent = sv.icono || '✓';
     var clp = m.querySelector('#sf-t-sabe-l'); if(clp) clp.style.display = 'none';
     m.querySelector('#sf-t-tit').textContent =
       (tt(T.puerta_hecha) || '{sala}').replace('{sala}', nom(CUAL));
     m.querySelector('#sf-t-n').textContent = '';
+
+    /* ══════════════════════════════════════════════════════════════════
+       LA SALA SIGUIENTE VIVE EN LA FRASE (P-H, 22/09/2026)
+
+       « Le bouton > Sus expedientes a supprimer d'ici et mettre a coté
+         du texte : ¿Seguimos con 📁 Sus expedientes ? — l'icone des
+         expedientes, un click renvoie aux expedientes. »
+
+       Era un boton que repetia lo que la frase ya decia, y que hacia el
+       cuadro mas ancho o mas estrecho segun el largo del nombre. Ahora
+       el nombre de la sala ESTA en la frase, con su icono, y se toca
+       ahi. Los botones de abajo son los mismos en todas las puertas —
+       « adopter la meme presentation du cadre pour tout le monde ».
+       ══════════════════════════════════════════════════════════════════ */
+    var frase;
+    if(sig){
+      var trozos = (tt(T.puerta_sigue) || '{sala}').split('{sala}');
+      var sg = V[sig] || {};
+      frase = esc(trozos[0] || '')
+            + '<button id="sf-p-sig" class="sf-p-ir">'
+            + '<span class="sf-p-ir-i">' + esc(sg.icono || '▶') + '</span>'
+            + '<span class="sf-p-ir-n">' + esc(nom(sig)) + '</span>'
+            + '</button>'
+            + esc(trozos.length > 1 ? trozos[1] : '');
+    }
+    else frase = esc(tt(T.puerta_ultima) || '');
+
+    /* ══════════════════════════════════════════════════════════════════
+       EL QUE NO QUIERE OPINAR (P-H, 22/09/2026)
+
+       « Ajouter icone "passer" (sans opinion). » Y la B: tocarlo no
+       calla solo esta puerta — no se le vuelve a preguntar en ninguna.
+       Quien pasa una vez no quiere que se le interrogue ocho veces.
+
+       El icono sale de la tabla (puerta_pasar), como todo lo demas.
+       ══════════════════════════════════════════════════════════════════ */
     var CARAS = T.caras || ['😡','😞','😐','😊','🤩'];
-    m.querySelector('#sf-t-texto').innerHTML = '<span class="sf-t-p dicha">'
-      + esc(sig ? (tt(T.puerta_sigue) || '').replace('{sala}', nom(sig))
-                : (tt(T.puerta_ultima) || '')) + '</span>'
-      + (opc.al_opinar
+    var pas = T.puerta_pasar || null;
+    var ya  = NOTAS[CUAL] || {};
+    /* el 🤐 calla ESTA puerta y ninguna otra — « d'accord si ca concerne
+       la salle visitee » (P-H, 22/09) */
+    var preguntar = !!opc.al_final && !ya.pasa;
+
+    m.querySelector('#sf-t-texto').innerHTML =
+        '<span class="sf-t-p dicha">' + frase + '</span>'
+      + (preguntar
          ? '<div class="sf-p-opina"><span>' + esc(tt(T.puerta_opina) || '') + '</span>'
-           + CARAS.map(function(c, k){
-               return '<button class="sf-p-cara" data-n="' + (k+1) + '">' + c + '</button>';
-             }).join('') + '</div>'
+           + CARAS.map(function(c, j){
+               return '<button class="sf-p-cara' + (ya.cara === j+1 ? ' on' : '')
+                    + '" data-n="' + (j+1) + '">' + c + '</button>';
+             }).join('')
+           + (pas
+              ? '<span class="sf-p-hueco"></span>'
+                + '<button class="sf-p-cara sf-p-pasar" id="sf-p-pasar">'
+                + esc(pas.icono || '🤐') + '</button>'
+              : '')
+           + '</div>'
          : '');
+
+    /* ══ LA PUERTA APUNTA, NO PREGUNTA (P-H, 22/09/2026) ══
+       Se toca una cara, se enciende, y se sigue. Nada se abre. */
     m.querySelectorAll('.sf-p-cara').forEach(function(bc){
+      if(bc.id === 'sf-p-pasar') return;
       bc.onclick = function(){
-        DIO = true;
         m.querySelectorAll('.sf-p-cara').forEach(function(x){ x.classList.remove('on'); });
         bc.classList.add('on');
-        opc.al_opinar(parseInt(bc.dataset.n, 10),
-                      { icono:sv.icono, titulo:sv.titulo || sv.nombre },
-                      PASOS.length, CUAL);
+        apunta(CUAL, { cara: parseInt(bc.dataset.n, 10), pasa:false });
       };
     });
+
+    var bp = m.querySelector('#sf-p-pasar');
+    if(bp && pas){
+      if(pas.tip) ponTitulo(m, '#sf-p-pasar', pas.tip);
+      bp.onclick = function(){
+        apunta(CUAL, { pasa:true, cara:0 });
+        tapaBurbuja();
+        var z = m.querySelector('.sf-p-opina');
+        if(z) z.parentNode.removeChild(z);
+      };
+    }
 
     m.style.cssText = '';
     m.classList.remove('naciendo');
@@ -931,22 +1045,95 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     var c = m.querySelector('.sf-t-caja');
     c.classList.remove('punta-arriba','punta-abajo');
 
+    /* ══ LOS MANDOS DE LA PUERTA SALEN DE LA TABLA (P-H, 22/09/2026) ══
+       Iguales en todas las salas. Para quitar uno, o cambiarle el icono,
+       se toca « puerta_mandos » — aqui no hay nada que cambiar. */
     var b = m.querySelector('.sf-t-mandos');
-    b.innerHTML =
-        (sig ? '<button id="sf-p-sig" class="grande">▶ ' + esc(nom(sig)) + '</button>' : '')
-      + '<button id="sf-p-carta">🧭</button>'
-      + '<span class="sf-t-sep"></span>'
-      + '<button id="sf-p-salir">❌</button>';
+    var MD = T.puerta_mandos || [ {id:'carta', icono:'🧭', tip:'p_carta'},
+                                  {id:'sep'},
+                                  {id:'salir', icono:'❌', tip:'p_salir'} ];
+    b.innerHTML = MD.map(function(d){
+      if(!d || !d.id || d.id === 'sep') return '<span class="sf-t-sep"></span>';
+      return '<button id="sf-p-' + d.id + '"'
+           + (d.clase ? ' class="' + esc(d.clase) + '"' : '') + '>'
+           + esc(d.icono || '') + '</button>';
+    }).join('');
 
-    if(sig) ponTitulo(m, '#sf-p-sig', 'p_sig', nom(sig));
-    ponTitulo(m, '#sf-p-carta', 'p_carta');
-    ponTitulo(m, '#sf-p-salir', 'p_salir');
-    if(sig) b.querySelector('#sf-p-sig').onclick = function(){ arrancaVisita(sig, false); };
-    b.querySelector('#sf-p-carta').onclick = function(){
-      var mm = document.getElementById('sf-tour'); if(mm) mm.remove();
-      carta(arrancaVisita);
+    var HACE = {
+      carta: function(){
+        var mm = document.getElementById('sf-tour'); if(mm) mm.remove();
+        carta(arrancaVisita);
+      },
+      /* ══ LA X LLEVA AL « GRACIAS » (P-H, 22/09) ══
+         Y el « Gracias » ensena ahora la cosecha entera de la visita. */
+      salir: function(){ sal(true); }
     };
-    b.querySelector('#sf-p-salir').onclick = function(){ sal(!DIO); };
+    MD.forEach(function(d){
+      if(!d || !d.id || d.id === 'sep') return;
+      if(d.tip) ponTitulo(m, '#sf-p-' + d.id, d.tip);
+      var bb = b.querySelector('#sf-p-' + d.id);
+      if(bb && HACE[d.id]) bb.onclick = HACE[d.id];
+    });
+
+    if(sig){
+      ponTitulo(m, '#sf-p-sig', 'p_sig', nom(sig));
+      var bs = m.querySelector('#sf-p-sig');
+      if(bs) bs.onclick = function(){ arrancaVisita(sig, false); };
+    }
+
+    /* ═════════════════════════════════════════════════════════════════
+       LA PUERTA HABLA (P-H, 23/09/2026)
+
+       « Tous les messages de fin de visite d'une salle sont muets. »
+
+       Lo estaban, y por construccion: la puerta no es una etapa, y solo
+       las etapas pasaban por habla().
+
+       Dice LO QUE ACABA DE PASAR — « Ya ha visitado el vestibulo » — que
+       pertenece a la sala y no se mueve nunca. La PREGUNTA (« ¿Seguimos
+       con...? ») se queda muda a proposito: nombra la sala SIGUIENTE, y
+       grabarla ataria el sonido al ORDEN de la tabla — el dia que se
+       permutan dos lineas, los nueve ficheros mentirian sin avisar. Se
+       lee en la pantalla, y se decide en silencio.
+
+       « Ca pourrait etre une voix de femme (celle qui surveille la
+         porte ?) » — si: en un museo el guia le acompana dentro, y en la
+       puerta es la guardiana quien le dice lo que acaba de ver. Cuando
+       la voz cambia, se sabe que la sala ha terminado sin leer nada; el
+       timbre hace el trabajo de la puntuacion. Quien es cada uno lo dice
+       la tabla, en « voces »; el motor no sabe ni sus nombres.
+
+       Si falta el mp3, habla() cae en la voz del navegador — mejor eso
+       que el silencio, mientras se graba.
+       ═════════════════════════════════════════════════════════════════ */
+    /* DOS FRASES, y cada fichero nombra SU PROPIA sala:
+         puerta-<esta>   « Ya ha visitado el vestibulo. »
+         invita-<la que viene>  « ¿Seguimos con sus expedientes? »
+       La invitacion pertenece a la sala que se PROPONE, no a la que se
+       deja — asi permutar dos lineas de la tabla no vuelve falso ningun
+       mp3: se toca otro, y sigue siendo verdad. */
+    var primera = { nombre: 'puerta-' + CUAL,
+      texto: (tt(T.puerta_hecha) || '').replace('{sala}', nom(CUAL)) };
+    var segunda = sig
+      ? { nombre: 'invita-' + sig,
+          texto: (tt(T.puerta_sigue) || '').replace('{sala}', nom(sig)) }
+      : { nombre: 'puerta_ultima',
+          texto: tt(T.puerta_ultima_dicho || T.puerta_ultima) };
+
+    /* « Je laisserai un petit silence entre les deux »: la guardiana
+       constata, respira, y luego propone. Pegadas suenan a una sola
+       frase recitada. El silencio esta en la tabla, no aqui. */
+    var respiro = (T.puerta_respiro != null) ? T.puerta_respiro : 420;
+
+    /* deEsta() + luego(): si entre las dos frases se ha salido o se ha
+       cambiado de sala, la segunda no arranca — nadie habla a una
+       pantalla que ya no esta. Y se encadena tanto si la primera ha
+       sonado como si no la habia. */
+    var despues = segunda.texto
+      ? deEsta(function(){ luego(function(){ habla(segunda); }, respiro); })
+      : null;
+    if(primera.texto) habla(primera, despues);
+    else if(despues) despues();
   }
 
   function calla(){
@@ -1238,17 +1425,64 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     b.style.width = '100%';
   }
 
+  /* ═════════════════════════════════════════════════════════════════
+     LA BURBUJA ES DE LA CASA (P-H, 22/09/2026)
+
+     « Quitte ce "Title" par defaut et met un tooltip maison — note-le
+       pour tous les tooltips present et a venir. »
+
+     El `title` del navegador tarda un segundo largo en salir, se dibuja
+     con los colores del sistema —blanco sobre gris, ilegible de noche—
+     y no se deja colocar. La burbuja de casa sale enseguida, lleva la
+     paleta del programa, y se aparta sola del borde de la pantalla.
+
+     El motor lleva la suya: la visita ha de poder correr en cualquier
+     programa, y no todos cargan casa. Se dibuja en tour.css, con las
+     mismas variables. El `title` se BORRA, para que no salgan las dos.
+     ═════════════════════════════════════════════════════════════════ */
+  function tapaBurbuja(){
+    var t = document.getElementById('sf-tip');
+    if(t) t.classList.remove('on');
+  }
+
+  function burbuja(el, texto){
+    if(!el) return;
+    el.removeAttribute('title');            /* nunca las dos a la vez */
+    el._sfDice = texto || '';
+    if(el._sfOye) return;                   /* los oyentes, una sola vez */
+    el._sfOye = true;
+    el.addEventListener('mouseenter', function(){
+      if(!el._sfDice) return;
+      var t = document.getElementById('sf-tip');
+      if(!t){ t = document.createElement('div'); t.id = 'sf-tip';
+              document.body.appendChild(t); }
+      t.textContent = el._sfDice;
+      t.classList.add('on');
+      var r = el.getBoundingClientRect();
+      var a = t.getBoundingClientRect();
+      var x = r.left + r.width/2 - a.width/2;
+      x = Math.max(6, Math.min(x, window.innerWidth - a.width - 6));
+      var y = r.bottom + 7;
+      if(y + a.height > window.innerHeight - 6) y = r.top - a.height - 7;
+      t.style.left = Math.round(x) + 'px';
+      t.style.top  = Math.round(y) + 'px';
+    });
+    el.addEventListener('mouseleave', tapaBurbuja);
+    el.addEventListener('click', tapaBurbuja);
+  }
+
   /* ── el titulo de un boton, sacado de la tabla ── */
   function ponTitulo(m, sel, clave, sala){
     var b = m.querySelector(sel);
     var t = T && T.mandos && T.mandos[clave];
-    if(b && t) b.title = tt(t).replace('{sala}', sala || '');
+    burbuja(b, t ? tt(t).replace('{sala}', sala || '') : '');
   }
 
   /* ── ⏭️ : lo que queda de la sala no se ve; se va a su puerta ── */
   function saltaSala(){
     if(!viva) return;
     corta(); calla(); apaga();
+    apunta(CUAL, { parada: Math.min(i + 1, PASOS.length), de: PASOS.length });
     saleSala();
     viva = false;
     luego(puerta, 250);
@@ -1366,6 +1600,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     calla(); clearTimeout(tmr); clearTimeout(relojEtapa); clearTimeout(plumaTmr);
     apaga();
     guardaHecha(CUAL);
+    apunta(CUAL, { vista:true });     /* vista entera */
     viva = false;
     /* ══ EL AVISO, AL SALIR DEL MUSEO — NO AL CAMBIAR DE SALA ══
        « Quand je clique sur todo seguido, on enchaîne tout. Alors pourquoi
@@ -1389,6 +1624,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       /* « J'aime le commentaire : abandon à l'étape 9 de 8 ! » (P-H) —
          i está en 0..n-1, así que la etapa es i+1, no i+2 */
       var o = objetoDe(i) || {};
+      apunta(CUAL, { parada: Math.min(i + 1, PASOS.length), de: PASOS.length });
       opc.al_interrumpir(Math.min(i + 1, PASOS.length), PASOS.length, o);
     }
     else sal();
@@ -1413,7 +1649,10 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
     if(cc) cc.remove();
     /* se sale por la puerta despues de ver salas: se pide la opinion;
        se sale por la carta o sin ver nada: se sale sin mas */
-    if(visitada && opc.al_final) opc.al_final(true, VISTOS, CUAL);
+    tapaBurbuja();
+    var tp = document.getElementById('sf-tip'); if(tp) tp.remove();
+    if(visitada && opc.al_final)
+      opc.al_final(true, VISTOS, totalPasos(), infoSala(CUAL), resumen());
     else if(opc.al_salir) opc.al_salir();
   }
 
@@ -1439,7 +1678,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       try{ if(window.speechSynthesis) speechSynthesis.getVoices(); }catch(e){}
       if(!opc.carpeta && T.voz_carpeta) opc.carpeta = '';
 
-      VISTOS = 0; DIO = false;
+      VISTOS = 0; NOTAS = {};
       Object.keys(T.objetos || {}).forEach(function(k){ delete T.objetos[k]._contado; });
       /* ── la brujula abre la CARTA; se elige una sala ── */
       if(opc.visita){ arrancaVisita(opc.visita, false); return; }

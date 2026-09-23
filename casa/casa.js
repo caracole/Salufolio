@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = window.SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.09.19-23:37:32",
+  "version": "2026.09.23-09:58:21",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -400,38 +400,95 @@ var SF_LANZADOR = window.SF_LANZADOR = {
     }
   ],
   "banda_arriba": {
+    "_fijos": "Los cuatro elementos que el lanzador dibuja en su sitio (la abeja a la izquierda, el titulo, el paciente, el disquete) no pueden entrar en « botones »: su lugar es fijo. Pero su burbuja no tiene por que vivir en el codigo — vive aqui, como las demas. « Note-le pour tous les tooltips present et a venir » (P-H, 22/09/2026).",
+    "fijos": {
+      "panal": {
+        "es": "Volver al panal",
+        "fr": "Revenir à la ruche",
+        "ca": "Tornar al rusc",
+        "en": "Back to the honeycomb"
+      },
+      "guardar": {
+        "es": "Guardar el expediente",
+        "fr": "Enregistrer le dossier",
+        "ca": "Guardar l'expedient",
+        "en": "Save the record"
+      },
+      "paciente": {
+        "es": "Toque aquí para cambiar de paciente",
+        "fr": "Touchez ici pour changer de patient",
+        "ca": "Toque ací per a canviar de pacient",
+        "en": "Tap here to change patient"
+      },
+      "titulo": {
+        "es": "Salufolio · lanzador v{v}",
+        "fr": "Salufolio · lanceur v{v}",
+        "ca": "Salufolio · llançador v{v}",
+        "en": "Salufolio · launcher v{v}"
+      }
+    },
     "botones": [
       {
         "id": "idioma",
         "icono": "🌐",
-        "titulo": "Idioma"
+        "titulo": {
+        "es": "Idioma",
+        "fr": "Langue",
+        "ca": "Idioma",
+        "en": "Language"
+      }
       },
       {
         "id": "tema",
         "icono": "🌓",
-        "titulo": "Paleta de colores"
+        "titulo": {
+        "es": "Paleta de colores",
+        "fr": "Palette de couleurs",
+        "ca": "Paleta de colors",
+        "en": "Colour palette"
+      }
       },
       {
         "id": "tips",
         "icono": "💬",
-        "titulo": "Burbujas de ayuda",
+        "titulo": {
+        "es": "Burbujas de ayuda",
+        "fr": "Bulles d'aide",
+        "ca": "Bambolles d'ajuda",
+        "en": "Help bubbles"
+      },
         "_que": "Las burbujas se pueden apagar (P-H, 16/09/2026).\nEl ajuste vive en mf.js, con el idioma y el tema: no es de un\nprograma, es de quien mira. Vale para toda la casa y sobrevive\nde una sesion a otra."
       },
       {
         "id": "tour",
         "icono": "🧭",
-        "titulo": "Visita guiada",
+        "titulo": {
+        "es": "Visita guiada",
+        "fr": "Visite guidée",
+        "ca": "Visita guiada",
+        "en": "Guided tour"
+      },
         "_que": "Las ocho etapas de la banda de arriba (P-H + Mattieu, 18/09/2026).\nLa tabla vive en casa/tour.js; el motor en comun/tour-motor.js.\nSe empieza pequeno: si gusta, se extiende programa por programa."
       },
       {
         "id": "ayuda",
         "icono": "❔",
-        "titulo": "Ayuda"
+        "titulo": {
+        "es": "Ayuda",
+        "fr": "Aide",
+        "ca": "Ajuda",
+        "en": "Help"
+      }
       },
       {
         "id": "inicio",
         "icono": "🏠",
-        "titulo": "Volver al lanzador"
+        "titulo": {
+        "es": "Volver al lanzador",
+        "fr": "Revenir au lanceur",
+        "ca": "Tornar al llançador",
+        "en": "Back to the launcher"
+      }
       }
     ]
   },
