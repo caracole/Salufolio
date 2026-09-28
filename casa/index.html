@@ -318,10 +318,33 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
 
 <script>document.write('<script src="../comun/plantilla-mf.js?'+Date.now()+'"><\/script>');</script>
 <script>document.write('<script src="../pacientes/pacientes.js?'+Date.now()+'"><\/script>');</script>
-<link rel="stylesheet" href="../comun/tour.css">
-<script src="casa.js"></script>
-<script src="tour.js"></script>
-<script src="../comun/tour-motor.js"></script>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     L'ANTI-CACHE POUR TOUT LE MONDE (P-H, 25/09/2026)
+
+     Ces quatre-là se chargeaient sans anti-cache, alors que les deux
+     lignes au-dessus en ont depuis toujours. Trois fois en trois jours
+     nous avons cherché un bug qui n'était qu'un fichier périmé : le 🤐
+     du 22/09, le popup du 23/09, la dernière porte à l'instant. Chaque
+     fois : « c'est encore le cache ».
+
+     Et ce n'est pas qu'une gêne d'atelier. Les visiteurs de
+     salufolio.com ne videront JAMAIS leur cache : après chaque
+     publication ils voient une maison à moitié à jour et croient à des
+     pannes. Bertica la première.
+
+     Le patron est celui que P-H avait déjà posé deux lignes plus haut —
+     document.write + Date.now(). Rien de neuf, rien en dur, et rien à
+     penser à mettre à jour : c'est l'horloge qui s'en charge.
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var V = Date.now();
+  document.write('<link rel="stylesheet" href="../comun/tour.css?'+V+'">');
+  document.write('<script src="casa.js?'+V+'"><\/script>');
+  document.write('<script src="tour.js?'+V+'"><\/script>');
+  document.write('<script src="../comun/tour-motor.js?'+V+'"><\/script>');
+})();
+</script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    LANZADOR — el marco de Salufolio (P-H + Claude, 03/09/2026)
@@ -1764,6 +1787,36 @@ function cambiarPaciente(){
   if(e){ e.style.display='block'; e.scrollIntoView({behavior:'smooth', block:'nearest'}); }
   var n = document.getElementById('cuadro-nuevo');
   if(n) n.style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LES DEUX PORTES DE LA DERNIÈRE PORTE (P-H, 25/09/2026)
+
+   « La visite commence par le glossaire, c'est bien, mais ne devrait-elle
+     pas se terminer par une invitation à ouvrir la démo ou à créer un
+     nouveau patient ? »
+
+   La visite finissait sur un point final. Maintenant elle tend la main.
+   Le moteur du tour ne sait pas ce qu'est une démonstration ni un
+   patient : la table nomme ces trois fonctions, il les appelle. C'est
+   casa qui sait, et c'est ici qu'elle le dit.
+
+   « hayDemo » existe pour que le 👁 ne s'affiche pas là où il n'y a rien
+   à montrer — on ne propose pas une porte qui ne mène nulle part.
+   ══════════════════════════════════════════════════════════════════════ */
+function hayDemo(){
+  return (PACIENTES_TODOS || []).some(function(p){ return p && p.demo; });
+}
+function abreDemo(){
+  cambiarPaciente();                 /* revenir à l'accueil, montrer la liste */
+  for(var i = 0; i < PACIENTES_TODOS.length; i++){
+    if(PACIENTES_TODOS[i] && PACIENTES_TODOS[i].demo){ eligePaciente(i); return true; }
+  }
+  return false;
+}
+function pideNuevo(){
+  cambiarPaciente();                 /* d'abord dégager l'écran… */
+  abreNuevo();                       /* …ensuite le cadre, curseur sur Nombre */
 }
 
 /* ══ L'AIDE : un fichier montré dans l'écran, pas un message ══ */

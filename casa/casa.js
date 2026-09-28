@@ -4,9 +4,9 @@
    Un .js en vez de un .json: el navegador no puede leer un fichero
    local con fetch, pero sí cargar un script. Todo funciona sin servidor.
    ══════════════════════════════════════════════════════════════════════ */
-var SF_LANZADOR = window.SF_LANZADOR = {
+var SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.09.23-17:40:29",
+  "version": "2026.09.25-15:55:18",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -431,10 +431,10 @@ var SF_LANZADOR = window.SF_LANZADOR = {
       "en": "Not now, thanks"
     },
     "despues": {
-      "es": "Después, la brújula 🧭 de arriba se la vuelve a abrir cuando quiera.",
-      "fr": "Ensuite, la boussole 🧭 en haut vous la rouvrira quand vous voudrez.",
-      "ca": "Després, la brúixola 🧭 de dalt li la torna a obrir quan vullga.",
-      "en": "Afterwards, the compass 🧭 above will open it again whenever you like."
+      "es": "Después, la brújula 🧭 de arriba a la derecha se la vuelve a abrir cuando quiera.",
+      "fr": "Ensuite, la boussole 🧭 en haut à droite vous la rouvrira quand vous voudrez.",
+      "ca": "Després, la brúixola 🧭 de dalt a la dreta li la torna a obrir quan vullga.",
+      "en": "Afterwards, the compass 🧭 at the top right will open it again whenever you like."
     },
     "lengua": {
       "es": "¿Prefiere otra lengua?",
@@ -476,63 +476,63 @@ var SF_LANZADOR = window.SF_LANZADOR = {
         "id": "idioma",
         "icono": "🌐",
         "titulo": {
-        "es": "Idioma",
-        "fr": "Langue",
-        "ca": "Idioma",
-        "en": "Language"
-      }
+          "es": "Idioma",
+          "fr": "Langue",
+          "ca": "Idioma",
+          "en": "Language"
+        }
       },
       {
         "id": "tema",
         "icono": "🌓",
         "titulo": {
-        "es": "Paleta de colores",
-        "fr": "Palette de couleurs",
-        "ca": "Paleta de colors",
-        "en": "Colour palette"
-      }
+          "es": "Paleta de colores",
+          "fr": "Palette de couleurs",
+          "ca": "Paleta de colors",
+          "en": "Colour palette"
+        }
       },
       {
         "id": "tips",
         "icono": "💬",
         "titulo": {
-        "es": "Burbujas de ayuda",
-        "fr": "Bulles d'aide",
-        "ca": "Bambolles d'ajuda",
-        "en": "Help bubbles"
-      },
+          "es": "Burbujas de ayuda",
+          "fr": "Bulles d'aide",
+          "ca": "Bambolles d'ajuda",
+          "en": "Help bubbles"
+        },
         "_que": "Las burbujas se pueden apagar (P-H, 16/09/2026).\nEl ajuste vive en mf.js, con el idioma y el tema: no es de un\nprograma, es de quien mira. Vale para toda la casa y sobrevive\nde una sesion a otra."
-      },
-      {
-        "id": "tour",
-        "icono": "🧭",
-        "titulo": {
-        "es": "Visita guiada",
-        "fr": "Visite guidée",
-        "ca": "Visita guiada",
-        "en": "Guided tour"
-      },
-        "_que": "Las ocho etapas de la banda de arriba (P-H + Mattieu, 18/09/2026).\nLa tabla vive en casa/tour.js; el motor en comun/tour-motor.js.\nSe empieza pequeno: si gusta, se extiende programa por programa."
       },
       {
         "id": "ayuda",
         "icono": "❔",
         "titulo": {
-        "es": "Ayuda",
-        "fr": "Aide",
-        "ca": "Ajuda",
-        "en": "Help"
-      }
+          "es": "Ayuda",
+          "fr": "Aide",
+          "ca": "Ajuda",
+          "en": "Help"
+        }
       },
       {
         "id": "inicio",
         "icono": "🏠",
         "titulo": {
-        "es": "Volver al lanzador",
-        "fr": "Revenir au lanceur",
-        "ca": "Tornar al llançador",
-        "en": "Back to the launcher"
-      }
+          "es": "Volver al lanzador",
+          "fr": "Revenir au lanceur",
+          "ca": "Tornar al llançador",
+          "en": "Back to the launcher"
+        }
+      },
+      {
+        "id": "tour",
+        "icono": "🧭",
+        "titulo": {
+          "es": "Visita guiada",
+          "fr": "Visite guidée",
+          "ca": "Visita guiada",
+          "en": "Guided tour"
+        },
+        "_que": "Las ocho etapas de la banda de arriba (P-H + Mattieu, 18/09/2026).\nLa tabla vive en casa/tour.js; el motor en comun/tour-motor.js.\nSe empieza pequeno: si gusta, se extiende programa por programa."
       }
     ]
   },
