@@ -408,7 +408,7 @@ table.med .marcas{color:var(--tinta-suave);font-weight:400;
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    INFORMES PARA EL MÉDICO — Salufolio
-   Versión 2026.09.18-10:24:55
+   Versión 2026.09.19-18:12:56
 
    « Un bouton — PAS l'informe — un résumé à l'écran à montrer au toubib
      sans détours ni ménagements. »        — P-H, 19/07/2026, desde la UCE
@@ -779,7 +779,7 @@ function principioDe(n){
        rivaroxaban — on les regroupe sous le nom du principe actif. »
 
      La tabla existe desde el 07/09: 240 nombres para un centenar de
-     tratamientos, construida con los medicamentos de María del Carmen y de P-H.
+     tratamientos, construida con los medicamentos de dos expedientes reales.
      Yo cortaba a la primera palabra, y « Xarelto » y « Rivaroxaban »
      hacían dos líneas de lo mismo. */
   var p = _buscaPrincipio(clave);
@@ -1385,6 +1385,12 @@ function pFichas(){
 
 function pTabla(){
   var CT = SF_CONFIG.columnas_tabla;
+  /* 28/09/2026 : elle manquait. U est une LOCALE, declaree dans les cinq
+     autres fonctions qui s'en servent ; ici la ligne avait ete recopiee
+     sans sa declaration. pinta() mourait sur « U is not defined » avant
+     d'ecrire dans #hoja, la feuille gardait l'express, et les trois
+     formes montraient la meme chose. */
+  var U = SF_CONFIG.umbrales;
   var M = mesures().slice().reverse();
   if(!M.length) return '';
   /* ══════════════════════════════════════════════════════════════════

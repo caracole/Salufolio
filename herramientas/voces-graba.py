@@ -54,9 +54,20 @@
 #
 #      python3 herramientas/voces-graba.py              grabar lo que falta
 #      python3 herramientas/voces-graba.py --lang ca    anadir una lengua
+#      python3 herramientas/voces-graba.py --lang ca --lang en    las dos
+#      python3 herramientas/voces-graba.py --solo puerta_ultima
+#                                          un solo mensaje, no los 67
+#      python3 herramientas/voces-graba.py --solo bienvenida,licencia --lang en
 #      python3 herramientas/voces-graba.py --voces      ver sus voces
 #      python3 herramientas/voces-graba.py --prueba Sarah,Cristina,Sofia
 #                                          escuchar candidatas antes de gastar
+#
+#  ── POR QUE EXISTE « --solo » (P-H, 23/09/2026) ──
+#  El 23/09 pidio grabar un solo mensaje en dos lenguas. La opcion no
+#  existia: se paso por alto EN SILENCIO, y se grabaron los 67 mensajes
+#  en catalan. No es dinero perdido —esa lengua faltaba— pero no era lo
+#  pedido, y nada aviso. Ahora un nombre que no existe DETIENE el
+#  programa en vez de dejarlo trabajar de mas.
 # ══════════════════════════════════════════════════════════════════════
 
 import os, sys, re, json, glob, getpass, runpy, hashlib
@@ -306,12 +317,41 @@ def main():
     empezadas = sorted(set(os.path.basename(x)[:2].lower()
                            for x in glob.glob(os.path.join(VOZ, '*.mp3'))
                            if re.match(r'^[A-Z]{2}-', os.path.basename(x))))
-    pedidas = [a.split('=')[-1] for a in sys.argv[1:] if a.startswith('--lang')]
-    if '--lang' in sys.argv:
-        j = sys.argv.index('--lang')
-        if j + 1 < len(sys.argv): pedidas.append(sys.argv[j+1])
+    # ── TODOS los --lang de la linea, no solo el primero (23/09/2026) ──
+    # « --lang ca --lang en » no daba mas que el catalan: se buscaba el
+    # PRIMER --lang y se paraba ahi. El ingles no se grabo, y nada lo dijo.
+    def deLaLinea(nombre):
+        """cada « --x valor » y cada « --x=valor » de la linea de ordenes.
+        NO se llama « pide »: ese nombre es de la funcion que llama a
+        ElevenLabs, y una local del mismo nombre la tapa — el 25/09 el
+        programa murio justo despues del « ¿Grabar? s », al pedir el
+        primer mp3. Un nombre no se reutiliza porque suene bien."""
+        v = []
+        for n, a in enumerate(sys.argv[1:], start=1):
+            if a.startswith(nombre + '='):
+                v.append(a.split('=', 1)[1])
+            elif a == nombre and n + 1 < len(sys.argv):
+                v.append(sys.argv[n + 1])
+        return [x for x in ' '.join(v).replace(',', ' ').split() if x]
+
+    pedidas = deLaLinea('--lang')
     lenguas = [l for l in (T.get('idiomas') or ['es'])
                if l in empezadas or l in pedidas] or ['es']
+
+    # ── UN SOLO MENSAJE, SI SE PIDE ──
+    solo = deLaLinea('--solo')
+    if solo:
+        hay = set(usados)
+        for l in lenguas:
+            hay |= set(o for o, _ in textos_puerta(T, l))
+        fuera = [s for s in solo if s not in hay]
+        if fuera:
+            sys.exit('\n  No existe: ' + ', '.join(fuera) + '\n'
+                     '  Los nombres son los de « objetos » en tour.js, o los\n'
+                     '  de las puertas: puerta-<sala>, invita-<sala>,\n'
+                     '  puerta_ultima.\n')
+        print('\n  --solo : ' + ', '.join(solo)
+              + '   en ' + ', '.join(l.upper() for l in lenguas))
 
     tareas, recuperados = [], 0
     for lang in lenguas:
@@ -323,6 +363,7 @@ def main():
             t = (fuente.get(lang) or '').strip()
             if t: piezas.append((obj, t))
         piezas += textos_puerta(T, lang)
+        if solo: piezas = [(o, t) for (o, t) in piezas if o in solo]
         for obj, texto in piezas:
             base = patron.replace('{lang}', lang.upper()).replace('{objeto}', obj)
             base = os.path.splitext(base)[0]

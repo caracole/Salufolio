@@ -1,7 +1,7 @@
 /* EL MUSEO — las salas y los objetos */
-var SF_TOUR = window.SF_TOUR = {
+var SF_TOUR = {
   "id": "tour",
-  "version": "2026.09.23-17:40:29",
+  "version": "2026.09.25-15:39:08",
   "_doctrina": "EL MUSEO (P-H, 18-21/09/2026)\n\n  « On ouvre la porte d'une salle, on parcourt les étapes, et quand on a\n    terminé on sort en fermant la porte, et on va visiter une autre\n    salle. Ce n'est pas plus compliqué. »\n\nSALAS    una sala es UN CUADRO de la pantalla. Tiene su puerta: como se\n         encuentra al entrar (abierta o cerrada) y que se hace al salir\n         (cerrar, dejar, o como_estaba). La sala sin puerta es el\n         VESTIBULO: la banda de arriba, donde se esta nada mas entrar.\n\nOBJETOS  lo que se ensena, sin orden. Un objeto se describe UNA VEZ —su\n         texto, su voz, su fichero— y puede salir en varias salas.\n\nAntes la sala « El paciente » cubria DOS cuadros, y hacian falta puertas\nque abrir y cerrar a mitad de camino. Una sala, un cuadro: el problema\ndesaparece.\n\nAl acabar una sala —n/n, o salida anticipada— se cierra su puerta, y se\npasa a la siguiente, se elige otra en la carta, o se sale del museo.",
   "idiomas": [
     "es",
@@ -19,19 +19,19 @@ var SF_TOUR = window.SF_TOUR = {
   "_objetos": "Lo que se puede ensenar. La clave es el nombre del objeto — da nombre a su fichero de voz. « objeto » dice donde esta en la pagina. Campos opcionales: « corto » (texto breve), « voz » (quien lo dice, si no la de la sala).",
   "objetos": {
     "bienvenida": {
-      "icono": "\ud83e\udded",
+      "icono": "🧭",
       "voz": "b2htR0pMe28pYwCY9gnP",
       "_voz": "Sofia — la que recibe en la puerta, no el guia",
       "texto": {
-        "es": "Bienvenido a Salufolio. Esta casa guarda su expediente m\u00e9dico en su propio ordenador, y de ah\u00ed no sale nada. \u00bfQuiere que se la ense\u00f1e? Son nueve salas, y cinco minutos.",
-        "fr": "Bienvenue dans Salufolio. Cette maison garde votre dossier m\u00e9dical sur votre propre ordinateur, et rien n'en sort. Voulez-vous que je vous la montre ? Neuf salles, et cinq minutes.",
-        "ca": "Benvingut a Salufolio. Esta casa guarda el seu expedient m\u00e8dic en el seu propi ordinador, i d'ac\u00ed no ix res. Vol que li la mostre? S\u00f3n nou sales, i cinc minuts.",
+        "es": "Bienvenido a Salufolio. Esta casa guarda su expediente médico en su propio ordenador, y de ahí no sale nada. ¿Quiere que se la enseñe? Son nueve salas, y cinco minutos.",
+        "fr": "Bienvenue dans Salufolio. Cette maison garde votre dossier médical sur votre propre ordinateur, et rien n'en sort. Voulez-vous que je vous la montre ? Neuf salles, et cinq minutes.",
+        "ca": "Benvingut a Salufolio. Esta casa guarda el seu expedient mèdic en el seu propi ordinador, i d'ací no ix res. Vol que li la mostre? Són nou sales, i cinc minuts.",
         "en": "Welcome to Salufolio. This house keeps your medical record on your own computer, and nothing leaves it. Would you like me to show you around? Nine rooms, and five minutes."
       },
       "dicho": {
-        "es": "Bienvenido a Salufolio. Esta casa guarda su expediente m\u00e9dico en su propio ordenador, y de ah\u00ed no sale nada. \u00bfQuiere que se la ense\u00f1e? Son nueve salas, y cinco minutos.",
-        "fr": "Bienvenue dans Salufolio. Cette maison garde votre dossier m\u00e9dical sur votre propre ordinateur, et rien n'en sort. Voulez-vous que je vous la montre ? Neuf salles, et cinq minutes.",
-        "ca": "Benvingut a Salufolio. Esta casa guarda el seu expedient m\u00e8dic en el seu propi ordinador, i d'ac\u00ed no ix res. Vol que li la mostre? S\u00f3n nou sales, i cinc minuts.",
+        "es": "Bienvenido a Salufolio. Esta casa guarda su expediente médico en su propio ordenador, y de ahí no sale nada. ¿Quiere que se la enseñe? Son nueve salas, y cinco minutos.",
+        "fr": "Bienvenue dans Salufolio. Cette maison garde votre dossier médical sur votre propre ordinateur, et rien n'en sort. Voulez-vous que je vous la montre ? Neuf salles, et cinq minutes.",
+        "ca": "Benvingut a Salufolio. Esta casa guarda el seu expedient mèdic en el seu propi ordinador, i d'ací no ix res. Vol que li la mostre? Són nou sales, i cinc minuts.",
         "en": "Welcome to Salufolio. This house keeps your medical record on your own computer, and nothing leaves it. Would you like me to show you around? Nine rooms, and five minutes."
       }
     },
@@ -1337,10 +1337,10 @@ var SF_TOUR = window.SF_TOUR = {
     "en": "Shall we go on with {sala}?"
   },
   "puerta_ultima": {
-    "es": "Ha visto toda la casa. Al salir de aquí, toque una tarjeta y mire: es su expediente, en su ordenador, y nada sale de ahí.",
-    "fr": "Vous avez vu toute la maison. En sortant d'ici, touchez une carte et regardez : c'est votre dossier, sur votre ordinateur, et rien n'en sort.",
-    "ca": "Ha vist tota la casa. En eixir d'ací, toque una targeta i mire: és el seu expedient, en el seu ordinador, i res no n'ix.",
-    "en": "You have seen the whole house. On leaving here, tap a card and look: it is your record, on your computer, and nothing leaves it."
+    "es": "Ha visto toda la casa. Ahora le toca a usted: abra la demostración y toque lo que quiera —no puede romper nada—, o cree su propio paciente. Todo se queda en su ordenador.",
+    "fr": "Vous avez vu toute la maison. À vous maintenant : ouvrez la démonstration et touchez ce que vous voulez — vous ne pouvez rien casser —, ou créez votre propre patient. Tout reste sur votre ordinateur.",
+    "ca": "Ha vist tota la casa. Ara li toca a vosté: òbriga la demostració i toque el que vullga —no pot trencar res—, o cree el seu propi pacient. Tot es queda en el seu ordinador.",
+    "en": "You have seen the whole house. Your turn now: open the demonstration and touch whatever you like — you cannot break anything — or create your own patient. Everything stays on your computer."
   },
   "_puerta": "La puerta compone su frase sola (P-H, 19/09/2026): sabe que sala se acaba de ver y cual viene despues, asi que no hace falta un « fin » por sala. Menos textos que grabar, y funciona con toda sala que se anada.",
   "carta_texto": {
@@ -1435,6 +1435,24 @@ var SF_TOUR = window.SF_TOUR = {
       "fr": "Je n'ai rien à dire sur cette salle",
       "ca": "No tinc res a dir d'esta sala",
       "en": "I have nothing to say about this room"
+    },
+    "p_demo": {
+      "es": "Abrir la demostración — datos inventados, toque lo que quiera",
+      "fr": "Ouvrir la démonstration — données inventées, touchez à tout",
+      "ca": "Obrir la demostració — dades inventades, toque el que vullga",
+      "en": "Open the demonstration — invented data, touch anything"
+    },
+    "p_nuevo": {
+      "es": "Crear su propio paciente",
+      "fr": "Créer votre propre patient",
+      "ca": "Crear el seu propi pacient",
+      "en": "Create your own patient"
+    },
+    "p_fin": {
+      "es": "Terminar la visita",
+      "fr": "Terminer la visite",
+      "ca": "Acabar la visita",
+      "en": "End the visit"
     }
   },
   "sabido": {
@@ -1469,12 +1487,12 @@ var SF_TOUR = window.SF_TOUR = {
   "extras": [
     "bienvenida"
   ],
-  "_voces": "Quien habla, por papel \u2014 no por nombre en el codigo. El GUIA le acompana dentro de la sala; la de la PUERTA le dice lo que acaba de ver. \u00ab Ca pourrait etre une voix de femme (celle qui surveille la porte ?) \u00bb (P-H, 23/09/2026): cuando la voz cambia, se sabe que la sala ha terminado sin leer nada. Se pone el IDENTIFICADOR de ElevenLabs y no el nombre: en la cuenta hay dos voces llamadas \u00ab Oscar \u00bb, y cual gana dependeria del orden en que ElevenLabs las devuelva. El nombre va al lado, para los humanos.",
+  "_voces": "Quien habla, por papel — no por nombre en el codigo. El GUIA le acompana dentro de la sala; la de la PUERTA le dice lo que acaba de ver. « Ca pourrait etre une voix de femme (celle qui surveille la porte ?) » (P-H, 23/09/2026): cuando la voz cambia, se sabe que la sala ha terminado sin leer nada. Se pone el IDENTIFICADOR de ElevenLabs y no el nombre: en la cuenta hay dos voces llamadas « Oscar », y cual gana dependeria del orden en que ElevenLabs las devuelva. El nombre va al lado, para los humanos.",
   "voces": {
     "guia": "3mmJ2Z5SLZ9OkeZZcv5p",
     "_guia": "Oscar - Fluid pitch, easy to listen",
     "puerta": "b2htR0pMe28pYwCY9gnP",
-    "_puerta": "Sof\u00eda - Natural and Conversational. Elegida de oido el 23/09/2026 entre Laura, Cristina y Sof\u00eda: \u00ab sofia va bien pour les deux, forte expressive \u00bb (P-H). Laura quedaba bien en castellano pero en frances tenia acento \u2014 \u00ab canadien ou belge \u00bb. Si un dia hiciera falta una voz DISTINTA por lengua, aqui cabe una tabla: { \"es\": \"...\", \"fr\": \"...\" }."
+    "_puerta": "Sofía - Natural and Conversational. Elegida de oido el 23/09/2026 entre Laura, Cristina y Sofía: « sofia va bien pour les deux, forte expressive » (P-H). Laura quedaba bien en castellano pero en frances tenia acento — « canadien ou belge ». Si un dia hiciera falta una voz DISTINTA por lengua, aqui cabe una tabla: { \"es\": \"...\", \"fr\": \"...\" }."
   },
   "_puerta_mandos": "Los botones de la puerta, iguales en TODAS las salas — « adopter la meme presentation du cadre pour tout le monde » (P-H, 22/09/2026). El nombre de la sala siguiente ya no es un boton: vive en el texto, con su icono, y se toca ahi. Asi el cuadro no cambia de ancho de una puerta a otra. Su texto esta en « mandos ».",
   "puerta_mandos": [
@@ -1496,5 +1514,40 @@ var SF_TOUR = window.SF_TOUR = {
     "icono": "🤐",
     "tip": "p_pasar"
   },
-  "_puerta_pasar": "El icono para no opinar. Vale SOLO para la sala que se acaba de ver — « le no quiero opinar d'accord mais que no me pregunta mas pas d'accord ! d'accord si ca concerne la salle visitee » (P-H, 22/09/2026). En la puerta siguiente se vuelve a ofrecer. El icono se cambia aqui, en una linea."
+  "_puerta_pasar": "El icono para no opinar. Vale SOLO para la sala que se acaba de ver — « le no quiero opinar d'accord mais que no me pregunta mas pas d'accord ! d'accord si ca concerne la salle visitee » (P-H, 22/09/2026). En la puerta siguiente se vuelve a ofrecer. El icono se cambia aqui, en una linea.",
+  "puerta_ultima_mandos": [
+    {
+      "id": "demo",
+      "icono": "👁",
+      "tip": "p_demo",
+      "si_funcion": "hayDemo",
+      "accion": {
+        "hacer": "llamar",
+        "funcion": "abreDemo"
+      }
+    },
+    {
+      "id": "nuevo",
+      "icono": "🧑",
+      "tip": "p_nuevo",
+      "accion": {
+        "hacer": "llamar",
+        "funcion": "pideNuevo"
+      }
+    },
+    {
+      "id": "sep"
+    },
+    {
+      "id": "carta",
+      "icono": "🧭",
+      "tip": "p_carta"
+    },
+    {
+      "id": "salir",
+      "icono": "❌",
+      "tip": "p_fin"
+    }
+  ],
+  "_puerta_ultima_mandos": "Los mandos de la ULTIMA puerta (P-H, 25/09/2026): la visita acaba tendiendo la mano. « accion » nombra una funcion del programa visitado —el motor la llama sin saber lo que hace—; « si_funcion » borra el mando si esa funcion dice que no hay nada que ensenar. Se sale ANTES de actuar: el motor deshace lo que habia abierto, y sin pedir opinion —quien va a trabajar no debe encontrar un cuestionario en medio."
 };

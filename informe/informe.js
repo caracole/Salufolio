@@ -1,7 +1,7 @@
 /* INFORMES PARA EL MÉDICO — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "informe",
-  "version": "2026.09.18-10:24:55",
+  "version": "2026.09.19-18:12:56",
   "programa": "informe.html",
   "lanzador": "../casa/casa.js",
   "carpeta": "informe/",

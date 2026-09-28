@@ -1054,14 +1054,38 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
        Iguales en todas las salas. Para quitar uno, o cambiarle el icono,
        se toca « puerta_mandos » — aqui no hay nada que cambiar. */
     var b = m.querySelector('.sf-t-mandos');
-    var MD = T.puerta_mandos || [ {id:'carta', icono:'🧭', tip:'p_carta'},
-                                  {id:'sep'},
-                                  {id:'salir', icono:'❌', tip:'p_salir'} ];
+    /* ══ LA ÚLTIMA PUERTA TIENDE LA MANO (P-H, 25/09/2026) ══
+       « La visite commence par le glossaire, c'est bien, mais ne devrait-
+         elle pas se terminer par une invitation à ouvrir la démo ou à
+         créer un nouveau patient ? »
+
+       Sí: se acaba la visita y no hay nada que hacer. La voz ya lo dice
+       —« toque una tarjeta y mire »— pero la pantalla solo ofrecía una ❌.
+       La última puerta tiene ahora sus propios mandos, y el motor sigue
+       sin saber lo que hacen: la tabla nombra la función, él la llama. */
+    var MD = (!sig && T.puerta_ultima_mandos)
+          || T.puerta_mandos
+          || [ {id:'carta', icono:'🧭', tip:'p_carta'},
+               {id:'sep'},
+               {id:'salir', icono:'❌', tip:'p_salir'} ];
+
+    /* ── una puerta que no lleva a ningún sitio no se dibuja ──
+       « si_funcion » nombra una función del programa visitado; si dice
+       que no, el mando no sale. Así el 👁 desaparece donde no hay
+       demostración, sin que el motor sepa lo que es una demostración. */
+    MD = MD.filter(function(d){
+      if(!d || !d.si_funcion) return true;
+      try{ var f = window[d.si_funcion];
+           return (typeof f === 'function') ? !!f() : false; }
+      catch(x){ return false; }
+    });
+
     b.innerHTML = MD.map(function(d){
       if(!d || !d.id || d.id === 'sep') return '<span class="sf-t-sep"></span>';
       return '<button id="sf-p-' + d.id + '"'
            + (d.clase ? ' class="' + esc(d.clase) + '"' : '') + '>'
-           + esc(d.icono || '') + '</button>';
+           + esc(d.icono || '') + (d.letra ? ' ' + esc(tt(d.letra)) : '')
+           + '</button>';
     }).join('');
 
     var HACE = {
@@ -1077,7 +1101,23 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       if(!d || !d.id || d.id === 'sep') return;
       if(d.tip) ponTitulo(m, '#sf-p-' + d.id, d.tip);
       var bb = b.querySelector('#sf-p-' + d.id);
-      if(bb && HACE[d.id]) bb.onclick = HACE[d.id];
+      if(!bb) return;
+      /* ══ PRIMERO SE SALE, DESPUÉS SE ACTÚA ══
+         El orden no es un detalle: al salir, el motor DESHACE todo lo que
+         había abierto para ensenar. Si se abriera la demostración antes,
+         el propio recogido la cerraría un instante después.
+         Y se sale SIN pedir la opinión: quien acaba de decir « quiero
+         verlo » no debe encontrarse un cuestionario en medio del paso.
+         « Le programme travaille, pas l'humain. » */
+      if(d.accion){
+        var a = d.accion;
+        bb.onclick = function(){
+          sal(false);
+          abre(a);
+          PUERTAS.length = 0;   /* la visita ha terminado: nada que deshacer */
+        };
+      }
+      else if(HACE[d.id]) bb.onclick = HACE[d.id];
     });
 
     if(sig){

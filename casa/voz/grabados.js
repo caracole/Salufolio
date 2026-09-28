@@ -1,5 +1,5 @@
 /* LO GRABADO — escrito por herramientas/voces-registra.py
-   el 2026-09-23 17:55. No se toca a mano. */
+   el 2026-09-25 15:46. No se toca a mano. */
 var SF_GRABADOS = window.SF_GRABADOS = {
  "CA-abeja": {
   "fecha": "2026-09-23 17:47",
@@ -238,8 +238,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "Ja ha visitat El vestíbul — la banda de dalt."
  },
  "CA-puerta_ultima": {
-  "fecha": "2026-09-23 17:50",
-  "texto": "Ha vist tota la casa. En eixir d'ací, toque una targeta i mire: és el seu expedient, en el seu ordinador, i res no n'ix."
+  "fecha": "2026-09-25 15:46",
+  "texto": "Ha vist tota la casa. Ara li toca a vosté: òbriga la demostració i toque el que vullga —no pot trencar res—, o cree el seu propi pacient. Tot es queda en el seu ordinador."
  },
  "CA-radar": {
   "fecha": "2026-09-23 17:49",
@@ -506,8 +506,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "You have visited The hall — the top bar."
  },
  "EN-puerta_ultima": {
-  "fecha": "2026-09-23 17:55",
-  "texto": "You have seen the whole house. On leaving here, tap a card and look: it is your record, on your computer, and nothing leaves it."
+  "fecha": "2026-09-25 15:46",
+  "texto": "You have seen the whole house. Your turn now: open the demonstration and touch whatever you like — you cannot break anything — or create your own patient. Everything stays on your computer."
  },
  "EN-radar": {
   "fecha": "2026-09-23 17:54",
@@ -774,8 +774,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "Ya ha visitado El vestíbulo — la banda de arriba."
  },
  "ES-puerta_ultima": {
-  "fecha": "2026-09-23 10:45",
-  "texto": "Ha visto toda la casa. Al salir de aquí, toque una tarjeta y mire: es su expediente, en su ordenador, y nada sale de ahí."
+  "fecha": "2026-09-25 15:46",
+  "texto": "Ha visto toda la casa. Ahora le toca a usted: abra la demostración y toque lo que quiera —no puede romper nada—, o cree su propio paciente. Todo se queda en su ordenador."
  },
  "ES-radar": {
   "fecha": "2026-09-21 22:26",
@@ -1042,8 +1042,8 @@ var SF_GRABADOS = window.SF_GRABADOS = {
   "texto": "Vous avez visité Le hall — la bande du haut."
  },
  "FR-puerta_ultima": {
-  "fecha": "2026-09-23 10:46",
-  "texto": "Vous avez vu toute la maison. En sortant d'ici, touchez une carte et regardez : c'est votre dossier, sur votre ordinateur, et rien n'en sort."
+  "fecha": "2026-09-25 15:46",
+  "texto": "Vous avez vu toute la maison. À vous maintenant : ouvrez la démonstration et touchez ce que vous voulez — vous ne pouvez rien casser —, ou créez votre propre patient. Tout reste sur votre ordinateur."
  },
  "FR-radar": {
   "fecha": "2026-09-21 22:29",
