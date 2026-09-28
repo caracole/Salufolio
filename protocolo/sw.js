@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    SW.JS — le service-worker du Protocolo móvil
    (P-H + Claude, 08/09/2026)
 
@@ -18,7 +19,7 @@
    anciens caches sont effacés et le Protocolo se recharge.
    ══════════════════════════════════════════════════════════════════════ */
 
-const VERSION = 'protocolo-2026.09.15.2117';
+const VERSION = 'protocolo-2026.09.28.1531';
 const GUARDAR = [
   './',
   './index.html',

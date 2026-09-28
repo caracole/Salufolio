@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- Versión 2026.09.19-18:15:47 -->
 <meta charset="UTF-8">
 
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
@@ -597,6 +598,21 @@ body.sin-paciente #nav-res { opacity: .35; }
       <input class="txt" id="cfg-patient2" autocomplete="off" placeholder="Nombre / etiqueta" onchange="setPatient(this.value)">
       <div class="nota-campo" id="i-lsip"></div>
       <input class="txt" id="cfg-sip" autocomplete="off" inputmode="numeric" placeholder="SIP" onchange="setSip(this.value)">
+      <!-- ══ LA PORTE DU RETOUR (P-H, 28/09/2026) ══
+           « protocolo qui sait faire une sauvegarde ne sait meme pas la
+             restaurer ? ce fichier json il sert donc a quoi ? »
+
+           Il savait. Mais la porte ne s'ouvrait qu'a deux moments — l'assistant
+           du premier pas, et l'ecran « aucun patient » — et le 22/09 une seule
+           journee saisie les a fermees toutes les deux. Elle est ici desormais,
+           chez le patient, ouverte tout le temps.
+
+           Au-dessus du bouton, l'age de la derniere copie dechargee : ce qui
+           dort ne se voit pas, ce qui se voit se fait. -->
+      <div id="resp-caja" style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px">
+        <div class="nota-campo" id="resp-edad" style="line-height:1.5"></div>
+        <button class="btn sec" style="width:100%;margin-top:6px" onclick="restaurarPaciente()" id="i-brestpac"></button>
+      </div>
     </div></details>
     <details class="acc" id="acc-meds"><summary><span id="i-tmeds"></span></summary><div class="accb">
       <div id="meds-lista"></div>
@@ -714,7 +730,7 @@ window.onerror = function (msg, src, line, col) {
 /* Adresse du PC injectée par le serveur au téléchargement (« Instalar en
    este teléfono ») — l'app locale naît déjà configurée. */
 const MFP_PC_DEF = '';
-const MFP_VERSION = '2026.9.8.81-SAT';
+const MFP_VERSION = '2026.9.28.82-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -894,6 +910,18 @@ const IDIOMAS = {
     b_fbenv:"Enviar",
     b_fbanul:"Anular",
     b_restaurar:"📂 Restaurar copia",
+    b_restpac:"📂 Restaurar paciente",
+    rp_tit:"📂 Restaurar paciente",
+    rp_de_archivo:"Desde un archivo guardado",
+    rp_de_interno:"Volver al último instantáneo",
+    rp_nada:"No hay instantáneo interno todavía.",
+    rp_aviso:"Restaurar REEMPLAZA los datos de este paciente. Lo que no esté en la copia se pierde.",
+    resp_nunca:"⚠ Nunca ha descargado una copia.",
+    resp_hoy:"Última copia descargada: hoy.",
+    resp_dias:"Última copia descargada: hace {n} días.",
+    resp_viejo:"⚠ Hace {n} días que no descarga una copia. Un teléfono se pierde, se actualiza, se cambia.",
+    resp_int:"Instantáneo interno: {cuando}.",
+    resp_ahora:"⬇ Descargar una copia ahora",
     disp_solo:"Los datos viven en este dispositivo.",
     pc_off:"⚪ Sin conexión.<br>Si Salufolio no responde : comprobar que esté abierto en el ordenador, que el teléfono use el mismo WiFi, y la dirección de abajo.",
     pc_on:"🟢 Salufolio responde en el ordenador — puede enviar.",
@@ -1106,6 +1134,18 @@ const IDIOMAS = {
     b_fbenv:"Enviar",
     b_fbanul:"Anul·lar",
     b_restaurar:"📂 Restaurar còpia",
+    b_restpac:"📂 Restaurar pacient",
+    rp_tit:"📂 Restaurar pacient",
+    rp_de_archivo:"Des d'un arxiu guardat",
+    rp_de_interno:"Tornar a l'últim instantani",
+    rp_nada:"Encara no hi ha instantani intern.",
+    rp_aviso:"Restaurar REEMPLAÇA les dades d'este pacient. El que no estiga en la còpia es perd.",
+    resp_nunca:"⚠ Mai no ha descarregat una còpia.",
+    resp_hoy:"Última còpia descarregada: hui.",
+    resp_dias:"Última còpia descarregada: fa {n} dies.",
+    resp_viejo:"⚠ Fa {n} dies que no descarrega una còpia. Un telèfon es perd, s'actualitza, es canvia.",
+    resp_int:"Instantani intern: {cuando}.",
+    resp_ahora:"⬇ Descarregar una còpia ara",
     disp_solo:"Les dades viuen en este dispositiu.",
     pc_off:"⚪ Sense connexió.<br>Si Salufolio no respon : comproveu que estiga obert a l’ordinador, que el telèfon use el mateix WiFi, i l’adreça de baix.",
     pc_on:"🟢 Salufolio respon a l’ordinador — podeu enviar.",
@@ -1318,6 +1358,18 @@ const IDIOMAS = {
     b_fbenv:"Envoyer",
     b_fbanul:"Annuler",
     b_restaurar:"📂 Restaurer une copie",
+    b_restpac:"📂 Restaurer le patient",
+    rp_tit:"📂 Restaurer le patient",
+    rp_de_archivo:"Depuis un fichier enregistré",
+    rp_de_interno:"Revenir au dernier instantané",
+    rp_nada:"Pas encore d'instantané interne.",
+    rp_aviso:"Restaurer REMPLACE les données de ce patient. Ce qui n'est pas dans la copie est perdu.",
+    resp_nunca:"⚠ Vous n'avez jamais déchargé de copie.",
+    resp_hoy:"Dernière copie déchargée : aujourd'hui.",
+    resp_dias:"Dernière copie déchargée : il y a {n} jours.",
+    resp_viejo:"⚠ Il y a {n} jours que vous n'avez pas déchargé de copie. Un téléphone se perd, se met à jour, se change.",
+    resp_int:"Instantané interne : {cuando}.",
+    resp_ahora:"⬇ Décharger une copie maintenant",
     disp_solo:"Les données vivent sur cet appareil.",
     pc_off:"⚪ Pas de connexion.<br>Si Salufolio ne répond pas : vérifiez qu’il est ouvert sur l’ordinateur, que le téléphone est sur le même WiFi, et l’adresse ci-dessous.",
     pc_on:"🟢 Salufolio répond sur l’ordinateur — vous pouvez envoyer.",
@@ -1531,6 +1583,18 @@ const IDIOMAS = {
     b_fbenv:"Send",
     b_fbanul:"Cancel",
     b_restaurar:"📂 Restore a copy",
+    b_restpac:"📂 Restore patient",
+    rp_tit:"📂 Restore patient",
+    rp_de_archivo:"From a saved file",
+    rp_de_interno:"Back to the last snapshot",
+    rp_nada:"No internal snapshot yet.",
+    rp_aviso:"Restoring REPLACES this patient's data. Whatever is not in the copy is lost.",
+    resp_nunca:"⚠ You have never downloaded a copy.",
+    resp_hoy:"Last copy downloaded: today.",
+    resp_dias:"Last copy downloaded: {n} days ago.",
+    resp_viejo:"⚠ It has been {n} days since you downloaded a copy. A phone gets lost, updated, replaced.",
+    resp_int:"Internal snapshot: {cuando}.",
+    resp_ahora:"⬇ Download a copy now",
     disp_solo:"Data lives on this device.",
     pc_off:"⚪ No connection.<br>If Salufolio does not respond: check it is open on the computer, that the phone uses the same WiFi, and the address below.",
     pc_on:"🟢 Salufolio responds on the computer — you can send.",
@@ -3610,6 +3674,29 @@ function arranqueInicial() {
      RECEVOIR : l'assistant offre justement de restaurer une copie, ou d'en
      créer un. On propose donc, au lieu d'exiger un nom d'emblée. */
   asistente();
+  /* ══ LE RAPPEL ARRIVE QUAND L'HUMAIN EST LA (P-H, 28/09/2026) ══
+     Une sauvegarde qui demande un geste ne se propose pas a la fermeture —
+     personne n'est la pour dire oui. Elle se propose a l'OUVERTURE, et
+     seulement si la derniere copie est trop vieille. Le delai est dans la
+     table, pas ici. */
+  pintaRespEdad();
+  setTimeout(recuerdaRespaldo, 1400);
+}
+
+/* ── l'invitation, une fois par jour au plus, et jamais si tout est frais ── */
+function recuerdaRespaldo() {
+  if (lsGet('mfp_asist', null) === null) return;   /* premier pas : on n'insiste pas */
+  if (!getMeds().length) return;                   /* rien a sauvegarder */
+  var n = respaldoDias();
+  if (n !== null && n < RESPALDO.dias_recuerdo) return;
+  var hoy = new Date().toISOString().slice(0, 10), visto;
+  try { visto = JSON.parse(_arm().getItem('mfp_resp_visto')); } catch (e) {}
+  if (visto === hoy) return;                       /* deja propose aujourd'hui */
+  try { _arm().setItem('mfp_resp_visto', JSON.stringify(hoy)); } catch (e) {}
+  /* le titre dit ce que le OUI va faire — decharger, pas restaurer */
+  confirmar(t('resp_ahora'),
+    (n === null ? t('resp_nunca') : t('resp_viejo').replace('{n}', n)),
+    function () { exportarJSON(); });
 }
 function irPauta() {
   ir('datos');
@@ -5837,13 +5924,204 @@ function restaurarArchivo(file) {
         _arm().setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
         /* si le casier a échoué malgré tout, ne pas rouvrir l'assistant en boucle */
         if (!lsGet('mfp_asist', null)) _arm().setItem('mfp_asist', JSON.stringify('1'));
-        toast('✓ restaurado — recargando…');
+        toast('✓ restaurado — recargando…'); nosVamos();
         setTimeout(() => location.reload(), 700);
       });
     } catch (e) { toast('⚠ archivo no válido'); }
   };
   r.readAsText(file);
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA SAUVEGARDE QUI SE FAIT TOUTE SEULE (P-H, 28/09/2026)
+
+   « sur fermeture de l'application on effectue une sauvegarde automatique »
+
+   Et il avait raison sur le principe, mais le geste demande trois pieces,
+   parce qu'aucune ne suffit :
+
+   ① L'INSTANTANE INTERNE — ecrit chaque fois que l'application passe en
+     arriere-plan. C'est le seul signal fiable sur telephone : « fermer »
+     une application, c'est appuyer sur Accueil ou la balayer hors du
+     selecteur de taches, et alors beforeunload ne part pas. Eprouve au
+     banc le 28/09 : onglet cache = aucun telechargement, aucune exception.
+     L'instantane vit dans le MEME tiroir, donc il n'aurait rien empeche
+     le 23/09 — il ne pretend pas a ca. Il donne le RETOUR EN ARRIERE :
+     une fiche effacee par erreur, une journee abimee, on revient.
+
+   ② LE FICHIER, sur pagehide et beforeunload — son code, qui marche
+     quand on ferme un onglet ou qu'on s'en va. Mais BORNE : seulement si
+     les donnees ont change, et au plus une fois par jour. Sans cette
+     borne, chaque bascule d'application deposerait un fichier, et cent
+     fichiers dont on ignore lequel vaut quelque chose ne sont pas une
+     sauvegarde, c'est un depotoir.
+
+   ③ L'AGE DE LA DERNIERE COPIE, ecrit en clair chez le patient, et
+     l'invitation a l'ouverture quand c'est trop vieux — quand il est la
+     pour dire oui. Ce qui dort ne se voit pas.
+
+   Rien en dur : les deux delais sont dans la table ci-dessous.
+   ══════════════════════════════════════════════════════════════════════ */
+var RESPALDO = {
+  _que: 'Les reglages de la sauvegarde automatique. On les change ici.',
+  dias_recuerdo: 7,      /* au-dela, l'application invite a decharger */
+  horas_fichero: 20,     /* pas plus d'un fichier automatique par tranche */
+  clave: 'mfp_respaldo', /* l'instantane interne */
+  clave_copia: 'mfp_ult_copia',
+  clave_huella: 'mfp_ult_huella'
+};
+
+/* ── une empreinte courte, pour savoir si quelque chose a bouge ── */
+function _huella(txt) {
+  var h = 5381, i = txt.length;
+  while (i) h = (h * 33 ^ txt.charCodeAt(--i)) >>> 0;
+  return String(h) + '.' + txt.length;
+}
+
+/* ── l'instantane interne : tout le patient, tel quel ── */
+function respaldoInterno() {
+  try {
+    if (!getActivo() && !getMeds().length) return false;
+    var d = payloadExport();
+    var txt = JSON.stringify(d);
+    _arm().setItem(RESPALDO.clave, JSON.stringify({
+      cuando: new Date().toISOString(), datos: d
+    }));
+    return txt;
+  } catch (e) { return false; }
+}
+
+function respaldoLeer() {
+  try { return JSON.parse(_arm().getItem(RESPALDO.clave)); } catch (e) { return null; }
+}
+
+/* ══ NOS PROPRES RECHARGEMENTS NE SONT PAS DES FERMETURES ══
+   Eprouve au banc le 28/09 : restaurer finit par location.reload(), qui
+   declenche pagehide, qui declenchait le fichier automatique — on restaurait
+   depuis un fichier et on en redechargeait un aussitot. Un rechargement que
+   NOUS provoquons n'est pas quelqu'un qui s'en va. */
+var _nosVamos = false;
+function nosVamos() { _nosVamos = true; }
+
+/* ── le fichier, borne : change ET pas trop recent ── */
+function respaldoFichero() {
+  if (_nosVamos) return;
+  var txt;
+  try { txt = JSON.stringify(payloadExport()); } catch (e) { return; }
+  var hue = _huella(txt);
+  var ant, cuando;
+  try { ant = _arm().getItem(RESPALDO.clave_huella); } catch (e) {}
+  try { cuando = JSON.parse(_arm().getItem(RESPALDO.clave_copia)); } catch (e) {}
+  if (ant === hue) return;                       /* rien n'a change */
+  if (cuando) {
+    var h = (Date.now() - new Date(cuando).getTime()) / 3600000;
+    if (h < RESPALDO.horas_fichero) return;      /* deja fait tout a l'heure */
+  }
+  try {
+    var d = new Date();
+    var st = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-'
+           + String(d.getDate()).padStart(2,'0') + '_'
+           + String(d.getHours()).padStart(2,'0') + 'h'
+           + String(d.getMinutes()).padStart(2,'0');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' }));
+    a.download = 'Salufolio_Protocolo_'
+      + getPatient().split(' ')[0].replace(/[^A-Za-z0-9]/g, '')
+      + '_auto_v' + st + '.json';
+    a.click();
+    /* on ne note la copie que si le navigateur l'a acceptee — sur telephone
+       il refuse souvent en silence, et une fausse trace vaut moins que rien.
+       La marque part donc au retour au premier plan, pas ici. */
+    respaldoMarcar(hue);
+  } catch (e) {}
+}
+
+function respaldoMarcar(hue) {
+  try {
+    _arm().setItem(RESPALDO.clave_copia, JSON.stringify(new Date().toISOString()));
+    if (hue) _arm().setItem(RESPALDO.clave_huella, hue);
+    else { try { _arm().setItem(RESPALDO.clave_huella,
+      _huella(JSON.stringify(payloadExport()))); } catch (e) {} }
+  } catch (e) {}
+  pintaRespEdad();
+}
+
+/* ── l'age de la derniere copie, chez le patient ── */
+function respaldoDias() {
+  var c;
+  try { c = JSON.parse(_arm().getItem(RESPALDO.clave_copia)); } catch (e) {}
+  if (!c) return null;
+  return Math.floor((Date.now() - new Date(c).getTime()) / 86400000);
+}
+
+function pintaRespEdad() {
+  var z = document.getElementById('resp-edad'); if (!z) return;
+  var n = respaldoDias(), h = '';
+  if (n === null)      h = t('resp_nunca');
+  else if (n === 0)    h = t('resp_hoy');
+  else if (n >= RESPALDO.dias_recuerdo) h = t('resp_viejo').replace('{n}', n);
+  else                 h = t('resp_dias').replace('{n}', n);
+  var r = respaldoLeer();
+  if (r && r.cuando) {
+    var q = new Date(r.cuando);
+    h += '<br>' + t('resp_int').replace('{cuando}',
+      q.toLocaleDateString() + ' ' + String(q.getHours()).padStart(2,'0')
+      + ':' + String(q.getMinutes()).padStart(2,'0'));
+  }
+  z.innerHTML = h;
+}
+
+/* ── le bouton : deux sources, et on dit ce que ca remplace ── */
+function restaurarPaciente() {
+  var r = respaldoLeer();
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:96;background:rgba(0,0,0,.65);'
+    + 'display:flex;align-items:center;justify-content:center;padding:18px';
+  var cuando = '';
+  if (r && r.cuando) {
+    var q = new Date(r.cuando);
+    cuando = ' — ' + q.toLocaleDateString() + ' '
+      + String(q.getHours()).padStart(2,'0') + ':'
+      + String(q.getMinutes()).padStart(2,'0');
+  }
+  ov.innerHTML = '<div class="dlg">'
+    + '<div style="font-size:17px;font-weight:700;margin-bottom:8px">' + t('rp_tit') + '</div>'
+    + '<p class="nota-campo" style="font-size:13px;line-height:1.5;margin:0 0 12px">'
+      + t('rp_aviso') + '</p>'
+    + '<button class="btn" style="width:100%" id="rp-arch">' + t('rp_de_archivo') + '</button>'
+    + (r ? '<button class="btn sec" style="width:100%;margin-top:8px" id="rp-int">'
+             + t('rp_de_interno') + cuando + '</button>'
+         : '<div class="nota-campo" style="margin-top:8px">' + t('rp_nada') + '</div>')
+    + '<button class="hbtn2" style="width:100%;margin-top:10px;font-size:12px" id="rp-no">'
+      + t('d_can') + '</button></div>';
+  document.body.appendChild(ov);
+  ov.querySelector('#rp-no').onclick = function () { ov.remove(); };
+  ov.querySelector('#rp-arch').onclick = function () {
+    ov.remove();
+    var f = document.getElementById('rest-file'); if (f) f.click();
+  };
+  var bi = ov.querySelector('#rp-int');
+  if (bi) bi.onclick = function () {
+    ov.remove();
+    confirmar(t('rp_tit'), t('rp_de_interno') + cuando + '\n\n' + t('rp_aviso'), function () {
+      restaurarDesdeObj(r.datos);
+      toast('✓ restaurado — recargando…'); nosVamos();
+      setTimeout(function () { location.reload(); }, 700);
+    });
+  };
+}
+
+/* ── les trois attaches ── */
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState === 'hidden') respaldoInterno();
+});
+window.addEventListener('pagehide', function () {
+  respaldoInterno(); respaldoFichero();
+});
+window.addEventListener('beforeunload', function () {
+  respaldoInterno(); respaldoFichero();
+});
+
 /* ═══ ASISTENTE DE PRIMER ARRANQUE (dessiné par P-H) ═══ */
 function asistente() {
   if (lsGet('mfp_asist', null)) return;
@@ -5909,6 +6187,9 @@ function exportarJSON(alFinal) {
   a.download = 'Salufolio_Protocolo_' + getPatient().split(' ')[0].replace(/[^A-Za-z0-9]/g, '') + '_v' + stamp + '.json';
   a.click();
   alVolverAlPrimerPlano(function () {
+    /* 28/09 : une copie dechargee A LA MAIN compte — c'est celle dont
+       l'age s'affiche chez le patient, et qui repousse le rappel. */
+    respaldoMarcar();
     if (typeof alFinal === 'function') alFinal();
     else toast('✓ JSON descargado');
   });
@@ -5955,7 +6236,7 @@ function aplicarIdiomas() {
     'i-tcomp':'t_comp','i-tmeds':'t_meds','i-tpac':'t_pac','i-bgconst':'b_gconst','i-bgobs':'b_gobs',
     'i-bpunt':'b_punt','i-bdesc':'b_desc','i-bcopi':'b_copi','i-bcomp':'b_comp','i-baddmed':'b_addmed',
     'i-carrit':'c_arritmia','i-lfrec':'fr_tit','i-lfin':'fin_trat','i-lini':'ini_trat','i-ldur':'dur_trat',
-    'i-nhoy':'nav_med','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-nres':'nav_res','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-lsip':'sip_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp','i-bta':'c_bta','i-bps':'c_bps','i-bpeso':'c_bpeso','i-btemp':'c_btemp',
+    'i-nhoy':'nav_med','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-nres':'nav_res','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-brestpac':'b_restpac','i-lsip':'sip_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp','i-bta':'c_bta','i-bps':'c_bps','i-bpeso':'c_bpeso','i-btemp':'c_btemp',
 
     'i-lpanal':'l_panal' };
   Object.entries(M).forEach(([id, k]) => { const e = document.getElementById(id); if (e) e.textContent = t(k); });
