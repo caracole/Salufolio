@@ -6,13 +6,13 @@
    adivinarlo: hace falta esta tabla. Crece con el uso — cuando un nombre
    no esta aqui, MF.principiosDesconocidos() lo senala.
 
-   Construida (07/09/2026) con los medicamentos de Ana y de
-   Pierre-Henri: mas de 240 nombres distintos, que son un centenar de
+   Construida (07/09/2026) con los medicamentos de dos expedientes
+   reales: mas de 240 nombres distintos, que son un centenar de
    tratamientos.
    ══════════════════════════════════════════════════════════════════════ */
 var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
   "_doctrina": "LOS PRINCIPIOS ACTIVOS (P-H, 07/09/2026)\n\nXarelto y Rivaroxaban son el mismo tratamiento: uno es el nombre comercial, el otro el principio activo. El programa no puede adivinarlo — hace falta esta tabla.\n\nVive en /Salufolio/Medicamentos/ y NO en V2/comun/: sirve a TODOS los pacientes y sobrevivira a las versiones del programa. Los datos de un lado, el codigo del otro.\n\nCrece con el uso: cuando un nombre no esta aqui, el programa lo senala y usted lo anade.",
-  "version": "2026.09.07-5",
+  "version": "2026.09.30-09:10:00",
   "_como": "clave = principio activo (normalizado) · valor = { nombre, comerciales[], grupo }",
   "principios": {
     "rivaroxaban": {
@@ -472,6 +472,15 @@ var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
       "grupo": "antifúngico",
       "categoria": "medicamento"
     },
+    "fluconazol": {
+      "nombre": "Fluconazol",
+      "comerciales": [
+        "diflucan"
+      ],
+      "grupo": "antifúngico sistémico",
+      "categoria": "medicamento",
+      "_aviso": "Ficha técnica: inhibe el CYP3A4 y aumenta la exposición al rivaroxabán (AUC ×1,4 con 400 mg/día); puede alargar el QT, como otros fármacos que lo alargan (p. ej. donepezilo). Señalarlo al farmacéutico si se toman juntos. (P-H, 29/09/2026)"
+    },
     "ambroxol": {
       "nombre": "Ambroxol",
       "comerciales": [
@@ -815,7 +824,7 @@ var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
       "categoria": "parafarmacia"
     }
   },
-  "_pacientes": "Construida con los medicamentos de Ana y de Pierre-Henri. Sirve a todos.",
+  "_pacientes": "Construida con los medicamentos de dos expedientes reales. Sirve a todos.",
   "_categorias": {
     "medicamento": {
       "es": "Medicamentos",
