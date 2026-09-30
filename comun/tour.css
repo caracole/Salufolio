@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    LA VISITA — su aspecto · /Salufolio/comun/tour.css
-   Versión 2026.09.23-10:30:57
+   Versión 2026.09.29-12:14:00
 
    Nada en duro en el motor: los colores vienen de la paleta de la casa,
    y cambian con ella.
@@ -46,11 +46,38 @@
 .sf-t-caja{
   position:relative;
   max-height:calc(100vh - 24px); overflow-y:auto;
-  /* ① más cerca de la luz que la página */
-  background:
+  /* ══════════════════════════════════════════════════════════════════
+     ① MÁS CERCA DE LA LUZ QUE LA PÁGINA — Y OPACO SIN INVENTAR COLOR
+     (P-H, 29/09/2026)
+
+     « Le fond du cadre a une transparence un peu genante. » Primer
+     remedio mio: un color de repli OPACO. Y era SOMBRIO, en duro, con
+     el tema claro puesto: « du coup on ne voit plus rien, le karaoke
+     est fond noir ». Falta mia —justo lo que la doctrina prohibe:
+     un color en el codigo.
+
+     « Pourquoi ne pas diminuer la transparence ? Avant c'etait bien
+       mais trop transparent. » Eso si se puede hacer SIN inventar nada:
+     la misma capa, puesta DOS VECES. Dos velos de alfa 0,62 dejan pasar
+     0,38 × 0,38 = 0,14 — es decir 0,86 de cubierta. El color sigue
+     siendo el de la casa, y sigue al tema.
+
+     EL MANDO ES EL NUMERO DE CAPAS, y esta en la linea de abajo:
+         una capa  = como estaba (demasiado transparente)
+         dos capas = 0,86        ← puesto
+         tres      = 0,95 (casi opaco)
+     Se anade o se quita « var(--capa-tour), » y ya esta.
+
+     « --surface-tour » se queda como puerta de salida: si algun dia lo
+     declaras en la paleta de casa, manda el; si no, se toma
+     « --surface2 » y « --surface », como antes.
+     ══════════════════════════════════════════════════════════════════ */
+  --capa-tour:
     linear-gradient(180deg,
-      color-mix(in srgb, var(--surface2, #1c1c22) 96%, white) 0%,
-      var(--surface, #16161b) 62%);
+      color-mix(in srgb,
+        var(--surface-tour, var(--surface2, #1c1c22)) 92%, white) 0%,
+      var(--surface-tour, var(--surface, #16161b)) 62%);
+  background: var(--capa-tour), var(--capa-tour);
   border:1px solid color-mix(in srgb, var(--accent, #4a9eff) 60%, transparent);
   border-radius:14px; padding:15px 18px 12px;
   font-family:var(--sans, system-ui, sans-serif);
@@ -71,7 +98,10 @@
     inset 0 -1px 0 rgba(0,0,0,.30);
 }
 
-/* el difuminado, discreto: ayuda cuando hay algo detrás */
+/* el difuminado, discreto: ayuda cuando hay algo detrás
+   (quitado y devuelto el 29/09/2026: con el fondo OPACO no suavizaba
+    nada y solo costaba GPU; con las dos capas vuelve a tener sentido —
+    queda un 0,14 por el que se ve, y es justo ese el que se difumina) */
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)){
   .sf-t-caja{
     -webkit-backdrop-filter: blur(9px) saturate(1.2);
@@ -339,21 +369,31 @@
      texte : ¿Seguimos con 📁 Sus expedientes ? »
 
    No es un boton mas: es la propia frase, y la parte que se puede tocar
-   lleva el icono de la sala. Subrayado punteado para que se vea que se
-   toca, sin gritarlo. Asi el cuadro mide siempre lo mismo, se llame la
-   sala « El vestibulo » o « Los pacientes conocidos ».
+   lleva el icono de la sala. Asi el cuadro mide siempre lo mismo, se
+   llame la sala « El vestibulo » o « Los pacientes conocidos ».
+
+   ── EL 29/09/2026 SE LE HA PUESTO UN CONTORNO ──
+   « Le texte de confirmation, entoure-le comme le bouton non — il faut
+     deviner pour cliquer dessus. » (P-H)
+
+   Llevaba un subrayado punteado, « para que se vea que se toca, sin
+   gritarlo ». Gritaba demasiado poco: nadie veia que era un boton.
+   Ahora los dos forman PAREJA —misma pastilla, mismo alto— y se
+   distinguen por lo que son, no por su forma: el « si » va relleno con
+   el color de accion, el « no » solo perfilado en gris.
    ══════════════════════════════════════════════════════════════════════ */
 .sf-p-ir{
   display:inline-flex; align-items:center; gap:5px;
-  background:transparent; border:0; border-radius:7px;
-  padding:1px 5px; margin:0 1px; cursor:pointer;
+  padding:2px 11px; margin:0 1px; cursor:pointer;
+  border:1px solid color-mix(in srgb, var(--accent, #4a9eff) 60%, transparent);
+  border-radius:999px;
+  background:color-mix(in srgb, var(--accent, #4a9eff) 13%, transparent);
   font:inherit; color:var(--accent, #4a9eff);
-  border-bottom:1px dashed color-mix(in srgb, var(--accent, #4a9eff) 60%, transparent);
-  transition:background .14s, color .14s;
+  transition:background .14s, color .14s, border-color .14s;
 }
 .sf-p-ir:hover{
-  background:color-mix(in srgb, var(--accent, #4a9eff) 15%, transparent);
-  border-bottom-color:var(--accent, #4a9eff);
+  background:color-mix(in srgb, var(--accent, #4a9eff) 26%, transparent);
+  border-color:var(--accent, #4a9eff);
 }
 .sf-p-ir-i{ font-size:1.15em; line-height:1; }
 .sf-p-ir-n{ font-weight:600; }
@@ -381,4 +421,31 @@
   #sf-tour{ bottom:12px; }
   .sf-t-caja{ padding:12px 14px 10px; }
   .sf-t-texto{ font-size:13px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL [ No ] DE LA PUERTA (Mattieu + P-H, 29/09/2026)
+
+   « Dans mon esprit : à droite du libellé invitation à poursuivre
+     (salle suivante) [ NON ]. »
+
+   No es un destino: es una RESPUESTA. Por eso no lleva el subrayado
+   punteado de « sf-p-ir » —que promete « esto te lleva a algun sitio »—
+   sino su propio recuadro, discreto, en el gris del texto secundario.
+
+   Y separado del nombre de la sala: el nombre entero es tocable, y un
+   dedo que resbala del « no » al « si » no debe cambiar de sala.
+   ══════════════════════════════════════════════════════════════════════ */
+.sf-p-no{
+  display:inline-flex; align-items:center; margin-left:10px; padding:2px 11px;
+  background:transparent; cursor:pointer;
+  border:1px solid var(--border, #3a3a48); border-radius:999px;
+  font:inherit; font-size:.92em; font-weight:600;
+  color:var(--muted, #9a9aa8);
+  transition:background .14s, color .14s, border-color .14s;
+}
+.sf-p-no:hover{
+  background:var(--surface2, rgba(255,255,255,.06));
+  color:var(--text, #e8e8ef);
+  border-color:var(--muted, #9a9aa8);
 }

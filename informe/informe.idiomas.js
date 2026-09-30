@@ -1,4 +1,29 @@
-/* Los textos del informe */
+/* ══════════════════════════════════════════════════════════════════════
+   LOS TEXTOS DEL INFORME — /Salufolio/informe/informe.idiomas.js
+   Versión 2026.09.29-15:55:00
+
+   Nada escrito en el código.
+
+   ── EL 29/09/2026, UNA LINEA FUERA DEL COMENTARIO ──
+   « 💊 sec_medicacion (meses_ult · 83 · 30 principios »  (P-H)
+
+   La cabecera abria el comentario y lo cerraba en la MISMA linea; debajo,
+   suelta, quedaba la linea de la version. Esa segunda linea ya no era un
+   comentario: era codigo. « Unexpected number ».
+
+   El fichero entero no se ejecutaba. SF_TEXTOS no existia. Y las 104
+   claves caian en su ultimo recurso —« o = … || k »— que enseña LA CLAVE
+   en lugar del texto.
+
+   Un informe en manos de un medico decia « sec_medicacion » desde el 19
+   de septiembre. Nadie lo vio, porque el titulo de la forma no viene de
+   aqui sino de SF_CONFIG por tt(), y ese salia bien: la mitad de la
+   pantalla estaba en español y la otra mitad en nombres de variable.
+
+   LA VERSION VIVE AHORA DENTRO DEL COMENTARIO, como en los demas
+   ficheros de la casa. Y una tabla de textos que no compila debe
+   notarse: quien la toque, que mire que el navegador no proteste.
+   ══════════════════════════════════════════════════════════════════════ */
 var SF_TEXTOS = window.SF_TEXTOS = {
  "_doctrina": "Los textos del informe. Nada escrito en el código.",
  "textos": {
@@ -50,6 +75,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "sec_fuera_lista": "Valores fuera de rango ({n})",
    "sec_medicacion": "Medicación documentada",
    "meses_ult": "últimos {n} meses",
+   "fuera_periodo": "fuera del período",
    "col_fechadoc": "Fecha doc.",
    "col_medicamento": "Medicamento",
    "col_dosis": "Dosis",
@@ -166,6 +192,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "sec_fuera_lista": "Valeurs hors des bornes ({n})",
    "sec_medicacion": "Médication documentée",
    "meses_ult": "{n} derniers mois",
+   "fuera_periodo": "hors période",
    "col_fechadoc": "Date doc.",
    "col_medicamento": "Médicament",
    "col_dosis": "Dose",
@@ -282,6 +309,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "sec_fuera_lista": "Valors fora de rang ({n})",
    "sec_medicacion": "Medicació documentada",
    "meses_ult": "últims {n} mesos",
+   "fuera_periodo": "fora del període",
    "col_fechadoc": "Data doc.",
    "col_medicamento": "Medicament",
    "col_dosis": "Dosi",
@@ -398,6 +426,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "sec_fuera_lista": "Values out of range ({n})",
    "sec_medicacion": "Documented medication",
    "meses_ult": "last {n} months",
+   "fuera_periodo": "outside the period",
    "col_fechadoc": "Doc. date",
    "col_medicamento": "Medication",
    "col_dosis": "Dose",

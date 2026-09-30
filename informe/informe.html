@@ -12,6 +12,7 @@
 <!-- « Xarelto y Rivaroxaban son el mismo tratamiento. El programa no
      puede adivinarlo: hace falta esta tabla. » — P-H, 07/09/2026 -->
 <script src="../medicamentos/principios.js"></script>
+<script src="../comun/equivalencias.js"></script>
 <style>
 /* ══════════════════════════════════════════════════════════════════════
    NADA EN DURO — los colores y los tamaños se ponen desde informe.js.
@@ -771,6 +772,30 @@ function guardaSituacion(){
    entraban en la comparación y cada papel parecía un tratamiento
    distinto. El nombre acaba donde empieza la cifra.
    ══════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════════
+   LAS EQUIVALENCIAS SALEN DE AQUI (P-H, 29/09/2026)
+
+   « Tu devrais avoir une fonction générique qui, si tu lui donnes A ou B
+     et que dans la table il y a A = B = C, te dise OK. »
+
+   Estaba escrito aqui, a medias y solo para los medicamentos. Ahora vive
+   en comun/equivalencias.js, que no conoce ningun medicamento: se le dice
+   QUE tabla leer y COMO se llaman sus campos.
+
+   « canonico » y « alias » son NOMBRES DE CAMPO. El dia que la tabla de
+   las siglas llame « otros » a lo que esta llama « comerciales », cambia
+   esta linea y nada mas. Doctrina de 1966.
+   ══════════════════════════════════════════════════════════════════════ */
+var _EQ_LISTO = false;
+function _eqListo(){
+  if(_EQ_LISTO) return true;
+  if(typeof SF_EQUIV === 'undefined' || typeof SF_PRINCIPIOS === 'undefined') return false;
+  SF_EQUIV.registra('medicamentos', SF_PRINCIPIOS.principios || {},
+    { canonico:'nombre', alias:'comerciales', normaliza:'primera_palabra' });
+  _EQ_LISTO = true;
+  return true;
+}
+
 function principioDe(n){
   var clave = _pela(n);
   if(!clave) return '';
@@ -779,11 +804,14 @@ function principioDe(n){
        rivaroxaban — on les regroupe sous le nom du principe actif. »
 
      La tabla existe desde el 07/09: 240 nombres para un centenar de
-     tratamientos, construida con los medicamentos de dos expedientes reales.
-     Yo cortaba a la primera palabra, y « Xarelto » y « Rivaroxaban »
-     hacían dos líneas de lo mismo. */
-  var p = _buscaPrincipio(clave);
-  return p || clave;
+     tratamientos, construida con los medicamentos de dos expedientes reales. */
+  if(_eqListo()){
+    var c = SF_EQUIV.canonico('medicamentos', n);
+    if(c) return String(c).toUpperCase();
+  }
+  /* la tabla no lo conoce: se agrupa por su primera palabra, y « huecos »
+     lo dira al pie de la tabla. No se inventa una equivalencia. */
+  return _buscaPrincipio(clave) || clave;
 }
 
 /* la primera palabra, normalizada — es la clave de búsqueda */
@@ -1251,16 +1279,6 @@ function pMedicacion(){
      estando, para el ingreso donde hace falta el recorrido entero. */
   var M = medicam();
   if(!M.length) return '';
-  if(MED_MESES){
-    var lim = new Date(Date.now() - MED_MESES*30.5*86400000)
-                .toISOString().slice(0,10);
-    M = M.filter(function(m){
-      var f = m.desde || m.date_debut || m.date || '';
-      var h = m.hasta || m.date_fin || '';
-      return (f >= lim) || (h && h >= lim) || (f && !h);
-    });
-    if(!M.length) return '';
-  }
 
   /* por principio, del más reciente al más antiguo */
   var fecha = function(m){ return m.desde || m.date_debut || m.date || ''; };
@@ -1274,13 +1292,62 @@ function pMedicacion(){
     por[k].push(m);
   });
 
+  /* ══════════════════════════════════════════════════════════════════
+     EL PERIODO DECIDE QUE PRINCIPIOS SALEN — NO CORTA NINGUNO
+     (P-H, 29/09/2026)
+
+     « Si un traitement chronique commencé il y a trois ans a été
+       abandonné ou remplacé et qu'il n'apparaît plus depuis trois mois,
+       je ne vois pas de problème. Le calcul se fait sur la période
+       filtrée. »
+
+     Tenia razon, y disolvia mi contradiccion. El filtro miraba « hasta »
+     —la fecha de fin— y casi ningun medicamento la lleva (un tratamiento
+     en curso no puede llevarla): la clausula « (f && !h) » dejaba pasar
+     83 lineas de 83, y los cuatro botones enseñaban lo mismo desde el
+     17/09. Y filtraba LINEA a LINEA, antes de agrupar: a 3 meses el
+     grupo del rivaroxaban perdia sus lineas de 2022, y con ellas la marca
+     « Xarelto », el « 5 documentos » y el ▸ para desplegar.
+
+     Ahora al reves. Primero se agrupa —y la tabla de equivalencias sabe
+     que Xarelto y rivaroxaban son lo mismo—; despues se pregunta, de
+     cada principio: ¿su mencion MAS RECIENTE cae en el periodo?
+     Si si, sale ENTERO: todas sus lineas, todas sus marcas, su primera
+     y su ultima fecha. El periodo es una puerta, no un sacacorchos.
+
+     Un principio SIN NINGUNA fecha no se puede juzgar antiguo: sale.
+     No se oculta lo que no se sabe fechar.
+
+     Y la cabecera dice lo que esconde: « 8 de 30 principios · 22 fuera
+     del periodo ». Nada desaparece sin decirlo.
+     ══════════════════════════════════════════════════════════════════ */
+  var totalPr = orden.length;
+  if(MED_MESES){
+    var lim = new Date(Date.now() - MED_MESES*30.5*86400000)
+                .toISOString().slice(0,10);
+    orden = orden.filter(function(k){
+      var ult = String(fecha(por[k][0]) || '');
+      return !ult || ult >= lim;
+    });
+  }
+  var nLineas = 0;
+  orden.forEach(function(k){ nLineas += por[k].length; });
+
   var marcas = '';
   var h = '<div class="p-sec">💊 ' + t('sec_medicacion')
     + ' <span class="sub">('
-    + (MED_MESES ? t('meses_ult', {n:MED_MESES}) + ' · ' : t('todo') + ' · ')
-    + M.length + ' · ' + orden.length + ' ' + t('principios')
-    + ')</span></div>'
-    + '<table class="p-tab med"><thead><tr>'
+    + (MED_MESES
+        ? t('meses_ult', {n:MED_MESES}) + ' · '
+          + orden.length + ' ' + t('de') + ' ' + totalPr + ' ' + t('principios')
+          + ' · ' + (totalPr - orden.length) + ' ' + t('fuera_periodo')
+        : t('todo') + ' · ' + nLineas + ' · ' + orden.length + ' ' + t('principios'))
+    + ')</span></div>';
+
+  /* nada en el periodo: se dice, no se calla la seccion */
+  if(!orden.length)
+    return h + '<div class="vacio">' + t('nada_periodo') + '</div>';
+
+  h += '<table class="p-tab med"><thead><tr>'
     + '<th style="width:18px"></th>'
     + th('med', 0, t('col_fechadoc')) + th('med', 1, t('col_medicamento'))
     + th('med', 2, t('col_dosis'))    + th('med', 3, t('col_frecuencia'))
@@ -1299,6 +1366,29 @@ function pMedicacion(){
     return { k:k, m:por[k][0] }; }), function(x, i){
       return CAM[i](x.m); }).map(function(x){ return x.k; });
 
+  /* ══ LO QUE LA TABLA NO CONOCE — PARA QUIEN MANTIENE, NO PARA EL MEDICO ══
+     Un nombre ausente de la tabla de equivalencias se agrupa por su
+     primera palabra, y puede parecer un tratamiento abandonado cuando es
+     el mismo con otro nombre. Se dice en la consola —un medico no puede
+     arreglar la tabla— y solo una vez por carga. */
+  try{
+    if(_eqListo() && !window._HUECOS_DICHOS){
+      window._HUECOS_DICHOS = true;
+      var hu = SF_EQUIV.huecos('medicamentos',
+        M.map(function(m){ return m.nombre || m.nom || ''; }));
+      var hk = Object.keys(hu);
+      if(hk.length && window.console)
+        console.info('[equivalencias] ' + hk.length + ' nombre(s) ausente(s) de '
+          + 'principios.js — cada uno cuenta como un principio propio:\n  '
+          + hk.map(function(p){ return p + '  ←  ' + hu[p].slice(0,2).join(' | '); })
+              .join('\n  '));
+      var ch = SF_EQUIV.choques('medicamentos'), ck = Object.keys(ch);
+      if(ck.length && window.console)
+        console.warn('[equivalencias] alias ambiguos (piden dos principios): '
+          + ck.map(function(a){ return a + ' → ' + ch[a].join(' / '); }).join(' ; '));
+    }
+  }catch(e){}
+
   claves.forEach(function(k, n){
     var L = por[k];
     var reciente = L[0];
@@ -1306,7 +1396,10 @@ function pMedicacion(){
     var id = 'g' + n;
     /* las marcas comerciales que se han visto de este principio */
     var _m = marcasDe(L);
-    marcas = _m.length ? _m.slice(0, 3).join(', ') : '';
+    /* más de tres marcas: se dice cuantas faltan, no se callan */
+    marcas = _m.length
+      ? _m.slice(0, 3).join(', ') + (_m.length > 3 ? ' +' + (_m.length - 3) : '')
+      : '';
 
     /* ══ v2 (P-H, 17/09) : LO MISMO PARA TODAS ══
        « Quand on déplie un médicament, le ▸ indique qu'il y en a plus
