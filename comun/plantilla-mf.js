@@ -40,7 +40,7 @@
 
 var SF_PLANTILLA = window.SF_PLANTILLA = {
 
-  version: '2026.09.17',
+  version: '2026.09.19-18:12:56',
 
   fuentes: {
     A: { nombre:'API',        que:'lectura automática de un documento' },

@@ -34,7 +34,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      No lo hacía: tour-motor.js y tour.css no llevaban ninguno. Y es la
      doctrina del 05/09 — sin número, imposible decir qué versión falla.
      Ahora lo llevan, y se ve en la burbuja del contador de etapas. */
-  var VERSION = '2026.09.21-23:20:23';
+  var VERSION = '2026.09.29-11:47:20';
 
   var T = null, i = 0, viva = false, pausa = false;
   /* ══ DECLARADAS, POR FIN (P-H, 21/09/2026) ══
@@ -941,13 +941,53 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
 
      Menos textos que grabar, y funciona con toda sala que se anada.
      ══════════════════════════════════════════════════════════════════ */
-  function puerta(){
+  function puerta(salto){
     var V = salas();
     var K = Object.keys(V);
     var k = K.indexOf(CUAL);
-    var sig = (k >= 0 && k < K.length-1) ? K[k+1] : null;
 
-    if(SEGUIDO && sig){ arrancaVisita(sig, true); return; }
+    /* ══ « TODAS SEGUIDAS » SIGUE EL ORDEN DE LA TABLA ══
+       Quien ha pedido verlas todas quiere todas, incluso las que ya
+       conocia. Aqui no se filtra nada: se pasa a la linea siguiente. */
+    var enOrden = (k >= 0 && k < K.length-1) ? K[k+1] : null;
+    if(SEGUIDO && enOrden){ arrancaVisita(enOrden, true); return; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       LA PUERTA PROPONE LO QUE FALTA, NO LA LINEA SIGUIENTE
+       (Mattieu + P-H, 29/09/2026)
+
+       « Sofia demande si on poursuit vers la salle suivante mais si on
+         veut sauter la salle suivante ce n'est pas possible. »
+
+       Y habia algo peor, que nadie habia visto: « sig » era POSICIONAL.
+       Quien abria la carta y elegia la ULTIMA sala se encontraba, al
+       acabarla, con la puerta final y con « Ha visto toda la casa » —
+       despues de UNA sola sala. Se afirmaba lo que no se habia visto.
+
+       El registro existia a dos pasos —HECHAS, en « sf_tour_hechas »— y
+       la puerta no lo miraba nunca. Ahora la lista de candidatas son las
+       salas QUE FALTAN, en el orden de la tabla y dando la vuelta:
+
+         PEND = las no visitadas, empezando DESPUES de la que se acaba
+         salto = cuantas veces se ha dicho « No »
+
+       De ahi salen las tres cosas de un golpe: el [ No ] no es mas que
+       « salto + 1 »; nunca se propone una sala ya vista; y la puerta
+       final se abre cuando PEND esta vacia — es decir cuando la frase
+       « Ha visto toda la casa » es VERDAD.
+
+       La sala que se acaba de dejar no se propone jamas, ni siquiera si
+       se ha salido de ella por el ⏭ sin terminarla: se queda en PEND
+       para mas tarde, pero la guardiana no le da la vuelta a la esquina
+       para volver a ofrecerla.
+       ══════════════════════════════════════════════════════════════════ */
+    var PEND = [], base = (k >= 0) ? k : -1;
+    for(var q = 1; q <= K.length; q++){
+      var kk = K[(base + q + K.length) % K.length];
+      if(kk !== CUAL && !HECHAS[kk]) PEND.push(kk);
+    }
+    salto = salto | 0;
+    var sig = PEND.length ? PEND[salto % PEND.length] : null;
 
     /* ══ LA OPINION, A MANO EN LA PUERTA (P-H, 21/09/2026) ══
        Ninguna ventana se abre sola. La puerta lleva las cinco caras, en
@@ -986,7 +1026,21 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
             + '<span class="sf-p-ir-i">' + esc(sg.icono || '▶') + '</span>'
             + '<span class="sf-p-ir-n">' + esc(nom(sig)) + '</span>'
             + '</button>'
-            + esc(trozos.length > 1 ? trozos[1] : '');
+            + esc(trozos.length > 1 ? trozos[1] : '')
+      /* ══ EL [ No ] VIVE EN LA FRASE, NO EN LA BARRA (P-H, 29/09/2026) ══
+         « Dans mon esprit : à droite du libellé invitation à poursuivre
+           (salle suivante) [ NON ]. »
+
+         El « si » es el nombre de la sala; el « no » esta justo al lado,
+         con su propia superficie —el cuadro entero ya es tocable, y un
+         dedo que resbala no debe decir si.
+
+         Y si solo queda UNA sala por ver, el [ No ] no sale: un boton
+         que no lleva a ningun sitio no debe estar ahi. */
+            + (PEND.length > 1
+               ? ' <button id="sf-p-no" class="sf-p-no">'
+                 + esc(tt(T.puerta_no) || 'No') + '</button>'
+               : '');
     }
     else frase = esc(tt(T.puerta_ultima) || '');
 
@@ -1124,6 +1178,20 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       ponTitulo(m, '#sf-p-sig', 'p_sig', nom(sig));
       var bs = m.querySelector('#sf-p-sig');
       if(bs) bs.onclick = function(){ arrancaVisita(sig, false); };
+
+      /* ── « No » = proponme la siguiente que falte ──
+         corta() antes de nada: si la primera frase esta sonando, o si el
+         respiro de la segunda esta en camino, la propuesta VIEJA hablaria
+         encima de la nueva. Se corta la generacion, y se vuelve a pintar
+         la misma puerta un paso mas adelante. */
+      var bn = m.querySelector('#sf-p-no');
+      if(bn){
+        ponTitulo(m, '#sf-p-no', 'p_no');
+        bn.onclick = function(){
+          corta(); calla(); tapaBurbuja();
+          puerta(salto + 1);
+        };
+      }
     }
 
     /* ═════════════════════════════════════════════════════════════════
@@ -1135,11 +1203,17 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
        las etapas pasaban por habla().
 
        Dice LO QUE ACABA DE PASAR — « Ya ha visitado el vestibulo » — que
-       pertenece a la sala y no se mueve nunca. La PREGUNTA (« ¿Seguimos
-       con...? ») se queda muda a proposito: nombra la sala SIGUIENTE, y
-       grabarla ataria el sonido al ORDEN de la tabla — el dia que se
-       permutan dos lineas, los nueve ficheros mentirian sin avisar. Se
-       lee en la pantalla, y se decide en silencio.
+       pertenece a la sala y no se mueve nunca. Y dice la INVITACION,
+       que pertenece a la sala que se PROPONE: dos ficheros, cada uno
+       nombrando SU propia sala, nunca la pareja. Asi permutar dos lineas
+       de la tabla no vuelve falso ningun mp3 —y el [ No ] del 29/09 no
+       cuesta ni una grabacion: cambia la propuesta, se toca otro
+       « invita- », y sigue siendo verdad.
+
+       (Este parrafo decia hasta hoy que la pregunta « se queda muda a
+        proposito ». Lo estuvo tres dias: el 22/09 se partio en dos
+        ficheros y desde entonces habla. El comentario se habia quedado
+        detras del codigo.)
 
        « Ca pourrait etre une voix de femme (celle qui surveille la
          porte ?) » — si: en un museo el guia le acompana dentro, y en la
@@ -1174,11 +1248,19 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
        cambiado de sala, la segunda no arranca — nadie habla a una
        pantalla que ya no esta. Y se encadena tanto si la primera ha
        sonado como si no la habia. */
-    var despues = segunda.texto
-      ? deEsta(function(){ luego(function(){ habla(segunda); }, respiro); })
+    /* ══ AL VOLVER A PROPONER, NO SE REPITE LO YA DICHO ══
+       « Ya ha visitado el vestibulo » se dice UNA vez, al abrirse la
+       puerta. Cada « No » solo cambia la propuesta: se oye la invitacion
+       nueva, y sin respiro —el respiro separa la constatacion de la
+       pregunta, y aqui ya no hay constatacion que separar. */
+    var diSegunda = segunda.texto
+      ? deEsta(function(){ habla(segunda); })
       : null;
-    if(primera.texto) habla(primera, despues);
-    else if(despues) despues();
+    var despues = diSegunda
+      ? deEsta(function(){ luego(diSegunda, respiro); })
+      : null;
+    if(salto === 0 && primera.texto) habla(primera, despues);
+    else if(diSegunda) diSegunda();
   }
 
   function calla(){

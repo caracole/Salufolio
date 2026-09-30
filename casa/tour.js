@@ -1,7 +1,7 @@
 /* EL MUSEO — las salas y los objetos */
 var SF_TOUR = {
   "id": "tour",
-  "version": "2026.09.25-15:39:08",
+  "version": "2026.09.29-11:47:20",
   "_doctrina": "EL MUSEO (P-H, 18-21/09/2026)\n\n  « On ouvre la porte d'une salle, on parcourt les étapes, et quand on a\n    terminé on sort en fermant la porte, et on va visiter une autre\n    salle. Ce n'est pas plus compliqué. »\n\nSALAS    una sala es UN CUADRO de la pantalla. Tiene su puerta: como se\n         encuentra al entrar (abierta o cerrada) y que se hace al salir\n         (cerrar, dejar, o como_estaba). La sala sin puerta es el\n         VESTIBULO: la banda de arriba, donde se esta nada mas entrar.\n\nOBJETOS  lo que se ensena, sin orden. Un objeto se describe UNA VEZ —su\n         texto, su voz, su fichero— y puede salir en varias salas.\n\nAntes la sala « El paciente » cubria DOS cuadros, y hacian falta puertas\nque abrir y cerrar a mitad de camino. Una sala, un cuadro: el problema\ndesaparece.\n\nAl acabar una sala —n/n, o salida anticipada— se cierra su puerta, y se\npasa a la siguiente, se elige otra en la carta, o se sale del museo.",
   "idiomas": [
     "es",
@@ -1336,6 +1336,13 @@ var SF_TOUR = {
     "ca": "Continuem amb {sala}?",
     "en": "Shall we go on with {sala}?"
   },
+  "puerta_no": {
+    "es": "No",
+    "fr": "Non",
+    "ca": "No",
+    "en": "No"
+  },
+  "_puerta_no": "El boton que dice « esa no » (Mattieu + P-H, 29/09/2026). Vive en la frase, a la derecha del nombre de la sala propuesta: el « si » es el nombre, el « no » esta al lado. Tocarlo no salta a ciegas — hace que la guardiana proponga la SIGUIENTE sala que falte, y se puede tocar tantas veces como haga falta. Si solo queda una sala por ver, no se dibuja: un boton que no lleva a ningun sitio no debe estar ahi.",
   "puerta_ultima": {
     "es": "Ha visto toda la casa. Ahora le toca a usted: abra la demostración y toque lo que quiera —no puede romper nada—, o cree su propio paciente. Todo se queda en su ordenador.",
     "fr": "Vous avez vu toute la maison. À vous maintenant : ouvrez la démonstration et touchez ce que vous voulez — vous ne pouvez rien casser —, ou créez votre propre patient. Tout reste sur votre ordinateur.",
@@ -1418,6 +1425,12 @@ var SF_TOUR = {
       "ca": "Seguir amb: {sala}",
       "en": "Go on with: {sala}"
     },
+    "p_no": {
+      "es": "Esa no — proponme la siguiente que falte",
+      "fr": "Pas celle-là — propose-moi la suivante qui manque",
+      "ca": "Eixa no — proposa'm la següent que falte",
+      "en": "Not that one — suggest the next one left"
+    },
     "p_carta": {
       "es": "Volver al principio — todas las salas",
       "fr": "Revenir à l'accueil — toutes les salles",
@@ -1494,15 +1507,15 @@ var SF_TOUR = {
     "puerta": "b2htR0pMe28pYwCY9gnP",
     "_puerta": "Sofía - Natural and Conversational. Elegida de oido el 23/09/2026 entre Laura, Cristina y Sofía: « sofia va bien pour les deux, forte expressive » (P-H). Laura quedaba bien en castellano pero en frances tenia acento — « canadien ou belge ». Si un dia hiciera falta una voz DISTINTA por lengua, aqui cabe una tabla: { \"es\": \"...\", \"fr\": \"...\" }."
   },
-  "_puerta_mandos": "Los botones de la puerta, iguales en TODAS las salas — « adopter la meme presentation du cadre pour tout le monde » (P-H, 22/09/2026). El nombre de la sala siguiente ya no es un boton: vive en el texto, con su icono, y se toca ahi. Asi el cuadro no cambia de ancho de una puerta a otra. Su texto esta en « mandos ».",
+  "_puerta_mandos": "Los botones de la puerta, iguales en TODAS las salas — « adopter la meme presentation du cadre pour tout le monde » (P-H, 22/09/2026). El nombre de la sala siguiente ya no es un boton: vive en el texto, con su icono, y se toca ahi. Asi el cuadro no cambia de ancho de una puerta a otra. Su texto esta en « mandos ».\n\nEl 29/09/2026 la brujula se ha movido a la DERECHA, junto a la salida — « un bouton [non] a rajouter et on deplace la boussole » (P-H). La frase lleva ahora el si y el no; abajo solo quedan las dos maneras de IRSE: a otra sala por la carta, o del museo. Para volver a ponerla a la izquierda se permutan estas dos lineas, y nada mas.",
   "puerta_mandos": [
+    {
+      "id": "sep"
+    },
     {
       "id": "carta",
       "icono": "🧭",
       "tip": "p_carta"
-    },
-    {
-      "id": "sep"
     },
     {
       "id": "salir",
