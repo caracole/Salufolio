@@ -2319,7 +2319,30 @@ async function _archivaViejas(hist){
       .catch(function(e){ if(opciones&&opciones.alFallar) opciones.alFallar(e.message); throw e; });
   }
 
-  return { arranca:arranca, carga:carga, params:params, abeja:abeja, abrirFichero:abrirFichero,
+  /* ══ PDF DEL PACIENTE (P-H, 06/10/2026) ══
+     MF.pdfRespuesta(nombre) devuelve una Response (como fetch) con el PDF de  pacientes/<mat>/sources/ .
+     Dentro de la Casa : se lo pide por mensaje (« pide-pdf »). Si la Casa no puede, o no hay Casa : el servidor
+     localhost:7777 de antes, sólo como socorro. Nunca lanza : sin PDF devuelve una Response 404. */
+  function pdfRespuesta(nombre){
+    var stem = String(nombre||'').replace(/\.pdf$/i, '');
+    var socorro = function(){
+      var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
+      return fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)).catch(function(){ return new Response(null, {status:404}); });
+    };
+    var enCasa = false; try{ enCasa = window.parent && window.parent !== window; }catch(e){}
+    if(!enCasa) return socorro();
+    return new Promise(function(resuelve){
+      var id = 'pdf' + Date.now() + '_' + Math.floor(Math.random()*1e6), listo = false;
+      function fin(r){ if(listo) return; listo = true; window.removeEventListener('message', oye); resuelve(r); }
+      function oye(ev){ var d = ev.data || {};
+        if(d.de !== 'lanzador' || d.tipo !== 'pdf' || d.id !== id) return;
+        fin(d.ok && d.archivo ? new Response(d.archivo, {status:200, headers:{'Content-Type':'application/pdf'}}) : null); }
+      window.addEventListener('message', oye);
+      setTimeout(function(){ fin(null); }, 5000);
+      try{ parent.postMessage({de:'modulo', tipo:'pide-pdf', id:id, nombre:stem}, '*'); }catch(e){ fin(null); }
+    }).then(function(r){ return r || socorro(); });
+  }
+  return { arranca:arranca, carga:carga, pdfRespuesta:pdfRespuesta, params:params, abeja:abeja, abrirFichero:abrirFichero,
            guarda:guarda, tocado:tocado, limpio:limpio, hayCambios:hayCambios, aviso:aviso,
            guardaTrabajo:guardaTrabajo, hayTrabajo:hayTrabajo, olvidaTrabajo:olvidaTrabajo,
            enMarco:function(){return enMarco;}, barra:barra, barraActivos:barraActivos, estado:estado,

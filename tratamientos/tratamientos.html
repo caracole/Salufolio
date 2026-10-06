@@ -89,7 +89,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    MEDICAMENTOS — programa autónomo de Salufolio V2
-   Versión 2026.10.06-16:11:25
+   Versión 2026.10.06-21:28:48
 
    Extraído de la V1: medications-js.js (38 funciones — la lista, la ficha,
    los prescriptores, las recetas), medications-html.html, y sus
@@ -100,7 +100,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
    toca. Es voluntario: se ve lo que se ha cambiado antes de guardarlo.
    ═══════════════════════════════════════════════════════════════════════ */
 /* número de versión : se actualiza en CADA modificación (regla de P-H) — es el que muestra el tooltip del nombre */
-SF_CONFIG.version = '2026.10.06-16:11:25';
+SF_CONFIG.version = '2026.10.06-21:28:48';
 const VERSION_PROGRAMA = SF_CONFIG.version;
 const APP_VERSION = SF_CONFIG.version;
 const APP_VERSION_DATE = SF_CONFIG.version;
@@ -251,7 +251,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
     if (nom) {
       var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
       var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
-      var r = await fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem));
+      var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)));
       if (r.ok) buf = await r.arrayBuffer();
     }
     if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */

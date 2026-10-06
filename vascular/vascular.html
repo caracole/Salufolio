@@ -57,7 +57,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ANÁLISIS VASCULAR — programa autónomo de Salufolio V2
-   Versión 2026.09.19-18:12:56
+   Versión 2026.10.06-21:28:48
    Extraido de la V1: vascular-js.js + vascular-html.html.
    Tres vistas: las mediciones, los medicamentos que actúan sobre ellas,
    y las pruebas de imagen.
@@ -185,7 +185,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
     if (nom) {
       var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
       var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
-      var r = await fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem));
+      var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)));
       if (r.ok) buf = await r.arrayBuffer();
     }
     if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */

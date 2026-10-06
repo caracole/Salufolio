@@ -108,7 +108,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    RADAR — programa autónomo de Salufolio V2
-   Versión 2026.09.19-18:12:56
+   Versión 2026.10.06-21:28:48
 
    Extraído de la V1: radar-js.js (12 funciones), core-panels-html.html
    (líneas 34-107), y sus dependencias tomadas en su fuente.
@@ -240,7 +240,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
     if (nom) {
       var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
       var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
-      var r = await fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem));
+      var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)));
       if (r.ok) buf = await r.arrayBuffer();
     }
     if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */
@@ -1062,9 +1062,9 @@ function audVerPdf(nombreEsperado, buscar) {
      honorée par certains visores ; positionnement exact par page = futur,
      quand l'Extractor émettra la page de chaque valeur). */
   const base = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
-  fetch(base + '/api/pdf?n=' + encodeURIComponent(nombreEsperado))
+  (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(nombreEsperado) : fetch(base + '/api/pdf?n=' + encodeURIComponent(nombreEsperado)))
     .then(function(r) {
-      if (r.status === 404) throw new Error('archivo no encontrado en las carpetas declaradas');
+      if (r.status === 404) throw new Error('archivo no encontrado en sources/');
       if (!r.ok) throw new Error('servidor respondió ' + r.status + ' (¿versión < 1.5.5?)');
       return r.blob();
     })

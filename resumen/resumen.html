@@ -58,7 +58,7 @@ main{padding:0}
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    RESUMEN — programa autónomo de Salufolio V2
-   Versión 2026.09.19-18:12:56
+   Versión 2026.10.06-21:28:48
 
    Extraído de la V1 (core-resumen-js.js + core-panels-html.html), con
    sus dependencias tomadas en su fuente: core-utils-js.js (fmtDate,
@@ -195,7 +195,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
     if (nom) {
       var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
       var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
-      var r = await fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem));
+      var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)));
       if (r.ok) buf = await r.arrayBuffer();
     }
     if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */

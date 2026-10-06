@@ -74,7 +74,7 @@ details > *:not(summary){padding:0 16px 14px}
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    REVISAR — programa autónomo de Salufolio V2
-   Versión 2026.09.19-18:12:56
+   Versión 2026.10.06-21:28:48
 
    « Il faut séparer la consultation / corrections de l'acquisition. »
                                                         — P-H, 09/09/2026
@@ -250,7 +250,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
     if (nom) {
       var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
       var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
-      var r = await fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem));
+      var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)));
       if (r.ok) buf = await r.arrayBuffer();
     }
     if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */

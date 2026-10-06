@@ -1546,11 +1546,45 @@ window.addEventListener('message', function(ev){
     } else ponEstado('el módulo « '+d.id+' » no está en las tablas');
     return;
   }
+  if(d.tipo==='pide-pdf'){ sirvePdf(ev, d); return; }
   if(d.tipo==='cierra-modulo'){ vuelveAtras(); return; }
   /* el programa anuncia la paleta con la que arranca (la global) : no es una elección — la guardada gana */
   if(d.tipo==='paleta-elegida'){ PAL_MOD=(ACTUAL && _palDe(ACTUAL.id)) || d.paleta; return; }
   if(d.tipo==='mis-paletas'){ PAL_MOD=(ACTUAL && _palDe(ACTUAL.id)) || d.actual; return; }
 });
+
+/* ══ LOS PDF DEL PACIENTE (P-H, 06/10/2026) ══
+   Un PDF vive en  pacientes/<matrícula>/sources/  y en ningún otro sitio. Un programa lo pide por mensaje
+   (« pide-pdf », con el nombre) y la Casa — que ya tiene la carpeta del paciente — le entrega el archivo.
+   Sin servidor. Si la carpeta no está autorizada o el archivo no está, responde ok:false con el motivo. */
+async function _buscaPdf(dir, nombre, prof){
+  var quiero = String(nombre||'').toLowerCase().replace(/\.pdf$/,'') + '.pdf';
+  try{
+    for await (var e of dir.values()){
+      if(e.kind === 'file' && e.name.toLowerCase() === quiero) return await e.getFile();
+    }
+    if(prof > 0) for await (var s of dir.values()){
+      if(s.kind === 'directory'){ var f = await _buscaPdf(s, nombre, prof-1); if(f) return f; }
+    }
+  }catch(e){}
+  return null;
+}
+async function sirvePdf(ev, d){
+  var resp = { de:'lanzador', tipo:'pdf', id:d.id, ok:false, motivo:'' };
+  try{
+    var dir = await carpetaPaciente(false);
+    if(!dir) resp.motivo = 'carpeta-no-autorizada';
+    else{
+      var src = null;
+      try{ src = await dir.getDirectoryHandle('sources'); }catch(e){ resp.motivo = 'sin-sources'; }
+      if(src){
+        var f = await _buscaPdf(src, d.nombre, 2);
+        if(f){ resp.ok = true; resp.archivo = f; resp.motivo = ''; } else resp.motivo = 'no-esta';
+      }
+    }
+  }catch(e){ resp.motivo = 'error: ' + (e && e.message || e); }
+  try{ ev.source.postMessage(resp, '*'); }catch(e){}
+}
 
 function marcaSucio(si){
   var b=document.querySelector('[data-b="guardar"]');

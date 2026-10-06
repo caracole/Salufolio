@@ -39,7 +39,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
   </div>
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px">
     <span id="aud-pdf-dir-label">📁 Carpeta de los PDF en este ordenador :</span>
-    <input id="aud-pdf-dir" type="text" placeholder="p. ej. /home/pierre/MEDIFOLIO/PDFs ; /media/pierre/PENDRIVE/MEDIFOLIO — varias carpetas separadas por ;" style="flex:1;font-size:12px;padding:5px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono)" onchange="setPdfDir(this.value); audPublicarCarpetas()" oninput="setPdfDir(this.value)">
+    <span id="aud-pdf-dir" title="Los PDF del paciente viven aquí y en ningún otro sitio" style="flex:1;font-family:var(--mono);font-size:12px;color:var(--muted)"></span>
   </div>
   <div id="auditoria-lista"></div>
 </div>
@@ -52,7 +52,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    AUDITORÍA — programa autónomo de Salufolio V2
-   Versión 2026.09.19-18:12:56
+   Versión 2026.10.06-21:47:50
    Extraido de la V1: auditoria-js.js (23 funciones) + auditoria-html.html.
 
    El expediente se revisa a sí mismo: valores imposibles, fechas
@@ -191,7 +191,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
     if (nom) {
       var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
       var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
-      var r = await fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem));
+      var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)));
       if (r.ok) buf = await r.arrayBuffer();
     }
     if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */
@@ -1047,7 +1047,7 @@ function getPdfDir() {
   const manual = localStorage.getItem(PDF_DIR_KEY) || '';
   return manual || getPdfDirAuto();
 }
-function setPdfDir(v) { localStorage.setItem(PDF_DIR_KEY, (v || '').trim()); }
+function setPdfDir(v) { debug("setPdfDir",PDF_DIR_KEY);localStorage.setItem(PDF_DIR_KEY, (v || '').trim()); }
 
 function pdfRegistro() {
   /* union de toutes les tables ; la table pdfs explicite a priorité */
@@ -1205,7 +1205,7 @@ function loadPdfView(input) {
   document.getElementById('pdf-modal-title').textContent = file.name;
   input.value = '';
 }
-document.getElementById('pdf-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closePdf(); });
+(document.getElementById('pdf-modal') || document.createElement('div')).addEventListener('click', e => { if (e.target === e.currentTarget) closePdf(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePdf(); });
 
 
@@ -1424,11 +1424,8 @@ const REGLAS_AUDITORIA = [
 /* ── VOIR LA PIÈCE : popup PDF déplaçable et redimensionnable (P-H 16/07).
    Salufolio ne stocke pas les PDF : on demande de désigner le fichier
    (nom attendu affiché), puis on l'affiche en visionneuse flottante. ── */
-function audPublicarCarpetas() {
-  const dirs = (typeof getPdfDir === 'function' ? getPdfDir() : '').split(';').map(function(x) { return x.trim(); }).filter(Boolean);
-  fetch('http://localhost:7777/api/pdf/carpetas', { method: 'POST',
-    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ carpetas: dirs }) }).catch(function() {});
-}
+/* (retirada P-H 06/10/2026 : ya no hay carpeta que declarar al servidor) */
+function audPublicarCarpetas() {}
 
 function audDiagnosticoPdf(nombreEsperado, buscar, motivo) {
   /* Le serveur n'a pas pu servir le PDF : dire POURQUOI, puis proposer
@@ -1436,12 +1433,11 @@ function audDiagnosticoPdf(nombreEsperado, buscar, motivo) {
      sans explication). */
   const dir = (typeof getPdfDir === 'function' ? getPdfDir() : '');
   mfDlg('📄 ' + nombreEsperado,
-    '<b>El servidor no ha podido entregar el archivo.</b><br><br>' +
+    '<b>No encuentro el PDF en la carpeta del paciente.</b><br><br>' +
     '<div style="font-size:12px;line-height:1.7">Motivo detectado: <b>' + motivo + '</b><br><br>' +
-    '① ¿Servidor en marcha? — la antena 🛰️ junto al logo debe estar <b>verde</b> (si no: ▶ Marcha en el panel del escritorio).<br>' +
-    '② ¿Versión del servidor ≥ 1.5.5? — es la del zip <i>Pont</i> más reciente.<br>' +
-    '③ ¿Carpeta declarada? — campo 📁 arriba: ' + (dir ? '<span style="font-family:var(--mono)">' + dir + '</span>' : '<span style="color:var(--warn)">VACÍO — escriba ahí la carpeta de sus PDF</span>') + '<br>' +
-    '④ ¿El archivo está realmente en esa carpeta (o subcarpetas)?</div>',
+    '① ¿Expediente abierto con 📂 y carpeta de pacientes autorizada en la Casa?<br>' +
+    '② ¿El archivo está en <span style="font-family:var(--mono)">pacientes/' + ((typeof getPatientLabel === 'function' ? getPatientLabel() : '') || '&lt;matrícula&gt;') + '/sources/</span> ?<br>' +
+    'Los PDF de un paciente viven ahí y en ningún otro sitio.</div>',
     [{ label: 'Elegir el archivo yo mismo', accion: function() { audVerPdfManual(nombreEsperado, buscar); } },
      { label: 'Cerrar', primario: true }]);
 }
@@ -1454,9 +1450,9 @@ function audVerPdf(nombreEsperado, buscar) {
      honorée par certains visores ; positionnement exact par page = futur,
      quand l'Extractor émettra la page de chaque valeur). */
   const base = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
-  fetch(base + '/api/pdf?n=' + encodeURIComponent(nombreEsperado))
+  (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(nombreEsperado) : fetch(base + '/api/pdf?n=' + encodeURIComponent(nombreEsperado)))
     .then(function(r) {
-      if (r.status === 404) throw new Error('archivo no encontrado en las carpetas declaradas');
+      if (r.status === 404) throw new Error('archivo no encontrado en sources/');
       if (!r.ok) throw new Error('servidor respondió ' + r.status + ' (¿versión < 1.5.5?)');
       return r.blob();
     })
@@ -1598,17 +1594,10 @@ function buildAuditoria() {
       ? ('\ud83d\udcc1 Carpeta de los PDF de ' + nombre + ' (en este ordenador) :')
       : '\ud83d\udcc1 Carpeta de los PDF en este ordenador :';
   }
-  if (dirEl) {
-    /* le champ ne montre QUE ce que l'aidant a explicitement tapé — la
-       valeur automatique reste visible en filigrane (placeholder), jamais
-       collée dans le champ comme si c'était une saisie */
-    dirEl.value = localStorage.getItem(PDF_DIR_KEY) || '';
-    const auto = (typeof getPdfDirAuto === 'function') ? getPdfDirAuto() : '';
-    dirEl.placeholder = auto
-      ? ('autom\u00e1tico: ' + auto)
-      : 'p. ej. /home/pierre/MEDIFOLIO/PDFs ; /media/pierre/PENDRIVE/MEDIFOLIO';
+  if (dirEl) {   /* P-H 06/10/2026 : no se teclea, se muestra — los PDF viven en sources/ del paciente */
+    const mat = (typeof MF !== 'undefined' && MF.paciente) ? (MF.paciente().matricula || '') : '';
+    dirEl.textContent = 'Salufolio/pacientes/' + (mat || '<matrícula>') + '/sources/';
   }
-  audPublicarCarpetas();
   const el = document.getElementById('auditoria-lista');
   if (!el) return;
   const alertas = ejecutarAuditoria();
