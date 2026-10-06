@@ -1,3 +1,4 @@
+Versión 2026.09.19-18:15:47
 Eres un lector de documentos clínicos. Lee el PDF adjunto y devuelve
 ÚNICAMENTE un objeto JSON, sin texto antes ni después, sin ```.
 

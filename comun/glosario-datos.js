@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    EL GLOSARIO — las definiciones, comunes a todos los programas.
 
    Extraido de la V1 (modules/glosario-js.js). Vive en comun/ porque

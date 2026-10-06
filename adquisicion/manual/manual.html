@@ -46,6 +46,8 @@ main{padding:16px 20px 40px;max-width:900px;margin:0 auto}
      background:transparent;color:var(--text);cursor:pointer;font-size:12.5px;font-family:inherit}
 .btn:hover{border-color:var(--accent)}
 .btn.pri{border-color:var(--accent);background:rgba(74,158,255,.15)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn:disabled:hover{border-color:var(--border)}
 #estado{font-size:12.5px;margin-top:10px;min-height:18px}
 
 /* ce que le formulaire dessine — il vient des communs */
@@ -118,6 +120,7 @@ button[data-tiptext],.rubs button,.btn,summary{cursor:pointer !important}
 </details>
 
 <div style="display:flex;justify-content:flex-end;margin-top:16px">
+  <span id="g-nota" style="font-size:12px;color:var(--muted);margin-right:10px;align-self:center"></span>
   <button class="btn pri" onclick="guardaExpediente()" id="b-guardar"></button>
 </div>
 <div id="estado"></div>
@@ -131,7 +134,7 @@ button[data-tiptext],.rubs button,.btn,summary{cursor:pointer !important}
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ADQUISICIÓN MANUAL — Salufolio
-   Versión 2026.09.16-15:19:48
+   Versión 2026.10.05-18:17:07
 
    « Ce système est universel, on peut saisir n'importe quoi. Il suffit
      d'une table bien renseignée. »                  — P-H, 14/09/2026
@@ -167,7 +170,28 @@ function _asegura(){
   if(!_DATOS) _DATOS = (typeof SF_PLANTILLA!=='undefined')
     ? SF_PLANTILLA.nuevo(MF.paciente()||{})
     : { formato:'SF1', mesures:[], events:[], medicaments:[] };
+  /* la foto de « lo ya guardado » : el dato nuevo se compara con ella */
+  if(_BASE === null) _BASE = huella();
   return _DATOS;
+}
+/* ══ « GUARDAR » SÓLO SI ALGO HA CAMBIADO (P-H, 05/10/2026) ══
+   Cada clic escribía un fichero nuevo, aunque no hubiera nada nuevo.
+   Ahora se compara el contenido con la foto del último guardado : añadir
+   y luego quitar vuelve a lo mismo, y el botón se apaga. Se mira el
+   contenido (las listas del expediente), no un contador. */
+var _BASE = null;
+function huella(){
+  var d = _DATOS || {}, o = {};
+  Object.keys(d).sort().forEach(function(k){
+    if(Array.isArray(d[k]) && d[k].length) o[k] = d[k]; });
+  return JSON.stringify(o);
+}
+function ajustaGuardar(){
+  var b = document.getElementById('b-guardar'); if(!b) return;
+  var hay = huella() !== (_BASE === null ? '{}' : _BASE);
+  b.disabled = !hay;
+  var n = document.getElementById('g-nota');
+  if(n) n.textContent = hay ? '' : t('nada_guardar');
 }
 function L(k){ var d=_asegura(); if(!Array.isArray(d[k])) d[k]=[]; return d[k]; }
 /* ══ LA MARQUE DE CE QUI EST ÉCRIT À LA MAIN (P-H, 14/09) ══
@@ -603,7 +627,7 @@ function confirmaSobreEscribir(){
 function pideIdentidad(){
   var cuerpo = '<div class="sf-sordo">' + t('id_texto') + '</div>'
     + '<label class="sf-etiqueta">' + t('id_nombre') + '</label>'
-    + '<input type="text" id="_i-nom" class="sf-campo" placeholder="Ana García López">'
+    + '<input type="text" id="_i-nom" class="sf-campo" placeholder="Ana García Ruiz">'
     + '<div style="display:flex;gap:10px;margin-top:10px">'
     +   '<div style="flex:1"><label class="sf-etiqueta">SIP</label>'
     +     '<input type="text" id="_i-sip" class="sf-campo" maxlength="10"></div>'
@@ -654,6 +678,7 @@ function escribe(p, esNuevo){
   var nombre = mat + '_' + _sello() + '.mf';
   MF.guarda('pacientes/'+mat+'/'+nombre, JSON.stringify(_DATOS,null,1)).then(function(){
     estado(t('guardado') + ' : ' + nombre);
+    _BASE = huella(); ajustaGuardar();
     salvaDiario();
   });
 }
@@ -665,6 +690,7 @@ function refresca(){
       + L('events').length + ' ' + t('u_eventos') + ' · '
       + L('medicaments').length + ' ' + t('u_medicamentos');
   }catch(e){}
+  ajustaGuardar();
 }
 
 function pintaTextos(){
@@ -689,6 +715,7 @@ function pintaTextos(){
   if(typeof MF!=='undefined' && MF.tip)
     MF.tip(document.getElementById('b-guardar'), t('tip_guardar'));
   if(typeof MF!=='undefined' && MF.aplicaIdioma) MF.aplicaIdioma();
+  ajustaGuardar();
 }
 
 /* un seul cadre ouvert : unSoloAbierto() le fait, une fois le menu dessiné */
@@ -697,6 +724,7 @@ MF.arranca({
   alCargar: function(d){
     _DATOS = (typeof SF_PLANTILLA!=='undefined') ? SF_PLANTILLA.completa(d, MF.paciente()) : d;
     _ABIERTO = true;
+    _BASE = huella();
     var p = MF.paciente();
     document.getElementById('x-pac').textContent = p.etiqueta || p.matricula || '';
     pintaTextos(); pintaMenu();

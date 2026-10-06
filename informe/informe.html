@@ -481,7 +481,7 @@ function zoom(d){
 /* ══════════════════════════════════════════════════════════════════════
    LOS PUENTES (P-H, 17/09/2026)
 
-   MF.mesures() NO devuelve lo que hay en el .mf: lo aplana. Una línea
+   MF.mesures() NO devuelve lo que hay en el .sf: lo aplana. Una línea
    por VALOR, no por fecha:
 
        { fecha, clave, valor, unidad, fuente, pdf }
@@ -554,7 +554,7 @@ function desdeDias(n){
    nadie confunde el 3 de abril con el 4 de marzo. Pero un informe para
    el médico no es un fichero — el papel español dice 12/08/2026.
 
-   Dentro, la regla del .mf. Fuera, la costumbre de quien lee.
+   Dentro, la regla del .sf. Fuera, la costumbre de quien lee.
    ══════════════════════════════════════════════════════════════════════ */
 function fpapel(iso){
   if(!iso) return '';
@@ -2303,6 +2303,14 @@ function botonListo(){
 ponEstilo();
 
 MF.arranca({
+  /* la lengua cambia en la casa : se vuelve a pintar lo que se ve — el escogedor,
+     o el informe abierto. La paleta, no : el informe tiene la suya (papel), a proposito. */
+  alIdioma: function(){
+    if(typeof _CORTE !== 'undefined' && _CORTE) return;      /* un comentario en curso no se interrumpe */
+    var e = document.getElementById('elegir');
+    if(!FORMA || (e && getComputedStyle(e).display !== 'none')) pintaEscogedor();
+    else { ponTextos(); pinta(); }
+  },
   alCargar: function(d){
     _PORFECHA = null;
     if(typeof SF_PLANTILLA!=='undefined') SF_PLANTILLA.completa(d, MF.paciente());

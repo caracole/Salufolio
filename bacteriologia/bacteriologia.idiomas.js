@@ -1,4 +1,5 @@
-/* Los textos de Bacteriología */
+/* Los textos de Bacteriología
+   Versión 2026.09.19-18:15:47 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Bacteriología, en su propia carpeta.",
   "textos": {

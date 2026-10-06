@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    LA TABLA DE LA ADQUISICIÓN MANUAL
    /Salufolio/comun/formularios/adquisicion.js
 
@@ -14,7 +15,7 @@
    ── CADA RÚBRICA DICE ──
      titulo   lo que se lee
      icono    para el menú
-     tabla    dónde va en el .mf  (mesures, medicaments, events…)
+     tabla    dónde va en el .sf  (mesures, medicaments, events…)
      ayuda    una línea para quien duda
      campos   lo que se pide
 

@@ -1,42 +1,169 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8"/>
+<html lang="es"><head>
+<!-- Versión 2026.10.06-10:53:14 -->
+<!-- A VALIDAR (P-H) : el paso 3 (medio de pago o crédito) está escrito en condicional —
+     « si la consola se lo pide » — porque la documentación de Anthropic no dice si es
+     obligatorio antes de crear la clave. Cuando se haya hecho el recorrido real, se precisa. -->
+<meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Ayuda · Adquisición automática</title>
+<link rel="stylesheet" href="../../comun/salufolio.css">
 <style>
-:root{--bg:#161b27;--text:#e8eaf0;--muted:#9aa3b8;--accent:#4a8fe8;--warn:#e8a44a;
-      --border:#2a3348;--surface:#1e2535;--serif:Georgia,serif}
 body{margin:0;padding:24px 28px 50px;background:var(--bg);color:var(--text);
-     font-family:system-ui,sans-serif;line-height:1.7}
+     font-family:var(--sans,system-ui,sans-serif);line-height:1.7}
 .env{max-width:720px;margin:0 auto}
 h1{font-family:var(--serif);font-size:21px;margin:0 0 4px}
 .sub{color:var(--muted);font-size:12.5px;margin-bottom:20px}
 h2{font-family:var(--serif);font-size:15px;color:var(--accent);margin:22px 0 6px;
    border-bottom:1px solid var(--border);padding-bottom:4px}
 p{margin:0 0 12px;font-size:14px}
+ol{margin:0 0 14px;padding-left:24px;font-size:14px}
+li{margin-bottom:9px}
+a{color:var(--accent);text-decoration:underline}
 .aviso{background:var(--surface);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;
        padding:11px 15px;font-size:13px;margin:16px 0}
 .nota{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
       padding:11px 15px;font-size:13px;color:var(--muted);margin:16px 0}
-code{background:#0b0e14;padding:1px 6px;border-radius:4px;color:#e8a44a;font-size:12.5px}
+code{background:var(--surface);color:var(--text);border:1px solid var(--border);
+     padding:1px 6px;border-radius:4px;font-size:12.5px}
 </style></head>
-<body><div class="env">
-<h1>⚙️ Adquisición automática</h1>
+<body><div id="lg"></div><div class="env" id="c"></div>
+<script src="../../comun/ayuda.js"></script>
+<script>
+/* Las direcciones, aquí y no en los textos : cambiarlas no toca ninguna frase.
+   La guía oficial existe en castellano ; para las demás lenguas, en inglés. */
+var ENLACES = {
+  consola : 'https://platform.claude.com/',
+  claves  : 'https://platform.claude.com/settings/keys',
+  guia    : { es:'https://platform.claude.com/docs/es/get-api-key',
+              ca:'https://platform.claude.com/docs/es/get-api-key',
+              en:'https://platform.claude.com/docs/en/get-api-key',
+              fr:'https://platform.claude.com/docs/en/get-api-key' }
+};
+var A = {
+es:`<h1>⚙️ Adquisición automática</h1>
 <div class="sub">Leer los PDF con la clave API</div>
 
-<div class="aviso"><b>Este modo cuesta dinero.</b> Cada documento leído llama a Claude: unos céntimos. El modo <b>asistida</b> hace lo mismo sin clave y sin coste — se copia el texto en claude.ai y se trae la respuesta.</div>
+<div class="aviso"><b>Este modo no es gratuito y necesita una «clave» para funcionar.</b> Cada documento que Claude lee cuesta unos céntimos. Si prefiere no usar clave, el modo <b>asistida</b> hace lo mismo sin coste: se copia el texto en claude.ai y se trae la respuesta.</div>
 
 <h2>La clave</h2>
+<p>La clave es una larga cadena de letras y números —empieza por <code>sk-ant-</code>— que da permiso a Salufolio para pedir a Claude que lea sus documentos. Funciona como una contraseña: es suya, y no se comparte con nadie.</p>
 <p>Se guarda en su aparato, en ningún otro sitio. Ni Salufolio ni nadie la ve pasar.</p>
+
+<h2>Cómo conseguirla, paso a paso</h2>
+<ol>
+<li><b>Abra la consola de Claude</b> en una pestaña nueva: {consola}. Es un sitio distinto del chat de claude.ai.</li>
+<li><b>Cree una cuenta</b> (o entre, si ya tiene una) con su correo electrónico.</li>
+<li><b>Si la consola se lo pide</b>, añada un medio de pago o crédito. Este modo cuesta unos céntimos por documento (vea el aviso de arriba).</li>
+<li><b>Entre en «Settings» y luego en «API keys»</b> — o vaya directamente: {claves}.</li>
+<li><b>Pulse «Create key»</b> y póngale un nombre que reconozca, por ejemplo «Salufolio».</li>
+<li><b>Copie la clave enseguida.</b> Solo se muestra una vez: si cierra la ventana sin copiarla, tendrá que crear otra.</li>
+<li><b>Péguela aquí</b>, en el campo de la clave de esta pantalla.</li>
+</ol>
+<p>Si cree que alguien la ha visto, cree una clave nueva en la misma página y deje de usar la anterior.</p>
+<div class="nota">Guía oficial de Anthropic, paso a paso: {guia} (en castellano).</div>
 
 <h2>Leer documentos</h2>
 <p>Suelte los PDF en la zona, o tóquela para elegirlos. Se leen uno tras otro, y cada uno deja su línea en el diario.</p>
 
 <h2>El diario</h2>
 <p>Cuándo, qué fichero, con qué modelo, qué se sacó — y las <b>dudas</b> que Claude devuelve cuando algo no estaba claro. Esas dudas valen oro: señalan lo que hay que comprobar.</p>
-<p>El diario vive en el expediente del paciente. No se mezclan los diarios de dos personas.</p>
+<p>El diario vive en el expediente del paciente. No se mezclan los diarios de dos personas.</p>`,
 
-<h2>Comprobar después</h2>
-<p>Leer no es comprobar. <b>Cotejo</b> pone el PDF al lado del expediente y marca en verde lo que ha entrado: lo que queda sin marcar es lo que se ha perdido.</p>
+fr:`<h1>⚙️ Acquisition automatique</h1>
+<div class="sub">Lire les PDF avec la clé API</div>
 
-<div class="nota">El prompt vive en <code>adquisicion/prompts/</code>, en su propio fichero .txt. Cambiarlo no toca el código — un solo código, varios prompts.</div>
-</div></body></html>
+<div class="aviso"><b>Ce mode n'est pas gratuit et il lui faut une « clé » pour fonctionner.</b> Chaque document lu par Claude coûte quelques centimes. Si vous préférez ne pas utiliser de clé, le mode <b>assisté</b> fait la même chose sans frais : on copie le texte dans claude.ai et on rapporte la réponse.</div>
+
+<h2>La clé</h2>
+<p>La clé est une longue suite de lettres et de chiffres — elle commence par <code>sk-ant-</code> — qui donne à Salufolio la permission de demander à Claude de lire vos documents. Elle fonctionne comme un mot de passe : elle est à vous, et ne se partage avec personne.</p>
+<p>Elle est gardée sur votre appareil, nulle part ailleurs. Ni Salufolio ni personne ne la voit passer.</p>
+
+<h2>Comment l'obtenir, pas à pas</h2>
+<ol>
+<li><b>Ouvrez la console Claude</b> dans un nouvel onglet : {consola}. C'est un site distinct du chat claude.ai.</li>
+<li><b>Créez un compte</b> (ou connectez-vous si vous en avez déjà un) avec votre courriel.</li>
+<li><b>Si la console vous le demande</b>, ajoutez un moyen de paiement ou du crédit. Ce mode coûte quelques centimes par document (voir l'avis ci-dessus).</li>
+<li><b>Allez dans « Settings » puis « API keys »</b> — ou directement : {claves}.</li>
+<li><b>Cliquez sur « Create key »</b> et donnez-lui un nom que vous reconnaîtrez, par exemple « Salufolio ».</li>
+<li><b>Copiez la clé tout de suite.</b> Elle ne s'affiche qu'une fois : si vous fermez la fenêtre sans la copier, il faudra en créer une autre.</li>
+<li><b>Collez-la ici</b>, dans le champ de la clé de cet écran.</li>
+</ol>
+<p>Si vous pensez que quelqu'un l'a vue, créez une nouvelle clé sur la même page et cessez d'utiliser l'ancienne.</p>
+<div class="nota">Guide officiel d'Anthropic, pas à pas : {guia} (en anglais).</div>
+
+<h2>Lire des documents</h2>
+<p>Déposez les PDF dans la zone, ou touchez-la pour les choisir. Ils sont lus l'un après l'autre, et chacun laisse sa ligne dans le journal.</p>
+
+<h2>Le journal</h2>
+<p>Quand, quel fichier, avec quel modèle, ce qui en a été tiré — et les <b>doutes</b> que Claude renvoie quand quelque chose n'était pas clair. Ces doutes valent de l'or : ils signalent ce qu'il faut vérifier.</p>
+<p>Le journal vit dans le dossier du patient. On ne mélange pas les journaux de deux personnes.</p>`,
+
+ca:`<h1>⚙️ Adquisició automàtica</h1>
+<div class="sub">Llegir els PDF amb la clau API</div>
+
+<div class="aviso"><b>Este mode no és gratuït i necessita una «clau» per a funcionar.</b> Cada document que Claude llig costa uns cèntims. Si prefereix no usar clau, el mode <b>assistit</b> fa el mateix sense cost: es copia el text a claude.ai i es porta la resposta.</div>
+
+<h2>La clau</h2>
+<p>La clau és una llarga cadena de lletres i números —comença per <code>sk-ant-</code>— que dona permís a Salufolio per a demanar a Claude que lligga els seus documents. Funciona com una contrasenya: és seua, i no es comparteix amb ningú.</p>
+<p>Es guarda en el seu aparell, en cap altre lloc. Ni Salufolio ni ningú la veu passar.</p>
+
+<h2>Com aconseguir-la, pas a pas</h2>
+<ol>
+<li><b>Òbriga la consola de Claude</b> en una pestanya nova: {consola}. És un lloc distint del xat de claude.ai.</li>
+<li><b>Cree un compte</b> (o entre, si ja en té un) amb el seu correu electrònic.</li>
+<li><b>Si la consola ho demana</b>, afegisca un mitjà de pagament o crèdit. Este mode costa uns cèntims per document (vegeu l'avís de dalt).</li>
+<li><b>Entre en «Settings» i després en «API keys»</b> — o vaja directament: {claves}.</li>
+<li><b>Prema «Create key»</b> i pose-li un nom que reconega, per exemple «Salufolio».</li>
+<li><b>Copie la clau tot seguit.</b> Només es mostra una vegada: si tanca la finestra sense copiar-la, haurà de crear-ne una altra.</li>
+<li><b>Apegue-la ací</b>, en el camp de la clau d'esta pantalla.</li>
+</ol>
+<p>Si creu que algú l'ha vista, cree una clau nova en la mateixa pàgina i deixe d'usar l'anterior.</p>
+<div class="nota">Guia oficial d'Anthropic, pas a pas: {guia} (en castellà).</div>
+
+<h2>Llegir documents</h2>
+<p>Deixe anar els PDF en la zona, o toque-la per a triar-los. Es lligen un darrere l'altre, i cadascun deixa la seua línia al diari.</p>
+
+<h2>El diari</h2>
+<p>Quan, quin fitxer, amb quin model, què se n'ha tret — i els <b>dubtes</b> que Claude torna quan alguna cosa no estava clara. Eixos dubtes valen or: assenyalen el que cal comprovar.</p>
+<p>El diari viu a l'expedient del pacient. No es barregen els diaris de dues persones.</p>`,
+
+en:`<h1>⚙️ Automatic acquisition</h1>
+<div class="sub">Reading PDFs with the API key</div>
+
+<div class="aviso"><b>This mode is not free and needs a “key” to work.</b> Every document Claude reads costs a few cents. If you would rather not use a key, the <b>assisted</b> mode does the same at no cost: you copy the text into claude.ai and bring back the answer.</div>
+
+<h2>The key</h2>
+<p>The key is a long string of letters and numbers — it starts with <code>sk-ant-</code> — that gives Salufolio permission to ask Claude to read your documents. It works like a password: it is yours, and you share it with nobody.</p>
+<p>It is kept on your device, nowhere else. Neither Salufolio nor anyone else sees it go by.</p>
+
+<h2>How to get it, step by step</h2>
+<ol>
+<li><b>Open the Claude console</b> in a new tab: {consola}. It is a different site from the claude.ai chat.</li>
+<li><b>Create an account</b> (or sign in, if you already have one) with your email address.</li>
+<li><b>If the console asks for it</b>, add a payment method or credit. This mode costs a few cents per document (see the notice above).</li>
+<li><b>Go to “Settings” and then “API keys”</b> — or go straight there: {claves}.</li>
+<li><b>Click “Create key”</b> and give it a name you will recognise, for example “Salufolio”.</li>
+<li><b>Copy the key straight away.</b> It is shown only once: if you close the window without copying it, you will have to create another.</li>
+<li><b>Paste it here</b>, in the key field on this screen.</li>
+</ol>
+<p>If you think someone has seen it, create a new key on the same page and stop using the old one.</p>
+<div class="nota">Official Anthropic guide, step by step: {guia} (in English).</div>
+
+<h2>Reading documents</h2>
+<p>Drop the PDFs into the zone, or tap it to choose them. They are read one after another, and each leaves its line in the log.</p>
+
+<h2>The log</h2>
+<p>When, which file, with which model, what was extracted — and the <b>doubts</b> Claude sends back when something was unclear. Those doubts are gold: they point to what needs checking.</p>
+<p>The log lives in the patient's record. Two people's logs are never mixed.</p>`
+};
+function liga(t, l){
+  return t.replace(/\{(\w+)\}/g, function(m, k){
+    var u = ENLACES[k]; if(!u) return m;
+    if(typeof u === 'object') u = u[l] || u.en;
+    return '<a href="' + u + '" target="_blank" rel="noopener">' + u.replace(/^https:\/\//, '') + '</a>';
+  });
+}
+Object.keys(A).forEach(function(l){ A[l] = liga(A[l], l); });
+SF_AYUDA.arranca(A);
+</script></body></html>

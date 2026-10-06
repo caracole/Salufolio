@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.10.06-17:05:00
    EL FORMULARIO — /Salufolio/comun/formulario.js
 
    « Ce système est universel, on peut saisir n'importe quoi. Il suffit
@@ -56,8 +57,10 @@ var SF_FORM = window.SF_FORM = (function(){
          tip_guardar:'Comprueba lo escrito y lo añade al expediente.',
          tip_siguiente:'Pasa a la pregunta siguiente. Se comprueba antes de pasar.',
          tip_atras:'Volver a la pregunta anterior.',
+         voz_on:'Leer las preguntas en voz alta (activado)', voz_off:'Leer las preguntas en voz alta', repite:'Repetir la pregunta',
          obligatorio:'Hace falta', opcional:'Puede quedar vacío',
-         entre:'entre', y:'y', habitual:'lo habitual está entre' },
+         entre:'entre', y:'y', habitual:'lo habitual está entre',
+         falta:'Falta', escribe_algo:'Escriba algún dato para poder guardar.' },
     fr:{ modo:'Mode :', conversa:'Conversationnel', formulario:'Formulaire',
          tip_conversa:'Une question par écran, comme si quelqu\'un vous les posait.',
          tip_formulario:'Tous les champs à la fois, comme un papier qu\'on remplit.',
@@ -66,8 +69,10 @@ var SF_FORM = window.SF_FORM = (function(){
          tip_guardar:'Vérifie ce qui est écrit et l\'ajoute au dossier.',
          tip_siguiente:'Passe à la question suivante. On vérifie avant de passer.',
          tip_atras:'Revenir à la question précédente.',
+         voz_on:'Lire les questions à voix haute (activé)', voz_off:'Lire les questions à voix haute', repite:'Répéter la question',
          obligatorio:'Il le faut', opcional:'Peut rester vide',
-         entre:'entre', y:'et', habitual:'l\'habituel va de' },
+         entre:'entre', y:'et', habitual:'l\'habituel va de',
+         falta:'Il manque', escribe_algo:'Saisissez une donnée pour pouvoir garder.' },
     ca:{ modo:'Mode:', conversa:'Conversacional', formulario:'Formulari',
          tip_conversa:'Una pregunta per pantalla.',
          tip_formulario:'Tots els camps alhora.',
@@ -76,8 +81,10 @@ var SF_FORM = window.SF_FORM = (function(){
          tip_guardar:'Comprova el que s\'ha escrit i ho afegeix a l\'expedient.',
          tip_siguiente:'Passa a la pregunta següent.',
          tip_atras:'Tornar a la pregunta anterior.',
+         voz_on:'Llegir les preguntes en veu alta (activat)', voz_off:'Llegir les preguntes en veu alta', repite:'Repetir la pregunta',
          obligatorio:'Cal', opcional:'Pot quedar buit',
-         entre:'entre', y:'i', habitual:'l\'habitual va de' },
+         entre:'entre', y:'i', habitual:'l\'habitual va de',
+         falta:'Falta', escribe_algo:'Escriviu alguna dada per poder guardar.' },
     en:{ modo:'Mode:', conversa:'Conversational', formulario:'Form',
          tip_conversa:'One question per screen, as if someone were asking.',
          tip_formulario:'All the fields at once, like a paper form.',
@@ -86,14 +93,54 @@ var SF_FORM = window.SF_FORM = (function(){
          tip_guardar:'Checks what you wrote and adds it to the record.',
          tip_siguiente:'Move to the next question. It checks before moving on.',
          tip_atras:'Back to the previous question.',
+         voz_on:'Read the questions aloud (on)', voz_off:'Read the questions aloud', repite:'Repeat the question',
          obligatorio:'Required', opcional:'May be left empty',
-         entre:'between', y:'and', habitual:'usually between' }
+         entre:'between', y:'and', habitual:'usually between',
+         falta:'Missing', escribe_algo:'Enter some data to be able to save.' }
   };
   function tx(k){
     var lg = 'es';
     try{ if(typeof MF!=='undefined' && MF.idioma) lg = MF.idioma(); }catch(e){}
     return (TX[lg] && TX[lg][k]) || TX.es[k] || k;
   }
+
+  /* ══ LA PREGUNTA (P-H, 06/10/2026) ══
+     Un campo puede decir cómo se pregunta : « pregunta », un texto o
+     { es:, fr:, ca:, en: }. Falta la lengua → la española ; falta
+     « pregunta » → la etiqueta. En el modo formulario se queda la etiqueta. */
+  function lg(){ var l = 'es'; try{ if(typeof MF!=='undefined' && MF.idioma) l = MF.idioma(); }catch(e){} return l; }
+  function txtDe(x){
+    if(x === undefined || x === null) return '';
+    if(typeof x === 'object') return x[lg()] || x.es || '';
+    return String(x);
+  }
+  function etiquetaDe(c, conversacional){
+    if(conversacional){ var q = txtDe(c.pregunta); if(q) return q; }
+    return c.etiqueta || c.id;
+  }
+  function preguntaDe(c){ return etiquetaDe(c, true); }
+
+  /* ══ LA VOZ, EN OPCIÓN (P-H, 06/10/2026) ══
+     Leer la pregunta en alto con la voz del navegador : sin red, sin
+     servicio, sin cuenta — todo se queda en la máquina. Se recuerda. */
+  var SF_FORM_VOZ = false;
+  try{ SF_FORM_VOZ = localStorage.getItem('sf_form_voz') === '1'; }catch(e){}
+  var BCP = { es:'es-ES', fr:'fr-FR', ca:'ca-ES', en:'en-GB' };
+  function habla(texto){
+    try{
+      if(!window.speechSynthesis) return false;
+      window.speechSynthesis.cancel();
+      if(!texto) return true;
+      var u = new SpeechSynthesisUtterance(String(texto));
+      u.lang = BCP[lg()] || 'es-ES';
+      var vs = window.speechSynthesis.getVoices() || [];
+      var v = vs.filter(function(x){ return (x.lang || '').toLowerCase().indexOf(u.lang.slice(0,2)) === 0; })[0];
+      if(v) u.voice = v;
+      window.speechSynthesis.speak(u);
+      return true;
+    }catch(e){ return false; }
+  }
+  function textoVoz(c){ return txtDe(c.pregunta_voz) || preguntaDe(c); }
 
   var TABLAS = {};        /* las tablas ya cargadas */
   var MODO   = 'todo';    /* todo | uno_a_uno — se recuerda */
@@ -271,7 +318,7 @@ var SF_FORM = window.SF_FORM = (function(){
 
     return '<div class="sf-campo-caja" data-campo="' + campo.id + '" data-tiptext="'
       + String(tip).replace(/"/g,'&quot;') + '">'
-      + '<label class="sf-etiqueta" for="' + id + '">' + (campo.etiqueta || campo.id)
+      + '<label class="sf-etiqueta" for="' + id + '">' + etiquetaDe(campo, MODO === 'uno_a_uno')
       /* ══ v2 (P-H, 16/09) : PLUS DE « title » ══
          C'était l'infobulle du navigateur — elle paraissait en haut de
          l'écran et doublait la nôtre, encadrée, en bas. Deux bulles pour
@@ -334,6 +381,11 @@ var SF_FORM = window.SF_FORM = (function(){
 
   function abre(R, campos, valores, alTerminar){
     var paso = 0;   /* para el modo uno_a_uno */
+    /* ══ UNA SOLA RESPUESTA ══
+       Al guardar, v.cierra() dispara alCerrar, que decía « cancelado »
+       (null) JUSTO ANTES de entregar lo escrito : quien llamaba recibía
+       dos respuestas. Ahora, si se ha entregado, no se dice « cancelado ». */
+    var hecho = false;
 
     function cuerpoTodo(){
       return (R.ayuda ? '<div class="sf-sordo">' + R.ayuda + '</div>' : '')
@@ -348,18 +400,61 @@ var SF_FORM = window.SF_FORM = (function(){
     }
 
     var pie = '<button class="sf-ventana-btn sf-suave" id="_f-modo"></button>'
+            + '<button class="sf-ventana-btn sf-suave" id="_f-voz">🔊</button>'
+            + '<button class="sf-ventana-btn sf-suave" id="_f-repite" style="display:none">↻</button>'
             + '<span style="flex:1"></span>'
             + '<button class="sf-ventana-btn sf-suave" id="_f-atras" style="display:none">◀</button>'
             + '<button class="sf-ventana-btn" id="_f-ok"></button>';
 
     var v = MF.ventana(R.titulo || '', (MODO === 'todo') ? cuerpoTodo() : cuerpoUno(),
                        { ancho: R.ancho || '520px', alPie: pie,
-                         alCerrar: function(){ if(alTerminar) alTerminar(null); } });
+                         alCerrar: function(){ habla(null); if(!hecho && alTerminar) alTerminar(null); } });
 
     var bModo  = v.caja.querySelector('#_f-modo');
+    var bVoz   = v.caja.querySelector('#_f-voz');
+    var bRep   = v.caja.querySelector('#_f-repite');
     var bAtras = v.caja.querySelector('#_f-atras');
     var bOk    = v.caja.querySelector('#_f-ok');
     var cuerpo = v.caja.querySelector('.sf-ventana-cuerpo');
+
+    /* ══ « GUARDAR » SÓLO CUANDO HAY QUE GUARDAR (P-H, 05/10/2026) ══
+       « Ne valider que s'il y a des données entrées. » Sin contador ni
+       memoria : cada vez se mira el estado de TODOS los campos.
+         activo  =  todos los obligatorios bien  Y  algún campo útil escrito
+       (ni la fecha, ni la hora, ni un valor propuesto por defecto cuentan
+       como dato). Se borra el dato, vuelve a apagarse. */
+    function esUltimo(){ return (MODO === 'todo' || paso === campos.length - 1); }
+    function valorDe(c){
+      return document.getElementById('_f_' + c.id) ? lee(c) : valores[c.id];
+    }
+    function esUtil(c, x){
+      if(c.tipo === 'fecha' || c.tipo === 'hora') return false;
+      if(x === '' || x === undefined || x === null || x === false) return false;
+      if(c.defecto !== undefined && String(x) === String(c.defecto)) return false;
+      return true;
+    }
+    function revisa(){
+      var lista = esUltimo() ? campos : [campos[paso]];
+      var faltan = [], hayUtil = false;
+      lista.forEach(function(c){
+        var x = valorDe(c), mal = comprueba(c, x);
+        if(mal && mal.grave){
+          var vacio = String(x === undefined || x === null ? '' : x).trim() === '';
+          faltan.push(vacio ? (c.etiqueta || c.id) : mal.texto);
+        }
+        if(esUtil(c, x)) hayUtil = true;
+      });
+      return { ok: faltan.length === 0 && (!esUltimo() || hayUtil), faltan: faltan };
+    }
+    function refrescaBoton(){
+      var r = revisa();
+      bOk.disabled = !r.ok;
+      bOk.style.opacity = r.ok ? '' : '.4';
+      bOk.style.cursor  = r.ok ? '' : 'default';
+      var z = document.getElementById('_f-falta');
+      if(z) z.textContent = r.ok ? ''
+        : (r.faltan.length ? (tx('falta') + ' : ' + r.faltan.join(' · ')) : tx('escribe_algo'));
+    }
 
     function pinta(){
       cuerpo.innerHTML = (MODO === 'todo') ? cuerpoTodo() : cuerpoUno();
@@ -370,12 +465,14 @@ var SF_FORM = window.SF_FORM = (function(){
       if(typeof MF!=='undefined' && MF.tip)
         MF.tip(bModo, (MODO === 'todo') ? tx('tip_conversa') : tx('tip_formulario'));
       bAtras.style.display = (MODO === 'uno_a_uno' && paso > 0) ? 'inline-block' : 'none';
-      var ultimo = (MODO === 'todo' || paso === campos.length - 1);
+      var ultimo = esUltimo();
       bOk.textContent = ultimo ? ('✓ ' + tx('guardar')) : (tx('siguiente') + ' ▶');
       if(typeof MF!=='undefined' && MF.tip){
         MF.tip(bOk, ultimo ? tx('tip_guardar') : tx('tip_siguiente'));
         MF.tip(bAtras, tx('tip_atras'));
       }
+      cuerpo.insertAdjacentHTML('beforeend',
+        '<div id="_f-falta" style="font-size:11.5px;color:var(--muted);margin-top:6px;min-height:16px"></div>');
       /* el primer campo, listo */
       var pr = cuerpo.querySelector('.sf-campo');
       if(pr && pr.focus) pr.focus();
@@ -389,6 +486,8 @@ var SF_FORM = window.SF_FORM = (function(){
       campos.forEach(function(c){
         var e = document.getElementById('_f_' + c.id);
         if(!e) return;
+        e.addEventListener('input',  refrescaBoton);
+        e.addEventListener('change', refrescaBoton);
         e.addEventListener('blur', function(){
           valores[c.id] = lee(c);
           avisa(c, comprueba(c, valores[c.id]));
@@ -397,6 +496,19 @@ var SF_FORM = window.SF_FORM = (function(){
           if(ev.key === 'Enter' && c.tipo !== 'texto_largo'){ ev.preventDefault(); bOk.click(); }
         });
       });
+      /* la voz : solo tiene sentido con UNA pregunta en pantalla */
+      var hayVoz = !!window.speechSynthesis;
+      bVoz.style.display = (hayVoz && MODO === 'uno_a_uno') ? 'inline-block' : 'none';
+      bVoz.textContent = SF_FORM_VOZ ? '🔊' : '🔇';
+      bVoz.style.opacity = SF_FORM_VOZ ? '' : '.55';
+      bRep.style.display = (hayVoz && MODO === 'uno_a_uno' && SF_FORM_VOZ) ? 'inline-block' : 'none';
+      if(typeof MF!=='undefined' && MF.tip){
+        MF.tip(bVoz, SF_FORM_VOZ ? tx('voz_on') : tx('voz_off'));
+        MF.tip(bRep, tx('repite'));
+      }
+      if(SF_FORM_VOZ && MODO === 'uno_a_uno') habla(textoVoz(campos[paso]));
+      else if(window.speechSynthesis) window.speechSynthesis.cancel();
+      refrescaBoton();
     }
 
     function avisa(c, mal){
@@ -416,8 +528,23 @@ var SF_FORM = window.SF_FORM = (function(){
       paso = 0; pinta();
     };
     bAtras.onclick = function(){ if(paso > 0){ paso--; pinta(); } };
+    bVoz.onclick = function(){
+      SF_FORM_VOZ = !SF_FORM_VOZ;
+      try{ localStorage.setItem('sf_form_voz', SF_FORM_VOZ ? '1' : '0'); }catch(e){}
+      pinta();
+    };
+    bRep.onclick = function(){ habla(textoVoz(campos[paso])); };
+    /* ══ UN CLIC QUE NO SE PIERDE ══
+       Al pulsar un botón del pie, el campo pierde el foco, su aviso
+       aparece (« hace falta »), la ventana crece o se encoge, el botón
+       se mueve bajo el dedo y el clic cae en el vacío. Se impide que el
+       botón robe el foco : el campo se queda donde está. */
+    [bModo, bVoz, bRep, bAtras, bOk].forEach(function(b){
+      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+    });
 
     bOk.onclick = function(){
+      if(bOk.disabled) return;
       /* on lit et on vérifie ce qui est à l'écran */
       var aComprobar = (MODO === 'todo') ? campos : [campos[paso]];
       var grave = false;
@@ -437,6 +564,8 @@ var SF_FORM = window.SF_FORM = (function(){
         var x = valores[c.id];
         if(x !== '' && x !== undefined && x !== null) salida[c.id] = x;
       });
+      habla(null);
+      hecho = true;
       v.cierra();
       if(alTerminar) alTerminar(salida);
     };
@@ -457,6 +586,9 @@ var SF_FORM = window.SF_FORM = (function(){
   }
 
   return { pide: pide, rubricas: rubricas, comprueba: comprueba, carga: carga,
+           habla: habla, texto: txtDe, pregunta: preguntaDe, tx: tx,
+           voz: function(b){ if(b !== undefined){ SF_FORM_VOZ = !!b;
+             try{ localStorage.setItem('sf_form_voz', SF_FORM_VOZ ? '1' : '0'); }catch(e){} } return SF_FORM_VOZ; },
            modo: function(m){ if(m){ MODO = m;
              try{ localStorage.setItem('sf_form_modo', m); }catch(e){} } return MODO; } };
 })();

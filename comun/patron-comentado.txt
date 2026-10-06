@@ -1,10 +1,11 @@
+Versión 2026.09.19-18:15:47
 ═══════════════════════════════════════════════════════════════════════════
-  EL PATRÓN DEL .mf — cada campo, explicado
+  EL PATRÓN DEL .sf — cada campo, explicado
   Salufolio · septiembre de 2026
 ═══════════════════════════════════════════════════════════════════════════
 
   Este documento no es un fichero de trabajo: es la explicación de lo que
-  hay dentro de un .mf. Léalo cuando dude de un campo.
+  hay dentro de un .sf. Léalo cuando dude de un campo.
 
   La forma viva está en comun/plantilla-mf.js — si los dos no coinciden,
   manda el programa, y este papel se corrige.
@@ -59,8 +60,8 @@
 
   "patient_name"          Nombre y apellidos, tal como se escriben.
   "patient_label"         La MATRÍCULA: tres iniciales + cuatro cifras del
-                          SIP. Ejemplo: Ana García López, SIP
-                          12345678 → AGL5678.
+                          SIP. Ejemplo: Ana García Ruiz, SIP
+                          12340000 → AGR0000.
                           Es lo que da nombre a su carpeta y a sus
                           ficheros. No cambia nunca.
 
@@ -266,7 +267,7 @@
 
 
 ───────────────────────────────────────────────────────────────────────────
-  6 · LO QUE NO ESTÁ EN EL .mf
+  6 · LO QUE NO ESTÁ EN EL .sf
 ───────────────────────────────────────────────────────────────────────────
 
   "diario"                Vive aparte, en pacientes/MATRÍCULA/diario.js

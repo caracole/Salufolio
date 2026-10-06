@@ -1,7 +1,7 @@
 /* TABLA — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "tabla",
-  "version": "2026.09.07-12:35:30",
+  "version": "2026.09.19-18:12:56",
   "programa": "tabla.html",
   "lanzador": "../casa/casa.js",
   "icono": "📋",

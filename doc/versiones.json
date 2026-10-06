@@ -1,6 +1,6 @@
 {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.09.21-22:46:35",
+ "_ultima_pasada": "2026.09.22-10:06:52",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -206,17 +206,17 @@
    "version": "2026.09.19-22:29:15"
   },
   "casa/tour.js": {
-   "suma": "c0f6a58f0675",
-   "version": "2026.09.21-22:43:16"
+   "suma": "d832f288e0d5",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/ES-abeja.mp3": {
    "muda": true,
-   "suma": "15e66009608d",
-   "version": "2026.09.19-22:29:15"
+   "suma": "0dc2928b6efa",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/ES-abeja.txt": {
-   "suma": "ea8cfb2753ad",
-   "version": "2026.09.21-21:19:26"
+   "suma": "cc2c4fc39a73",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/ES-abrir.mp3": {
    "muda": true,
@@ -256,12 +256,12 @@
   },
   "casa/voz/ES-automatica.mp3": {
    "muda": true,
-   "suma": "1690d6b0af1f",
-   "version": "2026.09.21-22:31:07"
+   "suma": "a650db8022f6",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/ES-automatica.txt": {
-   "suma": "ac57c9fb07f2",
-   "version": "2026.09.21-22:31:07"
+   "suma": "60ec62825209",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/ES-ayuda.mp3": {
    "muda": true,
@@ -337,12 +337,12 @@
   },
   "casa/voz/ES-doi.mp3": {
    "muda": true,
-   "suma": "7779c331799c",
-   "version": "2026.09.21-22:46:34"
+   "suma": "923d613c8c67",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/ES-doi.txt": {
-   "suma": "b6c614893089",
-   "version": "2026.09.21-22:46:34"
+   "suma": "d389ae668d08",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/ES-elegir.mp3": {
    "muda": true,
@@ -639,12 +639,12 @@
   },
   "casa/voz/FR-abeja.mp3": {
    "muda": true,
-   "suma": "2dec12967bfc",
-   "version": "2026.09.19-22:29:15"
+   "suma": "04e8dc235fe9",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/FR-abeja.txt": {
-   "suma": "46b0393b0eac",
-   "version": "2026.09.21-21:19:26"
+   "suma": "d3143b9c42ee",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/FR-abrir.mp3": {
    "muda": true,
@@ -684,12 +684,12 @@
   },
   "casa/voz/FR-automatica.mp3": {
    "muda": true,
-   "suma": "1b7eae1a99b3",
-   "version": "2026.09.21-22:31:07"
+   "suma": "2a98d4d56312",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/FR-automatica.txt": {
-   "suma": "be40f807416a",
-   "version": "2026.09.21-22:31:07"
+   "suma": "a0b0dd06d4b1",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/FR-ayuda.mp3": {
    "muda": true,
@@ -765,12 +765,12 @@
   },
   "casa/voz/FR-doi.mp3": {
    "muda": true,
-   "suma": "638a5f641a06",
-   "version": "2026.09.21-22:46:34"
+   "suma": "774c50ed46e1",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/FR-doi.txt": {
-   "suma": "61319ff4dbb0",
-   "version": "2026.09.21-22:46:34"
+   "suma": "12cb1cd52659",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/FR-elegir.mp3": {
    "muda": true,
@@ -1070,8 +1070,8 @@
    "version": "2026.09.19-19:42:02"
   },
   "casa/voz/grabados.js": {
-   "suma": "8a65258a6ac4",
-   "version": "2026.09.21-22:46:34"
+   "suma": "2cfb4969debb",
+   "version": "2026.09.22-10:06:52"
   },
   "casa/voz/t01_es.mp3": {
    "muda": true,
@@ -1213,12 +1213,12 @@
    "version": "2026.09.19-18:15:47"
   },
   "comun/tour-motor.js": {
-   "suma": "aba3279f29b6",
-   "version": "2026.09.21-22:36:53"
+   "suma": "cdad7a35dee3",
+   "version": "2026.09.21-23:21:34"
   },
   "comun/tour.css": {
-   "suma": "37008987c951",
-   "version": "2026.09.21-20:56:11"
+   "suma": "5e46a9eadd56",
+   "version": "2026.09.21-23:21:34"
   },
   "correlaciones/correlaciones.help.html": {
    "suma": "c25d1a0623c2",
@@ -1708,8 +1708,8 @@
    "version": "2026.09.19-18:15:47"
   },
   "doc/versiones.js": {
-   "suma": "ff40ef2e1cd7",
-   "version": "2026.09.21-22:46:34"
+   "suma": "2dcf6bbc81a5",
+   "version": "2026.09.22-10:06:52"
   },
   "farmacovigilancia/farmacovigilancia.html": {
    "suma": "f6e03a0519fc",

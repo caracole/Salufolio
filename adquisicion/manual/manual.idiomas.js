@@ -1,4 +1,5 @@
-/* Los textos de la adquisición manual */
+/* Los textos de la adquisición manual
+   Versión 2026.10.05-20:14:56 */
 var SF_TEXTOS = window.SF_TEXTOS = {
  "_doctrina": "Los textos. Las rúbricas tienen los suyos en la tabla.",
  "textos": {

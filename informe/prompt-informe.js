@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    EL PROMPT DEL COMENTARIO — informe/prompt-informe.js
 
    « NE JAMAIS MÉLANGER LE CODE JAVASCRIPT AVEC LE PROMPT. Le prompt vit

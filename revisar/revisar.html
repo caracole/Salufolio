@@ -74,7 +74,7 @@ details > *:not(summary){padding:0 16px 14px}
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    REVISAR — programa autónomo de Salufolio V2
-   Versión 2026.09.09-11:17:03
+   Versión 2026.09.19-18:12:56
 
    « Il faut séparer la consultation / corrections de l'acquisition. »
                                                         — P-H, 09/09/2026
@@ -98,7 +98,7 @@ const APP_VERSION_DATE = SF_CONFIG.version;
    sont ceux du dossier : « prescriptores », « servicios », « centros ». */
 var _DATOS = null;
 function _asegura(){
-  if(!_DATOS) _DATOS={ formato:'salufolio', version:'1.0', mesures:[], events:[], medicaments:[] };
+  if(!_DATOS) _DATOS={ formato:'salufolio', version:'2026.09.19-18:12:56', mesures:[], events:[], medicaments:[] };
   return _DATOS;
 }
 function loadData(){       return _asegura().mesures || []; }
@@ -314,7 +314,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
       '<button class="pdf-pg-next" style="cursor:pointer;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:0 8px">▶</button>' +
       '<span class="pdf-pg-nb" style="color:var(--muted)"></span>';
     sh.pop.insertBefore(barra, sh.cuerpo);
-    sh.cuerpo.style.background = '#8a8a8a';
+    sh.cuerpo.style.background = colorDe('visor_fondo', 'background-color', '--surface2');
     sh.cuerpo.style.textAlign = 'center';
     var actual = pagina;
     async function dibujar(pnum) {
@@ -396,8 +396,20 @@ function _chartVerInforme(s, key) {
 
 Chart.defaults.font.family = "'IBM Plex Mono', monospace";
 Chart.defaults.font.size = 10;
-Chart.defaults.color = '#7a8499';
-Chart.defaults.borderColor = '#2a3348';
+/* TABLA DE ESTILOS (P-H, 06/10/2026) : los colores del grafico ya no se escriben aqui —
+   vienen de los roles de casa.js (curva_texto, curva_rejilla...), resueltos por la paleta puesta. */
+function colorDe(rol, prop, respaldo){
+  var v = ''; try{ v = (MF.estilo(rol, prop) || '').trim(); }catch(e){}
+  return v || getComputedStyle(document.documentElement).getPropertyValue(respaldo).trim();
+}
+function aplicaColoresCurvas(){
+  if(typeof Chart === 'undefined') return;
+  Chart.defaults.color       = colorDe('curva_texto',   'color', '--muted');
+  Chart.defaults.borderColor = colorDe('curva_rejilla', 'color', '--border');
+  var tam = parseFloat(colorDe('curva_texto', 'font-size', '--tam-min'));
+  if(tam) Chart.defaults.font.size = tam;
+}
+aplicaColoresCurvas();
 const chartInstances = {};
 
 /* v2026.7.21.4 — échelle par courbe : Lin (par défaut) ⇄ Log (natif Chart.js).
@@ -432,7 +444,7 @@ function makeChart(canvasId, key, data, opts) {
      (bascule d'échelle, resize) conservent l'habillage d'origine. */
   window._chartOpts = window._chartOpts || {};
   _chartOpts[canvasId] = opts;
-  var rejilla = opts.claro ? '#e6e6de' : '#2a3348';
+  var rejilla = opts.claro ? '#e6e6de' : colorDe('curva_rejilla', 'color', '--border');
   const p = PARAMS[key];
   const series = getSeriesForParam(data, key);
   if (!series.length) return;
@@ -452,7 +464,7 @@ function makeChart(canvasId, key, data, opts) {
         data: series.map(s => s.y),
         borderColor: p.color,
         backgroundColor: p.color + '18',
-        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? '#c0392b' : p.color),
+        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? colorDe('curva_mal', 'color', '--danger') : p.color),
         pointRadius: 5, pointHoverRadius: (opts.sinTooltip ? 5 : 7), pointHitRadius: 14, tension: 0.3, fill: false,
       }]
     },
@@ -699,7 +711,8 @@ const PARAMS_I18N = {
   },
 };
 function textInt(id, campo) {
-  var lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'es';
+  /* la langue vient de la casa (MF.idioma) : « currentLang » n'existait nulle part */
+  var lang = 'es'; try{ lang = MF.idioma() || 'es'; }catch(e){}
   var tabla = PARAMS_I18N[lang] || PARAMS_I18N.es;
   var entrada = tabla[id] || PARAMS_I18N.es[id];
   return entrada ? entrada[campo] : id;
@@ -808,7 +821,7 @@ function paramTip(key) {
     const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     b.innerHTML = (t.getAttribute('data-ptip') || '').split('\n')
       .map(l => l.indexOf('Ref:') === 0
-        ? '<span style="color:#3fb950;font-weight:600">' + esc(l) + '</span>'
+        ? '<span style="color:' + colorDe('curva_ref', 'color', '--ok') + ';font-weight:600">' + esc(l) + '</span>'
         : esc(l)).join('<br>');
     b.classList.remove('on');
     b.style.left = '0px'; b.style.top = '-9999px';   /* mesurer hors écran */
@@ -2603,7 +2616,11 @@ function refresca(){
   }catch(err){ console.warn(err); }
 }
 
+function redibuja(){ aplicaColoresCurvas(); try{ pintaFiltro(); refresca(); }catch(e){ console.warn(e); } }
 MF.arranca({
+  alIdioma:  function(){ if(_DATOS) redibuja(); },
+  alPaleta:  aplicaColoresCurvas,
+  alEstilos: aplicaColoresCurvas,
   alCargar: function(d){
     _DATOS = d;
     var p = MF.paciente();

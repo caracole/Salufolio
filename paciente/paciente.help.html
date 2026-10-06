@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ayuda · Paciente</title>
+<style>
+body{margin:0;background:var(--bg,#14161b);color:var(--text,#e8e8ea);font-family:var(--sans,system-ui,sans-serif);line-height:1.75}
+main{max-width:680px;margin:0 auto;padding:22px 22px 50px}
+h1{font-family:var(--serif,Georgia,serif);font-size:21px;margin:0 0 6px}
+h2{font-family:var(--serif,Georgia,serif);font-size:15px;color:var(--accent,#4a8fe8);margin:22px 0 4px}
+p,li{font-size:14px}
+.suave{color:var(--muted,#9aa0aa);font-size:12.5px}
+</style>
+</head>
+<body>
+<main>
+<div id="es">
+  <h1>Paciente</h1>
+  <p class="suave">La ficha de la persona, contada en una conversación.</p>
+  <h2>¿Para qué sirve?</h2>
+  <p>Para abrir el expediente de una persona sin rellenar un papel : el programa le hace preguntas, una cada vez, y usted contesta escribiendo, eligiendo, o con un sí o un no.</p>
+  <h2>No hace falta saberlo todo</h2>
+  <p>Lo que no sepa, déjelo vacío. Se puede completar otro día : vuelva a abrir « Paciente » y pulse « Completar la ficha ». Nada se pierde y nada se escribe dos veces.</p>
+  <h2>Qué se pregunta</h2>
+  <ul>
+    <li>Quién es : nombre, apellidos, SIP, fecha de nacimiento, sexo.</li>
+    <li>Lo que ya le ha pasado : antecedentes, diagnósticos, vacunas.</li>
+    <li>Lo que viene : citas, dieta o material que usa.</li>
+    <li>A quién ve : los centros y los médicos que la atienden.</li>
+  </ul>
+  <h2>Leer las preguntas en voz alta</h2>
+  <p>En la ventana de las preguntas hay un botón con un altavoz. Si lo activa, cada pregunta se lee en voz alta, en el idioma elegido. Se queda como usted lo deje. La voz es la de su propio ordenador : nada sale de él.</p>
+  <h2>Guardar</h2>
+  <p>Lo que contesta se anota en el expediente al momento, y el disquete de arriba se enciende. Con él, el expediente queda guardado en su carpeta.</p>
+</div>
+<div id="fr" style="display:none">
+  <h1>Patient</h1>
+  <p class="suave">La fiche de la personne, racontée dans une conversation.</p>
+  <h2>À quoi ça sert ?</h2>
+  <p>À ouvrir le dossier d'une personne sans remplir un papier : le programme pose des questions, une à la fois, et vous répondez en écrivant, en choisissant, ou par oui ou non.</p>
+  <h2>Il n'est pas nécessaire de tout savoir</h2>
+  <p>Ce que vous ne savez pas, laissez-le vide. On peut compléter un autre jour : rouvrez « Patient » et appuyez sur « Compléter la fiche ». Rien ne se perd et rien n'est écrit deux fois.</p>
+  <h2>Ce qui est demandé</h2>
+  <ul>
+    <li>Qui c'est : prénom, nom, SIP, date de naissance, sexe.</li>
+    <li>Ce qui lui est arrivé : antécédents, diagnostics, vaccins.</li>
+    <li>Ce qui vient : rendez-vous, régime ou matériel utilisé.</li>
+    <li>Qui la suit : les centres et les médecins.</li>
+  </ul>
+  <h2>Lire les questions à voix haute</h2>
+  <p>Dans la fenêtre des questions, un bouton avec un haut-parleur. Activé, chaque question est lue à voix haute dans la langue choisie. Il reste comme vous l'avez laissé. La voix est celle de votre propre ordinateur : rien n'en sort.</p>
+  <h2>Garder</h2>
+  <p>Ce que vous répondez est noté dans le dossier aussitôt, et la disquette en haut s'allume. Avec elle, le dossier est gardé dans votre dossier.</p>
+</div>
+<script>
+try{
+  var l = (new URLSearchParams(location.search).get('idioma') || 'es').slice(0,2);
+  if(l === 'fr'){ document.getElementById('es').style.display='none'; document.getElementById('fr').style.display=''; document.documentElement.lang='fr'; }
+}catch(e){}
+</script>
+</main>
+</body>
+</html>

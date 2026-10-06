@@ -29,7 +29,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <div id="panel-radar" class="panel">
   <!-- La barre de titre était un désert : le titre à gauche, la légende à droite (P-H 16/07) -->
   <div class="section-label barra-titulo">
-    <span data-i18n="radar_title">🕸️ Vista de conjunto — Radar</span>
+    <span data-idioma="radar_title">🕸️ Vista de conjunto — Radar</span>
     <span id="radar-leyenda-top" class="leyenda-top"></span>
   </div>
 
@@ -48,7 +48,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
       <!-- Fechas : listbox de selección múltiple (P-H : ocupaba demasiado sitio) -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-          <div style="font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600">📅 FECHAS A COMPARAR <span style="color:var(--muted);font-weight:400">(máx. 8)</span></div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600"><span data-idioma="fechas">📅 FECHAS A COMPARAR</span> <span style="color:var(--muted);font-weight:400">(máx. 8)</span></div>
           <div style="display:flex;gap:5px">
             <button class="btn" onclick="selectLastRadarDates()" style="font-size:10.5px;padding:3px 9px">Últimas 3</button>
             <button class="btn" onclick="selectAllRadarDates()" style="font-size:10.5px;padding:3px 9px">Últimas 8</button>
@@ -62,7 +62,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 
       <!-- Grupos de parámetros -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px">
-        <div style="font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;margin-bottom:8px">🧪 GRUPO DE PARÁMETROS</div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;margin-bottom:8px" data-idioma="grupo">🧪 GRUPO DE PARÁMETROS</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="btn primary" onclick="setRadarGroup('general')" id="rg-general" style="font-size:11.5px;padding:5px 11px">General</button>
           <button class="btn" onclick="setRadarGroup('hemato')" id="rg-hemato" style="font-size:11.5px;padding:5px 11px">Hematología</button>
@@ -108,7 +108,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    RADAR — programa autónomo de Salufolio V2
-   Versión 2026.09.07-15:05:40
+   Versión 2026.09.19-18:12:56
 
    Extraído de la V1: radar-js.js (12 funciones), core-panels-html.html
    (líneas 34-107), y sus dependencias tomadas en su fuente.
@@ -304,7 +304,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
       '<button class="pdf-pg-next" style="cursor:pointer;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:0 8px">▶</button>' +
       '<span class="pdf-pg-nb" style="color:var(--muted)"></span>';
     sh.pop.insertBefore(barra, sh.cuerpo);
-    sh.cuerpo.style.background = '#8a8a8a';
+    sh.cuerpo.style.background = colorDe('visor_fondo', 'background-color', '--surface2');
     sh.cuerpo.style.textAlign = 'center';
     var actual = pagina;
     async function dibujar(pnum) {
@@ -386,8 +386,20 @@ function _chartVerInforme(s, key) {
 
 Chart.defaults.font.family = "'IBM Plex Mono', monospace";
 Chart.defaults.font.size = 10;
-Chart.defaults.color = '#7a8499';
-Chart.defaults.borderColor = '#2a3348';
+/* TABLA DE ESTILOS (P-H, 06/10/2026) : los colores del grafico ya no se escriben aqui —
+   vienen de los roles de casa.js (curva_texto, curva_rejilla...), resueltos por la paleta puesta. */
+function colorDe(rol, prop, respaldo){
+  var v = ''; try{ v = (MF.estilo(rol, prop) || '').trim(); }catch(e){}
+  return v || getComputedStyle(document.documentElement).getPropertyValue(respaldo).trim();
+}
+function aplicaColoresCurvas(){
+  if(typeof Chart === 'undefined') return;
+  Chart.defaults.color       = colorDe('curva_texto',   'color', '--muted');
+  Chart.defaults.borderColor = colorDe('curva_rejilla', 'color', '--border');
+  var tam = parseFloat(colorDe('curva_texto', 'font-size', '--tam-min'));
+  if(tam) Chart.defaults.font.size = tam;
+}
+aplicaColoresCurvas();
 const chartInstances = {};
 
 /* v2026.7.21.4 — échelle par courbe : Lin (par défaut) ⇄ Log (natif Chart.js).
@@ -422,7 +434,7 @@ function makeChart(canvasId, key, data, opts) {
      (bascule d'échelle, resize) conservent l'habillage d'origine. */
   window._chartOpts = window._chartOpts || {};
   _chartOpts[canvasId] = opts;
-  var rejilla = opts.claro ? '#e6e6de' : '#2a3348';
+  var rejilla = opts.claro ? '#e6e6de' : colorDe('curva_rejilla', 'color', '--border');
   const p = PARAMS[key];
   const series = getSeriesForParam(data, key);
   if (!series.length) return;
@@ -442,7 +454,7 @@ function makeChart(canvasId, key, data, opts) {
         data: series.map(s => s.y),
         borderColor: p.color,
         backgroundColor: p.color + '18',
-        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? '#c0392b' : p.color),
+        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? colorDe('curva_mal', 'color', '--danger') : p.color),
         pointRadius: 5, pointHoverRadius: (opts.sinTooltip ? 5 : 7), pointHitRadius: 14, tension: 0.3, fill: false,
       }]
     },
@@ -688,7 +700,8 @@ const PARAMS_I18N = {
   },
 };
 function textInt(id, campo) {
-  var lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'es';
+  /* la langue vient de la casa (MF.idioma) : « currentLang » n'existait nulle part */
+  var lang = 'es'; try{ lang = MF.idioma() || 'es'; }catch(e){}
   var tabla = PARAMS_I18N[lang] || PARAMS_I18N.es;
   var entrada = tabla[id] || PARAMS_I18N.es[id];
   return entrada ? entrada[campo] : id;
@@ -797,7 +810,7 @@ function paramTip(key) {
     const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     b.innerHTML = (t.getAttribute('data-ptip') || '').split('\n')
       .map(l => l.indexOf('Ref:') === 0
-        ? '<span style="color:#3fb950;font-weight:600">' + esc(l) + '</span>'
+        ? '<span style="color:' + colorDe('curva_ref', 'color', '--ok') + ';font-weight:600">' + esc(l) + '</span>'
         : esc(l)).join('<br>');
     b.classList.remove('on');
     b.style.left = '0px'; b.style.top = '-9999px';   /* mesurer hors écran */
@@ -1450,7 +1463,7 @@ function ajouterTrazabilidad(parsed, extra) {
 const SOURCES_PDF_KEY = 'mt_sources_pdf';
 /* ── Registre normalisé des PDF (proposition P-H, 16/07) ──
    Une seule vérité : { directorio: '…', archivos: { PDF011: 'nom.pdf', … } }.
-   Le .mf exporté ne porte plus la double clé pdf/pdf_id dans chaque table :
+   Le .sf exporté ne porte plus la double clé pdf/pdf_id dans chaque table :
    pdf_id suffit, le nom se résout ici. À l'import, Salufolio RÉHYDRATE les
    entrées (pdf ← registre) pour que tous les panneaux existants continuent
    de fonctionner sans chirurgie. Lavoisier des deux côtés. */
@@ -1620,7 +1633,12 @@ function resolveOrCreatePdf(fichero) {
 
 
 
+/* la casa cambia la lengua o la paleta : se vuelve a construir lo que se ve */
+function redibuja(){ aplicaColoresCurvas(); if(_DATOS) try{ buildRadar(loadData()); }catch(e){ console.warn(e); } }
 MF.arranca({
+  alIdioma:  redibuja,
+  alPaleta:  redibuja,
+  alEstilos: redibuja,
   alCargar: function(d, p){
     _DATOS=d;
     var pa=MF.paciente();
@@ -1641,7 +1659,7 @@ MF.arranca({
     var a=document.getElementById('aviso');
     a.style.display='block';
     a.innerHTML='<b>'+msg+'</b><br><br>Llame al programa con la matrícula:<br>'
-      +'<code>radar.html?mf=AGL5678&carpeta=../pacientes/AGL5678/</code>';
+      +'<code>radar.html?mf=AGR0000&carpeta=../pacientes/AGR0000/</code>';
   }
 });
 </script>

@@ -1,7 +1,7 @@
 /* REVISAR — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "revisar",
-  "version": "2026.09.09-11:17:03",
+  "version": "2026.09.19-18:12:56",
   "programa": "revisar.html",
   "lanzador": "../casa/casa.js",
   "icono": "🔍",

@@ -102,7 +102,7 @@ textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(
     <span class="cuenta" id="c-diario"></span>
   </summary>
   <div style="display:none;gap:8px;justify-content:flex-end;margin-bottom:8px" id="botones-diario">
-    <button class="btn" onclick="guardaExpediente()">💾 Guardar lo leído</button>
+    <button class="btn" onclick="guardaExpediente()" data-idioma="dia_guardar">💾 Guardar lo leído</button>
   </div>
   <div id="diario-lista" style="max-height:340px;overflow-y:auto"></div>
 </details>
@@ -115,7 +115,7 @@ textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ADQUISICIÓN ASISTIDA — Salufolio
-   Versión 2026.09.14-12:26:39
+   Versión 2026.09.19-18:12:56
 
    El segundo de los tres modos (P-H, 09/09):
      manual     · a mano, sin documento
@@ -268,13 +268,13 @@ function estado(txt, mal){
 }
 function cuentaLetras(){
   var n=document.getElementById('texto').value.length;
-  document.getElementById('cuenta-letras').textContent = n ? (n.toLocaleString()+' letras') : '';
+  document.getElementById('cuenta-letras').textContent = n ? t('doc_letras', {n:n.toLocaleString()}) : '';
 }
 
 async function tomaPdf(f){
   FICHERO = f;
   document.getElementById('c-doc').textContent = f.name;
-  estado('Leyendo ' + f.name + '…');
+  estado(t('doc_leyendo', {f:f.name}));
   try{
     var buf = await f.arrayBuffer();
     var doc = await pdfjsLib.getDocument({ data: buf }).promise;
@@ -288,13 +288,13 @@ async function tomaPdf(f){
     cuentaLetras();
     if(todo.trim().length < 120){
       /* pas de couche texte : c'est un scan */
-      estado('Este PDF no lleva texto — está escaneado.');
+      estado(t('doc_escaneado'));
       muestraBotonOcr(true);
     } else {
-      estado('Texto sacado de ' + doc.numPages + ' página(s).');
+      estado(t('doc_sacado', {n:doc.numPages}));
       muestraBotonOcr(false);
     }
-  }catch(e){ estado('No se ha podido leer: ' + e.message, true); }
+  }catch(e){ estado(t('doc_no_leer', {e:e.message}), true); }
 }
 
 function muestraBotonOcr(si){
@@ -308,7 +308,7 @@ function muestraBotonOcr(si){
 var ocrWorker = null;
 async function getOcrWorker(){
   if(ocrWorker) return ocrWorker;
-  estado('Cargando el motor OCR local…');
+  estado(t('ocr_cargando'));
   ocrWorker = await Tesseract.createWorker('spa', 1, {
     workerPath: '../../herramientas/cotejo/lib/worker.min.js',
     corePath:   '../../herramientas/cotejo/lib/',
@@ -319,7 +319,7 @@ async function getOcrWorker(){
 }
 
 async function haceOcr(){
-  if(!FICHERO){ estado('Elija primero un PDF.', true); return; }
+  if(!FICHERO){ estado(t('doc_elija'), true); return; }
   if(location.protocol === 'file:'){
     estado(t('doc_sin_servidor'), true); return;
   }
@@ -332,7 +332,7 @@ async function haceOcr(){
     var w = await getOcrWorker();
     var todo = '';
     for(var i=1; i<=doc.numPages; i++){
-      estado('OCR página ' + i + ' de ' + doc.numPages + '…');
+      estado(t('ocr_pagina', {i:i, n:doc.numPages}));
       var pg = await doc.getPage(i);
       var vp = pg.getViewport({ scale: 2 });
       var cv = document.createElement('canvas');
@@ -345,10 +345,10 @@ async function haceOcr(){
     cuentaLetras();
     var seg = Math.round((Date.now()-t0)/1000);
     SEG_OCR = seg;
-    estado('OCR de ' + doc.numPages + ' página(s) terminado en ' + seg + 's.');
+    estado(t('ocr_fin', {n:doc.numPages, s:seg}));
     b.textContent = t('doc_ocr_hecho'); b.disabled = true;
   }catch(e){
-    estado('Error OCR: ' + e.message, true);
+    estado(t('ocr_error', {e:e.message}), true);
     b.textContent = t('doc_ocr'); b.disabled = false;
   }
 }
@@ -372,10 +372,9 @@ function cargaPrompt(){
 
 function copiaTodo(){
   var txt = document.getElementById('texto').value.trim();
-  if(!txt){ estado('No hay texto que llevar.', true); return; }
+  if(!txt){ estado(t('lle_sin_texto'), true); return; }
   if(!PROMPT_TEXTO){
-    estado('La pregunta no se ha cargado. Compruebe que prompt-extraccion-ocr.js '
-         + 'está en adquisicion/prompts/.', true); return;
+    estado(t('lle_sin_pregunta'), true); return;
   }
   var todo = PROMPT_TEXTO + '\n\n────────────────────────────────\nEL DOCUMENTO:\n\n' + txt;
   navigator.clipboard.writeText(todo).then(function(){
@@ -384,7 +383,7 @@ function copiaTodo(){
     b.textContent = t('lle_copiado');
     setTimeout(function(){ b.textContent = t('lle_copiar'); }, 4000);
   }).catch(function(){
-    estado('El navegador no ha dejado copiar. Seleccione el texto a mano.', true);
+    estado(t('lle_no_copia'), true);
   });
 }
 
@@ -734,7 +733,7 @@ function guardaExpediente(){
   MF.guarda('pacientes/' + (p.matricula||'') + '/' + nombre, JSON.stringify(_DATOS,null,1))
     .then(function(r){
       var z = document.getElementById('estado-tra');
-      z.innerHTML = '<span style="color:var(--ok)">Guardado: ' + nombre + '</span>';
+      z.innerHTML = '<span style="color:var(--ok)">' + t('dia_guardado', {n:nombre}) + '</span>';
     });
 }
 
@@ -748,9 +747,7 @@ function refresca(){
 }
 
 function pintaTextos(){
-  document.getElementById('doc-intro').innerHTML =
-    'Saque el texto del documento. Si el PDF est\u00e1 escaneado, el OCR lo reconoce aqu\u00ed mismo '
-    + '\u2014 en su ordenador, sin que nada salga a Internet.';
+  document.getElementById('doc-intro').innerHTML = t('doc_intro');
   document.getElementById('lle-intro').innerHTML = t('lle_expl');
   document.getElementById('tra-intro').innerHTML = t('tra_expl');
   document.getElementById('b-copiar').textContent = t('lle_copiar');
@@ -781,6 +778,10 @@ if(window.pdfjsLib)
   pdfjsLib.GlobalWorkerOptions.workerSrc = '../../herramientas/cotejo/lib/pdf.worker.min.js';
 
 MF.arranca({
+  /* la langue change dans la casa : les textes que ce programme pose lui-meme
+     (boutons, explications, diario) se repoussent dans la nouvelle langue.
+     Les elements data-idioma, eux, sont deja traduits par mf.js. */
+  alIdioma: function(){ pintaTextos(); pintaDiario(); },
   alCargar: function(d){
     _DATOS = (typeof SF_PLANTILLA!=='undefined') ? SF_PLANTILLA.completa(d, MF.paciente()) : d;
     _ABIERTO = true;

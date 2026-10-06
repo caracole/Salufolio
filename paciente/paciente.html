@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Paciente · Salufolio</title>
+<script src="../comun/plantilla-mf.js"></script>
+<script src="../comun/formularios/adquisicion.js"></script>
+<script src="../comun/formularios/paciente.js"></script>
+<link rel="stylesheet" href="../comun/salufolio.css">
+<style>
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
+header[data-cabecera]{display:flex;align-items:baseline;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border)}
+.mod-tit{font-family:var(--serif);font-size:18px;font-weight:600}
+main{padding:16px 20px 40px;max-width:760px;margin:0 auto}
+.sordo{font-size:12.5px;color:var(--muted);line-height:1.75;margin:0 0 16px}
+.nota{font-size:12px;color:var(--warn);border:1px dashed var(--warn);border-radius:8px;padding:8px 12px;margin:0 0 16px;line-height:1.6}
+.btn{padding:9px 18px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;font-size:13.5px;font-family:inherit}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 15%, transparent)}
+.pista{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.6}
+.vignette{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius,12px);padding:14px 18px;margin-top:18px}
+.vignette h2{font-family:var(--serif);font-size:15px;color:var(--accent);margin:0 0 10px}
+.fila{display:flex;gap:10px;font-size:13px;padding:3px 0;border-bottom:1px solid var(--border)}
+.fila:last-child{border-bottom:none}
+.fila .k{flex:0 0 130px;color:var(--muted)}
+.fila .v{flex:1}
+.fila .vacio{color:var(--muted);opacity:.6}
+details{margin-top:14px}
+summary{cursor:pointer;font-size:12px;color:var(--muted)}
+pre{font-family:var(--mono,monospace);font-size:11.5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;overflow:auto;max-height:320px}
+
+/* la tarjeta que se corrige */
+.fila .v input,.fila .v select{width:100%;box-sizing:border-box;padding:4px 8px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;font:inherit}
+.fila .v input:focus,.fila .v select:focus{border-color:var(--accent);outline:none}
+.fila .v .malo{border-color:var(--danger)}
+.fila .cerrado{opacity:.85;cursor:help}
+details.lista{margin-top:6px;border-bottom:1px solid var(--border);padding-bottom:6px}
+details.lista>summary{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);list-style:none}
+details.lista>summary::-webkit-details-marker{display:none}
+details.lista .cuenta{color:var(--muted);font-size:12px;flex:1}
+.item{display:flex;align-items:center;gap:6px;font-size:13px;padding:4px 0 4px 18px;border-top:1px dotted var(--border)}
+.item .txt{flex:1;line-height:1.5}
+.ib{background:transparent;border:1px solid transparent;border-radius:6px;cursor:pointer;font-size:14px;padding:2px 6px;color:var(--text)}
+.ib:hover{border-color:var(--accent)}
+#estado{font-size:12.5px;margin-top:12px;min-height:18px}
+
+/* ce que le formulaire dessine — il vient des communs */
+.sf-campo-caja{margin-bottom:14px}
+.sf-campo-caja.sf-malo .sf-campo{border-color:var(--danger)}
+.sf-etiqueta{display:block;font-size:14px;color:var(--text);margin-bottom:6px;line-height:1.5}
+.sf-campo{width:100%;padding:8px 11px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:7px;font-size:13.5px;box-sizing:border-box;font-family:inherit}
+.sf-campo:focus{border-color:var(--accent);outline:none}
+.sf-ayuda{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+.sf-aviso{font-size:11.5px;margin-top:3px;line-height:1.5;min-height:2px}
+.sf-regla{font-size:10.5px;color:var(--muted);opacity:.7;margin-top:2px;line-height:1.45}
+.sf-sordo{font-size:12px;color:var(--muted);line-height:1.7;margin:2px 0 10px}
+.sf-paso{font-family:var(--mono,monospace);font-size:10.5px;color:var(--accent);letter-spacing:2px;margin-bottom:12px}
+.sf-sino{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:13.5px}
+.sf-momentos{display:flex;gap:10px;flex-wrap:wrap}
+[data-tiptext]{cursor:pointer !important}
+.sf-campo-caja[data-tiptext]{cursor:auto !important}
+.sf-campo-caja[data-tiptext] input,.sf-campo-caja[data-tiptext] select,.sf-campo-caja[data-tiptext] textarea{cursor:auto !important}
+.pregunta-cuerpo{font-size:15px;line-height:1.7;padding:6px 2px 10px}
+.module-version-corner{display:none}
+</style>
+<script src="paciente.js"></script>
+<script src="paciente.idiomas.js"></script>
+<script src="../comun/mf.js"></script>
+<script src="../comun/formulario.js"></script>
+</head>
+<body>
+<header data-cabecera>
+  <span class="mod-tit" data-idioma="tit">Paciente</span>
+</header>
+<main>
+  <p class="sordo" data-idioma="sordo"></p>
+  <button class="btn pri" id="b-empezar" data-idioma="empezar"></button>
+  <div class="pista" data-idioma="voz_pista"></div>
+  <div id="estado"></div>
+  <div id="resumen"></div>
+</main>
+<script>
+const VERSION_PROGRAMA = SF_CONFIG.version;
+const TABLA = 'paciente';
+
+function t(clave, vars){
+  var out;
+  try{
+    var T=(typeof SF_TEXTOS!=='undefined'&&SF_TEXTOS.textos)||{};
+    var lg=(typeof MF!=='undefined'&&MF.idioma)?MF.idioma():'es';
+    out = (T[lg]&&T[lg][clave])||(T.es&&T.es[clave])||clave;
+  }catch(e){ out = clave; }
+  var v = vars||{};
+  return String(out).replace(/\{(\w+)\}/g, function(m,k){ return (v[k]!==undefined) ? v[k] : m; });
+}
+function txt(x){ return SF_FORM.texto(x); }   /* un texto, o { es, fr, ca, en } */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+
+/* ══ LA CONVERSACIÓN Y LA TARJETA ══
+   El programa no sabe qué se pregunta ni qué se muestra : lee la tabla
+   (comun/formularios/paciente.js) — el flujo para la conversación, la
+   « vista » para la tarjeta, los campos « bloqueado » para lo que no se
+   corrige. Todo se escribe en el expediente abierto ; la tarjeta lo LEE
+   de ahí, no de una copia. Doctrina de 1966. */
+var FLUJO = SF_FORM_PACIENTE.flujo;
+var VISTA = SF_FORM_PACIENTE.vista;
+var CAMPOS = SF_FORM_PACIENTE.rubricas.identidad.campos;
+var _DATOS = null;                 /* el expediente abierto */
+var _LOCAL = { paciente:{} };      /* sin expediente (programa solo) : nada se guarda */
+var _AUTO = false;                 /* la conversación arranca sola UNA vez, en un expediente recién creado */
+var _EMP = false;                  /* ¿ya se ha hecho la conversación ? */
+var _ABIERTAS = {};                /* listas desplegadas, para que sigan así al repintar */
+var _ECO = ['sip','nhc','cip_sns','nacimiento','sexo'];
+
+function D(){ return _DATOS || _LOCAL; }
+function _sello(){
+  var d = new Date(), z = function(x){ return String(x).padStart(2,'0'); };
+  return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+'_'+z(d.getHours())+'h'+z(d.getMinutes());
+}
+function _marca(){ return { src:'paciente', escrito:_sello() }; }
+function _norm(s){ return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
+
+/* el registro de médicos : un DICCIONARIO {PR1:'nombre'} (la plantilla crea un array, que perdería sus claves
+   al escribirse). Lee el array de antes sin pérdida. */
+function _regPrescriptores(){
+  var o = {}, d = D();
+  [d.mt_prescripteurs, d.prescriptores].forEach(function(src){
+    if(!src) return;
+    if(Array.isArray(src)){ src.forEach(function(n, i){ if(typeof n === 'string' && n) o['PR' + (i + 1)] = n; }); }
+    else if(typeof src === 'object'){ Object.keys(src).forEach(function(k){ o[k] = src[k]; }); }
+  });
+  return o;
+}
+
+/* ── escribir en el expediente ── */
+function escribeReal(tipo, clave, valores){
+  var d = D();
+  if(tipo === 'raiz'){
+    var P = d[clave] = (d[clave] && typeof d[clave] === 'object') ? d[clave] : {};
+    Object.keys(valores).forEach(function(k){
+      if(valores[k] === '' || valores[k] === undefined || valores[k] === null) delete P[k]; else P[k] = valores[k];
+    });
+    /* el eco : los programas leen estos campos en la raíz (mf.js los quita al escribir el .sf) */
+    _ECO.forEach(function(k){ if(P[k]) d[k] = P[k]; else if(k in valores) delete d[k]; });
+    if(P.nombre || P.apellidos) d.patient_name = [P.nombre, P.apellidos].filter(Boolean).join(' ');
+  } else if(tipo === 'lista'){
+    var l = d[clave] = Array.isArray(d[clave]) ? d[clave] : [];
+    var x = Object.assign({}, valores, _marca());
+    if(clave === 'centros'){
+      var ya = l.filter(function(c){ return _norm(c.nombre) === _norm(valores.nombre); })[0];
+      if(ya) return;                                   /* ya está : no se duplica */
+      var max = 0; l.forEach(function(c){ var m = /^CT(\d+)$/.exec(c.id||''); if(m) max = Math.max(max, +m[1]); });
+      x.id = 'CT' + (max + 1);
+    }
+    l.push(x);
+  } else if(tipo === 'dicc'){
+    var reg = _regPrescriptores(), n = _norm(valores.nombre);
+    var hay = Object.keys(reg).filter(function(k){ return _norm(reg[k]) === n; })[0];
+    if(!hay){
+      var mx = 0; Object.keys(reg).forEach(function(k){ var m = /^PR(\d+)$/.exec(k); if(m) mx = Math.max(mx, +m[1]); });
+      reg['PR' + (mx + 1)] = valores.nombre;
+    }
+    d[clave] = reg;
+  }
+  if(_DATOS) MF.tocado();                              /* el 💾 se enciende */
+}
+
+function guarda(destino, rubrica, valores){
+  var d = String(destino || '').split(':');
+  escribeReal(d[0], d[1], valores);
+}
+
+/* una pregunta de sí o no, en una ventana — leída en alto si la voz está activada */
+function sino(texto, alResponder, textoYa){
+  var q = textoYa ? texto : txt(texto);
+  var pie = '<span style="flex:1"></span>'
+          + '<button class="sf-ventana-btn sf-suave" id="_s-no">' + esc(t('no')) + '</button>'
+          + '<button class="sf-ventana-btn" id="_s-si">' + esc(t('si')) + '</button>';
+  var respondido = false;
+  var v = MF.ventana('', '<div class="pregunta-cuerpo">' + esc(q) + '</div>', {
+    ancho: '460px', alPie: pie,
+    alCerrar: function(){ SF_FORM.habla(null); if(!respondido){ respondido = true; alResponder(null); } }
+  });
+  if(SF_FORM.voz()) SF_FORM.habla(q);
+  function responde(x){ if(respondido) return; respondido = true; SF_FORM.habla(null); v.cierra(); alResponder(x); }
+  v.caja.querySelector('#_s-si').onclick = function(){ responde(true); };
+  v.caja.querySelector('#_s-no').onclick = function(){ responde(false); };
+  v.caja.querySelector('#_s-si').focus();
+}
+
+function paso(i){
+  if(i >= FLUJO.length) return fin(true);
+  var P = FLUJO[i];
+  var T = SF_FORM_PACIENTE.rubricas[P.rubrica];
+  var escribe = P.escribe || (T && T.escribe);
+
+  function abre(luego){
+    var ini = {};
+    if(escribe === 'raiz:paciente'){                /* lo que ya se sabe, propuesto */
+      var d = D(), Pa = d.paciente || {};
+      Object.keys(Pa).forEach(function(k){ if(Pa[k]) ini[k] = Pa[k]; });
+      _ECO.forEach(function(k){ if(!ini[k] && d[k]) ini[k] = d[k]; });
+    }
+    SF_FORM.pide(P.tabla, P.rubrica, function(v){
+      if(v === null) return luego(null);          /* cerrada sin guardar */
+      guarda(escribe, P.rubrica, v);
+      pintaResumen();
+      luego(v);
+    }, ini);
+  }
+  function repite(){
+    abre(function(v){
+      if(v === null || !P.otra) return paso(i + 1);
+      sino(P.otra, function(x){ if(x) repite(); else paso(i + 1); });
+    });
+  }
+
+  if(!P.si){                                      /* la identidad : sin preguntar si */
+    if(P.intro) estado(txt(P.intro));
+    return abre(function(v){ if(v === null) return fin(false); paso(i + 1); });
+  }
+  sino(P.si, function(x){
+    if(x === null) return fin(false);             /* ✕ : se interrumpe todo */
+    if(x) repite(); else paso(i + 1);
+  });
+}
+
+function estado(m){ document.getElementById('estado').textContent = m || ''; }
+
+function empezar(){
+  _EMP = true;
+  SF_FORM.modo('uno_a_uno');                      /* este programa es conversacional */
+  estado('');
+  paso(0);
+}
+
+function fin(ok){
+  estado((ok ? t('fin_conv') : t('cancelado')) + (_DATOS ? ' ' + t('ya_guardado') : ''));
+  pintaResumen();
+  ponModo();
+}
+
+/* ¿un expediente recién creado ? sin sexo, sin nacimiento, sin listas, sin historia de cambios */
+function esReciente(d){
+  var P = d.paciente || {};
+  if(P.sexo || P.nacimiento || d.sexo || d.nacimiento) return false;
+  var vacio = ['antecedentes','diagnosticos','citas','vacunaciones','prescripciones','mesures','events','medicaments']
+    .every(function(k){ return !(d[k] && d[k].length); });
+  var h = (d.historial && d.historial.modificacion) || [];
+  return vacio && !h.length;
+}
+
+/* ══ LA TARJETA ══ — lee el expediente, nunca una copia */
+
+function _valorId(c){ var d = D(), P = d.paciente || {}; return P[c.id] || (_ECO.indexOf(c.id) >= 0 ? d[c.id] : '') || ''; }
+
+function _items(v){                       /* las líneas de una lista de la vista : [{ref, obj}] */
+  var e = String(v.escribe).split(':'), d = D();
+  if(e[0] === 'dicc'){
+    var reg = _regPrescriptores();
+    return Object.keys(reg).map(function(k){ return { ref:k, obj:{ nombre:reg[k] } }; });
+  }
+  return (Array.isArray(d[e[1]]) ? d[e[1]] : []).map(function(o, i){ return { ref:i, obj:o }; });
+}
+function _linea(v, o){
+  var partes = [];
+  v.resumen.forEach(function(grupo){
+    for(var i = 0; i < grupo.length; i++){
+      var x = o[grupo[i]]; if(x !== undefined && x !== null && String(x) !== ''){ partes.push(String(x)); break; }
+    }
+  });
+  return partes.join(' · ') || '—';
+}
+
+function _campoHTML(c){
+  var val = _valorId(c), lbl = txt(c.etiqueta);
+  if(c.bloqueado){
+    return '<div class="fila"><span class="k">' + esc(lbl) + '</span><span class="v cerrado" title="' + esc(t('bloqueado')) + '">🔒 '
+         + (val ? esc(val) : '—') + '</span></div>';
+  }
+  var ctl;
+  if(c.tipo === 'lista'){
+    ctl = '<select data-c="' + esc(c.id) + '"><option value=""></option>'
+        + (c.valores || []).map(function(o){
+            var vv = typeof o === 'object' ? o.valor : o, ee = typeof o === 'object' ? o.etiqueta : o;
+            return '<option value="' + esc(vv) + '"' + (vv === val ? ' selected' : '') + '>' + esc(ee) + '</option>';
+          }).join('') + '</select>';
+  } else {
+    ctl = '<input data-c="' + esc(c.id) + '" value="' + esc(val) + '" autocomplete="off"'
+        + (c.ejemplo ? ' placeholder="' + esc(c.ejemplo) + '"' : '') + '>';
+  }
+  return '<div class="fila"><span class="k">' + esc(lbl) + '</span><span class="v">' + ctl + '</span></div>';
+}
+
+function pintaResumen(){
+  var z = document.getElementById('resumen');
+  var h = _DATOS ? '<p class="nota" style="color:var(--accent);border-color:var(--accent)">' + esc(t('pulsa_guardar')) + '</p>'
+                 : '<p class="nota">' + esc(t('sin_expediente')) + '</p>';
+  h += '<div class="vignette"><h2>🧑 ' + esc(t('identidad_tit')) + '</h2>' + CAMPOS.map(_campoHTML).join('') + '</div>';
+  h += '<div class="vignette"><h2>📋 ' + esc(t('listas_tit')) + '</h2>';
+  VISTA.forEach(function(v){
+    var its = _items(v);
+    h += '<details class="lista" data-l="' + esc(v.id) + '"' + (_ABIERTAS[v.id] ? ' open' : '') + '><summary>'
+       + '<span>' + v.icono + ' ' + esc(txt(v.titulo)) + '</span>'
+       + '<span class="cuenta">' + (its.length ? esc(t('cuenta', { n:its.length })) : esc(t('lista_vacia'))) + '</span>'
+       + '<button class="ib" data-a="add" data-l="' + esc(v.id) + '" title="' + esc(t('anyadir')) + '">➕</button></summary>';
+    its.forEach(function(it){
+      h += '<div class="item"><span class="txt">' + esc(_linea(v, it.obj)) + '</span>'
+         + '<button class="ib" data-a="ed" data-l="' + esc(v.id) + '" data-r="' + esc(it.ref) + '" title="' + esc(t('editar')) + '">✏️</button>'
+         + '<button class="ib" data-a="del" data-l="' + esc(v.id) + '" data-r="' + esc(it.ref) + '" title="' + esc(t('suprimir')) + '">🗑</button></div>';
+    });
+    h += '</details>';
+  });
+  h += '</div>';
+  z.innerHTML = h;
+}
+
+/* ── corregir un campo de identidad ── */
+function cambiaCampo(el){
+  var c = CAMPOS.filter(function(x){ return x.id === el.getAttribute('data-c'); })[0];
+  if(!c || c.bloqueado) return;                                   /* defensa : los bloqueados no se tocan */
+  var val = String(el.value || '').trim();
+  var r = SF_FORM.comprueba(c, val);
+  if(r && (r.grave || c.tipo === 'fecha' || c.patron)){            /* un formato roto no se guarda */
+    el.classList.add('malo'); el.title = r.texto || t('ficha_mala'); return;
+  }
+  el.classList.remove('malo'); el.title = '';
+  if(val === _valorId(c)) return;
+  var o = {}; o[c.id] = val;
+  escribeReal('raiz', 'paciente', o);
+  estado('');
+}
+
+/* ── ¿algo apunta a esta entrada ? (un médico en una receta, un centro en una cita…) ── */
+function _enUso(v, ref, obj){
+  var e = String(v.escribe).split(':'), d = D(), clave = e[0] === 'dicc' ? ref : obj.id;
+  if(!clave) return false;
+  var aguja = '"' + clave + '"';
+  return Object.keys(d).some(function(k){
+    if(k === e[1] || k === 'mt_prescripteurs') return false;
+    try{ return JSON.stringify(d[k]).indexOf(aguja) >= 0; }catch(x){ return false; }
+  });
+}
+
+function accion(a, lid, ref){
+  var v = VISTA.filter(function(x){ return x.id === lid; })[0]; if(!v) return;
+  var e = String(v.escribe).split(':'), d = D();
+  _ABIERTAS[lid] = true;
+  if(a === 'add'){
+    SF_FORM.modo('uno_a_uno');
+    SF_FORM.pide(v.tabla, v.rubrica, function(x){ if(x === null) return; guarda(v.escribe, v.rubrica, x); pintaResumen(); });
+    return;
+  }
+  var its = _items(v), it = its.filter(function(x){ return String(x.ref) === String(ref); })[0]; if(!it) return;
+  if(a === 'ed'){
+    SF_FORM.modo('uno_a_uno');
+    SF_FORM.pide(v.tabla, v.rubrica, function(x){
+      if(x === null) return;
+      if(e[0] === 'dicc'){
+        var reg = _regPrescriptores(); reg[it.ref] = x.nombre; d[e[1]] = reg;
+      } else {
+        Object.keys(x).forEach(function(k){ if(x[k] === '' || x[k] === undefined) delete it.obj[k]; else it.obj[k] = x[k]; });
+        it.obj.corregido = _sello();
+      }
+      if(_DATOS) MF.tocado();
+      pintaResumen();
+    }, Object.assign({}, it.obj));
+    return;
+  }
+  if(a === 'del'){
+    var que = _linea(v, it.obj);
+    if(_enUso(v, it.ref, it.obj)){ estado(t('en_uso', { que:que })); return; }
+    sino(t('confirma_sup', { que:que }), function(ok){
+      if(!ok) return;
+      if(e[0] === 'dicc'){
+        var reg = _regPrescriptores(); delete reg[it.ref]; d[e[1]] = reg;
+        if(Array.isArray(d.mt_prescripteurs)){ var m = /^PR(\d+)$/.exec(it.ref); if(m) d.mt_prescripteurs[+m[1] - 1] = ''; }
+      } else {
+        d[e[1]].splice(+it.ref, 1);
+      }
+      if(_DATOS) MF.tocado();
+      estado('');
+      pintaResumen();
+    }, true);
+  }
+}
+
+var _zona = document.getElementById('resumen');
+_zona.addEventListener('change', function(ev){ if(ev.target.getAttribute && ev.target.getAttribute('data-c')) cambiaCampo(ev.target); });
+_zona.addEventListener('click', function(ev){
+  var b = ev.target.closest && ev.target.closest('[data-a]');
+  if(b){ ev.preventDefault(); ev.stopPropagation(); accion(b.getAttribute('data-a'), b.getAttribute('data-l'), b.getAttribute('data-r')); }
+});
+_zona.addEventListener('toggle', function(ev){
+  var l = ev.target.getAttribute && ev.target.getAttribute('data-l'); if(l) _ABIERTAS[l] = ev.target.open;
+}, true);
+
+document.getElementById('b-empezar').onclick = empezar;
+
+function ponModo(){
+  document.getElementById('b-empezar').textContent = t(_EMP ? 'reiniciar' : (_DATOS ? 'completar' : 'empezar'));
+}
+
+MF.arranca({
+  alCargar: function(d){
+    _DATOS = d;
+    MF.ponVersion(); if(MF.aplicaIdioma) MF.aplicaIdioma();
+    ponModo(); pintaResumen();
+    /* un expediente recién creado : la conversación arranca sola, una vez */
+    if(!_AUTO && esReciente(d)){ _AUTO = true; setTimeout(empezar, 250); }
+  },
+  alFallar: function(){ MF.ponVersion(); if(MF.aplicaIdioma) MF.aplicaIdioma(); ponModo(); pintaResumen(); },
+  alIdioma: function(){ if(MF.aplicaIdioma) MF.aplicaIdioma(); ponModo(); pintaResumen(); }
+});
+</script>
+</body>
+</html>

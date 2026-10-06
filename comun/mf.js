@@ -1,5 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Versión 2026.09.19-18:15:47
+   Versión 2026.10.06-12:02:16
+   (06/10/2026 : TABLA DE ESTILOS — aplicaEstilos / estilo(rol,prop), alPaleta / alEstilos.
+   (30/09/2026 : el 💾 escribe en la carpeta del paciente ; una sola función guarda.
+    01/10/2026 : .sf — el .mf ha muerto —, courant MATRICULE.sf, copias en
+    historial/MATRICULE_AAAA-MM-DD-HHhMMmSS.sf con la fecha que lleva el .sf ;
+    ver « GUARDAR EN LA CARPETA »)
    MF.JS — la pièce commune des modules de Salufolio
    (P-H + Claude, 01/09/2026)
 
@@ -125,16 +130,16 @@ var MF = (function(){
   }
 
   function carga(mat, carpeta){
-    var m = /^([A-Za-z]{2,4}\d{3,6})_.*\.(mf|sf|json)$/i.exec(mat);
-    if(m){
-      matricula = m[1];
-      ruta = (carpeta || (_raizPacientes() + m[1] + '/')) + mat;
-      return fetch(ruta)
-        .then(function(r){ if(!r.ok) throw new Error('no se encuentra '+ruta); return r.json(); })
-        .then(function(d){ datos=ponEco(d); try{ letreroDemo(); }catch(e){} return datos; });
-    }
-    matricula = mat;
-    ruta = (carpeta||'') + mat + '.mf';
+    /* P-H, 01/10 : le courant s'appelle MATRICULE.sf, à la racine de
+       pacientes/MATRICULE/. On accepte quand même :
+         · un fichier nommé (AGR0000_2026-09-15-18:52:11.sf, ou un vieux .mf) — tel quel ;
+         · un nom sans extension (la casa passait AGR0000_2026-09-18_00h01) —
+           on charge alors le courant, MATRICULE.sf. */
+    var m = matriculaDe(mat);
+    if(m !== matricula){ carpetaH = null; carpetaMat = null; }   /* un autre patient : autre dossier */
+    matricula = m;
+    var dir = carpeta || (_raizPacientes() + m + '/');
+    ruta = _tieneExtension(mat) ? dir + mat : dir + m + HIST.extension;
     return fetch(ruta)
       .then(function(r){ if(!r.ok) throw new Error('no se encuentra '+ruta); return r.json(); })
       .then(function(d){ datos=ponEco(d); try{ letreroDemo(); }catch(e){} return datos; });
@@ -327,7 +332,7 @@ var MF = (function(){
      exactement comme le 💾 du panneau du panal. Repli sur le
      téléchargement pour les navigateurs qui ne savent pas.
      ══════════════════════════════════════════════════════════════════ */
-  var manija=null, sucio=false, enMarco=false;
+  var carpetaH=null, carpetaMat=null, sucio=false, enMarco=false;
 
   /* ══ LA MÉMOIRE DE TRAVAIL (idée de P-H, 02/09) ══
      Chaque modification s'écrit AUSSITÔT dans le localStorage. Ainsi on
@@ -355,7 +360,7 @@ var MF = (function(){
        d'insulte en sortant, plus rien à quoi penser.
        On laisse passer un instant pour ne pas écrire dix fois pendant
        qu'une fiche se remplit. */
-    if(manija){
+    if(carpetaH){
       clearTimeout(_autoT);
       _autoT = setTimeout(function(){ guarda(null, true); }, 900);
     }
@@ -390,13 +395,279 @@ var MF = (function(){
   }
   function hayCambios(){ return sucio; }
 
-  function guarda(alTerminar, callado){
+  /* ══════════════════════════════════════════════════════════════════
+     GUARDAR EN LA CARPETA DEL PACIENTE — UN SOLO .sf, EL RESTO EN historial
+     (P-H, 30/09/2026 ; mis à jour le 01/10/2026)
+
+     La regla :
+         pacientes/AGR0000/AGR0000.sf              ← el courant, nom fixe, SANS suffixe
+         pacientes/AGR0000/historial/AGR0000_2026-09-15-18h52m11.sf
+                                                    ← les états d'avant, nommés d'après
+                                                      la date que porte le .sf lui-même
+     Et PAS D'AUTRES FICHIERS dans le dossier du patient.
+
+     Le navigateur ne peut écrire dans un dossier que si on le lui a
+     désigné : showDirectoryPicker, UNE fois par patient (le navigateur
+     retient le dossier). Pas de serveur. Chrome, Edge et Brave savent ;
+     Firefox non — on le dit dès l'ouverture, on ne télécharge plus rien
+     dans Descargas.
+
+     Avant d'écraser le courant, on copie l'ancien état dans historial/,
+     on VÉRIFIE la copie, et seulement alors on écrit. Rien n'est jamais
+     supprimé. Le nom de la copie porte la date de CET ÉTAT, lue dans le
+     .sf (historial.creacion / modificacion / actualizacion) ; à défaut,
+     la date du disque.
+
+     Tout ce qui peut changer est dans HIST et TXT_HIST, pas dans le code.
+     ══════════════════════════════════════════════════════════════════ */
+  var HIST = {
+    carpeta : 'historial',          /* nom du sous-dossier des sauvegardes (P-H, 01/10 : minuscules) */
+    extension : '.sf',              /* ce qu'on ÉCRIT : Salufolio = .sf, le .mf est mort */
+    extensiones_lectura : ['.sf', '.mf'],   /* ce qu'on sait LIRE — retirer '.mf' quand le ménage est fait */
+    zona : 'Europe/Madrid',         /* fuseau, si le nom doit venir du disque faute de date dans le .sf */
+    sep_hora : 'h', sep_min : 'm',  /* en el NOMBRE del fichero : 17h41m25 (el navegador rechaza « : » — P-H, 01/10) */
+    conservar_dias : 7, conservar_minimo : 5, carpeta_archivo : 'archivo',   /* las copias viejas, aparte (P-H, 01/10) */
+    minutos_entre_copias : 30,      /* l'écriture auto ne sème pas une copie à chaque frappe */
+    bd : 'sf_carpetas',             /* IndexedDB : où le navigateur retient le dossier */
+    almacen : 'manijas'
+  };
+  var TXT_HIST = {
+    es : { archivadas : ' · {n} copia(s) vieja(s) a {arch}/',
+           sin_api : 'Este navegador no puede guardar en la carpeta del paciente. Use Chrome, Edge o Brave.',
+           guardado : '💾 Guardado en {carpeta}', copia : ' · copia anterior en {hist}/{nombre}',
+           sin_permiso : 'Pulse 💾 para confirmar el permiso de escritura en la carpeta del paciente.',
+           cancelado : 'Guardado cancelado: no se eligió carpeta.',
+           fallo : 'No se pudo guardar: {msg}. Sus cambios siguen en la memoria de trabajo.',
+           varios : '⚠ Hay {n} ficheros de expediente en la carpeta del paciente: solo debería haber uno.' },
+    fr : { archivadas : ' · {n} copie(s) ancienne(s) vers {arch}/',
+           sin_api : 'Ce navigateur ne sait pas enregistrer dans le dossier du patient. Utilisez Chrome, Edge ou Brave.',
+           guardado : '💾 Enregistré dans {carpeta}', copia : ' · copie précédente dans {hist}/{nombre}',
+           sin_permiso : 'Cliquez sur 💾 pour confirmer la permission d’écriture dans le dossier du patient.',
+           cancelado : 'Enregistrement annulé : aucun dossier choisi.',
+           fallo : 'Enregistrement impossible : {msg}. Vos modifications restent dans la mémoire de travail.',
+           varios : '⚠ Il y a {n} fichiers d’expediente dans le dossier du patient : il ne devrait y en avoir qu’un.' },
+    en : { archivadas : ' · {n} old copy(ies) moved to {arch}/',
+           sin_api : 'This browser cannot save into the patient folder. Use Chrome, Edge or Brave.',
+           guardado : '💾 Saved in {carpeta}', copia : ' · previous copy in {hist}/{nombre}',
+           sin_permiso : 'Click 💾 to confirm write permission for the patient folder.',
+           cancelado : 'Save cancelled: no folder chosen.',
+           fallo : 'Could not save: {msg}. Your changes are still in the working memory.',
+           varios : '⚠ There are {n} record files in the patient folder: there should be only one.' },
+    ca : { archivadas : ' · {n} còpia/còpies antiga(es) a {arch}/',
+           sin_api : 'Aquest navegador no pot desar a la carpeta del pacient. Useu Chrome, Edge o Brave.',
+           guardado : '💾 Desat a {carpeta}', copia : ' · còpia anterior a {hist}/{nombre}',
+           sin_permiso : 'Premeu 💾 per confirmar el permís d’escriptura a la carpeta del pacient.',
+           cancelado : 'Desat cancel·lat: no s’ha triat cap carpeta.',
+           fallo : 'No s’ha pogut desar: {msg}. Els canvis resten a la memòria de treball.',
+           varios : '⚠ Hi ha {n} fitxers d’expedient a la carpeta del pacient: només n’hi hauria d’haver un.' }
+  };
+  function txH(clave, v){
+    var t = TXT_HIST[LANG_SF] || TXT_HIST.es;
+    var s = t[clave] || TXT_HIST.es[clave] || clave;
+    Object.keys(v||{}).forEach(function(k){ s = s.split('{'+k+'}').join(v[k]); });
+    return s;
+  }
+
+  /* les extensions qu'on sait lire, depuis la table : « .sf » → « sf » */
+  function _extLectura(){
+    return HIST.extensiones_lectura.map(function(e){ return e.replace(/^\./,''); });
+  }
+  function _reExtension(){
+    return new RegExp('\\.(' + _extLectura().join('|') + '|json)$', 'i');
+  }
+  function _tieneExtension(nombre){ return _reExtension().test(nombre||''); }
+
+  /* la matricule que porte un nom de fichier : AGR0000, AGR0000.sf et
+     AGR0000_2026-09-15-18:52:11.sf sont du même patient.
+     (matricule = capitales du prénom + du nom + 4 derniers chiffres du SIP) */
+  function matriculaDe(nombre){
+    var m = /^([A-Za-z]{2,4}\d{3,6})(?:_|\.|$)/.exec(nombre||'');
+    return m ? m[1] : String(nombre||'').replace(_reExtension(),'');
+  }
+
+  /* AAAA-MM-DD-HH:MM:SS — le format des dates DANS le .sf (SF_PLANTILLA.sello) */
+  var RE_SELLO = /^\d{4}-\d{2}-\d{2}-\d{2}:\d{2}:\d{2}$/;
+
+  /* faute de date dans le fichier, la date du disque, au même format */
+  function selloDisco(ms){
+    return new Intl.DateTimeFormat('sv-SE', { timeZone:HIST.zona,
+      year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', second:'2-digit' })
+      .format(new Date(ms)).replace(' ', '-');
+  }
+
+  /* LA DATE DE CET ÉTAT, lue dans le .sf lui-même (P-H, 01/10) :
+     la plus récente de historial.creacion et de toutes les dates de
+     historial.modificacion / historial.actualizacion. Sinon, le disque. */
+  function fechaDelEstado(txt, msDisco){
+    try{
+      var d = JSON.parse(txt), h = d && d.historial, c = [];
+      if(h){
+        if(RE_SELLO.test(h.creacion || '')) c.push(h.creacion);
+        ['modificacion','actualizacion'].forEach(function(k){
+          (Array.isArray(h[k]) ? h[k] : []).forEach(function(e){
+            if(e && RE_SELLO.test(e.fecha || '')) c.push(e.fecha);
+          });
+        });
+      }
+      if(c.length){ c.sort(); return c[c.length-1]; }
+    }catch(e){}
+    return selloDisco(msDisco);
+  }
+
+  /* 2026-09-16-17:41:25 → 2026-09-16-17h41m25 : un nom de fichier sans « : » */
+  function selloEnNombre(z){
+    return String(z).replace(/-(\d{2}):(\d{2}):(\d{2})$/, '-$1' + HIST.sep_hora + '$2' + HIST.sep_min + '$3');
+  }
+
+  /* le navigateur retient le dossier de chaque patient */
+  function _bdHist(){
+    return new Promise(function(ok, ko){
+      var q = indexedDB.open(HIST.bd, 1);
+      q.onupgradeneeded = function(){ q.result.createObjectStore(HIST.almacen); };
+      q.onsuccess = function(){ ok(q.result); };
+      q.onerror = function(){ ko(q.error); };
+    });
+  }
+  function _recuerdaCarpeta(mat, h){
+    return _bdHist().then(function(d){
+      d.transaction(HIST.almacen, 'readwrite').objectStore(HIST.almacen).put(h, mat);
+    }).catch(function(){});
+  }
+  function _recuperaCarpeta(mat){
+    return _bdHist().then(function(d){
+      return new Promise(function(ok){
+        var r = d.transaction(HIST.almacen).objectStore(HIST.almacen).get(mat);
+        r.onsuccess = function(){ ok(r.result || null); };
+        r.onerror = function(){ ok(null); };
+      });
+    }).catch(function(){ return null; });
+  }
+
+  /* la carpeta del patient : celle qu'on connaît, celle que le navigateur
+     retient, ou — seulement si un geste de l'utilisateur l'autorise — on
+     la lui demande. Sans permission d'écriture, on rend null. */
+  async function _carpetaPaciente(puedePreguntar){
+    /* la carpeta retenida es de UN patient : si on a changé de patient, on l'oublie */
+    if(carpetaMat !== matricula){ carpetaH = null; _ultimaCopia = null; }
+    var h = carpetaH, nueva = false;
+    if(!h) h = await _recuperaCarpeta(matricula);
+    if(!h && puedePreguntar){
+      h = await window.showDirectoryPicker({ mode:'readwrite' });
+      nueva = true;
+    }
+    if(!h) return null;
+    if(h.queryPermission){
+      var p = await h.queryPermission({ mode:'readwrite' });
+      if(p !== 'granted'){
+        if(!puedePreguntar) return null;
+        p = await h.requestPermission({ mode:'readwrite' });
+        if(p !== 'granted') return null;
+      }
+    }
+    carpetaH = h; carpetaMat = matricula;
+    if(nueva) _recuerdaCarpeta(matricula, h);
+    return h;
+  }
+
+  var _ultimaCopia = null, _avisoVarios = false;
+
+  /* Écrit txt comme courant ; archive l'état précédent si besoin.
+     Rend { igual, copia } — copia = nom de la copie faite, s'il y en a une. */
+  async function _escribeCarpeta(dir, txt){
+    var ext = HIST.extension, actual = matricula + ext, previo = null;
+    try{
+      var fh0 = await dir.getFileHandle(actual);
+      var f0 = await fh0.getFile();
+      previo = { file:f0, txt:await f0.text() };
+    }catch(e){ if(e.name !== 'NotFoundError') throw e; }
+
+    if(previo && previo.txt === txt) return { igual:true, copia:null };
+
+    var copia = null, movidas = 0;
+    if(previo){
+      var ahora = Date.now();
+      if(_ultimaCopia === null || (ahora - _ultimaCopia) >= HIST.minutos_entre_copias * 60000){
+        var hist = await dir.getDirectoryHandle(HIST.carpeta, { create:true });
+        var ya = [];
+        for await (var e of hist.values()) ya.push(e.name);
+        var base = matricula + '_' + selloEnNombre(fechaDelEstado(previo.txt, previo.file.lastModified));
+        var destino = base + ext, k = 1;
+        while(ya.indexOf(destino) >= 0) destino = base + '_' + (++k) + ext;
+        var wh = await hist.getFileHandle(destino, { create:true });
+        var ww = await wh.createWritable();
+        await ww.write(await previo.file.arrayBuffer()); await ww.close();
+        var chk = await (await hist.getFileHandle(destino)).getFile();
+        if(chk.size !== previo.file.size)
+          throw new Error('la copia de ' + HIST.carpeta + ' no coincide (' + chk.size + ' ≠ ' + previo.file.size + ')');
+        _ultimaCopia = ahora; copia = destino;
+        movidas = await _archivaViejas(hist);
+      }
+    }
+    var fh = await dir.getFileHandle(actual, { create:true });
+    var w = await fh.createWritable();
+    await w.write(txt); await w.close();
+    return { igual:false, copia:copia, movidas:movidas };
+  }
+
+
+/* ══ LAS COPIAS VIEJAS (P-H, 01/10/2026) ══
+   « Et si on laissait une semaine ? » — « Si dans une semaine il y a une
+   seule copie, on ne la supprime pas ? »
+
+   Una copia pasa a historial/archivo/ solo si cumple LAS DOS cosas :
+   tiene más de HIST.conservar_dias días Y no está entre las HIST.conservar_minimo más recientes.
+   Se copia, se comprueba el tamaño, y solo entonces se quita de
+   historial/ : nada se borra, se cambia de sitio. Con menos copias que
+   el mínimo, no se toca ninguna. */
+async function _archivaViejas(hist){
+  var re = _reExtension(), lista = [];
+  for await (var e of hist.values())
+    if(e.kind === 'file' && re.test(e.name)) lista.push({ nombre:e.name, f:await e.getFile() });
+  lista.sort(function(a, b){ return b.f.lastModified - a.f.lastModified; });   /* la más reciente primero */
+  var limite = Date.now() - HIST.conservar_dias * 86400000, movidas = 0, arch = null;
+  for(var i = HIST.conservar_minimo; i < lista.length; i++){
+    if(lista[i].f.lastModified >= limite) continue;
+    if(!arch) arch = await hist.getDirectoryHandle(HIST.carpeta_archivo, { create:true });
+    var ya = []; for await (var x of arch.values()) ya.push(x.name);
+    var m = /^(.*?)(\.[^.]+)$/.exec(lista[i].nombre), base = m ? m[1] : lista[i].nombre, ext = m ? m[2] : '';
+    var dest = lista[i].nombre, k = 1;
+    while(ya.indexOf(dest) >= 0) dest = base + '_' + (++k) + ext;
+    var w = await (await arch.getFileHandle(dest, { create:true })).createWritable();
+    await w.write(await lista[i].f.arrayBuffer()); await w.close();
+    var chk = await (await arch.getFileHandle(dest)).getFile();
+    if(chk.size !== lista[i].f.size) throw new Error(HIST.carpeta_archivo + ' (' + chk.size + ' ≠ ' + lista[i].f.size + ')');
+    await hist.removeEntry(lista[i].nombre);
+    movidas++;
+  }
+  return movidas;
+}
+
+  /* cuántos expedientes hay en la raíz — solo para avisar, jamás se tocan */
+  async function _cuentaExpedientes(dir){
+    var n = 0, re = _reExtension();
+    for await (var e of dir.values())
+      if(e.kind === 'file' && re.test(e.name)) n++;
+    return n;
+  }
+
+  /* MF.guarda() — el 💾 y la escritura automática.
+     MF.guarda(ruta, contenido) — la forma de antes, para quien la llame así. */
+  function guarda(a, b){
+    if(typeof a === 'string') return guardaRuta(a, b);
+    return guardaCarpeta(a, b);
+  }
+
+  function guardaCarpeta(alTerminar, callado){
     if(!datos){ if(alTerminar) alTerminar(false,'no hay expediente'); return; }
-    /* la date de modification, comme le fait Salufolio */
+    if(!window.showDirectoryPicker){
+      avisoBreve(txH('sin_api'));
+      if(alTerminar) alTerminar(false, 'sin showDirectoryPicker');
+      return;
+    }
     /* v2 (P-H, 15/09) : « modificado » écrasait une seule date à chaque
        fois. L'historial fait mieux — il empile : quand, par quelle voie,
-       et pourquoi. On n'écrase pas le passé.
-       try{ datos.modificado = new Date().toISOString(); }catch(e){} */
+       et pourquoi. On n'écrase pas le passé. */
     /* ══ EL ECO NO SE ESCRIBE (P-H, 17/09/2026) ══
        Se quita de una COPIA: los diecisiete programas siguen leyéndolo
        en memoria mientras la sesión dura. Sólo el disco queda limpio. */
@@ -404,43 +675,58 @@ var MF = (function(){
     if(typeof SF_PLANTILLA !== 'undefined' && SF_PLANTILLA.ordena)
       paraDisco = SF_PLANTILLA.ordena(paraDisco);
     var txt = JSON.stringify(paraDisco, null, 1);
-    var nombre = (matricula||'expediente') + '.mf';
 
-    if(window.showSaveFilePicker){
-      (async function(){
-        try{
-          if(!manija){
-            manija = await window.showSaveFilePicker({
-              suggestedName: nombre,
-              types:[{ description:'Expediente Salufolio', accept:{'application/json':['.mf','.sf','.json']} }]
-            });
-          }
-          var w = await manija.createWritable();
-          await w.write(txt); await w.close();
-          limpio();
-          olvidaTrabajo();                       /* le fichier fait foi désormais */
-          try{ sessionStorage.setItem('mf_datos', txt); }catch(e){}
-          if(!callado) aviso('💾 Guardado en ' + (manija.name||nombre) + ' — a partir de ahora se guarda solo');
-          else destello();
-          if(alTerminar) alTerminar(true);
-        }catch(e){
-          if(e.name==='AbortError'){ if(alTerminar) alTerminar(false,'cancelado'); return; }
-          descarga(txt, nombre); if(alTerminar) alTerminar(true);
+    (async function(){
+      try{
+        var dir = await _carpetaPaciente(!callado);
+        if(!dir){
+          /* la escritura automática no puede preguntar: el geste falta */
+          if(callado) avisoBreve(txH('sin_permiso')); else avisoBreve(txH('cancelado'));
+          if(alTerminar) alTerminar(false, 'sin carpeta');
+          return;
         }
-      })();
-    } else { descarga(txt, nombre); if(alTerminar) alTerminar(true); }
+        var r = await _escribeCarpeta(dir, txt);
+        limpio();
+        olvidaTrabajo();                       /* le fichier fait foi désormais */
+        try{ sessionStorage.setItem('mf_datos', txt); }catch(e){}
+        if(!callado){
+          avisoBreve(txH('guardado', { carpeta:dir.name }) +
+            (r.copia ? txH('copia', { hist:HIST.carpeta, nombre:r.copia }) : '') +
+            (r.movidas ? txH('archivadas', { n:r.movidas, arch:HIST.carpeta_archivo }) : ''));
+        } else destello();
+        if(!_avisoVarios){
+          var n = await _cuentaExpedientes(dir);
+          if(n > 1){ _avisoVarios = true; avisoBreve(txH('varios', { n:n })); }
+        }
+        if(alTerminar) alTerminar(true);
+      }catch(e){
+        if(e.name === 'AbortError'){ avisoBreve(txH('cancelado')); if(alTerminar) alTerminar(false,'cancelado'); return; }
+        avisoBreve(txH('fallo', { msg:(e && e.message) || e }));
+        if(alTerminar) alTerminar(false, (e && e.message) || 'fallo');
+      }
+    })();
   }
 
-  function descarga(txt, nombre){
-    var a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([txt],{type:'application/json'}));
-    a.download=nombre; document.body.appendChild(a); a.click(); a.remove();
-    limpio(); olvidaTrabajo();
-    aviso('⬇ Descargado: ' + nombre + ' — reemplácelo en su carpeta');
+  /* ── Firefox y compañía: se dice al abrir, no al perder el trabajo ── */
+  function avisaNavegador(){
+    if(window.showDirectoryPicker || enMarco) return;
+    var pon = function(){
+      if(document.getElementById('mf-navegador')) return;
+      var d = document.createElement('div'); d.id = 'mf-navegador';
+      d.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:9700;padding:8px 40px 8px 16px;'
+        + 'background:var(--surface,#161b27);border-bottom:2px solid var(--warn,#e8a44a);'
+        + 'color:var(--text,#e8eaf0);font:13px/1.4 system-ui,sans-serif';
+      d.textContent = txH('sin_api');
+      var x = document.createElement('span'); x.textContent = '✕';
+      x.style.cssText = 'position:absolute;right:14px;top:8px;cursor:pointer;opacity:.7';
+      x.onclick = function(){ d.remove(); };
+      d.appendChild(x); document.body.appendChild(d);
+    };
+    if(document.body) pon(); else document.addEventListener('DOMContentLoaded', pon);
   }
 
   /* un mot bref, sans fenêtre */
-  function aviso(msg){
+  function avisoBreve(msg){
     var d=document.getElementById('mf-aviso');
     if(!d){
       d=document.createElement('div'); d.id='mf-aviso';
@@ -639,6 +925,9 @@ var MF = (function(){
   }
   function _tomaPaletas(d, alListo){
     PALETAS = d.paletas || [];
+    /* sin lanzador : los estilos salen de la misma tabla, raiz + entrada del modulo */
+    var _m = (d.modulos||[]).filter(function(x){ return x && x.id===MI_NOMBRE; })[0];
+    aplicaEstilos(Object.assign({}, d.estilos||{}, (_m && _m.estilos)||{}));
     var elegida = null;
     try{ elegida = localStorage.getItem('sf_paleta_'+(MI_NOMBRE||'mod')); }catch(e){}
     aplicaPaleta(elegida || config().paleta || d.paleta_defecto || 'oscuro');
@@ -658,6 +947,26 @@ var MF = (function(){
     if(enMarco){
       try{ parent.postMessage({de:'modulo', tipo:'paleta-elegida', modulo:MI_NOMBRE, paleta:id}, '*'); }catch(e){}
     }
+  }
+  /* ── LA TABLA DE ESTILOS : un rol = una declaracion CSS ──
+     aplicaEstilos(roles) escribe  .sf-<rol>{ ... }  en una hoja unica.
+     estilo(rol, propiedad) lee el valor YA RESUELTO (los var(--x) pasados
+     por la paleta actual) : es lo que necesita un grafico que no habla CSS. */
+  var ROLES = {};
+  function aplicaEstilos(roles){
+    ROLES = roles || {};
+    var h = document.getElementById('sf-estilos');
+    if(!h){ h = document.createElement('style'); h.id = 'sf-estilos'; document.head.appendChild(h); }
+    h.textContent = Object.keys(ROLES).filter(function(k){ return k.charAt(0)!=='_'; }).map(function(k){
+      return '.sf-' + k + '{' + ROLES[k] + '}'; }).join('\n');
+  }
+  function estilo(rol, prop){
+    if(!ROLES[rol]) return '';          /* rol que la casa no ha dado : se usa el respaldo del programa */
+    var e = document.createElement('span');
+    e.className = 'sf-' + rol; e.style.display = 'none';
+    document.body.appendChild(e);
+    var v = getComputedStyle(e).getPropertyValue(prop || 'color');
+    e.remove(); return v;
   }
   function paletas(){ return PALETAS; }
   function paletaActual(){ return MI_PALETA; }
@@ -1643,7 +1952,7 @@ var MF = (function(){
     return { ok:true, como:'descarga', nombre:nombre };
   }
 
-  function guarda(ruta, contenido){
+  function guardaRuta(ruta, contenido){
     if(typeof contenido !== 'string') contenido = JSON.stringify(contenido, null, 1);
     var nombre = String(ruta).replace(/^.*\//, '');
     return hayServidor().then(function(hay){
@@ -1804,7 +2113,7 @@ var MF = (function(){
   var btopen;          /* le bouton 📂, gardé au moment où on le crée (P-H) */
   function abrirFichero(alCargar, alFallar){
     var i=document.createElement('input');
-    i.type='file'; i.accept='.mf,.sf,.json';
+    i.type='file'; i.accept=HIST.extensiones_lectura.concat(['.json']).join(',');
     i.onchange=function(){
       var f=i.files[0]; if(!f) return;
       var r=new FileReader();
@@ -1813,8 +2122,8 @@ var MF = (function(){
           /* l'infobulle du 📂 dit désormais QUEL dossier est chargé (P-H, 08/09) */
           if(btopen) btopen.title = f.name;
           datos=JSON.parse(r.result);
-          matricula=f.name.replace(/\.(mf|sf|json)$/i,'');
-          ruta=f.name; manija=null; limpio();
+          matricula=matriculaDe(f.name);
+          ruta=f.name; carpetaH=null; limpio();
           reanuda();
           if(alCargar) alCargar(datos);
         }catch(e){ if(alFallar) alFallar('No es un JSON válido: '+e.message); }
@@ -1831,7 +2140,7 @@ var MF = (function(){
     btopen=b;
     b.id='mf-abrir';
     b.innerHTML='📂';
-    b.title='Abrir un expediente del disco (.sf / .mf)';
+    b.title='Abrir un expediente del disco (' + HIST.extensiones_lectura.join(' / ') + ')';
     b.style.cssText='position:fixed;top:10px;right:52px;z-index:9000;font-size:22px;'
       +'cursor:pointer;opacity:.7;transition:all .25s;user-select:none';
     b.onmouseover=function(){ b.style.opacity='1'; b.style.transform='scale(1.2)'; };
@@ -1858,6 +2167,7 @@ var MF = (function(){
 
   function arranca(opciones){
     var p=params();
+    avisaNavegador();
     /* la forme courte : ?paciente=AGR0000_….mf — le dossier se déduit */
     if(!p.mf && p.paciente){
       p.mf = p.paciente;
@@ -1915,7 +2225,8 @@ var MF = (function(){
         if(d.tipo==='paleta'){
           if(d.v){ Object.keys(d.v).forEach(function(k){
             document.documentElement.style.setProperty(k, d.v[k]); });
-            if(d.id) MI_PALETA=d.id; return; }
+            if(d.id) MI_PALETA=d.id;
+            if(opciones&&opciones.alPaleta) opciones.alPaleta(MI_PALETA); return; }
           if(d.id){ aplicaPaleta(d.id); return; }
           Object.keys(d.v||{}).forEach(function(k){
             document.documentElement.style.setProperty(k, d.v[k]);
@@ -1923,6 +2234,10 @@ var MF = (function(){
           return;
         }
         /* le lanceur demande quelles palettes on connaît, et laquelle on porte */
+        /* TABLA DE ESTILOS (P-H, 06/10/2026) : la casa envia los roles ya
+           fusionados ; aqui se vuelven una hoja de estilo. */
+        if(d.tipo==='estilos'){ aplicaEstilos(d.roles||{});
+          if(opciones&&opciones.alEstilos) opciones.alEstilos(ROLES); return; }
         if(d.tipo==='idioma'){
           aplicaIdioma(d.idioma||'es');
           if(opciones&&opciones.alIdioma) opciones.alIdioma(LANG_SF); return; }
@@ -1996,7 +2311,7 @@ var MF = (function(){
     );
     if(!mat){
       /* sans matricule, le module attend qu'on lui tende un fichier */
-      if(opciones&&opciones.alFallar) opciones.alFallar('Toque 📂 arriba a la derecha para abrir un expediente (.sf o .mf), o llame al módulo con …?mf=MATRICULA');
+      if(opciones&&opciones.alFallar) opciones.alFallar('Toque 📂 arriba a la derecha para abrir un expediente (.sf), o llame al módulo con …?mf=MATRICULA');
       return Promise.resolve(null);
     }
     return carga(mat, (opciones&&opciones.carpeta)||'')
@@ -2008,14 +2323,14 @@ var MF = (function(){
            guarda:guarda, tocado:tocado, limpio:limpio, hayCambios:hayCambios, aviso:aviso,
            guardaTrabajo:guardaTrabajo, hayTrabajo:hayTrabajo, olvidaTrabajo:olvidaTrabajo,
            enMarco:function(){return enMarco;}, barra:barra, barraActivos:barraActivos, estado:estado,
-           paletas:paletas, paletaActual:paletaActual, aplicaPaleta:aplicaPaleta,
+           paletas:paletas, paletaActual:paletaActual, aplicaPaleta:aplicaPaleta, aplicaEstilos:aplicaEstilos, estilo:estilo,
            perfil:perfil, esPerfil:esPerfil, siPerfil:siPerfil, aplicaPerfil:aplicaPerfil,
            glosario:glosario, glosarioTodo:glosarioTodo, explica:explica, abreGlosario:abreGlosario,
            muestraGlosario:muestraGlosario, curvaEnGrande:curvaEnGrande,
            rubricas:rubricas, idiomas:idiomas, dice:dice, cierra:cierra,
            ponVersion:ponVersion, tip:tip, tips:tips,
            esDemo:esDemo, rutaPdf:rutaPdf, letreroDemo:letreroDemo, popupTexto:popupTexto, config:config, cargaConfig:cargaConfig,
-           guarda:guarda, lista:lista, hayServidor:hayServidor, aviso:aviso,
+           guarda:guarda, guardaRuta:guardaRuta, lista:lista, hayServidor:hayServidor, aviso:aviso,
            ventana:ventana,
            registro:registro, declara:declara, retira:retira, avisoDe:avisoDe,
            ponFuente:ponFuente,

@@ -1,3 +1,4 @@
+Versión 2026.09.19-18:15:47
 LOS PROMPTS DE SALUFOLIO
 ════════════════════════
 
@@ -29,7 +30,7 @@ CÓMO AÑADIR UNO
 CÓMO PROBARLO
 ─────────────
   Un prompt no se inventa: se prueba con documentos de verdad. El de
-  hoy nació cuando Ana volvió de urgencias con unas gasometrías
+  hoy nació cuando la paciente volvió de urgencias con unas gasometrías
   que nunca se habían tenido en cuenta — se escribió, se probó, se
   corrigió. Haga lo mismo.
 

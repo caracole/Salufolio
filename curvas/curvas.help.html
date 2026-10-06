@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- Versión 2026.10.06-10:29:13 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Ayuda · Curvas</title>
+<link rel="stylesheet" href="../comun/salufolio.css">
 <style>
-:root{--bg:#161b27;--text:#e8eaf0;--muted:#9aa3b8;--accent:#4a8fe8;
-      --border:#2a3348;--surface:#1e2535;--serif:Georgia,serif}
 body{margin:0;padding:24px 28px 50px;background:var(--bg);color:var(--text);
-     font-family:system-ui,sans-serif;line-height:1.7}
+     font-family:var(--sans,system-ui,sans-serif);line-height:1.7}
 .env{max-width:720px;margin:0 auto}
 h1{font-family:var(--serif);font-size:21px;margin:0 0 4px}
 .sub{color:var(--muted);font-size:12.5px;margin-bottom:20px}
@@ -19,8 +19,11 @@ p{margin:0 0 12px;font-size:14px}
       padding:11px 15px;font-size:13px;color:var(--muted);margin:16px 0}
 </style>
 </head>
-<body><div class="env">
-<h1>📈 Curvas</h1>
+<body><div id="lg"></div><div class="env" id="c"></div>
+<script src="../comun/ayuda.js"></script>
+<script>
+var A = {
+es:`<h1>📈 Curvas</h1>
 <div class="sub">Todos los parámetros, año tras año</div>
 
 <h2>Las rúbricas</h2>
@@ -34,6 +37,52 @@ p{margin:0 0 12px;font-size:14px}
 <p>La banda clara detrás de la curva marca el rango normal. Lo que sale de ella se aparta — sin que eso signifique forzosamente algo.</p>
 
 <h2>El documento de origen</h2>
-<p>Clic sobre un punto: se le dice de qué informe viene ese valor. Los PDF están en <code>pacientes/MATRÍCULA/sources/</code>.</p>
-</div></body>
-</html>
+<p>Clic sobre un punto: se le dice de qué informe viene ese valor. Los PDF están en <code>pacientes/MATRÍCULA/sources/</code>.</p>`,
+fr:`<h1>📈 Courbes</h1>
+<div class="sub">Tous les paramètres, année après année</div>
+
+<h2>Les rubriques</h2>
+<p>La barre du haut regroupe les paramètres par famille : hématologie, biochimie, coagulation, hépatique… Touchez une rubrique pour déployer ses paramètres, et cochez ceux que vous voulez voir. La barre reste fixe : on change de rubrique sans perdre les courbes de vue.</p>
+
+<h2>Superposer deux courbes</h2>
+<p>Clic droit sur une courbe pour en proposer une autre dans le même graphique. Utile pour voir si deux valeurs évoluent ensemble — l'hémoglobine et le fer, la créatinine et la filtration.</p>
+<div class="nota">Que deux valeurs évoluent ensemble ne veut pas dire que l'une cause l'autre. C'est une piste, pas une preuve.</div>
+
+<h2>Les seuils</h2>
+<p>La bande claire derrière la courbe marque la plage normale. Ce qui en sort s'écarte — sans que cela signifie forcément quelque chose.</p>
+
+<h2>Le document d'origine</h2>
+<p>Clic sur un point : on vous dit de quel rapport vient cette valeur. Les PDF sont dans <code>pacientes/MATRICULE/sources/</code>.</p>`,
+ca:`<h1>📈 Corbes</h1>
+<div class="sub">Tots els paràmetres, any rere any</div>
+
+<h2>Les rúbriques</h2>
+<p>La barra de dalt agrupa els paràmetres per família: hematologia, bioquímica, coagulació, hepàtic… Toque una rúbrica per a desplegar els seus paràmetres, i marque els que vulga veure. La barra queda fixa: es canvia de rúbrica sense perdre de vista les corbes.</p>
+
+<h2>Superposar dues corbes</h2>
+<p>Clic dret sobre una corba per a proposar-ne una altra en el mateix gràfic. Útil per a veure si dos valors es mouen junts — l'hemoglobina i el ferro, la creatinina i el filtrat.</p>
+<div class="nota">Que dos valors es moguen junts no vol dir que un cause l'altre. És una pista, no una prova.</div>
+
+<h2>Els llindars</h2>
+<p>La banda clara darrere de la corba marca el rang normal. El que n'ix s'aparta — sense que això signifique forçosament res.</p>
+
+<h2>El document d'origen</h2>
+<p>Clic sobre un punt: se li diu de quin informe ve aquest valor. Els PDF estan en <code>pacientes/MATRÍCULA/sources/</code>.</p>`,
+en:`<h1>📈 Curves</h1>
+<div class="sub">Every parameter, year after year</div>
+
+<h2>The groups</h2>
+<p>The bar at the top groups the parameters by family: haematology, biochemistry, coagulation, liver… Tap a group to unfold its parameters, and tick the ones you want to see. The bar stays fixed: you can switch group without losing sight of the curves.</p>
+
+<h2>Overlaying two curves</h2>
+<p>Right-click a curve to add another one to the same chart. Useful to see whether two values move together — haemoglobin and iron, creatinine and filtration.</p>
+<div class="nota">Two values moving together does not mean one causes the other. It is a lead, not proof.</div>
+
+<h2>Thresholds</h2>
+<p>The light band behind the curve marks the normal range. What falls outside it stands apart — without necessarily meaning anything.</p>
+
+<h2>The source document</h2>
+<p>Click a point: it tells you which report that value comes from. The PDFs are in <code>pacientes/ID/sources/</code>.</p>`
+};
+SF_AYUDA.arranca(A);
+</script></body></html>

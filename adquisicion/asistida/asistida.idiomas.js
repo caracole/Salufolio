@@ -1,4 +1,6 @@
-/* Los textos de la adquisición asistida */
+/* Los textos de la adquisición asistida
+   Versión 2026.10.06 (la cabecera estaba mal cerrada : el « Versión … » quedaba fuera del comentario,
+   el fichero no se leía y todo salía en español ; 06/10/2026) */
 var SF_TEXTOS = window.SF_TEXTOS = {
  "_doctrina": "Los textos de la adquisición asistida.",
  "textos": {
@@ -24,7 +26,23 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "tra_leido": "Leído",
    "tra_mal": "Eso no parece un JSON. Copie la respuesta entera, sin el texto de alrededor.",
    "dia_vacio": "El diario está vacío.",
-   "sin_exp": "⚠ ningún expediente abierto"
+   "sin_exp": "⚠ ningún expediente abierto",
+   "doc_intro": "Saque el texto del documento. Si el PDF está escaneado, el OCR lo reconoce aquí mismo — en su ordenador, sin que nada salga a Internet.",
+   "doc_leyendo": "Leyendo {f}…",
+   "doc_escaneado": "Este PDF no lleva texto — está escaneado.",
+   "doc_sacado": "Texto sacado de {n} página(s).",
+   "doc_no_leer": "No se ha podido leer: {e}",
+   "doc_elija": "Elija primero un PDF.",
+   "ocr_cargando": "Cargando el motor de reconocimiento…",
+   "ocr_pagina": "Reconociendo la página {i} de {n}…",
+   "ocr_fin": "Reconocimiento de {n} página(s) terminado en {s} s.",
+   "ocr_error": "Error de reconocimiento: {e}",
+   "lle_sin_texto": "No hay texto que llevar.",
+   "lle_sin_pregunta": "No se ha podido cargar la pregunta. Cierre el programa y vuelva a abrirlo.",
+   "lle_no_copia": "El navegador no ha dejado copiar. Seleccione el texto a mano.",
+   "doc_letras": "{n} letras",
+   "dia_guardar": "💾 Guardar lo leído",
+   "dia_guardado": "Guardado: {n}"
   },
   "fr": {
    "tit_doc": "📄 Le document",
@@ -48,7 +66,23 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "tra_leido": "Lu",
    "tra_mal": "Ça ne ressemble pas à du JSON. Copiez la réponse entière, sans le texte autour.",
    "dia_vacio": "Le journal est vide.",
-   "sin_exp": "⚠ aucun dossier ouvert"
+   "sin_exp": "⚠ aucun dossier ouvert",
+   "doc_intro": "Tirez le texte du document. Si le PDF est scanné, la reconnaissance se fait ici même — sur votre ordinateur, sans que rien ne sorte vers Internet.",
+   "doc_leyendo": "Lecture de {f}…",
+   "doc_escaneado": "Ce PDF ne contient pas de texte — il est scanné.",
+   "doc_sacado": "Texte tiré de {n} page(s).",
+   "doc_no_leer": "Lecture impossible : {e}",
+   "doc_elija": "Choisissez d'abord un PDF.",
+   "ocr_cargando": "Chargement du moteur de reconnaissance…",
+   "ocr_pagina": "Reconnaissance de la page {i} sur {n}…",
+   "ocr_fin": "Reconnaissance de {n} page(s) terminée en {s} s.",
+   "ocr_error": "Erreur de reconnaissance : {e}",
+   "lle_sin_texto": "Il n'y a pas de texte à porter.",
+   "lle_sin_pregunta": "La question n'a pas pu être chargée. Fermez le programme et rouvrez-le.",
+   "lle_no_copia": "Le navigateur n'a pas permis de copier. Sélectionnez le texte à la main.",
+   "doc_letras": "{n} lettres",
+   "dia_guardar": "💾 Ranger ce qui a été lu",
+   "dia_guardado": "Rangé : {n}"
   },
   "ca": {
    "tit_doc": "📄 El document",
@@ -72,7 +106,23 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "tra_leido": "Llegit",
    "tra_mal": "Això no sembla JSON.",
    "dia_vacio": "El diari està buit.",
-   "sin_exp": "⚠ cap expedient obert"
+   "sin_exp": "⚠ cap expedient obert",
+   "doc_intro": "Tregui el text del document. Si el PDF està escanejat, el reconeixement es fa aquí mateix — al seu ordinador, sense que res surti a Internet.",
+   "doc_leyendo": "Llegint {f}…",
+   "doc_escaneado": "Aquest PDF no porta text — està escanejat.",
+   "doc_sacado": "Text tret de {n} pàgina(es).",
+   "doc_no_leer": "No s'ha pogut llegir: {e}",
+   "doc_elija": "Triï primer un PDF.",
+   "ocr_cargando": "Carregant el motor de reconeixement…",
+   "ocr_pagina": "Reconeixent la pàgina {i} de {n}…",
+   "ocr_fin": "Reconeixement de {n} pàgina(es) acabat en {s} s.",
+   "ocr_error": "Error de reconeixement: {e}",
+   "lle_sin_texto": "No hi ha text per portar.",
+   "lle_sin_pregunta": "No s'ha pogut carregar la pregunta. Tanqui el programa i torni a obrir-lo.",
+   "lle_no_copia": "El navegador no ha deixat copiar. Seleccioni el text a mà.",
+   "doc_letras": "{n} lletres",
+   "dia_guardar": "💾 Guardar el que s'ha llegit",
+   "dia_guardado": "Guardat: {n}"
   },
   "en": {
    "tit_doc": "📄 The document",
@@ -96,7 +146,23 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "tra_leido": "Read",
    "tra_mal": "That doesn't look like JSON. Copy the whole answer, without the surrounding text.",
    "dia_vacio": "The log is empty.",
-   "sin_exp": "⚠ no record open"
+   "sin_exp": "⚠ no record open",
+   "doc_intro": "Pull the text out of the document. If the PDF is scanned, recognition happens right here — on your computer, nothing goes out to the Internet.",
+   "doc_leyendo": "Reading {f}…",
+   "doc_escaneado": "This PDF has no text — it is scanned.",
+   "doc_sacado": "Text taken from {n} page(s).",
+   "doc_no_leer": "Could not read it: {e}",
+   "doc_elija": "Pick a PDF first.",
+   "ocr_cargando": "Loading the recognition engine…",
+   "ocr_pagina": "Recognising page {i} of {n}…",
+   "ocr_fin": "Recognition of {n} page(s) finished in {s} s.",
+   "ocr_error": "Recognition error: {e}",
+   "lle_sin_texto": "There is no text to take.",
+   "lle_sin_pregunta": "The question could not be loaded. Close the program and open it again.",
+   "lle_no_copia": "The browser did not allow copying. Select the text by hand.",
+   "doc_letras": "{n} letters",
+   "dia_guardar": "💾 Save what was read",
+   "dia_guardado": "Saved: {n}"
   }
  }
 };

@@ -1,4 +1,5 @@
-/* Los textos de Resumen — en su propia carpeta, como todo lo suyo. */
+/* Los textos de Resumen — en su propia carpeta, como todo lo suyo.
+   Versión 2026.09.19-18:15:47 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de ESTE programa, en su propia carpeta (cloisonnement de P-H). Lo que es comun esta en ../comun/idiomas-datos.js",
   "textos": {

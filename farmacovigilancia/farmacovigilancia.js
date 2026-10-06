@@ -1,7 +1,7 @@
 /* FARMACOVIGILANCIA — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "farmacovigilancia",
-  "version": "2026.09.07-17:56:29",
+  "version": "2026.09.19-18:12:56",
   "programa": "farmacovigilancia.html",
   "lanzador": "../casa/casa.js",
   "icono": "⚠️",

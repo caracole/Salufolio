@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    UN PROMPT, DANS SON PROPRE FICHIER
 
    « NE JAMAIS MÉLANGER LE CODE JAVASCRIPT AVEC LE PROMPT. Le prompt vit

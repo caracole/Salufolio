@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    VISITA.JS — el motor de visitas guiadas (P-H + Claude, 01/09/2026)
 
    DOCTRINA (P-H) : un solo programa para todas las visitas — el panal,

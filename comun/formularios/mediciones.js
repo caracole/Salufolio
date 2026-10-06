@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    LAS MEDICIONES — /Salufolio/comun/formularios/mediciones.js
 
    « Chaque rubrique a ses propres caractéristiques. »  — P-H, 14/09/2026

@@ -1,4 +1,5 @@
 /* ══ ALIAS (P-H, 03/09 : « les caractères sont noirs ») ══
+   Versión 2026.09.19-18:15:47
    Salufolio définit --text ; le lanceur et les modules écrivent --fg.
    Sans correspondance, var(--fg) ne vaut rien et le texte prend le noir
    par défaut — invisible sur fond sombre.

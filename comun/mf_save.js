@@ -1,18 +1,19 @@
 /* ═══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    MF.JS — la pièce commune des modules de Salufolio
    (P-H + Claude, 01/09/2026)
 
    DOCTRINE (P-H) : chaque fonction devient un PROGRAMME à part entière —
-   Curvas, Cronología, Medicamentos, Radar… Ils ont le .mf en commun et
+   Curvas, Cronología, Medicamentos, Radar… Ils ont le .sf en commun et
    ne communiquent pas entre eux. Le panal (ou Salufolio réduit à un
    lanceur) appelle celui dont on a besoin, avec le dossier en paramètre.
 
    CE QUI SE PASSE, C'EST LE MATRICULE, PAS LE FICHIER :
         curvas.html?mf=JMA8986
-   Le module va chercher JMA8986.mf lui-même. Rien de lourd ne transite,
+   Le module va chercher JMA8986.sf lui-même. Rien de lourd ne transite,
    et il n'y a qu'une vérité : le fichier sur le disque.
 
-   Cette pièce est le SEUL savoir partagé : lire un .mf, y trouver les
+   Cette pièce est le SEUL savoir partagé : lire un .sf, y trouver les
    mesures, les médicaments, les événements. Le jour où le format évolue,
    un seul fichier à corriger.
 
@@ -41,7 +42,7 @@ var MF = (function(){
   /* ── charger le dossier ── */
   function carga(mat, carpeta){
     matricula = mat;
-    ruta = (carpeta||'') + mat + '.mf';
+    ruta = (carpeta||'') + mat + '.sf';
     return fetch(ruta)
       .then(function(r){ if(!r.ok) throw new Error('no se encuentra '+ruta); return r.json(); })
       .then(function(d){ datos=d; return d; });
@@ -64,7 +65,7 @@ var MF = (function(){
 
   /* ── ce que les modules demandent le plus souvent ── */
   /* ══════════════════════════════════════════════════════════════════
-     EL PERFIL DEL PACIENTE (P-H, 04/09) — está EN EL .mf, no fuera.
+     EL PERFIL DEL PACIENTE (P-H, 04/09) — está EN EL .sf, no fuera.
      El expediente se basta a sí mismo: se abre donde sea, y se sabe de
      quién es. Nombre, apellidos, SIP, matrícula, nacimiento, sexo.
      Todo módulo lo lee con MF.paciente() — para mostrarlo, imprimirlo,
@@ -195,12 +196,12 @@ var MF = (function(){
      L'ENREGISTREMENT (P-H, 01/09 : « NO OLVIDAR IMPORTANTE »)
 
      Un module comme Medicamentos ne fait pas que regarder : il CRÉE et
-     il MODIFIE. Il faut donc écrire le .mf — et l'écriture est
+     il MODIFIE. Il faut donc écrire le .sf — et l'écriture est
      centralisée ici, comme la lecture : un seul endroit qui sait le
      faire, tous les modules l'appellent.
 
          MF.tocado()   — le module signale qu'il a modifié quelque chose
-         MF.guarda()   — écrit le .mf
+         MF.guarda()   — écrit le .sf
 
      Le navigateur ne peut pas écrire dans un fichier sans permission.
      On désigne donc le fichier une fois (showSaveFilePicker), et les
@@ -276,7 +277,7 @@ var MF = (function(){
     /* la date de modification, comme le fait Salufolio */
     try{ datos.modificado = new Date().toISOString(); }catch(e){}
     var txt = JSON.stringify(datos, null, 1);
-    var nombre = (matricula||'expediente') + '.mf';
+    var nombre = (matricula||'expediente') + '.sf';
 
     if(window.showSaveFilePicker){
       (async function(){
@@ -284,7 +285,7 @@ var MF = (function(){
           if(!manija){
             manija = await window.showSaveFilePicker({
               suggestedName: nombre,
-              types:[{ description:'Expediente Salufolio', accept:{'application/json':['.mf','.sf','.json']} }]
+              types:[{ description:'Expediente Salufolio', accept:{'application/json':['.sf','.json']} }]
             });
           }
           var w = await manija.createWritable();
@@ -943,7 +944,7 @@ var MF = (function(){
      Le nom affiché est le plus court des équivalents — plus lisible.
 
      LE DOSSIER N'EST PAS TOUCHÉ : le nettoyage se fait à la lecture.
-     Les lignes restent toutes dans le .mf.
+     Les lignes restent toutes dans le .sf.
 
      Plus tard : une table principio-activo pour rapprocher les
      génériques de leur marque (Aricept → donepezilo).
@@ -1134,7 +1135,7 @@ var MF = (function(){
   /* ══════════════════════════════════════════════════════════════════
      QUEL DOSSIER REGARDE-T-ON ? (P-H, 08/09)
 
-     Avec des .mf, des .sf, des _REAL et des (copia) dans le même
+     Avec des .sf, des .sf, des _REAL et des (copia) dans le même
      répertoire, on ne sait plus lequel on a ouvert — et deux dossiers
      ne portent pas forcément la même chose.
 
@@ -1204,7 +1205,7 @@ var MF = (function(){
      l'interdit, et c'est heureux. Alors on lui tend le fichier. */
   function abrirFichero(alCargar, alFallar){
     var i=document.createElement('input');
-    i.type='file'; i.accept='.mf,.sf,.json';
+    i.type='file'; i.accept='.sf,.json';
     i.onchange=function(){
       var f=i.files[0]; if(!f) return;
       var r=new FileReader();
@@ -1228,7 +1229,7 @@ var MF = (function(){
     var b=document.createElement('div');
     b.id='mf-abrir';
     b.innerHTML='📂';
-    b.title='Abrir un expediente del disco (.sf / .mf)';
+    b.title='Abrir un expediente del disco (.sf)';
     b.style.cssText='position:fixed;top:10px;right:52px;z-index:9000;font-size:22px;'
       +'cursor:pointer;opacity:.7;transition:all .25s;user-select:none';
     b.onmouseover=function(){ b.style.opacity='1'; b.style.transform='scale(1.2)'; };
@@ -1245,7 +1246,7 @@ var MF = (function(){
        s'occupe plus de rien : ni du fichier, ni du cadre, ni de l'abeille.
        Le lanceur lui envoie le dossier par postMessage ; le module lui
        renvoie ses modifications, et c'est le lanceur qui enregistre.
-       Un seul .mf, un seul 💾, un seul cadre. */
+       Un seul .sf, un seul 💾, un seul cadre. */
     PERFIL = p.perfil || null;
     p_carpeta = p.carpeta || '';
     if(p.idioma) LANG_SF = p.idioma;
@@ -1370,7 +1371,7 @@ var MF = (function(){
     );
     if(!mat){
       /* sans matricule, le module attend qu'on lui tende un fichier */
-      if(opciones&&opciones.alFallar) opciones.alFallar('Toque 📂 arriba a la derecha para abrir un expediente (.sf o .mf), o llame al módulo con …?mf=MATRICULA');
+      if(opciones&&opciones.alFallar) opciones.alFallar('Toque 📂 arriba a la derecha para abrir un expediente (.sf), o llame al módulo con …?sf=MATRICULA');
       return Promise.resolve(null);
     }
     return carga(mat, (opciones&&opciones.carpeta)||'')

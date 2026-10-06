@@ -1,7 +1,7 @@
 /* OBSERVANCIA — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "observancia",
-  "version": "2026.09.07-16:55:41",
+  "version": "2026.09.19-18:12:56",
   "programa": "observancia.html",
   "lanzador": "../casa/casa.js",
   "icono": "💊",

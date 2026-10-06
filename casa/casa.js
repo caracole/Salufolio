@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.09.25-15:55:18",
+  "version": "2026.10.06-18:42:39",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -16,10 +16,24 @@ var SF_LANZADOR = {
     "fr",
     "en"
   ],
+  "estilos": {
+    "_porque": "TABLA DE ESTILOS (P-H, 06/10/2026). Cada ROL es una declaracion CSS. Los roles usan las variables de la paleta (var(--text)...), de modo que un cambio de paleta los sigue solo. Un modulo puede redecir un rol en su propio « estilos » ; lo que no redice, lo hereda de aqui. Un programa nunca escribe un color : dice « soy text_1 ».",
+    "text_1": "color:var(--text);font-size:14px;line-height:1.7",
+    "text_2": "color:var(--muted);font-size:12.5px;line-height:1.7",
+    "titre_1": "color:var(--text);font-family:var(--serif);font-size:21px",
+    "titre_2": "color:var(--accent);font-family:var(--serif);font-size:15px",
+    "curva_texto": "color:var(--muted);font-size:10px",
+    "curva_rejilla": "color:var(--border)",
+    "curva_mal": "color:#c0392b",
+    "curva_ref": "color:var(--ok)",
+    "visor_fondo": "background-color:#8a8a8a"
+  },
   "carpeta_expedientes": "../pacientes/",
   "carpeta_doc": "../../doc/Salufolio/",
-  "ayuda": "lanzador.help.html",
-  "paleta_defecto": "cielo",
+  "ayuda": "casa.help.html",
+  "ayuda_modulo": "{id}.help.html",
+  "_ayuda": "Las ayudas viven junto a su programa (rangement du 04/10/2026) : <carpeta>/<id>.help.html. « ayuda » es la de la casa, relativa a casa/ ; « ayuda_modulo » dice como se llama la de cada programa cuando el no declara la suya.",
+  "paleta_defecto": "papel",
   "acceso_defecto": "todos",
   "tablas": {
     "glosario": "../comun/glosario-datos.js",
@@ -27,6 +41,12 @@ var SF_LANZADOR = {
     "idiomas": "../comun/idiomas-datos.js"
   },
   "modulos": [
+    {
+      "id": "paciente",
+      "acceso": [
+        "todos"
+      ]
+    },
     {
       "id": "glosario",
       "acceso": [
@@ -61,6 +81,9 @@ var SF_LANZADOR = {
     },
     {
       "id": "curvas",
+      "estilos": {
+        "curva_texto": "color:var(--muted);font-size:10px"
+      },
       "acceso": [
         "todos"
       ]
@@ -351,9 +374,10 @@ var SF_LANZADOR = {
         "--border": "#3C93C9",
         "--text": "#0C2233",
         "--fg": "#0C2233",
-        "--muted": "#2A5470",
-        "--accent-m": "#0B4C7A"
+        "--muted": "#1A3C54",
+        "--accent-m": "#083D5F"
       },
+      "_contraste": "WCAG AA (02/10/2026): --muted #2A5470 sobre #74BBE4 daba 3,83 (minimo 4,5) → #1A3C54 da 5,48; --accent-m #0B4C7A daba 4,28 → #083D5F da 5,41. Los fondos no se tocan.",
       "_luego": "Un cursor en la paleta para que cada uno ajuste su azul — es muy subjetivo (P-H)."
     },
     {
@@ -545,9 +569,8 @@ var SF_LANZADOR = {
       },
       {
         "texto": "DOI 10.5281/zenodo.21997587",
-        "fichero": "salufolio-zenodo.pdf",
+        "enlace": "https://doi.org/10.5281/zenodo.21997587",
         "titulo": "Ver el artículo",
-        "fuera": "https://doi.org/10.5281/zenodo.21997587",
         "marca": "doi"
       },
       {

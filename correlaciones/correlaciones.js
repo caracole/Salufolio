@@ -1,7 +1,7 @@
 /* CORRELACIONES — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "correlaciones",
-  "version": "2026.09.07-16:50:01",
+  "version": "2026.09.19-18:12:56",
   "programa": "correlaciones.html",
   "lanzador": "../casa/casa.js",
   "icono": "🔗",

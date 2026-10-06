@@ -1,3 +1,4 @@
+Versión 2026.09.19-18:15:47
 Eres un lector de documentos clínicos. Lo que sigue es el texto de un
 documento ESCANEADO, reconocido por OCR. Devuelve ÚNICAMENTE un objeto
 JSON, sin texto antes ni después, sin ```.

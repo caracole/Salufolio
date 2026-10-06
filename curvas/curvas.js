@@ -1,7 +1,7 @@
 /* CURVAS — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "curvas",
-  "version": "2026.09.07-10:53:20",
+  "version": "2026.09.19-18:12:56",
   "programa": "curvas.html",
   "lanzador": "../casa/casa.js",
   "icono": "📈",

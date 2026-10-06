@@ -1,4 +1,5 @@
 /* ═══ LA LISTE DES TERMINAUX DU BANC D'ESSAI ═══
+   Versión 2026.09.19-18:15:47
    P-H, 17/08 : les données vivent DEHORS, le programme ne fait que les
    charger — un seul banc, plusieurs listes possibles.
 

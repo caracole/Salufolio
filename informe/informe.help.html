@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"/>
+<html lang="es"><head>
+<!-- Versión 2026.10.06-10:29:13 --><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Ayuda · Informe</title>
 <link rel="stylesheet" href="../comun/salufolio.css">
@@ -19,12 +20,9 @@ p{margin:0 0 12px;font-size:14px}
 table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 18px}
 td{padding:7px 10px 7px 0;border-bottom:1px solid var(--border);vertical-align:top}
 td:first-child{white-space:nowrap;width:1%;padding-right:16px;text-align:center;font-size:16px}
-#lg{position:fixed;top:12px;right:16px;display:flex;gap:5px;z-index:10}
-#lg button{border:1px solid var(--border);background:var(--surface);border-radius:7px;
-  padding:3px 8px;cursor:pointer;font-size:14px;opacity:.5;transition:all .18s}
-#lg button.on{opacity:1;border-color:var(--accent)}
 </style></head>
 <body><div id="lg"></div><div class="env" id="c"></div>
+<script src="../comun/ayuda.js"></script>
 <script>
 var A = {
 es:`<h1>📋 Informe para el médico</h1>
@@ -97,24 +95,40 @@ coûte.</div>
 <p>La page est faite pour le papier : fond clair, lettres grandes, et les
 boutons disparaissent à l'impression. A− et A+ changent la taille.</p>`,
 ca:`<h1>📋 Informe per al metge</h1>
-<div class="sub">L'essencial en una pàgina</div>
+<div class="sub">L'essencial en una pàgina, a punt per a la consulta</div>
 <p>Va nàixer d'un matí a urgències: un metge de guàrdia sense context, i
-la mateixa història contada una altra vegada.</p>
+la mateixa història contada una altra vegada des del principi. Aquest
+informe és el que s'hauria volgut donar-li: noranta segons de lectura, i
+ja ho sap.</p>
 <h2>Dues formes</h2>
 <table>
-<tr><td>📄</td><td><b>Curta</b> — trenta dies, quatre corbes.</td></tr>
-<tr><td>📑</td><td><b>Detallada</b> — noranta dies, cinc corbes.</td></tr>
+<tr><td>📄</td><td><b>Curta</b> — trenta dies, quatre corbes. Per a una
+consulta de sempre. Cap en una pàgina.</td></tr>
+<tr><td>📑</td><td><b>Detallada</b> — noranta dies, cinc corbes, més els
+esdeveniments i les preguntes. Per a un ingrés o un especialista nou.</td></tr>
 </table>
 <h2>El que porta</h2>
 <table>
-<tr><td>🏥</td><td><b>Episodi recent</b></td></tr>
-<tr><td>💊</td><td><b>Tractament actual</b></td></tr>
-<tr><td>🏠</td><td><b>Situació a casa</b> — ho escriu vosté.</td></tr>
-<tr><td>📉</td><td><b>A vigilar</b></td></tr>
+<tr><td>🏥</td><td><b>Episodi recent</b> — ingrés, alta, i en quin dia
+estem hui.</td></tr>
+<tr><td>💊</td><td><b>Tractament actual</b> — amb les dates, i el dia que
+va d'una pauta amb durada.</td></tr>
+<tr><td>🏠</td><td><b>Situació a casa</b> — ho escriu vosté. És l'única
+part que no ix de cap document, i sovint la que més importa.</td></tr>
+<tr><td>📉</td><td><b>A vigilar</b> — els paràmetres que més s'han mogut,
+amb la seua corba i el que el pendent diu.</td></tr>
 </table>
-<div class="nota">El comentari es guarda a l'expedient amb la seua data.</div>`,
+<h2>El comentari de les corbes</h2>
+<p>Si té una clau de l'API, pot demanar un comentari. No és un
+diagnòstic: descriu l'evolució, assenyala coincidències, i proposa
+preguntes per a la consulta.</p>
+<div class="nota">El comentari es guarda a l'expedient amb la seua data.
+Si les dades no han canviat, no es torna a demanar: una crida costa.</div>
+<h2>Imprimir</h2>
+<p>La pàgina està feta per al paper: fons clar, lletra gran, i els botons
+desapareixen en imprimir. A− i A+ canvien la mida.</p>`,
 en:`<h1>📋 Report for the doctor</h1>
-<div class="sub">The essentials on one page</div>
+<div class="sub">The essentials on one page, ready for the consultation</div>
 <p>It came from a morning in A&amp;E: a doctor on call with no context, and
 the same story told again from the beginning. This report is what one
 would have wanted to hand over: ninety seconds, and they know.</p>
@@ -134,22 +148,17 @@ timed course is on.</td></tr>
 <tr><td>🏠</td><td><b>At home</b> — you write this. The only part from no
 document, and often the one that matters most.</td></tr>
 <tr><td>📉</td><td><b>To watch</b> — the parameters that moved most, with
-their curve.</td></tr>
+their curve and what the slope says.</td></tr>
 </table>
+<h2>The comment on the curves</h2>
+<p>If you have an API key, you can ask for a comment. It is not a
+diagnosis: it describes the trend, points out coincidences, and suggests
+questions for the consultation.</p>
 <div class="nota">The comment is kept in the record with its date. If the
-data haven't changed, it isn't asked again: a call costs.</div>`
+data haven't changed, it isn't asked again: a call costs.</div>
+<h2>Printing</h2>
+<p>The page is made for paper: light background, large type, and the
+buttons disappear when printing. A− and A+ change the size.</p>`
 };
-var L=[['es','🇪🇸'],['ca','🏳️'],['fr','🇫🇷'],['en','🇬🇧']];
-function pon(l){
-  document.getElementById('c').innerHTML=A[l]||A.es;
-  document.documentElement.lang=l;
-  document.querySelectorAll('#lg button').forEach(function(b){
-    b.classList.toggle('on', b.dataset.l===l); });
-  try{ localStorage.setItem('sf_idioma', l); }catch(e){}
-}
-document.getElementById('lg').innerHTML = L.map(function(x){
-  return '<button data-l="'+x[0]+'" onclick="pon(\''+x[0]+'\')">'+x[1]+'</button>';
-}).join('');
-var l=''; try{ l=localStorage.getItem('sf_idioma')||''; }catch(e){}
-pon(A[l]?l:'es');
+SF_AYUDA.arranca(A);
 </script></body></html>

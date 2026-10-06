@@ -1,3 +1,4 @@
+Versión 2026.09.19-18:15:47
 CARPETA DE ICONOS — panal de Salufolio
 ======================================
 Ponga aquí sus ficheros SVG (o PNG).

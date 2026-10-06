@@ -1,7 +1,7 @@
 /* AUDITORÍA — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "auditoria",
-  "version": "2026.09.07-17:57:25",
+  "version": "2026.09.19-18:12:56",
   "programa": "auditoria.html",
   "lanzador": "../casa/casa.js",
   "icono": "🔍",

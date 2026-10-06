@@ -89,7 +89,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    MEDICAMENTOS — programa autónomo de Salufolio V2
-   Versión 2026.09.07-14:51:20
+   Versión 2026.10.06-16:11:25
 
    Extraído de la V1: medications-js.js (38 funciones — la lista, la ficha,
    los prescriptores, las recetas), medications-html.html, y sus
@@ -99,6 +99,8 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
    y enciende el 💾 de la banda; nada se escribe en el disco hasta que se
    toca. Es voluntario: se ve lo que se ha cambiado antes de guardarlo.
    ═══════════════════════════════════════════════════════════════════════ */
+/* número de versión : se actualiza en CADA modificación (regla de P-H) — es el que muestra el tooltip del nombre */
+SF_CONFIG.version = '2026.10.06-16:11:25';
 const VERSION_PROGRAMA = SF_CONFIG.version;
 const APP_VERSION = SF_CONFIG.version;
 const APP_VERSION_DATE = SF_CONFIG.version;
@@ -120,8 +122,23 @@ function saveData(){ if(_DATOS) MF.tocado(); }
 function getPatientLabel(){ var p=MF.paciente(); return p.etiqueta || p.matricula || ''; }
 function showPanel(){}
 /* les prescripteurs vivent dans le dossier */
-function loadPrescriptores(){ return (_DATOS && _DATOS.mt_prescripteurs) || []; }
-function savePrescriptores(l){ if(_DATOS){ _DATOS.mt_prescripteurs = l; MF.tocado(); } }
+/* P-H 06/10/2026 : le registre est un DICTIONNAIRE {PR1:'nom'} (le code l'a toujours utilisé ainsi) ; la plantilla
+   crée « prescriptores: [] » — un tableau perd ses clés texte à l'écriture du .sf. On le convertit ici, sans perte.
+   Clé canonique du dossier : « prescriptores » (celle de revisar et automatica) ; ancienne « mt_prescripteurs » lue en repli. */
+function _regPrescriptores(){
+  if(!_DATOS) return {};
+  var a = _DATOS.prescriptores, b = _DATOS.mt_prescripteurs, o = {};
+  [b, a].forEach(function(src){
+    if(!src) return;
+    if(Array.isArray(src)){ src.forEach(function(n, i){ if(typeof n === 'string' && n) o['PR' + (i + 1)] = n; }); }
+    else if(typeof src === 'object'){ Object.keys(src).forEach(function(k){ o[k] = src[k]; }); }
+  });
+  return o;
+}
+function loadPrescriptores(){ return _regPrescriptores(); }
+function savePrescriptores(l){ if(_DATOS){ _DATOS.prescriptores = l; MF.tocado(); } }
+/* normalisation d'un nom (comparaison insensible à la casse et aux espaces) — manquait ici, d'où le plantage d'Actualizar */
+function normNombre(s){ return (s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
 
 
 
@@ -298,7 +315,7 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
       '<button class="pdf-pg-next" style="cursor:pointer;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:0 8px">▶</button>' +
       '<span class="pdf-pg-nb" style="color:var(--muted)"></span>';
     sh.pop.insertBefore(barra, sh.cuerpo);
-    sh.cuerpo.style.background = '#8a8a8a';
+    sh.cuerpo.style.background = colorDe('visor_fondo', 'background-color', '--surface2');
     sh.cuerpo.style.textAlign = 'center';
     var actual = pagina;
     async function dibujar(pnum) {
@@ -380,8 +397,20 @@ function _chartVerInforme(s, key) {
 
 Chart.defaults.font.family = "'IBM Plex Mono', monospace";
 Chart.defaults.font.size = 10;
-Chart.defaults.color = '#7a8499';
-Chart.defaults.borderColor = '#2a3348';
+/* TABLA DE ESTILOS (P-H, 06/10/2026) : los colores del grafico ya no se escriben aqui —
+   vienen de los roles de casa.js (curva_texto, curva_rejilla...), resueltos por la paleta puesta. */
+function colorDe(rol, prop, respaldo){
+  var v = ''; try{ v = (MF.estilo(rol, prop) || '').trim(); }catch(e){}
+  return v || getComputedStyle(document.documentElement).getPropertyValue(respaldo).trim();
+}
+function aplicaColoresCurvas(){
+  if(typeof Chart === 'undefined') return;
+  Chart.defaults.color       = colorDe('curva_texto',   'color', '--muted');
+  Chart.defaults.borderColor = colorDe('curva_rejilla', 'color', '--border');
+  var tam = parseFloat(colorDe('curva_texto', 'font-size', '--tam-min'));
+  if(tam) Chart.defaults.font.size = tam;
+}
+aplicaColoresCurvas();
 const chartInstances = {};
 
 /* v2026.7.21.4 — échelle par courbe : Lin (par défaut) ⇄ Log (natif Chart.js).
@@ -416,7 +445,7 @@ function makeChart(canvasId, key, data, opts) {
      (bascule d'échelle, resize) conservent l'habillage d'origine. */
   window._chartOpts = window._chartOpts || {};
   _chartOpts[canvasId] = opts;
-  var rejilla = opts.claro ? '#e6e6de' : '#2a3348';
+  var rejilla = opts.claro ? '#e6e6de' : colorDe('curva_rejilla', 'color', '--border');
   const p = PARAMS[key];
   const series = getSeriesForParam(data, key);
   if (!series.length) return;
@@ -436,7 +465,7 @@ function makeChart(canvasId, key, data, opts) {
         data: series.map(s => s.y),
         borderColor: p.color,
         backgroundColor: p.color + '18',
-        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? '#c0392b' : p.color),
+        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? colorDe('curva_mal', 'color', '--danger') : p.color),
         pointRadius: 5, pointHoverRadius: (opts.sinTooltip ? 5 : 7), pointHitRadius: 14, tension: 0.3, fill: false,
       }]
     },
@@ -682,7 +711,8 @@ const PARAMS_I18N = {
   },
 };
 function textInt(id, campo) {
-  var lang = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'es';
+  /* la langue vient de la casa (MF.idioma) : « currentLang » n'existait nulle part */
+  var lang = 'es'; try{ lang = MF.idioma() || 'es'; }catch(e){}
   var tabla = PARAMS_I18N[lang] || PARAMS_I18N.es;
   var entrada = tabla[id] || PARAMS_I18N.es[id];
   return entrada ? entrada[campo] : id;
@@ -791,7 +821,7 @@ function paramTip(key) {
     const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     b.innerHTML = (t.getAttribute('data-ptip') || '').split('\n')
       .map(l => l.indexOf('Ref:') === 0
-        ? '<span style="color:#3fb950;font-weight:600">' + esc(l) + '</span>'
+        ? '<span style="color:' + colorDe('curva_ref', 'color', '--ok') + ';font-weight:600">' + esc(l) + '</span>'
         : esc(l)).join('<br>');
     b.classList.remove('on');
     b.style.left = '0px'; b.style.top = '-9999px';   /* mesurer hors écran */
@@ -1376,6 +1406,23 @@ function medsFiltroSet(mode, desde) {
   localStorage.setItem(MEDS_FILTRO_KEY, JSON.stringify({ mode: mode, desde: desde || null }));
   buildMedicamentos();
 }
+/* P-H, 06/10/2026 : « impossible d'entrer l'année à la main ». Un <input type="date"> donne une
+   date VALIDE dès le premier chiffre (année 0002) : le filtre se relançait, la barre était refaite,
+   et la saisie coupée. On n'applique que lorsque l'année est complète et plausible. */
+function medsDesdeCambia(v) {
+  var m = /^(\d{4,6})-\d{2}-\d{2}$/.exec(v || '');
+  if (!m) return;
+  var anio = +m[1];
+  if (anio < 1900 || anio > 2100) return;      /* année encore en cours de frappe */
+  medsFiltroSet('desde', v);
+}
+/* P-H, 06/10/2026 (opción B) : campo «año» — se teclea 2024 y Entrée (o se sale del campo) →
+   filtro «desde 2024-01-01». Solo se aplica con un año completo y plausible. */
+function medsAnioCambia(v) {
+  var a = parseInt(v, 10);
+  if (!(a >= 1900 && a <= 2100)) return;
+  medsFiltroSet('desde', a + '-01-01');
+}
 function medsFiltroGet() {
   try { return JSON.parse(localStorage.getItem(MEDS_FILTRO_KEY)) || { mode: '12m' }; }
   catch { return { mode: '12m' }; }
@@ -1453,11 +1500,15 @@ function buildMedicamentos() {
     '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:10px">' +
     '<span style="font-size:11px;color:var(--muted)">Periodo:</span>' +
     btnP('12m', 'Últimos 12 meses') + btnP('anno', 'Este año') + btnP('todo', 'Todo') +
-    '<span style="font-size:11px;color:var(--muted);margin-left:6px">desde</span>' +
-    '<input type="date" value="' + (f.mode === 'desde' && f.desde ? f.desde : '') + '" ' +
-    'onchange="if(this.value)medsFiltroSet(\'desde\',this.value)" ' +
+    '<span style="font-size:11px;color:var(--muted);margin-left:6px">desde año</span>' +
+    '<input type="number" min="1900" max="2100" step="1" placeholder="2024" value="' + (f.mode === 'desde' && f.desde && /-01-01$/.test(f.desde) ? f.desde.slice(0, 4) : '') + '" ' +
+    'onchange="medsAnioCambia(this.value)" onkeydown="if(event.key===\'Enter\')medsAnioCambia(this.value)" ' +
+    'style="width:68px;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text)"/>' +
+    '<span style="font-size:11px;color:var(--muted)">o fecha</span>' +
+    '<input type="date" value="' + (f.mode === 'desde' && f.desde && !/-01-01$/.test(f.desde) ? f.desde : '') + '" ' +
+    'onchange="medsDesdeCambia(this.value)" ' +
     'style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text)"/>' +
-    '<span style="margin-left:auto;font-size:11px;color:var(--muted)">' + meds.length + ' / ' + todos.length + ' entradas</span>' +
+    '<span style="margin-left:auto;font-size:11px;color:var(--muted)">' + (new Set(meds.map(function(m){ return medKeyCanon(m.nom); })).size) + ' medicamentos · ' + meds.length + ' / ' + todos.length + ' entradas</span>' +
     '</div>';
 
   if (!meds.length) {
@@ -1816,7 +1867,7 @@ function medNuevoMedicamento() {
      pas dans un prompt(). C'est aussi la seule façon qui marche vraiment :
      le bouton Guardar ne fait rien s'il ne trouve aucune entrée à
      l'avance portant ce nom (vérifié dans le code). */
-  var meds = loadMeds();
+  var meds = loadMeds().filter(function(m) { return !m._borrador; });  /* brouillons orphelins : jamais comptés (P-H 06/10) */
   var existentes = {};
   meds.forEach(function(m) { existentes[m.nom] = true; });
   var base = 'Nuevo medicamento', nombre = base, n = 1;
@@ -1910,7 +1961,7 @@ function editMedStatut(medName) {
     var prescs = JSON.parse(localStorage.getItem('mt_prescripteurs') || '[]');
     prescs.forEach(function(p) { if (p) doctorsSet[p] = 1; });
   } catch(e) {}
-  /* Ajouter depuis mt_mf_structure (structure complète du .mf importé) */
+  /* Ajouter depuis mt_mf_structure (structure complète du .sf importé) */
   try {
     var mtRaw = localStorage.getItem('mt_mf_structure');
     if (mtRaw) {
@@ -1999,8 +2050,8 @@ function editMedStatut(medName) {
 
   /* MAQUETA P-H 06/08 — Ligne 4 : les repas. L'INTERFACE parle repas, le
      STOCKAGE garde les ids historiques (am/mid/pm/night, connus du Protocolo
-     et des .mf existants) + 2 nouveaux (almuerzo, libre). Rétro-compat
-     totale : un .mf ancien coche les bonnes cases sans migration. */
+     et des .sf existants) + 2 nouveaux (almuerzo, libre). Rétro-compat
+     totale : un .sf ancien coche les bonnes cases sans migration. */
   var chkStyle = 'display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--text);cursor:pointer;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface2)';
   form.innerHTML += '<div><label style="' + lblStyle + '">Horarios de toma</label>' +
     '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px">' +
@@ -2167,12 +2218,23 @@ function editMedStatut(medName) {
     return m.nom === medName || 
            (m.nom && m.nom.toUpperCase().startsWith(medName.toUpperCase().replace(/\s*\(\d+\)$/,'')));
   });
-  var last = entries.length ? entries[entries.length - 1] : {};
+  /* P-H 06/10/2026 : la fenêtre travaille sur la MÊME ligne que la carte — la dernière par DATE (plus la dernière
+     du tableau) ; un champ qu'elle n'a pas est repris de la ligne antérieure la plus récente qui l'a. Dates et statut : de la dernière seule. */
+  var _cro = entries.slice().sort(function(a, b) {
+    return String(a.date_debut || a.date || '').localeCompare(String(b.date_debut || b.date || ''));
+  });
+  var _ultima = _cro.length ? _cro[_cro.length - 1] : {};
+  var last = {};
+  _cro.forEach(function(e) { Object.keys(e).forEach(function(k) {
+    if (e[k] !== '' && e[k] !== null && e[k] !== undefined && !(Array.isArray(e[k]) && !e[k].length)) last[k] = e[k];
+  }); });
+  ['statut', 'date_debut', 'date_fin'].forEach(function(k) { if (_ultima[k] !== undefined) last[k] = _ultima[k]; else delete last[k]; });
+  if (!last.date_debut && _ultima.date) last.date_debut = _ultima.date;
 
   /* Pré-remplir */
   setTimeout(function() {
     document.getElementById('med-edit-statut').value = last.statut || 'en_cours';
-    document.getElementById('med-edit-debut').value = last.date_debut || entries[0].date || '';
+    document.getElementById('med-edit-debut').value = last.date_debut || '';
     document.getElementById('med-edit-prescriptor').value = last.prescriptor ? prescriptorNombre(last.prescriptor) : '';
     if (last.prescriptor_origen === 'deducido') {
       var _pEl = document.getElementById('med-edit-prescriptor');
@@ -2220,7 +2282,7 @@ function editMedStatut(medName) {
       finInput.style.fontStyle = 'normal';
       hint.textContent = '';
     } else {
-      var startDateStr = last.date_debut || entries[0].date || '';
+      var startDateStr = last.date_debut || '';
       var duree = parseInt(last.duree_jours);
       if (startDateStr && duree && !isNaN(duree)) {
         var start = new Date(startDateStr);
@@ -2259,30 +2321,20 @@ function editMedStatut(medName) {
     var fin = (finInput.dataset.prevista === '1') ? '' : finInput.value;
     var prescriptor = document.getElementById('med-edit-prescriptor').value.trim();
     var receta = document.getElementById('med-edit-receta').value;
-    /* LISTE QUI APPREND, vraiment (P-H 06/08 : « le médecin privé antérieur a
-       disparu ») : la suggestion ne doit JAMAIS dépendre de l'état courant des
-       fiches — un nom tapé une fois entre pour toujours dans le registre
-       mt_prescripteurs (déjà lu par le datalist), même si la fiche change de
-       médecin ensuite. Un traitement passe entre plusieurs mains (Xarelto...). */
-    if (prescriptor) {
-      try {
-        var _reg = JSON.parse(localStorage.getItem('mt_prescripteurs') || '[]');
-        if (_reg.indexOf(prescriptor) === -1) {
-          _reg.push(prescriptor);
-          localStorage.setItem('mt_prescripteurs', JSON.stringify(_reg));
-        }
-        /* apprendre aussi le COUPLE nom↔type de recette (P-H 06/08) : sert à
-           proposer d'abord les médecins du type choisi, sans cacher les autres */
-        if (receta) {
-          var _regT = JSON.parse(localStorage.getItem('mt_prescriptores_receta') || '{}');
+    /* LISTE QUI APPREND : le nom entre dans le registre DU DOSSIER (plus de localStorage — P-H 06/10 : le .mf
+       ne recevait rien). Résolu AVANT de toucher à la fiche : si quelque chose échoue, rien n'est à moitié modifié. */
+    var prescId = null;
+    try {
+      if (prescriptor) {
+        prescId = prescriptorResolverId(prescriptor);
+        if (receta && _DATOS) {   /* couple nom↔type de recette : sert à proposer d'abord les médecins du type choisi */
+          var _regT = _DATOS.mt_prescriptores_receta || {};
           if (!_regT[prescriptor]) _regT[prescriptor] = [];
-          if (_regT[prescriptor].indexOf(receta) === -1) {
-            _regT[prescriptor].push(receta);
-            localStorage.setItem('mt_prescriptores_receta', JSON.stringify(_regT));
-          }
+          if (_regT[prescriptor].indexOf(receta) === -1) _regT[prescriptor].push(receta);
+          _DATOS.mt_prescriptores_receta = _regT;
         }
-      } catch (e) {}
-    }
+      }
+    } catch (e) { status('⚠ No se pudo guardar el prescriptor: ' + e.message); return; }
     /* Composer la posologie */
     var dosisQty = document.getElementById('med-edit-dosis-qty').value.trim();
     var dosisForm = document.getElementById('med-edit-dosis-form').value;
@@ -2298,8 +2350,18 @@ function editMedStatut(medName) {
     });
 
     var allMeds = loadMeds();
-    for (var i = allMeds.length - 1; i >= 0; i--) {
-      if (allMeds[i].nom === medName || (allMeds[i].nom && allMeds[i].nom.toUpperCase().startsWith(medName.toUpperCase().replace(/\s*\(\d+\)$/,'')))) {
+    /* la fiche modifiée = la ligne que la carte montre (dernière par date) */
+    var _blanco = medName.toUpperCase().replace(/\s*\(\d+\)$/, '');
+    var _iDestino = -1, _fDestino = '';
+    allMeds.forEach(function(x, j) {
+      if (x.nom === medName || (x.nom && x.nom.toUpperCase().startsWith(_blanco))) {
+        var f = String(x.date_debut || x.date || '');
+        if (_iDestino < 0 || f >= _fDestino) { _iDestino = j; _fDestino = f; }
+      }
+    });
+    try {
+    for (var i = _iDestino; i >= 0 && i === _iDestino; i--) {
+      if (true) {
         allMeds[i].nom = nuevoNombre;
         delete allMeds[i]._borrador; /* geste humain = la fiche existe pour de vrai */
         allMeds[i].statut = statut;
@@ -2307,7 +2369,7 @@ function editMedStatut(medName) {
         if (fin) allMeds[i].date_fin = fin;
         /* motif / remplace_par : plus dans l'UI (maquette 06/08) — préservés tels quels */
         if (prescriptor) {
-          allMeds[i].prescriptor = prescriptorResolverId(prescriptor); /* nom tapé -> id (P-H 06/08) */
+          allMeds[i].prescriptor = prescId; /* nom tapé -> id (P-H 06/08) */
           delete allMeds[i].prescriptor_origen; /* geste humain = validation, le flag deducido tombe */
         }
         if (receta) allMeds[i].receta = receta;
@@ -2321,6 +2383,8 @@ function editMedStatut(medName) {
       }
     }
     saveMeds(allMeds);
+    } catch (e) { status('⚠ Error al guardar: ' + e.message); return; }
+    status('✔ Guardado: ' + nuevoNombre);
     document.body.removeChild(ov);
     buildMedicamentos();
     /* Rafraîchir le Protocolo si la fonction existe */
@@ -2336,7 +2400,14 @@ function editMedStatut(medName) {
     }
   };
   bc.onclick = function() { document.body.removeChild(ov); };
-  ov.onclick = function(e) { if (e.target === ov) document.body.removeChild(ov); };
+  /* P-H 06/10/2026 : la fenêtre est MODALE — plus de fermeture au clic en dehors (elle laissait
+     un brouillon « Nuevo medicamento (N) » orphelin). Seuls Cancelar, Actualizar et Échap la ferment ;
+     Échap passe par Cancelar, donc le brouillon est retiré. */
+  var _esc = function(e) {
+    if (!ov.isConnected) { document.removeEventListener('keydown', _esc); return; }
+    if (e.key === 'Escape') { document.removeEventListener('keydown', _esc); bc.click(); }
+  };
+  document.addEventListener('keydown', _esc);
 }
 
 /* ── Modale de sélection des motifs (déplaçable) ── */
@@ -2569,7 +2640,7 @@ function medReordenarDoctores() {
     var dl = document.getElementById('med-edit-doctors');
     var tipo = document.getElementById('med-edit-receta');
     if (!dl || !tipo) return;
-    var regT = JSON.parse(localStorage.getItem('mt_prescriptores_receta') || '{}');
+    var regT = (_DATOS && _DATOS.mt_prescriptores_receta) || JSON.parse(localStorage.getItem('mt_prescriptores_receta') || '{}');
     var opciones = Array.prototype.slice.call(dl.querySelectorAll('option')).map(function(o) { return o.value; });
     var t = tipo.value;
     opciones.sort(function(a, b) {
@@ -2617,7 +2688,12 @@ function medStatutChange() {
 
 
 
+/* la casa cambia la lengua o la paleta : se vuelve a construir lo que se ve */
+function redibuja(){ aplicaColoresCurvas(); if(_DATOS) try{ buildMedicamentos(); }catch(e){ console.warn(e); } }
 MF.arranca({
+  alIdioma:  redibuja,
+  alPaleta:  aplicaColoresCurvas,
+  alEstilos: aplicaColoresCurvas,
   alCargar: function(d, p){
     _DATOS=d;
     var pa=MF.paciente();
@@ -2639,7 +2715,7 @@ MF.arranca({
     var a=document.getElementById('aviso');
     a.style.display='block';
     a.innerHTML='<b>'+msg+'</b><br><br>Llame al programa con la matrícula:<br>'
-      +'<code>medicamentos.html?mf=AGL5678&carpeta=../pacientes/AGL5678/</code>';
+      +'<code>medicamentos.html?mf=AGR0000&carpeta=../pacientes/AGR0000/</code>';
   }
 });
 </script>

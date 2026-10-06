@@ -1,7 +1,7 @@
 /* CRONOLOGÍA — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "cronologia",
-  "version": "2026.09.07-13:12:09",
+  "version": "2026.09.19-18:12:56",
   "programa": "cronologia.html",
   "lanzador": "../casa/casa.js",
   "icono": "📅",

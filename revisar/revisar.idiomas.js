@@ -1,4 +1,5 @@
-/* Los textos de Revisar */
+/* Los textos de Revisar
+   Versión 2026.09.19-18:15:47 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Revisar.",
   "textos": {

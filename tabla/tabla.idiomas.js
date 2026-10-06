@@ -1,4 +1,5 @@
-/* Los textos de Tabla */
+/* Los textos de Tabla
+   Versión 2026.09.19-18:15:47 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Tabla, en su propia carpeta.",
   "textos": {

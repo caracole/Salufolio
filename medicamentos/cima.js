@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    EL CIMA — nomenclator oficial espanol (AEMPS)
    /Salufolio/medicamentos/cima.js
 

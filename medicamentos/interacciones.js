@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.09.19-18:15:47
    LAS INTERACCIONES MEDICAMENTOSAS
    /Salufolio/medicamentos/interacciones.js
 
