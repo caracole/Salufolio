@@ -446,6 +446,9 @@ body.sin-paciente #nav-res { opacity: .35; }
 /* sitio público : se oculta SOLO lo que habla con el PC (clase solo-pc). El cajón
    « Guardar y compartir » se queda : sin él no hay forma de guardar una copia. */
 .web #bv-conexion, .web #btn-scan, .web #pac-imp, .web .solo-pc { display: none !important; }
+.dlg{max-height:100%;overflow-y:auto}  /* cuatro campos : en una pantalla baja la ventana se desplaza, el botón nunca se pierde */
+.dlg .err{color:var(--bad);font-size:13px;margin-top:10px;line-height:1.35}
+.dlg .nota{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4}
 </style>
 </head>
 <body>
@@ -601,6 +604,8 @@ body.sin-paciente #nav-res { opacity: .35; }
       <input class="txt" id="cfg-patient2" autocomplete="off" placeholder="Nombre / etiqueta" onchange="setPatient(this.value)">
       <div class="nota-campo" id="i-lsip"></div>
       <input class="txt" id="cfg-sip" autocomplete="off" inputmode="numeric" placeholder="SIP" onchange="setSip(this.value)">
+      <div class="nota-campo" id="i-lmatr"></div>
+      <input class="txt" id="cfg-matr" autocomplete="off" placeholder="PHG9876" style="text-transform:uppercase" onchange="setMatricula(this.value)">
       <!-- ══ LA PORTE DU RETOUR (P-H, 28/09/2026) ══
            « protocolo qui sait faire une sauvegarde ne sait meme pas la
              restaurer ? ce fichier json il sert donc a quoi ? »
@@ -658,7 +663,7 @@ body.sin-paciente #nav-res { opacity: .35; }
       <button class="btn sec" onclick="exportarJSON()" id="i-bdesc"></button>
       <button class="btn sec" onclick="compartir()" id="i-bcomp"></button>
       <button class="btn sec solo-pc" onclick="enviarSalufolio()" id="i-benv"></button>
-      <input type="file" id="rest-file" accept=".json,application/json" style="display:none" onchange="if(this.files[0])restaurarArchivo(this.files[0]);this.value=''">
+      <input type="file" id="rest-file" style="display:none" onchange="if(this.files[0])restaurarArchivo(this.files[0]);this.value=''">
       <div class="nota-campo solo-pc" style="margin-top:8px" id="i-lpc"></div>
       <div class="solo-pc" style="display:flex;gap:6px;align-items:stretch;margin-top:4px">
         <input class="txt" id="cfg-pc" autocomplete="off" placeholder="http://192.168.1.20:7777" onchange="setPc(this.value);sondearPc()" style="flex:1;margin-top:0">
@@ -737,7 +742,111 @@ const MFP_PC_DEF = '';
    no busca ningún servidor — todo se queda en el aparato del usuario. */
 const MFP_WEB = ['salufolio.com', 'www.salufolio.com'];
 const MFP_DEMO = './demo.json';
-const MFP_VERSION = '2026.10.7.86-SAT';
+
+/* ═══ LA TABLA DE LOS NOMBRES (P-H, 07/10/2026) — doctrina de 1966 ═══
+   Nada de esto vive en el código que la lee : la matrícula, la extensión
+   de la copia, el modelo del nombre de archivo y el del PDF salen de aquí.
+   Cambiar una regla = cambiar una línea.
+   LA MATRÍCULA es « la codificación interna mnemotécnica » de los centros de
+   salud (P-H, en el distribuidor de tickets) : iniciales de las dos primeras
+   palabras del NOMBRE y de los dos primeros APELLIDOS (como mucho 3 letras,
+   las partículas cuentan : « María del Carmen / Alonzo » = MDA), más las
+   4 últimas cifras del SIP.
+        Pierre / Giraud                 → PG5678
+        Pierre Henri / Giraud           → PHG5678
+        Ana / Paciente Anonymo          → APA0000
+   ⚠ La Casa (index.html, matriculaDe2) usa HOY otra regla : una inicial del
+   nombre y dos de los apellidos, partículas descartadas. Las dos tienen que
+   decir lo mismo — la matrícula da nombre a la carpeta del paciente. */
+const TABLA_NOMBRES = {
+  matricula: {
+    palabras_nombre: 2,
+    palabras_apellidos: 2,
+    letras_max: 3,
+    letras_min: 2,
+    cifras_sip: 4,
+    separadores: "[\\s,'’-]+",
+    particulas: [],
+    patron_valido: '^[A-Z]{2,4}\\d{3,6}$'
+  },
+  sip_obligatorio: true,
+  sin_sip: 'SIN-SIP',
+  archivos: {
+    copia:   { extension: 'pr',  modelo: '{matricula}_{aaaa}-{mm}-{dd}-{hh}h{mn}m{ss}', mime: 'application/octet-stream' },
+    informe: { extension: 'pdf', modelo: '{tipo}_{sip}_{aaaa}-{mm}-{dd}_{hh}-{mn}-{ss}', tipo: 'Informe-Protocolo' }
+  }
+};
+function _sinAcentos(t) { return String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function inicialesDe(txt, n) {
+  const R = TABLA_NOMBRES.matricula;
+  return _sinAcentos(txt).trim().split(new RegExp(R.separadores))
+    .filter(function (p) { return p && R.particulas.indexOf(p.toLowerCase()) < 0; })
+    .slice(0, n)
+    .map(function (p) { return p.charAt(0).toUpperCase(); })
+    .filter(function (c) { return /[A-Z]/.test(c); }).join('');
+}
+function matriculaDe(nombre, apellidos, sip) {
+  const R = TABLA_NOMBRES.matricula;
+  const letras = (inicialesDe(nombre, R.palabras_nombre) + inicialesDe(apellidos, R.palabras_apellidos)).slice(0, R.letras_max);
+  const cifras = String(sip || '').replace(/\D/g, '').slice(-R.cifras_sip);
+  return (letras.length >= R.letras_min && cifras.length === R.cifras_sip) ? letras + cifras : '';
+}
+/* un solo campo (pacientes ya creados) : la primera palabra es el nombre, el resto los apellidos */
+function matriculaDeUno(todo, sip) {
+  const p = String(todo || '').trim().split(/\s+/);
+  return matriculaDe(p[0] || '', p.slice(1).join(' '), sip);
+}
+function getMatricula() {
+  const a = getActivo();
+  const p = a ? getPacientes().filter(function (x) { return x.id === a; })[0] : null;
+  if (p && p.matricula) return p.matricula;
+  return matriculaDeUno(getPatient(), getSip());
+}
+/* La matrícula no cambia nunca : se graba la primera vez que se calcula. */
+function fijarMatricula() {
+  const a = getActivo(); if (!a) return;
+  const l = getPacientes(); let hecho = false;
+  l.forEach(function (p) {
+    if (p.id === a && !p.matricula) { const m = matriculaDeUno(p.nombre, p.sip); if (m) { p.matricula = m; hecho = true; } }
+  });
+  if (hecho) setPacientes(l);
+}
+function matriculaValida(m) { return new RegExp(TABLA_NOMBRES.matricula.patron_valido).test(m || ''); }
+function setMatricula(v, callado) {
+  const m = String(v || '').replace(/\s+/g, '').toUpperCase();
+  const a = getActivo(); if (!a) return;
+  if (!matriculaValida(m)) { if (!callado) toast('⚠ ' + t('pac_matricula_mal')); const c = document.getElementById('cfg-matr'); if (c) c.value = getMatricula(); return; }
+  const l = getPacientes();
+  l.forEach(function (p) { if (p.id === a) p.matricula = m; });
+  setPacientes(l);
+  const c = document.getElementById('cfg-matr'); if (c) c.value = m;
+}
+/* El nombre de un archivo sale del modelo de la tabla. */
+function nombreArchivo(clave, vars, sinExt) {
+  const A = TABLA_NOMBRES.archivos[clave], d = new Date(), z = function (n) { return String(n).padStart(2, '0'); };
+  const v = Object.assign({ aaaa: d.getFullYear(), mm: z(d.getMonth() + 1), dd: z(d.getDate()),
+                            hh: z(d.getHours()), mn: z(d.getMinutes()), ss: z(d.getSeconds()) }, A, vars || {});
+  const base = A.modelo.replace(/\{(\w+)\}/g, function (m, k) { return v[k] === undefined ? '' : String(v[k]); })
+    .replace(/[^A-Za-z0-9._-]+/g, '-');
+  return sinExt ? base : base + '.' + A.extension;
+}
+/* La matrícula, o a falta de ella el nombre del paciente sin espacios. */
+function claveDeArchivo() {
+  return getMatricula() || _sinAcentos(getPatient()).trim().replace(/\s+/g, '-') || 'Paciente';
+}
+/* El PDF : en « Guardar como PDF » el navegador propone el título de la página. */
+function imprimirInforme() {
+  const antes = document.title;
+  const sip = String(getSip() || '').trim() || TABLA_NOMBRES.sin_sip;
+  document.title = nombreArchivo('informe', { sip: sip }, true);
+  let vuelto = false;
+  const volver = function () { if (vuelto) return; vuelto = true; document.title = antes; window.removeEventListener('afterprint', volver); };
+  window.addEventListener('afterprint', volver);
+  setTimeout(volver, 60000);
+  window.print();
+}
+
+const MFP_VERSION = '2026.10.7.87-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -869,6 +978,7 @@ const IDIOMAS = {
     fr_dmes:"Día del mes",
     c_arritmia:"Ritmo irregular",
     pac_anadir:"Añadir paciente",
+    pac_pre:"Nombre", pac_apellidos:"Apellidos", pac_matricula:"Matrícula", pac_matricula_nota:"Se forma sola : iniciales y 4 últimas cifras del SIP.", pac_falta_nombre:"Falta el nombre.", pac_falta_sip:"Falta el SIP (4 cifras como mínimo) : sin él no hay matrícula.", pac_falta_matricula:"No se puede formar la matrícula : escriba nombre y apellidos.", pac_matricula_mal:"La matrícula son de 2 a 4 letras y luego cifras (ejemplo : PHG9876).", matr_label:"Matrícula (código interno)",
     pac_borrar:"Borrar paciente",
     pac_ninguno:"Ningún paciente",
     pac_nombre:"Nombre",
@@ -965,7 +1075,7 @@ const IDIOMAS = {
     d_ok:'Aceptar', d_can:'Cancelar', omitida:'omitida', puntual:'puntual',
     exp_nota:'La copia guardada (⬇️) o enviada (📡) es la que Salufolio importará en el ordenador.',
     b_env:'📡 Enviar a Salufolio', pc_label:'Dirección de Salufolio en el PC (opcional, ej. http://192.168.1.20:7777)',
-    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono (app local, sin PC)', inst_nota:'Descarga la app ya configurada. Ábrala desde Descargas — funciona siempre, aunque el ordenador esté apagado. 📡 enviará cuando el PC esté encendido.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂ %', c_peso:'Peso', c_temp:'Temperatura', c_bta:'Tensión', c_bps:'Pulso y saturación', c_bpeso:'Peso', c_btemp:'Temperatura', c_sin_o2:'Sin aporte de O₂', c_con_o2:'Con aporte de O₂', c_nueva:'＋ nueva medición', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria, opcional)', env_ok:'✓ Recibido en Salufolio', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
+    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono (app local, sin PC)', inst_nota:'Descarga la app ya configurada. Ábrala desde Descargas — funciona siempre, aunque el ordenador esté apagado. 📡 enviará cuando el PC esté encendido.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂ %', c_peso:'Peso', c_temp:'Temperatura', c_bta:'Tensión', c_bps:'Pulso y saturación', c_bpeso:'Peso', c_btemp:'Temperatura', c_sin_o2:'Sin aporte de O₂', c_con_o2:'Con aporte de O₂', c_nueva:'＋ nueva medición', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria)', env_ok:'✓ Recibido en Salufolio', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
   va: {
     sw_ini:"Iniciar",
     sw_fin:"Parar",
@@ -1094,6 +1204,7 @@ const IDIOMAS = {
     fr_dmes:"Dia del mes",
     c_arritmia:"Ritme irregular",
     pac_anadir:"Afegir pacient",
+    pac_pre:"Nom", pac_apellidos:"Cognoms", pac_matricula:"Matrícula", pac_matricula_nota:"Es forma sola : inicials i 4 últimes xifres del SIP.", pac_falta_nombre:"Falta el nom.", pac_falta_sip:"Falta el SIP (4 xifres com a mínim) : sense ell no hi ha matrícula.", pac_falta_matricula:"No es pot formar la matrícula : escriga nom i cognoms.", pac_matricula_mal:"La matrícula són de 2 a 4 lletres i després xifres (exemple : PHG9876).", matr_label:"Matrícula (codi intern)",
     pac_borrar:"Esborrar pacient",
     pac_ninguno:"Cap pacient",
     pac_nombre:"Nom",
@@ -1190,7 +1301,7 @@ const IDIOMAS = {
     d_ok:'Acceptar', d_can:'Cancel·lar', omitida:'omesa', puntual:'puntual',
     exp_nota:'Per a passar les dades a Salufolio : guarde una còpia o envie-la a l\'ordinador.',
     b_env:'📡 Enviar a Salufolio', pc_label:'Adreça de Salufolio a l\'ordinador (opcional)',
-    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon (app local, sense PC)', inst_nota:'Descarrega l\'app ja configurada. Obriu-la des de Baixades — funciona sempre, encara que l\'ordinador estiga apagat.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂ %', c_peso:'Pes', c_temp:'Temperatura', c_bta:'Tensió', c_bps:'Pols i saturació', c_bpeso:'Pes', c_btemp:'Temperatura', c_sin_o2:'Sense aportació d\'O₂', c_con_o2:'Amb aportació d\'O₂', c_nueva:'＋ nova mesura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària, opcional)', env_ok:'✓ Rebut a Salufolio', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
+    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon (app local, sense PC)', inst_nota:'Descarrega l\'app ja configurada. Obriu-la des de Baixades — funciona sempre, encara que l\'ordinador estiga apagat.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂ %', c_peso:'Pes', c_temp:'Temperatura', c_bta:'Tensió', c_bps:'Pols i saturació', c_bpeso:'Pes', c_btemp:'Temperatura', c_sin_o2:'Sense aportació d\'O₂', c_con_o2:'Amb aportació d\'O₂', c_nueva:'＋ nova mesura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària)', env_ok:'✓ Rebut a Salufolio', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
   fr: {
     sw_ini:"Démarrer",
     sw_fin:"Arrêter",
@@ -1319,6 +1430,7 @@ const IDIOMAS = {
     fr_dmes:"Jour du mois",
     c_arritmia:"Rythme irrégulier",
     pac_anadir:"Ajouter un patient",
+    pac_pre:"Prénom", pac_apellidos:"Nom", pac_matricula:"Matricule", pac_matricula_nota:"Elle se forme seule : initiales et 4 derniers chiffres du SIP.", pac_falta_nombre:"Il manque le prénom.", pac_falta_sip:"Il manque le SIP (4 chiffres au moins) : sans lui, pas de matricule.", pac_falta_matricula:"Impossible de former la matricule : saisissez prénom et nom.", pac_matricula_mal:"La matricule, c\'est 2 à 4 lettres puis des chiffres (exemple : PHG9876).", matr_label:"Matricule (code interne)",
     pac_borrar:"Supprimer le patient",
     pac_ninguno:"Aucun patient",
     pac_nombre:"Nom",
@@ -1415,7 +1527,7 @@ const IDIOMAS = {
     d_ok:'Valider', d_can:'Annuler', omitida:'omise', puntual:'ponctuelle',
     exp_nota:'Pour passer les données à Salufolio : enregistrez une copie ou envoyez-la vers l\'ordinateur.',
     b_env:'📡 Envoyer à Salufolio', pc_label:'Adresse de Salufolio sur le PC (optionnel)',
-    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone (app locale, sans PC)', inst_nota:'Télécharge l\'app déjà configurée. Ouvrez-la depuis Téléchargements — elle marche toujours, même ordinateur éteint. 📡 enverra quand le PC sera allumé.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂ %', c_peso:'Poids', c_temp:'Température', c_bta:'Tension', c_bps:'Pouls et saturation', c_bpeso:'Poids', c_btemp:'Température', c_sin_o2:'Sans apport d\'O₂', c_con_o2:'Avec apport d\'O₂', c_nueva:'＋ nouvelle mesure', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire, optionnel)', env_ok:'✓ Reçu dans Salufolio', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
+    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone (app locale, sans PC)', inst_nota:'Télécharge l\'app déjà configurée. Ouvrez-la depuis Téléchargements — elle marche toujours, même ordinateur éteint. 📡 enverra quand le PC sera allumé.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂ %', c_peso:'Poids', c_temp:'Température', c_bta:'Tension', c_bps:'Pouls et saturation', c_bpeso:'Poids', c_btemp:'Température', c_sin_o2:'Sans apport d\'O₂', c_con_o2:'Avec apport d\'O₂', c_nueva:'＋ nouvelle mesure', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire)', env_ok:'✓ Reçu dans Salufolio', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
   en: {
     sw_ini:"Start",
     sw_fin:"Stop",
@@ -1545,6 +1657,7 @@ const IDIOMAS = {
     fr_dmes:"Day of the month",
     c_arritmia:"Irregular rhythm",
     pac_anadir:"Add patient",
+    pac_pre:"First name", pac_apellidos:"Surname", pac_matricula:"Internal code", pac_matricula_nota:"Formed automatically : initials and last 4 digits of the SIP.", pac_falta_nombre:"The first name is missing.", pac_falta_sip:"The SIP is missing (at least 4 digits) : no code without it.", pac_falta_matricula:"Cannot form the code : enter first name and surname.", pac_matricula_mal:"The code is 2 to 4 letters followed by digits (example : PHG9876).", matr_label:"Internal code (matricule)",
     pac_borrar:"Delete patient",
     pac_ninguno:"No patient",
     pac_nombre:"Name",
@@ -1641,7 +1754,7 @@ const IDIOMAS = {
     d_ok:'OK', d_can:'Cancel', omitida:'missed', puntual:'one-off',
     exp_nota:'To move data into Salufolio: save a copy or send it to the computer.',
     b_env:'📡 Send to Salufolio', pc_label:'Salufolio address on the PC (optional)',
-    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation %', c_peso:'Weight', c_temp:'Temperature', c_bta:'Blood pressure', c_bps:'Pulse and saturation', c_bpeso:'Weight', c_btemp:'Temperature', c_sin_o2:'Room air', c_con_o2:'On O₂', c_nueva:'＋ new reading', env_wait:'⏳ Sending…', sip_label:'SIP (health card, optional)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
+    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation %', c_peso:'Weight', c_temp:'Temperature', c_bta:'Blood pressure', c_bps:'Pulse and saturation', c_bpeso:'Weight', c_btemp:'Temperature', c_sin_o2:'Room air', c_con_o2:'On O₂', c_nueva:'＋ new reading', env_wait:'⏳ Sending…', sip_label:'SIP (health card)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
 };
 const LANGS = ['es','va','fr','en'];
 /* ═══ LA LANGUE (P-H, 18/08) ═══
@@ -1689,18 +1802,24 @@ function aplicarZoom() { document.body.style.zoom = lsGet('mfp_zoom', 1.33);
   if (typeof ajustarPie === 'function') setTimeout(ajustarPie, 60); }
 
 /* ── dialogues maison, suaves ── */
-function dlg(titulo, campos, onOk) {
+function dlg(titulo, campos, onOk, alAbrir, validar) {
   const ov = document.createElement('div'); ov.className = 'dlg-ov';
   ov.innerHTML = '<div class="dlg"><h3>' + titulo + '</h3>' +
-    campos.map((c, i) => '<label>' + c.label + '</label><input id="dlg-c' + i + '" type="' + (c.tipo || 'text') + '" value="' + (c.valor || '') + '">').join('') +
+    campos.map((c, i) => '<label>' + c.label + '</label><input id="dlg-c' + i + '" type="' + (c.tipo || 'text') + '" value="' + (c.valor || '') + '">' +
+      (c.nota ? '<div class="nota">' + c.nota + '</div>' : '')).join('') +
+    '<div class="err" id="dlg-err" style="display:none"></div>' +
     '<div class="dbtns"><button class="dcan">' + t('d_can') + '</button><button class="dok">' + t('d_ok') + '</button></div></div>';
   ov.querySelector('.dcan').onclick = () => ov.remove();
   ov.querySelector('.dok').onclick = () => {
     const vals = campos.map((c, i) => ov.querySelector('#dlg-c' + i).value);
+    /* una validación puede decir NO sin cerrar la ventana : lo escrito se conserva */
+    const mal = validar ? validar(vals) : '';
+    if (mal) { const e = ov.querySelector('#dlg-err'); e.textContent = mal; e.style.display = ''; return; }
     ov.remove(); onOk(vals);
   };
   ov.onclick = e => { if (e.target === ov) ov.remove(); };
   document.body.appendChild(ov);
+  if (alAbrir) alAbrir(ov);
   const prem = ov.querySelector('input'); if (prem && !prem.value) prem.focus();
 }
 function dlgConfirm(titulo, onOk) {
@@ -3232,7 +3351,7 @@ window.addEventListener('scroll', function() {
 async function compartir() {
   const json = JSON.stringify(payloadExport(), null, 2);
   try {
-    const file = new File([json], 'Salufolio_Protocolo_export.json', { type: 'application/json' });
+    const file = new File([json], nombreArchivo('copia', { matricula: claveDeArchivo() }), { type: TABLA_NOMBRES.archivos.copia.mime });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({ files: [file], title: 'Salufolio Protocolo' }); return;
     }
@@ -3634,17 +3753,38 @@ function _impCrear() {
 }
 function pacienteNuevo(primero) {
   guardarActual();
+  /* « Nombre » y « Apellidos » van SEPARADOS, como en el distribuidor del centro de salud :
+     la frontera cuenta para la matrícula (« María del Carmen » / « Alonzo »). */
+  const calculada = vals => matriculaDe(vals[0], vals[1], vals[2]);
   dlg(primero ? t('pac_primero') : t('pac_nuevo'), [
-    { label: t('pac_nombre'), tipo: 'text', valor: '' },
-    { label: 'SIP', tipo: 'text', valor: '' }
+    { label: t('pac_pre'), tipo: 'text', valor: '' },
+    { label: t('pac_apellidos'), tipo: 'text', valor: '' },
+    { label: 'SIP', tipo: 'text', valor: '' },
+    { label: t('pac_matricula'), tipo: 'text', valor: '', nota: t('pac_matricula_nota') }
   ], vals => {
-    const nom = (vals[0] || '').trim(); if (!nom) return;
-    const sip = (vals[1] || '').trim();
-    const id = _idPaciente(nom);
-    const l = getPacientes(); l.push({ id: id, nombre: nom, sip: sip });
+    const nom = (vals[0] || '').trim(), ape = (vals[1] || '').trim(), sip = (vals[2] || '').trim();
+    const mat = String(vals[3] || '').replace(/\s+/g, '').toUpperCase() || calculada(vals);
+    const completo = (nom + ' ' + ape).trim();
+    const id = _idPaciente(completo);
+    const l = getPacientes(); l.push({ id: id, nombre: completo, sip: sip, matricula: mat });
     setPacientes(l); setActivo(id);
-    lsSet('mfp_patient', nom); lsSet('mfp_sip', sip);
+    lsSet('mfp_patient', completo); lsSet('mfp_sip', sip);
     restaurarCampos(); render(); renderDatos(); renderPacientes();
+  }, ov => {
+    /* la matrícula se forma a la vista, hasta que alguien la toca a mano */
+    const c = [0, 1, 2, 3].map(i => ov.querySelector('#dlg-c' + i));
+    let manual = false;
+    const v = () => [c[0].value, c[1].value, c[2].value, c[3].value];
+    const poner = () => { if (!manual) c[3].value = calculada(v()); };
+    [0, 1, 2].forEach(i => c[i].addEventListener('input', poner));
+    c[3].addEventListener('input', () => { manual = c[3].value.trim() !== '' && c[3].value.trim().toUpperCase() !== calculada(v()); });
+  }, vals => {
+    if (!(vals[0] || '').trim()) return t('pac_falta_nombre');
+    if (TABLA_NOMBRES.sip_obligatorio && String(vals[2] || '').replace(/\D/g, '').length < TABLA_NOMBRES.matricula.cifras_sip) return t('pac_falta_sip');
+    const m = String(vals[3] || '').replace(/\s+/g, '').toUpperCase() || calculada(vals);
+    if (!m) return t('pac_falta_matricula');
+    if (!matriculaValida(m)) return t('pac_matricula_mal');
+    return '';
   });
 }
 function _diasDelPaciente() {
@@ -5319,7 +5459,7 @@ function verResumen(dias) {
       '<button class="btn sec" style="flex:1 1 140px" data-cer="1">' + t('d_can') + '</button></div>';
   document.body.appendChild(ov);
   ov.querySelector('button[data-cer]').onclick = function () { ov.remove(); };
-  ov.querySelector('button[data-imp]').onclick = function () { window.print(); };
+  ov.querySelector('button[data-imp]').onclick = imprimirInforme;
   lsSet('mfp_ultimo_resumen', diaKey());
 }
 
@@ -5719,6 +5859,8 @@ function renderDatos() {
     ah.style.display = getAvisosOn() ? '' : 'none';
   }
   const cs = document.getElementById('cfg-sip'); if (cs) cs.value = getSip();
+  fijarMatricula();
+  const cm = document.getElementById('cfg-matr'); if (cm) cm.value = getMatricula();
 }
 function agregarMed() {
   const n = document.getElementById('nm-nombre').value.trim();
@@ -5832,7 +5974,8 @@ function payloadExport() {
     if (!pu || !pu.fecha) return;
     (tomasF2[pu.fecha] = tomasF2[pu.fecha] || []).push({ med: pu.nombre, hora: pu.hora });
   });
-  const pac = { nombre: getPatient() }; if (getSip()) pac.sip = getSip();
+  fijarMatricula();
+  const pac = { nombre: getPatient() }; if (getSip()) pac.sip = getSip(); if (getMatricula()) pac.matricula = getMatricula();
   return {
     formato: 2,
     version: 'Salufolio-Protocolo-' + MFP_VERSION,
@@ -5883,6 +6026,9 @@ function restaurarDesdeObj(d) {
     setPacientes(l); setActivo(id);
   }
   renombrarActivo(nom || null, sip || '');
+  /* la matrícula del archivo manda ; a falta de ella, la que se deduce */
+  const matF = F2 && d.paciente && d.paciente.matricula;
+  if (matF && matriculaValida(String(matF).toUpperCase())) setMatricula(matF, true); else fijarMatricula();
   const medsIn = (F2 ? d.medicamentos : d.medicamentos_config) || [];
   lsSet('mfp_meds', medsIn.map((m, i) => ({
     id: m.id || ('med' + Date.now() + '_' + i),
@@ -6072,10 +6218,8 @@ function respaldoFichero() {
            + String(d.getHours()).padStart(2,'0') + 'h'
            + String(d.getMinutes()).padStart(2,'0');
     var a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' }));
-    a.download = 'Salufolio_Protocolo_'
-      + getPatient().split(' ')[0].replace(/[^A-Za-z0-9]/g, '')
-      + '_auto_v' + st + '.json';
+    a.href = URL.createObjectURL(new Blob([txt], { type: TABLA_NOMBRES.archivos.copia.mime }));
+    a.download = nombreArchivo('copia', { matricula: claveDeArchivo() });
     a.click();
     /* on ne note la copie que si le navigateur l'a acceptee — sur telephone
        il refuse souvent en silence, et une fausse trace vaut moins que rien.
@@ -6228,13 +6372,10 @@ function alVolverAlPrimerPlano(cb) {
   document.addEventListener('visibilitychange', visi);
 }
 function exportarJSON(alFinal) {
-  const d = new Date();
-  const stamp = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0') +
-    '_' + String(d.getHours()).padStart(2,'0') + 'h' + String(d.getMinutes()).padStart(2,'0');
-  const blob = new Blob([JSON.stringify(payloadExport(), null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(payloadExport(), null, 2)], { type: TABLA_NOMBRES.archivos.copia.mime });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'Salufolio_Protocolo_' + getPatient().split(' ')[0].replace(/[^A-Za-z0-9]/g, '') + '_v' + stamp + '.json';
+  a.download = nombreArchivo('copia', { matricula: claveDeArchivo() });
   a.click();
   alVolverAlPrimerPlano(function () {
     /* 28/09 : une copie dechargee A LA MAIN compte — c'est celle dont
@@ -6286,7 +6427,7 @@ function aplicarIdiomas() {
     'i-tcomp':'t_comp','i-tmeds':'t_meds','i-tpac':'t_pac','i-bgconst':'b_gconst','i-bgobs':'b_gobs',
     'i-bpunt':'b_punt','i-bdesc':'b_desc','i-bcopi':'b_copi','i-bcomp':'b_comp','i-baddmed':'b_addmed',
     'i-carrit':'c_arritmia','i-lfrec':'fr_tit','i-lfin':'fin_trat','i-lini':'ini_trat','i-ldur':'dur_trat',
-    'i-nhoy':'nav_med','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-nres':'nav_res','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-brestpac':'b_restpac','i-lsip':'sip_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp','i-bta':'c_bta','i-bps':'c_bps','i-bpeso':'c_bpeso','i-btemp':'c_btemp',
+    'i-nhoy':'nav_med','i-nconst':'consts','i-nnotas':'notas','i-ndatos':'datos','i-nres':'nav_res','i-expnota':'exp_nota','i-binst':'inst_btn','i-feedback':'feedback','i-binst-nota':'inst_nota','i-tmat':'t_mat','i-tpac2':'t_pac','i-brestpac':'b_restpac','i-lsip':'sip_label','i-lmatr':'matr_label','i-avisos':'av_title','i-avisos-nota':'av_nota','i-lhid':'l_hid','i-ldep':'l_dep','i-lmic':'l_mic','i-tfb':'t_fb','i-bpauta':'b_pauta','i-fbenv':'b_fbenv','i-fbanul':'b_fbanul','i-dispsolo':'disp_solo','i-ctas':'c_tas','i-ctad':'c_tad','i-cfc':'c_fc','i-cspo2':'c_spo2','i-cpeso':'c_peso','i-ctemp':'c_temp','i-bta':'c_bta','i-bps':'c_bps','i-bpeso':'c_bpeso','i-btemp':'c_btemp',
 
     'i-lpanal':'l_panal' };
   Object.entries(M).forEach(([id, k]) => { const e = document.getElementById(id); if (e) e.textContent = t(k); });
