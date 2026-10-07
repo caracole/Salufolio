@@ -1600,20 +1600,39 @@ function _pidePermisoPdf(){
   }).then(function(h){ _pdfPidiendo = null; return h; });
   return _pdfPidiendo;
 }
+/* el PDF del SITIO : en salufolio.com la demo trae sus PDF en pacientes/<matrícula>/sources/ (hermano de casa/ y de los programas).
+   Sólo con http/https : desde file:// el navegador no deja leerlo. Se comprueba que sea de verdad un PDF (y no una página de error). */
+async function _pdfDelSitio(nombre){
+  try{
+    if(!/^https?:$/.test(location.protocol)) return null;
+    var mat = matriculaActual(); if(!mat) return null;
+    var stem = String(nombre||'').replace(/\.pdf$/i, '');
+    var u = new URL('../pacientes/' + encodeURIComponent(mat) + '/sources/' + encodeURIComponent(stem) + '.pdf', location.href);
+    var r = await fetch(u.href); if(!r.ok) return null;
+    var b = await r.blob();
+    var cab = new Uint8Array(await b.slice(0, 5).arrayBuffer());
+    if(String.fromCharCode.apply(null, cab).indexOf('%PDF') !== 0) return null;
+    return b.slice(0, b.size, 'application/pdf');
+  }catch(e){ return null; }
+}
+async function _pdfDelDisco(dir, nombre, resp){
+  var src = null;
+  try{ src = await dir.getDirectoryHandle('sources'); }catch(e){ resp.motivo = 'sin-sources'; return null; }
+  var f = await _buscaPdf(src, nombre, 2);
+  if(!f) resp.motivo = 'no-esta';
+  return f;
+}
 async function sirvePdf(ev, d){
   var resp = { de:'lanzador', tipo:'pdf', id:d.id, ok:false, motivo:'' };
   try{
-    var dir = await carpetaPaciente(false);
-    if(!dir) dir = await _pidePermisoPdf();
-    if(!dir) resp.motivo = 'carpeta-no-autorizada';
-    else{
-      var src = null;
-      try{ src = await dir.getDirectoryHandle('sources'); }catch(e){ resp.motivo = 'sin-sources'; }
-      if(src){
-        var f = await _buscaPdf(src, d.nombre, 2);
-        if(f){ resp.ok = true; resp.archivo = f; resp.motivo = ''; } else resp.motivo = 'no-esta';
-      }
+    var f = null, dir = await carpetaPaciente(false);       /* 1 · el disco, si ya está autorizado */
+    if(dir) f = await _pdfDelDisco(dir, d.nombre, resp);
+    if(!f) f = await _pdfDelSitio(d.nombre);                 /* 2 · el sitio */
+    if(!f && !dir){                                          /* 3 · pedir la carpeta (un clic en la Casa) */
+      dir = await _pidePermisoPdf();
+      if(dir) f = await _pdfDelDisco(dir, d.nombre, resp); else resp.motivo = 'carpeta-no-autorizada';
     }
+    if(f){ resp.ok = true; resp.archivo = f; resp.motivo = ''; }
   }catch(e){ resp.motivo = 'error: ' + (e && e.message || e); }
   try{ ev.source.postMessage(resp, '*'); }catch(e){}
 }
