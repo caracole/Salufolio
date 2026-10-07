@@ -373,11 +373,11 @@ select option{background:var(--surface);color:var(--text)}
   box-shadow:0 1px 2px rgba(0,0,0,.35),0 0 12px rgba(255,60,40,.75)}
 .rocker:active{box-shadow:inset 0 0 0 1px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.35)}
 .hbtn2{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:16px;padding:6px 9px;cursor:pointer}
-/* v.80 — l'abeille du retour au panal : discrète devant le sous-titre,
+/* v.90 — la maison (avant : l'abeille du v.80) : discrète devant le sous-titre,
    elle grossit quand on la survole ou qu'on la touche. */
-#bee-panal{cursor:pointer;font-size:15px;display:inline-block;margin-right:5px;
-  vertical-align:-2px;transition:transform .15s}
-#bee-panal:hover,#bee-panal:active{transform:scale(1.6)}
+#lnk-casa{cursor:pointer;font-size:15px;display:inline-block;margin-right:5px;
+  vertical-align:-2px;transition:transform .15s;text-decoration:none}
+#lnk-casa:hover,#lnk-casa:active{transform:scale(1.6)}
 .acc{border:1px solid var(--border);border-radius:12px;margin:10px 0;overflow:hidden;background:var(--surface)}
 .acc summary{list-style:none;cursor:pointer;padding:13px 14px;font-weight:700;font-size:16px;display:flex;align-items:center}
 .acc summary::-webkit-details-marker{display:none}
@@ -471,7 +471,10 @@ body.sin-paciente #nav-res { opacity: .35; }
        clique, on y va ; on passe dessus, elle grossit ». Comme au panal,
        l'abeille fait voyager. Elle vit dans SON span : render() réécrit
        hdr-sub, l'abeille à côté n'est jamais effacée. -->
-  <div class="sub" style="font-size:10px"><span id="bee-panal" onclick="window.open(TABLA_ENLACES.panal.url,'_blank')" title="Panal Salufolio">🐝</span><span id="hdr-sub" style="opacity:.75">Salufolio Protocolo</span></div>
+  <!-- v.90 (P-H, 07/10/2026) : la abeja cede su sitio a la casa 🏠 — un simple
+       enlace a la página de inicio de salufolio.com. La dirección, el icono y
+       el interruptor viven en TABLA_ENLACES.casa ; el script los pone. -->
+  <div class="sub" style="font-size:10px"><a id="lnk-casa" target="_blank" rel="noopener"></a><span id="hdr-sub" style="opacity:.75">Salufolio Protocolo</span></div>
 </header>
 
 <main>
@@ -744,18 +747,24 @@ const MFP_WEB = ['salufolio.com', 'www.salufolio.com'];
 const MFP_DEMO = './demo.json';
 
 /* ═══ LA TABLA DE LOS ENLACES (P-H, 07/10/2026) — doctrina de 1966 ═══
-   El enlace al Panal en la ayuda del Protocolo se OCULTA por ahora
-   (« c'est tenter le diable ») : quien lee la ayuda de un carnet de cuidador
-   no tiene por qué caer en la lista de todas las aplicaciones.
-   Lo mismo para la abeja 🐝 del encabezado, que abría la misma dirección.
-   Volver a mostrarlos = poner  ayuda:true  y/o  abeja:true  aquí, nada más.
-   La dirección se escribe una sola vez : aquí. */
+   « casa » : el 🏠 del encabezado, un simple enlace a la página de inicio del
+   sitio (salufolio.com) ; sustituye a la abeja. Se abre en otra pestaña : el
+   Protocolo y sus datos se quedan donde están.
+   « panal » : la lista de todas las aplicaciones. OCULTA por ahora
+   (« c'est tenter le diable ») — ni en la ayuda ni en el encabezado.
+   Volver a mostrarlo en la ayuda = ayuda:true. Quitar el 🏠 = visible:false.
+   Las direcciones se escriben una sola vez : aquí. */
 const TABLA_ENLACES = {
-  panal: { url: 'https://caracole.github.io/Salufolio/index.html', ayuda: false, abeja: false }
+  casa:  { visible: true, url: 'https://salufolio.com/', icono: '🏠', nombre: 'Salufolio' },
+  panal: { url: 'https://caracole.github.io/Salufolio/index.html', ayuda: false }
 };
-/* La abeja vive en el encabezado (HTML estático, anterior a este script) :
-   si la tabla dice que no, se retira antes de que nadie la vea. */
-if (!TABLA_ENLACES.panal.abeja) { const _ab = document.getElementById('bee-panal'); if (_ab) _ab.remove(); }
+/* El 🏠 vive en el encabezado (HTML estático, anterior a este script). */
+(function () {
+  const c = TABLA_ENLACES.casa, a = document.getElementById('lnk-casa');
+  if (!a) return;
+  if (!c || !c.visible) { a.remove(); return; }
+  a.href = c.url; a.textContent = c.icono; a.setAttribute('aria-label', c.nombre);
+})();
 
 /* ═══ LA TABLA DE LOS NOMBRES (P-H, 07/10/2026) — doctrina de 1966 ═══
    Nada de esto vive en el código que la lee : la matrícula, la extensión
@@ -860,7 +869,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.10.7.89-SAT';
+const MFP_VERSION = '2026.10.7.90-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {

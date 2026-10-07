@@ -19,7 +19,7 @@
    anciens caches sont effacés et le Protocolo se recharge.
    ══════════════════════════════════════════════════════════════════════ */
 
-const VERSION = 'protocolo-2026.10.07.1848';
+const VERSION = 'protocolo-2026.10.07.1938';
 const GUARDAR = [
   './',
   './index.html',
