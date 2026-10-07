@@ -471,7 +471,7 @@ body.sin-paciente #nav-res { opacity: .35; }
        clique, on y va ; on passe dessus, elle grossit ». Comme au panal,
        l'abeille fait voyager. Elle vit dans SON span : render() réécrit
        hdr-sub, l'abeille à côté n'est jamais effacée. -->
-  <div class="sub" style="font-size:10px"><span id="bee-panal" onclick="window.open('https://caracole.github.io/Salufolio/index.html','_blank')" title="Panal Salufolio">🐝</span><span id="hdr-sub" style="opacity:.75">Salufolio Protocolo</span></div>
+  <div class="sub" style="font-size:10px"><span id="bee-panal" onclick="window.open(TABLA_ENLACES.panal.url,'_blank')" title="Panal Salufolio">🐝</span><span id="hdr-sub" style="opacity:.75">Salufolio Protocolo</span></div>
 </header>
 
 <main>
@@ -747,12 +747,15 @@ const MFP_DEMO = './demo.json';
    El enlace al Panal en la ayuda del Protocolo se OCULTA por ahora
    (« c'est tenter le diable ») : quien lee la ayuda de un carnet de cuidador
    no tiene por qué caer en la lista de todas las aplicaciones.
-   Volver a mostrarlo = poner  ayuda:true  aquí, nada más.
-   (La abeja 🐝 del encabezado abre la misma dirección ; sigue en su sitio
-   hasta nueva orden.) */
+   Lo mismo para la abeja 🐝 del encabezado, que abría la misma dirección.
+   Volver a mostrarlos = poner  ayuda:true  y/o  abeja:true  aquí, nada más.
+   La dirección se escribe una sola vez : aquí. */
 const TABLA_ENLACES = {
-  panal: { url: 'https://caracole.github.io/Salufolio/index.html', ayuda: false }
+  panal: { url: 'https://caracole.github.io/Salufolio/index.html', ayuda: false, abeja: false }
 };
+/* La abeja vive en el encabezado (HTML estático, anterior a este script) :
+   si la tabla dice que no, se retira antes de que nadie la vea. */
+if (!TABLA_ENLACES.panal.abeja) { const _ab = document.getElementById('bee-panal'); if (_ab) _ab.remove(); }
 
 /* ═══ LA TABLA DE LOS NOMBRES (P-H, 07/10/2026) — doctrina de 1966 ═══
    Nada de esto vive en el código que la lee : la matrícula, la extensión
@@ -857,7 +860,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.10.7.88-SAT';
+const MFP_VERSION = '2026.10.7.89-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
