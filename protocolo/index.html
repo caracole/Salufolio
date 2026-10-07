@@ -443,7 +443,9 @@ body.sin-paciente #nav-res { opacity: .35; }
   #res-mandos { display: none !important; }
   body { zoom: 1 !important; background: #fff !important; }
 }
-.web #acc-comp, .web #bv-conexion, .web #btn-scan, .web #pac-imp { display: none !important; }
+/* sitio público : se oculta SOLO lo que habla con el PC (clase solo-pc). El cajón
+   « Guardar y compartir » se queda : sin él no hay forma de guardar una copia. */
+.web #bv-conexion, .web #btn-scan, .web #pac-imp, .web .solo-pc { display: none !important; }
 </style>
 </head>
 <body>
@@ -652,18 +654,18 @@ body.sin-paciente #nav-res { opacity: .35; }
            Et « Restaurar n'a rien à faire ici puisqu'on le propose au début » :
            il est retourné à l'assistant du premier pas, que le numéro de
            version en pied de page rappelle à tout moment. -->
-      <button class="btn" onclick="pantallaRevision()" id="i-brev"></button>
+      <button class="btn solo-pc" onclick="pantallaRevision()" id="i-brev"></button>
       <button class="btn sec" onclick="exportarJSON()" id="i-bdesc"></button>
       <button class="btn sec" onclick="compartir()" id="i-bcomp"></button>
-      <button class="btn sec" onclick="enviarSalufolio()" id="i-benv"></button>
+      <button class="btn sec solo-pc" onclick="enviarSalufolio()" id="i-benv"></button>
       <input type="file" id="rest-file" accept=".json,application/json" style="display:none" onchange="if(this.files[0])restaurarArchivo(this.files[0]);this.value=''">
-      <div class="nota-campo" style="margin-top:8px" id="i-lpc"></div>
-      <div style="display:flex;gap:6px;align-items:stretch;margin-top:4px">
+      <div class="nota-campo solo-pc" style="margin-top:8px" id="i-lpc"></div>
+      <div class="solo-pc" style="display:flex;gap:6px;align-items:stretch;margin-top:4px">
         <input class="txt" id="cfg-pc" autocomplete="off" placeholder="http://192.168.1.20:7777" onchange="setPc(this.value);sondearPc()" style="flex:1;margin-top:0">
         <button class="btn sec" id="btn-scan" onclick="escanearQR()" style="display:none;width:54px;margin-top:0;padding:0;font-size:20px">📷</button>
       </div>
-      <div id="pc-estado" style="font-size:12px;margin-top:6px;min-height:16px;color:var(--muted)"></div>
-      <div class="nota-campo" style="margin-top:6px"><span id="i-expnota"></span></div>
+      <div class="solo-pc" id="pc-estado" style="font-size:12px;margin-top:6px;min-height:16px;color:var(--muted)"></div>
+      <div class="nota-campo solo-pc" style="margin-top:6px"><span id="i-expnota"></span></div>
     </div></details>
     <details class="acc" id="acc-fb"><summary><span id="i-tfb"></span></summary><div class="accb">
       <div id="fb-caritas" style="font-size:26px;display:flex;gap:14px;justify-content:center;margin:4px 0 10px">
@@ -735,7 +737,7 @@ const MFP_PC_DEF = '';
    no busca ningún servidor — todo se queda en el aparato del usuario. */
 const MFP_WEB = ['salufolio.com', 'www.salufolio.com'];
 const MFP_DEMO = './demo.json';
-const MFP_VERSION = '2026.10.7.84-SAT';
+const MFP_VERSION = '2026.10.7.86-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -2932,7 +2934,17 @@ function setPc(v) { lsSet('mfp_pc', (v || '').trim()); render(); }
    Renvoie null — et non '' — quand rien n'est connu, pour que la chaîne
    vide reste une réponse valable. */
 function esWeb() { return location.protocol === 'https:' && MFP_WEB.indexOf(location.hostname) >= 0; }
-if (esWeb()) document.documentElement.classList.add('web');
+if (esWeb()) {
+  document.documentElement.classList.add('web');
+  /* el cajón de guardar va PRIMERO y abierto : es lo primero que se busca, y
+     en una pantalla de PC los otros cuatro cajones lo empujaban fuera de la vista */
+  const _abreGuardar = function () {
+    const c = document.getElementById('acc-comp'), p = document.getElementById('acc-pac');
+    if (c && p && p.parentNode) p.parentNode.insertBefore(c, p);
+    if (c) c.open = true;
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', _abreGuardar); else _abreGuardar();
+}
 function baseSalufolio() {
   if (esWeb()) return null;   /* sitio público : ningún pont, ninguna sonda */
   const esLocal = /^(localhost$|127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)/.test(location.hostname);
@@ -6028,6 +6040,10 @@ async function cargarDemo() {
     ['tomas', 'constantes', 'observaciones'].forEach(k => {
       const o = {}; Object.keys(d[k] || {}).forEach(n => { o[fec(n)] = d[k][n]; }); d[k] = o; });
     restaurarDesdeObj(d);
+    /* la restauración conserva un solo momento por medicamento : la demo guarda todos */
+    lsSet('mfp_meds', (d.medicamentos || []).map(m => ({ id: m.id, nombre: m.nombre, dosis: m.dosis || '',
+      momento: m.momento || 'desayuno', momentos: (m.momentos || []).slice(),
+      desde: m.desde || null, dias: m.dias || null, hasta: m.hasta || null })));
     _arm().setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
     nosVamos();
     setTimeout(() => location.reload(), 400);
