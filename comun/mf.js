@@ -2322,27 +2322,41 @@ async function _archivaViejas(hist){
   /* ══ PDF DEL PACIENTE (P-H, 06/10/2026) ══
      MF.pdfRespuesta(nombre) devuelve una Response (como fetch) con el PDF de  pacientes/<mat>/sources/ .
      Dentro de la Casa : se lo pide por mensaje (« pide-pdf »). Si la Casa no puede, o no hay Casa : el servidor
-     localhost:7777 de antes, sólo como socorro. Nunca lanza : sin PDF devuelve una Response 404. */
+     localhost:7777 de antes, sólo como socorro. Nunca lanza : sin PDF devuelve una Response 404 que lleva
+     el MOTIVO en la cabecera X-Sf-Motivo (MF.motivoPdf lo dice con palabras). */
+  var MOTIVOS_PDF = {
+    'carpeta-no-autorizada': { es:'la Casa aún no tiene acceso a la carpeta de pacientes en este sitio',
+      fr:'la Casa n’a pas encore accès au dossier des patients sur ce site', ca:'la Casa encara no té accés a la carpeta de pacients en aquest lloc',
+      en:'the Casa has no access to the patients folder on this site yet' },
+    'sin-sources': { es:'el paciente no tiene carpeta sources/', fr:'le patient n’a pas de dossier sources/', ca:'el pacient no té carpeta sources/', en:'the patient has no sources/ folder' },
+    'no-esta': { es:'archivo no encontrado en sources/', fr:'fichier introuvable dans sources/', ca:'arxiu no trobat a sources/', en:'file not found in sources/' },
+    'sin-respuesta': { es:'la Casa no ha respondido', fr:'la Casa n’a pas répondu', ca:'la Casa no ha respost', en:'the Casa did not answer' },
+    'sin-casa': { es:'el programa no está dentro de la Casa', fr:'le programme n’est pas dans la Casa', ca:'el programa no és dins la Casa', en:'the program is not inside the Casa' }
+  };
+  function motivoPdf(mo){ var t = MOTIVOS_PDF[mo] || MOTIVOS_PDF['no-esta']; return t[LANG_SF] || t.es; }
   function pdfRespuesta(nombre){
-    var stem = String(nombre||'').replace(/\.pdf$/i, '');
+    var stem = String(nombre||'').replace(/\.pdf$/i, ''), motivo = 'sin-respuesta';
     var socorro = function(){
       var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
       return fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)).catch(function(){ return new Response(null, {status:404}); });
     };
+    var fin404 = function(r){ if(r) return r;
+      return socorro().then(function(x){ return x.ok ? x : new Response(null, {status:404, headers:{'X-Sf-Motivo': motivo}}); }); };
     var enCasa = false; try{ enCasa = window.parent && window.parent !== window; }catch(e){}
-    if(!enCasa) return socorro();
+    if(!enCasa){ motivo = 'sin-casa'; return fin404(null); }
     return new Promise(function(resuelve){
       var id = 'pdf' + Date.now() + '_' + Math.floor(Math.random()*1e6), listo = false;
       function fin(r){ if(listo) return; listo = true; window.removeEventListener('message', oye); resuelve(r); }
       function oye(ev){ var d = ev.data || {};
         if(d.de !== 'lanzador' || d.tipo !== 'pdf' || d.id !== id) return;
-        fin(d.ok && d.archivo ? new Response(d.archivo, {status:200, headers:{'Content-Type':'application/pdf'}}) : null); }
+        if(d.ok && d.archivo) fin(new Response(d.archivo, {status:200, headers:{'Content-Type':'application/pdf'}}));
+        else { motivo = d.motivo || 'no-esta'; fin(null); } }
       window.addEventListener('message', oye);
-      setTimeout(function(){ fin(null); }, 5000);
+      setTimeout(function(){ fin(null); }, 60000);   /* la Casa puede estar esperando que se elija la carpeta */
       try{ parent.postMessage({de:'modulo', tipo:'pide-pdf', id:id, nombre:stem}, '*'); }catch(e){ fin(null); }
-    }).then(function(r){ return r || socorro(); });
+    }).then(fin404);
   }
-  return { arranca:arranca, carga:carga, pdfRespuesta:pdfRespuesta, params:params, abeja:abeja, abrirFichero:abrirFichero,
+  return { arranca:arranca, carga:carga, pdfRespuesta:pdfRespuesta, motivoPdf:motivoPdf, params:params, abeja:abeja, abrirFichero:abrirFichero,
            guarda:guarda, tocado:tocado, limpio:limpio, hayCambios:hayCambios, aviso:aviso,
            guardaTrabajo:guardaTrabajo, hayTrabajo:hayTrabajo, olvidaTrabajo:olvidaTrabajo,
            enMarco:function(){return enMarco;}, barra:barra, barraActivos:barraActivos, estado:estado,

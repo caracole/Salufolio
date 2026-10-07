@@ -89,7 +89,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    MEDICAMENTOS — programa autónomo de Salufolio V2
-   Versión 2026.10.06-21:28:48
+   Versión 2026.10.06-22:17:20
 
    Extraído de la V1: medications-js.js (38 funciones — la lista, la ficha,
    los prescriptores, las recetas), medications-html.html, y sus
@@ -100,7 +100,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
    toca. Es voluntario: se ve lo que se ha cambiado antes de guardarlo.
    ═══════════════════════════════════════════════════════════════════════ */
 /* número de versión : se actualiza en CADA modificación (regla de P-H) — es el que muestra el tooltip del nombre */
-SF_CONFIG.version = '2026.10.06-21:28:48';
+SF_CONFIG.version = '2026.10.06-22:17:20';
 const VERSION_PROGRAMA = SF_CONFIG.version;
 const APP_VERSION = SF_CONFIG.version;
 const APP_VERSION_DATE = SF_CONFIG.version;
@@ -237,8 +237,30 @@ function _pdfPopupAbrir(url, titulo, info) {
   sh.cuerpo.innerHTML = '<embed src="' + url + '" type="application/pdf" style="width:100%;height:100%;border:0">';
 }
 
+/* P-H 06/10/2026 : el PDF vive en pacientes/<matrícula>/sources/ — la Casa lo sirve ; si no está, se dice dónde debería estar */
+function _pdfSinArchivo(nom, motivo) {
+  var mat = ''; try { mat = (MF.paciente().matricula || ''); } catch (e) {}
+  var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : 'archivo no encontrado en sources/';
+  var msg = '📄 ' + nom + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
+  var det = document.getElementById('xz-cmt-detalle');
+  if (det) { det.textContent = '🧪 ' + msg; return; }
+  document.querySelectorAll('.sf-pdf-aviso').forEach(function(o) { o.remove(); });
+  var o = document.createElement('div'); o.className = 'sf-pdf-aviso';
+  o.style.cssText = 'position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:10003;max-width:min(520px,90vw);background:var(--surface);color:var(--text);border:2px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
+  o.textContent = msg + ' ';
+  var b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
+  b.onclick = function() { o.remove(); }; o.appendChild(b); document.body.appendChild(o);
+}
+
 async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
-  if (typeof pdfjsLib === 'undefined') { _pdfPopupAbrir(url, titulo, info); return; }
+  if (typeof pdfjsLib === 'undefined') {
+    /* sin pdf.js : se pide el archivo a la Casa y se muestra con el visor del navegador */
+    if (!url && nom && window.MF && MF.pdfRespuesta) {
+      var mo = ''; try { var rr = await MF.pdfRespuesta(nom); if (rr.ok) { _pdfPopupAbrir(URL.createObjectURL(await rr.blob()), titulo, info); return; } mo = rr.headers.get('X-Sf-Motivo') || ''; } catch (e) {}
+      _pdfSinArchivo(nom, mo); return;
+    }
+    _pdfPopupAbrir(url, titulo, info); return;
+  }
   var doc;
   /* P-H 10/08 : un file:// ne peut PAS être lu par fetch NI par le worker
      pdf.js depuis une page file:// (CORS « origin null », mur définitif).
@@ -254,10 +276,11 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
       var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)));
       if (r.ok) buf = await r.arrayBuffer();
     }
-    if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */
+    if (!buf && url) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */
+    if (!buf) throw new Error('sin-pdf:' + ((typeof r !== 'undefined' && r && r.headers && r.headers.get('X-Sf-Motivo')) || ''));
     doc = await pdfjsLib.getDocument({ data: buf }).promise;
   }
-  catch (e) { _pdfPopupAbrir(url, titulo, info); return; }
+  catch (e) { if (url) { _pdfPopupAbrir(url, titulo, info); return; } _pdfSinArchivo(nom, String((e && e.message) || '').replace(/^sin-pdf:?/, '')); return; }
   try {
     var labelMin = (info && info.label) ? info.label.toLowerCase() : null;
     /* Les formes sous lesquelles le laboratoire peut écrire CETTE valeur.
@@ -378,18 +401,14 @@ function _chartVerInforme(s, key) {
      l'extension que l'ancien code n'ajoutait pas. Zéro dépendance. */
   var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
   var dir = (typeof pdfCarpeta === 'function') ? pdfCarpeta(id) : '';
-  if (dir) {
-    var base = dir.replace(/\/+$/, '');
-    var url = (base.indexOf('://') !== -1 ? base : 'file://' + (base.charAt(0) === '/' ? '' : '/') + base) + '/' + encodeURIComponent(nom);
-    try { _pdfPopupAbrirEnPagina(url, nom, info, nom); return; } catch (e) {}
-  }
+  try { _pdfPopupAbrirEnPagina('', nom, info, nom); return; } catch (e) {}   /* P-H 06/10/2026 : la Casa sirve sources/ */
   /* v2026.7.21.20 — plus d'aboiement du navigateur (demande P-H) : le repli
      passe par la BANDE DU PAVÉ quand elle existe, et nomme le bon guichet
      (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si
      aucune bande n'est à l'écran. */
   var msg = '📄 ' + nom + (dir
     ? ' — carpeta: ' + dir + ' (no se pudo abrir)'
-    : ' — para abrirlo con un clic, defina la «carpeta de PDF» en la vista AUDITORÍA.');
+    : ' — no encuentro el archivo en la carpeta sources/ del paciente.');
   var det = document.getElementById('xz-cmt-detalle');
   if (det) { det.innerHTML = '🧪 ' + msg; return; }
   alert(msg);

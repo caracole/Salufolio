@@ -1569,10 +1569,42 @@ async function _buscaPdf(dir, nombre, prof){
   }catch(e){}
   return null;
 }
+/* ── la Casa pide la carpeta de pacientes cuando aún no la tiene (típico : salufolio.com, otro sitio = otras autorizaciones).
+   El navegador sólo deja elegir una carpeta tras un clic EN LA CASA : de ahí esta ventana con su botón. ── */
+var _TX_PDF = {
+  es:{ t:'Para abrir los PDF del paciente', c:'La Casa aún no tiene acceso a la carpeta de pacientes en este sitio. Elíjala una vez : se recordará.', ok:'Elegir la carpeta de pacientes', no:'Ahora no' },
+  fr:{ t:'Pour ouvrir les PDF du patient', c:'La Casa n’a pas encore accès au dossier des patients sur ce site. Choisis-le une fois : il sera retenu.', ok:'Choisir le dossier des patients', no:'Pas maintenant' },
+  ca:{ t:'Per obrir els PDF del pacient', c:'La Casa encara no té accés a la carpeta de pacients en aquest lloc. Trieu-la una vegada : es recordarà.', ok:'Triar la carpeta de pacients', no:'Ara no' },
+  en:{ t:'To open the patient’s PDFs', c:'The Casa does not have access to the patients folder on this site yet. Choose it once: it will be remembered.', ok:'Choose the patients folder', no:'Not now' }
+};
+var _pdfPidiendo = null;
+function _pidePermisoPdf(){
+  if(_pdfPidiendo) return _pdfPidiendo;
+  if(!window.showDirectoryPicker) return Promise.resolve(null);
+  _pdfPidiendo = new Promise(function(resuelve){
+    var x = _TX_PDF[LANG] || _TX_PDF.es;
+    var o = document.createElement('div'); o.id = 'sf-pdf-pide';
+    o.style.cssText = 'position:fixed;inset:0;z-index:9900;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center';
+    var c = document.createElement('div');
+    c.style.cssText = 'max-width:min(460px,90vw);background:var(--surface,#161b27);color:var(--text,#e8eaf0);border:2px solid var(--accent,#4a8fe8);border-radius:12px;padding:20px 22px;font-size:14px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
+    var t = document.createElement('div'); t.style.cssText = 'font-weight:700;margin-bottom:8px'; t.textContent = '📂 ' + x.t;
+    var p = document.createElement('div'); p.textContent = x.c; p.style.marginBottom = '16px';
+    var f = document.createElement('div'); f.style.cssText = 'display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap';
+    var b1 = document.createElement('button'); b1.className = 'btn'; b1.textContent = x.no;
+    var b2 = document.createElement('button'); b2.className = 'btn'; b2.textContent = x.ok; b2.style.cssText = 'border-color:var(--accent);font-weight:700';
+    function fin(v){ o.remove(); resuelve(v); }
+    b1.onclick = function(){ fin(null); };
+    b2.onclick = async function(){ var h = null; try{ h = await carpetaPaciente(true); }catch(e){} fin(h); };
+    f.appendChild(b1); f.appendChild(b2); c.appendChild(t); c.appendChild(p); c.appendChild(f); o.appendChild(c); document.body.appendChild(o);
+    b2.focus();
+  }).then(function(h){ _pdfPidiendo = null; return h; });
+  return _pdfPidiendo;
+}
 async function sirvePdf(ev, d){
   var resp = { de:'lanzador', tipo:'pdf', id:d.id, ok:false, motivo:'' };
   try{
     var dir = await carpetaPaciente(false);
+    if(!dir) dir = await _pidePermisoPdf();
     if(!dir) resp.motivo = 'carpeta-no-autorizada';
     else{
       var src = null;
