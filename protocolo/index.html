@@ -443,6 +443,7 @@ body.sin-paciente #nav-res { opacity: .35; }
   #res-mandos { display: none !important; }
   body { zoom: 1 !important; background: #fff !important; }
 }
+.web #acc-comp, .web #bv-conexion, .web #btn-scan, .web #pac-imp { display: none !important; }
 </style>
 </head>
 <body>
@@ -730,7 +731,11 @@ window.onerror = function (msg, src, line, col) {
 /* Adresse du PC injectée par le serveur au téléchargement (« Instalar en
    este teléfono ») — l'app locale naît déjà configurée. */
 const MFP_PC_DEF = '';
-const MFP_VERSION = '2026.9.28.82-SAT';
+/* Sitio público (local-first sin pont) : en estos hosts, https, el Protocolo
+   no busca ningún servidor — todo se queda en el aparato del usuario. */
+const MFP_WEB = ['salufolio.com', 'www.salufolio.com'];
+const MFP_DEMO = './demo.json';
+const MFP_VERSION = '2026.10.7.84-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -757,6 +762,7 @@ const IDIOMAS = {
     l_dep:"Deposición",
     imp_viejos:"Más de 3 meses — desmarcados; tóquelos si siguen vigentes",
     imp_boton:"Importar de Salufolio",
+    demo_boton:"Probar con un paciente de demostración", demo_nota:"Paciente ficticio. Los datos se guardan solo en este dispositivo.", demo_error:"No se pudo cargar la demostración",
     imp_tit:"¿Qué paciente?",
     imp_meds:"medicamentos",
     imp_copia:"copia del",
@@ -981,6 +987,7 @@ const IDIOMAS = {
     l_dep:"Deposició",
     imp_viejos:"Més de 3 mesos — desmarcats; toqueu-los si continuen vigents",
     imp_boton:"Importar de Salufolio",
+    demo_boton:"Provar amb un pacient de demostració", demo_nota:"Pacient fictici. Les dades es guarden només en este dispositiu.", demo_error:"No s'ha pogut carregar la demostració",
     imp_tit:"Quin pacient?",
     imp_meds:"medicaments",
     imp_copia:"còpia del",
@@ -1205,6 +1212,7 @@ const IDIOMAS = {
     l_dep:"Selles",
     imp_viejos:"Plus de 3 mois — décochés ; touchez-les s'ils sont toujours pris",
     imp_boton:"Importer de Salufolio",
+    demo_boton:"Essayer avec un patient de démonstration", demo_nota:"Patient fictif. Les données restent uniquement sur cet appareil.", demo_error:"Impossible de charger la démonstration",
     imp_tit:"Quel patient ?",
     imp_meds:"médicaments",
     imp_copia:"copie du",
@@ -1429,6 +1437,7 @@ const IDIOMAS = {
     l_dep:"Stool",
     imp_viejos:"Over 3 months — unchecked; tap them if still taken",
     imp_boton:"Import from Salufolio",
+    demo_boton:"Try with a demo patient", demo_nota:"Fictitious patient. Data stays only on this device.", demo_error:"Could not load the demo",
     imp_tit:"Which patient?",
     imp_meds:"medications",
     imp_copia:"copy of",
@@ -2922,7 +2931,10 @@ function setPc(v) { lsSet('mfp_pc', (v || '').trim()); render(); }
                                  ne doit pas s'envoyer à elle-même
    Renvoie null — et non '' — quand rien n'est connu, pour que la chaîne
    vide reste une réponse valable. */
+function esWeb() { return location.protocol === 'https:' && MFP_WEB.indexOf(location.hostname) >= 0; }
+if (esWeb()) document.documentElement.classList.add('web');
 function baseSalufolio() {
+  if (esWeb()) return null;   /* sitio público : ningún pont, ninguna sonda */
   const esLocal = /^(localhost$|127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)/.test(location.hostname);
   if (location.protocol.indexOf('http') === 0 && esLocal) return '';
   const pc = String(getPc() || '').trim().replace(/\/+$/, '');
@@ -3428,7 +3440,9 @@ function pintarCasaVacia() {
         /* la première porte ne paraît que si le pont répond : ne pas
            tenter le diable */
         (_pcVivo === true ? '<button class="btn" style="width:100%;margin-bottom:8px" onclick="importarDeSalufolio()">📥 ' + t('imp_boton') + '</button>' : '') +
-        '<button class="btn' + (_pcVivo === true ? ' sec' : '') + '" style="width:100%" onclick="pacienteNuevo(false)">＋ ' + t('pac_anadir') + '</button>' +
+        (esWeb() ? '<button class="btn" style="width:100%;margin-bottom:4px" onclick="cargarDemo()">🧪 ' + t('demo_boton') + '</button>' +
+                   '<div style="font-size:12px;color:var(--muted);margin:0 0 12px">' + t('demo_nota') + '</div>' : '') +
+        '<button class="btn' + ((_pcVivo === true || esWeb()) ? ' sec' : '') + '" style="width:100%" onclick="pacienteNuevo(false)">＋ ' + t('pac_anadir') + '</button>' +
         '<button class="btn sec" style="width:100%;margin-top:8px" onclick="var f=document.getElementById(\'rest-file\');if(f)f.click()">' + t('b_restaurar') + '</button>' +
       '</div>';
   });
@@ -3441,15 +3455,14 @@ function renderPacientes() {
       ? '<select class="pac-sel" id="pac-sel">' + lista.map(p =>
           '<option value="' + p.id + '"' + (p.id === act ? ' selected' : '') + '>' +
           p.nombre + (p.sip ? ' · ' + p.sip : '') + '</option>').join('') + '</select>'
-      : '<span class="pac-vacio">' + t('pac_ninguno') + '</span>') +
+      : '') +   /* casa vacía : la invitación del cuerpo lleva las palabras */
     /* ① Sur un téléphone il n'y a AUCUNE infobulle : le ＋ y était muet.
        Quand la maison est vide, il porte donc ses mots. Une fois qu'il y a
        des patients, le signe seul se comprend — il est à côté d'une liste
        de noms. */
     '<button class="pac-btn" id="pac-imp" title="' + t('imp_boton') + '" style="display:none">📥</button>' +
     '<button class="pac-btn" id="pac-mas" title="' + t('pac_anadir') + '"' +
-      (lista.length ? '' : ' style="width:auto;padding:0 12px;font-size:14px"') + '>＋' +
-      (lista.length ? '' : ' ' + t('pac_anadir')) + '</button>' +
+      '>＋</button>' +
     (lista.length ? '<button class="pac-btn" id="pac-del" title="' + t('pac_borrar') + '">🗑</button>' : '') +
     '</div>';
   const sel = document.getElementById('pac-sel');
@@ -6001,6 +6014,25 @@ function respaldoLeer() {
    depuis un fichier et on en redechargeait un aussitot. Un rechargement que
    NOUS provoquons n'est pas quelqu'un qui s'en va. */
 var _nosVamos = false;
+async function cargarDemo() {
+  /* El paciente de demostración es FICTICIO y vive en un archivo del sitio
+     (demo.json, mismo formato que una copia). Las fechas se cuentan desde
+     hoy : la demostración nunca queda vieja. */
+  try {
+    const r = await fetch(MFP_DEMO, { cache: 'no-store' });
+    if (!r.ok) throw new Error('demo');
+    const d = await r.json();
+    const hoy = new Date(); hoy.setHours(12, 0, 0, 0);
+    const fec = n => { const x = new Date(hoy); x.setDate(x.getDate() + Number(n));
+      return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); };
+    ['tomas', 'constantes', 'observaciones'].forEach(k => {
+      const o = {}; Object.keys(d[k] || {}).forEach(n => { o[fec(n)] = d[k][n]; }); d[k] = o; });
+    restaurarDesdeObj(d);
+    _arm().setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
+    nosVamos();
+    setTimeout(() => location.reload(), 400);
+  } catch (e) { toast('⚠ ' + t('demo_error')); }
+}
 function nosVamos() { _nosVamos = true; }
 
 /* ── le fichier, borne : change ET pas trop recent ── */
@@ -6133,12 +6165,14 @@ function asistente() {
   ov.innerHTML = '<div class="dlg" style="text-align:center">' +
     '<div style="font-size:19px;font-weight:800;margin-bottom:4px">Primer paso</div>' +
     '<p class="nota-campo" style="font-size:13px;margin-bottom:6px">¿Cómo empezamos?</p>' +
+    (esWeb() ? '<button class="btn" style="width:100%;margin-top:6px" id="as-demo">🧪 ' + t('demo_boton') + '</button>' : '') +
     '<button class="btn" style="width:100%;margin-top:6px" id="as-rest">📂 Restaurar una copia guardada</button>' +
     '<button class="btn sec" style="width:100%;margin-top:8px" id="as-nuevo">✚ Paciente nuevo</button>' +
     '<button class="hbtn2" style="width:100%;margin-top:10px;font-size:12px" id="as-luego">Más tarde</button></div>';
   document.body.appendChild(ov);
   const fin = () => { lsSet('mfp_asist', '1'); ov.remove(); };
   ov.querySelector('#as-luego').onclick = fin;
+  const bd = ov.querySelector('#as-demo'); if (bd) bd.onclick = () => { fin(); cargarDemo(); };
   ov.querySelector('#as-rest').onclick = () => { fin(); const f = document.getElementById('rest-file'); if (f) f.click(); };
   ov.querySelector('#as-nuevo').onclick = () => { fin(); pacienteNuevo(false); };
 }

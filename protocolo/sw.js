@@ -19,11 +19,12 @@
    anciens caches sont effacés et le Protocolo se recharge.
    ══════════════════════════════════════════════════════════════════════ */
 
-const VERSION = 'protocolo-2026.09.28.1531';
+const VERSION = 'protocolo-2026.10.07.1615';
 const GUARDAR = [
   './',
   './index.html',
-  './doc.pdf'
+  './doc.pdf',
+  './demo.json'
 ];
 
 /* ── à l'installation : on met le Protocolo en cache ── */

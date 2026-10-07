@@ -1,0 +1,548 @@
+{
+ "formato": 2,
+ "version": "Salufolio-Protocolo-demo",
+ "exportado": "demo",
+ "paciente": {
+  "nombre": "Paciente de demostración",
+  "sip": "DEMO"
+ },
+ "medicamentos": [
+  {
+   "id": "metformina_101",
+   "nombre": "Metformina",
+   "dosis": "850",
+   "momento": "desayuno",
+   "momentos": [
+    "desayuno"
+   ]
+  },
+  {
+   "id": "enalapril_102",
+   "nombre": "Enalapril",
+   "dosis": "10",
+   "momento": "desayuno",
+   "momentos": [
+    "desayuno"
+   ]
+  },
+  {
+   "id": "atorvastatina_103",
+   "nombre": "Atorvastatina",
+   "dosis": "20",
+   "momento": "cena",
+   "momentos": [
+    "cena"
+   ]
+  }
+ ],
+ "tomas": {
+  "-13": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-12": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-11": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-10": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-9": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-8": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-7": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-6": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-5": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-4": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   }
+  ],
+  "-3": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-2": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "-1": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "atorvastatina_103",
+    "momento": "atorvastatina_103",
+    "hora": {
+     "cena": "20:30"
+    }
+   }
+  ],
+  "0": [
+   {
+    "med_id": "metformina_101",
+    "momento": "metformina_101",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   },
+   {
+    "med_id": "enalapril_102",
+    "momento": "enalapril_102",
+    "hora": {
+     "desayuno": "08:00"
+    }
+   }
+  ]
+ },
+ "material": {},
+ "material_config": [],
+ "constantes": {
+  "-13": [
+   {
+    "hora": "09:00",
+    "ta_sis": 132,
+    "ta_dia": 72
+   },
+   {
+    "hora": "09:00",
+    "fc": 74,
+    "spo2": 95,
+    "o2": false
+   }
+  ],
+  "-12": [
+   {
+    "hora": "09:00",
+    "ta_sis": 124,
+    "ta_dia": 83
+   },
+   {
+    "hora": "09:00",
+    "fc": 65,
+    "spo2": 97,
+    "o2": false
+   },
+   {
+    "hora": "08:30",
+    "peso": 72.6
+   }
+  ],
+  "-11": [
+   {
+    "hora": "09:00",
+    "ta_sis": 138,
+    "ta_dia": 73
+   },
+   {
+    "hora": "09:00",
+    "fc": 63,
+    "spo2": 95,
+    "o2": false
+   }
+  ],
+  "-10": [
+   {
+    "hora": "09:00",
+    "ta_sis": 135,
+    "ta_dia": 76
+   },
+   {
+    "hora": "09:00",
+    "fc": 64,
+    "spo2": 96,
+    "o2": false
+   }
+  ],
+  "-9": [
+   {
+    "hora": "09:00",
+    "ta_sis": 124,
+    "ta_dia": 78
+   },
+   {
+    "hora": "09:00",
+    "fc": 75,
+    "spo2": 95,
+    "o2": false
+   }
+  ],
+  "-8": [
+   {
+    "hora": "09:00",
+    "ta_sis": 125,
+    "ta_dia": 73
+   },
+   {
+    "hora": "09:00",
+    "fc": 63,
+    "spo2": 98,
+    "o2": false
+   }
+  ],
+  "-7": [
+   {
+    "hora": "09:00",
+    "ta_sis": 123,
+    "ta_dia": 73
+   },
+   {
+    "hora": "09:00",
+    "fc": 63,
+    "spo2": 96,
+    "o2": false
+   }
+  ],
+  "-6": [
+   {
+    "hora": "09:00",
+    "ta_sis": 131,
+    "ta_dia": 76
+   },
+   {
+    "hora": "09:00",
+    "fc": 66,
+    "spo2": 95,
+    "o2": false
+   },
+   {
+    "hora": "08:30",
+    "peso": 72.6
+   }
+  ],
+  "-5": [
+   {
+    "hora": "09:00",
+    "ta_sis": 127,
+    "ta_dia": 71
+   },
+   {
+    "hora": "09:00",
+    "fc": 68,
+    "spo2": 97,
+    "o2": false
+   }
+  ],
+  "-4": [
+   {
+    "hora": "09:00",
+    "ta_sis": 125,
+    "ta_dia": 78
+   },
+   {
+    "hora": "09:00",
+    "fc": 64,
+    "spo2": 95,
+    "o2": false
+   }
+  ],
+  "-3": [
+   {
+    "hora": "09:00",
+    "ta_sis": 128,
+    "ta_dia": 77
+   },
+   {
+    "hora": "09:00",
+    "fc": 75,
+    "spo2": 97,
+    "o2": false
+   }
+  ],
+  "-2": [
+   {
+    "hora": "09:00",
+    "ta_sis": 136,
+    "ta_dia": 79
+   },
+   {
+    "hora": "09:00",
+    "fc": 76,
+    "spo2": 97,
+    "o2": false
+   }
+  ],
+  "-1": [
+   {
+    "hora": "09:00",
+    "ta_sis": 131,
+    "ta_dia": 73
+   },
+   {
+    "hora": "09:00",
+    "fc": 67,
+    "spo2": 96,
+    "o2": false
+   }
+  ],
+  "0": [
+   {
+    "hora": "09:00",
+    "ta_sis": 124,
+    "ta_dia": 79
+   },
+   {
+    "hora": "09:00",
+    "fc": 71,
+    "spo2": 98,
+    "o2": false
+   },
+   {
+    "hora": "08:30",
+    "peso": 73.0
+   }
+  ]
+ },
+ "observaciones": {
+  "-3": [
+   {
+    "hora": "11:00",
+    "tipos": [],
+    "nota": "Mareo leve al levantarse. Pasó en unos minutos."
+   }
+  ]
+ }
+}
