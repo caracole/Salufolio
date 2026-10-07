@@ -743,6 +743,17 @@ const MFP_PC_DEF = '';
 const MFP_WEB = ['salufolio.com', 'www.salufolio.com'];
 const MFP_DEMO = './demo.json';
 
+/* ═══ LA TABLA DE LOS ENLACES (P-H, 07/10/2026) — doctrina de 1966 ═══
+   El enlace al Panal en la ayuda del Protocolo se OCULTA por ahora
+   (« c'est tenter le diable ») : quien lee la ayuda de un carnet de cuidador
+   no tiene por qué caer en la lista de todas las aplicaciones.
+   Volver a mostrarlo = poner  ayuda:true  aquí, nada más.
+   (La abeja 🐝 del encabezado abre la misma dirección ; sigue en su sitio
+   hasta nueva orden.) */
+const TABLA_ENLACES = {
+  panal: { url: 'https://caracole.github.io/Salufolio/index.html', ayuda: false }
+};
+
 /* ═══ LA TABLA DE LOS NOMBRES (P-H, 07/10/2026) — doctrina de 1966 ═══
    Nada de esto vive en el código que la lee : la matrícula, la extensión
    de la copia, el modelo del nombre de archivo y el del PDF salen de aquí.
@@ -846,7 +857,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.10.7.87-SAT';
+const MFP_VERSION = '2026.10.7.88-SAT';
 /* ── table des langues : es · valencià · français · english (les JETONS d'observation restent
    en espagnol : ce sont les termes cliniques de l'informe — voir Ayuda). ── */
 const IDIOMAS = {
@@ -2572,8 +2583,10 @@ function verAyuda() {
       '<p style="color:var(--muted);font-size:12px">' + t('ay_disp') + '</p>' +
       '<p style="margin-top:6px"><a href="doc.pdf" target="_blank" rel="noopener" ' +
         'style="color:var(--accent);font-size:13px">📄 ' + t('ay_doc') + '</a></p>' +
-      '<p style="margin-top:4px"><a href="https://caracole.github.io/Salufolio/index.html" target="_blank" rel="noopener" ' +
-        'style="color:var(--accent);font-size:13px">🐝 ' + t('ay_panal') + '</a></p>' +
+      (TABLA_ENLACES.panal.ayuda
+        ? '<p style="margin-top:4px"><a href="' + TABLA_ENLACES.panal.url + '" target="_blank" rel="noopener" ' +
+          'style="color:var(--accent);font-size:13px">🐝 ' + t('ay_panal') + '</a></p>'
+        : '') +
       '<div style="font-size:11px;color:var(--muted);margin-top:10px">' + t('ay_dev') + ' — v' + MFP_VERSION + '</div>' +
       '<div style="font-size:11px;color:var(--muted);margin-top:3px">DOI ' +
         '<a href="https://doi.org/10.5281/zenodo.21997587" target="_blank" rel="noopener" ' +
