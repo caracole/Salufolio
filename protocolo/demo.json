@@ -1,10 +1,10 @@
 {
  "formato": 2,
- "version": "Salufolio-Protocolo-demo",
+ "version": "Salufolio-Protocolo-demo-APA0000",
  "exportado": "demo",
  "paciente": {
-  "nombre": "Paciente de demostración",
-  "sip": "DEMO"
+  "nombre": "Ana Paciente Anonymo",
+  "sip": "00000000"
  },
  "medicamentos": [
   {

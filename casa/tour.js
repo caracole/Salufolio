@@ -227,10 +227,10 @@ var SF_TOUR = {
         "en": "Choosing whose record"
       },
       "texto": {
-        "es": "Esta lista lleva a las personas cuyo expediente está en su ordenador. Ana Gómez Ruiz es la de demostración: sus datos clínicos son de verdad —catorce años— pero la persona no existe.",
-        "fr": "Cette liste porte les personnes dont le dossier est sur votre ordinateur. Ana Gómez Ruiz est celle de démonstration : ses données cliniques sont vraies — quatorze ans — mais la personne n'existe pas.",
+        "es": "Esta lista lleva a las personas cuyo expediente está en su ordenador. Ana Paciente Anonymo es la de demostración: sus datos clínicos son de verdad —catorce años— pero la persona no existe.",
+        "fr": "Cette liste porte les personnes dont le dossier est sur votre ordinateur. Ana Paciente Anonymo est celle de démonstration : ses données cliniques sont vraies — quatorze ans — mais la personne n'existe pas.",
         "ca": "Esta llista porta les persones que tenen expedient al seu ordinador.",
-        "en": "This list holds the people whose record is on your computer. Ana Gómez Ruiz is the demonstration one."
+        "en": "This list holds the people whose record is on your computer. Ana Paciente Anonymo is the demonstration one."
       },
       "grabado": {
         "es": "d0b55d60",

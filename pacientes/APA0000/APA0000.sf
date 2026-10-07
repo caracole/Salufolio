@@ -11,23 +11,29 @@
   "fechas": "AAAA-MM-DD-HH:MM:SS, hora de donde se trabaja",
   "el_patron": "comun/patron-comentado.txt — cada campo explicado"
  },
- "_demo": "Expediente de DEMOSTRACIÓN. Los datos clínicos son reales —las medidas, las fechas, los tratamientos— pero la persona no existe: nombre, SIP y NHC están cambiados. El sexo y la fecha de nacimiento se conservan: sin ellos las curvas y las escalas no dicen nada.",
  "formato": "SF1",
  "version": "Salufolio-2026.8.12.1",
  "data_type": "demo",
  "original_data_type": "real",
  "date_anonymized": "2026-09-16-17:30:00",
- "exported": "2026-08-24T09:17:36.329Z",
+ "exported": "2026-10-06T07:17:58.090Z",
  "paciente": {
   "nombre": "Ana",
-  "apellidos": "Gómez Ruiz",
-  "matricula": "AGR0000",
+  "apellidos": "Paciente Anonymo",
+  "matricula": "APA0000",
   "nacimiento": "1938-11-09",
   "sexo": "mujer",
-  "sip": "12340000",
+  "sip": "00000000",
   "nhc": "",
   "cip_sns": ""
  },
+ "patient_name": "Ana Paciente Anonymo",
+ "patient_label": "APA0000",
+ "sip": "00000000",
+ "nhc": "",
+ "cip_sns": "",
+ "nacimiento": "1938-11-09",
+ "sexo": "mujer",
  "historial": {
   "creacion": "2026-08-06-23:14:20",
   "creacion_nota": "historial iniciado aquí — no cubre lo anterior",
@@ -39,6 +45,22 @@
    {
     "src": "S",
     "fecha": "2026-08-14-18:54:25"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-10-01-13:00:55"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-10-02-12:22:17"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-10-05-17:29:02"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-10-06-09:17:58"
    }
   ],
   "actualizacion": [
@@ -1941,11 +1963,11 @@
    "nom": "ATROVENT",
    "dose": "2 puff",
    "frequence": "cada 8 horas con cámara espaciadora",
-   "statut": "suspendu",
+   "statut": "abandonne",
    "source": "Hospital General de Castellon - Urgencias (Neumología)",
    "pdf_id": "PDF011",
-   "date_fin": "2026-08-15",
-   "motif_suspension": "Mejoría clínica"
+   "date_fin": "2026-09-30",
+   "motif_suspension": "Cambio de tratamiento"
   },
   {
    "date": "2021-07-18",
@@ -1963,10 +1985,10 @@
    "nom": "ADIRO",
    "dose": "100MG",
    "frequence": "",
-   "statut": "terminado",
+   "statut": "en_cours",
    "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
    "pdf_id": "PDF009",
-   "date_fin": "2026-07-15"
+   "date_fin": "2026-10-02"
   },
   {
    "date": "2022-01-06",
@@ -1983,7 +2005,7 @@
    "nom": "DONEPEZILO",
    "dose": "5MG comprimidos",
    "frequence": "",
-   "statut": "abandonne",
+   "statut": "en_cours",
    "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
    "pdf_id": "PDF009",
    "date_fin": "2026-08-14",
@@ -2054,11 +2076,11 @@
    "nom": "ATROVENT",
    "dose": "3 inhalaciones",
    "frequence": "",
-   "statut": "suspendu",
+   "statut": "abandonne",
    "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
    "pdf_id": "PDF009",
-   "date_fin": "2026-08-15",
-   "motif_suspension": "Mejoría clínica"
+   "date_fin": "2026-09-30",
+   "motif_suspension": "Cambio de tratamiento"
   },
   {
    "date": "2022-01-06",
@@ -2105,10 +2127,10 @@
    "nom": "ADIRO",
    "dose": "100MG",
    "frequence": "habitual",
-   "statut": "terminado",
+   "statut": "en_cours",
    "source": "Hospital General de Castellón — Neumología",
    "pdf_id": "PDF004",
-   "date_fin": "2026-07-15"
+   "date_fin": "2026-10-02"
   },
   {
    "date": "2022-01-14",
@@ -2125,7 +2147,7 @@
    "nom": "DONEPEZILO",
    "dose": "5 MG",
    "frequence": "habitual",
-   "statut": "abandonne",
+   "statut": "en_cours",
    "source": "Hospital General de Castellón — Neumología",
    "pdf_id": "PDF004",
    "date_fin": "2026-08-14",
@@ -2176,11 +2198,11 @@
    "nom": "Adiro",
    "dose": "100mg",
    "frequence": "no especificada",
-   "statut": "terminado",
+   "statut": "en_cours",
    "source": "Vithas Castellón — Urgencias / Medicina Interna",
    "pdf_id": "PDF034",
    "date_debut": "2022-01-06",
-   "date_fin": "2026-07-15",
+   "date_fin": "2026-10-02",
    "dosis": "0",
    "slots": [],
    "comida": "",
@@ -2202,7 +2224,7 @@
    "nom": "Donepezilo",
    "dose": "5mg",
    "frequence": "no especificada",
-   "statut": "abandonne",
+   "statut": "en_cours",
    "source": "Vithas Castellón — Urgencias / Medicina Interna",
    "pdf_id": "PDF034",
    "date_fin": "2026-08-14",
@@ -2309,10 +2331,11 @@
    "nom": "XARELTO",
    "dose": "",
    "frequence": "",
-   "statut": "terminado",
+   "statut": "en_cours",
    "source": "Vithas Castellón — Urgencias / Medicina Interna (con antecedente de ingreso en Hospital General de Castellón — Neumología)",
    "pdf_id": "PDF035",
-   "date_fin": "2026-07-15"
+   "date_fin": "2026-10-01",
+   "motif_suspension": "Insuficiencia renal"
   },
   {
    "date": "2022-01-16",
@@ -2382,7 +2405,9 @@
    "frequence": "",
    "statut": "en_cours",
    "source": "Hospital General de Castellon - Urgencias",
-   "pdf_id": "PDF008"
+   "pdf_id": "PDF008",
+   "motif_suspension": "Insuficiencia renal",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2022-10-28",
@@ -2431,7 +2456,9 @@
    "frequence": "28 comprimidos recubiertos con película",
    "statut": "en_cours",
    "source": "Hospital General de Castellon — Servicio de Urgencia Hospitalaria",
-   "pdf_id": "PDF007"
+   "pdf_id": "PDF007",
+   "motif_suspension": "Insuficiencia renal",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2024-01-23",
@@ -2489,18 +2516,22 @@
    "nom": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT",
    "dose": "-",
    "frequence": "2 pañal día cada día",
-   "statut": "en_cours",
+   "statut": "abandonne",
    "source": "Historia Clínica Resumida",
-   "pdf_id": "PDF003"
+   "pdf_id": "PDF003",
+   "motif_suspension": "Hipotensión",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2024-05-16",
    "nom": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT",
    "dose": "N/A",
    "frequence": "2 pañal día cada día CRÓNICO",
-   "statut": "en_cours",
+   "statut": "abandonne",
    "source": "Historia Clínica Resumida",
-   "pdf_id": "PDF002"
+   "pdf_id": "PDF002",
+   "motif_suspension": "Hipotensión",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2025-07-19",
@@ -2509,18 +2540,20 @@
    "frequence": "1 comprimido cada día",
    "statut": "en_cours",
    "source": "Hospital General de Castellon - Urgencias",
-   "pdf_id": "PDF006"
+   "pdf_id": "PDF006",
+   "motif_suspension": "Insuficiencia renal",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2025-07-19",
    "nom": "ATROVENT 20MCG/DOS 200 DOSIS 10ML SOLUCION INHALACION ENV A PRESION",
    "dose": "20mcg/dosis",
    "frequence": "2 pulsaciones cada 6 horas",
-   "statut": "suspendu",
+   "statut": "abandonne",
    "source": "Hospital General de Castellon - Urgencias",
    "pdf_id": "PDF006",
-   "date_fin": "2026-08-15",
-   "motif_suspension": "Mejoría clínica"
+   "date_fin": "2026-09-30",
+   "motif_suspension": "Cambio de tratamiento"
   },
   {
    "date": "2025-07-19",
@@ -2537,7 +2570,7 @@
    "nom": "CALCIFEDIOL AMPOLLAS BEBIBLES 0.266 MG/1.5 ML",
    "dose": "0.266mg/1.5mL",
    "frequence": "",
-   "statut": "terminado",
+   "statut": "en_cours",
    "source": "Hospital General de Castellon - Urgencias",
    "pdf_id": "PDF006",
    "date_fin": "2026-07-21"
@@ -2558,18 +2591,22 @@
    "nom": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT",
    "dose": "-",
    "frequence": "1 envase cada 60 días",
-   "statut": "en_cours",
+   "statut": "abandonne",
    "source": "Historia Clínica Resumida",
-   "pdf_id": "PDF003"
+   "pdf_id": "PDF003",
+   "motif_suspension": "Hipotensión",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2025-12-12",
    "nom": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT",
    "dose": "N/A",
    "frequence": "1 envase cada 60 día/s CRÓNICO",
-   "statut": "en_cours",
+   "statut": "abandonne",
    "source": "Historia Clínica Resumida",
-   "pdf_id": "PDF002"
+   "pdf_id": "PDF002",
+   "motif_suspension": "Hipotensión",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2026-01-24",
@@ -2597,7 +2634,9 @@
    ],
    "comida": "durante",
    "duracion": "-1",
-   "frecuencia": "diario"
+   "frecuencia": "diario",
+   "motif_suspension": "Insuficiencia renal",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2026-01-24",
@@ -2615,7 +2654,7 @@
    "nom": "ACETILCISTEINA",
    "dose": "600mg",
    "frequence": "1 comp/24h",
-   "statut": "abandonne",
+   "statut": "a_demanda",
    "source": "Hospital General de Castellon - Urgencias (Traumatología)",
    "pdf_id": "PDF005",
    "date_debut": "2026-01-24",
@@ -2672,7 +2711,9 @@
    "frequence": "cada 24h",
    "statut": "en_cours",
    "source": "Clínica Diago Muñoz",
-   "pdf_id": "PDF005"
+   "pdf_id": "PDF005",
+   "motif_suspension": "Insuficiencia renal",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2026-02-24",
@@ -2700,7 +2741,7 @@
    "nom": "Acetilcisteína",
    "dose": "1 comp",
    "frequence": "cada 24h",
-   "statut": "abandonne",
+   "statut": "a_demanda",
    "source": "Clínica Diago Muñoz",
    "pdf_id": "PDF005",
    "date_fin": "2026-07-20",
@@ -2721,7 +2762,7 @@
    "nom": "ACETILCISTEÍNA",
    "dose": "1 comprimido",
    "frequence": "cada 24h",
-   "statut": "abandonne",
+   "statut": "a_demanda",
    "source": "Clínica Diago Muñoz",
    "pdf_id": "PDF008",
    "date_fin": "2026-07-20",
@@ -2748,17 +2789,18 @@
    "nom": "XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA (BAYER)",
    "dose": "20mg",
    "frequence": "1 comprimido cada día durante 150 días",
-   "statut": "terminado",
+   "statut": "en_cours",
    "source": "Historia Clínica Resumida",
    "pdf_id": "PDF003",
-   "date_fin": "2026-07-15",
+   "date_fin": "2026-10-01",
    "date_debut": "2022-01-16",
    "receta": "no_financiado",
    "dosis": "0",
    "slots": [],
    "comida": "",
    "duracion": "0",
-   "frecuencia": "diario"
+   "frecuencia": "diario",
+   "motif_suspension": "Insuficiencia renal"
   },
   {
    "date": "2026-07-16",
@@ -2777,7 +2819,9 @@
    "frequence": "1 comp/24h",
    "statut": "en_cours",
    "source": "Hospital General de Castellon - Urgencias",
-   "pdf_id": "PDF001"
+   "pdf_id": "PDF001",
+   "motif_suspension": "Insuficiencia renal",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2026-07-16",
@@ -2805,11 +2849,11 @@
    "nom": "Atrovent (nebulización)",
    "dose": "",
    "frequence": "",
-   "statut": "suspendu",
+   "statut": "abandonne",
    "source": "Hospital General de Castellon - Urgencias",
    "pdf_id": "PDF001",
-   "motif_suspension": "Mejoría clínica",
-   "date_fin": "2026-08-15"
+   "motif_suspension": "Cambio de tratamiento",
+   "date_fin": "2026-09-30"
   },
   {
    "date": "2026-07-16",
@@ -2883,7 +2927,9 @@
    "pdf_id": "PDF011",
    "slots": [
     "am"
-   ]
+   ],
+   "motif_suspension": "Insuficiencia renal",
+   "date_fin": "2026-10-01"
   },
   {
    "date": "2026-07-20",
@@ -2932,7 +2978,7 @@
    "nom": "DONEPEZILO",
    "dose": "10mg",
    "frequence": "1x/24h",
-   "statut": "abandonne",
+   "statut": "en_cours",
    "source": "Hospital de la Magdalena — Unidad Memoria y Demencias",
    "pdf_id": "PDF001",
    "date_fin": "2026-08-14",
@@ -2944,7 +2990,7 @@
    "nom": "Neuralex 2 cápsula",
    "dose": "",
    "frequence": "",
-   "statut": "en_cours",
+   "statut": "terminado",
    "source": "Hospital de la Magdalena — Unidad Memoria y Demencias",
    "pdf_id": "PDF001",
    "date_debut": "2026-08-12",
@@ -2958,11 +3004,12 @@
    "duracion": "-1",
    "frecuencia": "diario",
    "prescriptor": "PR3",
-   "receta": "no_financiado"
+   "receta": "no_financiado",
+   "date_fin": "2026-10-01"
   },
   {
    "nom": "ARICEPT",
-   "statut": "en_cours",
+   "statut": "a_demanda",
    "dosis": "1 comprimido",
    "date_debut": "2026-08-12",
    "prescriptor": "PR3",
@@ -3872,6 +3919,11 @@
    "pdf_id": "PDF002"
   }
  ],
+ "diagnosticos": [],
+ "escalas": [],
+ "citas": [],
+ "prescripciones": [],
+ "bacteriologia": [],
  "vacunas": {
   "11": "dTpa (difteria-tétanos-tosferina)",
   "19": "Hexavalente (DTPa-VPI-Hib-HB)",
@@ -4646,93 +4698,7 @@
   "PR2": "AGUÑA LEAL CONSOLACION Adjunto",
   "PR3": "ARNAU BARNES JAVIER"
  },
- "fuentes": {
-  "S001": "Hospital General de Castellon - Urgencias",
-  "S002": "Hospital General de Castellón — Urgencias",
-  "S003": "Complejo Hospitalario de Navarra — Servicio de Neumología HVC",
-  "S004": "Complejo Hospitalario de Navarra — Servicio de Urgencias",
-  "S005": "Clínica Universidad de Navarra — Medicina Nuclear-P.E.T.",
-  "S007": "Clínica Diago Muñoz",
-  "S008": "ASCIRES Castelló",
-  "S009": "Hospital General de Castellón — Unidad Corta Estancia",
-  "S010": "Hospital de la Magdalena — Unidad Memoria y Demencias"
- },
- "extracciones": {
-  "IC de Urgencias_18072026024428.pdf|42184": {
-   "archivo": "IC de Urgencias_18072026024428.pdf",
-   "bytes": 42184,
-   "modelo": "claude-sonnet-5",
-   "fecha": "18/7/2026, 15:11:06"
-  },
-  "Historia Clínica Resumida_17072026065532.pdf|56603": {
-   "archivo": "Historia Clínica Resumida_17072026065532.pdf",
-   "bytes": 56603,
-   "modelo": "claude-sonnet-5",
-   "fecha": "18/7/2026, 16:24:59"
-  },
-  "Ascires Scanne 2026-05-06 2 Radiologia (informe clinica).pdf|1044779": {
-   "archivo": "Ascires Scanne 2026-05-06 2 Radiologia (informe clinica).pdf",
-   "bytes": 1044779,
-   "modelo": "claude-sonnet-5",
-   "fecha": "19/7/2026, 12:13:07"
-  },
-  "Navarra_atencion_en_urgencias _25-09-2019.pdf|168194": {
-   "archivo": "Navarra_atencion_en_urgencias _25-09-2019.pdf",
-   "bytes": 168194,
-   "modelo": "claude-sonnet-5",
-   "fecha": "19/7/2026, 12:14:24"
-  },
-  "Scanne 2026-05-06 2 Neurologia DM.pdf|780951": {
-   "archivo": "Scanne 2026-05-06 2 Neurologia DM.pdf",
-   "bytes": 780951,
-   "modelo": "claude-sonnet-5",
-   "fecha": "19/7/2026, 12:16:36"
-  },
-  "Scanne 2026-05-06 5 Neurologia CUN.pdf|615552": {
-   "archivo": "Scanne 2026-05-06 5 Neurologia CUN.pdf",
-   "bytes": 615552,
-   "modelo": "claude-sonnet-5",
-   "fecha": "19/7/2026, 12:17:10"
-  },
-  "Navarra consulta_externa_especializada.pdf|238970": {
-   "archivo": "Navarra consulta_externa_especializada.pdf",
-   "bytes": 238970,
-   "modelo": "claude-sonnet-5",
-   "fecha": "19/7/2026, 12:18:44"
-  },
-  "Scanne 2026-05-06 2 Neurologia DM.pdf|774828": {
-   "archivo": "Scanne 2026-05-06 2 Neurologia DM.pdf",
-   "bytes": 774828,
-   "modelo": "claude-sonnet-5",
-   "fecha": "19/7/2026, 12:19:22"
-  },
-  "Scanne 2026-05-06 2 Radiologia (informe clinica).pdf|1046335": {
-   "archivo": "Scanne 2026-05-06 2 Radiologia (informe clinica).pdf",
-   "bytes": 1046335,
-   "modelo": "claude-sonnet-5",
-   "fecha": "19/7/2026, 12:20:55"
-  },
-  "Scanne 2026-05-06 5 Neurologia CUN.pdf|613750": {
-   "archivo": "Scanne 2026-05-06 5 Neurologia CUN.pdf",
-   "bytes": 613750,
-   "modelo": "claude-sonnet-5",
-   "fecha": "19/7/2026, 12:21:18"
-  },
-  "ICA-IC de Alta_200720265790683.pdf|5553952": {
-   "archivo": "ICA-IC de Alta_200720265790683.pdf",
-   "bytes": 5553952,
-   "modelo": "claude-sonnet-5",
-   "fecha": "21/7/2026, 22:20:45"
-  },
-  "AGR0000-ICU362012296.pdf|1615771": {
-   "archivo": "AGR0000-ICU362012296.pdf",
-   "bytes": 1615771,
-   "modelo": "claude-sonnet-5",
-   "fecha": "13/8/2026, 11:02:04"
-  }
- },
  "custom_params": {},
- "custom_sources": [],
  "correcciones": [],
  "auditoria_conformes": [
   {
@@ -4885,6 +4851,100 @@
    "huella": "17|2026-07-20|43.8"
   }
  },
+ "listas": {},
+ "dudas": [],
+ "identificadores_dudosos": [],
+ "pdfs": {
+  "directorio": "/pacientes/APA0000/sources",
+  "archivos": {}
+ },
+ "_demo": "Expediente de DEMOSTRACIÓN. Los datos clínicos son reales —las medidas, las fechas, los tratamientos— pero la persona no existe: nombre, SIP y NHC están cambiados. El sexo y la fecha de nacimiento se conservan: sin ellos las curvas y las escalas no dicen nada.",
+ "fuentes": {
+  "S001": "Hospital General de Castellon - Urgencias",
+  "S002": "Hospital General de Castellón — Urgencias",
+  "S003": "Complejo Hospitalario de Navarra — Servicio de Neumología HVC",
+  "S004": "Complejo Hospitalario de Navarra — Servicio de Urgencias",
+  "S005": "Clínica Universidad de Navarra — Medicina Nuclear-P.E.T.",
+  "S007": "Clínica Diago Muñoz",
+  "S008": "ASCIRES Castelló",
+  "S009": "Hospital General de Castellón — Unidad Corta Estancia",
+  "S010": "Hospital de la Magdalena — Unidad Memoria y Demencias"
+ },
+ "extracciones": {
+  "IC de Urgencias_18072026024428.pdf|42184": {
+   "archivo": "IC de Urgencias_18072026024428.pdf",
+   "bytes": 42184,
+   "modelo": "claude-sonnet-5",
+   "fecha": "18/7/2026, 15:11:06"
+  },
+  "Historia Clínica Resumida_17072026065532.pdf|56603": {
+   "archivo": "Historia Clínica Resumida_17072026065532.pdf",
+   "bytes": 56603,
+   "modelo": "claude-sonnet-5",
+   "fecha": "18/7/2026, 16:24:59"
+  },
+  "Ascires Scanne 2026-05-06 2 Radiologia (informe clinica).pdf|1044779": {
+   "archivo": "Ascires Scanne 2026-05-06 2 Radiologia (informe clinica).pdf",
+   "bytes": 1044779,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:13:07"
+  },
+  "Navarra_atencion_en_urgencias _25-09-2019.pdf|168194": {
+   "archivo": "Navarra_atencion_en_urgencias _25-09-2019.pdf",
+   "bytes": 168194,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:14:24"
+  },
+  "Scanne 2026-05-06 2 Neurologia DM.pdf|780951": {
+   "archivo": "Scanne 2026-05-06 2 Neurologia DM.pdf",
+   "bytes": 780951,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:16:36"
+  },
+  "Scanne 2026-05-06 5 Neurologia CUN.pdf|615552": {
+   "archivo": "Scanne 2026-05-06 5 Neurologia CUN.pdf",
+   "bytes": 615552,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:17:10"
+  },
+  "Navarra consulta_externa_especializada.pdf|238970": {
+   "archivo": "Navarra consulta_externa_especializada.pdf",
+   "bytes": 238970,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:18:44"
+  },
+  "Scanne 2026-05-06 2 Neurologia DM.pdf|774828": {
+   "archivo": "Scanne 2026-05-06 2 Neurologia DM.pdf",
+   "bytes": 774828,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:19:22"
+  },
+  "Scanne 2026-05-06 2 Radiologia (informe clinica).pdf|1046335": {
+   "archivo": "Scanne 2026-05-06 2 Radiologia (informe clinica).pdf",
+   "bytes": 1046335,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:20:55"
+  },
+  "Scanne 2026-05-06 5 Neurologia CUN.pdf|613750": {
+   "archivo": "Scanne 2026-05-06 5 Neurologia CUN.pdf",
+   "bytes": 613750,
+   "modelo": "claude-sonnet-5",
+   "fecha": "19/7/2026, 12:21:18"
+  },
+  "ICA-IC de Alta_200720265790683.pdf|5553952": {
+   "archivo": "ICA-IC de Alta_200720265790683.pdf",
+   "bytes": 5553952,
+   "modelo": "claude-sonnet-5",
+   "fecha": "21/7/2026, 22:20:45"
+  },
+  "APA0000-ICU362012296.pdf|1615771": {
+   "archivo": "APA0000-ICU362012296.pdf",
+   "bytes": 1615771,
+   "modelo": "claude-sonnet-5",
+   "fecha": "13/8/2026, 11:02:04"
+  }
+ },
+ "custom_sources": [],
  "patrones_curvas": [
   {
    "id": "PT1786196489166",
@@ -5129,46 +5189,9 @@
    "pdf_id": "PDF036"
   }
  ],
- "pdfs": {
-  "directorio": "sources",
-  "archivos": {
-   "PDF001": "PDF001.pdf",
-   "PDF002": "PDF002.pdf",
-   "PDF003": "PDF003.pdf",
-   "PDF004": "PDF004.pdf",
-   "PDF005": "PDF005.pdf",
-   "PDF006": "PDF006.pdf",
-   "PDF007": "PDF007.pdf",
-   "PDF008": "PDF008.pdf",
-   "PDF009": "PDF009.pdf",
-   "PDF010": "PDF010.pdf",
-   "PDF011": "PDF011.pdf",
-   "PDF012": "PDF012.pdf",
-   "PDF013": "PDF013.pdf",
-   "PDF014": "PDF014.pdf",
-   "PDF015": "PDF015.pdf",
-   "PDF017": "PDF017.pdf",
-   "PDF018": "PDF018.pdf",
-   "PDF019": "PDF019.pdf",
-   "PDF020": "PDF020.pdf",
-   "PDF021": "PDF021.pdf",
-   "PDF022": "PDF022.pdf",
-   "PDF023": "PDF023.pdf",
-   "PDF024": "PDF024.pdf",
-   "PDF025": "PDF025.pdf",
-   "PDF026": "PDF026.pdf",
-   "PDF027": "PDF027.pdf",
-   "PDF028": "PDF028.pdf",
-   "PDF029": "PDF029.pdf",
-   "PDF030": "PDF030.pdf",
-   "PDF031": "PDF031.pdf",
-   "PDF032": "PDF032.pdf",
-   "PDF033": "PDF033.pdf",
-   "PDF034": "PDF034.pdf",
-   "PDF035": "PDF035.pdf",
-   "PDF036": "PDF036.pdf"
-  },
-  "_demo": "Cada documento es un CLON del mismo aviso: explica por que los originales no se publican. Los datos clinicos son reales; los PDF llevan el membrete y el nombre, y tacharlos no basta — un rectangulo negro no borra el texto de debajo."
- },
- "modificado": "2026-09-09T09:40:54.738Z"
+ "comentario_curvas": {
+  "texto": "**Comentario clínico — Curvas analíticas**\n\nLa PCR muestra una trayectoria oscilante a lo largo de cinco años, con picos destacados en enero 2022 (66,44 mg/L [PDF009]) y julio 2026 (80,5 mg/L [PDF001][PDF011]), separados por períodos de valores bajos o moderados. El último registro disponible (julio 2026) representa el valor más elevado de toda la serie, lo que supone una elevación marcada respecto al dato previo de junio 2026 (9,4 mg/L [PDF031]) en un intervalo de apenas seis semanas.\n\nLa bilirrubina permaneció estable y dentro de la normalidad habitual durante más de diez años (0,36–0,71 mg/dL, 2012–2026 [PDF007–PDF031]); sin embargo, en julio 2026 asciende a 2 mg/dL [PDF001][PDF011], coincidiendo en el tiempo con el pico máximo de PCR. La coincidencia temporal de ambas elevaciones es llamativa, aunque los datos disponibles no permiten establecer una explicación causal.\n\n**Preguntas para la consulta:**\n\n1. ¿Ha notado que la piel o el blanco de los ojos se han puesto amarillentos en estas últimas semanas?\n2. ¿Ha tenido fiebre, escalofríos o dolor de barriga desde que se hicieron estos últimos análisis?\n3. ¿Ha habido algún cambio en los medicamentos o en lo que come desde junio?",
+  "fecha": "5/10/2026, 17:29:01",
+  "huella": "22|2026-08-12|1|90"
+ }
 }

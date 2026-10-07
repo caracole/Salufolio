@@ -1338,7 +1338,7 @@ function muestraExpediente(){
        réel anonymisé sur 14 années. »
 
      El expediente lo lleva escrito —data_type: "demo"— y nadie lo leía
-     aquí. Quien abre AGR0000 debe saber lo que mira: los datos son de
+     aquí. Quien abre APA0000 debe saber lo que mira: los datos son de
      verdad, la persona no. */
   var nota = document.getElementById('exp-nota');
   if(DATOS.data_type === 'demo'){
@@ -1463,7 +1463,7 @@ function _situaListaEn(mat){
   }
   var k = busca();
   if(k < 0){
-    /* P-H, 05/10/2026 : « Un patient a disparu de ma liste ; je charge AGR0000 par le 📂
+    /* P-H, 05/10/2026 : « Un patient a disparu de ma liste ; je charge APA0000 par le 📂
        et la liste reste sur JB5678. » Un paciente abierto a propósito con el 📂 entra
        en la lista (y deja de estar suprimido) : lista y cuadro verde no se contradicen. */
     quitaOculto(mat);
@@ -1670,8 +1670,8 @@ function manda(id){
 /* ══════════════════════════════════════════════════════════════════════
    EL ENREGISTREMENT — UN SOLO .sf, EL RESTO EN historial (P-H, 01/10/2026)
 
-     pacientes/AGR0000/AGR0000.sf                          ← el vigente
-     pacientes/AGR0000/historial/AGR0000_AAAA-MM-DD-HHhMMmSS.sf
+     pacientes/APA0000/APA0000.sf                          ← el vigente
+     pacientes/APA0000/historial/APA0000_AAAA-MM-DD-HHhMMmSS.sf
                                                            ← los de antes,
                                        con la fecha que lleva el .sf
 
@@ -1703,7 +1703,7 @@ function _reExt(){
 }
 function tieneExtension(n){ return _reExt().test(n||''); }
 function aceptaLectura(){ return SF_GUARDA.extensiones_lectura.concat(['.json']).join(','); }
-/* AGR0000, AGR0000.sf, AGR0000_2026-09-15-18:52:11.sf → AGR0000 */
+/* APA0000, APA0000.sf, APA0000_2026-09-15-18:52:11.sf → APA0000 */
 function matriculaDeFichero(nombre){
   var m = /^([A-Za-z]{2,4}\d{3,6})(?:_|\.|$)/.exec(nombre||'');
   return m ? m[1] : String(nombre||'').replace(_reExt(),'');

@@ -66,8 +66,8 @@ var MF = (function(){
      v2 (P-H, 11/09) : « rien n'empêche la sélection manuelle comme elle
      est programmée » — mais le nom du fichier porte déjà la matricule,
      donc on accepte les deux :
-         carga('AGR0000', '../pacientes/AGR0000/')          la matricule
-         carga('AGR0000_2026-09-02_….mf')                   le fichier
+         carga('APA0000', '../pacientes/APA0000/')          la matricule
+         carga('APA0000_2026-09-02_….mf')                   le fichier
      Dans le second cas le dossier se déduit, et les deux ne peuvent
      plus se contredire. */
   /* ══════════════════════════════════════════════════════════════════
@@ -76,10 +76,10 @@ var MF = (function(){
      « Moi ça ne me plaît pas du tout » — y tenía razón: cada campo
      figuraba DOS veces en el fichero.
 
-         "paciente": { "nombre":"Ana", "matricula":"AGR0000", … }
-         "patient_name": "Ana Gómez Ruiz"      ← lo mismo
-         "patient_label": "AGR0000"            ← lo mismo
-         "sip": "12340000"                     ← lo mismo
+         "paciente": { "nombre":"Ana", "matricula":"APA0000", … }
+         "patient_name": "Ana Paciente Anonymo"      ← lo mismo
+         "patient_label": "APA0000"            ← lo mismo
+         "sip": "00000000"                     ← lo mismo
 
      El eco existía porque DIECISIETE programas leen « patient_label »,
      y no se rompen diecisiete de golpe. Pero no tenía por qué estar en
@@ -132,8 +132,8 @@ var MF = (function(){
   function carga(mat, carpeta){
     /* P-H, 01/10 : le courant s'appelle MATRICULE.sf, à la racine de
        pacientes/MATRICULE/. On accepte quand même :
-         · un fichier nommé (AGR0000_2026-09-15-18:52:11.sf, ou un vieux .mf) — tel quel ;
-         · un nom sans extension (la casa passait AGR0000_2026-09-18_00h01) —
+         · un fichier nommé (APA0000_2026-09-15-18:52:11.sf, ou un vieux .mf) — tel quel ;
+         · un nom sans extension (la casa passait APA0000_2026-09-18_00h01) —
            on charge alors le courant, MATRICULE.sf. */
     var m = matriculaDe(mat);
     if(m !== matricula){ carpetaH = null; carpetaMat = null; }   /* un autre patient : autre dossier */
@@ -400,8 +400,8 @@ var MF = (function(){
      (P-H, 30/09/2026 ; mis à jour le 01/10/2026)
 
      La regla :
-         pacientes/AGR0000/AGR0000.sf              ← el courant, nom fixe, SANS suffixe
-         pacientes/AGR0000/historial/AGR0000_2026-09-15-18h52m11.sf
+         pacientes/APA0000/APA0000.sf              ← el courant, nom fixe, SANS suffixe
+         pacientes/APA0000/historial/APA0000_2026-09-15-18h52m11.sf
                                                     ← les états d'avant, nommés d'après
                                                       la date que porte le .sf lui-même
      Et PAS D'AUTRES FICHIERS dans le dossier du patient.
@@ -477,8 +477,8 @@ var MF = (function(){
   }
   function _tieneExtension(nombre){ return _reExtension().test(nombre||''); }
 
-  /* la matricule que porte un nom de fichier : AGR0000, AGR0000.sf et
-     AGR0000_2026-09-15-18:52:11.sf sont du même patient.
+  /* la matricule que porte un nom de fichier : APA0000, APA0000.sf et
+     APA0000_2026-09-15-18:52:11.sf sont du même patient.
      (matricule = capitales du prénom + du nom + 4 derniers chiffres du SIP) */
   function matriculaDe(nombre){
     var m = /^([A-Za-z]{2,4}\d{3,6})(?:_|\.|$)/.exec(nombre||'');
@@ -2150,7 +2150,7 @@ async function _archivaViejas(hist){
   }
 
   /* ── le démarrage type d'un module ── */
-  /* ══ la forme courte : ?paciente=AGR0000_….mf  (P-H, 11/09) ══
+  /* ══ la forme courte : ?paciente=APA0000_….mf  (P-H, 11/09) ══
      Le nom du fichier porte la matricule, donc le dossier s'en déduit.
      Un seul paramètre au lieu de deux, et ils ne peuvent plus se
      contredire. L'ancienne forme ?mf=…&carpeta=… marche toujours, et
@@ -2168,7 +2168,7 @@ async function _archivaViejas(hist){
   function arranca(opciones){
     var p=params();
     avisaNavegador();
-    /* la forme courte : ?paciente=AGR0000_….mf — le dossier se déduit */
+    /* la forme courte : ?paciente=APA0000_….mf — le dossier se déduit */
     if(!p.mf && p.paciente){
       p.mf = p.paciente;
       var _m = /^([A-Za-z]{2,4}\d{3,6})_/.exec(p.paciente);

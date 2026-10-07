@@ -1,16 +1,16 @@
-/* LOS PACIENTES — la demostracion, 2026.09.18-00:06:22 */
+/* LOS PACIENTES — la demostracion, 2026.10.07-17:17:03 */
 var SF_PACIENTES = window.SF_PACIENTES = {
  "_doctrina": "Los pacientes de la DEMOSTRACION. La tabla de casa de P-H no se publica.",
- "version": "2026.09.18-00:06:22",
+ "version": "2026.10.07-17:17:03",
  "carpeta": "../../pacientes/",
  "pacientes": [
   {
-   "matricula": "AGR0000",
-   "nombre": "Ana Gómez Ruiz",
-   "sip": "12340000",
+   "matricula": "APA0000",
+   "nombre": "Ana Paciente Anonymo",
+   "sip": "00000000",
    "demo": true,
    "ficheros": [
-    "AGR0000_2026-09-18_00h01.sf"
+    "APA0000.sf"
    ]
   }
  ]

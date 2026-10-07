@@ -61,7 +61,7 @@ Versión 2026.09.19-18:15:47
   "patient_name"          Nombre y apellidos, tal como se escriben.
   "patient_label"         La MATRÍCULA: tres iniciales + cuatro cifras del
                           SIP. Ejemplo: Ana García Ruiz, SIP
-                          12340000 → AGR0000.
+                          00000000 → APA0000.
                           Es lo que da nombre a su carpeta y a sus
                           ficheros. No cambia nunca.
 
