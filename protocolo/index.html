@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-11 18:20:41 par assembleur.py 2026.10.10-17:22:34 -->
+<!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-11 18:42:12 par assembleur.py 2026.10.10-17:22:34 -->
 <html lang="es">
 <head>
 <!-- Versión 2026.09.19-18:15:47 -->
@@ -2231,7 +2231,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.10.11.97-SAT';
+const MFP_VERSION = '2026.10.11.98-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
@@ -2954,17 +2954,56 @@ const BORNES_SAISIE = {
   'c-tas': [50, 260], 'c-tad': [25, 170], 'c-fc': [25, 230],
   'c-spo2': [50, 100], 'c-temp': [30, 43.5], 'c-peso': [15, 250]
 };
+/* ═══ 11/10 (P-H) — LES BORNES LIÉES ═══ « petit détail de contrôle : tension
+   diastolique < systolique ». Une valeur peut être possible seule et
+   impossible à côté d'une autre : 150 est une diastolique, mais pas sous
+   une systolique de 120. La table dit quelles valeurs se tiennent ; ajouter
+   une relation demain, c'est ajouter une ligne.
+     menor : le champ qui doit rester en dessous
+     mayor : le champ qui doit rester au-dessus
+     paso  : l'écart minimum entre les deux (1 : égales, elles sont refusées) */
+const BORNES_LIEES = [
+  { menor: 'c-tad', mayor: 'c-tas', paso: 1 }
+];
+/* la valeur qu'un champ porte, si elle est dans SES PROPRES bornes ; sinon rien */
+function valorPosible(id) {
+  const e = document.getElementById(id), b = BORNES_SAISIE[id];
+  if (!e || !b || e.value === '') return null;
+  const v = parseFloat(String(e.value).replace(',', '.'));
+  return (isNaN(v) || v < b[0] || v > b[1]) ? null : v;
+}
+/* LES BORNES D'UN CHAMP, À L'INSTANT. Ce sont celles de BORNES_SAISIE ;
+   si le champ est EN COURS DE SAISIE (enSaisie), elles se resserrent sur
+   l'autre champ de chaque relation, quand il porte une valeur possible.
+   ⚠ C'EST LE CHAMP QU'ON SAISIT QUI CÈDE, jamais l'autre : il a été validé
+   avant. Sans cela « 120 / 150 » rendrait les DEUX valeurs fautives, et
+   toute la mesure s'effacerait. Pour la même raison une mesure relue telle
+   quelle n'est pas jugée : on ne retouche pas ce qu'on n'est pas en train
+   d'écrire. */
+function bornesDe(id, enSaisie) {
+  const b = BORNES_SAISIE[id]; if (!b) return null;
+  let lo = b[0], hi = b[1];
+  if (enSaisie) BORNES_LIEES.forEach(function (r) {
+    if (r.menor === id) { const v = valorPosible(r.mayor); if (v !== null) hi = Math.min(hi, v - r.paso); }
+    if (r.mayor === id) { const v = valorPosible(r.menor); if (v !== null) lo = Math.max(lo, v + r.paso); }
+  });
+  return [lo, hi];
+}
 function avisarDudoso(el) {
   if (!el || !el.id) return;
-  const b = BORNES_SAISIE[el.id]; if (!b) return;
+  const b = bornesDe(el.id, el === document.activeElement); if (!b) return;
   const v = parseFloat(String(el.value).replace(',', '.'));
   const mal = el.value !== '' && (isNaN(v) || v < b[0] || v > b[1]);
   el.classList.toggle('dudoso', mal);
   el.title = mal ? (b[0] + ' – ' + b[1]) : '';
 }
 /* 11/10 — ce champ porte-t-il, en ce moment, une valeur hors de ses bornes ? */
-function fueraDeBorne(el) {
-  const b = el && BORNES_SAISIE[el.id]; if (!b || el.value === '') return false;
+/* enSaisie : le champ est celui qu'on écrit (ses bornes se resserrent sur le
+   champ lié). Sans mention, on regarde s'il a la main. À la SORTIE du champ
+   il ne l'a déjà plus : salidaBorne le dit donc expressément. */
+function fueraDeBorne(el, enSaisie) {
+  const b = el && bornesDe(el.id, enSaisie === undefined ? el === document.activeElement : enSaisie);
+  if (!b || el.value === '') return false;
   const v = parseFloat(String(el.value).replace(',', '.'));
   return isNaN(v) || v < b[0] || v > b[1];
 }
@@ -2995,7 +3034,7 @@ function toastAlerte(msg) {
    si le réglage le veut (table : bornes · son, timbre, vibre_ms), et un
    message dit quel champ et quelles bornes. */
 function senalBorne(el) {
-  const b = BORNES_SAISIE[el.id], c = el.closest('.cval') || el;
+  const b = bornesDe(el.id, true), c = el.closest('.cval') || el;   /* les bornes DU MOMENT : « 25 – 119 » sous une systolique de 120 */
   c.classList.remove('borne-fuera'); void c.offsetWidth; c.classList.add('borne-fuera');
   setTimeout(function () { c.classList.remove('borne-fuera'); }, 1200);
   const r = (UI_TABLA && UI_TABLA.bornes) || {};
@@ -3009,7 +3048,7 @@ function senalBorne(el) {
    signale. Rien n'avait été enregistré (constLeer) ; on repasse par l'écoute
    unique pour que la fiche et le récapitulatif soient à jour. */
 function salidaBorne(el) {
-  if (!fueraDeBorne(el)) return false;
+  if (!fueraDeBorne(el, true)) return false;
   el.value = ''; avisarDudoso(el);
   const f = CAMPOS_GUARDA[el.id]; if (f) { try { f(el); } catch (e) {} }
   senalBorne(el);
@@ -5081,7 +5120,7 @@ function constLeer(e) {
   /* 11/10 (P-H) — HORS BORNES, LA VALEUR NE S'ENREGISTRE PAS. Pendant la
      frappe c'est une valeur inachevée (« 12 » avant « 120 ») ; à la sortie
      du champ, si elle l'est restée, salidaBorne l'efface. */
-  const b = BORNES_SAISIE[e.id];
+  const b = bornesDe(e.id, e === document.activeElement);
   return (b && (n < b[0] || n > b[1])) ? null : n;
 }
 function constPoner(e, v) {
@@ -7651,7 +7690,7 @@ setInterval(() => { const f = document.getElementById('hdr-fecha').textContent;
      programme dont il emploie les tables. Retirer cette ligne le retire. -->
 <!-- MB:BEGIN modules/pave.js -->
 <!-- ═══════════════════════════════════════════════════════════════════════
-     LE PAVÉ DE SAISIE — Salufolio Protocolo            module 2026.10.11-15:26:52
+     LE PAVÉ DE SAISIE — Salufolio Protocolo            module 2026.10.11-18:34:23
      (P-H + Claude, maquette du 10/10/2026, porté le 11/10/2026)
 
      D'où il vient : une personne du centre de jour a reproché au Protocolo
@@ -7890,7 +7929,10 @@ const PAVE_ECHELLE = [
      Tout se compte en entiers (dixièmes pour un champ à une décimale) :
      aucune erreur d'arrondi ne peut laisser passer 43,6. */
   function mene(id, texto) {
-    const b = (typeof BORNES_SAISIE !== 'undefined' && BORNES_SAISIE[id]) || null, def = PAVE_CAMPOS[id];
+    /* 11/10 — les bornes DU MOMENT (bornesDe) : celles du champ, resserrées par
+       le champ qui lui est lié — la diastolique reste sous la systolique */
+    const b = (typeof bornesDe === 'function') ? bornesDe(id, true)
+            : ((typeof BORNES_SAISIE !== 'undefined' && BORNES_SAISIE[id]) || null), def = PAVE_CAMPOS[id];
     if (!b || !def || def.tipo === 'hora' || texto === '') return true;
     const D = def.decimales || 0, E = Math.pow(10, D), lo = Math.round(b[0] * E), hi = Math.round(b[1] * E);
     const touche = function (a, z) { return a <= hi && z >= lo; };   /* [a, z] : ce que ce début peut encore donner */
@@ -8369,7 +8411,7 @@ const PAVE_ECHELLE = [
   window.paveReponer = reponer;         /* retour à la place automatique */
   window.paveEtat = function () {       /* pour le banc d'essai : où en est le pavé */
     const r = pave.getBoundingClientRect();
-    return { version: '2026.10.11-15:26:52', allume: allume, ouvert: abierto(), champ: campo ? campo.id : null, remplace: reemplazar,
+    return { version: '2026.10.11-18:34:23', allume: allume, ouvert: abierto(), champ: campo ? campo.id : null, remplace: reemplazar,
              cote: PLAN.cote, appui: PLAN.appui, monte: PLAN.monte, toits: PLAN.toits, decale: POS.manual, dx: POS.dx, dy: POS.dy,
              x: Math.round(r.left), y: Math.round(r.top), larg: Math.round(r.width), haut: Math.round(r.height),
              pose: (performance.now() - tMovido) >= num('repos_ms', 250) };
