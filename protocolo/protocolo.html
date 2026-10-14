@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-14 22:21:03 par assembleur.py 2026.10.14-22:03:55 -->
+<!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-14 22:37:09 par assembleur.py 2026.10.14-22:25:02 -->
 <html lang="es">
 <head>
 <!-- Versión 2026.09.19-18:15:47 -->
@@ -2075,7 +2075,7 @@ window.LANGUES = {
 <!-- MB:BEGIN modules/rubricas-tabla.js -->
 <script>
 /* ══════════════════════════════════════════════════════════════════════
-   TABLA DE LAS SECCIONES DE LA DOCUMENTACIÓN — versión 2026.10.14-18:08:43
+   TABLA DE LAS SECCIONES DE LA DOCUMENTACIÓN — versión 2026.10.14-22:35:26
    (P-H + Claude, 14/10/2026). Sólo datos: el motor está en rubricas.js.
 
    palabras : las palabras de la ventana, en las cuatro lenguas
@@ -2091,25 +2091,33 @@ window.LANGUES = {
    Si falta el texto en una lengua, se ofrece el español : su BANDERA aparece
    junto al título, y la burbuja dice «solo en …» en la lengua elegida.
    lenguas : el nombre de cada lengua, en cada lengua (para esa burbuja).
+
+   anterior : PASARELA (14/10, P-H) — el manual ilustrado de antes, en el sitio,
+   mientras los folletos nuevos no existan. Para retirarla : borrar esta línea.
    ══════════════════════════════════════════════════════════════════════ */
 window.TABLA_RUBRICAS = {
   base: 'es',
+  anterior: { archivo: 'doc.pdf', version: 'v1.2' },
   palabras: {
     es: { enlace:'Documentación por secciones', tit:'Documentación', volver:'Índice', ok:'Entendido',
           prep:'en preparación', solo:'solo en {L}',
           pdf:'Folleto ilustrado (PDF)', pdf_prep:'Folleto ilustrado: en preparación', red:'necesita conexión',
+          anterior:'Manual ilustrado — versión anterior ({V})',
           lenguas:{ es:'español', va:'valenciano', fr:'francés', en:'inglés' } },
     va: { enlace:'Documentació per seccions', tit:'Documentació', volver:'Índex', ok:'Entesos',
           prep:'en preparació', solo:'només en {L}',
           pdf:'Fullet il·lustrat (PDF)', pdf_prep:'Fullet il·lustrat: en preparació', red:'necessita connexió',
+          anterior:'Manual il·lustrat — versió anterior ({V})',
           lenguas:{ es:'castellà', va:'valencià', fr:'francés', en:'anglés' } },
     fr: { enlace:'Documentation par rubriques', tit:'Documentation', volver:'Sommaire', ok:'Compris',
           prep:'en préparation', solo:'seulement en {L}',
           pdf:'Livret illustré (PDF)', pdf_prep:'Livret illustré : en préparation', red:'nécessite une connexion',
+          anterior:'Manuel illustré — version précédente ({V})',
           lenguas:{ es:'espagnol', va:'valencien', fr:'français', en:'anglais' } },
     en: { enlace:'Documentation by section', tit:'Documentation', volver:'Contents', ok:'Got it',
           prep:'in preparation', solo:'{L} only',
           pdf:'Illustrated booklet (PDF)', pdf_prep:'Illustrated booklet: in preparation', red:'needs a connection',
+          anterior:'Illustrated manual — previous version ({V})',
           lenguas:{ es:'Spanish', va:'Valencian', fr:'French', en:'English' } }
   },
   lista: [
@@ -2212,7 +2220,7 @@ window.TABLA_RUBRICAS = {
 <!-- MB:END modules/rubricas-tabla.js -->
 <!-- MB:BEGIN modules/rubricas.js -->
 <style>
-/* Ventana de la documentación por secciones — versión 2026.10.14-18:08:43.
+/* Ventana de la documentación por secciones — versión 2026.10.14-22:35:26.
    Sólo variables : las medidas propias se declaran aquí, los colores son los del tema. */
 :root{ --rub-num:28px; --rub-num-letra:13px; --rub-res-letra:13.5px; --rub-marca-letra:11.5px;
        --rub-texto-letra:15px; --rub-h-letra:16px; --rub-apagado:.45; --rub-sur-accent:#fff;
@@ -2235,10 +2243,12 @@ window.TABLA_RUBRICAS = {
 .rub-texto p{margin:0 0 10px}
 .rub-pdf{display:flex;align-items:center;gap:8px;min-height:var(--ui-touch);color:var(--accent);text-decoration:none}
 .rub-pdf.apagado{color:var(--muted)}
+.rub-anterior{flex:0 0 auto;border-top:1px solid var(--border);padding:8px 4px 2px}
+.rub-anterior .rub-pdf{display:block;padding:10px 0}
 </style>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
-   EL MOTOR DE LA DOCUMENTACIÓN POR SECCIONES — versión 2026.10.14-18:08:43
+   EL MOTOR DE LA DOCUMENTACIÓN POR SECCIONES — versión 2026.10.14-22:35:26
    (P-H + Claude, 14/10/2026)
 
    Lee TABLA_RUBRICAS (rubricas-tabla.js), TABLA_ENLACES.doc.base, y las
@@ -2276,6 +2286,11 @@ function _rubTexto(r, l) {
 }
 function _rubBandera(l) {
   return (typeof BANDERAS !== 'undefined' && BANDERAS[l]) || l.toUpperCase();
+}
+/* TABLA_ENLACES se declara con const en el esqueleto : no cuelga de window,
+   se la busca por su nombre. */
+function _rubBase() {
+  return (typeof TABLA_ENLACES !== 'undefined' && TABLA_ENLACES.doc && TABLA_ENLACES.doc.base) || '';
 }
 function _rubEsc(s) {
   return String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
@@ -2315,12 +2330,22 @@ function verRubricas() {
     }).join('');
   }
 
+  /* 14/10 — la PASARELA hacia el manual ilustrado de antes (TABLA_RUBRICAS.anterior) */
+  function anterior() {
+    const A = T.anterior;
+    const base = _rubBase();
+    if (!A || !A.archivo || !base) return '';
+    return '<div class="rub-anterior"><a class="rub-pdf" href="' + _rubEsc(base + A.archivo) + '" target="_blank" rel="noopener">📄 ' +
+      _rubEsc(String(w('anterior')).replace('{V}', A.version || '')) +
+      ' <span class="rub-marca">' + _rubEsc(w('red')) + '</span></a></div>';
+  }
+
   function seccion(r) {
     const tx = _rubTexto(r, lengua);
     const cuerpo = tx.lineas.map(([tipo, s]) =>
       tipo === 'h' ? '<h4>' + _rubEsc(s) + '</h4>' : '<p>' + _rubEsc(s) + '</p>').join('');
     const fichero = (r.pdf || {})[lengua] || (r.pdf || {})[T.base];
-    const base = (window.TABLA_ENLACES && TABLA_ENLACES.doc && TABLA_ENLACES.doc.base) || '';
+    const base = _rubBase();
     const pdf = (fichero && base)
       ? '<a class="rub-pdf" href="' + _rubEsc(base + fichero) + '" target="_blank" rel="noopener">📄 ' +
           _rubEsc(w('pdf')) + ' <span class="rub-marca">' + _rubEsc(w('red')) + '</span></a>'
@@ -2344,7 +2369,7 @@ function verRubricas() {
       abierta = null;
       ov.innerHTML = '<div class="dlg lista ay-carta" style="max-width:520px">' +
         '<div class="lista-tit">📄 ' + _rubEsc(w('tit')) + '</div>' + banderas() +
-        '<div class="lista-cuerpo" style="gap:0">' + lista() + '</div>' +
+        '<div class="lista-cuerpo" style="gap:0">' + lista() + anterior() + '</div>' +
         '<button class="btn" data-fin="1">' + _rubEsc(w('ok')) + '</button></div>';
     }
     if (typeof ajustaLista === 'function') ajustaLista(ov);
@@ -2527,7 +2552,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.10.14.100-SAT';
+const MFP_VERSION = '2026.10.14.101-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
