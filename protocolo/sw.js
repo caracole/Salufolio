@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.09.19-18:15:47
+   Versión 2026.10.14-21:45:11
    SW.JS — le service-worker du Protocolo móvil
    (P-H + Claude, 08/09/2026)
 
@@ -19,11 +19,14 @@
    anciens caches sont effacés et le Protocolo se recharge.
    ══════════════════════════════════════════════════════════════════════ */
 
-const VERSION = 'protocolo-2026.10.07.1938';
+/* 14/10 (P-H) — la aplicación es protocolo.html ; index.html no es más que la
+   puerta corta. El PDF ya no se guarda : la aplicación no lo llama, y pesa
+   2,3 Mo. Un número NUEVO borra la memoria vieja de los teléfonos. */
+const VERSION = 'protocolo-2026.10.14.100';
 const GUARDAR = [
   './',
   './index.html',
-  './doc.pdf',
+  './protocolo.html',
   './demo.json'
 ];
 
@@ -32,9 +35,9 @@ self.addEventListener('install', function(ev){
   ev.waitUntil(
     caches.open(VERSION)
       .then(function(c){ return c.addAll(GUARDAR); })
-      /* si le pdf manque, on garde au moins le programme */
+      /* si un fichier manque, on garde au moins le programme */
       .catch(function(){ return caches.open(VERSION).then(function(c){
-        return c.addAll(['./index.html']); }); })
+        return c.addAll(['./index.html', './protocolo.html']); }); })
       .then(function(){ return self.skipWaiting(); })
   );
 });
@@ -69,7 +72,7 @@ self.addEventListener('fetch', function(ev){
         return caches.match(ev.request).then(function(r){
           if(r) return r;
           /* une page qu'on n'a pas : on rend le Protocolo lui-même */
-          if(ev.request.mode === 'navigate') return caches.match('./index.html');
+          if(ev.request.mode === 'navigate') return caches.match('./protocolo.html');
         });
       })
   );
