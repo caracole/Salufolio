@@ -188,11 +188,13 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
 .op-cas input{margin:2px 0 0;accent-color:var(--accent);cursor:pointer;
               flex:0 0 auto}
 .op-cas input:checked + span{color:var(--accent);font-weight:600}
-#op-texto{width:100%;padding:9px 11px;border:1px solid var(--border);
+#op-texto,#opi-texto,#opi-nombre{width:100%;padding:9px 11px;border:1px solid var(--border);
           border-radius:7px;background:var(--bg);color:var(--text);
           font-family:inherit;font-size:13px;line-height:1.6;resize:vertical;
           box-sizing:border-box}
-#op-texto:focus{outline:none;border-color:var(--accent)}
+#opi-nombre{margin-top:6px;padding:5px 11px;line-height:1.3}
+#opi-aviso:empty{display:none}
+#op-texto:focus,#opi-texto:focus,#opi-nombre:focus{outline:none;border-color:var(--accent)}
 .op-btn{padding:7px 16px;border-radius:8px;border:1px solid var(--accent);
         background:rgba(74,158,255,.14);color:var(--text);cursor:pointer;
         font-family:inherit;font-size:13px}
@@ -450,6 +452,7 @@ function pintaBandas(){
        prohíbe — nada en duro, todo en la tabla. */
     + bts.filter(function(b){
         if(b.id === 'tips' && !(window.MF && MF.tips)) return false;
+        if(b.id === 'pantalla' && !pantallaPosible()) return false;
         return true;
       }).map(function(b){
         return '<span class="b-b" data-b="'+b.id+'">'+b.icono+'</span>';
@@ -670,7 +673,10 @@ function recibe(forzado){
     if(hablando){ calla(); ponBoton(); } else di();
   };
   document.getElementById('bv-no').onclick = cierra;
-  document.getElementById('bv-si').onclick = function(){ cierra(); arrancaTour(); };
+  document.getElementById('bv-si').onclick = function(){
+    /* (P-H, 15/10) el clic sirve de gesto : la visita empieza en pantalla completa */
+    if(((T && T.pantalla) || {}).con_bienvenida) pantallaCompleta(true);
+    cierra(); arrancaTour(); };
 
   /* ══ MODALE (P-H, 23/09/2026) ══
      « si on clique à côté ça ferme et c'est fini » — et c'était vrai au
@@ -1051,22 +1057,241 @@ function mandaOpinion(el, texto, etapa, total, e, terminada){
   ponEstado(tx('op_gracias_corto'));
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   ⛶ PANTALLA COMPLETA — la misma que el panal (P-H, 15/10/2026)
+
+   « Salufolio est meilleur en plein écran ! (F11) »
+
+   El navegador no deja abrirse en pantalla completa por su cuenta : solo
+   puede pedirse durante un clic. Así que :
+     · el ⛶ de la banda la pone y la quita ;
+     · el « Sí, enséñemela » del recibimiento la pide de paso ;
+     · la casa se acuerda : quien la puso la recupera con el primer clic
+       de la sesión siguiente. Escape la quita — y la casa lo olvida.
+   La clave del recuerdo vive en casa.js (« pantalla »).
+   ══════════════════════════════════════════════════════════════════════ */
+function pantallaPosible(){
+  return !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+}
+function pantallaCompleta(solo_poner){
+  var e = document.documentElement;
+  if(document.fullscreenElement || document.webkitFullscreenElement){
+    if(solo_poner) return;
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document); return;
+  }
+  try{
+    var p = (e.requestFullscreen || e.webkitRequestFullscreen || function(){}).call(e);
+    if(p && p.catch) p.catch(function(){});
+  }catch(x){}
+}
+(function(){
+  function clave(){ return (((typeof T !== 'undefined' && T) ? T.pantalla : null) || {}).recuerdo; }
+  /* se anota cada cambio : puesta = 1, quitada (⛶ o Escape) = 0 */
+  document.addEventListener('fullscreenchange', function(){
+    var k = clave(); if(!k) return;
+    try{ localStorage.setItem(k, document.fullscreenElement ? '1' : '0'); }catch(x){}
+  });
+  /* la sesión siguiente : el primer clic, donde sea, la devuelve */
+  function alPrimerClic(ev){
+    document.removeEventListener('pointerdown', alPrimerClic, true);
+    /* si ese primer clic es el ⛶ mismo, él decide : no se pone dos veces */
+    if(ev.target && ev.target.closest && ev.target.closest('[data-b="pantalla"]')) return;
+    var k = clave(); if(!k) return;
+    var si = false; try{ si = localStorage.getItem(k) === '1'; }catch(x){}
+    if(si && pantallaPosible()) pantallaCompleta(true);
+  }
+  document.addEventListener('pointerdown', alPrimerClic, true);
+})();
+
+/* ══════════════════════════════════════════════════════════════════════
+   ✍️ LA OPINIÓN, DESDE CUALQUIER PANTALLA (P-H + Claude, 15/10/2026)
+
+   « Je n'aimerais pas qu'on me signale qu'on ne sait pas où mettre un
+     commentaire ! »
+
+   Hasta hoy solo la visita guiada recogía opiniones. Quien pasaba dos
+   horas en un módulo, como pide el cartel, no tenía dónde escribir.
+   El ✍️ vive en la banda de arriba, a la derecha de la brújula, y vale
+   para la Casa y para el módulo abierto.
+
+   El correo dice DESDE DÓNDE y la VERSIÓN — sin número, no se sabe qué
+   versión falla. Nunca el paciente ni sus datos.
+
+   Sin servidor : se prepara un correo. Y como en un ordenador de
+   facultad no suele haber programa de correo, « Copiar el texto »
+   permite pegarlo en el correo web. La ventana lo explica antes.
+
+   Todas las palabras viven en casa.js (« opinion ») ; aquí, ninguna.
+   ══════════════════════════════════════════════════════════════════════ */
+function abreOpinion(){
+  var O = (T && T.opinion) || {};
+  var E = O.etiquetas || {};
+  var R = String.fromCharCode(10);
+  var correo = O.correo || '';
+  var pon = function(s){ return String(s || '').replace(/\{correo\}/g, correo); };
+
+  /* desde dónde : el módulo abierto, o la Casa */
+  var enModulo = ACTUAL && ACTUAL.id && ACTUAL.nombre;
+  var donde = enModulo ? ((ACTUAL.icono ? ACTUAL.icono + ' ' : '') + t(ACTUAL.nombre))
+                       : t(O.lanzador);
+  var version = enModulo ? (ACTUAL.version || '?') : ((T && T.version) || '?');
+
+  var cuerpo =
+      '<div style="' + ((T.estilos||{}).text_1 || '') + ';margin-bottom:6px">'
+    +   esc(t(O.explica)).replace('{donde}', '<b>' + esc(donde) + '</b>')
+          .replace('{version}', '<span style="' + ((T.estilos||{}).text_2 || '') + '">v' + esc(version) + '</span>')
+    + '</div>'
+    + '<div style="' + ((T.estilos||{}).text_2 || '') + ';margin-bottom:8px">' + esc(pon(t(O.como))) + '</div>'
+    + '<div class="op-lin">' + esc(t(O.caras_pregunta)) + '</div>'
+    + '<div class="op-caras" id="opi-caras" style="margin:4px 0 8px">'
+    + CARAS.map(function(c){
+        return '<button class="op-c" data-n="' + c.n + '">' + c.cara + '</button>'; }).join('')
+    + '</div>'
+    + '<textarea id="opi-texto" rows="2" placeholder="' + esc(t(O.texto)) + '"></textarea>'
+    + '<input type="text" id="opi-nombre" placeholder="' + esc(t(O.nombre)) + '">'
+    + '<div id="opi-aviso" style="' + ((T.estilos||{}).text_2 || '') + ';margin-top:5px"></div>';
+
+  var pie = '<button class="op-btn suave" id="opi-copiar">' + esc(t(O.copiar)) + '</button>'
+          + '<button class="op-btn" id="opi-enviar">' + esc(t(O.enviar)) + '</button>';
+
+  var v = ventanaCasa(esc(t(O.titulo)), cuerpo, pie, null,
+                      { modal:true, movil:true, cruz:t(O.cerrar), aire_pie:6 });
+  var caja = v.caja;
+  var area = caja.querySelector('#opi-texto');
+  var aviso = caja.querySelector('#opi-aviso');
+  area.focus();
+
+  /* ══ LAS CINCO CARAS (P-H, 15/10/2026) ══
+     Un toque pone delante una frase preparada, a completar. Cambiar de
+     cara cambia solo esa frase : lo escrito detrás no se toca nunca. */
+  var nota = 0, frase = '';
+  caja.querySelectorAll('#opi-caras .op-c').forEach(function(b){
+    ponTip(b, tx('op_c_' + b.dataset.n));
+    b.onclick = function(){
+      caja.querySelectorAll('#opi-caras .op-c').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      nota = parseInt(b.dataset.n, 10);
+      var actual = area.value || '';
+      var resto = (frase && actual.indexOf(frase) === 0) ? actual.slice(frase.length) : actual;
+      frase = t((O.caras || {})[nota]);
+      area.value = frase + resto;
+      area.focus(); area.setSelectionRange(area.value.length, area.value.length);
+      revisa(); crece();
+    };
+  });
+  function caraDeNota(){ return (CARAS.filter(function(c){ return c.n === nota; })[0] || {}).cara || ''; }
+  function textoNota(){
+    return nota ? String(O.nota || '').replace('{n}', nota).replace('{cara}', caraDeNota()) : '';
+  }
+
+  function mensaje(){
+    var L = '═══════════════════════════════════════';
+    var nombre = (caja.querySelector('#opi-nombre').value || '').trim();
+    return [L, E.cabecera, L, '',
+      E.donde + ' : ' + donde + (enModulo ? ' (' + ACTUAL.id + ')' : ''),
+      E.version + ' : v' + version,
+      (enModulo ? E.casa + ' : v' + ((T && T.version) || '?') : null),
+      (nota ? E.nota + ' : ' + nota + '/5 ' + caraDeNota() : null),
+      E.idioma + ' : ' + String(LANG).toUpperCase(),
+      E.ventana + ' : ' + window.innerWidth + '×' + window.innerHeight,
+      E.fecha + ' : ' + new Date().toLocaleString('es-ES', { timeZone: SF_GUARDA.zona }),
+      (nombre ? E.nombre + ' : ' + nombre : null),
+      '', '───────────────────────────────────────', E.texto,
+      '───────────────────────────────────────', '',
+      (area.value || '').trim(), '', L
+    ].filter(function(x){ return x !== null; }).join(R);
+  }
+  function asunto(){
+    return String(O.asunto || '').replace('{donde}', donde).replace('{nota}', textoNota())
+      .replace('{version}', version);
+  }
+  /* nada que mandar, nada que copiar : los dos botones esperan dos palabras */
+  function revisa(){
+    var hay = !!nota || !!(area.value || '').trim();
+    caja.querySelector('#opi-enviar').style.display = hay ? '' : 'none';
+    caja.querySelector('#opi-copiar').style.display = hay ? '' : 'none';
+  }
+  /* ══ EL CAMPO CRECE SOLO (P-H, 15/10) : dos líneas al empezar ; crece
+     mientras la ventana quepa en la pantalla ; luego solo él tiene ascensor. ══ */
+  function crece(){
+    area.style.height = 'auto';
+    var resto = caja.offsetHeight - area.offsetHeight;
+    var max = Math.floor(window.innerHeight * 0.92) - resto - 4;
+    var alto = area.scrollHeight + 2;
+    area.style.height = Math.max(40, Math.min(alto, max)) + 'px';
+    area.style.overflowY = alto > max ? 'auto' : 'hidden';
+  }
+  area.oninput = function(){ revisa(); crece(); }; revisa(); crece();
+
+  caja.querySelector('#opi-enviar').onclick = function(){
+    var a = document.createElement('a');
+    a.href = 'mailto:' + correo + '?subject=' + encodeURIComponent(asunto())
+           + '&body=' + encodeURIComponent(mensaje());
+    a.click();
+    aviso.textContent = pon(t(O.como));
+  };
+  caja.querySelector('#opi-copiar').onclick = function(){
+    var txt = asunto() + R + R + mensaje();
+    function bien(){ aviso.textContent = pon(t(O.copiado)); }
+    function aMano(){
+      /* el último recurso : el texto, a la vista y ya seleccionado */
+      area.value = txt; crece(); area.select();
+      try{ if(document.execCommand('copy')) return bien(); }catch(e){}
+      aviso.textContent = t(O.no_copiado);
+    }
+    try{
+      navigator.clipboard.writeText(txt).then(bien, aMano);
+    }catch(e){ aMano(); }
+  };
+}
+
 /* ── escapar lo que va en HTML — no existía en casa (P-H, 18/09) ── */
-function ventanaCasa(titulo, cuerpo, pie, alCerrar){
+function ventanaCasa(titulo, cuerpo, pie, alCerrar, opc){
+  /* ══ opc (P-H, 15/10/2026), para la ventana del ✍️ — la visita no pasa nada y sigue igual :
+       modal : un clic al lado NO cierra (se perdería lo escrito)
+       cruz  : la burbuja de la ✕ de arriba a la derecha ; sin cruz, no hay ✕
+       movil : se mueve tirando del título, a ratón o a dedo, sin salir de la pantalla
+       aire_pie : el aire encima de los botones de abajo (12 px si no se dice) ══ */
+  opc = opc || {};
   var f = document.createElement('div');
   f.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.6);'
     + 'display:flex;justify-content:center;align-items:center;padding:20px';
   var c = document.createElement('div');
   c.style.cssText = 'background:var(--surface);border:2px solid var(--accent);'
     + 'border-radius:13px;padding:16px 20px 14px;width:100%;max-width:560px;'
-    + 'max-height:92vh;overflow-y:auto;box-shadow:0 14px 44px rgba(0,0,0,.5)';
-  c.innerHTML = '<div style="font-size:14.5px;font-weight:600;color:var(--accent);'
-    + 'margin-bottom:9px">' + titulo + '</div>' + cuerpo
-    + '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">'
+    + 'max-height:92vh;overflow-y:auto;box-shadow:0 14px 44px rgba(0,0,0,.5);box-sizing:border-box';
+  c.innerHTML = '<div class="vc-tit" style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--accent);'
+    + 'margin-bottom:9px' + (opc.movil ? ';cursor:grab;user-select:none;touch-action:none' : '') + '">'
+    + '<span style="flex:1">' + titulo + '</span>'
+    + (opc.cruz ? '<span class="b-b vc-cruz" style="font-size:15px;color:var(--muted)">✕</span>' : '')
+    + '</div>' + cuerpo
+    + '<div class="vc-pie" style="display:flex;gap:8px;justify-content:flex-end;margin-top:' + (opc.aire_pie != null ? opc.aire_pie : 12) + 'px">'
     + pie + '</div>';
   f.appendChild(c); document.body.appendChild(f);
   function cierra(){ if(f.parentNode) document.body.removeChild(f); if(alCerrar) alCerrar(); }
-  f.onclick = function(e){ if(e.target === f) cierra(); };
+  if(!opc.modal) f.onclick = function(e){ if(e.target === f) cierra(); };
+  var x = c.querySelector('.vc-cruz');
+  if(x){ ponTip(x, opc.cruz); x.onclick = function(){ var t = document.getElementById('mi-tip'); if(t) t.style.display = 'none'; cierra(); }; }
+  if(opc.movil){
+    var tit = c.querySelector('.vc-tit');
+    tit.addEventListener('pointerdown', function(e){
+      if(e.target.closest('.vc-cruz')) return;
+      var r = c.getBoundingClientRect(), dx = e.clientX - r.left, dy = e.clientY - r.top;
+      c.style.position = 'fixed'; c.style.margin = '0';
+      c.style.left = r.left + 'px'; c.style.top = r.top + 'px'; c.style.width = r.width + 'px';
+      tit.style.cursor = 'grabbing'; tit.setPointerCapture(e.pointerId);
+      function mueve(ev){
+        var w = c.offsetWidth, hh = c.offsetHeight;
+        c.style.left = Math.min(Math.max(0, ev.clientX - dx), window.innerWidth - w) + 'px';
+        c.style.top  = Math.min(Math.max(0, ev.clientY - dy), window.innerHeight - hh) + 'px';
+      }
+      function suelta(){
+        tit.style.cursor = 'grab';
+        tit.removeEventListener('pointermove', mueve); tit.removeEventListener('pointerup', suelta);
+      }
+      tit.addEventListener('pointermove', mueve); tit.addEventListener('pointerup', suelta);
+    });
+  }
   return { caja:c, cierra:cierra };
 }
 
@@ -1665,6 +1890,8 @@ function manda(id){
   if(id==='idioma'){ toggleBanderas(); return; }
   if(id==='tour'){ if(!tourPermitido()){ ponEstado(tx('tour_en_lanzador')); return; } arrancaTour(); return; }
   if(id==='ayuda'){ abreAyuda(); return; }
+  if(id==='opinion'){ abreOpinion(); return; }
+  if(id==='pantalla'){ pantallaCompleta(); return; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -2479,9 +2706,18 @@ function ponTip(el, texto){
     if(!t){ t=document.createElement('div'); t.id='mi-tip'; document.body.appendChild(t); }
     t.className='tip'; t.textContent=texto;
     var r=el.getBoundingClientRect();
-    t.style.left=Math.max(6, r.left + r.width/2 - 60)+'px';
-    t.style.top =(r.bottom + 7)+'px';
+    /* 16/10 (P-H) : la burbuja del ✍️, al borde derecho, salía de la pantalla.
+       Como la de la visita (tour-motor.js) : se mide primero a la izquierda,
+       a sus anchas ; se centra bajo el botón ; y nunca pasa los bordes.
+       El ancho útil es el de la página (clientWidth) : innerWidth cuenta
+       también el ascensor, y la burbuja se escondía debajo. */
+    t.style.left='0px'; t.style.top='0px';
     t.style.display='block';
+    var ancho = document.documentElement.clientWidth || window.innerWidth;
+    var x = r.left + r.width/2 - t.offsetWidth/2;
+    x = Math.max(6, Math.min(x, ancho - t.offsetWidth - 6));
+    t.style.left=Math.round(x)+'px';
+    t.style.top =(r.bottom + 7)+'px';
   };
   el.onmouseleave=function(){ var t=document.getElementById('mi-tip'); if(t) t.style.display='none'; };
 }

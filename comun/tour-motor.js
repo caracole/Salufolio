@@ -34,7 +34,7 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
      No lo hacía: tour-motor.js y tour.css no llevaban ninguno. Y es la
      doctrina del 05/09 — sin número, imposible decir qué versión falla.
      Ahora lo llevan, y se ve en la burbuja del contador de etapas. */
-  var VERSION = '2026.09.29-11:47:20';
+  var VERSION = '2026.10.16-09:21:46';
 
   var T = null, i = 0, viva = false, pausa = false;
   /* ══ DECLARADAS, POR FIN (P-H, 21/09/2026) ══
@@ -1594,6 +1594,11 @@ var SF_TOUR_MOTOR = window.SF_TOUR_MOTOR = (function(){
       if(!t){ t = document.createElement('div'); t.id = 'sf-tip';
               document.body.appendChild(t); }
       t.textContent = el._sfDice;
+      /* 16/10 (P-H) : la burbuja salía demasiado a la derecha. Se medía en el
+         sitio de la vez anterior : pegada al borde, el navegador la estrechaba
+         y la medida salía falsa. Ahora se mide en el borde izquierdo, a sus
+         anchas, y solo después se coloca. */
+      t.style.left = '0px'; t.style.top = '0px';
       t.classList.add('on');
       var r = el.getBoundingClientRect();
       var a = t.getBoundingClientRect();

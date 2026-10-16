@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.10.07-11:35:37",
+  "version": "2026.10.16-09:10:07",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -497,6 +497,17 @@ var SF_LANZADOR = {
     },
     "botones": [
       {
+        "id": "pantalla",
+        "icono": "🖥️",
+        "titulo": {
+          "es": "Pantalla completa (F11)",
+          "fr": "Plein écran (F11)",
+          "ca": "Pantalla completa (F11)",
+          "en": "Full screen (F11)"
+        },
+        "_que": "El ⛶ del panal, aqui 🖥️ (P-H, 16/10 : « le ⛶ ne me plaît pas ») —, ahora tambien en la casa (P-H, 15/10/2026) : « Salufolio est meilleur en plein écran ! ». No se dibuja si el navegador no sabe. Ver « pantalla » mas abajo."
+      },
+      {
         "id": "idioma",
         "icono": "🌐",
         "titulo": {
@@ -557,21 +568,160 @@ var SF_LANZADOR = {
           "en": "Guided tour"
         },
         "_que": "Las ocho etapas de la banda de arriba (P-H + Mattieu, 18/09/2026).\nLa tabla vive en casa/tour.js; el motor en comun/tour-motor.js.\nSe empieza pequeno: si gusta, se extiende programa por programa."
+      },
+      {
+        "id": "opinion",
+        "icono": "✍️",
+        "titulo": {
+          "es": "Su opinión sobre esta pantalla",
+          "fr": "Votre avis sur cet écran",
+          "ca": "La seua opinió sobre esta pantalla",
+          "en": "Your opinion of this screen"
+        },
+        "_que": "El boton de la opinion (P-H, 15/10/2026). « Je n'aimerais pas qu'on me signale qu'on ne sait pas où mettre un commentaire ! » Tout a fait a droite, despues de la brujula ; ✍️ y no 💬, que ya es el de las burbujas. Sus textos, en « opinion » mas abajo."
       }
     ]
   },
+  "_pantalla": "PANTALLA COMPLETA (P-H, 15/10/2026). El navegador no deja abrirse en pantalla completa sin un gesto : solo puede pedirse DURANTE un clic. Por eso : (a) el « Sí, enséñemela » del recibimiento la pide de paso — la visita empieza en grande ; (b) la casa se acuerda : quien la puso una vez la recupera con el primer clic de la sesion siguiente, donde sea. Escape la quita, y entonces la casa lo olvida.",
+  "pantalla": {
+    "recuerdo": "sf_pantalla_completa",
+    "_recuerdo": "donde se anota la eleccion. Borrarlo = la casa vuelve a abrirse en ventana.",
+    "con_bienvenida": true,
+    "_con_bienvenida": "false = el « Sí, enséñemela » ya no pasa a pantalla completa."
+  },
+  "_opinion": "La ventana del ✍️ (P-H, 15/10/2026). Vale para la casa y para cada modulo abierto : el correo dice solo DESDE DONDE se escribe y la VERSION — « sans numéro, impossible de dire quelle version cloche ». Nunca el paciente ni sus datos. Sin servidor : se prepara un correo ; y como en un ordenador de facultad a menudo no hay programa de correo, « Copiar el texto » permite pegarlo en el correo web. La ventana lo explica antes de nada.",
+  "opinion": {
+    "correo": "salufolio@proton.me",
+    "asunto": "[Salufolio Opinión] {donde}{nota} — v{version}",
+    "_caras": "Las cinco caras de la visita (P-H, 15/10/2026) : las mismas, tomadas de la tabla CARAS de la casa ; su burbuja, la de la visita (op_c_1…5). Un toque pone delante del texto una frase preparada, a completar ; cambiar de cara solo cambia esa frase, nunca lo que se ha escrito despues. Sin casillas — « on verra aux premiers usages ».",
+    "nota": " — {n}/5 {cara}",
+    "caras_pregunta": {
+      "es": "¿Qué le parece esta pantalla?",
+      "fr": "Que pensez-vous de cet écran ?",
+      "ca": "Què li sembla esta pantalla?",
+      "en": "What do you think of this screen?"
+    },
+    "caras": {
+      "1": {
+        "es": "Esta pantalla no sirve tal como está. Lo que lo impide: ",
+        "fr": "Cet écran ne sert pas tel qu'il est. Ce qui l'en empêche : ",
+        "ca": "Esta pantalla no servix tal com està. El que ho impedix: ",
+        "en": "This screen is not usable as it stands. What prevents it: "
+      },
+      "2": {
+        "es": "Le falta bastante. Lo que echo en falta: ",
+        "fr": "Il lui manque beaucoup. Ce qui me manque : ",
+        "ca": "Li falta prou. El que trobe a faltar: ",
+        "en": "A lot is missing. What I miss: "
+      },
+      "3": {
+        "es": "Correcta, pero mejorable. Yo cambiaría: ",
+        "fr": "Correct, mais perfectible. Je changerais : ",
+        "ca": "Correcta, però millorable. Jo canviaria: ",
+        "en": "Adequate, but could be better. I would change: "
+      },
+      "4": {
+        "es": "Útil. La mejoraría así: ",
+        "fr": "Utile. Je l'améliorerais ainsi : ",
+        "ca": "Útil. La milloraria així: ",
+        "en": "Useful. I would improve it like this: "
+      },
+      "5": {
+        "es": "Muy útil en la consulta. Lo que más sirve: ",
+        "fr": "Très utile en consultation. Ce qui sert le plus : ",
+        "ca": "Molt útil en la consulta. El que més servix: ",
+        "en": "Very useful in the consultation room. What helps most: "
+      }
+    },
+    "titulo": {
+      "es": "✍️ Su opinión",
+      "fr": "✍️ Votre avis",
+      "ca": "✍️ La seua opinió",
+      "en": "✍️ Your opinion"
+    },
+    "_explica": "La primera frase dice desde donde se escribe (P-H, 15/10) : {donde} = la pantalla, en negrita ; {version} = su version, en pequeño. Asi no hace falta una linea aparte.",
+    "explica": {
+      "es": "Desde {donde} · {version}, escriba lo que piensa de esta pantalla: lo que falta, lo que sobra, lo que está mal dicho o lo que puede inducir a error. El programa añade solo desde dónde escribe y la versión; nunca los datos del paciente.",
+      "fr": "Depuis {donde} · {version}, écrivez ce que vous pensez de cet écran : ce qui manque, ce qui est en trop, ce qui est mal dit ou ce qui peut induire en erreur. Le programme ajoute seulement d'où vous écrivez et la version ; jamais les données du patient.",
+      "ca": "Des de {donde} · {version}, escriga el que pensa d'esta pantalla: el que hi falta, el que hi sobra, el que està mal dit o el que pot induir a error. El programa hi afig només des d'on escriu i la versió; mai les dades del pacient.",
+      "en": "From {donde} · {version}, write what you think of this screen: what is missing, what is superfluous, what is badly worded or what could mislead. The program only adds where you are writing from and the version; never the patient's data."
+    },
+    "como": {
+      "es": "« Enviar por correo » abre su programa de correo con el texto preparado. Si no se abre nada —en muchos ordenadores no hay programa de correo—, pulse « Copiar el texto » y péguelo en su correo web, dirigido a {correo}.",
+      "fr": "« Envoyer par courriel » ouvre votre messagerie avec le texte préparé. Si rien ne s'ouvre — beaucoup d'ordinateurs n'ont pas de messagerie installée —, touchez « Copier le texte » et collez-le dans votre webmail, à l'adresse {correo}.",
+      "ca": "« Enviar per correu » obri el seu programa de correu amb el text preparat. Si no s'obri res —molts ordinadors no en tenen—, toque « Copiar el text » i apegue'l en el seu correu web, adreçat a {correo}.",
+      "en": "“Send by email” opens your mail program with the text ready. If nothing opens — many computers have no mail program — tap “Copy the text” and paste it into your webmail, addressed to {correo}."
+    },
+    "lanzador": {
+      "es": "la Casa",
+      "fr": "la Casa",
+      "ca": "la Casa",
+      "en": "the Casa"
+    },
+    "texto": {
+      "es": "Su opinión…",
+      "fr": "Votre avis…",
+      "ca": "La seua opinió…",
+      "en": "Your opinion…"
+    },
+    "nombre": {
+      "es": "Su nombre (opcional — para figurar en el proyecto)",
+      "fr": "Votre nom (facultatif — pour figurer dans le projet)",
+      "ca": "El seu nom (opcional — per a figurar en el projecte)",
+      "en": "Your name (optional — to be credited in the project)"
+    },
+    "enviar": {
+      "es": "Enviar por correo",
+      "fr": "Envoyer par courriel",
+      "ca": "Enviar per correu",
+      "en": "Send by email"
+    },
+    "copiar": {
+      "es": "Copiar el texto",
+      "fr": "Copier le texte",
+      "ca": "Copiar el text",
+      "en": "Copy the text"
+    },
+    "copiado": {
+      "es": "✓ Copiado. Péguelo en su correo, dirigido a {correo}.",
+      "fr": "✓ Copié. Collez-le dans votre courriel, à l'adresse {correo}.",
+      "ca": "✓ Copiat. Apegue'l en el seu correu, adreçat a {correo}.",
+      "en": "✓ Copied. Paste it into your email, addressed to {correo}."
+    },
+    "no_copiado": {
+      "es": "No se ha podido copiar: seleccione el texto de abajo y cópielo a mano.",
+      "fr": "Copie impossible : sélectionnez le texte ci-dessous et copiez-le à la main.",
+      "ca": "No s'ha pogut copiar: seleccione el text de baix i copie'l a mà.",
+      "en": "Could not copy: select the text below and copy it by hand."
+    },
+    "cerrar": {
+      "es": "Cerrar",
+      "fr": "Fermer",
+      "ca": "Tancar",
+      "en": "Close"
+    },
+    "_ventana": "La ventana del ✍️ es MODAL (P-H, 15/10) : un clic al lado no la cierra — se perdería lo escrito ; solo la ✕ de arriba (su burbuja : « cerrar »). Se mueve tirando del titulo. El campo empieza con 2 lineas y crece solo ; la ventana nunca tiene ascensor, solo el campo cuando ya no cabe.",
+    "_correo": "Las etiquetas del CORREO : lo lee P-H, en español.",
+    "etiquetas": {
+      "cabecera": "Salufolio — Opinión",
+      "donde": "Pantalla",
+      "version": "Versión del programa",
+      "casa": "Versión de la Casa",
+      "idioma": "Idioma",
+      "nota": "Nota",
+      "nombre": "Nombre",
+      "fecha": "Fecha",
+      "ventana": "Ventana del navegador",
+      "texto": "OPINIÓN"
+    }
+  },
   "banda_abajo": {
+    "_doi": "DOI de Zenodo retirado (P-H, 15/10/2026) : las versiones publicadas en Zenodo están obsoletas y no se pueden borrar — un médico que pulsa y cae en una versión vieja se decepciona. Volverá cuando haya una versión nueva presentable.",
     "izquierda": "© 2026 Pierre-Henri Giraud · Salufolio",
     "centro": [
       {
         "texto": "Software libre · GNU GPL v3",
         "marca": "licencia"
-      },
-      {
-        "texto": "DOI 10.5281/zenodo.21997587",
-        "enlace": "https://doi.org/10.5281/zenodo.21997587",
-        "titulo": "Ver el artículo",
-        "marca": "doi"
       },
       {
         "texto": "salufolio@proton.me",
