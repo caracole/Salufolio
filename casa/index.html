@@ -347,6 +347,9 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
   document.write('<script src="casa.js?'+V+'"><\/script>');
   document.write('<script src="tour.js?'+V+'"><\/script>');
   document.write('<script src="../comun/tour-motor.js?'+V+'"><\/script>');
+  /* El contador de visitas (P-H, 25/10/2026) : la tabla primero, el módulo después. */
+  document.write('<script src="../comun/visitas-datos.js?'+V+'"><\/script>');
+  document.write('<script src="../comun/visitas.js?'+V+'"><\/script>');
 })();
 </script>
 <script>
@@ -694,6 +697,7 @@ function arrancaTour(){
     return;
   }
   _TOUR_T0 = Date.now();
+  if(window.SF_VISITAS_CUENTA) SF_VISITAS_CUENTA('tour', 'inicio');
   SF_TOUR_MOTOR.arranca(SF_TOUR, {
     idioma: LANG,
     al_interrumpir: function(etapa, total, e){
@@ -1124,6 +1128,7 @@ function pantallaCompleta(solo_poner){
    Todas las palabras viven en casa.js (« opinion ») ; aquí, ninguna.
    ══════════════════════════════════════════════════════════════════════ */
 function abreOpinion(){
+  if(window.SF_VISITAS_CUENTA) SF_VISITAS_CUENTA('opinion', 'abre');
   var O = (T && T.opinion) || {};
   var E = O.etiquetas || {};
   var R = String.fromCharCode(10);
@@ -1326,6 +1331,7 @@ function carga(id, clave){
     return;
   }
   ACTUAL=m; ponTour();
+  if(window.SF_VISITAS_CUENTA) SF_VISITAS_CUENTA('modulo', id);   /* el contador : solo « qué programa » */
   var f=document.getElementById('marco-mod');
   var q='?enMarco=1';
   if(PERFIL) q += '&perfil='+encodeURIComponent(PERFIL);
