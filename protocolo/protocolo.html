@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-14 22:37:09 par assembleur.py 2026.10.14-22:25:02 -->
+<!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-21 22:07:19 par assembleur.py 2026.10.10-17:22:34 -->
 <html lang="es">
 <head>
 <!-- Versión 2026.09.19-18:15:47 -->
@@ -652,22 +652,11 @@ body.sin-paciente #nav-res { opacity: .35; }
   <!-- ═══ NOTAS / OBSERVACIONES ═══ -->
   <section id="p-notas" class="panel">
     <h2 id="i-tnotas"></h2>
-    <!-- P-H, 15/08 : « positionné de la même manière que dans les constantes »
-         — donc EN TÊTE, comme l'heure de la mesure qu'il y avait placée le
-         31/07 : on dit d'abord QUAND, on observe ensuite. -->
-    <div class="chips" id="chips"></div>
-    <!-- v23.1 ⑧ (P-H) : el cuerpo entero — hidratación y eliminación -->
-    <div style="border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;margin:10px 0">
-      <!-- P-H, 01/08 : les boutons sous les titres « n'ont plus de raison
-           d'être » — ils ouvraient tous la même fenêtre. La LIGNE ENTIÈRE
-           l'ouvre désormais, et ne porte que ce qu'elle a observé. -->
-      <div class="reg-fila" onclick="pedirRegistro('hidratacion')"><span class="reg-ico">💧</span><b id="i-lhid"></b><span class="reg-res" id="hid-btn"></span><span class="reg-abre">›</span></div>
-      <div class="reg-fila" onclick="pedirRegistro('panal')"><span class="reg-ico">🩹</span><b id="i-lpanal"></b><span class="reg-res" id="panal-btn"></span><span class="reg-abre">›</span></div>
-      <div class="reg-fila" onclick="pedirRegistro('deposicion')"><span class="reg-ico">🚽</span><b id="i-ldep"></b><span class="reg-res" id="dep-res"></span><span class="reg-abre">›</span></div>
-      <div class="reg-fila" onclick="pedirRegistro('miccion')"><span class="reg-ico">💦</span><b id="i-lmic"></b><span class="reg-res" id="mic-res"></span><span class="reg-abre">›</span></div>
-    </div>
-    <textarea id="nota-libre" autocomplete="off" placeholder="Nota libre (opcional)…"></textarea>
-    <div id="obs-estado" style="font-size:12.5px;color:var(--muted);min-height:18px;margin-top:6px;text-align:center"></div>
+    <!-- 21/10/2026 (P-H) : las Notas son ahora UN ARBOL (modules/notas-tabla.js + modules/notas.js). El programa
+         pinta todo dentro de este contenedor : bloques, pantalla de un nodo (Noter / Éliminer), su propia barra
+         de día y hora. Las antiguas fichas (chips, las cuatro lineas del cuerpo, nota libre) ya no estan aqui :
+         el arbol las contiene. Los datos antiguos de mfp_obs siguen leyendose (Resumen, envio, copia). -->
+    <div id="notas-app"></div>
   </section>
 
   <!-- ═══ DATOS : historial + export + config ═══ -->
@@ -1372,7 +1361,7 @@ window.LANGUES = {
     t_const:'Constantes — deje vacío lo no medido', t_notas:'¿Qué se observa hoy? — toque lo que aplique',
     th_hoy:'Medicación de hoy', th_dia:'Medicación del', th_fin:'toque cuando se tome',
     tc_hoy:'Constantes', tc_dia:'Constantes del', tc_fin:'deje vacío lo no medido',
-    nav_med:'Medicación', tip_menu:'Menú', dh_obs:'Hora de la observación (corregible)',
+    nav_med:'Medicación', tip_menu:'Menú', dh_obs:'Hora de la observación (corregible)', cfg_notas:'Modificar las notas',
     tn_hoy:'¿Qué se observa hoy?', tn_dia:'¿Qué se observó el', tn_fin:'toque lo que aplique',
     t_hist:'Días por transmitir', hist_nada:'✓ Todo revisado y transmitido a Salufolio', hist_pie:'Toque un día para revisarlo y enviarlo.', hist_ap:'apuntes', hist_ap_1:'apunte', scan_tit:'Escanear el código QR del ordenador', scan_ayuda:'Apunte la cámara al código QR que muestra el ordenador (qr.sh o el panal de Salufolio).', scan_ok:'✓ Dirección guardada', scan_err:'⚠ Cámara no disponible — escriba la dirección a mano', t_comp:'Guardar y compartir', t_meds:'Medicamentos configurados', t_pac:'Paciente',
     b_gconst:'💾 Guardar constantes', b_gobs:'💾 Guardar observación', b_punt:'➕ Registrar toma puntual…',
@@ -1598,7 +1587,7 @@ window.LANGUES = {
     t_const:'Constants — deixe buit el que no s\'haja mesurat', t_notas:'Què s\'observa hui? — toque el que aplique',
     th_hoy:'Medicació de hui', th_dia:'Medicació del', th_fin:'toque quan es prenga',
     tc_hoy:'Constants', tc_dia:'Constants del', tc_fin:'deixe buit el que no s\'haja mesurat',
-    nav_med:'Medicació', tip_menu:'Menú', dh_obs:'Hora de l\'observació (corregible)',
+    nav_med:'Medicació', tip_menu:'Menú', dh_obs:'Hora de l\'observació (corregible)', cfg_notas:'Modificar les notes',
     tn_hoy:'Què s\'observa hui?', tn_dia:'Què es va observar el', tn_fin:'toque el que aplique',
     t_hist:'Dies per transmetre', hist_nada:'✓ Tot revisat i transmés a Salufolio', hist_pie:'Toque un dia per a revisar-lo i enviar-lo.', hist_ap:'apunts', hist_ap_1:'apunt', scan_tit:'Escanejar el codi QR de l\'ordinador', scan_ayuda:'Apunte la càmera al codi QR que mostra l\'ordinador (qr.sh o el panal de Salufolio).', scan_ok:'✓ Adreça guardada', scan_err:'⚠ Càmera no disponible — escriga l\'adreça a mà', t_comp:'Guardar i compartir', t_meds:'Medicaments configurats', t_pac:'Pacient',
     b_gconst:'💾 Guardar constants', b_gobs:'💾 Guardar observació', b_punt:'➕ Registrar presa puntual…',
@@ -1824,7 +1813,7 @@ window.LANGUES = {
     t_const:'Constantes — laissez vide ce qui n\'est pas mesuré', t_notas:'Qu\'observe-t-on aujourd\'hui ? — touchez ce qui s\'applique',
     th_hoy:'Médication du jour', th_dia:'Médication du', th_fin:'touchez à la prise',
     tc_hoy:'Constantes', tc_dia:'Constantes du', tc_fin:'laissez vide ce qui n\'est pas mesuré',
-    nav_med:'Médication', tip_menu:'Menu', dh_obs:'Heure de l\'observation (corrigible)',
+    nav_med:'Médication', tip_menu:'Menu', dh_obs:'Heure de l\'observation (corrigible)', cfg_notas:'Modifier les notes',
     tn_hoy:'Qu\'observe-t-on aujourd\'hui ?', tn_dia:'Qu\'a-t-on observé le', tn_fin:'touchez ce qui s\'applique',
     t_hist:'Jours à transmettre', hist_nada:'✓ Tout est relu et transmis à Salufolio', hist_pie:'Touchez un jour pour le relire et l\'envoyer.', hist_ap:'notes', hist_ap_1:'note', scan_tit:'Scanner le code QR de l\'ordinateur', scan_ayuda:'Visez le code QR affiché par l\'ordinateur (qr.sh ou le panal de Salufolio).', scan_ok:'✓ Adresse enregistrée', scan_err:'⚠ Caméra indisponible — saisissez l\'adresse à la main', t_comp:'Sauvegarder et partager', t_meds:'Médicaments configurés', t_pac:'Patient',
     b_gconst:'💾 Enregistrer les constantes', b_gobs:'💾 Enregistrer l\'observation', b_punt:'➕ Prise ponctuelle…',
@@ -2051,7 +2040,7 @@ window.LANGUES = {
     t_const:'Vitals — leave blank what was not measured', t_notas:'What is observed today? — tap what applies',
     th_hoy:'Today\'s medication', th_dia:'Medication of', th_fin:'tap when taken',
     tc_hoy:'Vitals', tc_dia:'Vitals of', tc_fin:'leave blank what was not measured',
-    nav_med:'Medication', tip_menu:'Menu', dh_obs:'Time of the observation (editable)',
+    nav_med:'Medication', tip_menu:'Menu', dh_obs:'Time of the observation (editable)', cfg_notas:'Edit the notes',
     tn_hoy:'What is observed today?', tn_dia:'What was observed on', tn_fin:'tap what applies',
     t_hist:'Days to transmit', hist_nada:'✓ All reviewed and sent to Salufolio', hist_pie:'Tap a day to review and send it.', hist_ap:'entries', hist_ap_1:'entry', scan_tit:'Scan the computer\'s QR code', scan_ayuda:'Point the camera at the QR code shown by the computer (qr.sh or the Salufolio panal).', scan_ok:'✓ Address saved', scan_err:'⚠ Camera unavailable — type the address by hand', t_comp:'Save and share', t_meds:'Configured medications', t_pac:'Patient',
     b_gconst:'💾 Save vitals', b_gobs:'💾 Save observation', b_punt:'➕ One-off dose…',
@@ -2075,7 +2064,7 @@ window.LANGUES = {
 <!-- MB:BEGIN modules/rubricas-tabla.js -->
 <script>
 /* ══════════════════════════════════════════════════════════════════════
-   TABLA DE LAS SECCIONES DE LA DOCUMENTACIÓN — versión 2026.10.14-22:35:26
+   TABLA DE LAS SECCIONES DE LA DOCUMENTACIÓN — versión 2026.10.14-18:08:43
    (P-H + Claude, 14/10/2026). Sólo datos: el motor está en rubricas.js.
 
    palabras : las palabras de la ventana, en las cuatro lenguas
@@ -2091,33 +2080,25 @@ window.LANGUES = {
    Si falta el texto en una lengua, se ofrece el español : su BANDERA aparece
    junto al título, y la burbuja dice «solo en …» en la lengua elegida.
    lenguas : el nombre de cada lengua, en cada lengua (para esa burbuja).
-
-   anterior : PASARELA (14/10, P-H) — el manual ilustrado de antes, en el sitio,
-   mientras los folletos nuevos no existan. Para retirarla : borrar esta línea.
    ══════════════════════════════════════════════════════════════════════ */
 window.TABLA_RUBRICAS = {
   base: 'es',
-  anterior: { archivo: 'doc.pdf', version: 'v1.2' },
   palabras: {
     es: { enlace:'Documentación por secciones', tit:'Documentación', volver:'Índice', ok:'Entendido',
           prep:'en preparación', solo:'solo en {L}',
           pdf:'Folleto ilustrado (PDF)', pdf_prep:'Folleto ilustrado: en preparación', red:'necesita conexión',
-          anterior:'Manual ilustrado — versión anterior ({V})',
           lenguas:{ es:'español', va:'valenciano', fr:'francés', en:'inglés' } },
     va: { enlace:'Documentació per seccions', tit:'Documentació', volver:'Índex', ok:'Entesos',
           prep:'en preparació', solo:'només en {L}',
           pdf:'Fullet il·lustrat (PDF)', pdf_prep:'Fullet il·lustrat: en preparació', red:'necessita connexió',
-          anterior:'Manual il·lustrat — versió anterior ({V})',
           lenguas:{ es:'castellà', va:'valencià', fr:'francés', en:'anglés' } },
     fr: { enlace:'Documentation par rubriques', tit:'Documentation', volver:'Sommaire', ok:'Compris',
           prep:'en préparation', solo:'seulement en {L}',
           pdf:'Livret illustré (PDF)', pdf_prep:'Livret illustré : en préparation', red:'nécessite une connexion',
-          anterior:'Manuel illustré — version précédente ({V})',
           lenguas:{ es:'espagnol', va:'valencien', fr:'français', en:'anglais' } },
     en: { enlace:'Documentation by section', tit:'Documentation', volver:'Contents', ok:'Got it',
           prep:'in preparation', solo:'{L} only',
           pdf:'Illustrated booklet (PDF)', pdf_prep:'Illustrated booklet: in preparation', red:'needs a connection',
-          anterior:'Illustrated manual — previous version ({V})',
           lenguas:{ es:'Spanish', va:'Valencian', fr:'French', en:'English' } }
   },
   lista: [
@@ -2220,7 +2201,7 @@ window.TABLA_RUBRICAS = {
 <!-- MB:END modules/rubricas-tabla.js -->
 <!-- MB:BEGIN modules/rubricas.js -->
 <style>
-/* Ventana de la documentación por secciones — versión 2026.10.14-22:35:26.
+/* Ventana de la documentación por secciones — versión 2026.10.14-18:08:43.
    Sólo variables : las medidas propias se declaran aquí, los colores son los del tema. */
 :root{ --rub-num:28px; --rub-num-letra:13px; --rub-res-letra:13.5px; --rub-marca-letra:11.5px;
        --rub-texto-letra:15px; --rub-h-letra:16px; --rub-apagado:.45; --rub-sur-accent:#fff;
@@ -2243,12 +2224,10 @@ window.TABLA_RUBRICAS = {
 .rub-texto p{margin:0 0 10px}
 .rub-pdf{display:flex;align-items:center;gap:8px;min-height:var(--ui-touch);color:var(--accent);text-decoration:none}
 .rub-pdf.apagado{color:var(--muted)}
-.rub-anterior{flex:0 0 auto;border-top:1px solid var(--border);padding:8px 4px 2px}
-.rub-anterior .rub-pdf{display:block;padding:10px 0}
 </style>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
-   EL MOTOR DE LA DOCUMENTACIÓN POR SECCIONES — versión 2026.10.14-22:35:26
+   EL MOTOR DE LA DOCUMENTACIÓN POR SECCIONES — versión 2026.10.14-18:08:43
    (P-H + Claude, 14/10/2026)
 
    Lee TABLA_RUBRICAS (rubricas-tabla.js), TABLA_ENLACES.doc.base, y las
@@ -2286,11 +2265,6 @@ function _rubTexto(r, l) {
 }
 function _rubBandera(l) {
   return (typeof BANDERAS !== 'undefined' && BANDERAS[l]) || l.toUpperCase();
-}
-/* TABLA_ENLACES se declara con const en el esqueleto : no cuelga de window,
-   se la busca por su nombre. */
-function _rubBase() {
-  return (typeof TABLA_ENLACES !== 'undefined' && TABLA_ENLACES.doc && TABLA_ENLACES.doc.base) || '';
 }
 function _rubEsc(s) {
   return String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
@@ -2330,22 +2304,12 @@ function verRubricas() {
     }).join('');
   }
 
-  /* 14/10 — la PASARELA hacia el manual ilustrado de antes (TABLA_RUBRICAS.anterior) */
-  function anterior() {
-    const A = T.anterior;
-    const base = _rubBase();
-    if (!A || !A.archivo || !base) return '';
-    return '<div class="rub-anterior"><a class="rub-pdf" href="' + _rubEsc(base + A.archivo) + '" target="_blank" rel="noopener">📄 ' +
-      _rubEsc(String(w('anterior')).replace('{V}', A.version || '')) +
-      ' <span class="rub-marca">' + _rubEsc(w('red')) + '</span></a></div>';
-  }
-
   function seccion(r) {
     const tx = _rubTexto(r, lengua);
     const cuerpo = tx.lineas.map(([tipo, s]) =>
       tipo === 'h' ? '<h4>' + _rubEsc(s) + '</h4>' : '<p>' + _rubEsc(s) + '</p>').join('');
     const fichero = (r.pdf || {})[lengua] || (r.pdf || {})[T.base];
-    const base = _rubBase();
+    const base = (window.TABLA_ENLACES && TABLA_ENLACES.doc && TABLA_ENLACES.doc.base) || '';
     const pdf = (fichero && base)
       ? '<a class="rub-pdf" href="' + _rubEsc(base + fichero) + '" target="_blank" rel="noopener">📄 ' +
           _rubEsc(w('pdf')) + ' <span class="rub-marca">' + _rubEsc(w('red')) + '</span></a>'
@@ -2369,7 +2333,7 @@ function verRubricas() {
       abierta = null;
       ov.innerHTML = '<div class="dlg lista ay-carta" style="max-width:520px">' +
         '<div class="lista-tit">📄 ' + _rubEsc(w('tit')) + '</div>' + banderas() +
-        '<div class="lista-cuerpo" style="gap:0">' + lista() + anterior() + '</div>' +
+        '<div class="lista-cuerpo" style="gap:0">' + lista() + '</div>' +
         '<button class="btn" data-fin="1">' + _rubEsc(w('ok')) + '</button></div>';
     }
     if (typeof ajustaLista === 'function') ajustaLista(ov);
@@ -2389,6 +2353,1511 @@ function verRubricas() {
 }
 </script>
 <!-- MB:END modules/rubricas.js -->
+<!-- MB:BEGIN modules/notas-tabla.js -->
+<script>
+/* notas-tabla.js — LA TABLA de las Notas (el árbol de P-H del 21/10, probado en la maqueta « grafo-notas »).
+   El programa de las Notas (modules/notas.js) no contiene ningún dato : ni un libellé, ni un texto de pantalla,
+   ni un tamaño. Todo está aquí. Los colores son los del tema de la casa (Noche, Día, Tinta, Bruma).
+
+   CÓMO SE LEE « nodos » : un nodo = "id": { t (texto de la tecla), q (pregunta), h (hijos, en orden de pantalla),
+   ir (continúa con el contenido de otro nodo : lista compartida), modo (uno | varios), exclusivo, multiple (false =
+   único al día), max, incompat, tipo (pregunta | respuesta | texto), rejilla (columnas de teselas), legado }.
+   « legado » : el nombre que la hoja de Resumen ya conocía (« 💦 Micción ») ; una nota de ese nodo, o de un hijo suyo,
+   se guarda bajo ese nombre y el Resumen sigue contándola como siempre.
+   Los identificadores son « número_nombre » (11_desayuno) : el número es el repere de diálogo, no lleva posición,
+   se da una vez y no se reutiliza. El orden de pantalla es el de « h ». Las listas compartidas viven en el bloque 9.
+   Lo que el usuario añade o cambia (modo edición, desde Configuración) se guarda aparte, por paciente : la base de
+   esta tabla no se toca nunca.
+   ADVERTENCIA : mfp_obs es el cajón de las notas desde siempre (Resumen, envío, copia) ; una nota del grafo
+   conserva su forma antigua { fecha, hora, tipos, nota } y añade « ids » (su camino en el árbol). */
+window.NOTAS_GRAFO = {
+  "version": "2026.10.21-21:15:08",
+  "raiz": "0_notas",
+  "modo_defecto": "uno",
+  "reglas": { "plafon": { "alcance": "dia" }, "exclusion": { "alcance": "hora" } },
+  "mostrar_pila": false,
+
+  "almacen": { "claves": { "adds": "mfp_notas_adds", "cambios": "mfp_notas_cambios", "registro": "mfp_obs" },
+               "separador_tipo": " › " },
+  "limites": { "ir": 20, "rejilla": 4, "etiqueta": 60, "texto": 1000, "filas_texto": 5, "texto_arbol": 80, "vueltas_ancho": 3, "max": 99, "hora_dia_pasado": "12:00" },
+  "marcas": { "alcance": "dia", "max_horas": 3,
+              "alcances": { "dia": "marca_leyenda_dia", "hora": "marca_leyenda_hora", "todo": "marca_leyenda_todo" } },
+  "archivo": { "prefijo": "arbol_notas_", "extension": ".json", "formato": "notas-arbol", "tipo_mime": "application/json",
+              "union_fecha": "_", "union_hora": "h" },
+  "edicion": { "modos": ["uno", "varios"], "naturalezas": ["respuesta", "pregunta", "texto"] },
+  "tiempos": { "aviso_ms": 3200, "confirmar_ms": 3000, "tip_ms": 2600, "cerrojo_ms": 7000 },
+  "avisos": { "ok": "ok", "error": "error", "supresion": "supresion" },
+  
+  "simbolos": { "hijo": "›", "ok": "✓", "marcado": "☑", "vacio": "☐", "borrar": "✕", "separador": "›", "badge_compartido": "×",
+               "anotado": "✓", "mas_horas": "…", "separador_horas": ", ", "punto": "·", "lapiz": "✎", "texto": "¶",
+               "cerrojo": "🔒", "borrar_seguro": "✕ ?", "distinto": "≠", "unico": "①" },
+
+  "orden": [
+    { "id": "subir", "simbolo": "↑", "paso": -1, "tip": "tip_subir", "aria": "aria_subir" },
+    { "id": "bajar", "simbolo": "↓", "paso": 1,  "tip": "tip_bajar", "aria": "aria_bajar" }
+  ],
+
+  "salidas": [
+    { "id": "padre", "simbolo": "↩", "tip": "tip_padre" },
+    { "id": "raiz",  "simbolo": "⌂", "tip": "tip_raiz" },
+    { "id": "mas",   "simbolo": "+", "texto": "anadir", "tip": "tip_anadir" },
+    { "id": "editar", "simbolo": "✎", "texto": "editar", "tip": "tip_editar" }
+  ],
+
+  "tip": { "desfase": 6, "margen": 4 },
+  "grafo": { "fuente_px": 13, "ancho_car": 8.0, "pad_x": 10, "nodo_min": 46, "nodo_alto": 28,
+             "fila_alto": 40, "col_hueco": 58, "margen": 14, "radio": 7, "vueltas": 4,
+             "sangria": 18, "hueco_arbol": 6, "linea": 16, "pad_y": 6, "texto_min": 60 },
+
+  "resultado": { "defecto": "arbol",
+                 "vistas": [ { "id": "arbol", "texto": "vista_arbol", "leyenda": "resultado_leyenda" },
+                             { "id": "grafo", "texto": "vista_grafo", "leyenda": "resultado_leyenda_grafo" } ] },
+
+  "estilo": {
+    "--fuente": "inherit",
+    "--fuente-mono": "ui-monospace, Menlo, Consolas, monospace",
+    "--fondo": "var(--bg)",
+    "--panel": "var(--surface)",
+    "--tinta": "var(--text)",
+    "--tinta-suave": "var(--muted)",
+    "--borde": "var(--border)",
+    "--acento": "var(--accent)",
+    "--acento-tinta": "#ffffff",
+    "--tecla": "var(--surface)",
+    "--tecla-sel": "color-mix(in srgb, var(--accent) 28%, var(--surface))",
+    "--tecla-borde": "var(--border)",
+    "--nt-ok": "var(--ok)",
+    "--ok-fondo": "color-mix(in srgb, var(--ok) 20%, var(--surface))",
+    "--aviso": "var(--warn)",
+    "--aviso-fondo": "color-mix(in srgb, var(--warn) 16%, var(--surface))",
+    "--error": "var(--bad)",
+    "--error-fondo": "color-mix(in srgb, var(--bad) 18%, var(--surface))",
+    "--toque": "2.75rem",
+    "--toque-marca": "2.25rem",
+    "--supresion": "var(--bad)",
+    "--supresion-fondo": "color-mix(in srgb, var(--bad) 18%, var(--surface))",
+    "--miel": "var(--warn)",
+    "--miel-fondo": "color-mix(in srgb, var(--warn) 22%, var(--surface))",
+    "--radio": "var(--radius)",
+    "--espacio": "0.75rem",
+    "--espacio-s": "0.4rem",
+    "--espacio-xs": "0.2rem",
+    "--tecla-alto": "3.6rem",
+    "--tecla-min": "10rem",
+    "--teja-alto": "6.5rem",
+    "--texto-teja": "clamp(0.8rem, 4.2vw, 1.15rem)",
+    "--texto": "1rem",
+    "--texto-s": "0.85rem",
+    "--texto-xs": "0.75rem",
+    "--texto-tecla": "1.1rem",
+    "--texto-pregunta": "1.25rem",
+    "--texto-titulo": "1.35rem",
+    "--ancho-max": "34rem",
+    "--ancho-max-grafo": "96rem",
+    "--alto-lienzo": "78vh",
+    "--borde-ancho": "2px",
+    "--sombra": "0 1px 3px rgba(16, 36, 58, 0.25)",
+    "--trazo": "5 3",
+    "--interlinea": "1.15",
+    "--ancho-num": "2.2em",
+    "--alto-datos": "9rem",
+    "--margen-scroll": "5rem",
+    "--ancho-flecha": "2.6rem",
+    "--ancho-numero": "6rem",
+    "--ancho-tip": "18rem",
+    "--peso-fuerte": "700",
+    "--opaco-tenue": "0.22",
+    "--tip-fondo": "#10243a",
+    "--tip-tinta": "#ffffff"
+  },
+
+  "textos": {
+    "es": {
+      "nombre": "Notas",
+      "subtitulo": "maqueta del grafo",
+      "migas_aria": "ruta",
+      "idioma": "Idioma",
+      "tip_version": "Versión {v}",
+      "tab_anotar": "Anotar", "tab_grafo": "Grafo", "tab_resultado": "Resultado",
+      "obs_titulo": "Día y hora de la observación (corregible)",
+      "obs_titulo_nota": "Día y hora de ESTA nota (corregible)",
+      "tip_padre": "Volver al nivel anterior",
+      "tip_raiz": "Volver a la raíz",
+      "tip_anadir": "Añadir una pregunta o una respuesta aquí",
+      "anadir": "añadir",
+      "tip_editar": "Modo edición : cambiar o quitar elementos",
+      "editar": "editar",
+      "aviso_edicion": "Modo edición : toca {lapiz} para cambiar o quitar un elemento, {flechas} para cambiar su orden. Pulsa « editar » otra vez para salir.",
+      "tip_subir": "Pasar delante del anterior",
+      "tip_bajar": "Pasar detrás del siguiente",
+      "aria_subir": "Pasar « {t} » delante del anterior",
+      "aria_bajar": "Pasar « {t} » detrás del siguiente",
+      "movido": "Movido : {t} — ahora en el puesto {pos} de {n}.",
+      "movido_compartida": "El orden vale también para : {lista}.",
+      "editar_esta": "{lapiz} Modificar « {t} »",
+      "edit_titulo": "Modificar « {t} »",
+      "edit_texto": "Texto",
+      "edit_pregunta": "Pregunta de la lista",
+      "edit_modo": "Respuestas de la lista",
+      "modo_uno": "Una sola",
+      "modo_varios": "Varias (se suman)",
+      "edit_multiple": "Múltiple (se puede anotar varias veces)",
+      "edit_max": "Máximo por día (0 = sin límite)",
+      "edit_excl_caja": "Los elementos de esta lista se excluyen entre sí (a la misma hora)",
+      "edit_incompat": "Incompatible con…",
+      "incompat_elegir": "— elegir un elemento —",
+      "incompat_ninguno": "No hay otro elemento en esta lista con el que declarar una incompatibilidad.",
+      "incompat_quitar": "Quitar la incompatibilidad con « {t} »",
+      "incompat_unidos": "Incompatibles : « {a} » y « {b} ».",
+      "incompat_quitada": "Incompatibilidad quitada.",
+      "prop_unico": "único",
+      "prop_max": "máx. {n} al día",
+      "prop_excl": "se excluyen",
+      "prop_incompat": "{distinto} {lista}",
+      "cerrojo_plafon": "Tope de {n} al día alcanzado para « {t} » (hoy : {c}).",
+      "cerrojo_unico": "« {t} » solo se anota una vez al día, y ya está.",
+      "cerrojo_incompat": "« {t} » es incompatible con « {otro} », anotado a las {hora}.",
+      "cerrojo_excl": "A las {hora}, « {otro} » ya está anotado : los elementos de esta lista se excluyen.",
+      "cerrojo_diario": "Abrir el Diario",
+      "anular_una": "Anular la nota de las {hora}",
+      "anular_varias": "Anular estas {n} notas de las {hora}",
+      "anulada": "Nota de las {hora} anulada.",
+      "retirada": "Nota de las {hora} retirada.",
+      "nota_movida": "Nota movida al {cuando}.",
+      "marca_tip": "Ver las notas de esto y quitar una",
+      "notas_titulo": "Notas de «{t}»",
+      "notas_volver": "Volver a la lista",
+      "notas_vacio": "Ya no queda ninguna nota.",
+      "anulada_resto": "Siguen otras notas de «{nodo}»: {horas}.",
+      "anuladas": "{n} notas anuladas.",
+      "quitar_tip": "Quitar esta nota (dos pulsaciones)",
+      "edit_nat": "Naturaleza",
+      "nat_respuesta": "Respuesta",
+      "nat_pregunta": "Pregunta",
+      "nat_texto": "Texto libre",
+      "edit_compartida": "Esta lista la comparten : {lista}. Lo que cambies o quites vale para todas.",
+      "aplicar": "Aplicar",
+      "quitar_elem": "Quitar este elemento",
+      "quitar_sub": "Desaparecerán también {n} elementos de debajo.",
+      "quitar_otro": "« {t} » también está en : {donde}. Seguirá allí.",
+      "quitado": "Quitado : {t}",
+      "modificado": "Modificado : {t}",
+      "marca_leyenda_dia": "{ok} : ya anotado ese día, con su hora.",
+      "marca_leyenda_hora": "{ok} : ya anotado a esa hora.",
+      "marca_leyenda_todo": "{ok} : ya anotado.",
+      "arbol_titulo": "Árbol en uso",
+      "arbol_estado": "{origen} · {n} elementos · {a} añadidos · {c} modificados",
+      "origen_tabla": "el de la tabla",
+      "origen_archivo": "cargado de un archivo",
+      "guardar_arbol": "Guardar el árbol",
+      "cargar_arbol": "Cargar un árbol",
+      "volver_tabla": "Volver al árbol de la tabla",
+      "arbol_guardado": "Árbol guardado : {archivo}",
+      "carga_pregunta": "« {archivo} » contiene {n} elementos. Sustituirá el árbol actual : tus añadidos y cambios se pierden.",
+      "cargar_si": "Cargar",
+      "cargado": "Árbol cargado : {n} elementos",
+      "restaurado": "Árbol de la tabla restaurado.",
+      "err_formato": "El archivo no es un árbol de Notas.",
+      "err_lectura": "No se pudo leer el archivo.",
+      "resultado_leyenda": "Solo lo anotado, en el orden del árbol : cada rama baja hasta lo último anotado ; a la derecha, las horas.",
+      "pregunta_vacia": "Esta pregunta aún no tiene respuestas. Usa « + » para añadirlas.",
+      "anotado": "Anotado",
+      "validar": "Validar ({n})",
+      "pila": "pila",
+      "nueva_titulo": "Añadir en « {donde} »",
+      "nueva_texto": "Texto",
+      "nueva_pregunta": "Pregunta",
+      "nueva_respuesta": "Respuesta",
+      "nueva_libre": "Texto libre",
+      "nueva_ayuda": "Pregunta : tendrá respuestas debajo. Respuesta : se anota al tocarla. Texto libre : se abre un cuadro para escribir.",
+      "texto_titulo": "Texto libre : {t}",
+      "texto_ayuda": "Escribe o dicta con el micrófono del teclado…",
+      "texto_anotar": "Anotar",
+      "texto_vacio": "Escribe algo antes de anotar.",
+      "nodo_noter": "Anotar a las {hora}",
+      "nodo_eliminar": "Eliminar {hora}",
+      "nodo_horas": "Horas anotadas del {dia}",
+      "nodo_ninguna": "Ninguna hora anotada ese día. Pulsa Anotar para añadir la que ves.",
+      "nodo_nueva_tip": "Hora que se va a anotar : puedes cambiarla arriba",
+      "nodo_hora_tip": "Ya anotada : púlsala para corregirla o quitarla",
+      "nueva_compartida": "Esta lista la comparten : {lista}. Lo que añadas aparecerá en todas.",
+      "nueva_vacia": "Escribe un texto primero.",
+      "cancelar": "Cancelar",
+      "anadido": "Añadido : {t}",
+      "grafo_titulo": "Grafo de base y añadidos",
+      "grafo_leyenda": "Borde dorado y ×n : nodo COMPARTIDO, al que llegan n caminos. Trazo discontinuo : pregunta común. Toca un nodo para resaltar sus flechas.",
+      "resultado_titulo": "Registro",
+      "resultado_vacio": "Aún no se ha anotado nada.",
+      "resultado_grafo": "Resultado dibujado",
+      "vistas_aria": "Forma de dibujar el resultado",
+      "vista_arbol": "Árbol",
+      "vista_grafo": "Grafo",
+      "resultado_leyenda_grafo": "Una rama por camino anotado, en capas de izquierda a derecha ; toca un cuadro para resaltar sus conexiones.",
+      "quitar": "Quitar la nota {n}",
+      "datos": "Datos (JSON)",
+      "copiar": "Copiar",
+      "copiado": "Copiado",
+      "vaciar_registro": "Vaciar el registro",
+      "confirmar": "¿Seguro ? Pulsa otra vez",
+      "sin_etiqueta": "(sin texto)",
+      "aviso_memoria": "El almacén del navegador no está disponible : lo anotado vive solo en memoria y se perderá al cerrar.",
+      "error_titulo": "La tabla del grafo tiene errores",
+      "error_ayuda": "Corrige notas-grafo.js y recarga la página.",
+      "err_sin_raiz": "La raíz « {id} » no existe.",
+      "err_inexistente": "El nodo « {id} » no existe (lo cita « {desde} »).",
+      "err_h_e_ir": "El nodo « {id} » tiene a la vez « h » e « ir ».",
+      "err_sin_t": "El nodo « {id} » figura en una lista pero no tiene texto « t ».",
+      "err_bucle": "Bucle : {ruta}"
+    },
+    "fr": {
+      "nombre": "Notas",
+      "subtitulo": "maquette du graphe",
+      "migas_aria": "chemin",
+      "idioma": "Langue",
+      "tip_version": "Version {v}",
+      "tab_anotar": "Noter", "tab_grafo": "Graphe", "tab_resultado": "Résultat",
+      "obs_titulo": "Jour et heure de l'observation (corrigible)",
+      "obs_titulo_nota": "Jour et heure de CETTE note (corrigible)",
+      "tip_padre": "Revenir au niveau précédent",
+      "tip_raiz": "Revenir à la racine",
+      "tip_anadir": "Ajouter une question ou une réponse ici",
+      "anadir": "ajouter",
+      "tip_editar": "Mode édition : modifier ou retirer des éléments",
+      "editar": "éditer",
+      "aviso_edicion": "Mode édition : touche {lapiz} pour modifier ou retirer un élément, {flechas} pour changer son ordre. Appuie encore sur « éditer » pour sortir.",
+      "tip_subir": "Passer devant le précédent",
+      "tip_bajar": "Passer derrière le suivant",
+      "aria_subir": "Passer « {t} » devant le précédent",
+      "aria_bajar": "Passer « {t} » derrière le suivant",
+      "movido": "Déplacé : {t} — maintenant {pos} sur {n}.",
+      "movido_compartida": "L'ordre vaut aussi pour : {lista}.",
+      "editar_esta": "{lapiz} Modifier « {t} »",
+      "edit_titulo": "Modifier « {t} »",
+      "edit_texto": "Texte",
+      "edit_pregunta": "Question de la liste",
+      "edit_modo": "Réponses de la liste",
+      "modo_uno": "Une seule",
+      "modo_varios": "Plusieurs (elles s'additionnent)",
+      "edit_multiple": "Multiple (peut être noté plusieurs fois)",
+      "edit_max": "Maximum par jour (0 = illimité)",
+      "edit_excl_caja": "Les éléments de cette liste s'excluent entre eux (à la même heure)",
+      "edit_incompat": "Incompatible avec…",
+      "incompat_elegir": "— choisir un élément —",
+      "incompat_ninguno": "Il n'y a pas d'autre élément dans cette liste avec qui déclarer une incompatibilité.",
+      "incompat_quitar": "Retirer l'incompatibilité avec « {t} »",
+      "incompat_unidos": "Incompatibles : « {a} » et « {b} ».",
+      "incompat_quitada": "Incompatibilité retirée.",
+      "prop_unico": "unique",
+      "prop_max": "max {n} par jour",
+      "prop_excl": "s'excluent",
+      "prop_incompat": "{distinto} {lista}",
+      "cerrojo_plafon": "Plafond de {n} par jour atteint pour « {t} » (aujourd'hui : {c}).",
+      "cerrojo_unico": "« {t} » ne se note qu'une fois par jour, et c'est déjà fait.",
+      "cerrojo_incompat": "« {t} » est incompatible avec « {otro} », noté à {hora}.",
+      "cerrojo_excl": "À {hora}, « {otro} » est déjà noté : les éléments de cette liste s'excluent.",
+      "cerrojo_diario": "Ouvrir le Journal",
+      "anular_una": "Annuler la note de {hora}",
+      "anular_varias": "Annuler ces {n} notes de {hora}",
+      "anulada": "Note de {hora} annulée.",
+      "retirada": "Note de {hora} retirée.",
+      "nota_movida": "Note déplacée au {cuando}.",
+      "marca_tip": "Voir les notes de ceci et en retirer une",
+      "notas_titulo": "Notes de « {t} »",
+      "notas_volver": "Retour à la liste",
+      "notas_vacio": "Il ne reste aucune note.",
+      "anulada_resto": "D'autres notes de « {nodo} » restent : {horas}.",
+      "anuladas": "{n} notes annulées.",
+      "quitar_tip": "Retirer cette note (deux appuis)",
+      "edit_nat": "Nature",
+      "nat_respuesta": "Réponse",
+      "nat_pregunta": "Question",
+      "nat_texto": "Texte libre",
+      "edit_compartida": "Cette liste est partagée par : {lista}. Ce que tu changes ou retires vaut pour toutes.",
+      "aplicar": "Appliquer",
+      "quitar_elem": "Retirer cet élément",
+      "quitar_sub": "{n} éléments en dessous disparaîtront aussi.",
+      "quitar_otro": "« {t} » est aussi dans : {donde}. Il y restera.",
+      "quitado": "Retiré : {t}",
+      "modificado": "Modifié : {t}",
+      "marca_leyenda_dia": "{ok} : déjà noté ce jour-là, avec son heure.",
+      "marca_leyenda_hora": "{ok} : déjà noté à cette heure.",
+      "marca_leyenda_todo": "{ok} : déjà noté.",
+      "arbol_titulo": "Arbre en cours",
+      "arbol_estado": "{origen} · {n} éléments · {a} ajoutés · {c} modifiés",
+      "origen_tabla": "celui de la table",
+      "origen_archivo": "chargé depuis un fichier",
+      "guardar_arbol": "Enregistrer l'arbre",
+      "cargar_arbol": "Charger un arbre",
+      "volver_tabla": "Revenir à l'arbre de la table",
+      "arbol_guardado": "Arbre enregistré : {archivo}",
+      "carga_pregunta": "« {archivo} » contient {n} éléments. Il remplacera l'arbre actuel : tes ajouts et modifications seront perdus.",
+      "cargar_si": "Charger",
+      "cargado": "Arbre chargé : {n} éléments",
+      "restaurado": "Arbre de la table rétabli.",
+      "err_formato": "Ce fichier n'est pas un arbre de Notas.",
+      "err_lectura": "Impossible de lire le fichier.",
+      "resultado_leyenda": "Seulement ce qui est noté, dans l'ordre de l'arbre : chaque branche descend jusqu'au dernier noté ; à droite, les heures.",
+      "pregunta_vacia": "Cette question n'a pas encore de réponses. Utilise « + » pour en ajouter.",
+      "anotado": "Noté",
+      "validar": "Valider ({n})",
+      "pila": "pile",
+      "nueva_titulo": "Ajouter dans « {donde} »",
+      "nueva_texto": "Texte",
+      "nueva_pregunta": "Question",
+      "nueva_respuesta": "Réponse",
+      "nueva_libre": "Texte libre",
+      "nueva_ayuda": "Question : aura des réponses en dessous. Réponse : se note dès qu'on la touche. Texte libre : ouvre une zone pour écrire.",
+      "texto_titulo": "Texte libre : {t}",
+      "texto_ayuda": "Écris ou dicte avec le micro du clavier…",
+      "texto_anotar": "Noter",
+      "texto_vacio": "Écris quelque chose avant de noter.",
+      "nodo_noter": "Noter à {hora}",
+      "nodo_eliminar": "Éliminer {hora}",
+      "nodo_horas": "Heures notées du {dia}",
+      "nodo_ninguna": "Aucune heure notée ce jour-là. Appuie sur Noter pour ajouter celle que tu vois.",
+      "nodo_nueva_tip": "Heure qui va être notée : tu peux la changer en haut",
+      "nodo_hora_tip": "Déjà notée : appuie pour la corriger ou l'éliminer",
+      "nueva_compartida": "Cette liste est partagée par : {lista}. Ce que tu ajoutes apparaîtra dans toutes.",
+      "nueva_vacia": "Écris d'abord un texte.",
+      "cancelar": "Annuler",
+      "anadido": "Ajouté : {t}",
+      "grafo_titulo": "Graphe de base et ajouts",
+      "grafo_leyenda": "Bord doré et ×n : nœud PARTAGÉ, atteint par n chemins. Trait en pointillé : question commune. Touche un nœud pour mettre ses flèches en évidence.",
+      "resultado_titulo": "Journal",
+      "resultado_vacio": "Rien n'a encore été noté.",
+      "resultado_grafo": "Résultat dessiné",
+      "vistas_aria": "Façon de dessiner le résultat",
+      "vista_arbol": "Arbre",
+      "vista_grafo": "Graphe",
+      "resultado_leyenda_grafo": "Une branche par chemin noté, en couches de gauche à droite ; touche un cadre pour mettre en évidence ses liens.",
+      "quitar": "Retirer la note {n}",
+      "datos": "Données (JSON)",
+      "copiar": "Copier",
+      "copiado": "Copié",
+      "vaciar_registro": "Vider le journal",
+      "confirmar": "Sûr ? Appuie encore",
+      "sin_etiqueta": "(sans texte)",
+      "aviso_memoria": "Le stockage du navigateur n'est pas disponible : ce qui est noté ne vit qu'en mémoire et sera perdu à la fermeture.",
+      "error_titulo": "La table du graphe contient des erreurs",
+      "error_ayuda": "Corrige notas-grafo.js puis recharge la page.",
+      "err_sin_raiz": "La racine « {id} » n'existe pas.",
+      "err_inexistente": "Le nœud « {id} » n'existe pas (cité par « {desde} »).",
+      "err_h_e_ir": "Le nœud « {id} » porte à la fois « h » et « ir ».",
+      "err_sin_t": "Le nœud « {id} » figure dans une liste mais n'a pas de texte « t ».",
+      "err_bucle": "Boucle : {ruta}"
+    }
+  },
+
+  "nodos": {
+    "0_notas": { "antiguo": "raiz", "t": "NOTAS", "rejilla": 2,
+                 "h": ["1_alimentacion", "2_ocupacion", "3_salud", "4_eliminacion"] },
+
+    "1_alimentacion": { "antiguo": "alimentacion", "t": "ALIMENTACION",
+                        "h": ["10_observacion", "11_desayuno", "12_almuerzo", "13_comida", "14_merienda", "15_cena", "16_hidratacion"] },
+    "10_observacion": { "antiguo": "obs_alimentacion", "t": "Observación", "tipo": "texto" },
+    "11_desayuno":    { "antiguo": "desayuno", "t": "Desayuno", "ir": "91_estados_comida", "multiple": false },
+    "12_almuerzo":    { "antiguo": "almuerzo", "t": "Almuerzo", "ir": "91_estados_comida", "multiple": false },
+    "13_comida":      { "antiguo": "comida",   "t": "Comida",   "ir": "91_estados_comida", "multiple": false },
+    "14_merienda":    { "antiguo": "merienda", "t": "Merienda", "ir": "91_estados_comida", "multiple": false },
+    "15_cena":        { "antiguo": "cena",     "t": "Cena",     "ir": "91_estados_comida", "multiple": false },
+    "16_hidratacion": { "t": "Hidratación", "ir": "92_bebidas", "legado": "💧 Hidratación" },
+
+    "2_ocupacion": { "antiguo": "ocupacion", "t": "OCUPACION", "q": "¿Que ha hecho ?", "modo": "uno", "exclusivo": true,
+                     "h": ["20_observacion", "21_nada", "22_caminar", "23_siesta", "24_lectura", "25_escritura", "26_dibujo", "27_television", "28_conversacion"] },
+    "20_observacion": { "antiguo": "obs_ocupacion", "t": "Observación", "tipo": "texto" },
+    "21_nada":         { "antiguo": "nada",         "t": "Nada" },
+    "22_caminar":      { "antiguo": "caminar",      "t": "Caminar" },
+    "23_siesta":       { "antiguo": "siesta",       "t": "Siesta" },
+    "24_lectura":      { "antiguo": "lectura",      "t": "Lectura" },
+    "25_escritura":    { "antiguo": "escritura",    "t": "Escritura" },
+    "26_dibujo":       { "antiguo": "dibujo",       "t": "Dibujo" },
+    "27_television":   { "antiguo": "television",   "t": "Television" },
+    "28_conversacion": { "antiguo": "conversacion", "t": "Conversación" },
+
+    "3_salud": { "antiguo": "salud", "t": "SALUD",
+                 "h": ["30_observacion", "31_hidratacion", "32_enfermeria", "34_terapias", "33_dolor", "35_caida", "36_crisis", "37_hinchazon_piernas", "38_estado"] },
+    "30_observacion": { "antiguo": "obs_salud", "t": "Observación", "tipo": "texto" },
+    "31_hidratacion": { "t": "Hidratación", "ir": "92_bebidas", "legado": "💧 Hidratación" },
+
+    "32_enfermeria": { "antiguo": "enfermeria", "t": "Enfermeria", "q": "¿Para que Visita de enfermeria?", "h": ["321_cura", "322_control", "323_extraccion"] },
+    "321_cura":       { "antiguo": "cura",    "t": "Cura" },
+    "322_control":    { "antiguo": "control", "t": "Control" },
+    "323_extraccion": { "t": "Extracción" },
+
+    "34_terapias": { "t": "Terapias", "q": "¿Que terapia ?", "h": ["341_fisioterapia", "342_logopedia"] },
+    "341_fisioterapia": { "t": "Fisioterapia" },
+    "342_logopedia":    { "t": "Logopedia" },
+
+    "33_dolor": { "antiguo": "dolor", "t": "Dolor", "q": "¿Donde ?", "h": ["331_cabeza", "332_brazos", "333_piernas", "334_espalda"] },
+    "331_cabeza":  { "antiguo": "cabeza",  "t": "Cabeza",  "h": ["3311_frontal", "3312_nuca", "3313_general"] },
+    "3311_frontal": { "antiguo": "frontal", "t": "Frontal" },
+    "3312_nuca":    { "antiguo": "nuca",    "t": "Nuca" },
+    "3313_general": { "antiguo": "general", "t": "General" },
+    "332_brazos":  { "antiguo": "brazos",  "t": "Brazos",  "h": ["3321_manos"] },
+    "3321_manos":  { "antiguo": "manos",   "t": "Manos",   "ir": "93_lado" },
+    "333_piernas": { "antiguo": "piernas", "t": "Piernas", "h": ["3331_muslo", "3332_pierna", "3333_rodilla", "3334_tobillo"] },
+    "3331_muslo":   { "antiguo": "muslo",   "t": "Muslo",   "ir": "93_lado" },
+    "3332_pierna":  { "antiguo": "pierna",  "t": "Pierna",  "ir": "93_lado" },
+    "3333_rodilla": { "antiguo": "rodilla", "t": "Rodilla", "ir": "93_lado" },
+    "3334_tobillo": { "antiguo": "tobillo", "t": "Tobillo", "ir": "93_lado" },
+    "334_espalda": { "antiguo": "espalda", "t": "Espalda", "h": ["3341_zona_alta", "3342_zona_baja", "3313_general"] },
+    "3341_zona_alta": { "antiguo": "zona_alta", "t": "Zona alta" },
+    "3342_zona_baja": { "antiguo": "zona_baja", "t": "Zona baja (lumbar)" },
+
+    "35_caida":  { "antiguo": "caida", "t": "Caida", "q": "¿Donde?", "h": ["351_en_cabeza", "352_en_cadera", "353_en_nalgas", "350_observacion"] },
+    "350_observacion": { "antiguo": "obs_caida", "t": "Observación", "tipo": "texto" },
+    "351_en_cabeza": { "antiguo": "en_cabeza", "t": "En la cabeza",  "ir": "94_consecuencia" },
+    "352_en_cadera": { "antiguo": "en_cadera", "t": "En la cadera",  "ir": "94_consecuencia" },
+    "353_en_nalgas": { "antiguo": "en_nalgas", "t": "En las nalgas", "ir": "94_consecuencia" },
+
+    "36_crisis": { "antiguo": "crisis", "t": "Crisis", "multiple": true },
+
+    "37_hinchazon_piernas": { "antiguo": "hinchazon_piernas", "t": "Hinchazon piernas", "ir": "93_lado" },
+
+    "38_estado": { "antiguo": "estado", "t": "Estado", "h": ["381_somnolencia", "382_duerme_conversacion", "383_agitacion", "384_desorientacion"] },
+    "381_somnolencia": { "antiguo": "somnolencia", "t": "Somnolencia", "q": "¿Cuando ?", "h": ["3811_tras_comidas", "3812_todo_dia"] },
+    "3811_tras_comidas": { "antiguo": "tras_comidas", "t": "Tras las comidas" },
+    "3812_todo_dia":     { "antiguo": "todo_dia",      "t": "Todo el dia" },
+    "382_duerme_conversacion": { "antiguo": "duerme_conversacion", "t": "Se duerme en conversacion" },
+    "383_agitacion": { "antiguo": "agitacion", "t": "Agitacion / Inquietud", "q": "¿En que momento ?",
+                       "h": ["3812_todo_dia", "3831_por_la_manana", "3832_al_medio_dia", "3833_por_la_tarde", "3834_por_la_noche"] },
+    "3831_por_la_manana": { "antiguo": "por_la_manana", "t": "Por la mañana" },
+    "3832_al_medio_dia":  { "antiguo": "al_medio_dia",  "t": "Al medio dia" },
+    "3833_por_la_tarde":  { "antiguo": "por_la_tarde",  "t": "Por la tarde" },
+    "3834_por_la_noche":  { "antiguo": "por_la_noche",  "t": "Por la noche" },
+    "384_desorientacion": { "antiguo": "desorientacion", "t": "Desorientacion", "q": "¿Que se ha observado ?",
+                            "h": ["3841_no_reconoce", "3842_repite_lo_mismo", "3843_quiere_irse_a_casa", "3844_confuse_noche"] },
+    "3841_no_reconoce":        { "antiguo": "no_reconoce",        "t": "No reconoce a alguien" },
+    "3842_repite_lo_mismo":    { "antiguo": "repite_lo_mismo",    "t": "Repite lo mismo" },
+    "3843_quiere_irse_a_casa": { "antiguo": "quiere_irse_a_casa", "t": "Quiere irse a casa" },
+    "3844_confuse_noche":      { "antiguo": "confuse_noche",      "t": "Confuse por la noche" },
+
+    "4_eliminacion": { "t": "ELIMINACION", "h": ["40_observacion", "41_miccion", "42_deposicion", "43_cambio_panales"] },
+    "40_observacion":    { "t": "Observación", "tipo": "texto" },
+    "41_miccion":        { "t": "Micciones",        "multiple": true, "legado": "💦 Micción" },
+    "42_deposicion":     { "t": "Deposición",       "multiple": true, "legado": "🚽 Deposición" },
+    "43_cambio_panales": { "t": "Cambio de pañales", "multiple": true, "legado": "🩹 Cambio de pañal" },
+
+    "91_estados_comida": { "antiguo": "estados_comida", "q": "¿Como comio ?", "h": ["911_comio_todo", "912_rechazo_todo", "913_come_si_insiste"] },
+    "911_comio_todo":      { "antiguo": "comio_todo",      "t": "Ha comido Todo" },
+    "912_rechazo_todo":    { "antiguo": "rechazo_todo",    "t": "Ha rechazado todo" },
+    "913_come_si_insiste": { "antiguo": "come_si_insiste", "t": "Ha comido si insiste" },
+
+    "92_bebidas": { "q": "¿Que ha bebido ?", "h": ["921_agua", "922_zumo_de_fruta", "923_te", "924_cafe", "925_chocolate"] },
+    "921_agua":          { "t": "Agua" },
+    "922_zumo_de_fruta": { "t": "Zumo de fruta" },
+    "923_te":            { "t": "Té" },
+    "924_cafe":          { "t": "Café" },
+    "925_chocolate":     { "t": "Chocolate" },
+
+    "93_lado": { "antiguo": "lado", "q": "¿Que Lado?", "h": ["931_izquierdo", "932_ambos", "933_derecho"] },
+    "931_izquierdo": { "antiguo": "izquierdo", "t": "Izquierdo" },
+    "932_ambos":     { "antiguo": "ambos",     "t": "Ambos" },
+    "933_derecho":   { "antiguo": "derecho",   "t": "Derecho" },
+
+    "94_consecuencia": { "antiguo": "consecuencia", "q": "¿Con que consecuencia ?", "modo": "varios",
+                         "h": ["941_sin_golpe", "942_con_rasguno", "943_con_hematomo"] },
+    "941_sin_golpe":    { "antiguo": "sin_golpe",    "t": "Sin golpe" },
+    "942_con_rasguno":  { "antiguo": "con_rasguno",  "t": "Con rasguño" },
+    "943_con_hematomo": { "antiguo": "con_hematomo", "t": "Con hematomo" }
+  }
+};
+</script>
+<!-- MB:END modules/notas-tabla.js -->
+<!-- MB:BEGIN modules/notas.js -->
+<style>
+/* notas.js — el programa de las Notas (el grafo de P-H). Aquí no hay ningún color, tamaño ni texto : todo viene de
+   modules/notas-tabla.js (variables « estilo », textos es / fr) y del tema de la casa. Todo va dentro de #notas-app. */
+#notas-app { font-size: var(--texto); color: var(--tinta); text-align: left; }
+#notas-app h2, #notas-app h3 { text-transform: none; letter-spacing: 0; text-align: left; color: var(--tinta); }
+#notas-app h2.pregunta { font-weight: var(--peso-fuerte); }
+#notas-app button, #notas-app input, #notas-app select, #notas-app textarea { font: inherit; color: inherit; }
+#notas-app button, #notas-app input, #notas-app select, #notas-app textarea { font: inherit; color: inherit; }
+#notas-app button { cursor: pointer; }
+#notas-app button:disabled { cursor: default; opacity: var(--opaco-tenue); }
+#notas-app .nt-aviso { padding: var(--espacio-s) var(--espacio); border-radius: var(--radio); background: var(--aviso-fondo); color: var(--aviso); margin: var(--espacio-s) 0; font-size: var(--texto-s); }
+#notas-app .nt-aviso.error { background: var(--error-fondo); color: var(--error); }
+#notas-app .nt-aviso.ok { background: var(--ok-fondo); color: var(--nt-ok); }
+#notas-app .nt-aviso.supresion { background: var(--supresion-fondo); color: var(--supresion); }
+#notas-app .nt-aviso .ir-diario { display: block; margin-top: var(--espacio-s); padding: var(--espacio-s) var(--espacio); border-radius: var(--radio); border: var(--borde-ancho) solid var(--error); background: var(--panel); color: var(--error); font-weight: var(--peso-fuerte); }
+#notas-app .obs { background: var(--panel); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); padding: var(--espacio-s) var(--espacio); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--espacio-s); }
+#notas-app .obs .lbl { font-size: var(--texto-s); color: var(--tinta-suave); }
+#notas-app .obs .cajas { display: flex; flex-wrap: wrap; gap: var(--espacio-s); max-width: 100%; }
+#notas-app .obs input { min-width: 0; padding: var(--espacio-xs) var(--espacio-s); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); background: var(--fondo); }
+#notas-app .migas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espacio-xs); margin: var(--espacio) 0 var(--espacio-s); font-size: var(--texto-s); }
+#notas-app .migas button { border: 0; background: none; color: var(--acento); text-decoration: underline; padding: var(--espacio-xs); }
+#notas-app .migas .actual { font-weight: var(--peso-fuerte); padding: var(--espacio-xs); }
+#notas-app .migas .sep { color: var(--tinta-suave); }
+#notas-app h2.pregunta { font-size: var(--texto-pregunta); margin: var(--espacio-s) 0; }
+#notas-app .teclas { display: grid; grid-template-columns: repeat(auto-fit, minmax(var(--tecla-min), 1fr)); gap: var(--espacio-s); }
+#notas-app .tecla { display: flex; justify-content: space-between; align-items: center; gap: var(--espacio-s); min-height: var(--tecla-alto); font-size: var(--texto-tecla); padding: var(--espacio-s) var(--espacio); border: var(--borde-ancho) solid var(--tecla-borde); background: var(--tecla); border-radius: var(--radio); text-align: left; box-shadow: var(--sombra); }
+#notas-app .tecla.sel { background: var(--tecla-sel); border-color: var(--acento); }
+#notas-app .tecla .chev { color: var(--acento); font-weight: var(--peso-fuerte); }
+#notas-app .tecla .chk { color: var(--acento); }
+#notas-app .tecla .cuerpo { display: flex; flex-direction: column; gap: var(--espacio-xs); min-width: 0; }
+#notas-app .tecla .marca { display: inline-flex; align-items: center; min-height: var(--toque-marca); font-size: var(--texto-xs); color: var(--nt-ok); font-weight: var(--peso-fuerte); cursor: pointer; padding: 0 var(--espacio-s); margin-left: calc(-1 * var(--espacio-s)); border-radius: var(--radio); }
+#notas-app .tecla .marca:hover, #notas-app .tecla .marca:focus-visible { background: var(--ok-fondo); outline: var(--borde-ancho) solid var(--nt-ok); }
+#notas-app .notas-nodo .registro button { min-width: var(--toque); min-height: var(--toque); font-size: var(--texto); }
+#notas-app .notas-nodo .volver { width: 100%; margin-top: var(--espacio-s); min-height: var(--tecla-alto); border-radius: var(--radio); border: var(--borde-ancho) solid var(--borde); background: var(--panel); font-size: var(--texto); }
+#notas-app .tecla.anotada { background: var(--ok-fondo); border-color: var(--nt-ok); }
+#notas-app .tecla.anotada.sel { background: var(--tecla-sel); border-color: var(--acento); }
+#notas-app .tecla.cerrada, #notas-app .tecla.anotada.cerrada { background: var(--error-fondo); border-color: var(--error); color: var(--error); }
+#notas-app .tecla.cerrada .marca { color: var(--error); }
+#notas-app .tecla .cerrojo { flex: none; }
+#notas-app .tecla .props { font-size: var(--texto-xs); color: var(--tinta-suave); overflow-wrap: anywhere; }
+#notas-app .teclas.edicion { grid-template-columns: 1fr; }
+#notas-app .teclas.rejilla { grid-template-columns: repeat(var(--rejilla-cols), minmax(0, 1fr)); }
+#notas-app .teclas.rejilla .tecla { flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: var(--teja-alto); font-size: var(--texto-teja); padding: var(--espacio-s); }
+#notas-app .teclas.rejilla .tecla .cuerpo { align-items: center; max-width: 100%; }
+#notas-app .teclas.rejilla .tecla .tx { overflow-wrap: anywhere; font-weight: var(--peso-fuerte); }
+#notas-app .teclas.rejilla .tecla .marca { margin-left: 0; }
+#notas-app .tecla.editable { padding: 0; gap: 0; align-items: stretch; border-style: dashed; }
+#notas-app .tecla.editable .cuerpo-btn { flex: 1; display: flex; justify-content: space-between; align-items: center; gap: var(--espacio-s); border: 0; background: none; text-align: left; font-size: inherit; padding: var(--espacio-s) var(--espacio); min-width: 0; overflow-wrap: anywhere; }
+#notas-app .tecla.editable .lapiz, #notas-app .tecla.editable .mover { border: 0; border-left: var(--borde-ancho) solid var(--tecla-borde); background: none; color: var(--acento); font-size: var(--texto-pregunta); padding: 0 var(--espacio); }
+#notas-app .tecla.editable .mover { padding: 0 var(--espacio-s); min-width: var(--ancho-flecha); }
+#notas-app .tecla.editable { scroll-margin-bottom: var(--margen-scroll); }
+#notas-app .tecla.editable.movida { background: var(--tecla-sel); border-color: var(--acento); }
+#notas-app .editar-esta { width: 100%; margin: var(--espacio-s) 0; min-height: var(--tecla-alto); border: var(--borde-ancho) dashed var(--acento); background: var(--panel); color: var(--acento); border-radius: var(--radio); font-weight: var(--peso-fuerte); }
+#notas-app .nodo .horas { display: flex; flex-wrap: wrap; gap: var(--espacio-s); margin: var(--espacio-s) 0; }
+#notas-app .nodo .horas button { min-width: var(--toque); min-height: var(--toque); padding: 0 var(--espacio); border-radius: var(--radio); border: var(--borde-ancho) solid var(--nt-ok); background: var(--ok-fondo); color: var(--nt-ok); font-size: var(--texto-tecla); font-weight: var(--peso-fuerte); }
+#notas-app .nodo .horas button.sel { background: var(--nt-ok); color: var(--acento-tinta); }
+#notas-app .nodo .horas .hora-nueva { border-color: var(--acento); background: var(--panel); color: var(--acento); }
+#notas-app .nodo .horas .hora-nueva.sel { background: var(--acento); color: var(--acento-tinta); }
+#notas-app .nodo .noter-hora, #notas-app .nodo .eliminar-hora { width: 100%; margin-top: var(--espacio-s); min-height: var(--tecla-alto); font-size: var(--texto-tecla); font-weight: var(--peso-fuerte); border: 0; border-radius: var(--radio); }
+#notas-app .nodo .noter-hora { background: var(--nt-ok); color: var(--acento-tinta); }
+#notas-app .nodo .eliminar-hora { background: var(--supresion); color: var(--acento-tinta); }
+#notas-app .validar { width: 100%; margin-top: var(--espacio-s); min-height: var(--tecla-alto); font-size: var(--texto-tecla); font-weight: var(--peso-fuerte); border: 0; border-radius: var(--radio); background: var(--nt-ok); color: var(--acento-tinta); }
+#notas-app .hecho { background: var(--ok-fondo); color: var(--nt-ok); border-radius: var(--radio); padding: var(--espacio); margin: var(--espacio-s) 0; }
+#notas-app .hecho .ok { font-weight: var(--peso-fuerte); font-size: var(--texto-pregunta); }
+#notas-app .hecho .ruta { margin-top: var(--espacio-s); color: var(--tinta); }
+#notas-app .hecho .hora { color: var(--tinta-suave); font-size: var(--texto-s); }
+#notas-app .hecho .libre { margin-top: var(--espacio-xs); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--tinta); }
+#notas-app .hecho .anular { margin-top: var(--espacio-s); padding: var(--espacio-s) var(--espacio); border-radius: var(--radio); border: var(--borde-ancho) solid var(--nt-ok); background: var(--panel); color: var(--nt-ok); font-weight: var(--peso-fuerte); }
+#notas-app .salidas { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: var(--espacio-s); position: sticky; bottom: var(--pie-alto, 0px); background: var(--fondo); padding: var(--espacio-s) 0; margin-top: var(--espacio); }
+#notas-app .salida { min-height: var(--tecla-alto); border: var(--borde-ancho) solid var(--acento); background: var(--acento); color: var(--acento-tinta); border-radius: var(--radio); font-size: var(--texto); padding: var(--espacio-xs) var(--espacio-s); display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: var(--interlinea); }
+#notas-app .salida .sim { font-size: var(--texto-pregunta); font-weight: var(--peso-fuerte); }
+#notas-app .salida .dest { font-size: var(--texto-xs); overflow-wrap: anywhere; text-align: center; }
+#notas-app .salida[data-salida="mas"], #notas-app .salida[data-salida="editar"] { background: var(--panel); color: var(--acento); }
+#notas-app .salida[aria-pressed="true"] { background: var(--nt-ok); border-color: var(--nt-ok); color: var(--acento-tinta); }
+#notas-app .pila { font-family: var(--fuente-mono); font-size: var(--texto-xs); color: var(--tinta-suave); margin-top: var(--espacio-s); overflow-wrap: anywhere; }
+#notas-app .nueva { background: var(--panel); border: var(--borde-ancho) solid var(--acento); border-radius: var(--radio); padding: var(--espacio); display: grid; gap: var(--espacio-s); }
+#notas-app .nueva h3 { margin: 0; font-size: var(--texto); }
+#notas-app .nueva input[type="text"] { padding: var(--espacio-s); font-size: var(--texto-tecla); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); width: 100%; }
+#notas-app .nueva .ayuda { margin: 0; font-size: var(--texto-xs); color: var(--tinta-suave); }
+#notas-app .nueva .compartida { margin: 0; padding: var(--espacio-s); border-radius: var(--radio); background: var(--miel-fondo); font-size: var(--texto-s); }
+#notas-app .nueva .dos { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: var(--espacio-s); }
+#notas-app .nueva textarea { width: 100%; padding: var(--espacio-s); font-size: var(--texto-tecla); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); background: var(--fondo); resize: vertical; }
+#notas-app .nueva .dos button { min-height: var(--tecla-alto); border-radius: var(--radio); border: var(--borde-ancho) solid var(--acento); background: var(--acento); color: var(--acento-tinta); font-weight: var(--peso-fuerte); }
+#notas-app .nueva .campo { display: grid; gap: var(--espacio-xs); }
+#notas-app .nueva .campo label { font-size: var(--texto-s); color: var(--tinta-suave); }
+#notas-app .nueva .campo label.caja { display: flex; align-items: center; gap: var(--espacio-s); font-size: var(--texto); color: var(--tinta); }
+#notas-app .nueva .campo label.caja input { flex: none; width: auto; }
+#notas-app .nueva input[type="number"] { padding: var(--espacio-s); font-size: var(--texto-tecla); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); width: var(--ancho-numero); }
+#notas-app .nueva .vinculos { display: flex; flex-wrap: wrap; gap: var(--espacio-s); }
+#notas-app .nueva .vinculo { padding: var(--espacio-s) var(--espacio); border-radius: var(--radio); border: var(--borde-ancho) solid var(--error); background: var(--error-fondo); color: var(--error); }
+#notas-app .nueva select { padding: var(--espacio-s); font-size: var(--texto-tecla); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); background: var(--panel); width: 100%; }
+#notas-app .nueva .quitar { min-height: var(--tecla-alto); border-radius: var(--radio); border: var(--borde-ancho) solid var(--error); background: var(--panel); color: var(--error); font-weight: var(--peso-fuerte); }
+#notas-app .nueva .efecto { margin: 0; padding: var(--espacio-s); border-radius: var(--radio); background: var(--error-fondo); color: var(--error); font-size: var(--texto-s); }
+#notas-app .nueva .cancelar { border: 0; background: none; color: var(--acento); text-decoration: underline; padding: var(--espacio-s); }
+#notas-app .leyenda { font-size: var(--texto-xs); color: var(--tinta-suave); margin: 0 0 var(--espacio-s); }
+#notas-app .registro { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--espacio-xs); }
+#notas-app .registro li { display: flex; align-items: center; gap: var(--espacio-s); padding: var(--espacio-xs) 0; border-bottom: var(--borde-ancho) solid var(--borde); font-size: var(--texto-s); }
+#notas-app .registro .n { font-weight: var(--peso-fuerte); min-width: var(--ancho-num); color: var(--acento); }
+#notas-app .registro .cuando { color: var(--tinta-suave); white-space: nowrap; }
+#notas-app .registro .texto { flex: 1; overflow-wrap: anywhere; }
+#notas-app .registro .libre { display: block; white-space: pre-wrap; color: var(--tinta-suave); overflow-wrap: anywhere; }
+#notas-app .registro button { border: 0; background: none; color: var(--error); padding: var(--espacio-s); }
+</style>
+<script>
+/* notas.js — versión 2026.10.21-22:07:19 (portado de la maqueta « grafo-notas »).
+   El mecanismo : pila, salidas, pantalla de un nodo (Noter / Éliminer), controles (único, tope, exclusividad,
+   incompatibilidad), marcas, modo edición (desde Configuración). Las notas se guardan en mfp_obs (ver notas-tabla.js). */
+(function () {
+  'use strict';
+
+  var T = window.NOTAS_GRAFO, APP = null;
+  if (!T || typeof T !== 'object' || !T.nodos || !T.textos || !T.estilo) { window.NotasGrafo = { entrar: function () {}, repintar: function () {} }; return; }
+
+  /* ───────────── pequeñas herramientas ───────────── */
+  function h(tag, attrs) {
+    var e = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) {
+      var v = attrs[k];
+      if (v === null || v === undefined || v === false) return;
+      if (k === 'class') e.className = v;
+      else if (k === 'dataset') Object.assign(e.dataset, v);
+      else if (k.indexOf('on') === 0) e.addEventListener(k.slice(2), v);
+      else e.setAttribute(k, v === true ? '' : v);
+    });
+    Array.prototype.slice.call(arguments, 2).forEach(function add(c) {
+      if (c === null || c === undefined || c === false) return;
+      if (Array.isArray(c)) { c.forEach(add); return; }
+      e.append(c.nodeType ? c : document.createTextNode(String(c)));
+    });
+    return e;
+  }
+  function fmt(str, vars) { return String(str).replace(/\{(\w+)\}/g, function (m, k) { return vars && vars[k] !== undefined ? vars[k] : m; }); }
+  function p2(n) { return String(n).padStart(2, '0'); }
+
+  /* ───────────── almacén : el de la casa (por paciente). Las notas del grafo viven en mfp_obs, con su forma de
+     siempre { fecha, hora, tipos, nota } y un campo más, « ids » (su camino en el árbol) ───────────── */
+  function nodoLegado(ids) {        /* el nombre que la hoja de Resumen ya conocía, si algún nodo del camino lo declara */
+    for (var i = ids.length - 1; i >= 0; i--) { var n = nodo(ids[i]); if (n && n.legado) return n.legado; }
+    return null;
+  }
+  function aRegistro(o) {
+    if (!o || !Array.isArray(o.ids) || !o.ids.length || !o.fecha || !o.hora) return null;
+    return { n: o.n, t: o.fecha + 'T' + o.hora + ':00', ids: o.ids.slice(), txt: Array.isArray(o.txt) ? o.txt.slice() : o.ids.slice(), libre: o.texto || undefined, _o: o };
+  }
+  function aObs(e) {
+    var tipo = nodoLegado(e.ids) || e.txt.join(T.almacen.separador_tipo);
+    var o = Object.assign({}, e._o || {}, { fecha: e.t.slice(0, 10), hora: e.t.slice(11, 16), tipos: [tipo], nota: e.libre || null, ids: e.ids, txt: e.txt, n: e.n });
+    if (e.libre) o.texto = e.libre; else delete o.texto;
+    e._o = o;
+    return o;
+  }
+  var Alm = {
+    ok: true,
+    get: function (k, def) {
+      if (k === 'registro') return getObs().map(aRegistro).filter(Boolean);
+      return lsGet(T.almacen.claves[k], def);
+    },
+    set: function (k, v) {
+      if (k === 'registro') {
+        var resto = getObs().filter(function (o) { return !(o && Array.isArray(o.ids) && o.ids.length); });
+        lsSet(T.almacen.claves.registro, resto.concat(v.map(aObs)));
+        return;
+      }
+      lsSet(T.almacen.claves[k], v);
+    }
+  };
+
+  /* ───────────── validación de la tabla (antes de arrancar) ───────────── */
+  function validar(N, raiz) {
+    var errs = [];
+    if (!N[raiz]) errs.push({ k: 'err_sin_raiz', v: { id: raiz } });
+    Object.keys(N).forEach(function (id) {
+      var n = N[id];
+      if (n.h && n.ir) errs.push({ k: 'err_h_e_ir', v: { id: id } });
+      (n.h || []).forEach(function (c) {
+        if (!N[c]) errs.push({ k: 'err_inexistente', v: { id: c, desde: id } });
+        else if (N[c].t === undefined) errs.push({ k: 'err_sin_t', v: { id: c } });
+      });
+      if (n.ir && !N[n.ir]) errs.push({ k: 'err_inexistente', v: { id: n.ir, desde: id } });
+    });
+    if (errs.length) return errs;
+    var estado = {}, pila = [];                         /* 1 = en curso, 2 = terminado */
+    function visita(id) {
+      if (estado[id] === 2) return true;
+      if (estado[id] === 1) { errs.push({ k: 'err_bucle', v: { ruta: pila.slice(pila.indexOf(id)).concat(id).join(' → ') } }); return false; }
+      estado[id] = 1; pila.push(id);
+      var n = N[id], sal = n.ir ? [n.ir] : (n.h || []), ok = true;
+      for (var i = 0; i < sal.length; i++) if (!visita(sal[i])) { ok = false; break; }
+      pila.pop(); estado[id] = 2;
+      return ok;
+    }
+    Object.keys(N).forEach(function (id) { if (!estado[id]) visita(id); });
+    return errs;
+  }
+
+  /* ───────────── estado ───────────── */
+  var S = {
+    pila: [],                 /* LA PILA : los nodos tocados, de la raíz hacia abajo (la raíz no se apila) */
+    sel: new Set(),
+    hecho: null,
+    aniadir: null,
+    obs: { dia: '', hora: '', manual: false },
+    notasNodo: null,
+    nodo: null,               /* { id, sel, foco } : la pantalla de UN nodo (horas anotadas, Anotar / Quitar) */
+    aviso: null,
+    confirmar: null,
+    modoEd: false,            /* modo edición : cambiar o quitar elementos */
+    editar: null,             /* { id, dueno } : el panel de edición abierto */
+    texto: null,              /* { id, dueno, borrador } : el cuadro de texto libre abierto */
+  };
+  /* BASE = el árbol de trabajo : el de la tabla, o el que se cargó de un archivo.
+     adds = lo que el usuario añade ; cambios = lo que modifica o quita en un nodo de la base. */
+  var BASE = T.nodos, RAIZ = T.raiz, deArchivo = false;
+  var adds = [], registro = [], cambios = {}, contadorAdds = 0;
+
+  function cargarCapa() {
+    BASE = T.nodos; RAIZ = T.raiz; deArchivo = false;
+    var a = Alm.get('adds', []);
+    adds = Array.isArray(a) ? a.filter(function (x) { return x && x.id && x.padre; }) : [];
+    registro = Alm.get('registro', []);
+    var c = Alm.get('cambios', {});
+    cambios = c && typeof c === 'object' && !Array.isArray(c) ? c : {};
+    reindexar();
+    normalizarRegistro();
+    Object.keys(cambios).forEach(function (id) { if (!BASE[id]) delete cambios[id]; });
+  }
+  /* La identidad de una nota es SU CONTENIDO (hora + ruta + texto libre), nunca sólo su número :
+     un número ausente, repetido o escrito como texto no puede impedir ni anular ni quitar una nota. */
+  function claveNota(e) { return e.t + '|' + e.ids.join('/') + '|' + (e.libre || ''); }
+  function sigN() { return registro.reduce(function (m, e) { return Math.max(m, Number(e.n) || 0); }, 0); }
+  function normalizarRegistro() {   /* al cargar : se descartan las entradas ilegibles ; los números malos o repetidos se rehacen, los buenos no se tocan */
+    var antes = JSON.stringify(registro), vistos = {}, pendientes = [];
+    registro = registro.filter(function (e) { return e && typeof e.t === 'string' && Array.isArray(e.ids) && e.ids.length; });
+    registro.forEach(function (e) {
+      if (!Array.isArray(e.txt)) e.txt = e.ids.slice();
+      var v = Number(e.n);
+      if (isFinite(v) && v > 0 && v % 1 === 0 && !vistos[v]) { e.n = v; vistos[v] = true; } else pendientes.push(e);
+    });
+    var tope = sigN();
+    pendientes.forEach(function (e) { e.n = ++tope; });
+    if (JSON.stringify(registro) !== antes) Alm.set('registro', registro);
+  }
+  function Tx() {
+    var base = T.textos.es || {}, cur = T.textos[getLang()] || {};
+    return Object.assign({}, base, cur);
+  }
+
+  /* ───────────── el grafo : nodos de la base + capa de añadidos del usuario ───────────── */
+  var idxAdds = {};
+  function reindexar() {
+    idxAdds = {};
+    var ids = {}; adds.forEach(function (a) { ids[a.id] = true; });
+    adds = adds.filter(function (a) { return BASE[a.padre] || ids[a.padre]; });
+    adds.forEach(function (a) { idxAdds[a.id] = { t: a.t, q: a.q, modo: a.modo, exclusivo: a.exclusivo, multiple: a.multiple, max: a.max, incompat: a.incompat, tipo: a.tipo, orden: a.orden, usuario: true }; });
+  }
+  function nodo(id) {               /* un nodo de la base con sus cambios, o un nodo añadido */
+    var b = BASE[id];
+    if (b) { var c = cambios[id]; return c ? Object.assign({}, b, c) : b; }
+    return idxAdds[id];
+  }
+  function etiqueta(id) {
+    var n = nodo(id);
+    if (!n) return Tx().sin_etiqueta;
+    return n.t !== undefined ? n.t : (n.q ? n.q : Tx().sin_etiqueta);
+  }
+  function hijosNat(id) {           /* hijos propios en el orden natural : los de la base (menos los quitados) y luego los añadidos */
+    var n = nodo(id), c = cambios[id], quitados = (c && c.quitar) || [];
+    return ((n && n.h) || []).filter(function (x) { return quitados.indexOf(x) < 0; })
+      .concat(adds.filter(function (a) { return a.padre === id; }).map(function (a) { return a.id; }));
+  }
+  function hijosDe(id) {            /* hijos propios en el orden del usuario : primero los de « orden », lo demás al final */
+    var nat = hijosNat(id), n = nodo(id), ord = n && n.orden;
+    if (!Array.isArray(ord) || !ord.length) return nat;
+    return ord.filter(function (x, i) { return nat.indexOf(x) >= 0 && ord.indexOf(x) === i; })
+      .concat(nat.filter(function (x) { return ord.indexOf(x) < 0; }));
+  }
+  function resolver(id) {           /* sigue las flechas « ir » hasta el nodo cuyo contenido se muestra */
+    var dueno = id, g = 0;
+    while (nodo(dueno) && nodo(dueno).ir && g++ < T.limites.ir) dueno = nodo(dueno).ir;
+    var n = nodo(dueno) || {}, modo = n.modo || T.modo_defecto;
+    return { dueno: dueno, q: n.q, modo: modo, excl: n.exclusivo === true, hijos: hijosDe(dueno), tipo: n.tipo };
+  }
+  function esPregunta(id) {
+    var r = resolver(id);
+    return r.hijos.length > 0 || r.tipo === 'pregunta';
+  }
+  function esTexto(id) {            /* un nodo de texto libre : no se anota al tocarlo, abre un cuadro para escribir */
+    return !esPregunta(id) && resolver(id).tipo === 'texto';
+  }
+  function aristasDe(id) { var n = nodo(id); return n && n.ir ? [n.ir] : hijosDe(id); }
+  function alcanzables(salto) {     /* los nodos que se alcanzan desde la raíz ; salto = {de, a} : una flecha que se ignora */
+    var vis = {}, pend = [RAIZ];
+    while (pend.length) {
+      var id = pend.pop();
+      if (vis[id]) continue;
+      vis[id] = true;
+      aristasDe(id).forEach(function (c) { if (!(salto && salto.de === id && salto.a === c)) pend.push(c); });
+    }
+    return vis;
+  }
+  function referentes(dueno) {      /* quién llega a este nodo : los que lo citan con « ir » o lo tienen en su lista */
+    var res = [], vivos = alcanzables(null);
+    var todos = Object.keys(BASE).concat(adds.map(function (a) { return a.id; }));
+    todos.forEach(function (id) { if (vivos[id] && aristasDe(id).indexOf(dueno) >= 0) res.push(id); });
+    return res;
+  }
+
+  /* ───────────── fecha y hora de la observación ───────────── */
+  function ahoraLocal() {
+    var d = new Date();      /* el día es el que muestra la casa (◀ ▶) ; la hora de ahora solo vale si es hoy */
+    return { dia: diaKey(), hora: esHoy() ? p2(d.getHours()) + ':' + p2(d.getMinutes()) : T.limites.hora_dia_pasado };
+  }
+  function iso(dia, hora) {
+    var d = new Date(dia + 'T' + hora + ':00'), off = -d.getTimezoneOffset(), a = Math.abs(off);
+    return dia + 'T' + hora + ':00' + (off >= 0 ? '+' : '-') + p2(Math.floor(a / 60)) + ':' + p2(a % 60);
+  }
+  function cuando(t) { return t.slice(8, 10) + '/' + t.slice(5, 7) + ' ' + t.slice(11, 16); }
+
+  /* ───────────── los controles : tope por día, exclusividad, incompatibilidad ─────────────
+     Ninguno sustituye una nota : cierran la tecla (en rojo) y, al tocarla, dicen por qué. */
+  function tope(id) {              /* notas por día que admite un nodo : 0 = sin límite ; « único » (multiple false) = 1 */
+    var n = nodo(id) || {};
+    if (n.multiple === false) return 1;
+    var m = Math.floor(Number(n.max));
+    return m > 0 ? Math.min(m, T.limites.max) : 0;
+  }
+  function parejas(id) {           /* los nodos declarados incompatibles con este (la declaración vale en los dos sentidos) */
+    var res = [], n = nodo(id);
+    function suma(x) { if (x !== id && nodo(x) && res.indexOf(x) < 0) res.push(x); }
+    if (n && Array.isArray(n.incompat)) n.incompat.forEach(suma);
+    Object.keys(BASE).concat(adds.map(function (a) { return a.id; })).forEach(function (x) {
+      var m = nodo(x);
+      if (m && Array.isArray(m.incompat) && m.incompat.indexOf(id) >= 0) suma(x);
+    });
+    return res;
+  }
+  function cerrojo(id, r, pend, ctx) {  /* null = la tecla está libre ; si no { k : texto de la tabla, v : variables }
+                                           ctx (opcional) : { obs : día y hora a probar, pila : la pila de la nota, fuera : notas que se mueven y no cuentan } */
+    if (esTexto(id)) return null;                                       /* un texto libre no tiene controles */
+    ctx = ctx || {};
+    var obs = ctx.obs || S.obs, pila = ctx.pila || S.pila, fuera = ctx.fuera || [];
+    var lim = tope(id), t = etiqueta(id);
+    if (lim > 0) {
+      var c = registro.filter(function (e) { return fuera.indexOf(e) < 0 && !e.libre && e.ids.indexOf(id) >= 0 && enAlcance(e, T.reglas.plafon.alcance, obs); }).length;
+      if (c >= lim) return { k: lim === 1 ? 'cerrojo_unico' : 'cerrojo_plafon', v: { t: t, n: lim, c: c } };
+    }
+    if (esPregunta(id)) return null;                                    /* exclusividad e incompatibilidad juegan entre respuestas */
+    var pilaK = pila.join('/'), pares = parejas(id), hoja, i;
+    var notas = registro.filter(function (e) {
+      return fuera.indexOf(e) < 0 && !e.libre && e.ids.length === pila.length + 1 && e.ids.slice(0, -1).join('/') === pilaK && enAlcance(e, T.reglas.exclusion.alcance, obs);
+    });
+    for (i = 0; i < notas.length; i++) {
+      hoja = notas[i].ids[notas[i].ids.length - 1];
+      if (hoja === id) continue;
+      var otro = notas[i].txt[notas[i].txt.length - 1], hora = notas[i].t.slice(11, 16);
+      if (r.excl) return { k: 'cerrojo_excl', v: { otro: otro, hora: hora } };
+      if (pares.indexOf(hoja) >= 0) return { k: 'cerrojo_incompat', v: { t: t, otro: otro, hora: hora } };
+    }
+    var pe = pend || [];                                                /* lo que se está marcando en esta misma pantalla */
+    for (i = 0; i < pe.length; i++) {
+      if (pe[i] === id || esPregunta(pe[i]) || esTexto(pe[i])) continue;
+      if (r.excl) return { k: 'cerrojo_excl', v: { otro: etiqueta(pe[i]), hora: obs.hora } };
+      if (pares.indexOf(pe[i]) >= 0) return { k: 'cerrojo_incompat', v: { t: t, otro: etiqueta(pe[i]), hora: obs.hora } };
+    }
+    return null;
+  }
+  function cerrojosDe(hojas, pila, r, ctx) {   /* lo que impide anotar estas respuestas bajo esta pila : primero los topes de las PREGUNTAS del camino (Desayuno : una vez al día), luego las respuestas */
+    var i, cj;
+    for (i = 0; i < pila.length; i++) { cj = cerrojo(pila[i], r, [], ctx); if (cj) return cj; }
+    for (i = 0; i < hojas.length; i++) { cj = cerrojo(hojas[i], r, hojas, ctx); if (cj) return cj; }
+    return null;
+  }
+  function avisarCerrojo(cj) {     /* el aviso lleva un botón hacia el Diario : es ahí donde se corrige */
+    S.aviso = { k: 'error', t: fmt(Tx()[cj.k], cj.v), ir: 'resultado' };
+    var t = S.aviso.t; render();
+    setTimeout(function () { olvidarAviso(t); }, T.tiempos.cerrojo_ms);
+  }
+
+  /* ───────────── acciones del mecanismo ───────────── */
+  function tocar(id, r) {
+    S.aviso = null;
+    var hojaUna = !esPregunta(id) && !esTexto(id) && r.modo !== 'varios';
+    if (!S.modoEd && !S.sel.has(id) && !(hojaUna && notasDe(id).length)) {          /* una tecla cerrada no anota ni entra : dice por qué (salvo una hoja ya anotada : su pantalla sirve para quitar) */
+      var cj = cerrojo(id, r, Array.from(S.sel));
+      if (cj) { avisarCerrojo(cj); return; }
+    }
+    if (esPregunta(id)) { S.pila.push(id); S.sel.clear(); render(); return; }       /* pregunta : se apila */
+    if (esTexto(id)) { abrirTexto(id, r.dueno); return; }                           /* texto libre : se escribe */
+    if (r.modo === 'varios') {                                                      /* varios : se marca */
+      if (S.sel.has(id)) S.sel.delete(id); else S.sel.add(id);
+      render(); return;
+    }
+    abrirNodo(id);                                                                  /* respuesta : se abre su pantalla ; ahí se anota o se quita */
+  }
+  function abrirNodo(id) {
+    S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; S.sel.clear();
+    if (!S.obs.manual) Object.assign(S.obs, ahoraLocal());
+    S.nodo = { id: id, sel: null, foco: 'hora' }; render();
+  }
+  function notasHoja(id, dia) {               /* las notas de esta hoja, bajo esta pila, ese día, por hora */
+    var ruta = S.pila.concat(id).join('/');
+    return registro.filter(function (e) { return !e.libre && e.ids.join('/') === ruta && e.t.slice(0, 10) === dia; })
+                   .sort(function (a, b) { return a.t < b.t ? -1 : (a.t > b.t ? 1 : a.n - b.n); });
+  }
+  function noterNodo() {
+    registrar([S.nodo.id], true);
+  }
+  function eliminarNodo() {
+    var nd = S.nodo, e = nd && nd.sel;
+    if (!e || registro.indexOf(e) < 0) { if (nd) nd.sel = null; render(); return; }
+    nd.sel = null; nd.foco = 'hora'; quitarNota(e);
+  }
+  /* Una nota idéntica (misma ruta, misma hora) no se duplica nunca : se rehace sin ruido.
+     Antes de anotar se vuelven a mirar los controles (la fecha y la hora pueden haber cambiado). */
+  function registrar(hojas, enNodo) {
+    if (!S.obs.manual || !S.obs.dia || !S.obs.hora) Object.assign(S.obs, ahoraLocal());
+    var t = iso(S.obs.dia, S.obs.hora), top = S.pila.length ? S.pila[S.pila.length - 1] : RAIZ, r = resolver(top);
+    var cj = cerrojosDe(hojas, S.pila, r);
+    if (cj) { avisarCerrojo(cj); return; }
+    var n0 = sigN();                                                                /* antes de quitar : los números no se reutilizan */
+    var rutas = hojas.map(function (hid) { return S.pila.concat(hid).join('/'); });
+    registro = registro.filter(function (e) { return e.libre || e.t !== t || rutas.indexOf(e.ids.join('/')) < 0; });
+    var nuevas = hojas.map(function (hid, i) {
+      var ids = S.pila.concat(hid);
+      return { n: n0 + 1 + i, t: t, ids: ids, txt: ids.map(etiqueta) };            /* la pila ENTERA viaja con la nota */
+    });
+    registro = registro.concat(nuevas);
+    Alm.set('registro', registro);
+    if (enNodo && S.nodo) { S.nodo.sel = nuevas[0]; S.nodo.foco = 'nota'; } else S.hecho = { nuevas: nuevas };
+    S.obs.manual = false;                                                           /* la hora tecleada sirvió una vez : la siguiente nota vuelve a « ahora » */
+    S.sel.clear(); render();
+  }
+  function horasTexto(hs) {                   /* « 06:10 · 07:30 … » : las horas, en el orden y con el tope de las marcas */
+    var y = T.simbolos, mx = T.marcas.max_horas, h2 = hs.slice().sort();
+    return h2.slice(0, mx).join(y.separador_horas) + (h2.length > mx ? y.mas_horas : '');
+  }
+  function restantesDe(q) {                   /* las horas de las OTRAS notas que siguen marcando el mismo nodo (mismo alcance que las marcas) */
+    var al = (T.marcas && T.marcas.alcance) || 'dia', ruta = q.ids.join('/'), hs = [];
+    registro.forEach(function (e) {
+      if (e.ids.join('/') !== ruta) return;
+      if (al === 'dia' && e.t.slice(0, 10) !== q.t.slice(0, 10)) return;
+      if (al === 'hora' && e.t !== q.t) return;
+      var hh = e.t.slice(11, 16); if (hs.indexOf(hh) < 0) hs.push(hh);
+    });
+    return hs;
+  }
+  function textoAnulada(quitadas, clave) {    /* dice QUÉ se quitó y, si el ✓ sigue encendido, POR QUÉ ; clave : « anulada » (por defecto) o « retirada » */
+    var tx = Tx(), cola = [];
+    quitadas.forEach(function (q) {
+      var hs = restantesDe(q);
+      if (hs.length) cola.push(fmt(tx.anulada_resto, { nodo: etiqueta(q.ids[q.ids.length - 1]), horas: horasTexto(hs) }));
+    });
+    var cab = quitadas.length > 1 ? fmt(tx.anuladas, { n: quitadas.length }) : fmt(tx[clave || 'anulada'], { hora: quitadas[0].t.slice(11, 16) });
+    return [cab].concat(cola).join(' ');
+  }
+  function anular() {                         /* quita las notas que acaban de anotarse (la pantalla « Anotado ») */
+    var hz = S.hecho;
+    if (!hz) return;
+    var ks = hz.nuevas.map(claveNota);
+    registro = registro.filter(function (e) { return ks.indexOf(claveNota(e)) < 0; });
+    Alm.set('registro', registro);
+    S.hecho = null;
+    avisar('supresion', textoAnulada(hz.nuevas));
+  }
+  function quitarNota(e) {                    /* quita UNA nota a elección (el ✕ del Diario, el ✕ del panel de un ✓) */
+    registro = registro.filter(function (x) { return x !== e; });
+    Alm.set('registro', registro);
+    if (S.hecho) {                            /* la pantalla « Anotado » no debe quedarse con una nota que ya no existe */
+      S.hecho.nuevas = S.hecho.nuevas.filter(function (x) { return x !== e; });
+      if (!S.hecho.nuevas.length) S.hecho = null;
+    }
+    if (S.notasNodo && !notasDe(S.notasNodo.id).length) S.notasNodo = null;
+    if (S.nodo && S.nodo.sel === e) S.nodo.sel = null;
+    avisar('supresion', textoAnulada([e], 'retirada'));
+  }
+  function corregirNota(dia, hora) {          /* la nota que acaba de anotarse cambia de día y de hora, con las mismas reglas que al anotarla */
+    var hz = S.hecho;
+    if (!hz) return;
+    var vivas = hz.nuevas.filter(function (e) { return registro.indexOf(e) >= 0; });
+    if (!vivas.length) { S.hecho = null; render(); return; }
+    moverNotas(vivas, dia, hora);
+  }
+  function moverNotas(vivas, dia, hora) {     /* mismas reglas para la nota recién anotada y para una hora elegida en la pantalla de un nodo */
+    if (!dia || !hora) { render(); return; }                                        /* un campo vaciado no mueve nada : se repinta con la fecha buena */
+    var t = iso(dia, hora);
+    if (t === vivas[0].t) { render(); return; }
+    var pila = vivas[0].ids.slice(0, -1), top = pila.length ? pila[pila.length - 1] : RAIZ, r = resolver(top);
+    var hojas = vivas.filter(function (e) { return !e.libre; }).map(function (e) { return e.ids[e.ids.length - 1]; });
+    var cj = cerrojosDe(hojas, pila, r, { obs: { dia: dia, hora: hora }, pila: pila, fuera: vivas });
+    if (cj) { avisarCerrojo(cj); return; }                                          /* el día o la hora elegidos están cerrados : la nota se queda donde estaba */
+    vivas.forEach(function (e) { e.t = t; });
+    var ks = vivas.map(claveNota);
+    registro = registro.filter(function (e) { return vivas.indexOf(e) >= 0 || ks.indexOf(claveNota(e)) < 0; });   /* idéntica a otra : una sola vez */
+    Alm.set('registro', registro);
+    avisar('ok', fmt(Tx().nota_movida, { cuando: cuando(t) }));
+  }
+  function notasDe(cid) {                     /* las notas que cuenta el ✓ de este elemento (mismo alcance que la marca) */
+    var L = S.pila.length;
+    return registro.filter(function (e) {
+      if (e.ids.length <= L || e.ids[L] !== cid || !enAlcance(e)) return false;
+      for (var i = 0; i < L; i++) if (e.ids[i] !== S.pila[i]) return false;
+      return true;
+    }).sort(function (a, b) { return a.t < b.t ? -1 : (a.t > b.t ? 1 : a.n - b.n); });
+  }
+  function abrirNotas(id) {
+    S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.aviso = null; S.nodo = null; S.sel.clear();
+    S.notasNodo = { id: id }; render();
+  }
+  function cerrarNotas() { S.notasNodo = null; render(); }
+  function formNotas() {
+    var tx = Tx(), cid = S.notasNodo.id, L = S.pila.length, sep = T.simbolos.separador, lista = notasDe(cid);
+    return h('div', { class: 'notas-nodo', id: 'notas-nodo' },
+      h('h2', { class: 'pregunta' }, fmt(tx.notas_titulo, { t: etiqueta(cid) })),
+      lista.length
+        ? h('ul', { class: 'registro', id: 'notas-del-nodo' }, lista.map(function (e) {
+            return h('li', { dataset: { n: String(e.n) } },
+              h('span', { class: 'cuando' }, e.t.slice(11, 16)),
+              h('span', { class: 'texto' }, e.txt.slice(L).join(' ' + sep + ' '), e.libre ? h('span', { class: 'libre' }, e.libre) : null),
+              conConfirmacion('nota-' + e.n, T.simbolos.borrar, function () { quitarNota(e); },
+                              'quitar-nota', T.simbolos.borrar_seguro, { 'aria-label': fmt(tx.quitar, { n: e.n }), 'data-tip': tx.quitar_tip }));
+          }))
+        : h('p', { class: 'nt-aviso' }, tx.notas_vacio),
+      h('button', { type: 'button', class: 'volver', dataset: { accion: 'cerrar-notas' }, onclick: cerrarNotas }, tx.notas_volver));
+  }
+  function avisoVivo() {                      /* el aviso en curso, con su botón hacia el Diario si lo lleva ; el mismo en todas las pestañas */
+    var tx = Tx();
+    if (!S.aviso) return null;
+    return h('div', { class: 'nt-aviso ' + (T.avisos[S.aviso.k] || ''), id: 'aviso-vivo' }, S.aviso.t,
+      S.aviso.ir ? h('button', { type: 'button', class: 'ir-diario', dataset: { accion: 'ir-diario' },
+                                 onclick: function () { S.aviso = null; render(); pedirResumen(); } }, tx.cerrojo_diario) : null);
+  }
+  function abrirTexto(id, dueno) {
+    S.hecho = null; S.aniadir = null; S.editar = null; S.notasNodo = null; S.nodo = null; S.sel.clear();
+    S.texto = { id: id, dueno: dueno, borrador: '' };
+    render(); var i = document.getElementById('texto-libre'); if (i) i.focus();
+  }
+  function anotarTexto() {                    /* la nota guarda la ruta entera y el texto ; varios comentarios a la misma hora conviven */
+    var tx = Tx(), tt = S.texto, v = (tt.borrador || '').trim();
+    if (!v) { S.aviso = { k: 'aviso', t: tx.texto_vacio }; render(); var i = document.getElementById('texto-libre'); if (i) i.focus(); return; }
+    if (!S.obs.manual || !S.obs.dia || !S.obs.hora) Object.assign(S.obs, ahoraLocal());
+    var t = iso(S.obs.dia, S.obs.hora), ids = S.pila.concat(tt.id), ruta = ids.join('/');
+    var n0 = sigN();
+    registro = registro.filter(function (e) { return !(e.libre === v && e.t === t && e.ids.join('/') === ruta); });   /* el mismo texto a la misma hora : una sola vez */
+    var nueva = { n: n0 + 1, t: t, ids: ids, txt: ids.map(etiqueta), libre: v };
+    registro = registro.concat([nueva]);
+    Alm.set('registro', registro);
+    S.texto = null; S.hecho = { nuevas: [nueva] }; S.obs.manual = false; S.sel.clear(); render();
+  }
+  function salirPadre() { S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; if (S.nodo) { S.nodo = null; S.sel.clear(); render(); return; } S.pila.pop(); S.sel.clear(); render(); }
+  function salirRaiz()  { S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; S.nodo = null; S.pila = []; S.sel.clear(); render(); }
+  function irA(nivel)   { S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; S.nodo = null; S.pila = S.pila.slice(0, nivel); S.sel.clear(); render(); }
+  function abrirAniadir(r) { S.texto = null; S.notasNodo = null; S.nodo = null; S.aniadir = { dueno: r.dueno }; render(); var i = document.getElementById('nuevo-texto'); if (i) i.focus(); }
+
+  /* un aviso desaparece sin repintar la pantalla : no borra lo que se esté escribiendo */
+  function olvidarAviso(t) {
+    if (S.aviso && S.aviso.t === t) { S.aviso = null; var el = document.getElementById('aviso-vivo'); if (el) el.remove(); }
+  }
+  function avisar(k, t) {
+    S.aviso = { k: k, t: t }; render();
+    setTimeout(function () { olvidarAviso(t); }, T.tiempos.aviso_ms);
+  }
+  function conConfirmacion(id, texto, accion, clase, textoConf, extra) {      /* un botón peligroso : hay que pulsarlo dos veces */
+    var b = h('button', Object.assign({ type: 'button', class: clase || 'peligro', dataset: { accion: id } }, extra || {}), texto);
+    b.addEventListener('click', function () {
+      if (S.confirmar === id) { S.confirmar = null; accion(); return; }
+      S.confirmar = id; b.textContent = textoConf || Tx().confirmar;
+      setTimeout(function () { if (S.confirmar === id) S.confirmar = null; b.textContent = texto; }, T.tiempos.confirmar_ms);
+    });
+    return b;
+  }
+
+  function crear(tipo) {
+    var tx = Tx(), inp = document.getElementById('nuevo-texto'), texto = (inp.value || '').trim();
+    if (!texto) { S.aviso = { k: 'aviso', t: tx.nueva_vacia }; render(); var i2 = document.getElementById('nuevo-texto'); if (i2) i2.focus(); return; }
+    contadorAdds++;
+    var id = 'u' + Date.now().toString(36) + contadorAdds;
+    adds.push({ id: id, t: texto, tipo: tipo, padre: S.aniadir.dueno });
+    Alm.set('adds', adds); reindexar();
+    S.aniadir = null;
+    if (tipo === 'pregunta') S.pila.push(id);                                       /* se entra a llenarla */
+    avisar('ok', fmt(tx.anadido, { t: texto }));
+  }
+
+  /* ───────────── lo ya anotado se marca al volver a una lista ───────────── */
+  function enAlcance(e, alcance, obs) {   /* alcance : dia | hora | todo ; por defecto el de las marcas ; obs : el día y la hora de referencia (por defecto los de la barra) */
+    var al = alcance || (T.marcas && T.marcas.alcance) || 'dia', o = obs || S.obs;
+    if (al === 'todo') return true;
+    if (al === 'hora') return e.t === iso(o.dia, o.hora);
+    return e.t.slice(0, 10) === o.dia;
+  }
+  function marcasDe(hijos) {        /* { id : {n notas por debajo, horas de las notas que terminan aquí} } */
+    var res = {}, L = S.pila.length;
+    registro.forEach(function (e) {
+      if (e.ids.length <= L || !enAlcance(e)) return;
+      for (var i = 0; i < L; i++) if (e.ids[i] !== S.pila[i]) return;
+      var cid = e.ids[L];
+      if (hijos.indexOf(cid) < 0) return;
+      var m = res[cid] || (res[cid] = { n: 0, horas: [] }), hh = e.t.slice(11, 16);
+      m.n++;
+      if (e.ids.length === L + 1 && m.horas.indexOf(hh) < 0) m.horas.push(hh);
+    });
+    return res;
+  }
+  function textoMarca(m, esPreg) {
+    var y = T.simbolos;
+    if (esPreg) return y.anotado + ' ' + m.n;
+    return y.anotado + (m.horas.length ? ' ' + horasTexto(m.horas) : '');
+  }
+
+  /* ───────────── edición : renombrar, propiedades, quitar ───────────── */
+  function alternarEdicion() { S.modoEd = !S.modoEd; S.editar = null; S.texto = null; S.hecho = null; S.notasNodo = null; S.nodo = null; S.sel.clear(); render(); }
+  function abrirEditar(id, dueno) {
+    S.hecho = null; S.aniadir = null; S.texto = null; S.notasNodo = null; S.nodo = null; S.confirmar = null; S.editar = { id: id, dueno: dueno, borrador: {} };
+    render(); var i = document.getElementById('ed-t'); if (i) i.focus();
+  }
+  function igual(x, y) { return JSON.stringify(x) === JSON.stringify(y); }
+  function setCampo(id, campo, valor, defecto) {   /* valor === undefined (o igual a la base) : se deshace el cambio */
+    var a = adds.filter(function (x) { return x.id === id; })[0], vacio = Array.isArray(valor) && !valor.length;
+    if (a) {
+      if (valor === undefined || vacio || (valor === defecto && defecto !== undefined)) delete a[campo]; else a[campo] = valor;
+      Alm.set('adds', adds); reindexar(); return;
+    }
+    var c = cambios[id] || (cambios[id] = {}), base = BASE[id] ? BASE[id][campo] : undefined;
+    if (valor === undefined || igual(valor, base) || (base === undefined && (valor === defecto || vacio))) delete c[campo]; else c[campo] = valor;
+    if (!Object.keys(c).length) delete cambios[id];
+    Alm.set('cambios', cambios);
+  }
+  function aplicarEdicion() {
+    var tx = Tx(), ed = S.editar, id = ed.id;
+    function v(k) { var e = document.getElementById(k); return e ? e.value : undefined; }
+    function chk(k) { var e = document.getElementById(k); return e ? e.checked : undefined; }
+    var t = (v('ed-t') || '').trim();
+    if (!t) { S.aviso = { k: 'aviso', t: tx.nueva_vacia }; render(); return; }
+    setCampo(id, 't', t);
+    if (document.getElementById('ed-q')) {                        /* una pregunta : las propiedades de SU lista */
+      var dn = resolver(id).dueno;
+      setCampo(dn, 'q', (v('ed-q') || '').trim(), '');
+      setCampo(dn, 'modo', v('ed-modo'), T.modo_defecto);
+      setCampo(dn, 'exclusivo', chk('ed-excl') === true, false);
+    } else if (document.getElementById('ed-nat')) {
+      setCampo(id, 'tipo', v('ed-nat'), T.edicion.naturalezas[0]);
+    }
+    if (document.getElementById('ed-multiple')) {                  /* los topes de ESTE nodo (no los de su lista) */
+      var mu = chk('ed-multiple');
+      setCampo(id, 'multiple', mu, true);
+      if (mu) setCampo(id, 'max', Math.max(0, Math.min(T.limites.max, parseInt(v('ed-max'), 10) || 0)), 0);
+    }
+    S.editar = null; avisar('ok', fmt(tx.modificado, { t: t }));
+  }
+  function efectosDeQuitar(id, dueno) {   /* qué desaparece si se quita la flecha dueno → id */
+    var antes = alcanzables(null), despues = alcanzables({ de: dueno, a: id }), perdidos = 0;
+    Object.keys(antes).forEach(function (k) { if (!despues[k]) perdidos++; });
+    var sigue = !!despues[id];
+    return { debajo: sigue ? 0 : Math.max(0, perdidos - 1),
+             tambien: sigue ? referentes(id).filter(function (x) { return x !== dueno; }).map(etiqueta) : [] };
+  }
+  function borrarAdd(id) {                /* un nodo añadido y todo lo que cuelga de él */
+    var fuera = {}, cambio = true; fuera[id] = true;
+    while (cambio) { cambio = false; adds.forEach(function (a) { if (!fuera[a.id] && fuera[a.padre]) { fuera[a.id] = true; cambio = true; } }); }
+    adds = adds.filter(function (a) { return !fuera[a.id]; });
+    Alm.set('adds', adds); reindexar();
+  }
+  function quitarElemento() {
+    var tx = Tx(), ed = S.editar, id = ed.id, t = etiqueta(id);
+    if (idxAdds[id]) borrarAdd(id);
+    else { var c = cambios[ed.dueno] || (cambios[ed.dueno] = {}); (c.quitar = c.quitar || []).push(id); Alm.set('cambios', cambios); }
+    if (S.pila[S.pila.length - 1] === id) S.pila.pop();
+    S.editar = null; S.sel.clear(); avisar('supresion', fmt(tx.quitado, { t: t }));
+  }
+  function mover(id, dueno, paso) {         /* pasa un elemento delante del anterior (paso < 0) o detrás del siguiente (paso > 0) */
+    var tx = Tx(), lista = hijosDe(dueno), i = lista.indexOf(id), j = i + paso;
+    if (i < 0 || j < 0 || j >= lista.length) return;
+    var nuevo = lista.slice(), nat = hijosNat(dueno);
+    nuevo.splice(i, 1); nuevo.splice(j, 0, id);
+    setCampo(dueno, 'orden', nuevo.every(function (x, k) { return x === nat[k]; }) ? undefined : nuevo);   /* de vuelta al orden natural : se deshace */
+    var comp = referentes(dueno).map(etiqueta);
+    avisar('ok', fmt(tx.movido, { t: etiqueta(id), pos: j + 1, n: lista.length }) + (comp.length > 1 ? ' ' + fmt(tx.movido_compartida, { lista: comp.join(', ') }) : ''));
+    Array.prototype.forEach.call(document.querySelectorAll('.tecla.editable'), function (f) {      /* se ve dónde ha ido a parar */
+      if (f.dataset.id !== id) return;
+      f.classList.add('movida'); f.scrollIntoView({ block: 'nearest' });
+      setTimeout(function () { f.classList.remove('movida'); }, T.tiempos.aviso_ms);
+    });
+  }
+
+  function ponerIncompat(a, b) {          /* « a es incompatible con b » : un solo enlace, que vale en los dos sentidos */
+    if (!b || a === b || parejas(a).indexOf(b) >= 0) return;
+    setCampo(a, 'incompat', ((nodo(a) || {}).incompat || []).concat(b));
+    avisar('ok', fmt(Tx().incompat_unidos, { a: etiqueta(a), b: etiqueta(b) }));
+  }
+  function quitarIncompat(a, b) {         /* el enlace está guardado en uno de los dos nodos, o en los dos */
+    [[a, b], [b, a]].forEach(function (p) {
+      var arr = (nodo(p[0]) || {}).incompat;
+      if (Array.isArray(arr) && arr.indexOf(p[1]) >= 0) setCampo(p[0], 'incompat', arr.filter(function (z) { return z !== p[1]; }));
+    });
+    avisar('supresion', Tx().incompat_quitada);
+  }
+  function propsTexto(id) {               /* en modo edición, bajo el texto : lo que este nodo controla */
+    var tx = Tx(), y = T.simbolos, p = [];
+    if (id === RAIZ || esTexto(id)) return '';
+    var lim = tope(id);
+    if (lim === 1) p.push(y.unico + ' ' + tx.prop_unico); else if (lim > 1) p.push(fmt(tx.prop_max, { n: lim }));
+    if (esPregunta(id)) { if (resolver(id).excl) p.push(tx.prop_excl); }
+    else { var pa = parejas(id); if (pa.length) p.push(fmt(tx.prop_incompat, { distinto: y.distinto, lista: pa.map(etiqueta).join(', ') })); }
+    return p.join(' ' + y.punto + ' ');
+  }
+
+  /* ───────────── vistas ───────────── */
+  function vistaAnotar() {
+    var tx = Tx(), sec = h('section', { class: 'anotar' });
+    if (!S.obs.manual) Object.assign(S.obs, ahoraLocal());
+    /* en la pantalla « Anotado » la barra es la de ESA nota : cambiar el día o la hora mueve la nota (con las reglas) */
+    if (S.nodo && S.nodo.sel && registro.indexOf(S.nodo.sel) < 0) S.nodo.sel = null;
+    var nota0 = S.hecho ? S.hecho.nuevas.filter(function (e) { return registro.indexOf(e) >= 0; })[0] : (S.nodo ? S.nodo.sel : null);
+    var barDia = nota0 ? nota0.t.slice(0, 10) : S.obs.dia, barHora = nota0 ? nota0.t.slice(11, 16) : S.obs.hora, barRotulo = nota0 ? tx.obs_titulo_nota : tx.obs_titulo;
+    function cambiaBarra(campo) {
+      return function (e) {
+        if (nota0 && S.nodo) { moverNotas([nota0], campo === 'dia' ? e.target.value : barDia, campo === 'hora' ? e.target.value : barHora); return; }
+        if (nota0) { corregirNota(campo === 'dia' ? e.target.value : barDia, campo === 'hora' ? e.target.value : barHora); return; }
+        S.obs[campo] = e.target.value; S.obs.manual = true; render();
+      };
+    }
+    sec.append(h('div', { class: 'obs' },
+      h('span', { class: 'lbl' }, barRotulo),
+      h('div', { class: 'cajas' },
+        h('input', { type: 'date', 'aria-label': barRotulo, value: barDia, onchange: cambiaBarra('dia') }),
+        h('input', { type: 'time', 'aria-label': barRotulo, value: barHora, onchange: cambiaBarra('hora') }))));
+
+    var sep = T.simbolos.separador;
+    var migas = h('div', { class: 'migas', 'aria-label': tx.migas_aria });
+    var niveles = [RAIZ].concat(S.pila);
+    niveles.forEach(function (id, i) {
+      if (i) migas.append(h('span', { class: 'sep' }, sep));
+      if (i === niveles.length - 1 && !S.hecho && !S.nodo) migas.append(h('span', { class: 'actual', dataset: { nivel: String(i) } }, etiqueta(id)));
+      else migas.append(h('button', { type: 'button', dataset: { nivel: String(i) }, onclick: function () { irA(i); } }, etiqueta(id)));
+    });
+    sec.append(migas);
+
+    var av = avisoVivo(); if (av) sec.append(av);
+
+    var top = S.pila.length ? S.pila[S.pila.length - 1] : RAIZ, r = resolver(top);
+    var duenoTop = S.pila.length ? resolver(S.pila.length >= 2 ? S.pila[S.pila.length - 2] : RAIZ).dueno : null;
+    if (S.hecho) {
+      sec.append(h('div', { class: 'hecho', 'data-hecho': String(S.hecho.nuevas.length) },
+        h('div', { class: 'ok' }, T.simbolos.ok + ' ' + tx.anotado),
+        S.hecho.nuevas.map(function (e) {
+          return h('div', { class: 'ruta' }, e.txt.join(' ' + sep + ' '), h('span', { class: 'hora' }, ' · ' + e.t.slice(11, 16)),
+                   e.libre ? h('div', { class: 'libre' }, e.libre) : null);
+        }),
+        h('button', { type: 'button', class: 'anular', dataset: { accion: 'anular' }, onclick: anular },
+          S.hecho.nuevas.length > 1 ? fmt(tx.anular_varias, { n: S.hecho.nuevas.length, hora: S.hecho.nuevas[0].t.slice(11, 16) })
+                                    : fmt(tx.anular_una, { hora: S.hecho.nuevas[0].t.slice(11, 16) }))));
+    } else if (S.notasNodo) {
+      sec.append(formNotas());
+    } else if (S.nodo) {
+      sec.append(formNodo(nota0));
+    } else if (S.aniadir) {
+      sec.append(formAniadir(r, top));
+    } else if (S.editar) {
+      sec.append(formEditar());
+    } else if (S.texto) {
+      sec.append(formTexto());
+    } else {
+      if (S.modoEd) {
+        sec.append(h('div', { class: 'nt-aviso', id: 'aviso-edicion' }, fmt(tx.aviso_edicion, { lapiz: T.simbolos.lapiz, flechas: T.orden.map(function (o) { return o.simbolo; }).join(' ') })));
+        sec.append(h('button', { type: 'button', class: 'editar-esta', dataset: { accion: 'editar-esta' }, onclick: function () { abrirEditar(top, duenoTop); } },
+                     fmt(tx.editar_esta, { lapiz: T.simbolos.lapiz, t: etiqueta(top) })));
+      }
+      if (r.q) sec.append(h('h2', { class: 'pregunta' }, r.q));
+      if (!r.hijos.length) sec.append(h('p', { class: 'nt-aviso' }, tx.pregunta_vacia));
+      var mk = marcasDe(r.hijos), hayMarcas = false;
+      var cols = S.modoEd ? 0 : Math.min(Math.floor(Number((nodo(r.dueno) || {}).rejilla)) || 0, T.limites.rejilla);   /* teselas : las columnas las dice la tabla */
+      sec.append(h('div', Object.assign({ class: 'teclas' + (S.modoEd ? ' edicion' : '') + (cols > 1 ? ' rejilla' : '') },
+                                        cols > 1 ? { style: '--rejilla-cols:' + cols } : {}), r.hijos.map(function (id) {
+        var preg = esPregunta(id), lib = esTexto(id), sel = S.sel.has(id), varios = r.modo === 'varios' && !preg && !lib, m = mk[id];
+        var cj = S.modoEd || sel ? null : cerrojo(id, r, Array.from(S.sel)), pr = S.modoEd ? propsTexto(id) : '';
+        if (m) hayMarcas = true;
+        var cuerpo = h('span', { class: 'cuerpo' }, h('span', { class: 'tx' }, etiqueta(id)),
+                       m ? h('span', Object.assign({ class: 'marca', dataset: { marca: preg ? 'pregunta' : 'respuesta' } },
+                                   S.modoEd ? {} : { role: 'button', tabindex: '0', 'data-tip': tx.marca_tip,
+                                                     onclick: function (ev) { ev.stopPropagation(); abrirNotas(id); },
+                                                     onkeydown: function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); ev.stopPropagation(); abrirNotas(id); } } }),
+                           textoMarca(m, preg)) : null,
+                       pr ? h('span', { class: 'props', dataset: { props: id } }, pr) : null);
+        var cls = 'tecla' + (sel ? ' sel' : '') + (m ? ' anotada' : '') + (cj ? ' cerrada' : '');
+        var tipo = preg ? 'pregunta' : (lib ? 'texto' : 'respuesta');
+        var marcaTipo = preg ? h('span', { class: 'chev' }, T.simbolos.hijo) : (lib ? h('span', { class: 'chev' }, T.simbolos.texto) : null);
+        if (S.modoEd) {                              /* edición : tocar entra (pregunta) o edita (respuesta) ; las flechas ordenan ; el lápiz edita siempre */
+          var pos = r.hijos.indexOf(id);
+          return h('div', { class: cls + ' editable', dataset: { id: id, tipo: tipo } },
+            h('button', { type: 'button', class: 'cuerpo-btn', dataset: { accion: preg ? 'entrar' : 'editar-hoja' },
+                          onclick: function () { if (preg) tocar(id, r); else abrirEditar(id, r.dueno); } },
+                     cuerpo, marcaTipo),
+            T.orden.map(function (o) {
+              var j = pos + o.paso;
+              return h('button', { type: 'button', class: 'mover', dataset: { accion: o.id, tip: tx[o.tip] }, 'aria-label': fmt(tx[o.aria], { t: etiqueta(id) }),
+                                   disabled: j < 0 || j >= r.hijos.length, onclick: function () { mover(id, r.dueno, o.paso); } }, o.simbolo);
+            }),
+            h('button', { type: 'button', class: 'lapiz', dataset: { accion: 'editar-elemento' }, onclick: function () { abrirEditar(id, r.dueno); } }, T.simbolos.lapiz));
+        }
+        var ds = { id: id, tipo: tipo }; if (cj) ds.cerrada = 'si';
+        return h('button', { type: 'button', class: cls, dataset: ds,
+                             'aria-pressed': varios ? String(sel) : null, onclick: function () { tocar(id, r); } },
+                 cuerpo,
+                 cj ? h('span', { class: 'cerrojo' }, T.simbolos.cerrojo)
+                    : (marcaTipo || (varios ? h('span', { class: 'chk' }, sel ? T.simbolos.marcado : T.simbolos.vacio) : null)));
+      })));
+      if (hayMarcas) sec.append(h('p', { class: 'leyenda', id: 'leyenda-marcas' }, fmt(tx[T.marcas.alcances[T.marcas.alcance]], { ok: T.simbolos.anotado })));
+      if (r.modo === 'varios' && S.sel.size) {
+        sec.append(h('button', { type: 'button', class: 'validar', dataset: { accion: 'validar' },
+                                 onclick: function () { registrar(r.hijos.filter(function (id) { return S.sel.has(id); })); } },
+                     fmt(tx.validar, { n: S.sel.size })));
+      }
+    }
+
+    /* las salidas, declaradas UNA vez en la tabla */
+    var destPadre = S.pila.length >= 2 ? S.pila[S.pila.length - 2] : RAIZ;
+    var bar = h('div', { class: 'salidas' });
+    T.salidas.forEach(function (sa) {
+      if ((sa.id === 'mas' || sa.id === 'editar') && !S.modoEd) return;    /* modificar el árbol : solo desde Configuración */
+      var dis, dest = null, fn, pulsado = null;
+      if (sa.id === 'padre') { dis = S.pila.length === 0 && !S.nodo; dest = etiqueta(S.nodo ? top : destPadre); fn = salirPadre; }
+      else if (sa.id === 'raiz') { dis = S.pila.length === 0 && !S.hecho && !S.editar && !S.texto && !S.notasNodo && !S.nodo; dest = etiqueta(RAIZ); fn = salirRaiz; }
+      else if (sa.id === 'editar') { dis = !!(S.aniadir || S.texto || S.nodo); dest = tx[sa.texto]; pulsado = String(S.modoEd); fn = alternarEdicion; }
+      else { dis = !!(S.hecho || S.aniadir || S.editar || S.texto || S.notasNodo || S.nodo); dest = sa.texto ? tx[sa.texto] : null; fn = function () { abrirAniadir(r); }; }
+      bar.append(h('button', { type: 'button', class: 'salida', 'aria-pressed': pulsado, dataset: { salida: sa.id, tip: tx[sa.tip] }, disabled: dis, onclick: fn },
+                   h('span', { class: 'sim' }, sa.simbolo), dest ? h('span', { class: 'dest' }, dest) : null));
+    });
+    var activa = S.modoEd || S.pila.length || S.hecho || S.nodo || S.texto || S.notasNodo || S.aniadir || S.editar;
+    if (activa) sec.append(bar);          /* en la raíz, sin nada abierto, no hay a dónde salir */
+    if (T.mostrar_pila) sec.append(h('div', { class: 'pila', id: 'pila' }, tx.pila + ' : [' + S.pila.join(' ' + sep + ' ') + ']'));
+    return sec;
+  }
+
+  function formEditar() {
+    var tx = Tx(), ed = S.editar, id = ed.id, n = nodo(id) || {}, preg = esPregunta(id), r = resolver(id);
+    var bor = ed.borrador = ed.borrador || {};      /* lo ya escrito en el panel sobrevive a un repintado (un vínculo que se añade, un aviso) */
+    function ini(k, def) { return bor[k] !== undefined ? bor[k] : def; }
+    function rec(k, ctl, prop) { var f = function () { bor[k] = ctl[prop]; }; ctl.addEventListener('input', f); ctl.addEventListener('change', f); return ctl; }
+    function campo(idc, rotulo, control) { return h('div', { class: 'campo' }, h('label', { 'for': idc }, rotulo), control); }
+    function caja(idc, rotulo, control) { return h('div', { class: 'campo' }, h('label', { class: 'caja', 'for': idc }, control, rotulo)); }
+    function lista(idc, valores, actual, pref) {
+      var cur = ini(idc, actual);
+      return rec(idc, h('select', { id: idc }, valores.map(function (v) { return h('option', { value: v, selected: v === cur }, tx[pref + v]); })), 'value');
+    }
+    var inpT = rec('ed-t', h('input', { type: 'text', id: 'ed-t', value: ini('ed-t', n.t !== undefined ? n.t : ''), maxlength: T.limites.etiqueta, autocomplete: 'off' }), 'value');
+    inpT.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); aplicarEdicion(); } });
+    var campos = [campo('ed-t', tx.edit_texto, inpT)];
+    var avisos = [];
+    function compartida(dueno, idn) {              /* una lista que sirve a varios : lo que se cambia vale para todos */
+      var ref = referentes(dueno).map(etiqueta);
+      if (ref.length > 1) avisos.push(h('p', { class: 'compartida', id: idn }, fmt(tx.edit_compartida, { lista: ref.join(', ') })));
+    }
+    if (ed.dueno) compartida(ed.dueno, 'compartida');
+    if (preg) {
+      var due = nodo(r.dueno) || {};
+      campos.push(campo('ed-q', tx.edit_pregunta, rec('ed-q', h('input', { type: 'text', id: 'ed-q', value: ini('ed-q', due.q || ''), maxlength: T.limites.etiqueta, autocomplete: 'off' }), 'value')));
+      campos.push(campo('ed-modo', tx.edit_modo, lista('ed-modo', T.edicion.modos, r.modo, 'modo_')));
+      campos.push(caja('ed-excl', tx.edit_excl_caja, rec('ed-excl', h('input', { type: 'checkbox', id: 'ed-excl', checked: ini('ed-excl', due.exclusivo === true) }), 'checked')));
+      compartida(r.dueno, 'compartida-lista');
+    } else {
+      campos.push(campo('ed-nat', tx.edit_nat, lista('ed-nat', T.edicion.naturalezas, n.tipo || T.edicion.naturalezas[0], 'nat_')));
+    }
+    if (id !== RAIZ && !esTexto(id)) {              /* los topes de este nodo : un texto libre y la raíz no los tienen */
+      var mu = ini('ed-multiple', n.multiple !== false);
+      var cMu = rec('ed-multiple', h('input', { type: 'checkbox', id: 'ed-multiple', checked: mu }), 'checked');
+      var cMx = rec('ed-max', h('input', { type: 'number', id: 'ed-max', min: 0, max: T.limites.max, step: 1, inputmode: 'numeric',
+                                          value: ini('ed-max', n.max > 0 ? n.max : 0), disabled: !mu }), 'value');
+      cMu.addEventListener('change', function () { cMx.disabled = !cMu.checked; });
+      campos.push(caja('ed-multiple', tx.edit_multiple, cMu));
+      campos.push(campo('ed-max', tx.edit_max, cMx));
+    }
+    if (!preg && !esTexto(id) && ed.dueno) {        /* incompatible con… : otra respuesta de la misma lista */
+      var pares = parejas(id);
+      var cand = resolver(ed.dueno).hijos.filter(function (x) { return x !== id && !esPregunta(x) && !esTexto(x) && pares.indexOf(x) < 0; });
+      campos.push(h('div', { class: 'campo' },
+        h('label', { 'for': 'ed-inc' }, tx.edit_incompat),
+        h('div', { class: 'vinculos', id: 'vinculos' }, pares.map(function (x) {
+          return h('button', { type: 'button', class: 'vinculo', dataset: { accion: 'quitar-incompat', id: x }, 'aria-label': fmt(tx.incompat_quitar, { t: etiqueta(x) }),
+                               onclick: function () { quitarIncompat(id, x); } }, etiqueta(x) + ' ' + T.simbolos.borrar);
+        })),
+        cand.length
+          ? h('select', { id: 'ed-inc', onchange: function (e) { if (e.target.value) ponerIncompat(id, e.target.value); } },
+              h('option', { value: '' }, tx.incompat_elegir),
+              cand.map(function (x) { return h('option', { value: x }, etiqueta(x)); }))
+          : h('p', { class: 'ayuda', id: 'incompat-ninguno' }, tx.incompat_ninguno)));
+    }
+    var quitar = [];
+    if (id !== RAIZ && ed.dueno) {
+      var ef = efectosDeQuitar(id, ed.dueno);
+      if (ef.debajo) quitar.push(h('p', { class: 'efecto', id: 'efecto-debajo' }, fmt(tx.quitar_sub, { n: ef.debajo })));
+      if (ef.tambien.length) quitar.push(h('p', { class: 'efecto', id: 'efecto-otro' }, fmt(tx.quitar_otro, { t: etiqueta(id), donde: ef.tambien.join(', ') })));
+      quitar.push(conConfirmacion('quitar', tx.quitar_elem, quitarElemento, 'quitar'));
+    }
+    return h('form', { class: 'nueva', id: 'form-editar', onsubmit: function (e) { e.preventDefault(); } },
+      h('h3', null, fmt(tx.edit_titulo, { t: etiqueta(id) })),
+      campos, avisos,
+      h('div', { class: 'dos' },
+        h('button', { type: 'button', dataset: { accion: 'aplicar' }, onclick: aplicarEdicion }, tx.aplicar),
+        h('button', { type: 'button', dataset: { accion: 'cancelar-edicion' }, onclick: function () { S.editar = null; render(); } }, tx.cancelar)),
+      quitar);
+  }
+
+  function formNodo(sel) {                    /* la pantalla de UN nodo : las horas ya anotadas (la elegida, resaltada) y UN botón, Anotar o Quitar */
+    var tx = Tx(), nd = S.nodo, dia = sel ? sel.t.slice(0, 10) : S.obs.dia, lista = notasHoja(nd.id, dia), foco = nd.foco;
+    nd.foco = null;
+    var chips = lista.map(function (e) {
+      var on = e === sel;
+      return h('button', { type: 'button', class: 'hora-nota' + (on ? ' sel' : ''), 'aria-pressed': String(on), dataset: on ? { n: String(e.n) } : { n: String(e.n), tip: tx.nodo_hora_tip },        /* la elegida no lleva infobulla : taparía el botón de debajo */
+                           onclick: function () { nd.sel = e; nd.foco = 'nota'; render(); } }, e.t.slice(11, 16));
+    });
+    var nueva = h('button', { type: 'button', class: 'hora-nueva' + (sel ? '' : ' sel'), 'aria-pressed': String(!sel), dataset: sel ? { nueva: 'si', tip: tx.nodo_nueva_tip } : { nueva: 'si' },
+                              onclick: function () { nd.sel = null; nd.foco = 'hora'; render(); } }, S.obs.hora);
+    var accion = sel
+      ? h('button', { type: 'button', class: 'eliminar-hora', dataset: { accion: 'eliminar-nodo' }, onclick: eliminarNodo }, fmt(tx.nodo_eliminar, { hora: sel.t.slice(11, 16) }))
+      : h('button', { type: 'button', class: 'noter-hora', dataset: { accion: 'noter-nodo' }, onclick: noterNodo }, fmt(tx.nodo_noter, { hora: S.obs.hora }));
+    tras.push(function () {
+      var el = foco === 'nota' ? document.querySelector('.hora-nota.sel') : (foco === 'hora' ? document.querySelector('.obs input[type=time]') : null);
+      if (el) el.focus();
+    });
+    return h('div', { class: 'nodo', id: 'nodo' },
+      h('h2', { class: 'pregunta' }, etiqueta(nd.id)),
+      h('p', { class: 'leyenda' }, fmt(tx.nodo_horas, { dia: dia.slice(8, 10) + '/' + dia.slice(5, 7) })),
+      h('div', { class: 'horas', id: 'horas-nodo' }, chips, nueva),
+      lista.length || sel ? null : h('p', { class: 'nt-aviso', id: 'nodo-ninguna' }, tx.nodo_ninguna),
+      accion);
+  }
+
+  function formTexto() {
+    var tx = Tx(), tt = S.texto;
+    var ta = h('textarea', { id: 'texto-libre', rows: T.limites.filas_texto, maxlength: T.limites.texto, placeholder: tx.texto_ayuda, 'aria-label': etiqueta(tt.id) });
+    ta.value = tt.borrador;
+    ta.addEventListener('input', function () { tt.borrador = ta.value; });          /* lo escrito sobrevive a cualquier repintado */
+    ta.addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); anotarTexto(); } });
+    return h('form', { class: 'nueva', id: 'form-texto', onsubmit: function (e) { e.preventDefault(); } },
+      h('h3', null, fmt(tx.texto_titulo, { t: etiqueta(tt.id) })),
+      ta,
+      h('div', { class: 'dos' },
+        h('button', { type: 'button', dataset: { accion: 'anotar-texto' }, onclick: anotarTexto }, tx.texto_anotar),
+        h('button', { type: 'button', dataset: { accion: 'cancelar-texto' }, onclick: function () { S.texto = null; render(); } }, tx.cancelar)));
+  }
+
+  function formAniadir(r, top) {
+    var tx = Tx(), donde = r.q !== undefined ? r.q : etiqueta(top);
+    var ref = referentes(r.dueno).filter(function (id) { return id !== r.dueno; }).map(etiqueta);
+    var inp = h('input', { type: 'text', id: 'nuevo-texto', placeholder: tx.nueva_texto, autocomplete: 'off', maxlength: T.limites.etiqueta, 'aria-label': tx.nueva_texto });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); crear('respuesta'); } });
+    return h('form', { class: 'nueva', onsubmit: function (e) { e.preventDefault(); } },
+      h('h3', null, fmt(tx.nueva_titulo, { donde: donde })),
+      ref.length > 1 ? h('p', { class: 'compartida', id: 'compartida' }, fmt(tx.nueva_compartida, { lista: ref.join(', ') })) : null,
+      inp,
+      h('p', { class: 'ayuda' }, tx.nueva_ayuda),
+      h('div', { class: 'dos' },
+        h('button', { type: 'button', dataset: { tipo: 'pregunta' }, onclick: function () { crear('pregunta'); } }, tx.nueva_pregunta),
+        h('button', { type: 'button', dataset: { tipo: 'respuesta' }, onclick: function () { crear('respuesta'); } }, tx.nueva_respuesta),
+        h('button', { type: 'button', dataset: { tipo: 'texto' }, onclick: function () { crear('texto'); } }, tx.nueva_libre)),
+      h('button', { type: 'button', class: 'cancelar', dataset: { accion: 'cancelar' }, onclick: function () { S.aniadir = null; render(); } }, tx.cancelar));
+  }
+
+  /* ───────────── el marco ───────────── */
+  var tras = [];                       /* lo que se hace cuando la pantalla ya está en el documento */
+  function render() {
+    if (!APP) return;
+    APP.replaceChildren();
+    APP.append(vistaAnotar());
+    tras.splice(0).forEach(function (f) { f(); });
+  }
+  function reponer() {                 /* se entra en las Notas : se vuelve a la raíz, con el día y la hora de la casa */
+    S.pila = []; S.sel.clear(); S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; S.nodo = null; S.aviso = null;
+    S.obs.manual = false;
+  }
+  function montar() {
+    if (APP) return true;
+    APP = document.getElementById('notas-app');
+    if (!APP) return false;
+    Object.keys(T.estilo).forEach(function (k) { APP.style.setProperty(k, T.estilo[k]); });
+    return true;
+  }
+  /* lo que ve el resto de la casa */
+  window.NotasGrafo = {
+    entrar: function (editar) {        /* al abrir la pantalla Notas ; editar : desde Configuración, con los botones de edición */
+      if (!montar()) return;
+      var errs = validar(T.nodos, T.raiz);
+      if (errs.length) { APP.textContent = errs.map(function (e) { return fmt(Tx()[e.k] || e.k, e.v); }).join(' · '); return; }
+      cargarCapa(); reponer(); S.modoEd = !!editar; render();
+    },
+    repintar: function () {            /* cambió el idioma, el día o el paciente */
+      if (!montar()) return;
+      cargarCapa(); S.obs.manual = false; S.nodo = null; render();
+    }
+  };
+})();
+</script>
+<!-- MB:END modules/notas.js -->
 <script>
 /* v23.7-diag — LE MORT PARLE : toute erreur d'exécution s'affiche en
    bannière rouge sur l'écran (autopsie sans F12, doctrine NIET). */
@@ -2552,7 +4021,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.10.14.101-SAT';
+const MFP_VERSION = '2026.10.21.101-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
@@ -2689,12 +4158,18 @@ function renderCfg() {
   const pon = function (id, txt) { const e = document.getElementById(id); if (e) e.textContent = txt; };
   pon('cfg-tit', '⚙️ ' + cfgTxt('tit')); pon('cfg-nota', cfgTxt('nota')); pon('cfg-reset', '↺ ' + cfgTxt('reset'));
   pon('cfg-guardar', '💾 ' + cfgTxt('guardar') + ' · maison.sf'); pon('cfg-abrir', '📂 ' + cfgTxt('abrir') + ' · maison.sf');
-  pon('cfg-atelier-tit', cfgTxt('atelier')); pon('cfg-cerrar', cfgTxt('cerrar'));
+  pon('cfg-atelier-tit', cfgTxt('atelier')); pon('cfg-cerrar', cfgTxt('cerrar')); pon('cfg-notas', '📝 ' + t('cfg_notas'));
   const de = function (niv) {
     return CFG_CAMPOS.filter(function (c) { return (c.niv || 'atelier') === niv; }).map(cfgLinea).join('');
   };
   box.innerHTML = de('usager');
   const at = document.getElementById('cfg-atelier-ui'); if (at) at.innerHTML = de('atelier');
+}
+/* 21/10 (P-H) : modificar el arbol de las Notas (orden, textos, añadir, quitar) no es un gesto corriente :
+   vive en Configuracion, no en la pantalla Notas. */
+function editarNotas() {
+  const ov = document.getElementById('cfg-ov'); if (ov) ov.remove();
+  ir('notas'); if (window.NotasGrafo) NotasGrafo.entrar(true);
 }
 function abrirCfg() {
   const viejo = document.getElementById('cfg-ov'); if (viejo) viejo.remove();
@@ -2710,6 +4185,7 @@ function abrirCfg() {
         '<button type="button" class="btn sec" id="cfg-abrir" onclick="document.getElementById(\'maison-file\').click()"></button>' +
         '<input id="maison-file" type="file" accept=".sf,.json,application/json" style="display:none" onchange="ouvrirMaison(this.files[0])">' +
       '</div>' +
+      '<div class="cfg-fila"><button type="button" class="btn sec" id="cfg-notas" onclick="editarNotas()"></button></div>' +
       '<div class="cfg-fila"><button type="button" class="btn sec" id="cfg-reset" onclick="pedirResetUi()"></button></div>' +
       '<details class="cfg-atelier"><summary id="cfg-atelier-tit"></summary>' +
         '<div class="nota-campo" id="cfg-nota"></div><div id="cfg-atelier-ui"></div></details>' +
@@ -3025,7 +4501,7 @@ function chipLabel(c) { const L = getLang(); return (CHIP_IDIOMAS[L] && CHIP_IDI
    c'est là, en un seul endroit, que le préfixe se pose. */
 const CLAVES_PACIENTE = ['mfp_patient','mfp_sip','mfp_meds','mfp_tomas','mfp_puntuales',
   'mfp_obs','mfp_constantes','mfp_material','mfp_material_cfg','mfp_asist',
-  'mfp_avisos','mfp_horas','mfp_inicio'];
+  'mfp_avisos','mfp_horas','mfp_inicio','mfp_notas_adds','mfp_notas_cambios'];
 /* ═══ LE GUICHET DU STOCKAGE (17/08) ═══
    Défaut trouvé par P-H en ouvrant l'app depuis un fichier dans le banc :
    « SecurityError : Access is denied for this document ». Selon l'origine —
@@ -3222,6 +4698,7 @@ function repintarDia() {
      venait de poser, trois lignes plus haut. Ce sont les recargar* qui
      décident, chacun pour son écran. */
   if (typeof recargarObs === 'function') recargarObs();
+  if (window.NotasGrafo && pantallaActiva() === 'notas') NotasGrafo.repintar();      /* las Notas siguen el dia de la casa */
   document.querySelectorAll('.dia-aviso').forEach(function (e) {
     e.textContent = esHoy() ? '' : t('dia_otro');
     e.style.display = esHoy() ? 'none' : '';
@@ -5163,7 +6640,9 @@ function pantallaActiva() {
    retire. Ce qui ne peut pas marcher ne se montre pas. */
 function pintaBarraHora() {
   const b = document.getElementById('barra-hora'); if (!b) return;
-  const p = pantallaActiva(), on = (p === 'notas');
+  /* 21/10 : las Notas llevan su propia barra de día y hora dentro de la pantalla (modules/notas.js) :
+     la banda compartida ya no se muestra en ninguna pantalla. */
+  const p = pantallaActiva(), on = false;
   b.style.display = on ? 'flex' : 'none';
   b.classList.toggle('centrado', p === 'notas');
   const l = document.getElementById('i-lhora');
@@ -5176,6 +6655,7 @@ function pintaBarraHora() {
 function ajustarPie() {
   const pie = document.getElementById('pie'), hd = document.querySelector('header');
   if (pie) document.body.style.paddingBottom = (pie.offsetHeight + 6) + 'px';
+  if (pie) document.documentElement.style.setProperty('--pie-alto', pie.offsetHeight + 'px');   /* las salidas de las Notas se pegan sobre el pie */
   if (hd) document.body.style.paddingTop = (hd.offsetHeight + 6) + 'px';
   var up = document.getElementById('subir');
   if (up && pie) up.style.bottom = (pie.offsetHeight + 12) + 'px';
@@ -5197,6 +6677,7 @@ function ir(p) {
   document.querySelectorAll('.panel').forEach(x => x.classList.remove('act'));
   document.querySelectorAll('nav button').forEach(x => x.classList.remove('act'));
   document.getElementById('p-' + p).classList.add('act');
+  if (p === 'notas' && window.NotasGrafo) NotasGrafo.entrar();
   var nb = document.getElementById('nav-' + p); if (nb) nb.classList.add('act');
   if (p === 'datos') renderDatos();
   pintaBarraHora();
@@ -5858,6 +7339,7 @@ function _legacyGuardarConstantes() {
 let _chipsSel = new Set();
 function renderChips() {
   _refrescarChipUlt();
+  if (!document.getElementById('chips')) return;       /* 21/10 : las fichas viven ahora en el arbol de las Notas */
   document.getElementById('chips').innerHTML = CHIP_TIPOS.map((c, i) => {
     const opc = CHIP_OPC[c];
     const marcada = _chipsSel.has(i) || (opc && _chipUlt[c]);
@@ -7861,6 +9343,7 @@ function render() {
   pintarCasaVacia();
   pintarAntena(baseSalufolio());        /* l'emblème existe avant la première sonde */
   trioTotales(); pintaConstHoy(); recargarConst(); recargarObs(); pintaBarraHora(); bienvenida();
+  if (window.NotasGrafo && pantallaActiva() === 'notas') NotasGrafo.repintar();
   if (sinArmoire()) {
     /* P-H, 17/08 : le bandeau masquait les boutons du haut. Un avertissement
        qui empêche d'agir est pire que pas d'avertissement — il prend donc la

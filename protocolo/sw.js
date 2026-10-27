@@ -22,7 +22,7 @@
 /* 14/10 (P-H) — la aplicación es protocolo.html ; index.html no es más que la
    puerta corta. El PDF ya no se guarda : la aplicación no lo llama, y pesa
    2,3 Mo. Un número NUEVO borra la memoria vieja de los teléfonos. */
-const VERSION = 'protocolo-2026.10.14.100';
+const VERSION = 'protocolo-2026.10.21.2207';
 const GUARDAR = [
   './',
   './index.html',
