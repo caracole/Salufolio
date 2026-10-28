@@ -1262,7 +1262,7 @@ function buildCorrelaciones(data) {
       desc: 'Seguimiento función renal.\nFiltrado glomerular y creatinina.\nFG <60 = insuficiencia renal crónica',
       sub: 'ml/min',
       params: [
-        { key:'filtrado_glomerular', label:'FG CKD-EPI', color:'#117a65' },
+        { key:'filtrado', label:'FG CKD-EPI', color:'#117a65' },
         { key:'creatinina', label:'Creatinina (×50)', color:'#4a8fe8', dash:true, scale:50 },
       ],
       med: null,
@@ -1361,7 +1361,7 @@ function buildCorrelaciones(data) {
       sub: 'mg/dL · ml/min÷10',
       params: [
         { key:'creatinina',          label:'Creatinina (mg/dL)', color:'#e74c3c' },
-        { key:'filtrado_glomerular', label:'FG (÷10)',            color:'#117a65', dash:true, scale:0.1 },
+        { key:'filtrado', label:'FG (÷10)',            color:'#117a65', dash:true, scale:0.1 },
       ],
       med: null,
       ref: 1.2, refLabel:'Creatinina <1.2'

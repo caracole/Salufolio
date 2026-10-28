@@ -1,7 +1,7 @@
 /* INFORMES PARA EL MÉDICO — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "informe",
-  "version": "2026.09.19-18:12:56",
+  "version": "2026.10.28-16:10:59",
   "programa": "informe.html",
   "lanzador": "../casa/casa.js",
   "carpeta": "informe/",
@@ -220,7 +220,7 @@ var SF_CONFIG = window.SF_CONFIG = {
       "leucocitos",
       "glucosa",
       "creatinina",
-      "filtrado_glomerular",
+      "filtrado",
       "colesterol",
       "pcr",
       "tsh",
@@ -231,7 +231,7 @@ var SF_CONFIG = window.SF_CONFIG = {
       "leucocitos": "Leuc.",
       "glucosa": "Gluc.",
       "creatinina": "Creat.",
-      "filtrado_glomerular": "FG",
+      "filtrado": "FG",
       "colesterol": "Colest.",
       "pcr": "PCR",
       "tsh": "TSH",

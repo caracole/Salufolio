@@ -411,6 +411,16 @@ function colorDe(rol, prop, respaldo){
   var v = ''; try{ v = (MF.estilo(rol, prop) || '').trim(); }catch(e){}
   return v || getComputedStyle(document.documentElement).getPropertyValue(respaldo).trim();
 }
+
+/* Le même color avec une transparence : la paleta donne « rgb(...) » ou « #rrggbb ». */
+function conAlfa(c, a){
+  c = String(c||'').trim();
+  var m = /^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/.exec(c);
+  if(m) return 'rgba(' + m[1] + ',' + m[2] + ',' + m[3] + ',' + a + ')';
+  m = /^#([0-9a-f]{6})$/i.exec(c);
+  if(m){ var n = parseInt(m[1],16); return 'rgba(' + (n>>16&255) + ',' + (n>>8&255) + ',' + (n&255) + ',' + a + ')'; }
+  return c;
+}
 function aplicaColoresCurvas(){
   if(typeof Chart === 'undefined') return;
   Chart.defaults.color       = colorDe('curva_texto',   'color', '--muted');
@@ -740,7 +750,7 @@ const PARAMS = {
   hba1c: { get label() { return textInt('hba1c','label'); }, unit:"%", ref:[4,6.5], color:"#a05c2a", get desc() { return textInt('hba1c','desc'); } },
   creatinina: { get label() { return textInt('creatinina','label'); }, unit:"mg/dL", ref:[0.51,0.95], color:"#117a65", get desc() { return textInt('creatinina','desc'); } },
   filtrado: { get label() { return textInt('filtrado','label'); }, unit:"ml/min", ref:[60,200], color:"#148f77", get desc() { return textInt('filtrado','desc'); } },
-  colesterol: { get label() { return textInt('colesterol','label'); }, unit:"mg/dL", ref:null, color:"#7d3c98", get desc() { return textInt('colesterol','desc'); } },
+  colesterol: { get label() { return textInt('colesterol','label'); }, unit:"mg/dL", ref:[null,200], color:"#7d3c98", get desc() { return textInt('colesterol','desc'); } },
   colesterol_hdl: { get label() { return textInt('colesterol_hdl','label'); }, unit:"mg/dL", ref:[40,65], color:"#5b2c6f", get desc() { return textInt('colesterol_hdl','desc'); } },
   colesterol_ldl: { get label() { return textInt('colesterol_ldl','label'); }, unit:"mg/dL", ref:[null,116], color:"#922b21", get desc() { return textInt('colesterol_ldl','desc'); } },
   trigliceridos: { get label() { return textInt('trigliceridos','label'); }, unit:"mg/dL", ref:[50,165], color:"#935116", get desc() { return textInt('trigliceridos','desc'); } },
@@ -1112,11 +1122,11 @@ function audVerPdf(nombreEsperado, buscar) {
    PANEL RADAR — Vue d'ensemble en toile d'araignée
 ================================================================ */
 const RADAR_GROUPS = {
-  general:     { label: 'General',      keys: ['hemoglobina','leucocitos','plaquetas','glucosa','creatinina','pcr','tsh','vitamina_d'] },
+  general:     { label: 'General',      keys: ['hemoglobina','leucocitos','plaquetas','glucosa','creatinina','pcr','tsh','t4','vitamina_d'] },
   hemato:      { label: 'Hematología',  keys: ['hemoglobina','hematocrito','vcm','hcm','leucocitos','neutrofilos','linfocitos','plaquetas','vsg'] },
   lipidos:     { label: 'Lípidos',      keys: ['colesterol','colesterol_hdl','colesterol_ldl','trigliceridos','no_hdl'] },
-  renal:       { label: 'Renal',        keys: ['creatinina','filtrado_glomerular','urea','urato','sodio','potasio','cloruro'] },
-  hepatico:    { label: 'Hepático',     keys: ['gpt','got','ggt','fosfatasa_alcalina','bilirrubina','albumina','proteinas','tiroxina_libre'] },
+  renal:       { label: 'Renal',        keys: ['creatinina','filtrado','urea','acido_urico','sodio','potasio','cloro'] },
+  hepatico:    { label: 'Hepático',     keys: ['gpt','got','ggt','fosfatasa','bilirrubina','albumina','proteinas'] },
   vitaminas:   { label: 'Vitaminas',    keys: ['vitamina_d','vitamina_b12','folico','ferritina','hierro'] },
   coagulacion: { label: 'Coagulación',  keys: ['inr','tp','ttpa','actividad_protrombina','fibrinogeno','dimero_d'] },
   signos:      { label: 'Signos vitales',   keys: ['TA_sys','TA_dia','FC','Temp','SpO2'] },
@@ -1391,12 +1401,39 @@ function buildRadar(data) {
   /* Détruire l'ancien chart */
   if (radarChart) radarChart.destroy();
 
-  const isLight = document.body.classList.contains('light');
-  const gridColor = isLight ? 'rgba(0,0,0,0.16)' : 'rgba(255,255,255,0.16)';
-  const textColor = isLight ? '#111118' : '#e8eaf0';
-  const mutedColor = isLight ? '#3d3d50' : '#7a8499';
+  /* Les couleurs viennent de la paleta puesta (roles de casa.js), plus de
+     test « clair / sombre » : texto, graduaciones, rejilla et zona normal
+     suivent la paleta, quelle qu'elle soit (papel, sepia, claro, cielo...). */
+  const gridColor  = colorDe('curva_rejilla', 'color', '--border');
+  const textColor  = colorDe('text_1',        'color', '--text');
+  const mutedColor = colorDe('curva_texto',   'color', '--muted');
+  const refColor   = colorDe('curva_ref',     'color', '--ok');
 
   const ctx = document.getElementById('radar-chart').getContext('2d');
+
+  /* El título DENTRO del dibujo : el grupo y las fechas (P-H, 28/10/2026).
+     Así el gráfico se basta solo cuando se copia o se imprime. Colores y
+     tamaños vienen de los roles de la paleta (text_1, text_2), nada en duro. */
+  const tamTitulo = parseFloat(colorDe('text_1', 'font-size', '--tam-min')) || 14;
+  const tamFechas = parseFloat(colorDe('text_2', 'font-size', '--tam-min')) || 12;
+  const fuenteTitulo = '600 ' + tamTitulo + 'px IBM Plex Mono';
+  const fuenteFechas = tamFechas + 'px IBM Plex Mono';
+  const nombreGrupo = (groupDef && groupDef.label) || '';
+  const anchoMax = Math.max(120, (document.getElementById('radar-chart').clientWidth || 600) - 24);
+  const punto = tamFechas * 0.9, sep = tamFechas * 1.4;
+  const filasFechas = [];
+  ctx.font = fuenteFechas;
+  let fila = [], ancho = 0;
+  radarSelectedDates.forEach(function(d, i) {
+    const txt = fmtDate(d), w = punto + ctx.measureText(txt).width;
+    if (fila.length && ancho + sep + w > anchoMax) { filasFechas.push(fila); fila = []; ancho = 0; }
+    ancho += (fila.length ? sep : 0) + w;
+    fila.push({ txt: txt, w: w, color: RADAR_COLORS[i % RADAR_COLORS.length].border });
+  });
+  if (fila.length) filasFechas.push(fila);
+  const altoLinea = tamFechas * 1.5;
+  const altoTitulo = Math.round((nombreGrupo ? tamTitulo * 1.6 : 0) + filasFechas.length * altoLinea + 10);
+
   radarChart = new Chart(ctx, {
     type: 'radar',
     data: {
@@ -1405,8 +1442,8 @@ function buildRadar(data) {
         {
           label: 'Rango normal (0–100%)',
           data: refData,
-          backgroundColor: isLight ? 'rgba(30,122,70,0.10)' : 'rgba(42,197,111,0.10)',
-          borderColor: isLight ? 'rgba(30,122,70,0.55)' : 'rgba(42,197,111,0.50)',
+          backgroundColor: conAlfa(refColor, 0.10),
+          borderColor: conAlfa(refColor, 0.55),
           borderWidth: 1.5,
           borderDash: [5, 4],
           pointRadius: 0,
@@ -1415,10 +1452,37 @@ function buildRadar(data) {
         ...datasets
       ]
     },
+    plugins: [{
+      id: 'radarTitulo',
+      afterDraw: function(chart) {
+        const c = chart.ctx, cx = chart.width / 2;
+        let y = 4;
+        c.save();
+        c.textBaseline = 'top';
+        if (nombreGrupo) {
+          c.font = fuenteTitulo; c.fillStyle = textColor; c.textAlign = 'center';
+          c.fillText(nombreGrupo, cx, y);
+          y += tamTitulo * 1.6;
+        }
+        c.font = fuenteFechas; c.textAlign = 'left';
+        filasFechas.forEach(function(f) {
+          let x = cx - (f.reduce(function(t, e, i) { return t + e.w + (i ? sep : 0); }, 0)) / 2;
+          f.forEach(function(e) {
+            c.fillStyle = e.color;
+            c.beginPath(); c.arc(x + punto / 2, y + tamFechas / 2, punto / 2.4, 0, 2 * Math.PI); c.fill();
+            c.fillStyle = textColor;
+            c.fillText(e.txt, x + punto, y);
+            x += e.w + sep;
+          });
+          y += altoLinea;
+        });
+        c.restore();
+      }
+    }],
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      layout: { padding: { bottom: 14 } },
+      layout: { padding: { top: altoTitulo, bottom: 14 } },
       scales: {
         r: {
           beginAtZero: true,
