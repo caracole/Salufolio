@@ -412,6 +412,15 @@ function colorDe(rol, prop, respaldo){
   return v || getComputedStyle(document.documentElement).getPropertyValue(respaldo).trim();
 }
 
+/* La plage de référence en texte : « 60–200 », « < 200 » (limite haute seule) ou « > 40 » (limite basse seule). */
+function fmtRef(r){
+  var lo = r[0], hi = r[1];
+  if(lo != null && hi != null) return lo + '–' + hi;
+  if(hi != null) return '< ' + hi;
+  if(lo != null) return '> ' + lo;
+  return '—';
+}
+
 /* Le même color avec une transparence : la paleta donne « rgb(...) » ou « #rrggbb ». */
 function conAlfa(c, a){
   c = String(c||'').trim();
@@ -1305,7 +1314,7 @@ function buildRadarTabla(data, paramKeys) {
       h += '<td style="padding:5px 6px;font-family:var(--mono);color:' + color + '">' + (v !== undefined ? v : '—') + '</td>';
     });
     h += '<td style="padding:5px 6px;font-family:var(--mono);color:var(--muted);font-size:11px">' +
-      (p.ref ? p.ref[0] + '–' + p.ref[1] + (p.unit ? ' ' + p.unit : '') : '—') + '</td></tr>';
+      (p.ref ? fmtRef(p.ref) + (p.unit ? ' ' + p.unit : '') : '—') + '</td></tr>';
   });
   el.innerHTML = h + '</table>';
 }

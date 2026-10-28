@@ -1,7 +1,7 @@
 /* RADAR — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "radar",
-  "version": "2026.10.28-20:00:19",
+  "version": "2026.10.28-20:03:30",
   "programa": "radar.html",
   "lanzador": "../casa/casa.js",
   "icono": "🕸️",
