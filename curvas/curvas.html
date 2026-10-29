@@ -70,6 +70,17 @@ function saveData(){ if(_DATOS) MF.tocado(); }
 function loadChartsSel(){ try{ return JSON.parse(localStorage.getItem('sf_curvas_sel')||'[]'); }catch(e){ return []; } }
 function saveChartsSel(s){ try{ localStorage.setItem('sf_curvas_sel', JSON.stringify(s)); }catch(e){} }
 function loadChartsCombos(){ try{ return JSON.parse(localStorage.getItem('sf_curvas_combos')||'[]'); }catch(e){ return []; } }
+/* ── Los textos : todos vienen de curvas.idiomas.js (nada escrito en duro aquí) ── */
+function trad(k){
+  var lg='es'; try{ lg=MF.idioma()||'es'; }catch(e){}
+  var Tt=(window.SF_TEXTOS&&SF_TEXTOS.textos)||{};
+  return (Tt[lg]&&Tt[lg][k]) || (Tt.es&&Tt.es[k]) || k;
+}
+/* el nombre de una rúbrica (clave interna : COAGULACIÓN, VITAMINAS/FE…) en la lengua elegida */
+function rubLabel(g){
+  var k='rub_'+String(g).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+  var v=trad(k); return v===k ? g : v;
+}
 function saveChartsCombos(c){ try{ localStorage.setItem('sf_curvas_combos', JSON.stringify(c)); }catch(e){} }
 
 
@@ -140,7 +151,7 @@ function _pdfPopupShell(titulo, info) {
   pop.style.cssText = 'position:fixed;z-index:10002;width:min(900px,94vw);height:82vh;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.5);padding:4px;display:flex;flex-direction:column;resize:both;overflow:hidden;min-width:280px;min-height:160px';
   pop.style.left = 'calc(50% - min(450px,47vw))';
   pop.style.top = '40px';
-  var banda = info ? '<div class="pdf-popup-banda" style="flex:0 0 auto;padding:4px 6px;font-size:12px;border-bottom:1px solid var(--border)">🔍 Verificar en el documento: <b style="color:' + info.color + '">' + info.label + '</b> = <b>' + info.valor + '</b> ' + info.unidad + ' (' + (typeof fmtDate === 'function' ? fmtDate(info.fecha) : info.fecha) + ')<span class="pdf-popup-extra"></span></div>' : '';
+  var banda = info ? '<div class="pdf-popup-banda" style="flex:0 0 auto;padding:4px 6px;font-size:12px;border-bottom:1px solid var(--border)">🔍 ' + trad('pdf_verificar') + ' <b style="color:' + info.color + '">' + info.label + '</b> = <b>' + info.valor + '</b> ' + info.unidad + ' (' + (typeof fmtDate === 'function' ? fmtDate(info.fecha) : info.fecha) + ')<span class="pdf-popup-extra"></span></div>' : '';
   pop.innerHTML =
     '<div class="pdf-popup-drag" style="cursor:move;user-select:none;flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 6px;border-bottom:1px solid var(--border)">' +
     '<b style="font-size:13px">📄 ' + titulo + '</b>' +
@@ -172,7 +183,7 @@ function _pdfPopupAbrir(url, titulo, info) {
 /* P-H 06/10/2026 : el PDF vive en pacientes/<matrícula>/sources/ — la Casa lo sirve ; si no está, se dice dónde debería estar */
 function _pdfSinArchivo(nom, motivo) {
   var mat = ''; try { mat = (MF.paciente().matricula || ''); } catch (e) {}
-  var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : 'archivo no encontrado en sources/';
+  var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : trad('pdf_sin_archivo');
   var msg = '📄 ' + nom + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
   var det = document.getElementById('xz-cmt-detalle');
   if (det) { det.textContent = '🧪 ' + msg; return; }
@@ -180,7 +191,7 @@ function _pdfSinArchivo(nom, motivo) {
   var o = document.createElement('div'); o.className = 'sf-pdf-aviso';
   o.style.cssText = 'position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:10003;max-width:min(520px,90vw);background:var(--surface);color:var(--text);border:2px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
   o.textContent = msg + ' ';
-  var b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
+  var b = document.createElement('button'); b.className = 'btn'; b.textContent = trad('btn_cerrar'); b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
   b.onclick = function() { o.remove(); }; o.appendChild(b); document.body.appendChild(o);
 }
 
@@ -303,8 +314,8 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
         wrapper.appendChild(d);
         if (premierTop === null) premierTop = tx[5] - h;
       });
-      barra.querySelector('.pdf-pg-info').textContent = 'página ' + pnum + ' / ' + doc.numPages;
-      barra.querySelector('.pdf-pg-nb').textContent = nb ? ('🟡 ' + nb + ' resaltado' + (nb > 1 ? 's' : '')) : '';
+      barra.querySelector('.pdf-pg-info').textContent = trad('pdf_pagina') + ' ' + pnum + ' / ' + doc.numPages;
+      barra.querySelector('.pdf-pg-nb').textContent = nb ? ('🟡 ' + nb + ' ' + trad(nb > 1 ? 'pdf_resaltados' : 'pdf_resaltado')) : '';
       if (premierTop !== null) sh.cuerpo.scrollTop = Math.max(0, premierTop - 60);
     }
     barra.querySelector('.pdf-pg-prev').onclick = function() { if (actual > 1) dibujar(actual - 1); };
@@ -339,8 +350,8 @@ function _chartVerInforme(s, key) {
      (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si
      aucune bande n'est à l'écran. */
   var msg = '📄 ' + nom + (dir
-    ? ' — carpeta: ' + dir + ' (no se pudo abrir)'
-    : ' — no encuentro el archivo en la carpeta sources/ del paciente.');
+    ? ' — ' + trad('pdf_carpeta') + ' ' + dir + ' (' + trad('pdf_no_abrir') + ')'
+    : ' — ' + trad('pdf_no_encuentro'));
   var det = document.getElementById('xz-cmt-detalle');
   if (det) { det.innerHTML = '🧪 ' + msg; return; }
   alert(msg);
@@ -453,10 +464,10 @@ function makeChart(canvasId, key, data, opts) {
         afterLabel: c => {
           const s = series[c.dataIndex] || {};
           const fuera = getStatus(key, c.raw) === 'bad';
-          const l = [fuera ? '⚠ Fuera de rango' : '✓ Normal'];
+          const l = [fuera ? '⚠ ' + trad('est_fuera') : '✓ ' + trad('est_normal')];
           const doc = (typeof pdfNombre === 'function' && (s.pdf_id || s.pdf)) ? pdfNombre(s.pdf_id || s.pdf) : (s.src || '');
           if (doc) l.push('📄 ' + doc);
-          if (s.pdf_id || s.pdf) l.push('(clic: ver informe)');
+          if (s.pdf_id || s.pdf) l.push('(' + trad('clic_informe') + ')');
           return l;
         }
       }}},
@@ -464,7 +475,7 @@ function makeChart(canvasId, key, data, opts) {
         x: { grid: { color: rejilla } },
         y: { type: esLog ? 'logarithmic' : 'linear',
              grid: { color: rejilla }, ticks: { maxTicksLimit: 6 },
-             title: { display: true, text: p.unit + ' — vista ' + (esLog ? 'LOG' : 'LIN') } }
+             title: { display: true, text: p.unit + ' — ' + trad('vista') + ' ' + (esLog ? 'LOG' : 'LIN') } }
       }
     },
     plugins: [{
@@ -771,7 +782,7 @@ function paramTip(key) {
     }
     const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     b.innerHTML = (t.getAttribute('data-ptip') || '').split('\n')
-      .map(l => l.indexOf('Ref:') === 0
+      .map(l => l.indexOf(trad('lbl_ref')) === 0
         ? '<span style="color:' + colorDe('curva_ref', 'color', '--ok') + ';font-weight:600">' + esc(l) + '</span>'
         : esc(l)).join('<br>');
     b.classList.remove('on');
@@ -798,7 +809,7 @@ function paramSpan(key, shortLabel, extraStyle) {
   /* P-H 07/08 : fondu avec l'indication clic droit dans LA MÊME bulle
      rapide (data-ptip) — l'ancien title="" natif du <td> parent avait un
      délai imposé par le navigateur, impossible à raccourcir en JS. */
-  const tip = (p.desc || p.label) + (ref ? '\nRef: ' + ref : '') + '\n🖱️ Clic izq.: glosario · Clic der.: curva';
+  const tip = (p.desc || p.label) + (ref ? '\n' + trad('lbl_ref') + ' ' + ref : '') + '\n🖱️ ' + trad('tip_curva');
   const label = shortLabel || p.label;
   return '<span class="param-tip" data-ptip="' + tip.replace(/"/g, '&quot;') + '" onclick="glosarioMostrarToast(\'' + key.replace(/'/g,"") + '\', event)" style="cursor:pointer' + (extraStyle ? ';'+extraStyle : '') + '">' + label + '</span>';
 }
@@ -811,11 +822,11 @@ function paramTip(key, short) {
 function fillParamSelect() {
   const sel = document.getElementById('m-param');
   if (!sel) return;
-  sel.innerHTML = '<option value="">— ' + (t('lbl_param')||'Parámetro') + ' —</option>';
+  sel.innerHTML = '<option value="">— ' + trad('lbl_param') + ' —</option>';
 
   /* Paramètres prédéfinis — triés alphabétiquement */
   const optGroup1 = document.createElement('optgroup');
-  optGroup1.label = 'Parámetros estándar';
+  optGroup1.label = trad('grp_estandar');
   Object.entries(PARAMS)
     .sort((a, b) => a[1].label.localeCompare(b[1].label))
     .forEach(([k,p]) => {
@@ -829,7 +840,7 @@ function fillParamSelect() {
   const customs = loadCustomParams();
   if (Object.keys(customs).length) {
     const optGroup2 = document.createElement('optgroup');
-    optGroup2.label = 'Mis parámetros';
+    optGroup2.label = trad('grp_mis_params');
     Object.entries(customs).forEach(([k,p]) => {
       const opt = document.createElement('option');
       opt.value = k; opt.textContent = p.label + ' (' + p.unit + ')';
@@ -843,7 +854,7 @@ function fillParamSelect() {
   sep.disabled = true; sep.textContent = '────────────────';
   sel.appendChild(sep);
   const addOpt = document.createElement('option');
-  addOpt.value = '__NEW__'; addOpt.textContent = '➕ Nuevo parámetro...';
+  addOpt.value = '__NEW__'; addOpt.textContent = '➕ ' + trad('opt_nuevo_param');
   addOpt.style.color = 'var(--accent)';
   sel.appendChild(addOpt);
 
@@ -864,7 +875,7 @@ function fillSourceList() {
   /* Garder la sélection actuelle */
   const prev = sel.value;
 
-  sel.innerHTML = '<option value="">— Seleccionar fuente —</option>';
+  sel.innerHTML = '<option value="">— ' + trad('opt_sel_fuente') + ' —</option>';
 
   /* Sources existantes */
   [...sources].sort().forEach(s => {
@@ -880,7 +891,7 @@ function fillSourceList() {
     sel.appendChild(sep);
   }
   const addOpt = document.createElement('option');
-  addOpt.value = '__NEW_SOURCE__'; addOpt.textContent = '➕ Nueva fuente...';
+  addOpt.value = '__NEW_SOURCE__'; addOpt.textContent = '➕ ' + trad('opt_nueva_fuente');
   sel.appendChild(addOpt);
 
   /* Restaurer sélection si possible */
@@ -964,7 +975,7 @@ function registerCustomParam() {
 
   /* Sauvegarder dans PARAMS (runtime) et localStorage */
   const customs = loadCustomParams();
-  const paramDef = { label, unit, ref, color: '#7f8c8d', desc: 'Parámetro personalizado: ' + label };
+  const paramDef = { label, unit, ref, color: '#7f8c8d', desc: trad('desc_personalizado') + ' ' + label };
   customs[key] = paramDef;
   PARAMS[key] = paramDef;
   saveCustomParams(customs);
@@ -992,7 +1003,7 @@ function tblShowComentario(keys, autoComentar) {
   if (!parCle.length) return;
   const esCombo = keys.length > 1;
   const titre = keys.map(k => '<span style="color:' + ((PARAMS[k]||{}).color || 'var(--accent)') + '">' + ((PARAMS[k]||{}).label || k) + '</span>').join(' ⇆ ');
-  const stats = parCle.map(x => ((PARAMS[x.k]||{}).label || x.k) + ': última ' + x.dern.y + ' ' + ((PARAMS[x.k]||{}).unit || '') + ' (' + fmtDate(x.dern.x) + ')').join(' · ');
+  const stats = parCle.map(x => ((PARAMS[x.k]||{}).label || x.k) + ': ' + trad('ultima') + ' ' + x.dern.y + ' ' + ((PARAMS[x.k]||{}).unit || '') + ' (' + fmtDate(x.dern.x) + ')').join(' · ');
   const huella = esCombo
     ? parCle.map(x => x.k + ':' + x.serie.length + '|' + x.dern.x + '|' + x.dern.y).join(',')
     : (parCle[0].serie.length + '|' + parCle[0].dern.x + '|' + parCle[0].dern.y);
@@ -1002,16 +1013,16 @@ function tblShowComentario(keys, autoComentar) {
   const cambioDatos = memo && memo.huella && memo.huella !== huella;
   const clesJs = "['" + keys.map(k => k.replace(/'/g,"")).join("','") + "']";
   var boutonAction = '';
-  if (!memo || !memo.texto) boutonAction = '<button id="tblcurve-btn" class="btn" style="font-size:11px;padding:5px 12px" onclick="tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')">🧠 Comentario clínico (Claude)</button>';
-  else if (cambioDatos) boutonAction = '<button id="tblcurve-btn" class="btn primary" style="font-size:11px;padding:5px 12px" onclick="tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')">🔄 Actualizar comentario</button>';
+  if (!memo || !memo.texto) boutonAction = '<button id="tblcurve-btn" class="btn" style="font-size:11px;padding:5px 12px" onclick="tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')">🧠 ' + trad('btn_comentario') + '</button>';
+  else if (cambioDatos) boutonAction = '<button id="tblcurve-btn" class="btn primary" style="font-size:11px;padding:5px 12px" onclick="tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')">🔄 ' + trad('btn_actualizar') + '</button>';
   const zona = apiKey ? (
     '<div id="tblcurve-topbar" style="display:flex;flex-direction:column;flex:1;min-height:0">' +
     (memo && memo.texto ? formatearComentarioClaude(memo.texto) +
-      '<div style="flex:0 0 auto;margin-top:4px;font-size:10px;color:var(--muted);font-style:italic">Comentario de Claude (' + (memo.modelo||'') + ') del ' + (memo.fecha||'') + ' — no sustituye el juicio clínico.</div>' +
-      (cambioDatos ? '<div style="flex:0 0 auto;margin-top:6px;font-size:11px;color:var(--warn,#e8a33d)">⚠ Los datos han cambiado desde este comentario.</div>' : '') : '') +
-    (boutonAction ? '<div style="flex:0 0 auto;margin-top:8px;display:flex;align-items:center;gap:8px">' + boutonAction + '<span style="font-size:10px;color:var(--muted)">se guarda en el expediente</span></div>' : '') + '</div>'
+      '<div style="flex:0 0 auto;margin-top:4px;font-size:10px;color:var(--muted);font-style:italic">' + trad('nota_comentario').replace('{modelo}', memo.modelo||'').replace('{fecha}', memo.fecha||'') + '</div>' +
+      (cambioDatos ? '<div style="flex:0 0 auto;margin-top:6px;font-size:11px;color:var(--warn,#e8a33d)">⚠ ' + trad('aviso_datos_cambiaron') + '</div>' : '') : '') +
+    (boutonAction ? '<div style="flex:0 0 auto;margin-top:8px;display:flex;align-items:center;gap:8px">' + boutonAction + '<span style="font-size:10px;color:var(--muted)">' + trad('se_guarda') + '</span></div>' : '') + '</div>'
   ) : (
-    '<div id="tblcurve-topbar" style="font-size:11px;color:var(--muted)">💡 Puede pedir una segunda opinión a Claude — configure su clave API en <a href="#" onclick="showPanel(\'importar\',document.getElementById(\'tour-tab-importar\'));this.closest(\'.tblcurve-comentario-popup\').remove();return false;" style="color:var(--accent)">📥 Datos</a>.</div>'
+    '<div id="tblcurve-topbar" style="font-size:11px;color:var(--muted)">💡 ' + trad('aviso_clave_pre') + ' <a href="#" onclick="showPanel(\'importar\',document.getElementById(\'tour-tab-importar\'));this.closest(\'.tblcurve-comentario-popup\').remove();return false;" style="color:var(--accent)">📥 ' + trad('aviso_clave_datos') + '</a>.</div>'
   );
   const pop = document.createElement('div');
   pop.className = 'tblcurve-comentario-popup';
@@ -1024,8 +1035,8 @@ function tblShowComentario(keys, autoComentar) {
     '<div class="tblcurve-toast-drag" style="cursor:move;user-select:none;flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 6px;border-bottom:1px solid var(--border)">' +
     '<b style="font-size:14px">' + titre + '</b>' +
     '<span style="display:inline-flex;align-items:center;gap:8px">' +
-    (esCombo ? (patronExiste(keys) ? '<span style="font-size:11px;color:var(--ok,#3fb950)">✓ Patrón conservado</span>'
-      : '<button id="tblcombo-conservar" class="btn" style="font-size:11px;padding:3px 8px" onclick="patronConservar(' + JSON.stringify(keys).replace(/"/g,"\'") + ')">💾 Conservar este patrón</button>') : '') +
+    (esCombo ? (patronExiste(keys) ? '<span style="font-size:11px;color:var(--ok,#3fb950)">✓ ' + trad('est_conservado') + '</span>'
+      : '<button id="tblcombo-conservar" class="btn" style="font-size:11px;padding:3px 8px" onclick="patronConservar(' + JSON.stringify(keys).replace(/"/g,"\'") + ')">💾 ' + trad('btn_conservar') + '</button>') : '') +
     '<span style="cursor:pointer;color:var(--muted);font-size:16px" onclick="this.closest(\'.tblcurve-comentario-popup\').remove()">✕</span></span></div>' +
     '<div style="flex:0 0 auto;font-size:11px;color:var(--muted);padding:4px 6px">' + stats + '</div>' +
     '<div style="flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;padding:4px 6px">' + zona + '</div>';
@@ -1113,13 +1124,13 @@ function buildAllCharts(data) {
     return '<span style="display:inline-flex;align-items:center;gap:2px;margin:2px 4px 2px 0">' +
       '<button onclick="_grupoToggle(\'' + g + '\')" style="cursor:pointer;font-size:11px;padding:4px 10px;border-radius:14px 0 0 14px;border:1px solid ' +
         (actif ? 'var(--accent)' : 'var(--border)') + ';background:' + (actif ? 'var(--accent)' : 'var(--surface)') +
-        ';color:' + (actif ? '#fff' : 'var(--muted)') + '">' + g + (partiel ? ' ' + nSel + '/' + cles.length : '') + '</button>' +
-      '<button onclick="_grupoDeplier(\'' + g + '\')" title="Elegir parámetros" style="cursor:pointer;font-size:11px;padding:4px 7px;border-radius:0 14px 14px 0;border:1px solid ' +
+        ';color:' + (actif ? '#fff' : 'var(--muted)') + '">' + rubLabel(g) + (partiel ? ' ' + nSel + '/' + cles.length : '') + '</button>' +
+      '<button onclick="_grupoDeplier(\'' + g + '\')" title="' + trad('tit_elegir_params') + '" style="cursor:pointer;font-size:11px;padding:4px 7px;border-radius:0 14px 14px 0;border:1px solid ' +
         (actif ? 'var(--accent)' : 'var(--border)') + ';border-left:none;background:var(--surface);color:var(--muted)">' +
       (_grupoOuvert === g ? '▴' : '▾') + '</button></span>';
   };
   let html = '<div style="display:flex;flex-wrap:wrap;align-items:center">' + rubriques.map(puce).join('') +
-    '<span style="margin-left:auto;font-size:11px;color:var(--muted)">' + sel.length + '/' + avecDonnees.length + ' parámetros · clic derecho en una curva: superponer</span></div>';
+    '<span style="margin-left:auto;font-size:11px;color:var(--muted)">' + trad('resumen_params').replace('{n}', sel.length).replace('{total}', avecDonnees.length) + '</span></div>';
   if (_grupoOuvert && rubriques.includes(_grupoOuvert)) {
     const cles = avecDonnees.filter(k => grupoDe(k) === _grupoOuvert);
     html += '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);display:flex;flex-wrap:wrap;gap:4px 12px">' +
@@ -1144,8 +1155,8 @@ function buildAllCharts(data) {
     const titres = combo.keys.map(k => '<span style="color:' + PARAMS[k].color + '">' + (PARAMS[k].label || k) + '</span>').join(' ⇆ ');
     div.innerHTML = '<div class="chart-title">' + titres +
       '<span style="float:right;display:inline-flex;gap:4px">' +
-      '<button onclick="_comboTaille(' + i + ')" title="' + (grande ? 'Reducir' : 'Ampliar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">' + (grande ? '📍' : '⛶') + '</button>' +
-      '<button onclick="_comboSupprimer(' + i + ')" title="Separar todo" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">✕</button>' +
+      '<button onclick="_comboTaille(' + i + ')" title="' + trad(grande ? 'tip_reducir' : 'tip_ampliar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">' + (grande ? '📍' : '⛶') + '</button>' +
+      '<button onclick="_comboSupprimer(' + i + ')" title="' + trad('tip_separar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">✕</button>' +
       '</span></div>' +
       '<canvas id="ac-combo-' + i + '" height="' + (grande ? 90 : 150) + '"></canvas>';
     div.addEventListener('contextmenu', e => { e.preventDefault(); _menuOuvrir(e, { combo: i }); });
@@ -1184,14 +1195,14 @@ function buildAllCharts(data) {
     const _sv = getSeriesForParam(data, key).map(s => s.y).filter(v => v > 0);
     const _ampli = _sv.length > 1 ? Math.max(..._sv) / Math.min(..._sv) : 1;
     const _btnEsc = _ampli > 20
-      ? `<button class="scale-btn" onclick="_chartToggleScale('${key}','ac-${key}')" title="Cambiar escala lineal/logarítmica">⇄ escala</button>`
+      ? `<button class="scale-btn" onclick="_chartToggleScale('${key}','ac-${key}')" title="${trad('tip_escala')}">⇄ ${trad('btn_escala')}</button>`
       : '';
-    div.innerHTML = `<div class="chart-title">${paramSpan(key)}${_btnEsc}</div><div class="chart-sub">${p.unit}${p.ref?'·Ref:'+p.ref.filter(v=>v!==null).join('–'):''}</div><canvas id="ac-${key}" height="150"></canvas>`;
+    div.innerHTML = `<div class="chart-title">${paramSpan(key)}${_btnEsc}</div><div class="chart-sub">${p.unit}${p.ref?'·'+trad('lbl_ref')+p.ref.filter(v=>v!==null).join('–'):''}</div><canvas id="ac-${key}" height="150"></canvas>`;
     el.appendChild(div);
     setTimeout(() => makeChart('ac-'+key, key, data), 50);
   });
   combos.forEach((c, i) => { if (!rendus.has(i)) { rendus.add(i); carteCombo(i); } });
-  if (!el.children.length) el.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">Ninguna rúbrica seleccionada — pulse una arriba.</p>';
+  if (!el.children.length) el.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">' + trad('msg_ninguna_rubrica') + '</p>';
 }
 
 /* v2026.7.21.4 — bascule l'échelle d'une courbe et la redessine sur place. */
@@ -1232,38 +1243,38 @@ function _menuOuvrir(e, cible) {
   const cands = _candidats(keys);
   const units = comboUnits(keys);
   _menuCible = cible; _menuSel = new Set();
-  html += '<div style="padding:4px 10px;color:var(--muted);font-size:11px">' + keys.map(k => PARAMS[k].label || k).join(' ⇆ ') + ' — ejes: ' + units.join(' | ') + '</div>';
+  html += '<div style="padding:4px 10px;color:var(--muted);font-size:11px">' + keys.map(k => PARAMS[k].label || k).join(' ⇆ ') + ' — ' + trad('lbl_ejes') + ': ' + units.join(' | ') + '</div>';
   {
     /* P-H 09/08 : le commentaire clinique vit dans son popup déplaçable,
        sans courbe — accessible ici pour les courbes seules ET combinées. */
     const clesJs = "['" + keys.map(k => k.replace(/'/g, '')).join("','") + "']";
-    html += '<div style="padding:6px 10px;border-radius:6px;cursor:pointer;color:var(--accent);font-weight:600" onmouseover="this.style.background=\'var(--border)\'" onmouseout="this.style.background=\'\'" onclick="_menuFermer();tblShowComentario(' + clesJs + ',true)">🧠 Comentario clínico</div>' +
+    html += '<div style="padding:6px 10px;border-radius:6px;cursor:pointer;color:var(--accent);font-weight:600" onmouseover="this.style.background=\'var(--border)\'" onmouseout="this.style.background=\'\'" onclick="_menuFermer();tblShowComentario(' + clesJs + ',true)">🧠 ' + trad('menu_comentario') + '</div>' +
       '<div style="border-top:1px solid var(--border);margin:4px 0"></div>';
   }
   html += '<div style="position:sticky;top:0;background:var(--surface);z-index:2;padding:6px 8px 8px;border-bottom:1px solid var(--border)">' +
-    '<div style="padding:0 2px 5px;color:var(--muted);font-size:11px">➕ Superponer con… (selección múltiple)</div>' +
-    '<button id="menu-btn-add" class="btn" style="width:100%;padding:6px;font-size:12px;opacity:.5" onclick="_menuAjouterSel()">➕ Añadir seleccionados (0)</button></div>';
+    '<div style="padding:0 2px 5px;color:var(--muted);font-size:11px">➕ ' + trad('menu_superponer') + '</div>' +
+    '<button id="menu-btn-add" class="btn" style="width:100%;padding:6px;font-size:12px;opacity:.5" onclick="_menuAjouterSel()">➕ ' + trad('menu_anadir') + ' (0)</button></div>';
   if (cands.length) {
     /* groupés par rubrique, dans l'ordre du catalogue GRUPOS */
     const ordre = Object.keys(GRUPOS).concat('OTROS');
     const parGrupo = {};
     cands.forEach(k => { const g = grupoDe(k); (parGrupo[g] = parGrupo[g] || []).push(k); });
     ordre.filter(g => parGrupo[g]).forEach(g => {
-      html += '<div style="padding:5px 10px 2px;font-size:10px;letter-spacing:.5px;color:var(--accent);border-top:1px dashed var(--border)">' + g + '</div>';
+      html += '<div style="padding:5px 10px 2px;font-size:10px;letter-spacing:.5px;color:var(--accent);border-top:1px dashed var(--border)">' + rubLabel(g) + '</div>';
       parGrupo[g].forEach(k => {
         const meme = units.includes(unitOf(k));
         html += '<label data-cand="' + k + '" data-unit="' + unitOf(k) + '" style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;cursor:pointer" ' +
           'onmouseover="this.style.background=\'var(--border)\'" onmouseout="this.style.background=\'\'">' +
           '<input type="checkbox" onclick="event.stopPropagation();_menuToggleCand(this,\'' + k + '\')"/>' +
-          '<span>' + (PARAMS[k].label || k) + ' <span style="color:var(--muted)">(' + (unitOf(k) || '—') + (meme ? '' : ' → 2º eje') + ')</span></span></label>';
+          '<span>' + (PARAMS[k].label || k) + ' <span style="color:var(--muted)">(' + (unitOf(k) || '—') + (meme ? '' : ' → ' + trad('lbl_segundo_eje')) + ')</span></span></label>';
       });
     });
 
-  } else html += item('(sin candidatos compatibles)', '_menuFermer()', true);
+  } else html += item('(' + trad('sin_candidatos') + ')', '_menuFermer()', true);
   if (cible.combo !== undefined) {
     html += '<div style="border-top:1px dashed var(--border);margin:4px 0"></div>';
-    keys.forEach(k => { html += item('➖ Quitar ' + (PARAMS[k].label || k), '_comboQuitter(' + cible.combo + ',\'' + k + '\')'); });
-    html += item('✕ Separar todo', '_comboSupprimer(' + cible.combo + ')');
+    keys.forEach(k => { html += item('➖ ' + trad('menu_quitar') + ' ' + (PARAMS[k].label || k), '_comboQuitter(' + cible.combo + ',\'' + k + '\')'); });
+    html += item('✕ ' + trad('tip_separar'), '_comboSupprimer(' + cible.combo + ')');
   }
   m.innerHTML = html;
   document.body.appendChild(m);
@@ -1293,7 +1304,7 @@ function _menuToggleCand(cb, k) {
       l.querySelector('input').disabled = bloque && !_menuSel.has(l.getAttribute('data-cand'));
     });
     const btn = menu.querySelector('#menu-btn-add');
-    if (btn) { btn.textContent = '➕ Añadir seleccionados (' + _menuSel.size + ')'; btn.style.opacity = _menuSel.size ? '1' : '.5'; }
+    if (btn) { btn.textContent = '➕ ' + trad('menu_anadir') + ' (' + _menuSel.size + ')'; btn.style.opacity = _menuSel.size ? '1' : '.5'; }
   }
 }
 function _menuAjouterSel() {
@@ -1315,10 +1326,10 @@ function _comboProposer(div, k1, k2) {   /* au drop : choix de taille (inchangé
   const t2 = PARAMS[k2] ? (PARAMS[k2].label || k2) : k2;
   div.innerHTML =
     '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:170px;text-align:center">' +
-      '<div style="font-size:12px;color:var(--fg)">Superponer <b>' + t1 + '</b> ⇆ <b>' + t2 + '</b></div>' +
+      '<div style="font-size:12px;color:var(--fg)">' + trad('superponer_t') + ' <b>' + t1 + '</b> ⇆ <b>' + t2 + '</b></div>' +
       '<div style="display:flex;gap:8px">' +
-        '<button class="btn" style="padding:6px 14px;font-size:12px" onclick="_comboCreer(\'' + k1 + '\',\'' + k2 + '\',\'aqui\')">📍 Aquí</button>' +
-        '<button class="btn" style="padding:6px 14px;font-size:12px" onclick="_comboCreer(\'' + k1 + '\',\'' + k2 + '\',\'grande\')">⛶ En grande</button>' +
+        '<button class="btn" style="padding:6px 14px;font-size:12px" onclick="_comboCreer(\'' + k1 + '\',\'' + k2 + '\',\'aqui\')">📍 ' + trad('btn_aqui') + '</button>' +
+        '<button class="btn" style="padding:6px 14px;font-size:12px" onclick="_comboCreer(\'' + k1 + '\',\'' + k2 + '\',\'grande\')">⛶ ' + trad('btn_grande') + '</button>' +
       '</div>' +
       '<button onclick="buildAllCharts()" style="cursor:pointer;font-size:11px;border:none;background:none;color:var(--muted);text-decoration:underline">cancelar</button>' +
     '</div>';
@@ -1459,14 +1470,14 @@ MF.arranca({
     }catch(e){
       var a=document.getElementById('aviso');
       a.style.display='block';
-      a.innerHTML='<b>El motor de curvas ha tropezado:</b><br><code>'+String(e.message)+'</code>';
+      a.innerHTML='<b>'+trad('err_motor')+'</b><br><code>'+String(e.message)+'</code>';
       console.error(e);
     }
   },
   alFallar: function(msg){
     var a=document.getElementById('aviso');
     a.style.display='block';
-    a.innerHTML='<b>'+msg+'</b><br><br>Llame al programa con la matrícula:<br>'
+    a.innerHTML='<b>'+msg+'</b><br><br>'+trad('aviso_llame')+'<br>'
       +'<code>curvas.html?mf=APA0000&carpeta=../pacientes/APA0000/</code>';
   }
 });

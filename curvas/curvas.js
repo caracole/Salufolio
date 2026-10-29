@@ -2,7 +2,7 @@
 var SF_CONFIG = window.SF_CONFIG = {
   "grosor_linea": 2,
   "id": "curvas",
-  "version": "2026.09.19-18:12:56",
+  "version": "2026.10.29-11:05:58",
   "programa": "curvas.html",
   "lanzador": "../casa/casa.js",
   "icono": "📈",
