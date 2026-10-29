@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Versión 2026.10.29-09:37:26 -->
+<!-- Versión 2026.10.29-11:16:36 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Ayuda · Radar</title>
+<link rel="stylesheet" href="../comun/salufolio.css">
 <style>
-:root{--bg:#161b27;--text:#e8eaf0;--muted:#9aa3b8;--accent:#4a8fe8;
-      --border:#2a3348;--surface:#1e2535;--serif:Georgia,serif}
 body{margin:0;padding:24px 28px 50px;background:var(--bg);color:var(--text);
-     font-family:system-ui,sans-serif;line-height:1.7}
+     font-family:var(--sans,system-ui,sans-serif);line-height:1.7}
 .env{max-width:720px;margin:0 auto}
 h1{font-family:var(--serif);font-size:21px;margin:0 0 4px}
 .sub{color:var(--muted);font-size:12.5px;margin-bottom:20px}
@@ -20,31 +19,122 @@ p{margin:0 0 12px;font-size:14px}
       padding:11px 15px;font-size:13px;color:var(--muted);margin:16px 0}
 </style>
 </head>
-<body><div class="env">
-<h1>🕸️ Radar</h1>
+<body><div id="lg"></div><div class="env" id="c"></div>
+<script src="../comun/ayuda.js"></script>
+<script>
+var A = {
+es:`<h1>🕸️ Radar</h1>
 <div class="sub">La vista de conjunto, fechas superpuestas</div>
 
 <h2>Cómo leer</h2>
 <p>La <b>zona verde es el rango normal</b>. Cada eje va del límite bajo (0 %) al límite alto (100 %, el borde de la zona verde). Un punto dentro del verde está dentro de lo normal. Un valor demasiado alto sale por fuera del verde; uno demasiado bajo se acerca al centro y puede pasar por debajo de 0 %. Cuando un parámetro solo tiene límite superior (el LDL, por ejemplo), el 100 % es ese límite.</p>
 
+<h2>Los cuadros de la izquierda</h2>
+<p>Cada cuadro (Cómo leer, Fechas, Grupo, Fuentes, Valores) se abre y se cierra con un clic en su título. Cerrado, el título recuerda lo esencial: cuántas fechas hay elegidas, qué grupo se ve, cuántas fuentes tienen.</p>
+
 <h2>El título del gráfico</h2>
-<p>Arriba a la izquierda figura el nombre del grupo, en mayúsculas. Arriba a la derecha están las fechas elegidas, de tres en tres, cada una con el color de su serie. Así el gráfico se entiende solo cuando se copia o se imprime y deja el máximo de sitio al dibujo.</p>
+<p>Arriba a la izquierda figura el nombre del grupo, en mayúsculas. Arriba a la derecha están las fechas elegidas, de cuatro en cuatro, cada una con el color de su serie. Así el gráfico se entiende solo cuando se copia o se imprime, y deja el máximo de sitio al dibujo.</p>
 
 <h2>Las fechas</h2>
 <p>Elija hasta ocho extracciones para superponerlas. <b>Últimas 3</b> muestra la evolución reciente; <b>Últimas 8</b>, la tendencia larga. Ctrl+clic para añadir o quitar una fecha.</p>
 
 <h2>Los grupos</h2>
-<p>General, hematología, lípidos, renal, hepático, vitaminas, coagulación, signos vitales y todos. Con todos los parámetros a la vez el radar se vuelve ilegible: es mejor mirar una familia cada vez. Un parámetro que no se midió en una fecha aparece como un eje sin punto.</p>
+<p>General, hematología, lípidos, renal, hepático, vitaminas, coagulación, signos vitales y todos. Con todos los parámetros a la vez el radar se vuelve difícil de leer: es mejor mirar una familia cada vez. Un parámetro que no se midió en una fecha aparece como un eje sin punto.</p>
 
 <h2>La escala</h2>
 <p>Si un valor está muy fuera de la norma, el gráfico se agranda para mostrarlo y la zona verde se hace más pequeña. Elija otra fecha para volver a verla grande.</p>
 
-<h2>Los valores</h2>
-<p>Debajo del radar, la tabla de los datos que lo componen — con el 📄 del documento de donde viene cada valor y, en la última columna, el rango de referencia («&lt; 200 mg/dL» cuando solo hay un límite superior).</p>
+<h2>Las fuentes y los valores</h2>
+<p>En el cuadro <b>Fuentes</b>, el documento de donde viene cada fecha. En el cuadro <b>Valores</b>, la tabla de los datos que componen el radar — con el 📄 del documento de donde viene cada valor y, en la última columna, el rango de referencia («&lt; 200 mg/dL» cuando solo hay un límite superior).</p>
 
 <h2>Los colores</h2>
 <p>Se adaptan a la paleta que haya elegido en la Casa.</p>
 
-<div class="nota">Salufolio no inventa nada: cada punto del radar viene de un informe. Si un valor sorprende, mire el documento antes de sacar conclusiones.</div>
-</div></body>
-</html>
+<div class="nota">Salufolio no inventa nada: cada punto del radar viene de un informe. Si un valor sorprende, mire el documento antes de sacar conclusiones.</div>`,
+fr:`<h1>🕸️ Radar</h1>
+<div class="sub">La vue d'ensemble, dates superposées</div>
+
+<h2>Comment lire</h2>
+<p>La <b>zone verte est la plage normale</b>. Chaque axe va de la limite basse (0 %) à la limite haute (100 %, le bord de la zone verte). Un point dans le vert est dans la norme. Une valeur trop élevée sort du vert vers l'extérieur ; une valeur trop basse se rapproche du centre et peut passer sous 0 %. Quand un paramètre n'a qu'une limite supérieure (le LDL, par exemple), le 100 % est cette limite.</p>
+
+<h2>Les cadres de gauche</h2>
+<p>Chaque cadre (Comment lire, Dates, Groupe, Sources, Valeurs) s'ouvre et se ferme d'un clic sur son titre. Fermé, le titre rappelle l'essentiel : combien de dates sont choisies, quel groupe est affiché, combien de sources elles ont.</p>
+
+<h2>Le titre du graphique</h2>
+<p>En haut à gauche figure le nom du groupe, en majuscules. En haut à droite, les dates choisies, quatre par ligne, chacune dans la couleur de sa série. Ainsi le graphique se comprend seul quand on le copie ou l'imprime, et laisse le plus de place au dessin.</p>
+
+<h2>Les dates</h2>
+<p>Choisissez jusqu'à huit prélèvements pour les superposer. <b>3 dernières</b> montre l'évolution récente ; <b>8 dernières</b>, la tendance longue. Ctrl+clic pour ajouter ou retirer une date.</p>
+
+<h2>Les groupes</h2>
+<p>Général, hématologie, lipides, rénal, hépatique, vitamines, coagulation, signes vitaux et tous. Avec tous les paramètres à la fois, le radar devient difficile à lire : mieux vaut regarder une famille à la fois. Un paramètre non mesuré à une date apparaît comme un axe sans point.</p>
+
+<h2>L'échelle</h2>
+<p>Si une valeur est très éloignée de la norme, le graphique s'agrandit pour la montrer et la zone verte rapetisse. Choisissez une autre date pour la revoir en grand.</p>
+
+<h2>Les sources et les valeurs</h2>
+<p>Dans le cadre <b>Sources</b>, le document dont vient chaque date. Dans le cadre <b>Valeurs</b>, le tableau des données qui composent le radar — avec le 📄 du document d'où vient chaque valeur et, dans la dernière colonne, la plage de référence (« &lt; 200 mg/dL » quand il n'y a qu'une limite supérieure).</p>
+
+<h2>Les couleurs</h2>
+<p>Elles s'adaptent à la palette choisie dans la Casa.</p>
+
+<div class="nota">Salufolio n'invente rien : chaque point du radar vient d'un rapport. Si une valeur surprend, regardez le document avant de tirer des conclusions.</div>`,
+ca:`<h1>🕸️ Radar</h1>
+<div class="sub">La vista de conjunt, dates superposades</div>
+
+<h2>Com llegir</h2>
+<p>La <b>zona verda és el rang normal</b>. Cada eix va del límit baix (0 %) al límit alt (100 %, la vora de la zona verda). Un punt dins del verd és dins de la norma. Un valor massa alt surt del verd cap a fora; un de massa baix s'acosta al centre i pot passar per sota de 0 %. Quan un paràmetre només té límit superior (l'LDL, per exemple), el 100 % és aquest límit.</p>
+
+<h2>Els quadres de l'esquerra</h2>
+<p>Cada quadre (Com llegir, Dates, Grup, Fonts, Valors) s'obri i es tanca amb un clic al seu títol. Tancat, el títol recorda l'essencial: quantes dates hi ha triades, quin grup es veu, quantes fonts tenen.</p>
+
+<h2>El títol del gràfic</h2>
+<p>A dalt a l'esquerra figura el nom del grup, en majúscules. A dalt a la dreta hi ha les dates triades, de quatre en quatre, cadascuna amb el color de la seua sèrie. Així el gràfic s'entén sol quan es copia o s'imprimeix, i deixa el màxim d'espai al dibuix.</p>
+
+<h2>Les dates</h2>
+<p>Trieu fins a huit extraccions per a superposar-les. <b>Últimes 3</b> mostra l'evolució recent; <b>Últimes 8</b>, la tendència llarga. Ctrl+clic per afegir o treure una data.</p>
+
+<h2>Els grups</h2>
+<p>General, hematologia, lípids, renal, hepàtic, vitamines, coagulació, signes vitals i tots. Amb tots els paràmetres alhora el radar es fa difícil de llegir: és millor mirar una família cada vegada. Un paràmetre que no es va mesurar en una data apareix com un eix sense punt.</p>
+
+<h2>L'escala</h2>
+<p>Si un valor està molt fora de la norma, el gràfic s'engrandeix per mostrar-lo i la zona verda es fa més menuda. Trieu una altra data per tornar a veure-la gran.</p>
+
+<h2>Les fonts i els valors</h2>
+<p>Al quadre <b>Fonts</b>, el document d'on ve cada data. Al quadre <b>Valors</b>, la taula de les dades que componen el radar — amb el 📄 del document d'on ve cada valor i, a l'última columna, el rang de referència («&lt; 200 mg/dL» quan només hi ha un límit superior).</p>
+
+<h2>Els colors</h2>
+<p>S'adapten a la paleta que hàgiu triat a la Casa.</p>
+
+<div class="nota">Salufolio no s'inventa res: cada punt del radar ve d'un informe. Si un valor sorprén, mireu el document abans de traure conclusions.</div>`,
+en:`<h1>🕸️ Radar</h1>
+<div class="sub">The overview, dates overlaid</div>
+
+<h2>How to read it</h2>
+<p>The <b>green zone is the normal range</b>. Each axis runs from the lower limit (0 %) to the upper limit (100 %, the edge of the green zone). A point inside the green is within the normal range. A value that is too high goes outward, beyond the green; one that is too low moves toward the centre and can drop below 0 %. When a parameter only has an upper limit (LDL, for example), 100 % is that limit.</p>
+
+<h2>The boxes on the left</h2>
+<p>Each box (How to read it, Dates, Group, Sources, Values) opens and closes with a click on its title. When closed, the title keeps the essentials: how many dates are chosen, which group is shown, how many sources they have.</p>
+
+<h2>The chart title</h2>
+<p>At the top left is the name of the group, in capitals. At the top right are the chosen dates, four per line, each in the colour of its series. This way the chart makes sense on its own when copied or printed, and leaves the most room for the drawing.</p>
+
+<h2>The dates</h2>
+<p>Choose up to eight blood draws to overlay. <b>Last 3</b> shows the recent trend; <b>Last 8</b>, the long-term one. Ctrl+click to add or remove a date.</p>
+
+<h2>The groups</h2>
+<p>General, haematology, lipids, renal, liver, vitamins, coagulation, vital signs and all. With every parameter at once the radar becomes hard to read: it is better to look at one family at a time. A parameter that was not measured on a date shows up as an axis with no point.</p>
+
+<h2>The scale</h2>
+<p>If a value is far outside the normal range, the chart zooms out to show it and the green zone gets smaller. Choose another date to see it large again.</p>
+
+<h2>Sources and values</h2>
+<p>In the <b>Sources</b> box, the document each date comes from. In the <b>Values</b> box, the table of the data behind the radar — with the 📄 of the document each value comes from and, in the last column, the reference range (“&lt; 200 mg/dL” when there is only an upper limit).</p>
+
+<h2>The colours</h2>
+<p>They follow the palette you chose in the Casa.</p>
+
+<div class="nota">Salufolio invents nothing: every point on the radar comes from a report. If a value is surprising, look at the document before drawing conclusions.</div>`
+};
+SF_AYUDA.arranca(A);
+</script></body></html>

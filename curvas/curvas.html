@@ -21,6 +21,14 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
             gap:var(--gap-m,14px);margin-top:14px}
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
 .module-version-corner{display:none}
+/* cuadro plegable « Cómo usar » (mismo mecanismo que el radar) */
+.cuadro{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius,var(--radio-s,8px));margin-top:14px}
+.cuadro.acento{border-left:4px solid var(--accent)}
+.cuadro-cab{display:flex;align-items:center;gap:8px;padding:10px 16px;cursor:pointer;user-select:none;
+            font-family:var(--mono,inherit);font-size:12px;color:var(--accent);font-weight:600}
+.cuadro-cab .flecha{width:1em;color:var(--muted)}
+.cuadro-cuerpo{padding:0 16px 12px;font-size:13.5px;color:var(--muted);line-height:1.6}
+.cuadro.cerrado .cuadro-cuerpo{display:none}
 </style>
 </head>
 <body>
@@ -31,7 +39,10 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 </header>
 
 <div id="panel-curvas" class="panel">
-  <div class="section-label" data-idioma="todos_param">Todos los parámetros</div>
+  <div class="cuadro acento" data-cuadro="comoutilizar">
+    <div class="cuadro-cab" onclick="alternaCuadro('comoutilizar')"><span class="flecha">▾</span><span data-idioma="usar_tit">💡 CÓMO UTILIZAR</span></div>
+    <div class="cuadro-cuerpo" data-tx="usar_txt"></div>
+  </div>
   <div class="chart-grid" id="all-charts"></div>
   <div class="module-version-corner">
     <span class="module-version-tag" data-module="core"></span>
@@ -70,6 +81,81 @@ function saveData(){ if(_DATOS) MF.tocado(); }
 function loadChartsSel(){ try{ return JSON.parse(localStorage.getItem('sf_curvas_sel')||'[]'); }catch(e){ return []; } }
 function saveChartsSel(s){ try{ localStorage.setItem('sf_curvas_sel', JSON.stringify(s)); }catch(e){} }
 function loadChartsCombos(){ try{ return JSON.parse(localStorage.getItem('sf_curvas_combos')||'[]'); }catch(e){ return []; } }
+/* ── Vista : qué cuadros plegables empiezan abiertos (nada en duro en el marcado) ── */
+var CURVAS_VISTA = {
+  cuadros: [ { id: 'comoutilizar', abierto: true } ],
+  /* paleta de 8 pavés para elegir el color de una curva (rol + color) */
+  paleta: [
+    { rol: 'rojo',     color: '#d94b4b' },
+    { rol: 'naranja',  color: '#e8913a' },
+    { rol: 'ambar',    color: '#d4b030' },
+    { rol: 'verde',    color: '#4caf6e' },
+    { rol: 'turquesa', color: '#2fb5b0' },
+    { rol: 'azul',     color: '#4a8fe0' },
+    { rol: 'violeta',  color: '#8d6cd0' },
+    { rol: 'rosa',     color: '#d86ab0' }
+  ],
+  /* una forma por rango en una superposición : símbolo del título y estilo de los puntos */
+  formas: [
+    { simbolo: '●', punto: 'circle' },
+    { simbolo: '■', punto: 'rect' },
+    { simbolo: '▲', punto: 'triangle' },
+    { simbolo: '◆', punto: 'rectRot' }
+  ],
+  claveColores: 'sf_curvas_colores'
+};
+/* ── Colores : el del usuario si lo eligió, si no el del catálogo ── */
+function _coloresUsuario(){ try{ return JSON.parse(localStorage.getItem(CURVAS_VISTA.claveColores)||'{}'); }catch(e){ return {}; } }
+function colorCurva(k){ var u=_coloresUsuario(); return u[k] || ((PARAMS[k]||{}).color) || 'var(--accent)'; }
+/* en una superposición, dos curvas no comparten color : la segunda toma el primer pavé libre */
+function coloresCombo(keys){
+  var usados=[], out=[];
+  keys.forEach(function(k){
+    var c=colorCurva(k);
+    if(usados.indexOf(c.toLowerCase())>=0){
+      var libre=CURVAS_VISTA.paleta.filter(function(q){ return usados.indexOf(q.color.toLowerCase())<0; })[0];
+      if(libre) c=libre.color;
+    }
+    usados.push(c.toLowerCase()); out.push(c);
+  });
+  return out;
+}
+function _formaRango(r){ var f=CURVAS_VISTA.formas; return f[r % f.length]; }
+function _menuPaleta(k){
+  var kk=k.replace(/'/g,'');
+  return CURVAS_VISTA.paleta.map(function(q){
+    return '<span class="pave" data-ptip="'+trad('color_'+q.rol)+'" onclick="event.stopPropagation();event.preventDefault();_colorElegir(\''+kk+'\',\''+q.color+'\')" style="display:inline-block;width:18px;height:18px;border-radius:4px;background:'+q.color+';cursor:pointer;border:1px solid var(--border)"></span>';
+  }).join('')+'<span class="pave" data-ptip="'+trad('color_defecto')+'" onclick="event.stopPropagation();event.preventDefault();_colorElegir(\''+kk+'\',null)" style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;cursor:pointer;border:1px solid var(--border);font-size:12px;color:var(--muted)">⟲</span>';
+}
+function _colorAbrir(ev,k){
+  ev.stopPropagation(); ev.preventDefault();
+  var f=document.querySelector('#charts-ctxmenu .fila-paleta[data-k="'+k+'"]'); if(!f) return;
+  f.style.display = f.style.display==='none' ? 'flex' : 'none';
+}
+function _colorElegir(k,c){
+  var u=_coloresUsuario(); if(c) u[k]=c; else delete u[k];
+  try{ localStorage.setItem(CURVAS_VISTA.claveColores, JSON.stringify(u)); }catch(e){}
+  document.querySelectorAll('#charts-ctxmenu .cuadrito[data-k="'+k+'"]').forEach(function(q){ q.style.background=colorCurva(k); });
+  document.querySelectorAll('#charts-ctxmenu .fila-paleta[data-k="'+k+'"]').forEach(function(f){ f.style.display='none'; });
+  if(typeof _DATOS!=='undefined' && _DATOS) try{ buildAllCharts(loadData()); }catch(e){}
+}
+function _cuadrito(k){
+  var kk=k.replace(/'/g,'');
+  return '<span class="cuadrito" data-k="'+kk+'" data-ptip="'+trad('tip_color')+'" onclick="_colorAbrir(event,\''+kk+'\')" style="display:inline-block;flex:0 0 auto;width:14px;height:14px;border-radius:3px;background:'+colorCurva(k)+';cursor:pointer;border:1px solid var(--border)"></span>';
+}
+function _filaPaleta(k){ return '<div class="fila-paleta" data-k="'+k.replace(/'/g,'')+'" style="display:none;gap:4px;flex-wrap:wrap;padding:2px 10px 6px 34px">'+_menuPaleta(k)+'</div>'; }
+function alternaCuadro(id, abrir) {
+  var c = document.querySelector('[data-cuadro="' + id + '"]'); if (!c) return;
+  var cerrar = (abrir === undefined) ? !c.classList.contains('cerrado') : !abrir;
+  c.classList.toggle('cerrado', cerrar);
+  var f = c.querySelector('.flecha'); if (f) f.textContent = cerrar ? '▸' : '▾';
+}
+/* los elementos con data-tx="clave" se traducen ; **negrita** y saltos de línea admitidos */
+function aplicaTextosCur() {
+  document.querySelectorAll('[data-tx]').forEach(function(e) {
+    e.innerHTML = trad(e.getAttribute('data-tx')).replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--text)">$1</strong>').replace(/\n/g, '<br>');
+  });
+}
 /* ── Los textos : todos vienen de curvas.idiomas.js (nada escrito en duro aquí) ── */
 function trad(k){
   var lg='es'; try{ lg=MF.idioma()||'es'; }catch(e){}
@@ -336,7 +422,7 @@ function _chartVerInforme(s, key) {
      valeur, date — et l'URL porte #search= (honoré par certains visores). */
   var info = null;
   if (key && typeof PARAMS === 'object' && PARAMS[key]) {
-    info = { label: PARAMS[key].label || key, valor: s.y, unidad: PARAMS[key].unit || '', fecha: s.x, color: PARAMS[key].color || 'var(--accent)' };
+    info = { label: PARAMS[key].label || key, valor: s.y, unidad: PARAMS[key].unit || '', fecha: s.x, color: colorCurva(key) };
   }
   /* P-H 09/08 (« je n'ai pas besoin d'un serveur pour lire un pdf ») :
      ouverture DIRECTE en file:// — les fichiers de sources/ portent
@@ -425,9 +511,9 @@ function makeChart(canvasId, key, data, opts) {
       datasets: [{
         label: p.label,
         data: series.map(s => s.y),
-        borderColor: p.color,
-        backgroundColor: p.color + '18',
-        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? colorDe('curva_mal', 'color', '--danger') : p.color),
+        borderColor: colorCurva(key),
+        backgroundColor: colorCurva(key) + '18',
+        pointBackgroundColor: series.map(s => getStatus(key, s.y) === 'bad' ? colorDe('curva_mal', 'color', '--danger') : colorCurva(key)),
         borderWidth: (typeof SF_CONFIG !== 'undefined' && SF_CONFIG.grosor_linea) || 2, pointRadius: 5, pointHoverRadius: (opts.sinTooltip ? 5 : 7), pointHitRadius: 14, tension: 0.3, fill: false,
       }]
     },
@@ -1002,7 +1088,7 @@ function tblShowComentario(keys, autoComentar) {
   const parCle = keys.map(k => { const serie = getSeriesForParam(data, k); return { k, serie, dern: serie[serie.length - 1] }; }).filter(x => x.serie.length);
   if (!parCle.length) return;
   const esCombo = keys.length > 1;
-  const titre = keys.map(k => '<span style="color:' + ((PARAMS[k]||{}).color || 'var(--accent)') + '">' + ((PARAMS[k]||{}).label || k) + '</span>').join(' ⇆ ');
+  const titre = keys.map(k => '<span style="color:' + colorCurva(k) + '">' + ((PARAMS[k]||{}).label || k) + '</span>').join(' ⇆ ');
   const stats = parCle.map(x => ((PARAMS[x.k]||{}).label || x.k) + ': ' + trad('ultima') + ' ' + x.dern.y + ' ' + ((PARAMS[x.k]||{}).unit || '') + ' (' + fmtDate(x.dern.x) + ')').join(' · ');
   const huella = esCombo
     ? parCle.map(x => x.k + ':' + x.serie.length + '|' + x.dern.x + '|' + x.dern.y).join(',')
@@ -1125,7 +1211,7 @@ function buildAllCharts(data) {
       '<button onclick="_grupoToggle(\'' + g + '\')" style="cursor:pointer;font-size:11px;padding:4px 10px;border-radius:14px 0 0 14px;border:1px solid ' +
         (actif ? 'var(--accent)' : 'var(--border)') + ';background:' + (actif ? 'var(--accent)' : 'var(--surface)') +
         ';color:' + (actif ? '#fff' : 'var(--muted)') + '">' + rubLabel(g) + (partiel ? ' ' + nSel + '/' + cles.length : '') + '</button>' +
-      '<button onclick="_grupoDeplier(\'' + g + '\')" title="' + trad('tit_elegir_params') + '" style="cursor:pointer;font-size:11px;padding:4px 7px;border-radius:0 14px 14px 0;border:1px solid ' +
+      '<button onclick="_grupoDeplier(\'' + g + '\')" data-ptip="' + trad('tit_elegir_params') + '" style="cursor:pointer;font-size:11px;padding:4px 7px;border-radius:0 14px 14px 0;border:1px solid ' +
         (actif ? 'var(--accent)' : 'var(--border)') + ';border-left:none;background:var(--surface);color:var(--muted)">' +
       (_grupoOuvert === g ? '▴' : '▾') + '</button></span>';
   };
@@ -1152,11 +1238,15 @@ function buildAllCharts(data) {
     const div = document.createElement('div');
     div.className = 'chart-card';
     if (grande) div.style.gridColumn = '1 / -1';
-    const titres = combo.keys.map(k => '<span style="color:' + PARAMS[k].color + '">' + (PARAMS[k].label || k) + '</span>').join(' ⇆ ');
+    const _cols = coloresCombo(combo.keys);
+    const titres = combo.keys.map((k, r) => {
+      const oc = _comboEsOculta(i, k);
+      return '<span class="combo-nom" data-combo="' + i + '" data-k="' + k + '" data-ptip="' + trad('tip_vercacher') + '" onclick="_comboVerCacher(' + i + ',\'' + k.replace(/'/g, '') + '\')" style="cursor:pointer;color:' + _cols[r] + (oc ? ';opacity:.4;text-decoration:line-through' : '') + '">' + _formaRango(r).simbolo + ' ' + (PARAMS[k].label || k) + '</span>';
+    }).join(' ⇆ ');
     div.innerHTML = '<div class="chart-title">' + titres +
       '<span style="float:right;display:inline-flex;gap:4px">' +
-      '<button onclick="_comboTaille(' + i + ')" title="' + trad(grande ? 'tip_reducir' : 'tip_ampliar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">' + (grande ? '📍' : '⛶') + '</button>' +
-      '<button onclick="_comboSupprimer(' + i + ')" title="' + trad('tip_separar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">✕</button>' +
+      '<button onclick="_comboTaille(' + i + ')" data-ptip="' + trad(grande ? 'tip_reducir' : 'tip_ampliar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">' + (grande ? '📍' : '⛶') + '</button>' +
+      '<button onclick="_comboSupprimer(' + i + ')" data-ptip="' + trad('tip_separar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">✕</button>' +
       '</span></div>' +
       '<canvas id="ac-combo-' + i + '" height="' + (grande ? 90 : 150) + '"></canvas>';
     div.addEventListener('contextmenu', e => { e.preventDefault(); _menuOuvrir(e, { combo: i }); });
@@ -1195,7 +1285,7 @@ function buildAllCharts(data) {
     const _sv = getSeriesForParam(data, key).map(s => s.y).filter(v => v > 0);
     const _ampli = _sv.length > 1 ? Math.max(..._sv) / Math.min(..._sv) : 1;
     const _btnEsc = _ampli > 20
-      ? `<button class="scale-btn" onclick="_chartToggleScale('${key}','ac-${key}')" title="${trad('tip_escala')}">⇄ ${trad('btn_escala')}</button>`
+      ? `<button class="scale-btn" onclick="_chartToggleScale('${key}','ac-${key}')" data-ptip="${trad('tip_escala')}">⇄ ${trad('btn_escala')}</button>`
       : '';
     div.innerHTML = `<div class="chart-title">${paramSpan(key)}${_btnEsc}</div><div class="chart-sub">${p.unit}${p.ref?'·'+trad('lbl_ref')+p.ref.filter(v=>v!==null).join('–'):''}</div><canvas id="ac-${key}" height="150"></canvas>`;
     el.appendChild(div);
@@ -1243,7 +1333,8 @@ function _menuOuvrir(e, cible) {
   const cands = _candidats(keys);
   const units = comboUnits(keys);
   _menuCible = cible; _menuSel = new Set();
-  html += '<div style="padding:4px 10px;color:var(--muted);font-size:11px">' + keys.map(k => PARAMS[k].label || k).join(' ⇆ ') + ' — ' + trad('lbl_ejes') + ': ' + units.join(' | ') + '</div>';
+  html += '<div style="padding:4px 10px;color:var(--muted);font-size:11px">' + trad('lbl_ejes') + ': ' + units.join(' | ') + '</div>';
+  keys.forEach(k => { html += '<div style="display:flex;align-items:center;gap:8px;padding:3px 10px;font-size:12px">' + _cuadrito(k) + '<span>' + (PARAMS[k].label || k) + '</span></div>' + _filaPaleta(k); });
   {
     /* P-H 09/08 : le commentaire clinique vit dans son popup déplaçable,
        sans courbe — accessible ici pour les courbes seules ET combinées. */
@@ -1265,8 +1356,8 @@ function _menuOuvrir(e, cible) {
         const meme = units.includes(unitOf(k));
         html += '<label data-cand="' + k + '" data-unit="' + unitOf(k) + '" style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;cursor:pointer" ' +
           'onmouseover="this.style.background=\'var(--border)\'" onmouseout="this.style.background=\'\'">' +
-          '<input type="checkbox" onclick="event.stopPropagation();_menuToggleCand(this,\'' + k + '\')"/>' +
-          '<span>' + (PARAMS[k].label || k) + ' <span style="color:var(--muted)">(' + (unitOf(k) || '—') + (meme ? '' : ' → ' + trad('lbl_segundo_eje')) + ')</span></span></label>';
+          '<input type="checkbox" onclick="event.stopPropagation();_menuToggleCand(this,\'' + k + '\')"/>' + _cuadrito(k) +
+          '<span>' + (PARAMS[k].label || k) + ' <span style="color:var(--muted)">(' + (unitOf(k) || '—') + (meme ? '' : ' → ' + trad('lbl_segundo_eje')) + ')</span></span></label>' + _filaPaleta(k);
       });
     });
 
@@ -1396,8 +1487,23 @@ function _chartsSelToggle(cb) {
 }
 
 /* ── graphe combiné : AXE PAR UNITÉ (max 2), pointillés variés par axe ── */
+/* Courbes superposées : les noms cachés, le temps de la visite (se perd en quittant le module) */
+var _comboOcultas = {};
+function _comboCk(i) { var c = loadChartsCombos()[i]; return c ? c.keys.slice().sort().join('+') : ''; }
+function _comboEsOculta(i, k) { var o = _comboOcultas[_comboCk(i)]; return !!(o && o[k]); }
+function _comboVerCacher(i, k) {
+  var ck = _comboCk(i); if (!ck) return;
+  var o = _comboOcultas[ck] || (_comboOcultas[ck] = {}); o[k] = !o[k];
+  var c = loadChartsCombos()[i], ch = chartInstances['ac-combo-' + i], di = c.keys.indexOf(k);
+  if (ch && di >= 0) { ch.setDatasetVisibility(di, !o[k]); ch.update(); }
+  document.querySelectorAll('.combo-nom[data-combo="' + i + '"]').forEach(function(sp) {
+    if (sp.getAttribute('data-k') === k) { sp.style.opacity = o[k] ? '.4' : ''; sp.style.textDecoration = o[k] ? 'line-through' : ''; }
+  });
+}
+
 function makeComboChart(canvasId, keys, data) {
   const ctxEl = document.getElementById(canvasId);
+  const _i = parseInt(String(canvasId).replace('ac-combo-', ''), 10);
   if (!ctxEl) return;
   if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
   const units = comboUnits(keys).slice(0, 2);
@@ -1420,14 +1526,15 @@ function makeComboChart(canvasId, keys, data) {
     if (surAxe2.size === series.length) surAxe2.clear(); /* toutes petites = rien à séparer */
   }
   const compteurAxe = {};
-  const datasets = series.map(({ k, s }) => {
+  const _colsC = coloresCombo(keys);
+  const datasets = series.map(({ k, s }, r) => {
     const u = unitOf(k);
     const axe = (units.indexOf(u) === 1 || surAxe2.has(k)) ? 'y2' : 'y';
     const n = compteurAxe[axe] = (compteurAxe[axe] || 0) + 1;
     return {
-      label: PARAMS[k].label || k, data: dates.map(d => val(s, d)), yAxisID: axe,
-      borderColor: PARAMS[k].color, backgroundColor: PARAMS[k].color + '18',
-      borderDash: DASH[(n - 1) % DASH.length], pointStyle: STYLES[(n - 1) % STYLES.length],
+      label: PARAMS[k].label || k, data: dates.map(d => val(s, d)), yAxisID: axe, hidden: _comboEsOculta(_i, k),
+      borderColor: _colsC[r], backgroundColor: _colsC[r] + '18',
+      borderDash: DASH[(n - 1) % DASH.length], pointStyle: _formaRango(r).punto,
       borderWidth: (typeof SF_CONFIG !== 'undefined' && SF_CONFIG.grosor_linea) || 2, pointRadius: 5, pointHoverRadius: 7, tension: 0.3, spanGaps: true, fill: false
     };
   });
@@ -1442,7 +1549,17 @@ function makeComboChart(canvasId, keys, data) {
     type: 'line',
     data: { labels: dates.map(fmtDate), datasets },
     options: { responsive: true,
-      plugins: { legend: { display: true, labels: { usePointStyle: true, font: { size: 10 } } } },
+      /* como en las curvas simples : un dedo cerca de un punto, y el clic abre el documento de origen */
+      onHover: (e, els) => { try { const t = (e.native || e).target; if (t) t.style.cursor = (els && els.length) ? 'pointer' : 'default'; } catch (er) {} },
+      onClick: (e, els) => {
+        try {
+          if (!els || !els.length) return;
+          const di = els[0].datasetIndex, idx = els[0].index;
+          const pt = series[di].s.find(q => q.x === dates[idx]);
+          if (pt && (pt.pdf_id || pt.pdf)) _chartVerInforme(pt, keys[di]);
+        } catch (er) {}
+      },
+      plugins: { legend: { display: false } },
       scales }
   });
 }
@@ -1455,11 +1572,13 @@ function makeComboChart(canvasId, keys, data) {
 MF.arranca({
   /* la paleta o los estilos cambian : se vuelven a leer los colores y se redibuja */
   /* la langue change : etiquettes et descriptions des courbes se relisent */
-  alIdioma:  function(){ if(_DATOS) try{ buildAllCharts(loadData()); }catch(e){} },
+  alIdioma:  function(){ aplicaTextosCur(); if(_DATOS) try{ buildAllCharts(loadData()); }catch(e){} },
   alPaleta:  function(){ aplicaColoresCurvas(); if(_DATOS) try{ buildAllCharts(loadData()); }catch(e){} },
   alEstilos: function(){ aplicaColoresCurvas(); if(_DATOS) try{ buildAllCharts(loadData()); }catch(e){} },
   alCargar: function(d, p){
     _DATOS=d;
+    CURVAS_VISTA.cuadros.forEach(function(q){ alternaCuadro(q.id, q.abierto); });
+    aplicaTextosCur();
     var pa=MF.paciente();
     document.getElementById('c-pac').textContent = pa.etiqueta || pa.matricula || '';
     document.getElementById('aviso').style.display='none';

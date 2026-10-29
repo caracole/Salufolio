@@ -1381,7 +1381,7 @@ function buildRadarLeyenda(data) {
       '<td style="padding:5px 6px;color:var(--muted)">' + (e.fuentes.length ? e.fuentes.join('<br>') : '—') + '</td>' +
       '<td style="padding:5px 6px;text-align:right;vertical-align:top">' +
         e.docs.map(function(pdf) {
-          return '<button class="btn" style="font-size:10px;padding:2px 8px;white-space:nowrap;margin-bottom:3px" onclick="audVerPdf(\'' + String(pdf).replace(/'/g, '') + '\')" title="' + pdf + '">' + tx('btn_ver') + '</button>';
+          return '<button class="btn" style="font-size:10px;padding:2px 8px;white-space:nowrap;margin-bottom:3px" onclick="audVerPdf(\'' + String(pdf).replace(/'/g, '') + '\')" data-ptip="' + String(pdf).replace(/"/g, '&quot;') + '">' + tx('btn_ver') + '</button>';
         }).join('<br>') + '</td></tr>';
   });
   el.innerHTML = h + '</table>';

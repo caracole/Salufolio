@@ -1,5 +1,5 @@
 /* Los textos de Curvas
-   Versión 2026.10.29-11:04:20 */
+   Versión 2026.10.29-11:52:59 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Curvas, en su propia carpeta.",
   "textos": {
@@ -40,7 +40,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "est_conservado": "Patrón conservado",
       "btn_conservar": "Conservar este patrón",
       "tit_elegir_params": "Elegir parámetros",
-      "resumen_params": "{n}/{total} parámetros · clic derecho en una curva: superponer",
+      "resumen_params": "{n}/{total} parámetros",
       "tip_reducir": "Reducir",
       "tip_ampliar": "Ampliar",
       "tip_separar": "Separar todo",
@@ -69,7 +69,20 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "rub_vitaminas_fe": "VITAMINAS/FE",
       "rub_inflamacion": "INFLAMACIÓN",
       "rub_constantes": "CONSTANTES",
-      "rub_otros": "OTROS"
+      "rub_otros": "OTROS",
+      "tip_vercacher": "Clic: ver o ocultar la curva",
+      "usar_tit": "💡 CÓMO UTILIZAR",
+      "usar_txt": "• **Pasa el ratón** por el nombre de un parámetro o de una curva: aparece su explicación.\n• **Haz clic en un punto** de una curva: se abre el documento de donde viene el valor.\n• **Clic derecho** sobre un parámetro: ver el comentario de la IA o **superponer** otros parámetros en la misma gráfica.\n• En ese menú, el **cuadrito de color** junto a cada parámetro permite elegir su color entre 8 pavés (⟲ = color por defecto).\n• En una gráfica superpuesta, las unidades distintas usan un segundo eje; **haz clic en el nombre** de una curva (en el título) para ocultarla o mostrarla.\n• Los botones de cada tarjeta permiten reducirla, ampliarla o quitarla.",
+      "color_defecto": "Color por defecto",
+      "tip_color": "Clic: elegir el color de la curva",
+      "color_rojo": "rojo",
+      "color_naranja": "naranja",
+      "color_ambar": "ámbar",
+      "color_verde": "verde",
+      "color_turquesa": "turquesa",
+      "color_azul": "azul",
+      "color_violeta": "violeta",
+      "color_rosa": "rosa"
     },
     "fr": {
       "todos_param": "Tous les paramètres",
@@ -108,7 +121,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "est_conservado": "Modèle conservé",
       "btn_conservar": "Conserver ce modèle",
       "tit_elegir_params": "Choisir les paramètres",
-      "resumen_params": "{n}/{total} paramètres · clic droit sur une courbe : superposer",
+      "resumen_params": "{n}/{total} paramètres",
       "tip_reducir": "Réduire",
       "tip_ampliar": "Agrandir",
       "tip_separar": "Tout séparer",
@@ -137,7 +150,20 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "rub_vitaminas_fe": "VITAMINES/FER",
       "rub_inflamacion": "INFLAMMATION",
       "rub_constantes": "CONSTANTES",
-      "rub_otros": "AUTRES"
+      "rub_otros": "AUTRES",
+      "tip_vercacher": "Clic : voir ou cacher la courbe",
+      "usar_tit": "💡 COMMENT UTILISER",
+      "usar_txt": "• **Survole** le nom d'un paramètre ou d'une courbe : son explication s'affiche.\n• **Clique sur un point** d'une courbe : le document d'où vient la valeur s'ouvre.\n• **Clic droit** sur un paramètre : voir le commentaire de l'IA ou **superposer** d'autres paramètres sur le même graphique.\n• Dans ce menu, le **petit carré de couleur** à côté de chaque paramètre permet de choisir sa couleur parmi 8 pavés (⟲ = couleur par défaut).\n• Dans un graphique superposé, les unités différentes utilisent un second axe ; **clique sur le nom** d'une courbe (dans le titre) pour la cacher ou la montrer.\n• Les boutons de chaque carte permettent de la réduire, l'agrandir ou la supprimer.",
+      "color_defecto": "Couleur par défaut",
+      "tip_color": "Clic : choisir la couleur de la courbe",
+      "color_rojo": "rouge",
+      "color_naranja": "orange",
+      "color_ambar": "ambre",
+      "color_verde": "vert",
+      "color_turquesa": "turquoise",
+      "color_azul": "bleu",
+      "color_violeta": "violet",
+      "color_rosa": "rose"
     },
     "ca": {
       "todos_param": "Tots els paràmetres",
@@ -176,7 +202,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "est_conservado": "Patró conservat",
       "btn_conservar": "Conservar aquest patró",
       "tit_elegir_params": "Triar paràmetres",
-      "resumen_params": "{n}/{total} paràmetres · clic dret en una corba: superposar",
+      "resumen_params": "{n}/{total} paràmetres",
       "tip_reducir": "Reduir",
       "tip_ampliar": "Ampliar",
       "tip_separar": "Separar-ho tot",
@@ -205,7 +231,20 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "rub_vitaminas_fe": "VITAMINES/FE",
       "rub_inflamacion": "INFLAMACIÓ",
       "rub_constantes": "CONSTANTS",
-      "rub_otros": "ALTRES"
+      "rub_otros": "ALTRES",
+      "tip_vercacher": "Clic: veure o amagar la corba",
+      "usar_tit": "💡 COM UTILITZAR",
+      "usar_txt": "• **Passa el ratolí** pel nom d'un paràmetre o d'una corba: apareix la seva explicació.\n• **Fes clic en un punt** d'una corba: s'obre el document d'on ve el valor.\n• **Clic dret** sobre un paràmetre: veure el comentari de la IA o **superposar** altres paràmetres al mateix gràfic.\n• En aquest menú, el **quadradet de color** al costat de cada paràmetre permet triar-ne el color entre 8 pavès (⟲ = color per defecte).\n• En un gràfic superposat, les unitats diferents fan servir un segon eix; **fes clic en el nom** d'una corba (al títol) per amagar-la o mostrar-la.\n• Els botons de cada targeta permeten reduir-la, ampliar-la o treure-la.",
+      "color_defecto": "Color per defecte",
+      "tip_color": "Clic: triar el color de la corba",
+      "color_rojo": "vermell",
+      "color_naranja": "taronja",
+      "color_ambar": "ambre",
+      "color_verde": "verd",
+      "color_turquesa": "turquesa",
+      "color_azul": "blau",
+      "color_violeta": "violeta",
+      "color_rosa": "rosa"
     },
     "en": {
       "todos_param": "All parameters",
@@ -244,7 +283,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "est_conservado": "Pattern saved",
       "btn_conservar": "Save this pattern",
       "tit_elegir_params": "Choose parameters",
-      "resumen_params": "{n}/{total} parameters · right-click a curve to overlay",
+      "resumen_params": "{n}/{total} parameters",
       "tip_reducir": "Shrink",
       "tip_ampliar": "Enlarge",
       "tip_separar": "Separate all",
@@ -273,7 +312,20 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "rub_vitaminas_fe": "VITAMINS/IRON",
       "rub_inflamacion": "INFLAMMATION",
       "rub_constantes": "VITAL SIGNS",
-      "rub_otros": "OTHER"
+      "rub_otros": "OTHER",
+      "tip_vercacher": "Click: show or hide the curve",
+      "usar_tit": "💡 HOW TO USE",
+      "usar_txt": "• **Hover** over the name of a parameter or a curve: its explanation appears.\n• **Click a point** on a curve: the document the value comes from opens.\n• **Right-click** a parameter: see the AI's comment or **overlay** other parameters on the same chart.\n• In that menu, the **small colour square** next to each parameter lets you pick its colour from 8 swatches (⟲ = default colour).\n• In an overlaid chart, different units use a second axis; **click a curve's name** (in the title) to hide or show it.\n• The buttons on each card let you shrink, enlarge or remove it.",
+      "color_defecto": "Default colour",
+      "tip_color": "Click: choose the curve colour",
+      "color_rojo": "red",
+      "color_naranja": "orange",
+      "color_ambar": "amber",
+      "color_verde": "green",
+      "color_turquesa": "turquoise",
+      "color_azul": "blue",
+      "color_violeta": "violet",
+      "color_rosa": "pink"
     }
   }
 };
