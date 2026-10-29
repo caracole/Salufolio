@@ -14,9 +14,18 @@ header[data-cabecera]{display:flex;align-items:baseline;gap:var(--gap-m,12px);
 .mod-tit{font-family:var(--serif);font-size:var(--tam-tit,18px);font-weight:600;color:var(--text)}
 header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-radius:var(--radio-s,6px);
              padding:1px 8px;color:var(--muted)}
-#panel-radar{display:block;padding:12px 20px 30px}
+#panel-radar{display:block;padding:12px 20px 0}   /* sin margen abajo : lo da RADAR_VISTA.huecoBajo */
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
 .module-version-corner{display:none}
+/* Cuadros plegables de la columna izquierda : todo con variables de la paleta */
+.cuadro{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.cuadro.acento{border-left:4px solid var(--accent)}
+.cuadro-cab{display:flex;align-items:center;gap:8px;padding:10px 16px;cursor:pointer;user-select:none;
+            font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600}
+.cuadro-cab .flecha{width:1em;color:var(--muted)}
+.cuadro-cab .resumen{margin-left:auto;font-weight:400;color:var(--muted)}
+.cuadro-cuerpo{padding:0 16px 12px}
+.cuadro.cerrado .cuadro-cuerpo{display:none}
 </style>
 </head>
 <body>
@@ -27,11 +36,8 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 </header>
 
 <div id="panel-radar" class="panel">
-  <!-- La barre de titre était un désert : le titre à gauche, la légende à droite (P-H 16/07) -->
-  <div class="section-label barra-titulo">
-    <span data-idioma="radar_title">🕸️ Vista de conjunto — Radar</span>
-    <span id="radar-leyenda-top" class="leyenda-top"></span>
-  </div>
+  <!-- (La barra de título « Vista de conjunto » y su leyenda de fechas se quitaron el 29/10/2026 :
+       el título y las fechas están ahora dentro del propio gráfico.) -->
 
   <!-- Deux colonnes : datos+explicaciones (scrollable) · radar fijo y centrado (P-H 16/07) -->
   <div class="radar-2col">
@@ -39,53 +45,57 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
     <!-- ══════ IZQUIERDA : DATOS Y EXPLICACIONES (cuadro con su propio ascensor) ══════ -->
     <div class="radar-izq">
 
-      <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius);padding:12px 16px;font-size:13.5px;color:var(--muted);line-height:1.6">
-        💡 <strong style="color:var(--text)">Cómo leer</strong> — cada eje es un parámetro normalizado:
-        <strong style="color:var(--text)">100 % = centro del rango normal</strong>. Cuanto más lejos del centro,
-        más lejos de la norma. Las fechas se superponen para ver la evolución.
+      <!-- Todos los cuadros se pliegan con un clic en su cabecera (tabla RADAR_VISTA.cuadros) -->
+      <div class="cuadro acento" data-cuadro="comoleer">
+        <div class="cuadro-cab" onclick="alternaCuadro('comoleer')"><span class="flecha">▾</span><span data-tx="comoleer_tit">💡 CÓMO LEER</span></div>
+        <div class="cuadro-cuerpo" data-tx="comoleer_txt" style="font-size:13.5px;color:var(--muted);line-height:1.6">Cada eje es un parámetro normalizado: la <strong style="color:var(--text)">zona verde es el rango normal</strong> (0 % = límite bajo, 100 % = límite alto). Un punto fuera del verde está fuera de la norma: por fuera si es demasiado alto, hacia el centro si es demasiado bajo. Las fechas se superponen para ver la evolución.</div>
       </div>
 
-      <!-- Fechas : listbox de selección múltiple (P-H : ocupaba demasiado sitio) -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-          <div style="font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600"><span data-idioma="fechas">📅 FECHAS A COMPARAR</span> <span style="color:var(--muted);font-weight:400">(máx. 8)</span></div>
-          <div style="display:flex;gap:5px">
-            <button class="btn" onclick="selectLastRadarDates()" style="font-size:10.5px;padding:3px 9px">Últimas 3</button>
-            <button class="btn" onclick="selectAllRadarDates()" style="font-size:10.5px;padding:3px 9px">Últimas 8</button>
-            <button class="btn" onclick="clearRadarDates()" style="font-size:10.5px;padding:3px 9px">Ninguna</button>
+      <!-- Fechas : listbox de selección múltiple -->
+      <div class="cuadro" data-cuadro="fechas">
+        <div class="cuadro-cab" onclick="alternaCuadro('fechas')"><span class="flecha">▾</span><span data-idioma="fechas">📅 FECHAS A COMPARAR</span><span style="color:var(--muted);font-weight:400" data-tx="max_fechas">(máx. 8)</span><span class="resumen" id="res-fechas"></span></div>
+        <div class="cuadro-cuerpo">
+          <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap">
+            <button class="btn" onclick="selectLastRadarDates()" data-tx="btn_ultimas3" style="font-size:10.5px;padding:3px 9px">Últimas 3</button>
+            <button class="btn" onclick="selectAllRadarDates()" data-tx="btn_ultimas8" style="font-size:10.5px;padding:3px 9px">Últimas 8</button>
+            <button class="btn" onclick="clearRadarDates()" data-tx="btn_ninguna" style="font-size:10.5px;padding:3px 9px">Ninguna</button>
           </div>
+          <select id="radar-fechas" multiple size="5" onchange="onRadarFechasChange()"
+            style="width:100%;font-family:var(--mono);font-size:12px;padding:4px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px"></select>
+          <div data-tx="ctrl_clic" style="font-size:10.5px;color:var(--muted);margin-top:6px">Ctrl+clic (o ⌘+clic) para añadir o quitar fechas.</div>
         </div>
-        <select id="radar-fechas" multiple size="8" onchange="onRadarFechasChange()"
-          style="width:100%;font-family:var(--mono);font-size:12px;padding:4px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px"></select>
-        <div style="font-size:10.5px;color:var(--muted);margin-top:6px">Ctrl+clic (o ⌘+clic) para añadir o quitar fechas.</div>
       </div>
 
       <!-- Grupos de parámetros -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px">
-        <div style="font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;margin-bottom:8px" data-idioma="grupo">🧪 GRUPO DE PARÁMETROS</div>
+      <div class="cuadro" data-cuadro="grupo">
+        <div class="cuadro-cab" onclick="alternaCuadro('grupo')"><span class="flecha">▾</span><span data-idioma="grupo">🧪 GRUPO DE PARÁMETROS</span><span class="resumen" id="res-grupo"></span></div>
+        <div class="cuadro-cuerpo">
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn primary" onclick="setRadarGroup('general')" id="rg-general" style="font-size:11.5px;padding:5px 11px">General</button>
-          <button class="btn" onclick="setRadarGroup('hemato')" id="rg-hemato" style="font-size:11.5px;padding:5px 11px">Hematología</button>
-          <button class="btn" onclick="setRadarGroup('lipidos')" id="rg-lipidos" style="font-size:11.5px;padding:5px 11px">Lípidos</button>
-          <button class="btn" onclick="setRadarGroup('renal')" id="rg-renal" style="font-size:11.5px;padding:5px 11px">Renal</button>
-          <button class="btn" onclick="setRadarGroup('hepatico')" id="rg-hepatico" style="font-size:11.5px;padding:5px 11px">Hepático</button>
-          <button class="btn" onclick="setRadarGroup('vitaminas')" id="rg-vitaminas" style="font-size:11.5px;padding:5px 11px">Vitaminas</button>
-          <button class="btn" onclick="setRadarGroup('coagulacion')" id="rg-coagulacion" style="font-size:11.5px;padding:5px 11px">Coagulación</button>
-          <button class="btn" onclick="setRadarGroup('todos')" id="rg-todos" style="font-size:11.5px;padding:5px 11px">Todos</button>
+          <button class="btn primary" onclick="setRadarGroup('general')" id="rg-general" data-tx="g_general" style="font-size:11.5px;padding:5px 11px">General</button>
+          <button class="btn" onclick="setRadarGroup('hemato')" id="rg-hemato" data-tx="g_hemato" style="font-size:11.5px;padding:5px 11px">Hematología</button>
+          <button class="btn" onclick="setRadarGroup('lipidos')" id="rg-lipidos" data-tx="g_lipidos" style="font-size:11.5px;padding:5px 11px">Lípidos</button>
+          <button class="btn" onclick="setRadarGroup('renal')" id="rg-renal" data-tx="g_renal" style="font-size:11.5px;padding:5px 11px">Renal</button>
+          <button class="btn" onclick="setRadarGroup('hepatico')" id="rg-hepatico" data-tx="g_hepatico" style="font-size:11.5px;padding:5px 11px">Hepático</button>
+          <button class="btn" onclick="setRadarGroup('vitaminas')" id="rg-vitaminas" data-tx="g_vitaminas" style="font-size:11.5px;padding:5px 11px">Vitaminas</button>
+          <button class="btn" onclick="setRadarGroup('coagulacion')" id="rg-coagulacion" data-tx="g_coagulacion" style="font-size:11.5px;padding:5px 11px">Coagulación</button>
+          <button class="btn" onclick="setRadarGroup('todos')" id="rg-todos" data-tx="g_todos" style="font-size:11.5px;padding:5px 11px">Todos</button>
+        </div>
         </div>
       </div>
 
-      <!-- Leyenda : color · FECHA · FUENTE · 📄 (P-H : Fuente justo después de Fecha) -->
-      <div id="radar-leyenda-box" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;display:none">
-        <div style="font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;margin-bottom:8px">📄 FUENTES DE LAS SERIES</div>
-        <div id="radar-leyenda" style="overflow-x:auto"></div>
+      <!-- Fuentes : color · FECHA · FUENTE · 📄 -->
+      <div class="cuadro" id="radar-leyenda-box" data-cuadro="fuentes" style="display:none">
+        <div class="cuadro-cab" onclick="alternaCuadro('fuentes')"><span class="flecha">▾</span><span data-tx="fuentes_tit">📄 FUENTES DE LAS SERIES</span><span class="resumen" id="res-fuentes"></span></div>
+        <div class="cuadro-cuerpo"><div id="radar-leyenda" style="overflow-x:auto"></div></div>
       </div>
 
       <!-- Los datos que explican el radar -->
-      <div id="radar-tabla-box" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;display:none">
-        <div style="font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;margin-bottom:8px">📊 VALORES (los datos del gráfico)</div>
-        <div id="radar-tabla" style="overflow-x:auto"></div>
-        <div style="font-size:10.5px;color:var(--muted);margin-top:8px;font-style:italic">Salufolio no inventa nada: cada valor viene de un documento — 📄 para verlo.</div>
+      <div class="cuadro" id="radar-tabla-box" data-cuadro="valores" style="display:none">
+        <div class="cuadro-cab" onclick="alternaCuadro('valores')"><span class="flecha">▾</span><span data-tx="valores_tit">📊 VALORES (los datos del gráfico)</span></div>
+        <div class="cuadro-cuerpo">
+          <div id="radar-tabla" style="overflow-x:auto"></div>
+          <div data-tx="nota_valores" style="font-size:10.5px;color:var(--muted);margin-top:8px;font-style:italic">Salufolio no inventa nada: cada valor viene de un documento — 📄 para verlo.</div>
+        </div>
       </div>
 
     </div>
@@ -1130,21 +1140,104 @@ function audVerPdf(nombreEsperado, buscar) {
 /* ================================================================
    PANEL RADAR — Vue d'ensemble en toile d'araignée
 ================================================================ */
+/* La presentación del gráfico, en una tabla (nada en duro en el dibujo).
+   - tituloFactor : el título del grupo = tamaño del texto de la paleta × este factor
+   - fechasPorFila : las fechas se agrupan por líneas de N, a la derecha
+   - pesoEtiquetas : grosor de los nombres de los ejes (normal, no negrita)
+   - tamEtiquetas : tamaño de los nombres según el número de ejes (hasta N ejes → tamaño) */
+const RADAR_VISTA = {
+  tituloFactor: 1.3,
+  fechasFactor: 0.8,       /* las fechas = tamaño del texto secundario de la paleta × este factor */
+  fechasPorFila: 4,        /* 8 fechas máximo = 2 líneas */
+  margenBajo: 14,          /* margen de base bajo el gráfico, en píxeles */
+  lienzoAlto: 98,          /* el dibujo ocupa este % de la altura libre (antes 92 en el CSS común) */
+  huecoBajo: 12,           /* margen bajo el radar, en píxeles (antes --radar-gap : 26) */
+  bajarCentro: 18,         /* el centro del gráfico baja N píxeles (el sitio lo da el margen de abajo) */
+  pesoEtiquetas: '400',
+  /* los cuadros plegables de la columna izquierda : abiertos al empezar o no */
+  cuadros: [
+    { id: 'comoleer', abierto: true  },
+    { id: 'fechas',   abierto: false },
+    { id: 'grupo',    abierto: true  },
+    { id: 'fuentes',  abierto: false },
+    { id: 'valores',  abierto: false }
+  ],
+  fechasLineas: 5,                    /* alto de la lista de fechas, en líneas */
+  /* los textos viven en radar.idiomas.js (claves res_fecha_*, res_fuente_*) */
+  tamEtiquetas: [
+    { hasta: 12, tam: 13 },
+    { hasta: 25, tam: 11 },
+    { hasta: 40, tam: 9 },
+    { hasta: 9999, tam: 8 }
+  ]
+};
+
+/* ── Los textos : todos vienen de radar.idiomas.js (nada escrito en duro aquí) ── */
+function tx(k) {
+  var lg = 'es'; try { lg = MF.idioma() || 'es'; } catch (e) {}
+  var T = (window.SF_TEXTOS && SF_TEXTOS.textos) || {};
+  return (T[lg] && T[lg][k]) || (T.es && T.es[k]) || k;
+}
+/* los elementos con data-tx="clave" se traducen ; **negrita** admitida */
+function aplicaTextos() {
+  document.querySelectorAll('[data-tx]').forEach(function(e) {
+    e.innerHTML = tx(e.getAttribute('data-tx')).replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--text)">$1</strong>');
+  });
+}
+
+/* ── Cuadros plegables : un clic en la cabecera abre o cierra ── */
+function alternaCuadro(id, abrir) {
+  const c = document.querySelector('[data-cuadro="' + id + '"]');
+  if (!c) return;
+  const cerrar = (abrir === undefined) ? !c.classList.contains('cerrado') : !abrir;
+  c.classList.toggle('cerrado', cerrar);
+  const f = c.querySelector('.flecha');
+  if (f) f.textContent = cerrar ? '▸' : '▾';
+}
+function textoNumero(clave, n) { return tx(clave + (n === 1 ? '_1' : '_n')).replace('{n}', n); }
+/* La altura del radar = lo que queda libre de verdad : se MIDE dónde empieza la columna
+   (el --radar-top del CSS común, 118 px, venía de la época del monofichero). */
+function ajustaAlturaRadar() {
+  const col = document.querySelector('.radar-2col');
+  if (!col) return;
+  const arriba = Math.round(col.getBoundingClientRect().top + (window.pageYOffset || 0));
+  const raiz = document.documentElement.style;
+  raiz.setProperty('--radar-top', arriba + 'px');
+  raiz.setProperty('--radar-gap', RADAR_VISTA.huecoBajo + 'px');
+  const lz = document.querySelector('.radar-lienzo');
+  if (lz) lz.style.height = RADAR_VISTA.lienzoAlto + '%';
+}
+function iniciaCuadros() {
+  RADAR_VISTA.cuadros.forEach(function(q) { alternaCuadro(q.id, q.abierto); });
+  const sel = document.getElementById('radar-fechas');
+  if (sel) sel.size = RADAR_VISTA.fechasLineas;
+}
+/* Lo esencial queda visible en la cabecera aunque el cuadro esté cerrado */
+function resumenCuadros() {
+  const f = document.getElementById('res-fechas'), g = document.getElementById('res-grupo');
+  if (f) f.textContent = textoNumero('res_fecha', radarSelectedDates.length);
+  if (g) g.textContent = ((RADAR_GROUPS[radarCurrentGroup] || {}).label) || '';
+}
+
 const RADAR_GROUPS = {
-  general:     { label: 'General',      keys: ['hemoglobina','leucocitos','plaquetas','glucosa','creatinina','pcr','tsh','t4','vitamina_d'] },
-  hemato:      { label: 'Hematología',  keys: ['hemoglobina','hematocrito','vcm','hcm','leucocitos','neutrofilos','linfocitos','plaquetas','vsg'] },
-  lipidos:     { label: 'Lípidos',      keys: ['colesterol','colesterol_hdl','colesterol_ldl','trigliceridos','no_hdl'] },
-  renal:       { label: 'Renal',        keys: ['creatinina','filtrado','urea','acido_urico','sodio','potasio','cloro'] },
-  hepatico:    { label: 'Hepático',     keys: ['gpt','got','ggt','fosfatasa','bilirrubina','albumina','proteinas'] },
-  vitaminas:   { label: 'Vitaminas',    keys: ['vitamina_d','vitamina_b12','folico','ferritina','hierro'] },
-  coagulacion: { label: 'Coagulación',  keys: ['inr','tp','ttpa','actividad_protrombina','fibrinogeno','dimero_d'] },
-  signos:      { label: 'Signos vitales',   keys: ['TA_sys','TA_dia','FC','Temp','SpO2'] },
-  todos:       { label: 'Todos',        keys: null } /* null = tous les paramètres disponibles */
+  general:     { get label() { return tx('g_general'); },      keys: ['hemoglobina','leucocitos','plaquetas','glucosa','creatinina','pcr','tsh','t4','vitamina_d'] },
+  hemato:      { get label() { return tx('g_hemato'); },  keys: ['hemoglobina','hematocrito','vcm','hcm','leucocitos','neutrofilos','linfocitos','plaquetas','vsg'] },
+  lipidos:     { get label() { return tx('g_lipidos'); },      keys: ['colesterol','colesterol_hdl','colesterol_ldl','trigliceridos','no_hdl'] },
+  renal:       { get label() { return tx('g_renal'); },        keys: ['creatinina','filtrado','urea','acido_urico','sodio','potasio','cloro'] },
+  hepatico:    { get label() { return tx('g_hepatico'); },     keys: ['gpt','got','ggt','fosfatasa','bilirrubina','albumina','proteinas'] },
+  vitaminas:   { get label() { return tx('g_vitaminas'); },    keys: ['vitamina_d','vitamina_b12','folico','ferritina','hierro'] },
+  coagulacion: { get label() { return tx('g_coagulacion'); },  keys: ['inr','tp','ttpa','actividad_protrombina','fibrinogeno','dimero_d'] },
+  signos:      { get label() { return tx('g_signos'); },   keys: ['TA_sys','TA_dia','FC','Temp','SpO2'] },
+  todos:       { get label() { return tx('g_todos'); },        keys: null } /* null = tous les paramètres disponibles */
 };
 
 let radarChart = null;
 let radarSelectedDates = [];
 let radarCurrentGroup = 'general';
+iniciaCuadros();   /* el script va después del marcado : los cuadros ya existen */
+ajustaAlturaRadar();
+window.addEventListener('resize', ajustaAlturaRadar);
+window.addEventListener('load', ajustaAlturaRadar);
 
 /* Couleurs pour chaque date (max 8) */
 /* Le canvas ne résout PAS les variables CSS : ici, que des couleurs littérales.
@@ -1173,7 +1266,7 @@ function normalizeParam(key, value) {
     const mid = (lo + hi) / 2;
     const range = hi - lo;
     if (range === 0) return 100;
-    /* Normaliser : 100 = milieu du range, 0 = lo, 200 = hi */
+    /* Normaliser : 0 = limite basse (lo), 100 = limite haute (hi) : la zone verte est la plage normale */
     return ((value - lo) / range) * 100;
   } else if (hi !== null) {
     /* Seulement un max (ex: LDL < 116) */
@@ -1226,7 +1319,7 @@ function onRadarFechasChange() {
   if (sel.length > 8) {                                  /* 8 couleurs, 8 séries */
     sel = sel.slice(0, 8);
     Array.from(el.options).forEach(function(o) { o.selected = sel.includes(o.value); });
-    if (typeof customAlert === 'function') customAlert('Máximo 8 fechas a la vez.', 'warn');
+    if (typeof customAlert === 'function') customAlert(tx('max8'), 'warn');
   }
   radarSelectedDates = sel.sort();
   buildRadar(loadData());
@@ -1254,7 +1347,7 @@ function clearRadarDates() {
 function buildRadarLeyendaTop() {
   const el = document.getElementById('radar-leyenda-top');
   if (!el) return;
-  if (!radarSelectedDates.length) { el.innerHTML = '<span class="vacio">— ninguna fecha seleccionada —</span>'; return; }
+  if (!radarSelectedDates.length) { el.innerHTML = '<span class="vacio">— ' + tx('ninguna_fecha') + ' —</span>'; return; }
   el.innerHTML = radarSelectedDates.map(function(d, i) {
     const c = RADAR_COLORS[i % RADAR_COLORS.length];
     return '<span class="item"><span class="punto" style="background:' + c.border + '"></span>' + fmtDate(d) + '</span>';
@@ -1267,9 +1360,17 @@ function buildRadarLeyenda(data) {
   if (!el || !box) return;
   if (!radarSelectedDates.length) { box.style.display = 'none'; return; }
   box.style.display = 'block';
+  /* resumen de la cabecera : cuántas fuentes distintas (documentos) tienen las fechas elegidas */
+  const _vistos = {};
+  radarSesiones(data).forEach(function(e) {
+    if (radarSelectedDates.indexOf(e.date) === -1) return;
+    e.fuentes.concat(e.docs).forEach(function(x) { _vistos[x] = 1; });
+  });
+  const _nf = Object.keys(_vistos).length, _rf = document.getElementById('res-fuentes');
+  if (_rf) _rf.textContent = _nf ? textoNumero('res_fuente', _nf) : '';
   let h = '<table style="width:100%;border-collapse:collapse;font-size:12px">' +
     '<tr style="color:var(--muted);font-family:var(--mono);font-size:10.5px;text-align:left">' +
-    '<th style="padding:3px 6px"></th><th style="padding:3px 6px">FECHA</th><th style="padding:3px 6px">FUENTE</th><th style="padding:3px 6px"></th></tr>';
+    '<th style="padding:3px 6px"></th><th style="padding:3px 6px">' + tx('th_fecha') + '</th><th style="padding:3px 6px">' + tx('th_fuente') + '</th><th style="padding:3px 6px"></th></tr>';
   const ses = radarSesiones(data);
   radarSelectedDates.forEach(function(date, i) {
     const e = ses.find(function(d) { return d.date === date; }) || { fuentes: [], docs: [] };
@@ -1280,7 +1381,7 @@ function buildRadarLeyenda(data) {
       '<td style="padding:5px 6px;color:var(--muted)">' + (e.fuentes.length ? e.fuentes.join('<br>') : '—') + '</td>' +
       '<td style="padding:5px 6px;text-align:right;vertical-align:top">' +
         e.docs.map(function(pdf) {
-          return '<button class="btn" style="font-size:10px;padding:2px 8px;white-space:nowrap;margin-bottom:3px" onclick="audVerPdf(\'' + String(pdf).replace(/'/g, '') + '\')" title="' + pdf + '">📄 Ver</button>';
+          return '<button class="btn" style="font-size:10px;padding:2px 8px;white-space:nowrap;margin-bottom:3px" onclick="audVerPdf(\'' + String(pdf).replace(/'/g, '') + '\')" title="' + pdf + '">' + tx('btn_ver') + '</button>';
         }).join('<br>') + '</td></tr>';
   });
   el.innerHTML = h + '</table>';
@@ -1294,12 +1395,12 @@ function buildRadarTabla(data, paramKeys) {
   box.style.display = 'block';
   let h = '<table style="width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap">' +
     '<tr style="color:var(--muted);font-family:var(--mono);font-size:10.5px;text-align:left">' +
-    '<th style="padding:3px 6px">PARÁMETRO</th>';
+    '<th style="padding:3px 6px">' + tx('th_parametro') + '</th>';
   radarSelectedDates.forEach(function(d, i) {
     const c = RADAR_COLORS[i % RADAR_COLORS.length];
     h += '<th style="padding:3px 6px;color:' + c.border + '">' + fmtDate(d) + '</th>';
   });
-  h += '<th style="padding:3px 6px">REF.</th></tr>';
+  h += '<th style="padding:3px 6px">' + tx('th_ref') + '</th></tr>';
   paramKeys.forEach(function(k) {
     const p = PARAMS[k] || {};
     h += '<tr style="border-top:1px solid var(--border)"><td style="padding:5px 6px">' + (p.label || k) + '</td>';
@@ -1331,6 +1432,7 @@ function setRadarGroup(group) {
 
 function buildRadar(data) {
   if (!data.length) return;
+  resumenCuadros();
 
   /* Initialiser les dates sélectionnées si vide (fechas fusionnées) */
   if (!radarSelectedDates.length) {
@@ -1423,25 +1525,46 @@ function buildRadar(data) {
   /* El título DENTRO del dibujo : el grupo y las fechas (P-H, 28/10/2026).
      Así el gráfico se basta solo cuando se copia o se imprime. Colores y
      tamaños vienen de los roles de la paleta (text_1, text_2), nada en duro. */
-  const tamTitulo = parseFloat(colorDe('text_1', 'font-size', '--tam-min')) || 14;
-  const tamFechas = parseFloat(colorDe('text_2', 'font-size', '--tam-min')) || 12;
-  const fuenteTitulo = '600 ' + tamTitulo + 'px IBM Plex Mono';
+  const tamTexto  = parseFloat(colorDe('text_1', 'font-size', '--tam-min')) || 14;
+  const tamTitulo = Math.round(tamTexto * RADAR_VISTA.tituloFactor);
+  const tamFechas = (parseFloat(colorDe('text_2', 'font-size', '--tam-min')) || 12) * RADAR_VISTA.fechasFactor;
+  const fuenteTitulo = '700 ' + tamTitulo + 'px IBM Plex Mono';
   const fuenteFechas = tamFechas + 'px IBM Plex Mono';
-  const nombreGrupo = (groupDef && groupDef.label) || '';
-  const anchoMax = Math.max(120, (document.getElementById('radar-chart').clientWidth || 600) - 24);
+  const nombreGrupo = ((groupDef && groupDef.label) || '').toLocaleUpperCase();
+  const margen = 8;
+  /* el ancho se mide en el CONTENEDOR del lienzo (el lienzo mismo, antes de
+     su primer dibujo, todavía mide su ancho por defecto y falseaba el cálculo) */
+  const _lienzo = document.getElementById('radar-chart');
+  const anchoGraf = (_lienzo.parentElement && _lienzo.parentElement.clientWidth) || _lienzo.clientWidth || 600;
   const punto = tamFechas * 0.9, sep = tamFechas * 1.4;
   const filasFechas = [];
   ctx.font = fuenteFechas;
-  let fila = [], ancho = 0;
+  const porFila = Math.max(1, RADAR_VISTA.fechasPorFila);
   radarSelectedDates.forEach(function(d, i) {
     const txt = fmtDate(d), w = punto + ctx.measureText(txt).width;
-    if (fila.length && ancho + sep + w > anchoMax) { filasFechas.push(fila); fila = []; ancho = 0; }
-    ancho += (fila.length ? sep : 0) + w;
-    fila.push({ txt: txt, w: w, color: RADAR_COLORS[i % RADAR_COLORS.length].border });
+    if (i % porFila === 0) filasFechas.push({ items: [], ancho: 0 });
+    const f = filasFechas[filasFechas.length - 1];
+    f.ancho += (f.items.length ? sep : 0) + w;
+    f.items.push({ txt: txt, w: w, color: RADAR_COLORS[i % RADAR_COLORS.length].border });
   });
-  if (fila.length) filasFechas.push(fila);
   const altoLinea = tamFechas * 1.5;
-  const altoTitulo = Math.round((nombreGrupo ? tamTitulo * 1.6 : 0) + filasFechas.length * altoLinea + 10);
+  const altoFechas = filasFechas.length * altoLinea;
+  const altoNombre = nombreGrupo ? tamTitulo * 1.3 : 0;
+  ctx.font = fuenteTitulo;
+  const anchoNombre = nombreGrupo ? ctx.measureText(nombreGrupo).width : 0;
+  const anchoFechas = filasFechas.reduce(function(m, f) { return Math.max(m, f.ancho); }, 0);
+  /* título a la izquierda y fechas a la derecha, en la misma banda ;
+     si no caben lado a lado, las fechas pasan debajo del título */
+  const apiladas = anchoNombre + anchoFechas + 3 * margen > anchoGraf;
+  const altoTitulo = Math.round((apiladas ? altoNombre + altoFechas : Math.max(altoNombre, altoFechas)) + 10);
+  /* Bajar el centro N px sin cambiar de sitio los demás elementos : margen de abajo reducido, de arriba aumentado */
+  const _mb = RADAR_VISTA.margenBajo, _bc = RADAR_VISTA.bajarCentro;
+  const margenAbajo = Math.max(0, _mb - _bc);
+  const margenArriba = altoTitulo + Math.max(0, 2 * _bc - _mb + margenAbajo);
+
+  /* Nombres de los ejes : tamaño según el número de ejes (tabla RADAR_VISTA) */
+  const nEjes = labels.length;
+  const tamEje = (RADAR_VISTA.tamEtiquetas.find(function(t) { return nEjes <= t.hasta; }) || { tam: 8 }).tam;
 
   radarChart = new Chart(ctx, {
     type: 'radar',
@@ -1449,7 +1572,7 @@ function buildRadar(data) {
       labels: labels,
       datasets: [
         {
-          label: 'Rango normal (0–100%)',
+          label: tx('rango_normal_leyenda'),
           data: refData,
           backgroundColor: conAlfa(refColor, 0.10),
           borderColor: conAlfa(refColor, 0.55),
@@ -1464,19 +1587,20 @@ function buildRadar(data) {
     plugins: [{
       id: 'radarTitulo',
       afterDraw: function(chart) {
-        const c = chart.ctx, cx = chart.width / 2;
-        let y = 4;
+        const c = chart.ctx, W = chart.width;
+        let yFechas = 4;
         c.save();
         c.textBaseline = 'top';
         if (nombreGrupo) {
-          c.font = fuenteTitulo; c.fillStyle = textColor; c.textAlign = 'center';
-          c.fillText(nombreGrupo, cx, y);
-          y += tamTitulo * 1.6;
+          c.font = fuenteTitulo; c.fillStyle = textColor; c.textAlign = 'left';
+          c.fillText(nombreGrupo, margen, 4);
+          if (apiladas) yFechas += altoNombre;
         }
         c.font = fuenteFechas; c.textAlign = 'left';
+        let y = yFechas;
         filasFechas.forEach(function(f) {
-          let x = cx - (f.reduce(function(t, e, i) { return t + e.w + (i ? sep : 0); }, 0)) / 2;
-          f.forEach(function(e) {
+          let x = W - margen - f.ancho;
+          f.items.forEach(function(e) {
             c.fillStyle = e.color;
             c.beginPath(); c.arc(x + punto / 2, y + tamFechas / 2, punto / 2.4, 0, 2 * Math.PI); c.fill();
             c.fillStyle = textColor;
@@ -1491,7 +1615,7 @@ function buildRadar(data) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      layout: { padding: { top: altoTitulo, bottom: 14 } },
+      layout: { padding: { top: margenArriba, bottom: margenAbajo } },
       scales: {
         r: {
           beginAtZero: true,
@@ -1505,7 +1629,7 @@ function buildRadar(data) {
           },
           pointLabels: {
             color: textColor,
-            font: { size: 13, family: 'IBM Plex Mono', weight: '600' },
+            font: { size: tamEje, family: 'IBM Plex Mono', weight: RADAR_VISTA.pesoEtiquetas },
           },
           grid: { color: gridColor },
           angleLines: { color: gridColor },
@@ -1516,7 +1640,7 @@ function buildRadar(data) {
         tooltip: {
           callbacks: {
             label: function(ctx) {
-              if (ctx.datasetIndex === 0) return 'Rango normal';
+              if (ctx.datasetIndex === 0) return tx('rango_normal');
               const key = paramKeys[ctx.dataIndex];
               const date = radarSelectedDates[ctx.datasetIndex - 1];
               const entry = radarSesiones(data).find(d => d.date === date);
@@ -1741,16 +1865,21 @@ function resolveOrCreatePdf(fichero) {
 
 
 /* la casa cambia la lengua o la paleta : se vuelve a construir lo que se ve */
-function redibuja(){ aplicaColoresCurvas(); if(_DATOS) try{ buildRadar(loadData()); }catch(e){ console.warn(e); } }
+function redibuja(){ aplicaTextos(); pintaCabecera(); aplicaColoresCurvas(); if(_DATOS) try{ buildRadar(loadData()); }catch(e){ console.warn(e); } }
+function pintaCabecera(){
+  var e = document.getElementById('r-est');
+  if (e && _DATOS) e.textContent = (_DATOS.mesures||[]).length + ' ' + tx('extracciones');
+}
 MF.arranca({
   alIdioma:  redibuja,
   alPaleta:  redibuja,
   alEstilos: redibuja,
   alCargar: function(d, p){
     _DATOS=d;
+    aplicaTextos();
     var pa=MF.paciente();
     document.getElementById('r-pac').textContent = pa.etiqueta || pa.matricula || '';
-    document.getElementById('r-est').textContent = (d.mesures||[]).length + ' extracciones';
+    document.getElementById('r-est').textContent = (d.mesures||[]).length + ' ' + tx('extracciones');
     document.getElementById('aviso').style.display='none';
     try{
       buildRadar(loadData());

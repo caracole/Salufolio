@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Versión 2026.09.19-18:15:47 -->
+<!-- Versión 2026.10.29-09:37:26 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Ayuda · Radar</title>
@@ -25,16 +25,25 @@ p{margin:0 0 12px;font-size:14px}
 <div class="sub">La vista de conjunto, fechas superpuestas</div>
 
 <h2>Cómo leer</h2>
-<p>Cada eje es un parámetro <b>normalizado</b>: 100 % es el centro del rango normal. Cuanto más lejos del centro, más se aparta el valor de la norma — hacia arriba o hacia abajo, el radar no lo distingue: mide la distancia, no el sentido.</p>
+<p>La <b>zona verde es el rango normal</b>. Cada eje va del límite bajo (0 %) al límite alto (100 %, el borde de la zona verde). Un punto dentro del verde está dentro de lo normal. Un valor demasiado alto sale por fuera del verde; uno demasiado bajo se acerca al centro y puede pasar por debajo de 0 %. Cuando un parámetro solo tiene límite superior (el LDL, por ejemplo), el 100 % es ese límite.</p>
+
+<h2>El título del gráfico</h2>
+<p>Arriba a la izquierda figura el nombre del grupo, en mayúsculas. Arriba a la derecha están las fechas elegidas, de tres en tres, cada una con el color de su serie. Así el gráfico se entiende solo cuando se copia o se imprime y deja el máximo de sitio al dibujo.</p>
 
 <h2>Las fechas</h2>
 <p>Elija hasta ocho extracciones para superponerlas. <b>Últimas 3</b> muestra la evolución reciente; <b>Últimas 8</b>, la tendencia larga. Ctrl+clic para añadir o quitar una fecha.</p>
 
 <h2>Los grupos</h2>
-<p>General, hematología, lípidos, renal, hepático, vitaminas, coagulación. Con todos los parámetros a la vez el radar se vuelve ilegible: es mejor mirar una familia cada vez.</p>
+<p>General, hematología, lípidos, renal, hepático, vitaminas, coagulación, signos vitales y todos. Con todos los parámetros a la vez el radar se vuelve ilegible: es mejor mirar una familia cada vez. Un parámetro que no se midió en una fecha aparece como un eje sin punto.</p>
+
+<h2>La escala</h2>
+<p>Si un valor está muy fuera de la norma, el gráfico se agranda para mostrarlo y la zona verde se hace más pequeña. Elija otra fecha para volver a verla grande.</p>
 
 <h2>Los valores</h2>
-<p>Debajo del radar, la tabla de los datos que lo componen — con el 📄 del documento de donde viene cada valor.</p>
+<p>Debajo del radar, la tabla de los datos que lo componen — con el 📄 del documento de donde viene cada valor y, en la última columna, el rango de referencia («&lt; 200 mg/dL» cuando solo hay un límite superior).</p>
+
+<h2>Los colores</h2>
+<p>Se adaptan a la paleta que haya elegido en la Casa.</p>
 
 <div class="nota">Salufolio no inventa nada: cada punto del radar viene de un informe. Si un valor sorprende, mire el documento antes de sacar conclusiones.</div>
 </div></body>
