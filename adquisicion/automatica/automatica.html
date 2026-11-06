@@ -29,6 +29,14 @@ input[type=text],input[type=password],select{background:var(--bg);color:var(--te
      border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px}
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
 .module-version-corner{display:none}
+/* v2026.11.03 (P-H) : la zone se verrouille pendant une lecture */
+#zona.bloqueada{opacity:.5;cursor:not-allowed;border-style:solid}
+#zona.bloqueada:hover{border-color:var(--border);background:transparent}
+/* v2026.11.03 (P-H) : un signe de vie pendant chaque document */
+.sf-vivo{position:relative;height:3px;margin-top:4px;overflow:hidden;border-radius:2px}
+.sf-vivo::after{content:'';position:absolute;top:0;left:-30%;width:30%;height:100%;
+  background:var(--accent);opacity:.6;animation:sf-vivo 1.6s ease-in-out infinite}
+@keyframes sf-vivo{from{left:-30%}to{left:100%}}
 </style>
 </head>
 <body>
@@ -128,7 +136,7 @@ input[type=text],input[type=password],select{background:var(--bg);color:var(--te
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ADQUISICIÓN AUTOMÁTICA — Salufolio V2
-   Versión 2026.09.19-18:12:56
+   Versión 2026.11.05-22:43:03
 
    El tercero de los tres modos de adquisición (P-H, 09/09):
      manual     · a mano, sin documento
@@ -336,6 +344,8 @@ function _resumenDe(l){
   if(l.error)    return String(l.error).substring(0,70);
   if(l.repetido) return t('dia_repe') + ' \u00b7 ' + (l.comoEn||'');
   var p = [];
+  if(l.nueva_version) p.push('\ud83d\udd04 ' + t('dia_nueva_version'));
+  if(l.reemplazada)   p.push('\u21b7 ' + t('dia_reemplazada'));
   if(l.mediciones)   p.push(l.mediciones + ' med');
   if(l.eventos)      p.push(l.eventos + ' ev');
   if(l.medicamentos) p.push(l.medicamentos + ' trat');
@@ -416,6 +426,11 @@ function detalleDiario(i){
     [t('det_fuente'),   l.fuente],
     [t('det_sacado'),   (l.mediciones||0) + ' mediciones \u00b7 ' + (l.eventos||0)
                         + ' eventos \u00b7 ' + (l.medicamentos||0) + ' medicamentos'],
+    [t('det_extraccion'), l.extraccion || (l.modo === 'A' && !l.error && l.extraccion === null
+                          ? t('ext_no_guardada') : '')],
+    [t('det_nueva_version'), l.nueva_version ? (t('det_reemplaza', { cuando: String(l.nueva_version).replace('_',' ') })
+                          + (l.sustituidas != null ? ' \u00b7 ' + l.sustituidas + ' ' + t('det_sustituidas') : '')) : ''],
+    [t('det_reemplazada'), l.reemplazada ? String(l.reemplazada).replace('_',' ') : ''],
     [t('det_error'),    l.error]
   ].filter(function(x){ return x[1]; });
 
@@ -434,8 +449,65 @@ function detalleDiario(i){
          + '</details>'
        : '');
 
-  MF.ventana((ICO_ESTADO[_estadoDe(l)]||'') + ' ' + (l.fichero||'\u2014'),
-             cuerpo, { cerrar: t('det_cerrar') });
+  /* v2026.11.03 (P-H) : « un bouton copier dans le presse-papier, ce serait
+     plus commode que sélectionner à la souris » */
+  var texto = filas.map(function(x){ return x[0] + '\t' + _sinEtiquetas(x[1]); }).join('\n')
+    + ((l.dudas && l.dudas.length) ? '\n' + l.dudas.map(_sinEtiquetas).join('\n') : '');
+  /* v2026.11.04 (P-H : « le bouton volver a leer ne s'affiche pas ») : il
+     paraît sur TOUTE ligne d'un fichier — « ya leído », erreur, remplacée…
+     La relecture remplace toujours la lectura VALABLE de ce fichier ; si la
+     ligne cliquée n'est pas celle-là, le bouton dit laquelle sera remplacée. */
+  var _valida = null;
+  if(l.fichero){
+    _lecturasBuenas().forEach(function(x){ if(x.fichero === l.fichero) _valida = x; });
+  }
+  var _txtReleer = (_valida && _valida !== l)
+      ? t('det_volver_leer_sust', { cuando: String(_valida.cuando || '').replace('_', ' ') })
+      : t('det_volver_leer');
+  var v = MF.ventana((ICO_ESTADO[_estadoDe(l)]||'') + ' ' + (l.fichero||'\u2014'),
+             cuerpo, { cerrar: t('det_cerrar'),
+                       alPie: ((l.fichero && (l.modo||'A') === 'A')
+                                ? '<button class="sf-ventana-btn sf-suave" id="_b-releer">\ud83d\udd04 ' + _txtReleer + '</button>' : '')
+                              + '<span style="flex:1"></span><button class="sf-ventana-btn" id="_b-copiar">\ud83d\udccb '
+                              + t('det_copiar') + '</button>' });
+  var br = v.caja.querySelector('#_b-releer');
+  if(br) br.onclick = function(){ v.cierra(); volverALeer(l); };
+  var bc = v.caja.querySelector('#_b-copiar');
+  bc.onclick = function(){
+    _copia(texto).then(function(ok){
+      bc.textContent = ok ? '\u2713 ' + t('det_copiado') : t('det_no_copiado');
+    });
+  };
+}
+/* v2026.11.03 (P-H) : forcer la relecture d'un document — on va le chercher
+   dans sources/ par le serveur ; sans serveur, on le fait choisir */
+var _FORZAR_ELECCION = false;
+function volverALeer(l){
+  if(_LEYENDO) return;
+  fetch(baseSalufolio() + encodeURIComponent(l.fichero) + '?' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('no'); return r.blob(); })
+    .then(function(b){
+      leeDocumentos([new File([b], l.fichero, { type:'application/pdf' })], { forzar:true });
+    })
+    .catch(function(){
+      pintaProgreso(t('det_volver_elegir', { fichero: l.fichero }));
+      _FORZAR_ELECCION = true;
+      document.getElementById('ficheros').click();
+    });
+}
+function _sinEtiquetas(h){ var d = document.createElement('div'); d.innerHTML = String(h==null?'':h); return d.textContent; }
+function _copia(texto){
+  if(navigator.clipboard && navigator.clipboard.writeText)
+    return navigator.clipboard.writeText(texto).then(function(){ return true; }, function(){ return _copiaVieja(texto); });
+  return Promise.resolve(_copiaVieja(texto));
+}
+function _copiaVieja(texto){
+  var ta = document.createElement('textarea');
+  ta.value = texto; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  var ok = false; try{ ok = document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+  return ok;
 }
 
 function borraDiario(){
@@ -585,7 +657,8 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
     if (nom) {
       var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
       var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
-      var r = await fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem));
+      /* B (P-H, 04/11/2026) : nunca el servidor 7777 (buscaba en todo ~/Salufolio) — la Casa, por MF */
+      var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : Promise.resolve(new Response(null, {status:404})));
       if (r.ok) buf = await r.arrayBuffer();
     }
     if (!buf) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */
@@ -1610,6 +1683,10 @@ function loadSourcesPdf() {
 function saveSourcesPdf(s) { localStorage.setItem(SOURCES_PDF_KEY, JSON.stringify(s)); }
 
 function resolveOrCreatePdf(fichero) {
+  /* v2026.11.05-22:43:03 (P-H) : el número lo da la tabla del expediente, por MF.pdfAlta (hueco, si no
+     contador + 1). El registro del navegador, compartido entre pacientes, ya no da números.
+     Lo que sigue queda para un MF antiguo. */
+  if (window.MF && MF.pdfAlta) return MF.pdfAlta(_asegura(), fichero);
   const reg = loadSourcesPdf();
   const trouve = reg.find(r => r.fichero === fichero);
   if (trouve) return trouve.id;
@@ -1745,6 +1822,7 @@ function deduplicateAll() {
         if (m.date_debut && !existing.date_debut) existing.date_debut = m.date_debut;
         if (m.remplace_par && !existing.remplace_par) existing.remplace_par = m.remplace_par;
         if (m.source && !existing.source) existing.source = m.source;
+        if (m.prc_id && !existing.prc_id) existing.prc_id = m.prc_id;
       }
     }
   });
@@ -2424,7 +2502,11 @@ function poblarTablasResumida(parsed, fechaHCR, fileName, pdfId) {
 }
 
     if (parsed.tipo_documento === 'historia_resumida') {
-      const fechaHCR = parsed.fecha_actualizacion || new Date().toISOString().slice(0, 10);
+      /* v2026.10.30-15:31:11 : la date d'ACTUALISATION n'est pas la date d'un soin (P-H, 30/10/2026).
+         Elle ne sert plus de valeur par défaut, et la date du jour non plus : un élément
+         sans date de début reste sans date. fechaHCR = la date du document lui-même, sinon rien. */
+      const fechaAct = parsed.fecha_actualizacion || '';
+      const fechaHCR = parsed.fecha_creacion || parsed.fecha_informe || '';
       const nAct = (parsed.problemas_activos || []).length,
             nIna = (parsed.problemas_inactivos || []).length,
             nVac = (parsed.vacunas || []).length,
@@ -2445,6 +2527,7 @@ function poblarTablasResumida(parsed, fechaHCR, fileName, pdfId) {
         (pr.codigo ? pr.codigo + ' — ' : '') + pr.descripcion +
         (pr.fecha_inicio ? ' (' + pr.fecha_inicio + (pr.fecha_inactivacion ? ' → ' + pr.fecha_inactivacion : '') + ')' : ''));
       if (parsed.alertas?.length) ev.alertes = parsed.alertas;
+      if (fechaAct) ev.fecha_actualizacion = fechaAct;   /* information, jamais la date de l'événement */
       evts.push(ev);
       evts.sort((a, b) => a.date.localeCompare(b.date));
       saveEvents(evts);
@@ -2452,7 +2535,7 @@ function poblarTablasResumida(parsed, fechaHCR, fileName, pdfId) {
       if (parsed.medicaments?.length) {
         const meds = loadMeds();
         for (const md of parsed.medicaments) {
-          meds.push({ date: md.date_debut || fechaHCR, nom: md.nom, dose: md.dose || '',
+          meds.push({ date: md.date_debut || '', nom: md.nom, dose: md.dose || '',
                       frequence: md.frequence || '', statut: md.statut || 'en_cours',
                       source: parsed.source || 'Historia Clínica Resumida',
                       pdf: file.name, pdf_id: _pdfId });
@@ -2461,18 +2544,18 @@ function poblarTablasResumida(parsed, fechaHCR, fileName, pdfId) {
         saveMeds(meds);
       }
 
-      const bilanTablas = poblarTablasResumida(parsed, fechaHCR, file.name, _pdfId);
+      const bilanTablas = poblarTablasResumida(parsed, '', file.name, _pdfId);
       pbar.style.width = '100%';
     if (typeof mfRespaldar === 'function') mfRespaldar('extracción de documento');
       plog.innerHTML += '→ 📋 Resumida : ' + nAct + ' activos · ' + nIna + ' inactivos · '
         + nVac + ' vacunas · ' + nNanda + ' NANDA · ' + nNic + ' NIC · '
-        + (parsed.medicaments || []).length + ' tratamientos · Fecha: ' + fechaHCR + '<br>';
+        + (parsed.medicaments || []).length + ' tratamientos · Fecha: ' + (fechaHCR || '—') + (fechaAct ? ' · actualizado: ' + fechaAct : '') + '<br>';
       plog.innerHTML += '✓ Sauvegardé : événement + medicamentos + tablas ('
         + bilanTablas.vac + ' vacunaciones, ' + bilanTablas.nanda + ' NANDA, '
         + bilanTablas.nic + ' NIC, ' + bilanTablas.ant + ' antecedentes).<br>';
       updateDataSummary(loadData());
       showMainNav();
-      addJournalEntry({ fichier: file.name, fecha_doc: fechaHCR,
+      addJournalEntry({ fichier: file.name, fecha_doc: fechaHCR || fechaAct,
         n_params: nAct + nIna + nVac + nNanda + nNic, via: (_yaHecho ? '♻️ caché' : '🤖 API'), ok: true,
         dur: Math.round((Date.now() - _t0) / 1000), json: parsed });
       return;
@@ -2651,6 +2734,147 @@ function huellaDe(parsed){
                     f, (doc.tipo||'').toLowerCase().trim() ].join('|');
 }
 
+/* ══ L'EMPREINTE DU DOCUMENT, tirée de SON TEXTE (P-H, 03/11/2026) ══
+   Le portail GVA régénère le PDF à chaque téléchargement : seule l'heure
+   d'impression change (dans le texte et dans le nom). On ôte donc dates,
+   heures et horodatages à 14 chiffres, on écrase les blancs, et on prend
+   l'empreinte de ce qui reste. Même texte = même document ; un ICA et un
+   ICC du même séjour, du même jour, restent deux documents.
+   Un scan sans texte : l'empreinte des octets — seul un fichier identique
+   est alors un doublon. pdf.js vient de comun/ (SF_CONFIG.pdfjs). */
+var _PDFJS = null;
+function cargaPdfjs(){
+  if(typeof pdfjsLib !== 'undefined') return Promise.resolve(pdfjsLib);
+  if(_PDFJS) return _PDFJS;
+  var cfg = SF_CONFIG.pdfjs || {};
+  if(!cfg.lib) return Promise.reject(new Error('sin pdf.js'));
+  _PDFJS = new Promise(function(res, rej){
+    var sc = document.createElement('script');
+    sc.src = cfg.lib;
+    sc.onload = function(){
+      if(typeof pdfjsLib === 'undefined'){ rej(new Error('pdf.js no se ha cargado')); return; }
+      if(cfg.worker) pdfjsLib.GlobalWorkerOptions.workerSrc = cfg.worker;
+      res(pdfjsLib);
+    };
+    sc.onerror = function(){ _PDFJS = null; rej(new Error('pdf.js no se ha cargado')); };
+    document.head.appendChild(sc);
+  });
+  return _PDFJS;
+}
+function _textoNormalizado(texto){
+  return String(texto || '').toLowerCase()
+    .replace(/\b\d{14}\b/g, ' ')                              /* 17072026070616 : horodatage du portail */
+    .replace(/\b\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}\b/g, ' ')    /* 17/07/2026 · 17-07-26 */
+    .replace(/\b\d{4}[\/.\-]\d{1,2}[\/.\-]\d{1,2}\b/g, ' ')      /* 2026-07-17 */
+    .replace(/\b\d{1,2}:\d{2}(:\d{2})?\b/g, ' ')                  /* 07:06 · 07:06:16 */
+    .replace(/\s+/g, ' ').trim();
+}
+async function _empreinte(donnees){
+  var octets = (typeof donnees === 'string') ? new TextEncoder().encode(donnees) : new Uint8Array(donnees);
+  if(window.crypto && crypto.subtle){
+    var h = await crypto.subtle.digest('SHA-256', octets);
+    return Array.from(new Uint8Array(h)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+  }
+  /* repli sans crypto.subtle : deux FNV-1a de 32 bits */
+  var a = 0x811c9dc5, b = 0x01000193 ^ 0x5bd1e995;
+  for(var i = 0; i < octets.length; i++){
+    a = Math.imul(a ^ octets[i], 0x01000193) >>> 0;
+    b = Math.imul(b ^ octets[i], 0x5bd1e995) >>> 0;
+  }
+  return a.toString(16).padStart(8,'0') + b.toString(16).padStart(8,'0');
+}
+/* v2026.11.03 (P-H) : DEUX empreintes, deux questions.
+     suma  — la somme du FICHIER : a-t-il changé depuis sa lecture ? (une
+             correction d'anonymisation, même sur un scan)
+     texto — l'empreinte du TEXTE, dates ôtées : ce fichier au nouveau nom
+             est-il un document déjà lu ? (un nouveau téléchargement GVA) */
+async function huellasArchivo(file){
+  var buf = await file.arrayBuffer();
+  var suma = 'bin:' + await _empreinte(buf);
+  var texto = await huellaArchivo(file, buf);
+  return { suma: suma, texto: (texto.indexOf('txt:') === 0) ? texto : null };
+}
+async function huellaArchivo(file, buf){
+  buf = buf || await file.arrayBuffer();
+  var texto = '';
+  try{
+    var lib = await cargaPdfjs();
+    var doc = await lib.getDocument({ data: buf.slice(0) }).promise;
+    for(var n = 1; n <= doc.numPages; n++){
+      var tc = await (await doc.getPage(n)).getTextContent();
+      texto += tc.items.map(function(it){ return it.str; }).join(' ') + '\n';
+    }
+  }catch(e){ texto = ''; }
+  var norm = _textoNormalizado(texto);
+  if(norm.length >= 40) return 'txt:' + await _empreinte(norm);
+  return 'bin:' + await _empreinte(buf);
+}
+/* v2026.11.03 (P-H) : la décision, AVANT tout appel
+     même nom, même somme      → déjà lu (refusé)
+     même nom, somme différente → NOUVELLE VERSION : relu, et l'ancienne
+                                  lecture remplacée sous le même pdf_id
+     autre nom, même texte      → nouveau téléchargement (refusé)
+     sinon                      → document nouveau (lu)
+   Une ligne d'avant 16:14 sans somme : protégée par son nom seulement —
+   « 🔄 Volver a leer » force alors la relecture. */
+function _lecturasBuenas(){
+  return diario().filter(function(l){ return !l.error && !l.repetido && !l.parado && !l.reemplazada; });
+}
+function decideLectura(nombre, h, forzar){
+  var B = _lecturasBuenas(), mismo = null;
+  for(var i = B.length - 1; i >= 0; i--){ if(B[i].fichero === nombre){ mismo = B[i]; break; } }
+  if(mismo){
+    if(forzar) return { accion:'nueva_version', anterior:mismo };
+    if(mismo.suma_archivo && h && h.suma && mismo.suma_archivo !== h.suma)
+      return { accion:'nueva_version', anterior:mismo };
+    return { accion:'repetido', como:mismo };
+  }
+  if(!forzar && h){
+    for(var j = 0; j < B.length; j++){
+      if(h.texto && B[j].huella_archivo === h.texto) return { accion:'repetido', como:B[j] };
+      if(h.suma && (B[j].suma_archivo === h.suma || B[j].huella_archivo === h.suma)) return { accion:'repetido', como:B[j] };
+    }
+  }
+  return { accion:'nuevo' };
+}
+/* retirer du dossier tout ce qu'a versé un pdf_id — EN PLACE (les tableaux
+   sont partagés avec mf.js) ; rend ce qui a été retiré, pour le remettre
+   si la nouvelle lecture échoue */
+function quitaPdf(pdfId){
+  var d = _asegura(), quitado = {};
+  MF_TABLAS_PDF_MF.forEach(function(k){
+    var T = d[k]; if(!Array.isArray(T)) return;
+    for(var i = T.length - 1; i >= 0; i--){
+      if(T[i] && T[i].pdf_id === pdfId){ (quitado[k] = quitado[k] || []).unshift(T[i]); T.splice(i, 1); }
+    }
+  });
+  return quitado;
+}
+function devuelvePdf(quitado){
+  var d = _asegura();
+  Object.keys(quitado || {}).forEach(function(k){
+    if(!Array.isArray(d[k])) d[k] = [];
+    Array.prototype.push.apply(d[k], quitado[k]);
+  });
+}
+function _cuenta(quitado){ return Object.keys(quitado||{}).reduce(function(n,k){ return n + quitado[k].length; }, 0); }
+function pdfIdDe(nombre){
+  var A = loadPdfsArchivo(), id = null;
+  Object.keys(A).forEach(function(k){ if(A[k] === nombre) id = k; });
+  return id;
+}
+
+function yaLeidoArchivo(nombre, huella){
+  var D = diario();
+  for(var i = 0; i < D.length; i++){
+    var l = D[i];
+    if(l.error || l.repetido || l.parado) continue;
+    if(l.fichero === nombre) return l;
+    if(huella && l.huella_archivo === huella) return l;
+  }
+  return null;
+}
+
 function yaLeido(huella){
   if(!huella) return null;
   var D = diario();
@@ -2660,23 +2884,57 @@ function yaLeido(huella){
   return null;
 }
 
-/* ══ le prompt, chargé de son .txt ══ */
+/* ══ le prompt, chargé de son fichier ══
+   v3 (P-H, 03/11/2026) : depuis le 19/09 chaque prompt vit dans un .js qui
+   DÉCLARE une variable (prompts.js dit laquelle : « variable »), pour que
+   l'asistida marche sans serveur. L'automatique lisait encore le fichier
+   comme du texte brut : l'IA recevait TOUT le .js — commentaire français,
+   « var … = », chaînes pleines de \n — et répondait « # Análisis… » au lieu
+   du JSON. Désormais il le charge comme l'asistida, par <script src>, et
+   prend le texte dans sa variable : le vrai prompt, et rien d'autre, sans
+   serveur. Un ancien prompt en .txt (sans « variable ») se lit encore
+   par fetch, comme avant.
+   Le dossier des prompts n'est pas écrit ici : c'est celui de la balise
+   qui charge déjà prompts.js. */
 var PROMPT_TEXTO = null;
+function _carpetaPrompts(){
+  var s = document.querySelector('script[src$="prompts.js"]');
+  return s ? s.getAttribute('src').replace(/[^\/]*$/, '') : '';
+}
+function _pareceCodigo(txt){
+  /* garde-fou : un fichier de code n'est jamais un prompt */
+  return /^\s*(\/\*|\/\/|var\s|const\s|let\s|window\.)/.test(txt || '');
+}
 function cargaPrompt(id){
   var T = (typeof SF_PROMPTS!=='undefined') ? SF_PROMPTS : {prompts:[]};
   var p = (T.prompts||[]).filter(function(x){ return x.id===id; })[0]
        || (T.prompts||[]).filter(function(x){ return x.por_defecto; })[0]
        || (T.prompts||[])[0];
   if(!p) return;
-  fetch('../prompts/' + p.fichero)
+  PROMPT_TEXTO = null;
+  var ruta = _carpetaPrompts() + p.fichero;
+  if(p.variable){
+    /* déjà chargé (changement de prompt dans la liste puis retour) */
+    if(typeof window[p.variable] === 'string' && window[p.variable].trim()){
+      PROMPT_TEXTO = window[p.variable]; return;
+    }
+    var sc = document.createElement('script');
+    sc.src = ruta;
+    sc.onload = function(){
+      var v = window[p.variable];
+      PROMPT_TEXTO = (typeof v === 'string' && v.trim()) ? v : null;
+    };
+    /* v2 (P-H, 10/09) : on ne le dit PAS au démarrage — ça fait peur
+       avant qu'on ait rien demandé. Le message vient au moment de lire
+       un document, quand il devient vrai. */
+    sc.onerror = function(){ PROMPT_TEXTO = null; };
+    document.head.appendChild(sc);
+    return;
+  }
+  fetch(ruta)
     .then(function(r){ if(!r.ok) throw new Error('no'); return r.text(); })
-    .then(function(txt){ PROMPT_TEXTO = txt; })
-    .catch(function(){
-      /* v2 (P-H, 10/09) : on ne le dit PAS au démarrage — ça fait peur
-         avant qu'on ait rien demandé. Le message vient au moment de lire
-         un document, quand il devient vrai. */
-      PROMPT_TEXTO = null;
-    });
+    .then(function(txt){ PROMPT_TEXTO = _pareceCodigo(txt) ? null : txt; })
+    .catch(function(){ PROMPT_TEXTO = null; });
 }
 function pintaPrompts(){
   var sel = document.getElementById('prompt-elegido');
@@ -2712,7 +2970,7 @@ function miraClave(){
   /* v2 (P-H, 10/09) : la variable s'appelait « t » — et masquait la
      FONCTION t() dans la fonction même qui l'appelle. */
   var k='', m='', tk='';
-  try{ k  = localStorage.getItem('sf_api_key')||'';
+  try{ k  = (window.MF && MF.claveIA) ? MF.claveIA() : (localStorage.getItem('sf_api_key')||'');   /* la clave única (P-H, 04/11/2026) */
        m  = localStorage.getItem('sf_api_modelo')||'';
        tk = localStorage.getItem('sf_api_tokens')||''; }catch(e){}
   if(k)  document.getElementById('clave').value  = k;
@@ -2738,22 +2996,26 @@ function pintaProgreso(txt, cual, total){
   if(_reloj){ clearInterval(_reloj); _reloj = null; }
   if(!txt){ z.innerHTML = ''; return; }
   var t0 = Date.now();
-  function dibuja(){
-    var seg = Math.floor((Date.now()-t0)/1000);
-    var pc  = total ? Math.round(((cual-1)/total)*100) : 0;
-    z.innerHTML =
-        '<div style="display:flex;gap:10px;align-items:baseline;font-size:12.5px">'
-      + '<span style="color:var(--accent);flex:1">' + txt + '</span>'
-      + (total? '<span style="color:var(--muted);font-family:var(--mono);font-size:11px">'
-                + cual + '/' + total + '</span>' : '')
-      + '<span style="color:var(--muted);font-family:var(--mono);font-size:11px;'
-      + 'min-width:38px;text-align:right">' + seg + 's</span></div>'
-      + (total
-         ? '<div style="height:4px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden">'
-           + '<div style="height:100%;width:' + pc + '%;background:var(--accent);'
-           + 'transition:width .4s"></div></div>'
-         : '');
-  }
+  var pc  = total ? Math.round(((cual-1)/total)*100) : 0;
+  /* v2026.11.03 (P-H) : la barre ne bouge qu'entre deux documents ; pendant
+     la lecture d'un seul, rien ne vivait. Un trait glisse désormais dessous
+     tant que le document est chez l'IA. Le tout est dessiné UNE fois : seules
+     les secondes changent, sinon l'animation repartirait à chaque seconde. */
+  z.innerHTML =
+      '<div style="display:flex;gap:10px;align-items:baseline;font-size:12.5px">'
+    + '<span style="color:var(--accent);flex:1">' + txt + '</span>'
+    + (total? '<span style="color:var(--muted);font-family:var(--mono);font-size:11px">'
+              + cual + '/' + total + '</span>' : '')
+    + '<span class="_seg" style="color:var(--muted);font-family:var(--mono);font-size:11px;'
+    + 'min-width:38px;text-align:right">0s</span></div>'
+    + (total
+       ? '<div style="height:4px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden">'
+         + '<div style="height:100%;width:' + pc + '%;background:var(--accent);'
+         + 'transition:width .4s"></div></div>'
+         + '<div class="sf-vivo"></div>'
+       : '');
+  var segEl = z.querySelector('._seg');
+  function dibuja(){ segEl.textContent = Math.floor((Date.now()-t0)/1000) + 's'; }
   dibuja();
   _reloj = setInterval(dibuja, 1000);
 }
@@ -2762,13 +3024,30 @@ function pintaProgreso(txt, cual, total){
    On ne coupe pas un document au milieu : la lecture en cours va au bout,
    et on s'arrête avant le suivant. Ce qui est entré reste entré. */
 var _PARAR = false;
+/* v2026.11.03 (P-H) : « il faudra penser à verrouiller tant que ce qui est
+   en cours n'est pas terminé ». Sans verrou, déposer d'autres PDF pendant
+   une lecture lançait une SECONDE fournée en parallèle. */
+var _LEYENDO = false, _ZONA_HTML = null;
+function bloqueaZona(si){
+  var z = document.getElementById('zona');
+  if(!z) return;
+  if(si){
+    if(_ZONA_HTML === null) _ZONA_HTML = z.innerHTML;
+    z.classList.add('bloqueada');
+    z.innerHTML = '<div style="font-size:30px;margin-bottom:6px">\u23f3</div>'
+      + '<div style="font-size:13.5px">' + t('leer_en_curso') + '</div>';
+  } else {
+    z.classList.remove('bloqueada');
+    if(_ZONA_HTML !== null){ z.innerHTML = _ZONA_HTML; _ZONA_HTML = null; }
+  }
+}
 function pideParar(){
   _PARAR = true;
   var b = document.querySelector('#parar button');
   if(b){ b.textContent = t('leer_parando'); b.disabled = true; }
 }
 
-async function leeDocumentos(files){
+async function leeDocumentos(files, opciones){
   var k = miraClave();
   if(!k){ document.getElementById('d-config').open = true;
           pintaProgreso(t('leer_sin_clave')); return; }
@@ -2786,6 +3065,13 @@ async function leeDocumentos(files){
      « ningún expediente abierto » — ça suffit à prévenir. Ce qui est lu
      va dans un dossier neuf, qu'on nommera en le gardant. */
 
+  if(_LEYENDO) return;                       /* v2026.11.03 : une fournée à la fois */
+  _LEYENDO = true; bloqueaZona(true);
+  try{ await _leeFournee(files, k, !!(opciones && opciones.forzar)); }
+  finally{ _LEYENDO = false; bloqueaZona(false); }
+}
+
+async function _leeFournee(files, k, forzar){
   var modelo = document.getElementById('modelo').value;
   _PARAR = false;
   var zp = document.getElementById('parar');
@@ -2801,20 +3087,57 @@ async function leeDocumentos(files){
     var f = files[i];
     pintaProgreso(t('leer_leyendo') + ' ' + f.name + '…', i+1, files.length);
     var _t0 = Date.now();
+    /* v2026.11.03 (P-H) : déjà lu ? même NOM qu'une lecture réussie, ou
+       même TEXTE (dates et heures ôtées — sa loi du 20/08 : 52 fichiers =
+       34 documents). Alors pas d'appel : un doublon ne coûte plus rien. */
+    var hh = null;
+    try{ hh = await huellasArchivo(f); }catch(e){ hh = null; }
+    var hf = hh ? (hh.texto || hh.suma) : null;
+    var dec = decideLectura(f.name, hh, forzar);
+    if(dec.accion === 'repetido'){
+      anotaEnDiario({ fichero: f.name, modelo: modelo,
+        prompt: document.getElementById('prompt-elegido').value,
+        repetido: true, comoEn: dec.como.fichero, huella_archivo: hf,
+        suma_archivo: hh ? hh.suma : null,
+        segundos: Math.round((Date.now()-_t0)/1000) });
+      leidos++;
+      continue;
+    }
+    /* nouvelle version : l'ancienne lecture sort du dossier AVANT la
+       nouvelle — et y revient si la nouvelle échoue */
+    var quitado = null, idAnt = null;
+    if(dec.accion === 'nueva_version'){
+      idAnt = pdfIdDe(f.name);
+      quitado = idAnt ? quitaPdf(idAnt) : {};
+    }
     try{
-      var r = await leeUnDocumento(f, k, modelo);
+      var r = await leeUnDocumento(f, k, modelo,
+        dec.anterior ? { reemplaza: dec.anterior.extraccion || dec.anterior.cuando } : null);
+      if(dec.anterior){
+        dec.anterior.reemplazada = _selloSeg();
+        if(typeof SF_PLANTILLA !== 'undefined')
+          SF_PLANTILLA.modifica(_DATOS, 'A', 'nueva versión de ' + f.name
+            + (idAnt ? ' (' + idAnt + ')' : '') + ' — ' + _cuenta(quitado) + ' entradas sustituidas');
+        MF.tocado();
+      }
       anotaEnDiario({
         fichero: f.name, modelo: modelo,
         prompt: document.getElementById('prompt-elegido').value,
         mediciones: r.mediciones||0, eventos: r.eventos||0, medicamentos: r.medicamentos||0,
         fuente: r.fuente||'', dudas: r.dudas||[],
         huella: r.huella||null, segundos: Math.round((Date.now()-_t0)/1000),
-        repetido: r.repetido||false, comoEn: r.comoEn||null
+        repetido: r.repetido||false, comoEn: r.comoEn||null,
+        extraccion: r.extraccion||null, huella_archivo: hf,
+        suma_archivo: hh ? hh.suma : null,
+        nueva_version: dec.anterior ? (dec.anterior.cuando || true) : null,
+        sustituidas: dec.anterior ? _cuenta(quitado) : null
       });
     }catch(e){
+      if(quitado) devuelvePdf(quitado);   /* la lecture a échoué : l'ancienne reste */
       anotaEnDiario({ fichero: f.name, modelo: modelo,
                       segundos: Math.round((Date.now()-_t0)/1000),
-                      error: String(e.message||e) });
+                      error: String(e.message||e), huella_archivo: hf,
+                      suma_archivo: hh ? hh.suma : null });
     }
     leidos++;
   }
@@ -2829,7 +3152,9 @@ async function leeDocumentos(files){
   refresca();
 }
 
-async function leeUnDocumento(file, clave, modelo){
+var _t0Doc = 0;
+async function leeUnDocumento(file, clave, modelo, extra){
+  _t0Doc = Date.now();
   var b64 = await new Promise(function(res, rej){
     var r = new FileReader();
     r.onload = function(){ res(r.result.split(',')[1]); };
@@ -2850,8 +3175,9 @@ async function leeUnDocumento(file, clave, modelo){
     })
   });
   if(!resp.ok){
-    var t = await resp.text();
-    throw new Error('la API ha dicho ' + resp.status + ': ' + t.substring(0,120));
+    /* v2026.11.03 : « t » masquait la fonction de traduction t() dans toute la fonction */
+    var cuerpoError = await resp.text();
+    throw new Error('la API ha dicho ' + resp.status + ': ' + cuerpoError.substring(0,120));
   }
   var data = await resp.json();
   /* v2 (P-H, 09/09) : un informe de alta donne un JSON bien plus long
@@ -2863,40 +3189,183 @@ async function leeUnDocumento(file, clave, modelo){
   }
   var txt = (data.content||[]).map(function(x){ return x.text||''; }).join('').trim();
   txt = txt.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'');
-  var parsed = JSON.parse(txt);
+  /* v2026.11.03 (P-H) : chaque réponse est gardée telle quelle dans
+     pacientes/<matricula>/extracciones/ — un fichier par lecture, jamais
+     écrasé, pour comparer (assistée contre automatique, ancien prompt
+     contre nouveau). MÊME QUAND ELLE N'EST PAS DU JSON : c'est alors le
+     seul moyen de lire ce que l'IA a répondu. Le .sf, lui, n'en garde
+     rien (le 19/08, la réponse brute pesait 36 % du dossier). */
+  var parsed = null, malo = null;
+  try{ parsed = JSON.parse(txt); }catch(e){ malo = e; }
+  var r = parsed ? guardaLoLeido(parsed, file) : null;
+  var A = loadPdfsArchivo(), pdfId = null;
+  Object.keys(A).forEach(function(k){ if(A[k] === file.name) pdfId = k; });
+  var nombre = await guardaExtraccion(file, {
+    fichero: file.name, pdf_id: pdfId, modo: MI_MODO, modelo: modelo,
+    prompt: document.getElementById('prompt-elegido').value,
+    prompt_version: _versionPrompt(document.getElementById('prompt-elegido').value),
+    programa: SF_CONFIG.id + ' ' + SF_CONFIG.version,
+    fecha: _selloSeg(), segundos: Math.round((Date.now() - _t0Doc) / 1000),
+    stop_reason: data.stop_reason || null,
+    uso: data.usage || null,
+    json_valido: !malo,
+    reemplaza: (extra && extra.reemplaza) || null,
+    respuesta: parsed || txt
+  });
+  if(malo){
+    throw new Error(malo.message + (nombre ? ' — ' + t('ext_guardada', { nombre: nombre }) : ''));
+  }
+  r.extraccion = nombre;
+  return r;
+}
 
-  return guardaLoLeido(parsed, file);
+/* le nom porte la date à la seconde et le mode : jamais deux fois le même */
+function _selloSeg(d){
+  d = d || new Date();
+  var z = function(x){ return String(x).padStart(2,'0'); };
+  return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())
+       + '_'+z(d.getHours())+'h'+z(d.getMinutes())+'m'+z(d.getSeconds());
+}
+function _versionPrompt(id){
+  var T = (typeof SF_PROMPTS!=='undefined') ? SF_PROMPTS : {prompts:[]};
+  var p = (T.prompts||[]).filter(function(x){ return x.id===id; })[0];
+  return p ? (p.version || null) : null;
+}
+/* écrit par le serveur « salufolio » ; sans lui, on n'écrit RIEN (pas de
+   téléchargement par document dans Descargas) — le diario le dira */
+function guardaExtraccion(file, contenido){
+  var mat = (MF.paciente()||{}).matricula;
+  var cfg = SF_CONFIG.extracciones || {};
+  if(!mat || !cfg.carpeta) return Promise.resolve(null);
+  var nombre = file.name + '_' + contenido.fecha + '_' + (contenido.modo || 'A') + '.json';
+  var ruta = 'pacientes/' + mat + '/' + cfg.carpeta + '/' + nombre;
+  return MF.hayServidor().then(function(hay){
+    if(!hay) return null;
+    return fetch('/_guardar/' + ruta, { method:'POST', body: JSON.stringify(contenido, null, 1) })
+      .then(function(r){ return r.json(); })
+      .then(function(d){ return (d && d.ok) ? nombre : null; })
+      .catch(function(){ return null; });
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   LAS TABLAS DE REFERENCIA (P-H, 03/11/2026)
+
+   « rien que dans un ICU on répète 16 fois le même nom d'hôpital »
+
+   Cada centro, servicio y profesional se escribe UNA vez en
+   « referencias », con su código ; cada dato lleva solo su « prc_id ».
+   MF.procedencia() lo vuelve a poner en claro para los módulos.
+
+   · Se reconoce un nombre sin mayúsculas, sin acentos, sin espacios de
+     más: « HOSPITAL GENERAL DE CASTELLON » y « Hospital General de
+     Castellón » son el mismo CNT. Se guarda el de la primera vez.
+   · La planta se olvida (P-H) : « NEUMOLOGIA / 6B -NEM » → « NEUMOLOGIA ».
+   · El firmante entra si el documento lo lleva (un PDF anonimizado no).
+   · Las tablas se llenan EN SU SITIO, nunca se reemplazan : _DATOS y
+     MF.datos() son dos objetos que comparten la misma « referencias ».
+   ══════════════════════════════════════════════════════════════════ */
+var REF_TABLAS = ['centros','servicios','profesionales','procedencias'];
+function _refs(){
+  var D = _asegura();
+  var R = D.referencias;
+  if(!R || typeof R !== 'object' || Array.isArray(R)){
+    R = {}; D.referencias = R;
+    try{ var M = MF.datos(); if(M && M !== D && !M.referencias) M.referencias = R; }catch(e){}
+  }
+  REF_TABLAS.forEach(function(k){
+    if(!R[k] || typeof R[k] !== 'object' || Array.isArray(R[k])) R[k] = {};
+  });
+  return R;
+}
+function _refClave(s){
+  return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase().replace(/\s+/g, ' ').trim();
+}
+function _refLimpio(s){ return String(s || '').replace(/\s+/g, ' ').trim(); }
+function _refSinPlanta(s){ return _refLimpio(String(s || '').split('/')[0]); }
+/* busca un nombre en su tabla ; si no está, le da el código siguiente */
+function _refCodigo(tabla, prefijo, nombre, extra){
+  var c = _refClave(nombre);
+  if(!c) return '';
+  var id = Object.keys(tabla).find(function(k){
+    var v = tabla[k];
+    return _refClave(typeof v === 'string' ? v : (v && v.nombre)) === c;
+  });
+  if(id) return id;
+  var n = 1;
+  while(tabla[prefijo + String(n).padStart(3, '0')]) n++;
+  id = prefijo + String(n).padStart(3, '0');
+  tabla[id] = extra ? Object.assign({ nombre: _refLimpio(nombre) }, extra) : _refLimpio(nombre);
+  return id;
+}
+/* x : un nombre, o { nombre, rol } como lo da el prompt (03/11, etapa 4).
+   El rol de la primera vez se queda ; un PRO sin rol lo recibe después. */
+function _refProfesional(x, rol){
+  if(!x) return '';
+  if(typeof x === 'object'){ rol = x.rol || rol; x = x.nombre || ''; }
+  if(!x) return '';
+  var T = _refs().profesionales;
+  var id = _refCodigo(T, 'PRO', x, { rol: rol || '' });
+  if(id && rol && T[id] && typeof T[id] === 'object' && !T[id].rol) T[id].rol = rol;
+  return id;
+}
+/* el trío centro + servicio + firmante → su PRC (lo crea si hace falta) */
+function procedenciaDe(doc, otra){
+  doc = doc || {};
+  var R = _refs();
+  var centro   = doc.centro || doc.emisor || '';
+  var servicio = _refSinPlanta(doc.servicio);
+  /* lo de antes : « centro — servicio » en una sola cadena */
+  if(!centro && !servicio && otra){
+    var p = String(otra).split(' — ');
+    centro = p[0]; servicio = _refSinPlanta(p.slice(1).join(' — '));
+  }
+  var trio = {};
+  var cnt = _refCodigo(R.centros,   'CNT', centro);   if(cnt) trio.centro = cnt;
+  var ser = _refCodigo(R.servicios, 'SER', servicio); if(ser) trio.servicio = ser;
+  var pro = _refProfesional(doc.firmante || doc.medico || doc.profesional);
+  if(pro) trio.profesional = pro;
+  if(!cnt && !ser && !pro) return '';
+  var id = Object.keys(R.procedencias).find(function(k){
+    var x = R.procedencias[k] || {};
+    return (x.centro||'') === (trio.centro||'') && (x.servicio||'') === (trio.servicio||'')
+        && (x.profesional||'') === (trio.profesional||'');
+  });
+  if(id) return id;
+  var n = 1;
+  while(R.procedencias['PRC' + String(n).padStart(3, '0')]) n++;
+  id = 'PRC' + String(n).padStart(3, '0');
+  R.procedencias[id] = trio;
+  return id;
 }
 
 /* ══ ranger ce que Claude a rendu ══ */
 function guardaLoLeido(parsed, file){
-  /* déjà lu ? le même document donné deux fois ne compte qu'une (P-H) */
+  /* v2026.11.03 (P-H) : le « déjà lu » ne se décide PLUS ici. L'empreinte
+     tirée de la réponse prenait le n° d'épisode seul : un ICA et un ICC du
+     même séjour avaient la même — l'ICC_17072026070447 a été déclaré
+     « ya leído » de l'ICA_17072026070616 et n'a rien versé. Le doublon se
+     juge désormais AVANT la lecture, sur le texte du PDF (huellaArchivo).
+     L'ancienne empreinte reste calculée et notée au diario, pour mémoire. */
   var _h = huellaDe(parsed);
-  var _antes = yaLeido(_h);
-  if(_antes){
-    return { repetido:true, huella:_h, comoEn:_antes.fichero,
-             mediciones:0, eventos:0, medicamentos:0,
-             fuente:(parsed.documento&&parsed.documento.centro)||'', dudas:[] };
-  }
   var doc = parsed.documento || {};
   var idf = parsed.identificacion || {};
   var fuente = doc.centro
     ? doc.centro + (doc.servicio ? ' — ' + doc.servicio : '')
     : (parsed.source || '');
   var fecha = doc.fecha_informe || doc.fecha_ingreso || parsed.date || '';
+  /* v2026.11.03-17:59 (P-H) : la procedencia una vez en referencias, y
+     en cada dato solo su dirección. « fuente » en claro queda para el
+     diario, no para el .sf. */
+  var prc = procedenciaDe(doc, parsed.source);
+  if(prc && MF.procedencia) fuente = MF.procedencia(prc) || fuente;
 
   /* le fichier va dans la table des PDF : c'est ce qui attache une
      donnée à son document (P-H, 09/09) */
-  var A = loadPdfsArchivo();
-  var pdfId = null;
-  Object.keys(A).forEach(function(k){ if(A[k]===file.name) pdfId=k; });
-  if(!pdfId){
-    var n = 1;
-    while(A['PDF'+String(n).padStart(3,'0')]) n++;
-    pdfId = 'PDF'+String(n).padStart(3,'0');
-    A[pdfId] = file.name;
-    savePdfsArchivo(A);
-  }
+  /* v2026.11.05-22:43:03 (P-H) : el número lo da MF.pdfAlta — el del fichero si ya está,
+     si no el primer hueco "", si no contador + 1. Ya no « el primer libre ». */
+  var pdfId = MF.pdfAlta(_asegura(), file.name);
 
   var nMed=0, nEv=0, nTrat=0;
   /* ce qui entre ici est du NEUF : actualizacion, source A (l'API) */
@@ -2909,8 +3378,12 @@ function guardaLoLeido(parsed, file){
     parsed.mediciones.forEach(function(m){
       var f = m.fecha || fecha; if(!f) return;
       var clave = f + '|' + (m.hora||'') + '|' + (m.condicion||'');
-      if(!porFecha[clave]) porFecha[clave] = { date:f, src:fuente, vals:{},
-        pdf:file.name, pdf_id:pdfId };
+      /* v2026.11.03 (P-H) : plus de « pdf » ici — le nom vit UNE fois dans
+         pdfs.archivos, pdf_id y renvoie */
+      if(!porFecha[clave]){
+        porFecha[clave] = { date:f, vals:{}, pdf_id:pdfId };
+        if(prc) porFecha[clave].prc_id = prc;
+      }
       if(m.hora)      porFecha[clave].hora = m.hora;
       if(m.condicion) porFecha[clave].condicion = m.condicion;
       if(m.grupo)     porFecha[clave].grupo = m.grupo;
@@ -2941,12 +3414,10 @@ function guardaLoLeido(parsed, file){
             : (doc.servicio||'').toLowerCase() || 'consulta',
         title: e.titulo || '',
         text: e.detalle || '',
-        src: fuente,
-        pdf: file.name,
-        pdf_id: pdfId
+        pdf_id: pdfId            /* v2026.11.03 : le nom est dans pdfs.archivos */
       };
-      if(doc.centro)        ev.centro   = doc.centro;
-      if(doc.servicio)      ev.servicio = doc.servicio;
+      /* v2026.11.03-17:59 : ni src, ni centro, ni servicio en claro */
+      if(prc)               ev.prc_id = prc;
       if(doc.fecha_informe) ev.fecha_informe = doc.fecha_informe;
       if(idf.n_episodio)    ev.n_episodio = idf.n_episodio;
       if(idf.n_informe)     ev.n_informe  = idf.n_informe;
@@ -2962,23 +3433,34 @@ function guardaLoLeido(parsed, file){
     var M = loadMeds();
     parsed.medicamentos.forEach(function(m){
       if(!m.nombre) return;
-      M.push({
+      var med = {
         nombre: m.nombre, dosis: m.dosis||'', frecuencia: m.pauta||'', via: m.via||'',
-        desde: m.desde || fecha, hasta: m.hasta || '',
-        source: fuente, pdf: file.name, pdf_id: pdfId
-      });
+        /* v2026.10.30-15:31:11 : sans date de début imprimée, un médicament n'en reçoit pas — sauf s'il est prescrit
+           « al_alta » (un ordre donné le jour du document). Un traitement habituel n'a pas commencé le jour du rapport. */
+        desde: m.desde || (m.origen === 'al_alta' ? fecha : ''), hasta: m.hasta || '',
+        pdf_id: pdfId   /* v2026.11.03 : le nom est dans pdfs.archivos */
+      };
+      /* v2026.11.03-17:59 : la procedencia por su dirección ; el que
+         prescribe, si el documento lo nombra y no es el firmante */
+      if(prc) med.prc_id = prc;
+      /* v2026.11.04-10:30 (P-H : « identifier à partir du principe actif ») :
+         ce que l'IA sait du médicament se garde — c'est la clé de regroupement */
+      if(m.principio_activo) med.principio_activo = String(m.principio_activo).trim();
+      if(m.atc)              med.atc = String(m.atc).trim().toUpperCase();
+      if(m.categoria)        med.categoria = String(m.categoria).trim().toLowerCase();
+      var presc = _refProfesional(m.prescriptor || m.medico, 'medico');
+      if(presc) med.prescriptor_id = presc;
+      M.push(med);
       nTrat++;
     });
     saveMeds(M);
   }
 
-  /* le centre, dans la table des sources */
-  if(doc.centro){
-    var C = loadCentros();
-    var ya = C.some(function(x){
-      return (typeof x==='string'? x : (x.nombre||'')).toLowerCase() === fuente.toLowerCase(); });
-    if(!ya){ C.push({ nombre: fuente, abrev: '' }); saveCentros(C); }
-  }
+  /* v2026.11.03-17:59 (P-H) : l'ancienne liste « centros » recevait
+     « centre — service » collés, un centre par service. Elle n'est plus
+     écrite : les centres vivent dans referencias (procedenciaDe). La
+     clé reste — on ne modifie jamais une clé, on ajoute. */
+  if(prc && (nMed + nEv + nTrat) > 0) MF.tocado();
 
   /* « le programme doit les poser à CHAQUE écriture, sans exception » */
   if((nMed + nEv + nTrat) > 0 && typeof SF_PLANTILLA!=='undefined'){
@@ -2999,9 +3481,15 @@ function guardaAqui(){
   var n = new Date(), z = function(x){ return String(x).padStart(2,'0'); };
   var sello = n.getFullYear()+'-'+z(n.getMonth()+1)+'-'+z(n.getDate())
             + '_'+z(n.getHours())+'h'+z(n.getMinutes());
-  var nombre = (p.matricula || 'SIN_PACIENTE') + '_' + sello + '.mf';
-  if(typeof SF_PLANTILLA!=='undefined') SF_PLANTILLA.paraExportar(_DATOS);
-  var b = new Blob([JSON.stringify(_DATOS, null, 1)], {type:'application/json'});
+  /* v2026.11.03 (P-H) : l'extension vient de la configuration (.sf) — le
+     .mf est mort ; et la copie téléchargée ne répète plus le nom du PDF
+     dans chaque entrée quand pdf_id y renvoie (pdfDeshidratar, écrite le
+     16/07 et que plus personne n'appelait). */
+  var nombre = (p.matricula || 'SIN_PACIENTE') + '_' + sello + (SF_CONFIG.extension_expediente || '.sf');
+  var copia = JSON.parse(JSON.stringify(_DATOS));
+  MF_TABLAS_PDF_MF.forEach(function(k){ if(Array.isArray(copia[k])) copia[k] = pdfDeshidratar(copia[k]); });
+  if(typeof SF_PLANTILLA!=='undefined') copia = SF_PLANTILLA.paraExportar(copia);
+  var b = new Blob([JSON.stringify(copia, null, 1)], {type:'application/json'});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(b); a.download = nombre; a.click();
   URL.revokeObjectURL(a.href);
@@ -3049,15 +3537,19 @@ function refresca(){
 /* la zone de dépôt */
 (function(){
   var z = document.getElementById('zona'), inp = document.getElementById('ficheros');
-  z.onclick = function(){ inp.click(); };
-  inp.onchange = function(){ if(inp.files.length) leeDocumentos(Array.from(inp.files)); inp.value=''; };
+  z.onclick = function(){ if(_LEYENDO) return; inp.click(); };   /* v2026.11.03 : verrou */
+  inp.onchange = function(){
+    var forzar = _FORZAR_ELECCION; _FORZAR_ELECCION = false;
+    if(inp.files.length && !_LEYENDO) leeDocumentos(Array.from(inp.files), { forzar: forzar });
+    inp.value='';
+  };
   ['dragenter','dragover'].forEach(function(ev){
-    z.addEventListener(ev, function(e){ e.preventDefault(); z.classList.add('encima'); }); });
+    z.addEventListener(ev, function(e){ e.preventDefault(); if(!_LEYENDO) z.classList.add('encima'); }); });
   ['dragleave','drop'].forEach(function(ev){
     z.addEventListener(ev, function(e){ e.preventDefault(); z.classList.remove('encima'); }); });
   z.addEventListener('drop', function(e){
     var f = Array.from(e.dataTransfer.files||[]).filter(function(x){ return /\.pdf$/i.test(x.name); });
-    if(f.length) leeDocumentos(f);
+    if(f.length && !_LEYENDO) leeDocumentos(f);
   });
 })();
 

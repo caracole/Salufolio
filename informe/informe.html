@@ -1819,8 +1819,8 @@ function copiaDeComentarios(){
 }
 
 function claveApi(){
-  try{ return localStorage.getItem('sf_apikey')
-            || localStorage.getItem('mt_apikey') || ''; }catch(e){ return ''; }
+  /* la clave única de Salufolio (P-H, 04/11/2026) — antes sf_apikey, que nadie más leía */
+  try{ return MF.claveIA(); }catch(e){ return ''; }
 }
 function comentarioGuardado(){
   var d = datos();
@@ -1905,7 +1905,7 @@ function pideClave(alGuardar){
     if(k.length < 20){
       caja.querySelector('#k-aviso').textContent = t('clave_corta'); return;
     }
-    try{ localStorage.setItem('sf_apikey', k); }catch(e){}
+    MF.guardaClaveIA(k);   /* la clave única (P-H, 04/11/2026) */
     cierra();
     if(alGuardar) alGuardar(k);
   };
@@ -2302,7 +2302,29 @@ function botonListo(){
 
 ponEstilo();
 
+/* ══ LA PALETA DEL INFORME (P-H, 04/11/2026) ══
+   « On peut admettre papel, sepia ou blanc. » Solo las paletas que informe.js
+   permite (paletas_permitidas) ; con las demás, los colores propios del informe.
+   Al imprimir, siempre los colores propios : el blanco. */
+var _PAL_INF = null;
+function paletaInforme(id){
+  var P = SF_CONFIG.paletas_permitidas || [], M = SF_CONFIG.de_la_paleta || {}, r = document.documentElement;
+  _PAL_INF = id;
+  ponEstilo();
+  if(P.indexOf(id) < 0) return;
+  var p = ((MF.paletas && MF.paletas()) || []).filter(function(x){ return x.id === id; })[0];
+  var cs = getComputedStyle(r);
+  Object.keys(M).forEach(function(k){
+    if(k.charAt(0) === '_') return;
+    var v = p ? p.v[M[k]] : cs.getPropertyValue(M[k]).trim();
+    if(v) r.style.setProperty('--' + k.replace(/_/g, '-'), v);
+  });
+}
+window.addEventListener('beforeprint', function(){ ponEstilo(); });
+window.addEventListener('afterprint',  function(){ if(_PAL_INF) paletaInforme(_PAL_INF); });
+
 MF.arranca({
+  alPaleta: function(id){ paletaInforme(id); },
   /* la lengua cambia en la casa : se vuelve a pintar lo que se ve — el escogedor,
      o el informe abierto. La paleta, no : el informe tiene la suya (papel), a proposito. */
   alIdioma: function(){

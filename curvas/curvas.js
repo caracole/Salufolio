@@ -1,8 +1,21 @@
 /* CURVAS — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "grosor_linea": 2,
+  "comentario": {
+    "alto_curva": 200,
+    "impresion": {
+      "papel": "#ffffff",
+      "tinta": "#222222",
+      "suave": "#666666",
+      "linea": "#cccccc",
+      "acento": "#1a5276"
+    }
+  },
+  "_comentario": "La ventana del comentario de la IA : alto de su curva ; colores de la HOJA IMPRESA, siempre en blanco (P-H, 04/11/2026).",
+  "pdf_ausente": "PDF ABSENT.pdf",
+  "_pdf_ausente": "El nombre que, en la tabla pdfs, marca un documento ausente (P-H, 05/11/2026). Un clic en un punto que lo cita abre la ficha de lo que se sabe de él.",
   "id": "curvas",
-  "version": "2026.10.29-11:53:37",
+  "version": "2026.11.06-09:20:17",
   "programa": "curvas.html",
   "lanzador": "../casa/casa.js",
   "icono": "📈",

@@ -1,5 +1,5 @@
 /* Los textos de Medicamentos
-   Versión 2026.09.19-18:15:47 */
+   Versión 2026.11.04-11:19:30 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Medicamentos, en su propia carpeta.",
   "textos": {
@@ -7,25 +7,85 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "activos": "Activos",
       "suspendidos": "Suspendidos",
       "nuevo": "➕ Nuevo medicamento",
-      "prescriptores": "Prescriptores"
+      "prescriptores": "Prescriptores",
+      "fin_titulo": "Fecha de fin",
+      "fin_explica": "Por defecto hoy, o el fin impreso en la receta si ya ha pasado. Se puede adelantar (tratamiento parado antes), nunca retrasar más allá del fin impreso.",
+      "fin_invalida": "No es una fecha válida.",
+      "fin_posterior": "La fecha de fin no puede ser posterior al",
+      "cancelar": "Cancelar",
+      "confirmar": "Confirmar",
+      "prescrito_el": "Prescrito el",
+      "fin_prevista": "fin prevista",
+      "sin_fin": "sin fin prevista",
+      "receta_de": "Receta:",
+      "se_aplica": "Se aplica a {n} líneas de este medicamento.",
+      "documento_del": "Documento del",
+      "doc_alta": "alta",
+      "doc_informe": "informe",
+      "fecha_no_indicada": "fecha no indicada"
     },
     "fr": {
       "activos": "Actifs",
       "suspendidos": "Suspendus",
       "nuevo": "➕ Nouveau médicament",
-      "prescriptores": "Prescripteurs"
+      "prescriptores": "Prescripteurs",
+      "fin_titulo": "Date de fin",
+      "fin_explica": "Par défaut aujourd'hui, ou la fin imprimée sur l'ordonnance si elle est déjà passée. On peut l'avancer (traitement arrêté plus tôt), jamais la reculer au-delà de la fin imprimée.",
+      "fin_invalida": "Ce n'est pas une date valide.",
+      "fin_posterior": "La date de fin ne peut pas être postérieure au",
+      "cancelar": "Annuler",
+      "confirmar": "Confirmer",
+      "prescrito_el": "Prescrit le",
+      "fin_prevista": "fin prévue",
+      "sin_fin": "sans fin prévue",
+      "receta_de": "Ordonnance :",
+      "se_aplica": "S'applique aux {n} lignes de ce médicament.",
+      "documento_del": "Document du",
+      "doc_alta": "sortie",
+      "doc_informe": "rapport",
+      "fecha_no_indicada": "date non indiquée"
     },
     "ca": {
       "activos": "Actius",
       "suspendidos": "Suspesos",
       "nuevo": "➕ Nou medicament",
-      "prescriptores": "Prescriptors"
+      "prescriptores": "Prescriptors",
+      "fin_titulo": "Data de fi",
+      "fin_explica": "Per defecte hui, o la fi impresa en la recepta si ja ha passat. Es pot avançar (tractament parat abans), mai endarrerir més enllà de la fi impresa.",
+      "fin_invalida": "No és una data vàlida.",
+      "fin_posterior": "La data de fi no pot ser posterior al",
+      "cancelar": "Cancel·lar",
+      "confirmar": "Confirmar",
+      "prescrito_el": "Prescrit el",
+      "fin_prevista": "fi prevista",
+      "sin_fin": "sense fi prevista",
+      "receta_de": "Recepta:",
+      "se_aplica": "S'aplica a {n} línies d'este medicament.",
+      "documento_del": "Document del",
+      "doc_alta": "alta",
+      "doc_informe": "informe",
+      "fecha_no_indicada": "data no indicada"
     },
     "en": {
       "activos": "Active",
       "suspendidos": "Stopped",
       "nuevo": "➕ New medication",
-      "prescriptores": "Prescribers"
+      "prescriptores": "Prescribers",
+      "fin_titulo": "End date",
+      "fin_explica": "Today by default, or the end printed on the prescription if it has already passed. It can be moved earlier (treatment stopped sooner), never later than the printed end.",
+      "fin_invalida": "Not a valid date.",
+      "fin_posterior": "The end date cannot be later than",
+      "cancelar": "Cancel",
+      "confirmar": "Confirm",
+      "prescrito_el": "Prescribed on",
+      "fin_prevista": "planned end",
+      "sin_fin": "no planned end",
+      "receta_de": "Prescription:",
+      "se_aplica": "Applies to {n} lines of this medication.",
+      "documento_del": "Document of",
+      "doc_alta": "discharge",
+      "doc_informe": "report",
+      "fecha_no_indicada": "date not given"
     }
   }
 };

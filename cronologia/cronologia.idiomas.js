@@ -1,23 +1,103 @@
 /* Los textos de Cronología
-   Versión 2026.09.19-18:15:47 */
+   Versión 2026.11.05-15:44:58 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Cronología, en su propia carpeta.",
   "textos": {
     "es": {
       "tab_asist": "📊 Asistencial",
-      "tab_clinica": "📅 Clínica"
+      "tab_clinica": "📅 Clínica",
+      "g_ayuda": "Pulse una especialidad para ver todas sus consultas, un año para las de ese año, una casilla para las dos cosas.",
+      "tip_fila": "Clic para más detalles sobre {nom}",
+      "tip_anio": "Clic : las consultas de este año — de la línea elegida, o de todas",
+      "g_todas": "Todas las especialidades",
+      "g_cuenta": "{n} consultas",
+      "g_cuenta_1": "{n} consulta",
+      "g_ninguna": "Ninguna consulta.",
+      "g_doc": "Abrir el documento",
+      "g_sin_eventos": "El expediente no tiene acontecimientos con fecha.",
+      "k_est": "{n} acontecimientos",
+      "k_est_1": "{n} acontecimiento",
+      "err_motor": "La cronología ha tropezado :",
+      "tip_vacio": "Ningún dato de este tipo en el expediente",
+      "g_col_titulo": "Servicios",
+      "comoleer_tit": "💡 CÓMO LEER",
+      "comoleer_ve_tit": "Lo que se ve.",
+      "comoleer_ve": "Cada línea es un servicio, con su color. Los años van del más reciente, a la izquierda, al más antiguo, a la derecha. Cada rectángulo es una vez que el paciente fue visto, colocado en su fecha dentro del año. La cifra entre paréntesis da el número de consultas. Una línea en gris quiere decir que el expediente aún no tiene ningún dato de ese tipo.",
+      "comoleer_hace_tit": "Lo que se puede hacer.",
+      "comoleer_hace": "Pase el ratón sobre un rectángulo para ver su fecha, su motivo y su procedencia. Pulse el nombre de un servicio para ver todas sus consultas; una segunda pulsación lo deselecciona. Pulse un año para ver las consultas de ese año. Pulse una casilla para ver un servicio y un año a la vez. En la ventana que se abre, el botón 📄 muestra el documento de origen.",
+      "titulo_mod": "📅 Cronología"
     },
     "fr": {
       "tab_asist": "📊 Suivi",
-      "tab_clinica": "📅 Clinique"
+      "tab_clinica": "📅 Clinique",
+      "g_ayuda": "Cliquez sur une spécialité pour voir toutes ses consultations, sur une année pour celles de l'année, sur une case pour les deux.",
+      "tip_fila": "Clic pour plus de détails sur {nom}",
+      "tip_anio": "Clic : les consultations de cette année — de la ligne choisie, ou de toutes",
+      "g_todas": "Toutes les spécialités",
+      "g_cuenta": "{n} consultations",
+      "g_cuenta_1": "{n} consultation",
+      "g_ninguna": "Aucune consultation.",
+      "g_doc": "Ouvrir le document",
+      "g_sin_eventos": "Le dossier n'a pas d'événements datés.",
+      "k_est": "{n} événements",
+      "k_est_1": "{n} événement",
+      "err_motor": "La chronologie a trébuché :",
+      "tip_vacio": "Aucune donnée de ce type dans le dossier",
+      "g_col_titulo": "Services",
+      "comoleer_tit": "💡 COMMENT LIRE",
+      "comoleer_ve_tit": "Ce qu'on voit.",
+      "comoleer_ve": "Chaque ligne est un service, avec sa couleur. Les années vont de la plus récente, à gauche, à la plus ancienne, à droite. Chaque petit rectangle est une fois où le patient a été vu, placé à sa date dans l'année. Le chiffre entre parenthèses donne le nombre de consultations. Une ligne grisée veut dire que le dossier ne contient encore aucune donnée de ce type.",
+      "comoleer_hace_tit": "Ce qu'on peut faire.",
+      "comoleer_hace": "Passez la souris sur un rectangle pour voir sa date, son motif et sa provenance. Cliquez sur le nom d'un service pour voir toutes ses consultations ; un second clic le désélectionne. Cliquez sur une année pour voir les consultations de cette année. Cliquez sur une case pour voir un service et une année à la fois. Dans la fenêtre qui s'ouvre, le bouton 📄 affiche le document d'origine.",
+      "titulo_mod": "📅 Chronologie"
     },
     "ca": {
       "tab_asist": "📊 Assistencial",
-      "tab_clinica": "📅 Clínica"
+      "tab_clinica": "📅 Clínica",
+      "g_ayuda": "Premeu una especialitat per a veure totes les seues consultes, un any per a les d'eixe any, una casella per a les dues coses.",
+      "tip_fila": "Clic per a més detalls sobre {nom}",
+      "tip_anio": "Clic : les consultes d'este any — de la línia triada, o de totes",
+      "g_todas": "Totes les especialitats",
+      "g_cuenta": "{n} consultes",
+      "g_cuenta_1": "{n} consulta",
+      "g_ninguna": "Cap consulta.",
+      "g_doc": "Obrir el document",
+      "g_sin_eventos": "L'expedient no té esdeveniments amb data.",
+      "k_est": "{n} esdeveniments",
+      "k_est_1": "{n} esdeveniment",
+      "err_motor": "La cronologia ha ensopegat :",
+      "tip_vacio": "Cap dada d'este tipus a l'expedient",
+      "g_col_titulo": "Serveis",
+      "comoleer_tit": "💡 COM LLEGIR",
+      "comoleer_ve_tit": "El que es veu.",
+      "comoleer_ve": "Cada línia és un servei, amb el seu color. Els anys van del més recent, a l'esquerra, al més antic, a la dreta. Cada rectangle és una vegada que el pacient va ser vist, col·locat a la seua data dins de l'any. La xifra entre parèntesis dona el nombre de consultes. Una línia en gris vol dir que l'expedient encara no té cap dada d'aquest tipus.",
+      "comoleer_hace_tit": "El que es pot fer.",
+      "comoleer_hace": "Passeu el ratolí sobre un rectangle per a veure'n la data, el motiu i la procedència. Premeu el nom d'un servei per a veure totes les seues consultes; una segona pulsació el desselecciona. Premeu un any per a veure les consultes d'aquell any. Premeu una casella per a veure un servei i un any alhora. A la finestra que s'obri, el botó 📄 mostra el document d'origen.",
+      "titulo_mod": "📅 Cronologia"
     },
     "en": {
       "tab_asist": "📊 Care",
-      "tab_clinica": "📅 Clinical"
+      "tab_clinica": "📅 Clinical",
+      "g_ayuda": "Click a specialty to see all its visits, a year for that year's, a cell for both.",
+      "tip_fila": "Click for more details on {nom}",
+      "tip_anio": "Click: this year's visits — for the chosen line, or for all",
+      "g_todas": "All specialties",
+      "g_cuenta": "{n} visits",
+      "g_cuenta_1": "{n} visit",
+      "g_ninguna": "No visits.",
+      "g_doc": "Open the document",
+      "g_sin_eventos": "The record has no dated events.",
+      "k_est": "{n} events",
+      "k_est_1": "{n} event",
+      "err_motor": "The timeline stumbled:",
+      "tip_vacio": "No data of this kind in the record",
+      "g_col_titulo": "Services",
+      "comoleer_tit": "💡 HOW TO READ",
+      "comoleer_ve_tit": "What you see.",
+      "comoleer_ve": "Each row is a service, with its colour. Years run from the most recent, on the left, to the oldest, on the right. Each small rectangle is one time the patient was seen, placed at its date within the year. The number in brackets gives the count of visits. A greyed-out row means the record holds no data of that kind yet.",
+      "comoleer_hace_tit": "What you can do.",
+      "comoleer_hace": "Hover over a rectangle to see its date, its reason and its source. Click a service name to see all its visits; a second click deselects it. Click a year to see that year's visits. Click a cell to see one service and one year at once. In the window that opens, the 📄 button shows the original document.",
+      "titulo_mod": "📅 Timeline"
     }
   }
 };

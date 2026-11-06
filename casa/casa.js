@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.10.25-18:35:54",
+  "version": "2026.11.05-21:22:06",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -61,6 +61,27 @@ var SF_LANZADOR = {
     },
     {
       "id": "resumen",
+      "acceso": [
+        "todos"
+      ]
+    },
+    {
+      "id": "neumologia",
+      "carpeta": "especialidad/",
+      "acceso": [
+        "todos"
+      ]
+    },
+    {
+      "id": "cardiologia",
+      "carpeta": "especialidad/",
+      "acceso": [
+        "todos"
+      ]
+    },
+    {
+      "id": "neurologia",
+      "carpeta": "especialidad/",
       "acceso": [
         "todos"
       ]
@@ -194,6 +215,14 @@ var SF_LANZADOR = {
         "todos"
       ],
       "carpeta": "adquisicion/manual/"
+    },
+    {
+      "id": "comparador",
+      "acceso": [
+        "todos"
+      ],
+      "carpeta": "herramientas/comparador/",
+      "_que": "Comparador de expedientes (P-H, 05/11/2026) : poner un expediente al nivel de otro — sus PDF emparejados por sus datos. Herramienta de taller."
     }
   ],
   "_modulos": "Se añaden a medida que se extraen de la V1, uno a uno, probado antes de pasar al siguiente.",
@@ -272,7 +301,11 @@ var SF_LANZADOR = {
         "--text": "#e8e8ef",
         "--fg": "#e8e8ef",
         "--muted": "#9a9aa8",
-        "--accent-m": "#4a9eff"
+        "--accent-m": "#4a9eff",
+        "--ok": "#4ae8a4",
+        "--danger": "#e84a4a",
+        "--warn": "#e8a44a",
+        "--accent2": "#4ae8a4"
       }
     },
     {
@@ -287,7 +320,11 @@ var SF_LANZADOR = {
         "--text": "#d0eaff",
         "--fg": "#d0eaff",
         "--muted": "#4a7aaa",
-        "--accent-m": "#5bc8ff"
+        "--accent-m": "#5bc8ff",
+        "--ok": "#4ae8a4",
+        "--danger": "#e84a4a",
+        "--warn": "#e8a44a",
+        "--accent2": "#4ae8a4"
       }
     },
     {
@@ -302,7 +339,11 @@ var SF_LANZADOR = {
         "--text": "#d0f0d4",
         "--fg": "#d0f0d4",
         "--muted": "#4a7a50",
-        "--accent-m": "#5bc8a0"
+        "--accent-m": "#5bc8a0",
+        "--ok": "#4ae8a4",
+        "--danger": "#e84a4a",
+        "--warn": "#e8a44a",
+        "--accent2": "#4ae8a4"
       }
     },
     {
@@ -317,7 +358,11 @@ var SF_LANZADOR = {
         "--text": "#f0d0d8",
         "--fg": "#f0d0d8",
         "--muted": "#7a4050",
-        "--accent-m": "#ff6b8a"
+        "--accent-m": "#ff6b8a",
+        "--ok": "#4ae8a4",
+        "--danger": "#e84a4a",
+        "--warn": "#e8a44a",
+        "--accent2": "#4ae8a4"
       }
     },
     {
@@ -332,7 +377,11 @@ var SF_LANZADOR = {
         "--text": "#1a1a14",
         "--fg": "#1a1a14",
         "--muted": "#7a7060",
-        "--accent-m": "#1a6abf"
+        "--accent-m": "#1a6abf",
+        "--ok": "#0a5c4a",
+        "--danger": "#a82015",
+        "--warn": "#8a6d00",
+        "--accent2": "#0a5c4a"
       }
     },
     {
@@ -346,7 +395,11 @@ var SF_LANZADOR = {
         "--text": "#e8eaf0",
         "--fg": "#e8eaf0",
         "--muted": "#9aa3b8",
-        "--accent-m": "#4a8fe8"
+        "--accent-m": "#4a8fe8",
+        "--ok": "#4ae8a4",
+        "--danger": "#e84a4a",
+        "--warn": "#e8a44a",
+        "--accent2": "#4ae8a4"
       }
     },
     {
@@ -360,7 +413,11 @@ var SF_LANZADOR = {
         "--text": "#d8dbe4",
         "--fg": "#d8dbe4",
         "--muted": "#8b93a6",
-        "--accent-m": "#5b9bd5"
+        "--accent-m": "#5b9bd5",
+        "--ok": "#4ae8a4",
+        "--danger": "#e84a4a",
+        "--warn": "#e8a44a",
+        "--accent2": "#4ae8a4"
       }
     },
     {
@@ -375,7 +432,11 @@ var SF_LANZADOR = {
         "--text": "#0C2233",
         "--fg": "#0C2233",
         "--muted": "#1A3C54",
-        "--accent-m": "#083D5F"
+        "--accent-m": "#083D5F",
+        "--ok": "#0a5c4a",
+        "--danger": "#a82015",
+        "--warn": "#8a6d00",
+        "--accent2": "#0a5c4a"
       },
       "_contraste": "WCAG AA (02/10/2026): --muted #2A5470 sobre #74BBE4 daba 3,83 (minimo 4,5) → #1A3C54 da 5,48; --accent-m #0B4C7A daba 4,28 → #083D5F da 5,41. Los fondos no se tocan.",
       "_luego": "Un cursor en la paleta para que cada uno ajuste su azul — es muy subjetivo (P-H)."
@@ -391,7 +452,11 @@ var SF_LANZADOR = {
         "--text": "#2a2620",
         "--fg": "#2a2620",
         "--muted": "#6b6355",
-        "--accent-m": "#a0762a"
+        "--accent-m": "#a0762a",
+        "--ok": "#0a5c4a",
+        "--danger": "#a82015",
+        "--warn": "#8a6d00",
+        "--accent2": "#0a5c4a"
       }
     },
     {
@@ -405,7 +470,11 @@ var SF_LANZADOR = {
         "--text": "#1a1d24",
         "--fg": "#1a1d24",
         "--muted": "#5f6b7d",
-        "--accent-m": "#2d6fc4"
+        "--accent-m": "#2d6fc4",
+        "--ok": "#0a5c4a",
+        "--danger": "#a82015",
+        "--warn": "#8a6d00",
+        "--accent2": "#0a5c4a"
       }
     },
     {
@@ -419,7 +488,11 @@ var SF_LANZADOR = {
         "--text": "#ffffff",
         "--fg": "#ffffff",
         "--muted": "#b0b0b0",
-        "--accent-m": "#ffd700"
+        "--accent-m": "#ffd700",
+        "--ok": "#4ae8a4",
+        "--danger": "#e84a4a",
+        "--warn": "#e8a44a",
+        "--accent2": "#4ae8a4"
       }
     }
   ],
@@ -489,10 +562,10 @@ var SF_LANZADOR = {
         "en": "Tap here to change patient"
       },
       "titulo": {
-        "es": "Salufolio · lanzador v{v}",
-        "fr": "Salufolio · lanceur v{v}",
-        "ca": "Salufolio · llançador v{v}",
-        "en": "Salufolio · launcher v{v}"
+        "es": "v{v}",
+        "fr": "v{v}",
+        "ca": "v{v}",
+        "en": "v{v}"
       }
     },
     "botones": [
@@ -729,5 +802,7 @@ var SF_LANZADOR = {
         "marca": "correo"
       }
     ]
-  }
+  },
+  "_senales": "Los colores de SEÑAL de cada paleta (P-H, 05/11/2026 : « vert sur fond sépia ou clair : illisible ») : --ok (en las normas), --danger (fuera), --warn (alerta), --accent2. Las paletas claras (fondo luminoso : papel, cielo, sepia, claro) los llevan oscuros ; las oscuras, los de siempre. Cada paleta los lleva TODOS : al pasar de una clara a una oscura, nada se queda de la anterior.",
+  "_especialidades": "Las tarjetas de especialidad (P-H, 05/11/2026) : un solo programa, especialidad/ ; cada tarjeta, su fichero (especialidad/neumologia.js…) con « parametros » : esp=… Lo que muestra, en comun/especialidades.js (« ficha »)."
 };

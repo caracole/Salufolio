@@ -1,5 +1,25 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Versión 2026.10.06-12:02:16
+   Versión 2026.11.05-22:50:45
+   (05/11/2026 : MF.esCronico y MF.medNuevo, por fin en mf.js — la instalación « Crónica » no los había puesto.)
+   (05/11/2026 : EL NÚMERO DE UN PDF — MF.pdfAlta (hueco primero, si no contador + 1) · pdfBaja (solo sin citas) · pdfCitas · pdfNumero.)
+   (05/11/2026 : la burbuja se esconde al cerrar una ventana ; MF.ptips().)
+   (05/11/2026 : MF.palabra — las palabras comunes en 4 lenguas ; la ✕ de las ventanas con la infobulle de la casa.)
+   (05/11/2026 : MF.eventosRegistros — vacunas, NANDA, NIC como acontecimientos.)
+   (04/11/2026 : MF.tituloPdf — el título de un PDF dice matrícula:expediente/fichero.)
+   (04/11/2026 : LA CLAVE DE LA IA, una sola — MF.claveIA() · guardaClaveIA() · pideClave().)
+   (04/11/2026 : B — un PDF ya no se busca nunca fuera de la carpeta del paciente abierto.)
+   (04/11/2026 : el PDF de una toma se busca por la tabla del expediente — pdfs.archivos —, no por su identificador.)
+   (04/11/2026 : MF.mesuresCanon() — cada medida bajo su clave única según
+    comun/sinonimos-parametros.js ; el .sf no cambia. MF.parametro(k).)
+   (04/11/2026 10:12 : los productos de principios.js tienen también sus
+    nombres — « comerciales » — : Incopack, pañal → absorbente.)
+   (04/11/2026 : MF.aliasMeds() — los módulos V1 leen « nom », « date »…
+    en los medicamentos V2 por alias invisibles ; el .sf no cambia.
+    MF.profesional(código) → el nombre en claro.)
+   (03/11/2026 : LAS PROCEDENCIAS — MF.procedencia() sigue las direcciones
+    de « referencias » ; mesures/eventos/medicamentos ya no pierden la
+    procedencia (leían « source » donde automática escribía « src »).
+    La burbuja de versión: solo los números, una línea cada uno, + la matriz.)
    (06/10/2026 : TABLA DE ESTILOS — aplicaEstilos / estilo(rol,prop), alPaleta / alEstilos.
    (30/09/2026 : el 💾 escribe en la carpeta del paciente ; una sola función guarda.
     01/10/2026 : .sf — el .mf ha muerto —, courant MATRICULE.sf, copias en
@@ -245,7 +265,7 @@ var MF = (function(){
             out.push({ fecha:f, clave:c,
                        valor: (val && typeof val==='object')? (val.valor!==undefined?val.valor:val.value) : val,
                        unidad:(val && typeof val==='object')? (val.unidad||val.unit||'') : '',
-                       fuente: m.source || m.fuente || '', pdf: m.pdf_id || '' });
+                       fuente: procedencia(m), pdf: m.pdf_id || '' });
           });
         } else {
           out.push(norm(m));   /* une ligne = une valeur */
@@ -273,10 +293,317 @@ var MF = (function(){
   function norm(m){
     return { fecha: m.date||m.fecha||m.f||'', clave: m.clave||m.key||m.nombre||m.parametro||'',
              valor: (m.valor!==undefined)?m.valor:(m.value!==undefined?m.value:m.v),
-             unidad: m.unidad||m.unit||m.u||'', fuente: m.source||m.fuente||m.origen||'' };
+             unidad: m.unidad||m.unit||m.u||'', fuente: procedencia(m) };
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
+     LAS PROCEDENCIAS (P-H, 03/11/2026)
+
+     « rien que dans un ICU on répète 16 fois le même nom d'hôpital »
+
+     Un dato ya no lleva el hospital en claro: lleva su DIRECCIÓN,
+     « prc_id »: "PRC002". Aquí se siguen los enlaces — doctrina de 1966,
+     la dirección se resuelve en UN sitio, no en cada programa:
+
+        PRC002 → { centro:CNT001, servicio:SER003, profesional:PRO001 }
+        CNT001 → HOSPITAL GENERAL DE CASTELLON
+        SER003 → Neumología
+        PRO001 → Dr. X
+                 ⇒ « HOSPITAL GENERAL DE CASTELLON — Neumología — Dr. X »
+
+     Se llama « procedencia », no « fuente »: « fuente » es A·X·P·S, cómo
+     entró el dato (P-H: evitar al máximo los sinónimos). El campo
+     « fuente » que devuelven mesures()/eventos()/medicamentos() conserva
+     su nombre para no romper los módulos que lo leen.
+
+     Acepta un dato entero o un código. Un dato de antes, sin prc_id,
+     se lee igual: source, src, fuente, origen — en este orden.
+     (03/11 : automática escribía « src » en medidas y eventos, y aquí se
+     leía « source »: la procedencia salía VACÍA en los módulos.)
+
+     MF.procedencia(x, true) devuelve las partes por separado:
+       { centro, servicio, profesional, texto }
+     ══════════════════════════════════════════════════════════════════ */
+  /* LOS REGISTROS COMO ACONTECIMIENTOS (P-H, 05/11/2026 : « ajouter Infirmería », « les vaccins à part ») — vacunaciones, NANDA, NIC :
+     tablas datadas del .sf que el gantt no leía. La lista de tablas vive en comun/especialidades.js (« registros »). */
+  function eventosRegistros(d){
+    var Rg = (window.SF_ESPECIALIDADES && SF_ESPECIALIDADES.registros) || [], out = [];
+    if(!d) return out;
+    Rg.forEach(function(r){
+      var L = d[r.tabla], C = d[r.catalogo] || {}; if(!Array.isArray(L)) return;
+      var tx = (r.texto || {})[LANG_SF] || (r.texto || {}).es || '';
+      L.forEach(function(x){ if(!x || !x.fecha) return;
+        var nom = (C && typeof C === 'object' && !Array.isArray(C) && C[x.codigo]) || x.codigo || '';
+        out.push({ date: x.fecha, type: r.tipo || '', title: String(nom), text: tx + (x.codigo ? ' · ' + x.codigo : ''), pdf_id: x.pdf_id || '', _esp: r.especialidad, _registro: r.tabla });
+      });
+    });
+    return out;
+  }
+  function procedencia(x, partes){
+    var vacio = { centro:'', servicio:'', profesional:'', texto:'' };
+    if(!x) return partes ? vacio : '';
+    var id = (typeof x === 'string') ? x : (x.prc_id || '');
+    if(id && /^PRC\d+$/.test(id)){
+      var R = (datos && datos.referencias) || {};
+      var p = (R.procedencias || {})[id];
+      if(p){
+        var pr = (R.profesionales || {})[p.profesional];
+        var o = { centro:      (R.centros   || {})[p.centro]   || '',
+                  servicio:    (R.servicios || {})[p.servicio] || '',
+                  profesional: pr ? (typeof pr === 'string' ? pr : (pr.nombre || '')) : '' };
+        o.texto = [o.centro, o.servicio, o.profesional].filter(Boolean).join(' — ');
+        return partes ? o : o.texto;
+      }
+      /* un código que no está en la tabla: se dice tal cual, no se calla */
+      return partes ? Object.assign({}, vacio, {texto:id}) : id;
+    }
+    var t = (typeof x === 'string') ? x
+          : (x.source || x.src || x.fuente || x.origen || '');
+    /* « fuente » puede ser una letra A·X·P·S: eso no es una procedencia */
+    if(/^[AXPS]$/.test(t)) t = '';
+    return partes ? Object.assign({}, vacio, {texto:t}) : t;
+  }
+
+  /* un profesional por su código (PRO003) → su nombre en claro */
+  function profesional(cod){
+    if(!cod) return '';
+    var T = (datos && datos.referencias && datos.referencias.profesionales) || {};
+    var p = T[cod];
+    if(!p) return '';
+    return typeof p === 'string' ? p : (p.nombre || '');
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
+     LOS ALIAS INVISIBLES (P-H, 04/11/2026)
+
+     « Il ne faut pas toucher, sauf erreur, à la structure du sf, mais
+       plutôt au niveau des modules. »
+
+     Tratamientos (V1) lee m.nom, m.date, m.statut… ; la adquisición (V2)
+     escribe nombre, desde, estado… La tabla comun/alias-campos.js dice
+     cuál es cuál, y aquí se pone en CADA DATO un alias:
+
+        m.nom       lee m.nombre      escribe m.nombre
+        m.date_fin  lee m.hasta       escribe m.hasta
+        m.source    lee la procedencia en claro (MF.procedencia)
+
+     Los alias NO SON ENUMERABLES: JSON.stringify no los ve, el .sf se
+     guarda tal cual, en su forma V2. Un dato que ya tiene su campo V1
+     (expediente antiguo) no se toca. Se puede llamar cuantas veces se
+     quiera: un alias ya puesto no se vuelve a poner.
+     ══════════════════════════════════════════════════════════════════ */
+  function aliasMeds(lista){
+    var T = (typeof SF_ALIAS !== 'undefined') && SF_ALIAS.medicaments;
+    if(!T || !Array.isArray(lista)) return lista || [];
+    var marca = T.marca_v2 || 'nombre';
+    var A = T.alias || {}, L = T.lectura || {};
+    function propio(o, k, v){
+      Object.defineProperty(o, k, { value:v, writable:true, enumerable:true, configurable:true });
+    }
+    lista.forEach(function(m){
+      if(!m || typeof m !== 'object' || !Object.prototype.hasOwnProperty.call(m, marca)) return;
+      Object.keys(A).forEach(function(v1){
+        if(Object.prototype.hasOwnProperty.call(m, v1)) return;   /* ya está (alias o propio) */
+        var v2 = A[v1];
+        Object.defineProperty(m, v1, { enumerable:false, configurable:true,
+          get: function(){ return this[v2]; },
+          set: function(x){ this[v2] = x; } });
+      });
+      Object.keys(L).forEach(function(v1){
+        if(Object.prototype.hasOwnProperty.call(m, v1)) return;
+        var r = L[v1];
+        Object.defineProperty(m, v1, { enumerable:false, configurable:true,
+          get: function(){
+            var x = this[r.campo];
+            if(!x) return undefined;
+            return r.como === 'procedencia' ? (procedencia(this) || x) : x;
+          },
+          /* si el módulo escribe, su valor pasa a ser un campo propio */
+          set: function(x){ propio(this, v1, x); } });
+      });
+    });
+    return lista;
+  }
+
+
+  /* ══ EL NÚMERO DE UN PDF — una sola regla, un solo sitio (P-H, 05/11/2026) ══
+     La tabla pdfs lleva un contador (pdfs.contador, clave nueva).
+     ALTA  : el fichero ya está en la tabla → su número ; si no, el primer hueco « PDFnnn":"" » ;
+             si no hay hueco, contador + 1. « Pourquoi creuser des trous dans un cimetière
+             alors qu'il y a des trous libres ? »
+     BAJA  : solo cuando ningún dato del expediente cita ya el número ; entonces « PDFnnn":"" ».
+     « PDF ABSENT.pdf » no es un hueco : hay datos, falta el fichero.
+     Sin contador (expedientes antiguos) : nace con el número más alto de la tabla.
+     La automática, la asistida, la manual y el Comparador llaman aquí ; el registro del
+     navegador (mt_sources_pdf) ya no da ningún número. */
+  var PDF_RX = /^PDF(\d+)$/;
+  function _pdfTabla(d){
+    if(!d.pdfs || typeof d.pdfs !== 'object') d.pdfs = { directorio:'', archivos:{} };
+    if(!d.pdfs.archivos || typeof d.pdfs.archivos !== 'object') d.pdfs.archivos = {};
+    return d.pdfs;
+  }
+  function pdfContador(p){
+    var max = 0;
+    Object.keys(p.archivos || {}).forEach(function(k){ var m = PDF_RX.exec(k); if(m && +m[1] > max) max = +m[1]; });
+    if(typeof p.contador !== 'number' || !(p.contador >= max)) p.contador = max;
+    return p.contador;
+  }
+  /* el número que toca, sin escribir el nombre : el primer hueco, o contador + 1 (reservado) */
+  function pdfNumero(p){
+    if(!p.archivos) p.archivos = {};
+    pdfContador(p);
+    var huecos = Object.keys(p.archivos).filter(function(k){ return PDF_RX.test(k) && p.archivos[k] === ''; })
+                   .sort(function(a, b){ return +PDF_RX.exec(a)[1] - +PDF_RX.exec(b)[1]; });
+    if(huecos.length) return huecos[0];
+    p.contador += 1;
+    return 'PDF' + String(p.contador).padStart(3, '0');
+  }
+  function pdfAlta(d, nombre){
+    d = d || datos; if(!d || !nombre) return null;
+    var p = _pdfTabla(d), A = p.archivos, ya = null;
+    Object.keys(A).forEach(function(k){ if(!ya && A[k] === nombre) ya = k; });
+    if(ya){ if(typeof p.contador !== 'number'){ pdfContador(p); tocado(); } return ya; }
+    var id = pdfNumero(p);
+    A[id] = nombre;
+    tocado();
+    return id;
+  }
+  /* cuántas veces el expediente cita el número (valor o clave exactamente igual), fuera de la tabla pdfs */
+  function pdfCitas(d, id){
+    d = d || datos; var n = 0;
+    (function anda(x){
+      if(Array.isArray(x)){ x.forEach(anda); return; }
+      if(x && typeof x === 'object'){ Object.keys(x).forEach(function(k){ if(k === id) n++; anda(x[k]); }); return; }
+      if(x === id) n++;
+    })(Object.keys(d || {}).filter(function(k){ return k !== 'pdfs'; }).map(function(k){ return d[k]; }));
+    return n;
+  }
+  function pdfBaja(d, id){
+    d = d || datos; if(!d || !PDF_RX.test(id || '')) return { ok:false, citas:0 };
+    var p = _pdfTabla(d);
+    if(!(id in p.archivos)) return { ok:false, citas:0 };
+    var n = pdfCitas(d, id);
+    if(n > 0) return { ok:false, citas:n };
+    pdfContador(p);
+    p.archivos[id] = '';
+    tocado();
+    return { ok:true, citas:0 };
+  }
+
+  /* ¿CRÓNICO? (P-H, 05/11/2026) — una sola pregunta, un solo sitio : « cronico » vale true (la adquisición, el .sf)
+     o « duracion » vale -1 (la ventana Editar de Medicamentos : « Crónica », antes « Sin límite »). */
+  function esCronico(m){ return !!m && (m.cronico === true || String(m.duracion) === '-1'); }
+  /* un medicamento CREADO por un módulo V1 en un expediente V2 nace en forma V2 (nombre, estado, desde…) ;
+     solo el nuevo : los datos que ya existen no se tocan. */
+  function medNuevo(o, lista){
+    var T = (typeof SF_ALIAS !== 'undefined') && SF_ALIAS.medicaments;
+    if(!T || !o || !Array.isArray(lista)) return o;
+    var marca = T.marca_v2 || 'nombre', A = T.alias || {};
+    if(!lista.some(function(m){ return m && Object.prototype.hasOwnProperty.call(m, marca); })) return o;
+    var n = {};
+    Object.keys(o).forEach(function(k){ var v2 = A[k]; if(v2 && !Object.prototype.hasOwnProperty.call(o, v2) && n[v2] === undefined) n[v2] = o[k]; else if(!v2) n[k] = o[k]; });
+    return aliasMeds([n])[0];
   }
 
   /* la liste des paramètres présents, avec leur nombre de mesures */
+  /* ══════════════════════════════════════════════════════════════════
+     LAS MEDIDAS CON SU CLAVE ÚNICA (P-H, 04/11/2026)
+
+     « Le .sf garde une seule clé par paramètre ; les synonymes vivent
+       dans une table extérieure. »                       — P-H, 28/10
+     « Il ne faut pas toucher, sauf erreur, à la structure du sf, mais
+       plutôt au niveau des modules. »                    — P-H, 04/11
+
+     El .sf guarda los nombres tal como los imprime cada laboratorio
+     (« CREATININA (SANGRE) », « FILTRADO GLOM.ESTIMADO CKD-EPI »…).
+     mesuresCanon(d) devuelve las MISMAS tomas, con la MISMA forma
+     ({date, vals, unidades, pdf_id…}), pero cada valor bajo su clave
+     única, según comun/sinonimos-parametros.js :
+       · un nombre que la tabla no conoce se queda como está ;
+       · un % bajo una clave absoluta pasa a su gemela, y al revés ;
+       · « 151/75 » se reparte en dos claves (tabla « partir ») ;
+       · lo que la IA leyó por error (tabla « ignorar ») se aparta ;
+       · la misma medida repetida — mismo día, misma clave, mismo valor :
+         dos informes que copian el mismo análisis — cuenta UNA vez ;
+       · dos valores distintos de una clave en la misma toma (« (2ª) »)
+         dan dos tomas el mismo día.
+     Cada toma lleva además « impresos » {clave: nombre impreso} : la
+     burbuja puede decir de qué fórmula viene un filtrado.
+     Sin la tabla o sin el motor (equivalencias.js) : las tomas tal cual.
+     Nada se escribe : es una lectura.
+     ══════════════════════════════════════════════════════════════════ */
+  var _CANON = { datos:null, n:-1, v:null, out:null };
+  function _tablaSinonimos(){
+    var T = window.SF_SINONIMOS_PARAMETROS, E = window.SF_EQUIV;
+    if(!T || !E) return null;
+    if(T._registrada !== T.version){
+      E.registra('parametros', T.parametros || {}, T.equivalencia || {});
+      var norma = (T.equivalencia || {}).normaliza;
+      E.registra('parametros_ignorar', { ignorar:{ impresos:T.ignorar || [] } }, { alias:'impresos', normaliza:norma });
+      Object.keys(T.segun_grupo || {}).forEach(function(g){
+        var S = T.segun_grupo[g], t = {};
+        Object.keys(S).forEach(function(n){ (t[S[n]] = t[S[n]] || { impresos:[] }).impresos.push(n); });
+        E.registra('parametros@' + g.toLowerCase(), t, { canonico:'_clave', alias:'impresos', normaliza:norma });
+      });
+      T._registrada = T.version;
+    }
+    return T;
+  }
+  function mesuresCanon(d){
+    d = d || datos;
+    if(!d) return [];
+    var M = d.mesures || d.medidas || d.measures || [];
+    if(!Array.isArray(M)) return M;
+    var T = _tablaSinonimos(); if(!T) return M;
+    if(_CANON.datos === d && _CANON.n === M.length && _CANON.v === T.version) return _CANON.out;
+    var E = window.SF_EQUIV, P = T.parametros || {}, PA = T.partir || {}, visto = {}, out = [];
+    M.forEach(function(m){
+      var V = m.vals || m.valores || m.values;
+      if(!V || typeof V !== 'object'){ out.push(m); return; }
+      var U = m.unidades || {}, g = String(m.grupo || '').toLowerCase(), f = m.date || m.fecha || '';
+      var tomas = [];
+      function nueva(){ var t = Object.assign({}, m); t.vals = {}; t.unidades = {}; t.impresos = {}; tomas.push(t); return t; }
+      function pon(k, v, u, imp){
+        var firma = f + '|' + k + '|' + v;
+        if(visto[firma]) return;
+        visto[firma] = 1;
+        var t = tomas.filter(function(x){ return !(k in x.vals); })[0] || nueva();
+        t.vals[k] = v; if(u) t.unidades[k] = u; t.impresos[k] = imp;
+      }
+      nueva();
+      Object.keys(V).forEach(function(n){
+        var v = V[n], u = U[n] || '';
+        if(E.clase('parametros_ignorar', n)) return;
+        var k = (g && E.canonico('parametros@' + g, n)) || E.canonico('parametros', n);
+        if(!k){ pon(n, v, u, n); return; }
+        var e = P[k] || {};
+        if(e.si_porcentaje && /%/.test(u)) k = e.si_porcentaje;
+        else if(e.si_absoluto && u && !/%/.test(u)) k = e.si_absoluto;
+        var pa = PA[k];
+        if(pa && typeof v === 'string' && v.indexOf(pa.separador) >= 0){
+          v.split(pa.separador).forEach(function(x, i){
+            var c = (pa.en || [])[i], num = parseFloat(String(x).replace(',', '.'));
+            if(c && !isNaN(num)) pon(c, num, u, n);
+          });
+          return;
+        }
+        pon(k, v, u, n);
+      });
+      tomas.forEach(function(t){ if(Object.keys(t.vals).length) out.push(t); });
+    });
+    _CANON = { datos:d, n:M.length, v:T.version, out:out };
+    return out;
+  }
+  /* lo que la tabla sabe de una clave : grupo, unidad, curva, etiqueta en la lengua de la casa */
+  function parametro(k){
+    var T = window.SF_SINONIMOS_PARAMETROS, e = T && (T.parametros || {})[k];
+    if(!e) return null;
+    var et = e.etiqueta || {};
+    return { clave:k, grupo:e.grupo || '', unidad:e.unidad || '', curva:e.curva !== false,
+             etiqueta: et[LANG_SF] || et.es || k };
+  }
+  function parametros(){ var T = window.SF_SINONIMOS_PARAMETROS; return Object.keys((T && T.parametros) || {}); }
+
   function claves(){
     var c={};
     mesures().forEach(function(m){ c[m.clave]=(c[m.clave]||0)+1; });
@@ -294,7 +621,7 @@ var MF = (function(){
     return E.map(function(e){
       return { fecha: e.date||e.fecha||'', titulo: e.title||e.titulo||'',
                texto: e.text||e.texto||e.descripcion||'',
-               tipo: e.type||e.tipo||'', fuente: e.source||e.fuente||'', pdf: e.pdf_id||'' };
+               tipo: e.type||e.tipo||'', fuente: procedencia(e), pdf: e.pdf_id||'' };
     }).filter(function(e){ return e.fecha; })
       .sort(function(a,b){ return a.fecha < b.fecha ? -1 : 1; });
   }
@@ -311,7 +638,7 @@ var MF = (function(){
                frecuencia: m.frequence||m.frecuencia||'',
                estado: m.statut||m.estado||'',
                desde: m.date||m.desde||m.inicio||'', hasta: m.date_fin||m.hasta||m.fin||'',
-               fuente: m.source||m.fuente||'', pdf: m.pdf_id||'' };
+               fuente: procedencia(m), pdf: m.pdf_id||'' };
     });
   }
 
@@ -1198,9 +1525,15 @@ async function _archivaViejas(hist){
     var t = document.getElementById('titulo') || document.querySelector('.mod-tit');
     if(!t) return;
     var c = config();
-    var txt = (c.nombre && (c.nombre.es||c.nombre)) || nombreDelModulo();
     var v   = c.version || 'sin versión';
-    tip(t, txt + String.fromCharCode(10) + 'versión ' + v);
+    /* v2026.11.03 (P-H) : « supprime le texte Adquisition automatique et
+       garde seulement version » — le nom, on le survole déjà. Une ligne
+       par numéro, jamais coupée ; et la matrice, qu'aucun écran ne
+       montrait : on ne pouvait pas dire laquelle tournait. */
+    var lineas = ['versión ' + v];
+    if(typeof SF_PLANTILLA !== 'undefined' && SF_PLANTILLA.version)
+      lineas.push('matriz  ' + SF_PLANTILLA.version);
+    tip(t, lineas.join(String.fromCharCode(10)), { enteras:true });
     var e = document.getElementById('version') || document.getElementById('r-ver');
     if(e) e.textContent = 'v' + v;
   }
@@ -1310,8 +1643,12 @@ async function _archivaViejas(hist){
     try{ return localStorage.getItem(TIPS_CLAVE) !== 'no'; }catch(e){ return true; }
   }
 
-  function tip(el, texto){
+  /* opc.enteras : cada línea entera, nunca cortada (números de versión).
+     La anchura de la burbuja vive en la variable CSS --tip-ancho
+     (P-H, 03/11/2026 : nada en duro) ; 250px si nadie la define. */
+  function tip(el, texto, opc){
     if(!el || !texto) return;
+    opc = opc || {};
     /* ══ v2 (P-H, 16/09) : LE CURSEUR NE CHANGE PLUS ══
        « Enlève ce curseur flèche avec ! — laisse le curseur normal. »
        « cursor:help » posé en style direct s'imposait à tout, même à un
@@ -1324,13 +1661,46 @@ async function _archivaViejas(hist){
       b.style.cssText='position:fixed;z-index:9999;background:var(--surface,#161b27);'
         +'border:1px solid var(--warn,#e8a44a);border-radius:8px;padding:5px 11px;'
         +'font-size:12px;color:var(--text,#e8eaf0);box-shadow:0 5px 20px rgba(0,0,0,.5);'
-        +'pointer-events:none;white-space:pre-line;max-width:250px';
+        +'pointer-events:none;'
+        +(opc.enteras ? 'white-space:pre;max-width:none;font-family:var(--mono,monospace)'
+                      : 'white-space:pre-line;max-width:var(--tip-ancho,250px)');
       b.textContent=texto;
       var r=el.getBoundingClientRect();
       b.style.left=Math.max(6,r.left)+'px'; b.style.top=(r.bottom+7)+'px';
       b.style.display='block';
     };
     el.onmouseleave=function(){ var b=document.getElementById('mf-tip'); if(b) b.style.display='none'; };
+  }
+  /* la burbuja se esconde cuando lo que la llevaba desaparece (P-H, 05/11/2026 : « un toast Cerrar qui traîne ») :
+     el ✕ se va con su ventana bajo el ratón, el ratón no lo « deja » nunca, la burbuja se quedaba. */
+  function _ocultaBurbujas(){
+    var b = document.getElementById('mf-tip'); if(b) b.style.display = 'none';
+    var p = document.getElementById('param-tipbox'); if(p) p.classList.remove('on');
+  }
+  /* la burbuja de la casa para todo elemento con data-ptip — para las páginas que no tienen la suya */
+  var _ptipsPuestas = false;
+  function ptips(){
+    if(_ptipsPuestas) return; _ptipsPuestas = true;
+    document.addEventListener('mouseover', function(e){
+      var t = e.target && e.target.closest ? e.target.closest('[data-ptip]') : null;
+      if(!t || !t.getAttribute('data-ptip') || !tips()) return;
+      var b = document.getElementById('mf-tip');
+      if(!b){ b = document.createElement('div'); b.id = 'mf-tip'; document.body.appendChild(b); }
+      b.style.cssText = 'position:fixed;z-index:9999;background:var(--surface,#161b27);border:1px solid var(--warn,#e8a44a);border-radius:8px;padding:5px 11px;'
+        + 'font-size:12px;color:var(--text,#e8eaf0);box-shadow:0 5px 20px rgba(0,0,0,.5);pointer-events:none;white-space:pre-line;max-width:var(--tip-ancho,250px)';
+      b.textContent = t.getAttribute('data-ptip');
+      var r = t.getBoundingClientRect(); b.style.display = 'block';
+      var ancho = document.documentElement.clientWidth || window.innerWidth;
+      b.style.left = Math.max(6, Math.min(r.left, ancho - b.offsetWidth - 6)) + 'px';
+      var y = r.bottom + 7; if(y + b.offsetHeight > window.innerHeight - 4) y = Math.max(4, r.top - b.offsetHeight - 7);
+      b.style.top = y + 'px';
+    });
+    document.addEventListener('mouseout', function(e){
+      var t = e.target && e.target.closest ? e.target.closest('[data-ptip]') : null;
+      if(t && !(e.relatedTarget && t.contains(e.relatedTarget))){ var b = document.getElementById('mf-tip'); if(b) b.style.display = 'none'; }
+    });
+    document.addEventListener('scroll', _ocultaBurbujas, true);
+    document.addEventListener('click', _ocultaBurbujas, true);
   }
 
 
@@ -1585,7 +1955,11 @@ async function _archivaViejas(hist){
       _idxPrin[k]=k;
       (P.principios[k].comerciales||[]).forEach(function(c){ _idxPrin[normMed(c)]=k; });
     });
-    Object.keys(P.productos||{}).forEach(function(k){ _idxPrin[k]='@'+k; });
+    Object.keys(P.productos||{}).forEach(function(k){
+      _idxPrin[k]='@'+k;
+      /* v2026.11.04 : un produit a aussi ses noms (« incopack », « pañal »…) */
+      (P.productos[k].comerciales||[]).forEach(function(c){ _idxPrin[normMed(c)]='@'+k; });
+    });
   }
 
   /* le principe actif d'un nom, s'il est connu */
@@ -2035,7 +2409,7 @@ async function _archivaViejas(hist){
 
     caja.innerHTML =
         '<div class="sf-ventana-cab"><span class="sf-ventana-tit">' + (titulo||'') + '</span>'
-      + '<span class="sf-ventana-x" title="cerrar">✕</span></div>'
+      + '<span class="sf-ventana-x">✕</span></div>'
       + '<div class="sf-ventana-cuerpo">' + (contenido||'') + '</div>'
       /* v2 (P-H, 11/09) : le ✕ ferme déjà — un bouton « Cerrar » en plus
          serait deux fois le même geste. Le pied ne paraît que s'il porte
@@ -2048,6 +2422,7 @@ async function _archivaViejas(hist){
     function cierra(){
       document.removeEventListener('keydown', porTecla);
       if(fondo.parentNode) document.body.removeChild(fondo);
+      _ocultaBurbujas();   /* la del ✕ se iba a quedar (P-H, 05/11/2026) */
       if(op.alCerrar) op.alCerrar();
     }
     function porTecla(e){ if(e.key === 'Escape') cierra(); }
@@ -2055,6 +2430,7 @@ async function _archivaViejas(hist){
 
     fondo.onclick = function(e){ if(e.target === fondo) cierra(); };
     caja.querySelector('.sf-ventana-x').onclick = cierra;
+    tip(caja.querySelector('.sf-ventana-x'), palabra('cerrar'));   /* la infobulle de la casa, no la del navegador (P-H, 05/11/2026) */
     var b = caja.querySelector('.sf-ventana-btn');
     if(b) b.onclick = cierra;
 
@@ -2333,12 +2709,62 @@ async function _archivaViejas(hist){
     'sin-respuesta': { es:'la Casa no ha respondido', fr:'la Casa n’a pas répondu', ca:'la Casa no ha respost', en:'the Casa did not answer' },
     'sin-casa': { es:'el programa no está dentro de la Casa', fr:'le programme n’est pas dans la Casa', ca:'el programa no és dins la Casa', en:'the program is not inside the Casa' }
   };
+  /* LAS PALABRAS COMUNES (P-H, 05/11/2026) : las que todos los programas dicen igual — en las cuatro lenguas, una sola vez */
+  var PALABRAS = { cerrar: { es:'Cerrar', fr:'Fermer', ca:'Tancar', en:'Close' },
+                   plegar_cerrar: { es:'Clic para cerrar', fr:'Clic pour fermer', ca:'Clic per a tancar', en:'Click to close' },
+                   plegar_abrir:  { es:'Clic para abrir',  fr:'Clic pour ouvrir', ca:'Clic per a obrir',  en:'Click to open' } };
+  function palabra(k){ var t = PALABRAS[k]; return t ? (t[LANG_SF] || t.es) : k; }
+  /* la burbuja del título de un cuadro plegable sigue su estado (P-H, 05/11/2026) */
+  /* el texto se elige AL PASAR el ratón : así vale la lengua de ese momento, no la del arranque */
+  function plegableTip(cab, abierto){
+    cab._sfAbierto = !!abierto; tip(cab, ' '); var en = cab.onmouseenter;
+    cab.onmouseenter = function(){ en.call(cab); var b = document.getElementById('mf-tip');
+      if (b && tips()) b.textContent = palabra(cab._sfAbierto ? 'plegar_cerrar' : 'plegar_abrir'); };
+  }
   function motivoPdf(mo){ var t = MOTIVOS_PDF[mo] || MOTIVOS_PDF['no-esta']; return t[LANG_SF] || t.es; }
+  /* ══ EL NOMBRE REAL DE UN DOCUMENTO (P-H, 04/11/2026) ══
+     « prend PDF034 et non le fichier réel » : las tomas guardan el
+     identificador (PDF034) ; el nombre del fichier vive UNA vez en la tabla
+     del expediente — "pdfs": {"archivos": {"PDF034": "PRL_17072026071302.pdf"}}.
+     Nadie la leía : se buscaba un « PDF034.pdf » que no existe, y el último
+     recurso iba a buscarlo… a otro paciente. Aquí se traduce. Sin entrada
+     en la tabla, el nombre sigue siendo el identificador, como antes. */
+  function _nombrePdf(nombre){
+    var stem = String(nombre||'').replace(/\.pdf$/i, '');
+    var A = (datos && datos.pdfs && datos.pdfs.archivos) || {};
+    var v = A[stem] || A[stem.toUpperCase()];
+    if(v && typeof v === 'object') v = v.file || v.archivo || v.nombre || '';
+    return v ? String(v).split('/').pop().replace(/\.pdf$/i, '') : stem;
+  }
+  /* EL TÍTULO DE UN DOCUMENTO (P-H, 04/11/2026) : « PDF009:DSF2026/RPE_17072026065605.pdf » —
+     la matrícula del documento, el expediente del paciente, el nombre del fichero en el disco.
+     Sin entrada en la tabla archivos : « PDF009:DSF2026/? », no se inventa un nombre. */
+  function tituloPdf(nombre){
+    if(!datos) return String(nombre||'');   /* expediente aún no cargado : el nombre tal cual, como antes */
+    var id = String(nombre||'').replace(/\.pdf$/i, ''), real = _nombrePdf(id);
+    var exp = matricula || (datos && (datos.matricula || datos.paciente)) || '';
+    if(typeof exp !== 'string') exp = '';
+    return id + ':' + (exp ? exp + '/' : '') + (real !== id ? real + '.pdf' : '?');
+  }
   function pdfRespuesta(nombre){
-    var stem = String(nombre||'').replace(/\.pdf$/i, ''), motivo = 'sin-respuesta';
+    var stem = _nombrePdf(nombre), motivo = 'sin-respuesta';
+    /* B (P-H, 04/11/2026) : el último recurso ya NO es el servidor 7777, que buscaba en TODO
+       ~/Salufolio y devolvió el PDF034 de otro paciente. Solo la carpeta del paciente abierto
+       (la de la dirección, ?carpeta=…) — « un PDF vive en pacientes/<matrícula>/sources/ y en
+       ningún otro sitio » (P-H, 06/10/2026). Mejor un documento ausente que un documento falso. */
     var socorro = function(){
-      var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
-      return fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)).catch(function(){ return new Response(null, {status:404}); });
+      var no = function(){ return new Response(null, {status:404}); };
+      if(!p_carpeta) return Promise.resolve(no());
+      return fetch(String(p_carpeta).replace(/\/?$/, '/') + 'sources/' + encodeURIComponent(stem) + '.pdf')
+        .then(function(x){ return x.ok ? x.blob() : null; })
+        .then(function(b){
+          if(!b) return no();
+          return b.slice(0, 5).arrayBuffer().then(function(a){
+            var c = String.fromCharCode.apply(null, new Uint8Array(a));
+            return c.indexOf('%PDF') === 0 ? new Response(b, {status:200, headers:{'Content-Type':'application/pdf'}}) : no();
+          });
+        })
+        .catch(no);
     };
     var fin404 = function(r){ if(r) return r;
       return socorro().then(function(x){ return x.ok ? x : new Response(null, {status:404, headers:{'X-Sf-Motivo': motivo}}); }); };
@@ -2356,7 +2782,97 @@ async function _archivaViejas(hist){
       try{ parent.postMessage({de:'modulo', tipo:'pide-pdf', id:id, nombre:stem}, '*'); }catch(e){ fin(null); }
     }).then(fin404);
   }
-  return { arranca:arranca, carga:carga, pdfRespuesta:pdfRespuesta, motivoPdf:motivoPdf, params:params, abeja:abeja, abrirFichero:abrirFichero,
+  /* ══════════════════════════════════════════════════════════════════
+     LA CLAVE DE LA IA — UNA SOLA, PARA TODOS (P-H, 04/11/2026)
+
+     « Dans Tabla, il me demande de configurer ma clé API dans Datos
+       alors qu'elle est configurée dans l'acquisition automatique. »
+
+     La misma clave vivía bajo TRES nombres : sf_api_key (adquisición
+     automática), sf_apikey (informes), mt_apikey (tabla, curvas, la V1).
+     Cada programa buscaba el suyo. Ahora hay UNO, sf_api_key — el de la
+     adquisición, con sus hermanos sf_api_modelo y sf_api_tokens — y una
+     sola manera de leerlo, de guardarlo y de pedirlo.
+     claveIA()      : la clave ; si solo existe con un nombre antiguo, se
+                      copia una vez bajo el bueno (los antiguos se quedan,
+                      la V1 los sigue leyendo).
+     guardaClaveIA(k): la guarda ; vacía, la borra con todos sus nombres.
+     pideClave(alGuardar) : la ventana de la casa (la de los informes, que
+                      P-H validó), para cualquier programa.
+     ══════════════════════════════════════════════════════════════════ */
+  var CLAVE_NOMBRE = 'sf_api_key', CLAVE_ANTIGUOS = ['sf_apikey', 'mt_apikey'];
+  function claveIA(){
+    try{
+      var k = localStorage.getItem(CLAVE_NOMBRE) || '';
+      if(!k) for(var i = 0; i < CLAVE_ANTIGUOS.length && !k; i++){
+        k = localStorage.getItem(CLAVE_ANTIGUOS[i]) || '';
+        if(k) localStorage.setItem(CLAVE_NOMBRE, k);
+      }
+      return String(k).trim();
+    }catch(e){ return ''; }
+  }
+  function guardaClaveIA(k){
+    k = String(k || '').trim();
+    try{
+      if(k) localStorage.setItem(CLAVE_NOMBRE, k);
+      else [CLAVE_NOMBRE].concat(CLAVE_ANTIGUOS).forEach(function(n){ localStorage.removeItem(n); });
+    }catch(e){}
+    return k;
+  }
+  var CLAVE_TX = {
+    titulo:  { es:'La clave de la API', fr:'La clé de l’API', ca:'La clau de l’API', en:'The API key' },
+    que:     { es:'Para pedir un comentario a la IA hace falta una clave de la API de Anthropic. Se guarda en este navegador y no sale de él.',
+               fr:'Pour demander un commentaire à l’IA, il faut une clé de l’API d’Anthropic. Elle se garde dans ce navigateur et n’en sort pas.',
+               ca:'Per demanar un comentari a la IA cal una clau de l’API d’Anthropic. Es guarda en aquest navegador i no n’ix.',
+               en:'To ask the AI for a comment you need an Anthropic API key. It is kept in this browser and never leaves it.' },
+    donde:   { es:'Se pone una sola vez : vale para todos los programas de Salufolio.', fr:'On la pose une seule fois : elle vaut pour tous les programmes de Salufolio.',
+               ca:'Es posa una sola vegada : val per a tots els programes de Salufolio.', en:'Set it once: it works for every Salufolio program.' },
+    corta:   { es:'Eso no parece una clave. Empieza por sk-ant-', fr:'Ça ne ressemble pas à une clé. Elle commence par sk-ant-',
+               ca:'Això no sembla una clau. Comença per sk-ant-', en:'That doesn’t look like a key. It starts with sk-ant-' },
+    ok:      { es:'Guardar', fr:'Garder', ca:'Guardar', en:'Save' },
+    no:      { es:'Cancelar', fr:'Annuler', ca:'Cancel·lar', en:'Cancel' },
+    obtener: { es:'Cómo conseguir una clave', fr:'Comment obtenir une clé', ca:'Com aconseguir una clau', en:'How to get a key' },
+    como:    { es:'Para conseguir una clave :\n\n1 · Abra console.anthropic.com y cree una cuenta si no la tiene.\n2 · Vaya a Settings → API keys.\n3 · Toque « Create Key » y copie lo que sale.\n4 · Péguelo en el campo de Salufolio.\n\nLa clave se guarda en este navegador y no sale de él. Cada llamada cuesta unos céntimos.',
+               fr:'Pour obtenir une clé :\n\n1 · Ouvrez console.anthropic.com et créez un compte si vous n’en avez pas.\n2 · Allez dans Settings → API keys.\n3 · Touchez « Create Key » et copiez ce qui sort.\n4 · Collez-le dans le champ de Salufolio.\n\nLa clé se garde dans ce navigateur et n’en sort pas. Chaque appel coûte quelques centimes.',
+               ca:'Per aconseguir una clau :\n\n1 · Obriu console.anthropic.com.\n2 · Aneu a Settings → API keys.\n3 · Toqueu « Create Key » i copieu el que ix.\n4 · Apegueu-ho al camp de Salufolio.\n\nLa clau es guarda en aquest navegador. Cada crida costa uns cèntims.',
+               en:'To get a key:\n\n1 · Open console.anthropic.com and create an account if you have none.\n2 · Go to Settings → API keys.\n3 · Tap “Create Key” and copy what comes out.\n4 · Paste it into Salufolio’s field.\n\nThe key stays in this browser. Each call costs a few cents.' },
+    invita:  { es:'Puede pedir un comentario a la IA :', fr:'On peut demander un commentaire à l’IA :', ca:'Podeu demanar un comentari a la IA :', en:'You can ask the AI for a comment:' },
+    poner:   { es:'poner la clave', fr:'poser la clé', ca:'posar la clau', en:'set the key' }
+  };
+  function textoClave(k){ var t = CLAVE_TX[k] || {}; return t[LANG_SF] || t.es || k; }
+  function pideClave(alGuardar){
+    var e = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); };
+    var html = '<p style="margin:0 0 10px">' + e(textoClave('que')) + '</p>'
+      + '<input type="password" class="sf-clave-campo" autocomplete="off" spellcheck="false" placeholder="sk-ant-api03-…" '
+      + 'style="width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font-family:var(--mono)">'
+      + '<div class="sf-clave-aviso" style="color:var(--warn);min-height:1.4em;margin-top:4px"></div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">'
+      + '<button class="btn sf-clave-ok" disabled style="border-color:var(--accent);font-weight:700">' + e(textoClave('ok')) + '</button>'
+      + '<button class="btn sf-clave-no">' + e(textoClave('no')) + '</button>'
+      + '<button class="btn sf-clave-como">' + e(textoClave('obtener')) + '</button></div>'
+      + '<p style="margin:10px 0 0;color:var(--muted)">' + e(textoClave('donde')) + '</p>';
+    var v = ventana('🔑 ' + e(textoClave('titulo')), html, { ancho:'480px' });
+    var caja = v.caja, campo = caja.querySelector('.sf-clave-campo'), bOk = caja.querySelector('.sf-clave-ok');
+    campo.value = claveIA();
+    bOk.disabled = campo.value.length < 20;
+    setTimeout(function(){ try{ campo.focus(); }catch(x){} }, 30);
+    campo.addEventListener('input', function(){ bOk.disabled = campo.value.trim().length < 20; caja.querySelector('.sf-clave-aviso').textContent = ''; });
+    campo.addEventListener('keydown', function(ev){ if(ev.key === 'Enter' && !bOk.disabled) bOk.click(); });
+    bOk.onclick = function(){
+      var k = campo.value.trim();
+      if(k.length < 20){ caja.querySelector('.sf-clave-aviso').textContent = textoClave('corta'); return; }
+      guardaClaveIA(k); v.cierra();
+      if(alGuardar) alGuardar(k);
+    };
+    caja.querySelector('.sf-clave-no').onclick = function(){ v.cierra(); };
+    caja.querySelector('.sf-clave-como').onclick = function(){
+      popupTexto(textoClave('obtener'), textoClave('como'), function(){});
+      setTimeout(function(){ try{ window.open('https://console.anthropic.com/settings/keys', '_blank', 'noopener'); }catch(x){} }, 200);
+    };
+    return v;
+  }
+
+  return { arranca:arranca, carga:carga, pdfRespuesta:pdfRespuesta, palabra:palabra, plegableTip:plegableTip, eventosRegistros:eventosRegistros, tituloPdf:tituloPdf, nombrePdf:function(x){ return _nombrePdf(x); }, motivoPdf:motivoPdf, params:params, abeja:abeja, abrirFichero:abrirFichero,
            guarda:guarda, tocado:tocado, limpio:limpio, hayCambios:hayCambios, aviso:aviso,
            guardaTrabajo:guardaTrabajo, hayTrabajo:hayTrabajo, olvidaTrabajo:olvidaTrabajo,
            enMarco:function(){return enMarco;}, barra:barra, barraActivos:barraActivos, estado:estado,
@@ -2365,15 +2881,18 @@ async function _archivaViejas(hist){
            glosario:glosario, glosarioTodo:glosarioTodo, explica:explica, abreGlosario:abreGlosario,
            muestraGlosario:muestraGlosario, curvaEnGrande:curvaEnGrande,
            rubricas:rubricas, idiomas:idiomas, dice:dice, cierra:cierra,
-           ponVersion:ponVersion, tip:tip, tips:tips,
+           ponVersion:ponVersion, tip:tip, tips:tips, ptips:ptips,
            esDemo:esDemo, rutaPdf:rutaPdf, letreroDemo:letreroDemo, popupTexto:popupTexto, config:config, cargaConfig:cargaConfig,
            guarda:guarda, guardaRuta:guardaRuta, lista:lista, hayServidor:hayServidor, aviso:aviso,
-           ventana:ventana,
+           ventana:ventana, claveIA:claveIA, guardaClaveIA:guardaClaveIA, pideClave:pideClave, textoClave:textoClave,
            registro:registro, declara:declara, retira:retira, avisoDe:avisoDe,
            ponFuente:ponFuente,
            aplicaIdioma:aplicaIdioma, idioma:idioma,
-           datos:function(){return datos;}, matricula:function(){return matricula;},
+           datos:function(){return datos;},
+           pdfAlta:pdfAlta, pdfBaja:pdfBaja, pdfCitas:pdfCitas, pdfNumero:pdfNumero, pdfContador:function(p){ return pdfContador(p || _pdfTabla(datos)); }, matricula:function(){return matricula;},
            paciente:paciente, ponPaciente:ponPaciente, mesures:mesures, claves:claves,
+           mesuresCanon:mesuresCanon, parametro:parametro, parametros:parametros,
+           procedencia:procedencia, profesional:profesional, aliasMeds:aliasMeds, esCronico:esCronico, medNuevo:medNuevo,
            eventos:eventos, medicamentos:medicamentos,
            medicamentosUnicos:medicamentosUnicos, normMed:normMed,
            principioDe:principioDe, principiosDesconocidos:principiosDesconocidos,

@@ -17,6 +17,60 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,syst
 main{padding:0}
 .panel{display:block}
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
+/* EL RESUMEN PANORÁMICO (P-H, 04/11/2026) — todo por variables */
+.pn-banda{display:flex;flex-wrap:wrap;gap:6px 22px;padding:var(--pad-s,10px) var(--pad-m,18px);font-size:var(--tam-nor,13px);border-bottom:1px solid var(--border)}
+.pn-banda b{font-size:calc(var(--tam-nor,13px) + 2px)}
+.pn-banda span{color:var(--muted)}
+.pn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:var(--gap-m,12px);padding:var(--gap-m,12px) var(--pad-m,18px);align-items:start}
+.pn-col{display:flex;flex-direction:column;gap:var(--gap-m,12px);min-width:0}
+.pn-carta{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius,10px);padding:10px 14px;min-width:0}
+.pn-cab{display:flex;align-items:center;justify-content:space-between}
+.pn-carta h3{margin:0 0 8px;font-size:var(--tam-min,11px);letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);font-weight:700}
+.pn-ajuste{background:transparent;border:1px solid var(--border);border-radius:var(--radio-s,6px);color:var(--muted);cursor:pointer;font-size:13px;padding:0 6px;margin-bottom:8px}
+.pn-ajuste:hover{border-color:var(--accent);color:var(--text)}
+.pn-fila{display:flex;gap:10px;align-items:baseline;padding:4px 0;border-bottom:1px dashed var(--border);font-size:calc(var(--tam-nor,13px) - .5px)}
+.pn-fila:last-child,.pn-v:last-child{border-bottom:0}
+.pn-f{flex:0 0 76px;font-family:var(--mono);font-size:var(--tam-min,11px);color:var(--muted)}
+.pn-der{text-align:right;flex:0 0 auto}
+.pn-c{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pn-esp{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}
+.pn-v{display:grid;grid-template-columns:1fr auto 18px 84px 74px;gap:8px;align-items:center;padding:3px 0;border-bottom:1px dashed var(--border);font-size:calc(var(--tam-nor,13px) - .5px)}
+.pn-num{font-family:var(--mono);font-weight:700;text-align:right}
+.pn-u{color:var(--muted);font-weight:400;font-size:calc(var(--tam-min,11px) - .5px);margin-left:3px}
+.pn-fl{text-align:center;font-weight:700}
+.pn-sube{color:var(--warn)} .pn-baja{color:var(--accent)} .pn-igual{color:var(--muted)}
+.pn-din{color:var(--accent);font-size:var(--tam-min,11px);cursor:help}
+.pn-svg polyline{fill:none;stroke:var(--accent);stroke-width:1.5}
+.pn-nada{color:var(--muted);font-size:12px;font-style:italic}
+.pn-cat{margin:8px 0 3px;font-size:calc(var(--tam-min,11px) - 1px);letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
+.pn-cron{font-size:calc(var(--tam-min,11px) - 1px);color:var(--muted);border:1px solid var(--border);border-radius:var(--radio-s,6px);padding:0 4px;margin-left:4px}
+.pn-caduca .pn-c b,.pn-caduca .pn-der{color:var(--warn)}
+.pn-barras{display:flex;align-items:stretch;gap:3px;height:70px;margin-top:4px}
+.pn-barra{flex:1;display:flex;flex-direction:column-reverse;min-width:0;height:100%}
+.pn-barra i{display:block}
+.pn-anios{display:flex;gap:3px;font-size:calc(var(--tam-min,11px) - 1.5px);color:var(--muted);font-family:var(--mono)}
+.pn-anios span{flex:1;text-align:center}
+.pn-ley{display:flex;flex-wrap:wrap;gap:14px;font-size:var(--tam-min,11px);color:var(--muted);margin-top:6px}
+.pn-aj-ayuda{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5}
+.pn-aj-lista{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;max-height:50vh;overflow-y:auto;overflow-x:hidden;font-size:12.5px;align-content:start}   /* dos columnas fijas : ningún ascensor horizontal */
+/* LA ALTURA, LOS COLORES, LA BÚSQUEDA (P-H, 04/11/2026) */
+.pn-carta{display:flex;flex-direction:column}
+.pn-cuerpo{min-height:0;overflow-y:auto;scrollbar-gutter:stable;padding-right:2px}
+.pn-grid.pn-fijo{align-items:start}
+.pn-grid.pn-fijo > .pn-carta,.pn-grid.pn-fijo > .pn-col{max-height:100%;min-height:0}
+.pn-grid.pn-fijo .pn-col > .pn-carta:first-child{flex:0 1 auto;min-height:0}
+.pn-grid.pn-fijo .pn-col > .pn-carta:last-child{flex:0 0 auto}
+.pn-ley-it{position:relative;display:inline-flex;align-items:center}
+.pn-esp-el{cursor:pointer;width:11px;height:11px;outline:1px solid var(--border)}
+.pn-paves{display:none;position:absolute;bottom:calc(100% + 4px);left:0;gap:4px;padding:5px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radio-s,6px);z-index:20;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.pn-paves.abierto{display:flex}
+.pn-pave{display:inline-block;width:16px;height:16px;border-radius:3px;cursor:pointer;outline:1px solid var(--border)}
+.pn-pave:hover{outline:2px solid var(--text)}
+.pn-pave-def{display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);background:transparent}
+.pn-aj-busca{width:100%;box-sizing:border-box;margin:0 0 8px;padding:5px 8px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--radio-s,6px);font-family:inherit;font-size:12.5px}
+.pn-aj-busca:focus{outline:none;border-color:var(--accent)}
+
+.pn-aj-fila{display:block;padding:2px 0;break-inside:avoid;cursor:pointer}
 </style>
 </head>
 <body>
@@ -27,19 +81,15 @@ main{padding:0}
 </header>
 <main>
 <div id="panel-resumen" class="panel">
-  <div class="tab-bar" id="resumen-tabs">
-    <div class="tab-item tab-active" onclick="switchResumen('situacion')" id="resumen-tab-situacion" data-idioma="tab_situacion">📋 Situación clínica actual</div>
-    <div class="tab-item" onclick="switchResumen('valores')" id="resumen-tab-valores" data-idioma="tab_valores">🔬 Últimos valores conocidos</div>
-    <div class="tab-item" onclick="switchResumen('parametros')" id="resumen-tab-parametros" data-idioma="tab_parametros">📉 Parámetros clave</div>
-  </div>
-  <div class="tab-body">
-    <div id="resumen-view-situacion"></div>
-    <div id="resumen-view-valores" style="display:none">
-      <div class="kpi-grid" id="kpi-grid"></div>
+  <!-- EL RESUMEN PANORÁMICO (P-H, 04/11/2026) : una sola vista, sin pestañas -->
+  <div class="pn-banda" id="pn-banda"></div>
+  <div class="pn-grid">
+    <div class="pn-col">
+      <div class="pn-carta"><h3 data-pn="pn_pasos"></h3><div class="pn-cuerpo" id="pn-pasos"></div></div>
+      <div class="pn-carta"><h3 data-pn="pn_act"></h3><div id="pn-act"></div></div>
     </div>
-    <div id="resumen-view-parametros" style="display:none">
-      <div class="chart-grid" id="key-charts"></div>
-    </div>
+    <div class="pn-carta"><div class="pn-cab"><h3 data-pn="pn_valores"></h3><button class="pn-ajuste" id="pn-ajuste" onclick="pnAjusta()">⚙</button></div><div class="pn-cuerpo" id="pn-valores"></div></div>
+    <div class="pn-carta"><h3 data-pn="pn_trat"></h3><div class="pn-cuerpo" id="pn-trat"></div></div>
   </div>
   <div class="module-version-corner">
     <span class="module-version-tag" data-module="core"></span>
@@ -52,13 +102,20 @@ main{padding:0}
      Un <script src> écrit dans la page passe même en file:/// ;
      celui que le code crée, non (P-H l'a éprouvé le 07/09). -->
 <script src="../medicamentos/principios.js"></script>
+<script src="../comun/especialidades.js"></script>
+<script src="../comun/paleta-colores.js"></script>
 <script src="resumen.js"></script>
 <script src="resumen.idiomas.js"></script>
+<script src="../comun/equivalencias.js"></script>
+<script src="../comun/sinonimos-parametros.js"></script>
 <script src="../comun/mf.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    RESUMEN — programa autónomo de Salufolio V2
-   Versión 2026.10.06-22:17:20
+   Versión 2026.11.05-13:21:32
+   (05/11/2026 : Enfermería y Vacunas — P-H.)
+   (04/11/2026 : colores elegidos por el usuario, un ascensor por carta, búsqueda en la ventana ⚙ — P-H.)
+   (04/11/2026 : el resumen panorámico — una sola vista, P-H.)
 
    Extraído de la V1 (core-resumen-js.js + core-panels-html.html), con
    sus dependencias tomadas en su fuente: core-utils-js.js (fmtDate,
@@ -1021,120 +1078,262 @@ function switchResumen(view) {
   });
 }
 
-function buildResumen(data, events) {
-  if (!data) data = loadData();
-  if (!events) events = loadEvents();
-  const grid = document.getElementById('kpi-grid');
-  const chartsEl = document.getElementById('key-charts');
-  grid.innerHTML = '';
-  chartsEl.innerHTML = '';
+/* ══ EL RESUMEN PANORÁMICO (P-H, 04/11/2026 : « un tableau de bord, une vue panoramique, un seul coup d'œil ») ══
+   Una sola vista, cuatro cartas : los últimos pasos (urgencias, ingresos, la última de cada especialidad —
+   la tabla común comun/especialidades.js, la misma que el gantt), la actividad por año, los últimos valores
+   (lista de resumen.js + los que se han movido + la elección del profesional, guardada en el .sf
+   bajo « preferencias.resumen ») y los tratamientos en curso (regla de P-H, ver _pnEnCurso).
+   Todo lo regulable vive en resumen.js (« panorama ») ; todo texto, en resumen.idiomas.js. */
+function _pnLg(){ try { return MF.idioma() || 'es'; } catch (e) { return 'es'; } }
+function txr(k, v){
+  const T = (window.SF_TEXTOS && SF_TEXTOS.textos) || {}, L = T[_pnLg()] || {};
+  if (v && v.n === 1 && (L[k + '_1'] || (T.es && T.es[k + '_1']))) k = k + '_1';   /* el singular, si la tabla lo tiene */
+  let s = L[k] || (T.es && T.es[k]) || k;
+  Object.keys(v || {}).forEach(x => { s = s.split('{' + x + '}').join(v[x]); });
+  return s;
+}
+function _pnEsc(s){ return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function _pnF(d){ return d && d.length >= 10 ? d.slice(8, 10) + '/' + d.slice(5, 7) + '/' + d.slice(0, 4) : (d || ''); }
+function _pnCfg(){ return Object.assign({ meses_tratamiento: 12, estados_fin: [], parametros: [], dinamicos: { meses: 12, cambio: 0.2, max: 4 }, max_pasos: 8, umbral_flecha: 0.05 }, SF_CONFIG.panorama || {}); }
+function _pnHoy(){ const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function _pnMenosMeses(iso, m){ const d = new Date(iso + 'T12:00:00'); d.setMonth(d.getMonth() - m); return d.toISOString().slice(0, 10); }
 
-  /* ── ENCADRÉ SITUATION ACTUELLE (data-driven) ── */
-  var sitWrap = document.getElementById('resumen-view-situacion');
-  sitWrap.innerHTML = '';
-  if (!data.length) return;
-
-  const meds = loadMeds();
-  /* v4 (P-H, 06/09) : la liste dédoublonnée — le même traitement
-     paraissait jusqu'à sept fois, selon l'écriture de chaque extraction. */
-  /* medsU, pas meds : celle-là est const, on ne la réaffecte pas */
-  const medsU = (typeof MF!=='undefined' && MF.medicamentosUnicos)? MF.medicamentosUnicos(meds) : meds;
-  /* le dossier écrit « estado », avec des valeurs françaises — on prend les deux */
-  const enCurso = medsU.filter(function(m){
-    return m.estado === 'en_cours' || m.estado === 'a_demanda' || m.statut === 'en_cours'; });
-  /* v6 (P-H, 07/09) : trois catégories — les protections ne sont pas des
-     médicaments, l'oxygène non plus. Chaque produit dit lui-même où il va,
-     dans la table des principes actifs. */
-  const CATS = ['medicamento','parafarmacia','material'];
-  const porCat = {};
-  CATS.forEach(function(c){ porCat[c]=[]; });
-  enCurso.forEach(function(m){
-    var c = m._categoria || 'medicamento';
-    (porCat[c] = porCat[c] || []).push(m);
+/* las especialidades : la tabla común (comun/especialidades.js), preparada una vez */
+function _pnEsp(){
+  const E = (window.SF_ESPECIALIDADES && SF_ESPECIALIDADES.especialidades) || [];
+  return E.map(e => Object.assign({}, e, { _srv: e.servicios ? new RegExp(e.servicios, 'i') : null, _pal: e.palabras ? new RegExp(e.palabras, 'i') : null }));
+}
+function _pnNomEsp(e){ const t = (e && e.etiqueta) || {}; return t[_pnLg()] || t.es || (e && e.id) || ''; }
+function _pnEspDe(ev, T){
+  if (ev && ev._esp) { const f = T.find(e => e.id === ev._esp); if (f) return f; }   /* un registro dice él mismo su línea */
+  const pr = MF.procedencia ? MF.procedencia(ev, true) : { servicio: '' };
+  const ts = (ev.type || '') + ' ' + (pr.servicio || '');
+  for (const e of T.slice().sort((a, b) => (a.orden || 99) - (b.orden || 99))) if (e._srv && e._srv.test(ts)) return e;
+  const bl = (ev.titre || ev.title || '') + ' ' + (ev.description || ev.text || '');
+  for (const e of T) if (e._pal && e._pal.test(e.solo_titulo ? String(ev.titre || ev.title || '') : bl)) return e;   /* solo_titulo (P-H, 05/11/2026) */
+  return T.find(e => e.por_defecto) || T[T.length - 1] || {};
+}
+/* los acontecimientos, una vez cada uno (como el gantt), del más reciente al más antiguo */
+function _pnEventos(d, T){
+  const visto = {}, out = [];
+  const vistoEsp = {};   /* fecha|línea de los acontecimientos (P-H, 05/11/2026) */
+  (d.events || []).concat(((window.MF && MF.eventosRegistros) ? MF.eventosRegistros(d) : [])).forEach(e => {
+    if (!e || !e.date || isNaN(new Date(e.date).getTime())) return;
+    const k = e.date + '|' + String(e.titre || e.title || e.type || '').trim().toUpperCase();
+    if (visto[k]) return; visto[k] = 1;
+    const esp = _pnEspDe(e, T);
+    const kd = e.date + '|' + esp.id;
+    if (e._registro ? vistoEsp[kd] : (esp.uno_por_dia && vistoEsp[kd])) return;
+    if (!e._registro) vistoEsp[kd] = 1;
+    out.push({ ev: e, esp: esp });
   });
-  const medsActifs = porCat['medicamento'] || [];
-  const patLbl = getPatientLabel() || 'Paciente';
-  const lastDate = data.length ? data[data.length-1].date : '—';
+  return out.sort((a, b) => a.ev.date < b.ev.date ? 1 : -1);
+}
 
-  var html = '<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">';
-  /* v2 (P-H, 06/09) : le titre bleu répétait l'onglet — il part. La
-     matricule reste seule, à droite du bandeau. */
-  /* v3 (P-H, 06/09) : le résumé chiffré monte dans le bandeau bleu — la
-     matricule est déjà dans la bande du lanceur, inutile de la répéter. */
-  html += '<div style="background:var(--accent);padding:8px 20px;color:white;font-size:12px">';
-  var cuenta = CATS.filter(function(c){ return (porCat[c]||[]).length; }).map(function(c){
-    var n=porCat[c].length;
-    var nom=(typeof MF!=='undefined' && MF.nombreCategoria)? MF.nombreCategoria(c) : c;
-    /* singulier quand il n'y en a qu'un */
-    var t=nom.toLowerCase();
-    if(n===1) t=t.replace(/s$/,'');
-    return '<strong>'+n+'</strong> '+t;
-  }).join(' · ');
-  /* v7 (P-H) : la date collée à ce qu'elle qualifie — c'est la dernière
-     MESURE, pas le dernier médicament. */
-  html += cuenta + ' · <strong>' + data.length + '</strong> mediciones'
-    + (lastDate && lastDate!=='—'? ' <span style="opacity:.8">(última: ' + fmtDate(lastDate) + ')</span>' : '');
-  html += '</div>';
-  html += '<div style="padding:16px 20px;font-size:13px;line-height:1.6;color:var(--text)">';
-  CATS.forEach(function(cat){
-    var lista = porCat[cat] || [];
-    if(!lista.length) return;
-    var nom = (typeof MF!=='undefined' && MF.nombreCategoria)? MF.nombreCategoria(cat) : cat;
-    /* le séparateur entre catégories */
-    html += '<div style="margin:12px 0 5px;font-size:10.5px;letter-spacing:1.5px;'
-      + 'color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:3px">'
-      + nom.toUpperCase() + '</div>';
-    lista.forEach(function(m){
-      /* la date de la dernière prescription, à gauche du nom (P-H) */
-      var f = m.desde || m.fecha || m.date || '';
-      var com = (m._comerciales && m._comerciales.length)
-        ? ' <span style="color:var(--muted);font-size:11px">(' + m._comerciales.slice(0,3).join(' · ') + ')</span>' : '';
-      var dos = (m.dosis||m.dose||'').replace(/^\s*-+\s*$/,'').trim();
-      var fre = (m.frecuencia||m.frequence||'').trim();
-      html += '<div style="margin:3px 0;font-size:12px;display:flex;gap:8px;align-items:baseline">'
-        + '<span style="color:var(--muted);font-family:var(--mono);font-size:10.5px;flex:0 0 78px;padding-right:4px">' + (f? fmtDate(f) : '') + '</span>'
-        + '<span style="flex:1">💊 <strong>' + (m.nombre||m.nom) + '</strong>'
-        + (dos? ' ' + dos : '') + (fre? ' — ' + fre : '')
-        + com + '</span></div>';
-    });
+/* ── LOS TRATAMIENTOS EN CURSO — la regla de P-H (04/11/2026) ──
+   · la prescripción no tiene más de « meses_tratamiento » meses (desde) ;
+   · su fin es posterior a hoy — o no tiene fin y el tratamiento es crónico (« cronico »: true) ;
+   · su estado no es uno de « estados_fin » (abandonado, suspendido…) ;
+   · un crónico cuya fin ya pasó sigue a la vista, en naranja : « caducado el … » — ¿receta por renovar, o documento que falta ? */
+function _pnEnCurso(d){
+  const C = _pnCfg(), hoy = _pnHoy(), lim = _pnMenosMeses(hoy, C.meses_tratamiento);
+  const fin = (C.estados_fin || []).map(x => String(x).toLowerCase());
+  const raw = d.medicaments || [];
+  /* « cronico » puede estar en cualquiera de las variantes de un mismo tratamiento */
+  const cron = {};
+  if (MF.medicamentosUnicos) raw.forEach(m => { if (m && m.cronico === true) { const u = MF.medicamentosUnicos([m])[0]; if (u) cron[u._clave] = 1; } });
+  const U = MF.medicamentosUnicos ? MF.medicamentosUnicos(raw) : raw;
+  const out = [];
+  U.forEach(m => {
+    const est = String(m.estado || m.statut || '').toLowerCase();
+    if (est && fin.indexOf(est) >= 0) return;
+    if (!m.desde || m.desde < lim) return;
+    const esCron = m.cronico === true || !!cron[m._clave];
+    if (m.hasta && m.hasta > hoy) out.push({ m: m, cron: esCron });
+    else if (!m.hasta && esCron) out.push({ m: m, cron: true });
+    else if (m.hasta && esCron) out.push({ m: m, cron: true, caducado: m.hasta });
   });
-  html += '</div>';
-  /* le pied de page part : la version vit dans l'infobulle du bandeau,
-     le copyright et le DOI dans la bande du bas du lanceur. */
-  html += '</div>';
-  sitWrap.innerHTML = html;
+  return out;
+}
 
-  /* ── KPIs (onglet Valores) ── */
-  const KEY_PARAMS = ['dimero_d','hemoglobina','glucosa','colesterol','creatinina','filtrado','hba1c','vitamina_d','pcr','tsh','albumina'];
-  KEY_PARAMS.forEach(key => {
-    const series = getSeriesForParam(data, key);
-    if (!series.length) return;
-    const last = series[series.length - 1];
-    const prev = series.length > 1 ? series[series.length - 2] : null;
-    const p = PARAMS[key];
-    const st = getStatus(key, last.y);
-    const trend = prev ? (last.y > prev.y ? 'up' : last.y < prev.y ? 'down' : 'stable') : 'stable';
-    const card = document.createElement('div');
-    card.className = `kpi-card ${st === 'bad' ? 'bad' : 'ok'}`;
-    card.innerHTML = `
-      <div class="kpi-label">${paramTip(key)}</div>
-      <div class="kpi-value">${last.y} <span class="kpi-unit">${p.unit}</span></div>
-      <div class="kpi-date">${fmtDate(last.x)}${last.src ? " · " + last.src : ""}</div>
-      ${prev ? `<div class="kpi-trend ${trend}">${trend==='up'?'↑':trend==='down'?'↓':'→'} vs ${prev.y}</div>` : ''}`;
-    grid.appendChild(card);
+/* ── LOS PARÁMETROS — la lista de resumen.js, o la del profesional (preferencias.resumen del .sf),
+      más los que se han movido de verdad en los últimos meses ── */
+function _pnSeries(d){
+  const S = {};
+  (MF.mesuresCanon ? MF.mesuresCanon(d) : []).forEach(t => Object.keys(t.vals || {}).forEach(k => {
+    const v = parseFloat(t.vals[k]); if (isNaN(v)) return; (S[k] = S[k] || []).push([t.date, v]); }));
+  Object.keys(S).forEach(k => S[k].sort((a, b) => a[0] < b[0] ? -1 : 1));
+  return S;
+}
+function _pnElegidos(d){ const p = d && d.preferencias && d.preferencias.resumen; return (p && Array.isArray(p.parametros)) ? p.parametros : null; }
+function _pnEtiq(k){ const P = ((window.SF_SINONIMOS_PARAMETROS || {}).parametros || {})[k] || {}; const e = P.etiqueta || {}; return [e[_pnLg()] || e.es || k, P.unidad || '']; }
+function _pnLista(d, S){
+  const C = _pnCfg(), D = C.dinamicos || {}, base = (_pnElegidos(d) || C.parametros || []).filter(k => S[k]);
+  const lim = _pnMenosMeses(_pnHoy(), D.meses || 12), extra = [];
+  Object.keys(S).forEach(k => {
+    if (base.indexOf(k) >= 0) return;
+    const s = S[k]; if (s.length < 2) return;
+    const u = s[s.length - 1], p = s[s.length - 2]; if (u[0] < lim) return;
+    const c = Math.abs(u[1] - p[1]) / (Math.abs(p[1]) || 1);
+    if (c >= (D.cambio || 0.2)) extra.push({ k: k, c: c });
   });
+  extra.sort((a, b) => b.c - a.c);
+  return base.map(k => ({ k: k })).concat(extra.slice(0, D.max || 0).map(x => ({ k: x.k, din: Math.round(x.c * 100) })));
+}
+function _pnCurvita(s){
+  const w = 84, h = 20, ys = s.map(x => x[1]), mn = Math.min.apply(null, ys), r = (Math.max.apply(null, ys) - mn) || 1;
+  const pts = s.map((x, i) => ((s.length > 1 ? i * (w - 4) / (s.length - 1) + 2 : w / 2).toFixed(1) + ',' + (h - 3 - (x[1] - mn) / r * (h - 6)).toFixed(1))).join(' ');
+  return '<svg class="pn-svg" width="' + w + '" height="' + h + '"><polyline points="' + pts + '"/></svg>';
+}
 
-  /* ── Mini-courbes (onglet Parámetros) ── */
-  ['hemoglobina','glucosa','colesterol','creatinina'].forEach(key => {
-    const series = getSeriesForParam(data, key);
-    if (series.length < 2) return;
-    const p = PARAMS[key];
-    const div = document.createElement('div');
-    div.className = 'chart-card';
-    div.innerHTML = `<div class="chart-title">${p.label}</div><div class="chart-sub">${p.unit}${p.ref ? ' · Ref: ' + p.ref.filter(v=>v!==null).join('–') : ''}</div><canvas id="kc-${key}" height="160"></canvas>`;
-    chartsEl.appendChild(div);
-    setTimeout(() => makeChart('kc-'+key, key, data), 50);
+/* ── LA VISTA ── */
+function buildResumen(){
+  const d = _DATOS; if (!d) return;
+  const C = _pnCfg(), T = _pnEsp(), E = _pnEventos(d, T), S = _pnSeries(d);
+  const fechas = E.map(x => x.ev.date).concat(Object.keys(S).map(k => S[k][S[k].length - 1][0])).filter(Boolean).sort();
+  const pri = fechas[0] || '', ult = fechas[fechas.length - 1] || '';
+  document.querySelectorAll('[data-pn]').forEach(e => { e.textContent = txr(e.getAttribute('data-pn')); });
+  const ti = document.getElementById('titulo'); if (ti) ti.textContent = '📄 ' + (((SF_CONFIG.nombre || {})[_pnLg()]) || (SF_CONFIG.nombre || {}).es || '');   /* el título, en la lengua de la casa */
+  const aj = document.getElementById('pn-ajuste'); if (aj) aj.setAttribute('data-ptip', txr('pn_tip_ajuste'));
+
+  /* la banda : sexo, edad, período, cuántos acontecimientos, el último dato — nunca el nombre */
+  const b = [], nac = parseInt(d.nacimiento || '', 10), sx = String(d.sexo || '').toLowerCase();
+  const sxk = /^(muj|fem|f$|wom|dona)/.test(sx) ? 'pn_mujer' : /^(hom|masc|m$|male|man|h$)/.test(sx) ? 'pn_hombre' : '';
+  if (sxk) b.push('<b>' + _pnEsc(txr(sxk)) + '</b>');
+  if (nac > 1900) b.push('<b>' + _pnEsc(txr('pn_anos', { n: new Date().getFullYear() - nac })) + '</b>');
+  if (pri) b.push('<span>' + _pnEsc(txr('pn_periodo', { a: pri.slice(0, 4), b: ult.slice(0, 4) })) + '</span>');
+  b.push('<span>' + _pnEsc(txr('pn_eventos', { n: E.length })) + '</span>');
+  if (ult) b.push('<span>' + _pnEsc(txr('pn_ultimo', { f: _pnF(ult) })) + '</span>');
+  document.getElementById('pn-banda').innerHTML = b.join('');
+  const nada = '<div class="pn-nada">' + _pnEsc(txr('pn_nada')) + '</div>';
+
+  /* 1 · los últimos pasos : las líneas fijas (urgencias, ingresos) y luego la última de cada especialidad */
+  const ultDe = {}, orden = [];
+  E.forEach(x => { if (!ultDe[x.esp.id]) { ultDe[x.esp.id] = x; orden.push(x.esp.id); } });
+  const fijas = T.filter(e => e.orden).sort((a, b) => a.orden - b.orden).map(e => e.id).filter(id => ultDe[id]);
+  const ids = fijas.concat(orden.filter(id => fijas.indexOf(id) < 0)).slice(0, C.max_pasos || 8);
+  document.getElementById('pn-pasos').innerHTML = ids.length ? ids.map(id => {
+    const x = ultDe[id], pr = MF.procedencia ? MF.procedencia(x.ev) : '';
+    return '<div class="pn-fila"><span class="pn-f">' + _pnF(x.ev.date) + '</span><span class="pn-c"' + (pr ? ' data-ptip="' + _pnEsc(pr) + '"' : '') + '>'
+      + '<span class="pn-esp" style="background:' + _pnEsc(x.esp.color || 'var(--muted)') + '"></span><b>' + _pnEsc(_pnNomEsp(x.esp)) + '</b> · ' + _pnEsc(x.ev.title || x.ev.titre || '') + '</span></div>';
+  }).join('') : nada;
+
+  /* 2 · la actividad por año : urgencias, ingresos, el resto */
+  const urg = T.find(e => e.orden === 1) || {}, hos = T.find(e => e.orden === 2) || {};
+  const por = {}; let a0 = 9999, a1 = 0;
+  E.forEach(x => { const a = parseInt(x.ev.date, 10); a0 = Math.min(a0, a); a1 = Math.max(a1, a);
+    const g = x.esp.id === urg.id ? 'urg' : x.esp.id === hos.id ? 'hos' : 'otr'; por[a] = por[a] || { urg: 0, hos: 0, otr: 0 }; por[a][g]++; });
+  if (E.length) {
+    let mx = 1; for (let a = a0; a <= a1; a++) { const p = por[a] || { urg: 0, hos: 0, otr: 0 }; mx = Math.max(mx, p.urg + p.hos + p.otr); }
+    const col = _pnColores(), nom = { urg: _pnNomEsp(urg), hos: _pnNomEsp(hos), otr: txr('pn_otras') };
+    let hb = '<div class="pn-barras">', ha = '<div class="pn-anios">';
+    for (let y = a0; y <= a1; y++) {
+      const q = por[y] || { urg: 0, hos: 0, otr: 0 };
+      hb += '<div class="pn-barra" data-ptip="' + _pnEsc(y + ' · ' + nom.urg + ' ' + q.urg + ' · ' + nom.hos + ' ' + q.hos + ' · ' + nom.otr + ' ' + q.otr) + '">'
+          + ['urg', 'hos', 'otr'].map(g => q[g] ? '<i style="height:' + (q[g] / mx * 100).toFixed(1) + '%;background:' + _pnEsc(col[g]) + '"></i>' : '').join('') + '</div>';
+      ha += '<span>' + String(y).slice(2) + '</span>';
+    }
+    document.getElementById('pn-act').innerHTML = hb + '</div>' + ha + '</div><div class="pn-ley">'
+      + _pnLeyenda(col, nom) + '</div>';
+  } else document.getElementById('pn-act').innerHTML = nada;
+
+  /* 3 · los últimos valores : flecha frente al anterior, curvita de toda la historia */
+  const filas = _pnLista(d, S).map(x => {
+    const s = S[x.k], u = s[s.length - 1], p = s.length > 1 ? s[s.length - 2] : null, L = _pnEtiq(x.k);
+    let fl = '', cl = 'pn-igual', tip = '';
+    if (p) { const c = (u[1] - p[1]) / (Math.abs(p[1]) || 1); fl = c > C.umbral_flecha ? '↑' : c < -C.umbral_flecha ? '↓' : '→'; cl = fl === '↑' ? 'pn-sube' : fl === '↓' ? 'pn-baja' : 'pn-igual';
+             tip = txr('pn_tip_antes', { v: p[1], f: _pnF(p[0]) }); }
+    return '<div class="pn-v"><span class="pn-c">' + _pnEsc(L[0]) + (x.din != null ? ' <span class="pn-din" data-ptip="' + _pnEsc(txr('pn_tip_dinamico', { p: x.din })) + '">✦</span>' : '') + '</span>'
+      + '<span class="pn-num">' + _pnEsc(u[1]) + '<span class="pn-u">' + _pnEsc(L[1]) + '</span></span>'
+      + '<span class="pn-fl ' + cl + '"' + (tip ? ' data-ptip="' + _pnEsc(tip) + '"' : '') + '>' + fl + '</span>' + _pnCurvita(s)
+      + '<span class="pn-f pn-der">' + _pnF(u[0]) + '</span></div>';
   });
+  document.getElementById('pn-valores').innerHTML = filas.length ? filas.join('') : nada;
+
+  /* 4 · los tratamientos en curso, por categoría ; los crónicos caducados, en naranja */
+  const tr = _pnEnCurso(d), cats = {};
+  tr.forEach(x => { const c = x.m._categoria || 'medicamento'; (cats[c] = cats[c] || []).push(x); });
+  let h = '';
+  Object.keys(cats).forEach(c => {
+    h += '<div class="pn-cat">' + _pnEsc(MF.nombreCategoria ? MF.nombreCategoria(c) : c) + ' · ' + cats[c].length + '</div>';
+    h += cats[c].map(x => '<div class="pn-fila' + (x.caducado ? ' pn-caduca' : '') + '"><span class="pn-c">💊 <b>' + _pnEsc(x.m._principio || x.m.nombre || '') + '</b> ' + _pnEsc(x.m.dosis || '')
+      + (x.cron ? ' <span class="pn-cron" data-ptip="' + _pnEsc(txr('pn_tip_cronico')) + '">' + _pnEsc(txr('pn_cronico')) + '</span>' : '') + '</span>'
+      + '<span class="pn-f pn-der">' + _pnEsc(x.caducado ? txr('pn_caducado', { f: _pnF(x.caducado) }) : (x.m.hasta ? txr('pn_hasta', { f: _pnF(x.m.hasta) }) : '')) + '</span></div>').join('');
+  });
+  document.getElementById('pn-trat').innerHTML = h || nada;
+  _pnAltura();
+}
+
+/* ── LOS COLORES DE LA ACTIVIDAD — como en Courbes : el usuario elige (P-H, 04/11/2026 : « c'est très subjectif, mieux vaut ne pas imposer »).
+      La paleta común (comun/paleta-colores.js) ; los de origen en resumen.js (panorama.colores, por nombre de pavé) ; la elección, en este navegador. ── */
+const _PN_CLAVE_COL = 'sf_resumen_colores';
+function _pnPaves(){ return (window.SF_PALETA_COLORES && SF_PALETA_COLORES.paves) || []; }
+function _pnColUsu(){ try { return JSON.parse(localStorage.getItem(_PN_CLAVE_COL) || '{}'); } catch (e) { return {}; } }
+function _pnColores(){
+  const C = _pnCfg().colores || {}, u = _pnColUsu(), P = _pnPaves(), out = {};
+  ['urg', 'hos', 'otr'].forEach(g => { const p = P.find(x => x.rol === C[g]); out[g] = u[g] || (p && p.color) || 'var(--muted)'; });
+  return out;
+}
+function _pnColorAbre(ev, g){
+  ev.stopPropagation();
+  const f = document.querySelector('.pn-paves[data-g="' + g + '"]');
+  document.querySelectorAll('.pn-paves').forEach(x => { if (x !== f) x.classList.remove('abierto'); });
+  if (f) f.classList.toggle('abierto');
+}
+function _pnColorElige(ev, g, c){ ev.stopPropagation(); const u = _pnColUsu(); if (c) u[g] = c; else delete u[g]; try { localStorage.setItem(_PN_CLAVE_COL, JSON.stringify(u)); } catch (e) {} buildResumen(); }
+function _pnLeyenda(col, nom){
+  const P = _pnPaves(), L = _pnLg();
+  return ['urg', 'hos', 'otr'].map(g => '<span class="pn-ley-it"><span class="pn-esp pn-esp-el" data-ptip="' + _pnEsc(txr('pn_tip_color')) + '" onclick="_pnColorAbre(event,\'' + g + '\')" style="background:' + _pnEsc(col[g]) + '"></span>' + _pnEsc(nom[g])
+    + '<span class="pn-paves" data-g="' + g + '">'
+    + P.map(p => '<span class="pn-pave" data-ptip="' + _pnEsc((p.etiqueta || {})[L] || (p.etiqueta || {}).es || p.rol) + '" onclick="_pnColorElige(event,\'' + g + '\',\'' + _pnEsc(p.color) + '\')" style="background:' + _pnEsc(p.color) + '"></span>').join('')
+    + '<span class="pn-pave pn-pave-def" data-ptip="' + _pnEsc(txr('pn_color_defecto')) + '" onclick="_pnColorElige(event,\'' + g + '\',null)">↺</span></span></span>').join('');
+}
+document.addEventListener('click', function(){ document.querySelectorAll('.pn-paves.abierto').forEach(x => x.classList.remove('abierto')); });
+
+/* ── LA ALTURA (P-H, 04/11/2026 : « un ascenseur pour ne pas avoir à faire défiler toute la page ») — en pantalla ancha,
+      las tres columnas lado a lado, la página ya no se desplaza : cada carta lleva su propio ascensor, su título fijo arriba. ── */
+function _pnAltura(){
+  const g = document.querySelector('.pn-grid'); if (!g) return;
+  const tres = getComputedStyle(g).gridTemplateColumns.split(' ').filter(Boolean).length >= 3;
+  g.classList.toggle('pn-fijo', tres);
+  g.style.height = tres ? Math.max(260, window.innerHeight - g.getBoundingClientRect().top - 6) + 'px' : '';
+  if (tres) {   /* lo que queda debajo (la esquina de la versión, los márgenes) : se descuenta, la página no debe desplazarse */
+    const exc = document.documentElement.scrollHeight - window.innerHeight;
+    if (exc > 0) g.style.height = Math.max(260, parseFloat(g.style.height) - exc) + 'px';
+  }
+}
+window.addEventListener('resize', function(){ clearTimeout(window._pnAT); window._pnAT = setTimeout(_pnAltura, 120); });
+
+/* ── ⚙ EL PROFESIONAL ELIGE LOS PARÁMETROS — se guarda en el .sf : preferencias.resumen ── */
+function pnAjusta(){
+  const d = _DATOS; if (!d) return;
+  const S = _pnSeries(d), ya = _pnLista(d, S).filter(x => x.din == null).map(x => x.k);
+  const ks = Object.keys(S).sort((a, b) => _pnEtiq(a)[0].localeCompare(_pnEtiq(b)[0]));
+  let h = '<div class="pn-aj-ayuda">' + _pnEsc(txr('pn_aj_ayuda')) + '</div><input class="pn-aj-busca" type="search" placeholder="' + _pnEsc(txr('pn_aj_buscar')) + '"><div class="pn-aj-lista">';
+  ks.forEach(k => { h += '<label class="pn-aj-fila"><input type="checkbox" value="' + _pnEsc(k) + '"' + (ya.indexOf(k) >= 0 ? ' checked' : '') + '> ' + _pnEsc(_pnEtiq(k)[0]) + ' <span class="pn-u">' + S[k].length + '</span></label>'; });
+  h += '</div>';
+  const pie = '<button class="sf-ventana-btn sf-suave">' + _pnEsc(txr('pn_aj_cancelar')) + '</button>'
+            + '<button class="sf-ventana-btn sf-suave pn-aj-base">' + _pnEsc(txr('pn_aj_base')) + '</button>'
+            + '<button class="sf-ventana-btn pn-aj-ok">' + _pnEsc(txr('pn_aj_guardar')) + '</button>';
+  const v = MF.ventana('⚙ ' + _pnEsc(txr('pn_valores')), h, { ancho: '520px', alPie: pie });
+  if (!v || !v.caja) return;
+  /* la búsqueda : se teclea « créat » y solo quedan esas líneas (sin acentos ni mayúsculas) */
+  const _nb = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const bq = v.caja.querySelector('.pn-aj-busca');
+  if (bq) { bq.oninput = function(){ const q = _nb(this.value); v.caja.querySelectorAll('.pn-aj-fila').forEach(r => { r.style.display = !q || _nb(r.textContent).indexOf(q) >= 0 ? '' : 'none'; }); }; setTimeout(() => bq.focus(), 50); }
+  /* la lista se ajusta a la ventana : un solo ascensor, el suyo */
+  setTimeout(function(){ const cu = v.caja.querySelector('.sf-ventana-cuerpo'), li = v.caja.querySelector('.pn-aj-lista'); if (cu && li) { const ex = cu.scrollHeight - cu.clientHeight; if (ex > 0) li.style.maxHeight = Math.max(120, li.clientHeight - ex - 2) + 'px'; } }, 30);
+  v.caja.querySelector('.pn-aj-ok').onclick = function(){
+    const sel = Array.from(v.caja.querySelectorAll('.pn-aj-lista input:checked')).map(i => i.value);
+    d.preferencias = d.preferencias || {};
+    d.preferencias.resumen = Object.assign({}, d.preferencias.resumen || {}, { parametros: sel, fecha: _pnHoy() });
+    try { MF.tocado(); } catch (e) {}
+    v.cierra(); buildResumen();
+  };
+  v.caja.querySelector('.pn-aj-base').onclick = function(){   /* volver a la lista de resumen.js */
+    if (d.preferencias && d.preferencias.resumen) { delete d.preferencias.resumen.parametros; d.preferencias.resumen.fecha = _pnHoy(); try { MF.tocado(); } catch (e) {} }
+    v.cierra(); buildResumen();
+  };
 }
 
 
@@ -1152,7 +1351,7 @@ MF.tip(document.getElementById('titulo'),
        + String.fromCharCode(10) + SF_CONFIG.programa);
 
 /* la casa cambia la lengua o la paleta : se vuelve a construir lo que se ve */
-function redibuja(){ aplicaColoresCurvas(); if(_DATOS) try{ buildResumen(loadData(), loadEvents()); switchResumen('situacion'); }catch(e){ console.warn(e); } }
+function redibuja(){ aplicaColoresCurvas(); if(_DATOS) try{ buildResumen(); }catch(e){ console.warn(e); } }
 MF.arranca({
   alIdioma:  redibuja,
   alPaleta:  redibuja,
@@ -1162,13 +1361,13 @@ MF.arranca({
     var pa=MF.paciente();
     document.getElementById('r-pac').textContent = pa.etiqueta || pa.matricula || '';
     document.getElementById('r-est').textContent =
-      (d.mesures||[]).length + ' extracciones · ' + (d.medicaments||[]).length + ' medicamentos';
+      txr('k_est', { n: (d.mesures||[]).length });
     document.getElementById('aviso').style.display='none';
-    try{ buildResumen(loadData(), loadEvents()); switchResumen('situacion'); }
+    try{ buildResumen(); }
     catch(e){
       var a=document.getElementById('aviso');
       a.style.display='block';
-      a.innerHTML='<b>El motor ha tropezado:</b><br><code>'+String(e.message)+'</code>';
+      a.innerHTML='<b>'+txr('err_motor')+'</b><br><code>'+String(e.message)+'</code>';
       console.error(e);
     }
   },

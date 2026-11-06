@@ -26,7 +26,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 </head>
 <body>
 <header data-cabecera>
-  <span id="titulo" class="mod-tit">🦠 Bacteriología</span>
+  <span id="titulo" class="mod-tit" data-idioma="titulo_mod">🦠 Bacteriología</span>
   <span class="chip" id="x-pac">—</span>
   <span class="chip" id="x-est"></span>
 </header>
@@ -36,10 +36,9 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <!-- ===== PANEL BACTERIOLOGÍA ===== -->
 <div id="panel-bacterio" class="panel">
   <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius);padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--muted)">
-    💡 <strong style="color:var(--text)">Fuentes</strong> —
-    Los resultados bacteriológicos se extraen automáticamente de los informes médicos (laboratorio, urgencias).
-    Incluyen cultivos, antibiogramas y comentarios del laboratorio.
-    <strong style="color:var(--warn)">Este módulo NO sustituye la interpretación microbiológica profesional.</strong>
+    💡 <strong style="color:var(--text)" data-idioma="fuentes_tit">Fuentes</strong> —
+    <span data-idioma="fuentes_txt">Los resultados bacteriológicos se extraen automáticamente de los informes médicos (laboratorio, urgencias). Incluyen cultivos, antibiogramas y comentarios del laboratorio.</span>
+    <strong style="color:var(--warn)" data-idioma="fuentes_aviso">Este módulo NO sustituye la interpretación microbiológica profesional.</strong>
   </div>
 
   <div id="bacterio-content"></div>
@@ -56,7 +55,8 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    BACTERIOLOGÍA — programa autónomo de Salufolio V2
-   Versión 2026.10.06-22:17:20
+   Versión 2026.11.05-15:44:58
+   (05/11/2026 : el título en la lengua de la casa.)
    Extraido de la V1: bacteriology-js.js + bacteriology-html.html.
    ESTE PROGRAMA ESCRIBE: los cultivos y las vacunas se guardan en el
    expediente y encienden el 💾 de la banda.
@@ -190,14 +190,14 @@ function _pdfPopupAbrir(url, titulo, info) {
 function _pdfSinArchivo(nom, motivo) {
   var mat = ''; try { mat = (MF.paciente().matricula || ''); } catch (e) {}
   var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : 'archivo no encontrado en sources/';
-  var msg = '📄 ' + nom + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
+  var msg = '📄 ' + ((window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom) + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
   var det = document.getElementById('xz-cmt-detalle');
   if (det) { det.textContent = '🧪 ' + msg; return; }
   document.querySelectorAll('.sf-pdf-aviso').forEach(function(o) { o.remove(); });
   var o = document.createElement('div'); o.className = 'sf-pdf-aviso';
   o.style.cssText = 'position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:10003;max-width:min(520px,90vw);background:var(--surface);color:var(--text);border:2px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
   o.textContent = msg + ' ';
-  var b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
+  var b = document.createElement('button'); b.className = 'btn'; b.textContent = (window.MF && MF.palabra) ? MF.palabra('cerrar') : 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
   b.onclick = function() { o.remove(); }; o.appendChild(b); document.body.appendChild(o);
 }
 
@@ -350,7 +350,7 @@ function _chartVerInforme(s, key) {
      l'extension que l'ancien code n'ajoutait pas. Zéro dépendance. */
   var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
   var dir = (typeof pdfCarpeta === 'function') ? pdfCarpeta(id) : '';
-  try { _pdfPopupAbrirEnPagina('', nom, info, nom); return; } catch (e) {}   /* P-H 06/10/2026 : la Casa sirve sources/ */
+  try { _pdfPopupAbrirEnPagina('', (window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom, info, nom); return; } catch (e) {}   /* P-H 04/11/2026 : PDF009:DSF2026/RPE_….pdf */   /* P-H 06/10/2026 : la Casa sirve sources/ */
   /* v2026.7.21.20 — plus d'aboiement du navigateur (demande P-H) : le repli
      passe par la BANDE DU PAVÉ quand elle existe, et nomme le bon guichet
      (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si

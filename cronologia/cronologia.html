@@ -23,25 +23,49 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 .tab-body{padding:14px 20px 40px}
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
 .module-version-corner{display:none}
+/* el gantt interactivo (P-H, 04/11/2026) */
+.g-ayuda{font-size:var(--tam-min,11px);color:var(--muted);margin:0 0 8px}
+/* el cuadro « Cómo leer », como en el Radar (P-H, 05/11/2026) */
+.g-leer{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radio-s,6px);margin:0 0 10px}
+.g-leer-cab{display:flex;align-items:center;gap:8px;padding:7px 14px;cursor:pointer;user-select:none;font-family:var(--mono);font-size:var(--tam-min,12px);color:var(--accent);font-weight:600}
+.g-leer-cab .flecha{width:1em;color:var(--muted)}
+.g-leer-cuerpo{padding:0 14px 10px;font-size:var(--tam-txt,13px);color:var(--muted);line-height:1.6}
+.g-leer-cuerpo p{margin:0 0 6px}.g-leer-cuerpo b{color:var(--text)}
+.g-leer.cerrado .g-leer-cuerpo{display:none}
+.g-anio{cursor:pointer;color:var(--text)}.g-anio:hover{color:var(--accent)}
+.g-tit{display:flex;align-items:center;font-weight:700;color:var(--text);cursor:pointer;z-index:3}
+.g-tit:hover{color:var(--accent)}.g-n{color:var(--muted);font-size:var(--gantt-font-n);margin-left:4px;font-weight:400}
+.g-banda{pointer-events:none;transition:background .12s}
+.g-banda.luz{background:var(--surface2)}
+.g-banda.sel{background:var(--surface2);box-shadow:inset 3px 0 0 var(--accent)}
+.g-casilla{cursor:pointer;z-index:1}
+.g-cuenta{color:var(--muted);font-size:12px;margin-bottom:6px}
+.g-anio-tit{font-family:var(--serif);font-weight:700;margin:12px 0 4px;color:var(--accent);border-bottom:1px solid var(--border)}
+.g-fila{display:flex;gap:10px;align-items:flex-start;padding:5px 0;border-bottom:1px dashed var(--border)}
+.g-fecha{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;padding-top:2px}
+.g-cuerpo{flex:1;min-width:0;font-size:13px}
+.g-txt{color:var(--muted);font-size:12px;margin-top:2px}.g-prc{color:var(--muted);font-size:11px;margin-top:2px;font-style:italic}
+.g-chip{font-size:10px;border:1px solid;border-radius:8px;padding:0 6px;margin-right:4px}
+/* el 📄 NO lleva sf-ventana-btn : MF.ventana hace « cerrar » del primero que encuentra */
+.g-doc{padding:2px 8px;border-radius:var(--radio-s,7px);border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:inherit}
+.g-doc:hover{border-color:var(--accent);color:var(--text)}
+.g-ventana .sf-ventana-cuerpo{max-height:70vh;overflow-y:auto}
+.g-casilla.g-vacia{cursor:default}
+.g-tit.g-tit-vacio{cursor:default;color:var(--muted);opacity:.55}
+.g-tit.g-tit-vacio:hover{text-decoration:none}
 </style>
 </head>
 <body>
 <header data-cabecera>
-  <span id="titulo" class="mod-tit">📅 Cronología</span>
+  <span id="titulo" class="mod-tit" data-idioma="titulo_mod">📅 Cronología</span>
   <span class="chip" id="k-pac">—</span>
   <span class="chip" id="k-est"></span>
 </header>
 
 <div id="panel-timeline" class="panel">
-  <div class="tab-bar" id="crono-tabs">
-    <div class="tab-item tab-active" onclick="switchCrono('asist')" id="crono-tab-asist" data-idioma="tab_asist">📊 Asistencial</div>
-    <div class="tab-item" onclick="switchCrono('clinica')" id="crono-tab-clinica" data-idioma="tab_clinica">📅 Clínica</div>
-  </div>
+  <!-- la cronología ES el gantt (P-H, 04/11/2026 : « on pourrait se passer des autres onglets ») -->
   <div class="tab-body">
     <div id="crono-view-asist"></div>
-    <div id="crono-view-clinica" style="display:none">
-      <div class="timeline" id="timeline-el"></div>
-    </div>
   </div>
   <div class="module-version-corner">
     <span class="module-version-tag" data-module="core"></span>
@@ -49,13 +73,21 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 </div>
 <div id="aviso" style="display:none"></div>
 
+<script src="../comun/especialidades.js"></script>
 <script src="cronologia.js"></script>
 <script src="cronologia.idiomas.js"></script>
 <script src="../comun/mf.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    CRONOLOGÍA — programa autónomo de Salufolio V2
-   Versión 2026.10.06-22:17:20
+   Versión 2026.11.05-15:44:58
+   (05/11/2026 : el título en la lengua de la casa.)
+   (05/11/2026 : el cuadro Cómo leer ; la burbuja de cada línea dice su nombre.)
+   (05/11/2026 : título centrado, letra más grande.)
+   (05/11/2026 : el título SERVICES de la columna de la izquierda.)
+   (05/11/2026 : las líneas « siempre » vacías, en gris.)
+   (05/11/2026 : Enfermería y Vacunas — P-H.)
+   (04/11/2026 : la cronología ES el gantt interactivo — P-H.)
 
    Extraído de la V1: core-timeline-js.js (el gantt asistencial y la línea
    clínica), core-panels-html.html (líneas 130-144).
@@ -178,14 +210,14 @@ function _pdfPopupAbrir(url, titulo, info) {
 function _pdfSinArchivo(nom, motivo) {
   var mat = ''; try { mat = (MF.paciente().matricula || ''); } catch (e) {}
   var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : 'archivo no encontrado en sources/';
-  var msg = '📄 ' + nom + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
+  var msg = '📄 ' + ((window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom) + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
   var det = document.getElementById('xz-cmt-detalle');
   if (det) { det.textContent = '🧪 ' + msg; return; }
   document.querySelectorAll('.sf-pdf-aviso').forEach(function(o) { o.remove(); });
   var o = document.createElement('div'); o.className = 'sf-pdf-aviso';
   o.style.cssText = 'position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:10003;max-width:min(520px,90vw);background:var(--surface);color:var(--text);border:2px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
   o.textContent = msg + ' ';
-  var b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
+  var b = document.createElement('button'); b.className = 'btn'; b.textContent = (window.MF && MF.palabra) ? MF.palabra('cerrar') : 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
   b.onclick = function() { o.remove(); }; o.appendChild(b); document.body.appendChild(o);
 }
 
@@ -338,7 +370,7 @@ function _chartVerInforme(s, key) {
      l'extension que l'ancien code n'ajoutait pas. Zéro dépendance. */
   var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
   var dir = (typeof pdfCarpeta === 'function') ? pdfCarpeta(id) : '';
-  try { _pdfPopupAbrirEnPagina('', nom, info, nom); return; } catch (e) {}   /* P-H 06/10/2026 : la Casa sirve sources/ */
+  try { _pdfPopupAbrirEnPagina('', (window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom, info, nom); return; } catch (e) {}   /* P-H 04/11/2026 : PDF009:DSF2026/RPE_….pdf */   /* P-H 06/10/2026 : la Casa sirve sources/ */
   /* v2026.7.21.20 — plus d'aboiement du navigateur (demande P-H) : le repli
      passe par la BANDE DU PAVÉ quand elle existe, et nomme le bon guichet
      (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si
@@ -1112,35 +1144,7 @@ function buildTimeline(data, events, meds) {
    CRONOLOGÍA ASISTENCIAL — Suivi par spécialité (graphique type Gantt)
    Table-driven: SPEC_MAP extensible
 ================================================================ */
-const SPEC_MAP = [
-  [/CATARATA|DICLOFENACO.*colirio|VIGAMOX|oft[aá]lm/i,                          'Oftalmología',    '#3498db'],
-  [/HBP|PROSTAT|urolog|PSA|ESTRANGURIA|URINARI/i,                                'Urología',        '#e67e22'],
-  [/HIPERTENS|cardio|\.FA\b|fibrilaci[oó]n|RIVAROXABAN|DOLOR TOR[AÁ]C|tensi[oó]n|ECG|arritmia/i,'Cardiología','#e74c3c'],
-  [/DERMATIT|ECZEMA|ECCEMA|lesi[oó]n.*piel|cut[aá]ne|GRANULOMA|PICADURA/i,       'Dermatología',    '#9b59b6'],
-  [/ANSIEDAD|DIAZEPAM|psiq|INSOMNIO|depresi[oó]n|ansiedad/i,                     'Salud mental',    '#f1c40f'],
-  [/PROTESIS HOMBRO|CONTUSION|TUNEL CARP|traumat|artro|fractura/i,                'Traumatología',   '#2ecc71'],
-  [/INSUFICIENCIA VENOSA|vascular|VARICES/i,                                      'Angiología',      '#1abc9c'],
-  [/Urgencias|URGENCI|urgencia/i,                                                  'Urgencias',       '#c0392b'],
-  [/NEUMOL|APNEA|bronq|EPOC|ASMA|pulmon/i,                                        'Neumología',      '#16a085'],
-  [/NEUROLOG|NEUROF|cefalea|migrañ|VÉRTIGO|MAREO/i,                               'Neurología',      '#8e44ad'],
-  [/OTOR|ORL|otitis|sinusit|amigdal/i,                                            'ORL',             '#2980b9'],
-  [/INFECCION|infección|orina/i,                                                  'Med. general',    '#7f8c8d'],
-];
-const SPEC_DEFAULT = ['Consulta AP', '#95a5a6'];
-
-function detectSpec(text) {
-  for (const [re, label, color] of SPEC_MAP) {
-    if (re.test(text)) return { label, color };
-  }
-  return { label: SPEC_DEFAULT[0], color: SPEC_DEFAULT[1] };
-}
-
-function switchCrono(view) {
-  document.getElementById('crono-view-clinica').style.display = view === 'clinica' ? '' : 'none';
-  document.getElementById('crono-view-asist').style.display   = view === 'asist'   ? '' : 'none';
-  document.getElementById('crono-tab-clinica').className = 'tab-item' + (view === 'clinica' ? ' tab-active' : '');
-  document.getElementById('crono-tab-asist').className   = 'tab-item' + (view === 'asist'   ? ' tab-active' : '');
-}
+/* SPEC_MAP, detectSpec y switchCrono : retirados (P-H, 04/11/2026) — las especialidades viven en cronologia.js, y ya no hay dos vistas */
 
 function ganttTipShow(el) {
   var tip = document.getElementById('gantt-tooltip');
@@ -1186,143 +1190,193 @@ function ganttTipHide() {
   if (tip) tip.style.opacity = '0';
 }
 
-let _ganttResizeHook = false;
+/* ══════════════════════════════════════════════════════════════════════
+   EL GANTT INTERACTIVO (P-H, 04/11/2026)
+
+   « Un doigt quand on survole les titres des lignes, en même temps mettre
+     en relief la ligne ; clic sur le titre : on sélectionne la ligne
+     (Cardiologie), une popup affiche les consultations des années de la
+     ligne ; clic sur le titre colonne année : les consultations en
+     cardiologie de l'année sélectionnée. On pourrait se passer des autres
+     onglets. »
+
+   La cronología ES el gantt : una línea por especialidad, una columna por
+   año (el año presente a la izquierda — P-H, 19/07). Se interroga :
+     · título de línea : se ilumina al pasar ; clic → la línea queda elegida
+       y una ventana enseña sus consultas, año por año ;
+     · año (cabecera) : clic → las consultas de ese año, de la línea elegida
+       o de todas si no hay ninguna ;
+     · casilla (línea × año) o punto : clic → esa línea, ese año.
+   La especialidad de cada acontecimiento : su TIPO o el SERVICIO de su
+   procedencia primero (urgencias, ingreso, neumología…) ; las palabras del
+   título solo en último recurso. La tabla vive en cronologia.js
+   (« especialidades ») : etiquetas en 4 lenguas, colores, servicios, palabras.
+   Un mismo acontecimiento citado por varios documentos (misma fecha, mismo
+   título) cuenta una vez — solo a la vista : el .sf no cambia.
+   ══════════════════════════════════════════════════════════════════════ */
+let _ganttResizeHook = false, _ganttSel = null, _ganttEv = null;
+function _lgCr(){ try { return MF.idioma() || 'es'; } catch (e) { return 'es'; } }
+function txcr(k, v){
+  const T = (window.SF_TEXTOS && SF_TEXTOS.textos) || {}, L = T[_lgCr()] || {};
+  if (v && v.n === 1 && (L[k + '_1'] || (T.es && T.es[k + '_1']))) k = k + '_1';   /* el singular, si la tabla lo tiene */
+  let s = L[k] || (T.es && T.es[k]) || k;
+  Object.keys(v || {}).forEach(x => { s = s.split('{' + x + '}').join(v[x]); });
+  return s;
+}
+function _escCr(s){ return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function _espTabla(){ return (((window.SF_ESPECIALIDADES && SF_ESPECIALIDADES.especialidades) || SF_CONFIG.especialidades) || []).map(e => Object.assign({}, e, {
+  _srv: e.servicios ? new RegExp(e.servicios, 'i') : null, _pal: e.palabras ? new RegExp(e.palabras, 'i') : null })); }
+function _espNombre(e){ const t = (e && e.etiqueta) || {}; return t[_lgCr()] || t.es || (e && e.id) || ''; }
+/* la especialidad de un acontecimiento : tipo y servicio primero, palabras después */
+function _espDe(ev, T){
+  if (ev && ev._esp) { const f = T.find(e => e.id === ev._esp); if (f) return f; }   /* un registro dice él mismo su línea */
+  const pr = MF.procedencia ? MF.procedencia(ev, true) : { servicio: '' };
+  const tipoSrv = (ev.type || '') + ' ' + (pr.servicio || '');
+  /* por el tipo o el servicio : urgencias e ingresos primero (su « orden »), luego las especialidades */
+  for (const e of T.slice().sort((a, b) => (a.orden || 99) - (b.orden || 99))) if (e._srv && e._srv.test(tipoSrv)) return e;
+  const blob = (ev.titre || ev.title || '') + ' ' + (ev.description || ev.text || '');
+  for (const e of T) if (e._pal && e._pal.test(e.solo_titulo ? String(ev.titre || ev.title || '') : blob)) return e;   /* solo_titulo (P-H, 05/11/2026) */
+  return T.find(e => e.por_defecto) || T[T.length - 1];
+}
+/* los acontecimientos, una vez cada uno, con su especialidad */
+function _ganttEventos(){
+  const T = _espTabla(), visto = {}, out = [];
+  const vistoEsp = {};   /* fecha|línea de los acontecimientos (P-H, 05/11/2026) */
+  (loadEvents() || []).concat(((window.MF && MF.eventosRegistros) ? MF.eventosRegistros(_DATOS) : [])).forEach(e => {
+    if (!e || !e.date || isNaN(new Date(e.date).getTime())) return;
+    const tit = String(e.titre || e.title || e.type || '').trim();
+    const k = e.date + '|' + tit.toUpperCase();
+    if (visto[k]) return; visto[k] = 1;
+    const esp = _espDe(e, T);
+    const kd = e.date + '|' + esp.id;   /* un registro que repite un acontecimiento de ese día y esa línea : ya contado ; uno_por_dia : uno solo */
+    if (e._registro ? vistoEsp[kd] : (esp.uno_por_dia && vistoEsp[kd])) return;
+    if (!e._registro) vistoEsp[kd] = 1;
+    out.push({ ev: e, date: e.date, anio: parseInt(e.date), titulo: tit, esp: esp.id, color: esp.color });
+  });
+  return out;
+}
+
 function buildCronoAsistencial() {
   if (!_ganttResizeHook) {
     _ganttResizeHook = true;
     let _grT = null;
-    window.addEventListener('resize', function () {
-      clearTimeout(_grT);
-      _grT = setTimeout(function () {
-        const vAs = document.getElementById('crono-view-asist');
-        if (vAs && vAs.offsetParent !== null) buildCronoAsistencial();
-      }, 150);
-    });
+    window.addEventListener('resize', function () { clearTimeout(_grT); _grT = setTimeout(buildCronoAsistencial, 150); });
   }
-  const events = (loadEvents() || []).filter(e => e && e.date && !isNaN(new Date(e.date).getTime()));
-  if (!events.length) return;
-
-  const bySpec = {};
-  events.forEach(e => {
-    const blob = (e.titre || e.title || '') + ' ' + (e.description || e.text || '');
-    const sp = detectSpec(blob);
-    if (!bySpec[sp.label]) bySpec[sp.label] = { color: sp.color, dates: [] };
-    bySpec[sp.label].dates.push(e.date);
+  const E = _ganttEventos(); _ganttEv = E;
+  const el0 = document.getElementById('crono-view-asist');
+  if (!E.length) { if (el0) el0.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">' + txcr('g_sin_eventos') + '</p>'; return; }
+  const T = _espTabla(), porEsp = {};
+  E.forEach(x => { (porEsp[x.esp] = porEsp[x.esp] || []).push(x); });
+  /* orden : las líneas fijas de la tabla (urgencias, ingresos) primero, luego por número de consultas */
+  const specs = Object.keys(porEsp).sort((a, b) => {
+    const fa = (T.find(e => e.id === a) || {}).orden || 99, fb = (T.find(e => e.id === b) || {}).orden || 99;
+    return fa - fb || porEsp[b].length - porEsp[a].length;
   });
-
-  const specs = Object.keys(bySpec).sort((a,b) => bySpec[b].dates.length - bySpec[a].dates.length);
-  const allDates = events.map(e => e.date).filter(Boolean).sort();
-  const minY = parseInt(allDates[0]);
-  const maxY = parseInt(allDates[allDates.length - 1]);
+  /* las líneas « siempre » sin nada, abajo (P-H, 05/11/2026 : « ça évitera des questions ») */
+  T.filter(e => e.siempre && !porEsp[e.id]).forEach(e => { specs.push(e.id); porEsp[e.id] = []; });
+  const anios = E.map(x => x.anio).sort((a, b) => a - b);
+  const minY = anios[0], maxY = anios[anios.length - 1];
 
   let el = document.getElementById('crono-asistencial');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'crono-asistencial';
-    const container = document.getElementById('crono-view-asist');
-    if (container) container.appendChild(el);
-  }
+  if (!el) { el = document.createElement('div'); el.id = 'crono-asistencial'; if (el0) el0.appendChild(el); }
 
-  /* Lire les variables CSS (ou valeurs par défaut) */
   const cs = getComputedStyle(document.documentElement);
   const v = k => parseInt(cs.getPropertyValue(k)) || 0;
-  const yearWMin = v('--gantt-year-w') || 38;   /* devient un MINIMUM (13/07) */
-  const rowH   = v('--gantt-row-h')   || 26;
-  const labelW = v('--gantt-label-w') || 110;
-  const pad    = v('--gantt-pad')     || 6;
-  const dotSz  = v('--gantt-dot')     || 7;
-  const dotR   = cs.getPropertyValue('--gantt-dot-r').trim() || '0';
-  const fSize  = cs.getPropertyValue('--gantt-font').trim()  || '10px';
-  const fLbl   = cs.getPropertyValue('--gantt-font-lbl').trim() || '11px';
-  const tipDly = cs.getPropertyValue('--gantt-tip-delay').trim() || '0s';
-  /* Largeur d'année DYNAMIQUE : le Gantt occupe 100% de son conteneur,
-     la dernière colonne colle au bord droit ; en dessous du minimum,
-     le défilement horizontal reprend ses droits (demande P-H 13/07). */
+  const yearWMin = v('--gantt-year-w') || 38, rowH = v('--gantt-row-h') || 26, labelW = v('--gantt-label-w') || 150;
+  const pad = v('--gantt-pad') || 6, dotSz = v('--gantt-dot') || 7;
+  const dotR = cs.getPropertyValue('--gantt-dot-r').trim() || '0';
+  const fSize = cs.getPropertyValue('--gantt-font').trim() || '10px', fLbl = cs.getPropertyValue('--gantt-font-lbl').trim() || '11px';
+  const fTit = cs.getPropertyValue('--gantt-font-tit').trim() || fSize;
   const nY = maxY - minY + 1;
-  const contEl = document.getElementById('crono-view-asist');
-  const contW = contEl ? contEl.clientWidth : 0;
+  const contW = el0 ? el0.clientWidth : 0;
   const yearW = contW > 0 ? Math.max(yearWMin, Math.floor((contW - labelW - pad - 22) / nY)) : yearWMin;
   const totalW = labelW + nY * yearW + pad;
+  const X = y => labelW + (maxY - y) * yearW;      /* el año presente a la izquierda */
 
-  let html = '';
-  html += '<div style="overflow-x:auto;border:1px solid var(--border);background:var(--surface);padding:' + pad + 'px;padding-left:0">';
-  html += '<div style="position:relative;min-width:' + totalW + 'px;height:' + ((specs.length + 1) * rowH + pad) + 'px">';
+  let h = _ganttLeerHtml();
+  h += '<div style="overflow-x:auto;border:1px solid var(--border);background:var(--surface);padding:' + pad + 'px;padding-left:0">';
+  h += '<div style="position:relative;min-width:' + totalW + 'px;height:' + ((specs.length + 1) * rowH + pad) + 'px">';
+  h += '<div style="position:absolute;left:0;top:' + (rowH - 5) + 'px;width:' + totalW + 'px;border-bottom:1px solid var(--border)"></div>';
+  /* el título de la columna de los nombres (P-H, 05/11/2026 : « SERVICES ») */
+  h += '<div class="g-col-tit" style="position:absolute;left:0;top:0;width:' + labelW + 'px;text-align:center;font-size:' + fTit + ';font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)">' + _escCr(txcr('g_col_titulo')) + '</div>';
+  for (let y = minY; y <= maxY; y++)
+    h += '<div class="g-anio" data-ptip="' + _escCr(txcr('tip_anio')) + '" onclick="_ganttAnio(' + y + ')" style="position:absolute;left:' + X(y) + 'px;top:0;width:' + yearW + 'px;text-align:center;font-size:' + fSize + ';font-weight:700;' + (y === minY ? '' : 'border-left:1px solid var(--border)') + '">' + y + '</div>';
 
-  /* Ligne horizontale sous la rangée des dates (P-H 13/07) */
-  html += '<div style="position:absolute;left:0;top:' + (rowH - 5) + 'px;width:' + totalW + 'px;border-bottom:1px solid var(--border)"></div>';
-  /* En-tête années — gras */
-  for (let y = minY; y <= maxY; y++) {
-    const x = labelW + (maxY - y) * yearW;   /* P-H 19/07 : l'année COURANTE à gauche — l'œil lit le présent d'abord */
-    const isFirst = y === minY;
-    html += '<div style="position:absolute;left:' + x + 'px;top:0;width:' + yearW + 'px;text-align:center;font-size:' + fSize + ';font-weight:700;color:var(--text);' + (isFirst ? '' : 'border-left:1px solid var(--border)') + '">' + y + '</div>';
-  }
-
-  /* Lignes par spécialité */
   specs.forEach((sp, ri) => {
-    const top = (ri + 1) * rowH + 2;
-    const info = bySpec[sp];
-    /* Label — gras */
-    html += '<div style="position:absolute;left:0;top:' + top + 'px;width:' + labelW + 'px;height:' + (rowH - 2) + 'px;display:flex;align-items:center;font-size:' + fLbl + ';font-weight:700;color:var(--text);padding-left:' + pad + 'px">';
-    html += '<span style="display:inline-block;width:' + dotSz + 'px;height:' + dotSz + 'px;border-radius:' + dotR + ';background:' + info.color + ';margin-right:' + pad + 'px;flex:none"></span>';
-    html += sp + ' <span style="color:var(--muted);font-size:9px;margin-left:4px;font-weight:400">(' + info.dates.length + ')</span></div>';
-
-    /* Fond rayé */
-    for (let y = minY; y <= maxY; y++) {
-      const x = labelW + (maxY - y) * yearW;   /* P-H 19/07 : l'année COURANTE à gauche — l'œil lit le présent d'abord */
-      const bl = y === minY ? '' : 'border-left:1px solid var(--border);';
-      html += '<div style="position:absolute;left:' + x + 'px;top:' + top + 'px;width:' + yearW + 'px;height:' + (rowH - 2) + 'px;' + bl + (ri % 2 ? 'background:rgba(128,128,128,.04)' : '') + '"></div>';
-    }
-
-    /* Points (carrés, tooltip enrichi maison) */
-    info.dates.forEach(d => {
-      const dt = new Date(d);
-      const yearFrac = dt.getFullYear() + (dt.getMonth() / 12) + (dt.getDate() / 365);
-      /* v2026.7.21.1 (fix .20.4 rejoué) : sur l'axe INVERSÉ, la fraction
-         intra-année doit courir de DROITE (janvier) à GAUCHE (décembre)
-         dans sa case — sinon les points glissent dans l'année voisine. */
-      const x = labelW + (maxY - yearFrac) * yearW + yearW;
-      /* Trouver l'événement correspondant */
-      const ev = events.find(e => e.date === d && detectSpec((e.titre||e.title||'') + ' ' + (e.description||e.text||'')).label === sp);
-      const evTitle = ev ? (ev.titre || ev.title || '') : '';
-      const evDesc  = ev ? (ev.description || ev.text || '') : '';
-      const evDiag  = ev && ev.diagnostics ? ev.diagnostics.slice(0,2).join(' · ') : '';
-      const tipContent = [
-        '<strong>' + d + '</strong>',
-        evTitle ? evTitle.slice(0, 80) : '',
-        evDesc  ? evDesc.slice(0, 100) : '',
-        evDiag  ? '🔬 ' + evDiag.slice(0, 80) : '',
-      ].filter(Boolean).join('\n');
-      /* Pavé = 1/12 de colonne (un MOIS), demande P-H 13/07 — jamais plus
-         petit que dotSz pour rester cliquable sur fenêtres étroites. */
-      const paveW = Math.max(dotSz, Math.round(yearW / 12));
-      const paveH = rowH - 8;   /* le pavé prend la hauteur de sa ligne (P-H 13/07) */
-      html += '<div data-gantt-tip="' + tipContent.replace(/"/g,'&quot;') + '" data-tip-color="' + info.color + '" '
-            + 'style="position:absolute;left:' + Math.round(x - paveW / 2) + 'px;top:' + (top + 3) + 'px;'
-            + 'width:' + paveW + 'px;height:' + paveH + 'px;border-radius:' + dotR + ';background:' + info.color + ';'
-            + 'opacity:.9;cursor:pointer;z-index:1" '
-            + 'onmouseenter="ganttTipShow(this)" onmouseleave="ganttTipHide()"></div>';
+    const top = (ri + 1) * rowH + 2, lista = porEsp[sp], esp = T.find(e => e.id === sp) || {}, color = esp.color || 'var(--muted)';
+    const sel = _ganttSel === sp;
+    /* la banda de la línea : se ilumina al pasar por su título, se marca si está elegida */
+    h += '<div class="g-banda' + (sel ? ' sel' : '') + '" id="g-banda-' + ri + '" style="position:absolute;left:0;top:' + (top - 1) + 'px;width:' + totalW + 'px;height:' + rowH + 'px"></div>';
+    h += (lista.length ? '<div class="g-tit" data-ptip="' + _escCr(txcr('tip_fila', { nom: _espNombre(esp) })) + '" onmouseenter="_ganttLuz(' + ri + ',1)" onmouseleave="_ganttLuz(' + ri + ',0)" onclick="_ganttFila(\'' + sp + '\')" '
+                       : '<div class="g-tit g-tit-vacio" data-ptip="' + _escCr(txcr('tip_vacio')) + '" ')
+       + 'style="position:absolute;left:0;top:' + top + 'px;width:' + labelW + 'px;height:' + (rowH - 2) + 'px;font-size:' + fLbl + ';padding-left:' + pad + 'px">'
+       + '<span style="display:inline-block;width:' + dotSz + 'px;height:' + dotSz + 'px;border-radius:' + dotR + ';background:' + color + ';margin-right:' + pad + 'px;flex:none"></span>'
+       + _escCr(_espNombre(esp)) + ' <span class="g-n">(' + lista.length + ')</span></div>';
+    const conAnio = {}; lista.forEach(x => { conAnio[x.anio] = 1; });
+    for (let y = minY; y <= maxY; y++)   /* una casilla vacía no abre nada */
+      h += '<div class="g-casilla' + (conAnio[y] ? '' : ' g-vacia') + '" onmouseenter="_ganttLuz(' + ri + ',1)" onmouseleave="_ganttLuz(' + ri + ',0)"' + (conAnio[y] ? ' onclick="_ganttVer(\'' + sp + '\',' + y + ')"' : '') + ' style="position:absolute;left:' + X(y) + 'px;top:' + top + 'px;width:' + yearW + 'px;height:' + (rowH - 2) + 'px;' + (y === minY ? '' : 'border-left:1px solid var(--border);') + '"></div>';
+    const paveW = Math.max(dotSz, Math.round(yearW / 12)), paveH = rowH - 8;
+    lista.forEach(x => {
+      const dt = new Date(x.date), f = dt.getFullYear() + dt.getMonth() / 12 + dt.getDate() / 365;
+      const px = labelW + (maxY - f) * yearW + yearW;
+      const tip = [fmtDate(x.date), x.titulo.slice(0, 80), (MF.procedencia ? MF.procedencia(x.ev) : '')].filter(Boolean).join('\n');
+      h += '<div data-gantt-tip="' + _escCr(tip) + '" data-tip-color="' + color + '" onclick="_ganttVer(\'' + sp + '\',' + x.anio + ')" '
+         + 'style="position:absolute;left:' + Math.round(px - paveW / 2) + 'px;top:' + (top + 3) + 'px;width:' + paveW + 'px;height:' + paveH + 'px;border-radius:' + dotR + ';background:' + color + ';opacity:.9;cursor:pointer;z-index:2" '
+         + 'onmouseenter="_ganttLuz(' + ri + ',1);ganttTipShow(this)" onmouseleave="_ganttLuz(' + ri + ',0);ganttTipHide()"></div>';
     });
   });
-
-  html += '</div></div>';
-
-  /* Tooltip instantané via CSS */
-  if (!document.getElementById('gantt-tip-css')) {
-    const st = document.createElement('style');
-    st.id = 'gantt-tip-css';
-    st.textContent = '#crono-asistencial [title]{position:relative}#crono-asistencial [title]:hover::after{content:attr(title);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--surface);color:var(--text);border:1px solid var(--border);padding:3px 8px;font-size:10px;font-family:var(--mono);z-index:100;pointer-events:none;transition-delay:var(--gantt-tip-delay,0s)}';
-    document.head.appendChild(st);
-  }
-
-  el.innerHTML = html;
+  h += '</div></div>';
+  el.innerHTML = h;
+  const lc = el.querySelector('.g-leer-cab'); if (lc) if (window.MF && MF.plegableTip) MF.plegableTip(lc, _ganttLeerAbierto());   /* « Clic para cerrar / abrir » */
+}
+/* el cuadro « Cómo leer » : abierto la primera vez, luego la página recuerda la elección */
+function _ganttLeerAbierto(){ try { return localStorage.getItem('sf_crono_leer') !== '0'; } catch (e) { return true; } }
+function _ganttLeerHtml(){
+  const ab = _ganttLeerAbierto();
+  return '<div class="g-leer' + (ab ? '' : ' cerrado') + '"><div class="g-leer-cab" onclick="_ganttLeer(this)"><span class="flecha">' + (ab ? '▾' : '▸') + '</span>' + _escCr(txcr('comoleer_tit')) + '</div>'
+       + '<div class="g-leer-cuerpo"><p><b>' + _escCr(txcr('comoleer_ve_tit')) + '</b> ' + _escCr(txcr('comoleer_ve')) + '</p>'
+       + '<p><b>' + _escCr(txcr('comoleer_hace_tit')) + '</b> ' + _escCr(txcr('comoleer_hace')) + '</p></div></div>';
+}
+function _ganttLeer(cab){
+  const c = cab.parentNode, cerrar = !c.classList.contains('cerrado');
+  c.classList.toggle('cerrado', cerrar); cab.querySelector('.flecha').textContent = cerrar ? '▸' : '▾';
+  if (window.MF && MF.plegableTip) MF.plegableTip(cab, !cerrar);
+  try { localStorage.setItem('sf_crono_leer', cerrar ? '0' : '1'); } catch (e) {}
+}
+function _ganttLuz(ri, si){ const b = document.getElementById('g-banda-' + ri); if (b) b.classList.toggle('luz', !!si); }
+function _ganttFila(sp){ _ganttSel = (_ganttSel === sp) ? null : sp; buildCronoAsistencial(); if (_ganttSel) _ganttVer(sp, null); }
+function _ganttAnio(y){   /* la línea elegida no tiene nada ese año : se enseñan todas */
+  const hay = _ganttSel && (_ganttEv || []).some(x => x.esp === _ganttSel && x.anio === y);
+  _ganttVer(hay ? _ganttSel : null, y); }
+/* la ventana : las consultas de una línea (o de todas) y de un año (o de todos), por año, de la más reciente */
+function _ganttVer(sp, anio){
+  const T = _espTabla();
+  const L = (_ganttEv || _ganttEventos()).filter(x => (!sp || x.esp === sp) && (!anio || x.anio === anio)).sort((a, b) => b.date.localeCompare(a.date));
+  const nomEsp = sp ? _espNombre(T.find(e => e.id === sp)) : txcr('g_todas');
+  const tit = nomEsp + (anio ? ' · ' + anio : '');
+  let h = '<div class="g-cuenta">' + _escCr(txcr('g_cuenta', { n: L.length })) + '</div>';
+  if (!L.length) h += '<p>' + _escCr(txcr('g_ninguna')) + '</p>';
+  let anioAct = null;
+  L.forEach(x => {
+    if (x.anio !== anioAct) { anioAct = x.anio; h += '<div class="g-anio-tit">' + x.anio + '</div>'; }
+    const e = x.ev, txt = String(e.description || e.text || '').trim(), pr = MF.procedencia ? MF.procedencia(e) : '';
+    const esp = sp ? '' : '<span class="g-chip" style="border-color:' + x.color + ';color:' + x.color + '">' + _escCr(_espNombre(T.find(s => s.id === x.esp))) + '</span> ';
+    h += '<div class="g-fila"><span class="g-fecha">' + fmtDate(x.date) + '</span><div class="g-cuerpo">' + esp + '<b>' + _escCr(x.titulo) + '</b>'
+       + (txt && !/^\d+$/.test(txt) && txt.toUpperCase() !== x.titulo.toUpperCase() ? '<div class="g-txt">' + _escCr(txt.slice(0, 240)) + '</div>' : '')
+       + (pr ? '<div class="g-prc">' + _escCr(pr) + '</div>' : '') + '</div>'
+       + (e.pdf_id ? '<button class="g-doc" data-ptip="' + _escCr(txcr('g_doc')) + '" onclick="_chartVerInforme({pdf_id:\'' + _escCr(e.pdf_id) + '\'}, null)">📄</button>' : '') + '</div>';
+  });
+  document.querySelectorAll('.g-ventana').forEach(v => { const f = v.closest('.sf-ventana-fondo'); if (f) f.remove(); });
+  const v = MF.ventana('📅 ' + _escCr(tit), h, { ancho: '720px' });
+  if (v && v.caja) v.caja.classList.add('g-ventana');
 }
 
 
 
 
+
 /* la casa cambia la lengua o la paleta : se vuelve a construir lo que se ve */
-function redibuja(){ aplicaColoresCurvas(); if(_DATOS) try{ buildCronoAsistencial();
-      buildTimeline(); }catch(e){ console.warn(e); } }
+function redibuja(){ aplicaColoresCurvas(); if(_DATOS) try{ buildCronoAsistencial(); }catch(e){ console.warn(e); } }
 MF.arranca({
   alIdioma:  redibuja,
   alPaleta:  redibuja,
@@ -1331,17 +1385,15 @@ MF.arranca({
     _DATOS=d;
     var pa=MF.paciente();
     document.getElementById('k-pac').textContent = pa.etiqueta || pa.matricula || '';
-    document.getElementById('k-est').textContent =
-      (d.events||[]).length + ' eventos · ' + (d.mesures||[]).length + ' extracciones';
+    document.getElementById('k-est').textContent = txcr('k_est', { n: _ganttEventos().length })   /* los mismos que el gantt : cada uno una vez */;
     document.getElementById('aviso').style.display='none';
     try{
       buildCronoAsistencial();
-      buildTimeline();
       MF.ponVersion();
     }catch(e){
       var a=document.getElementById('aviso');
       a.style.display='block';
-      a.innerHTML='<b>El motor de la cronología ha tropezado:</b><br><code>'+String(e.message)+'</code>';
+      a.innerHTML='<b>'+txcr('err_motor')+'</b><br><code>'+String(e.message)+'</code>';
       console.error(e);
     }
   },
@@ -1353,5 +1405,9 @@ MF.arranca({
   }
 });
 </script>
+<script src="../comun/pdfjs/pdf.min.js"></script>
+<!-- el visor de documentos, común (P-H, 06/11/2026) : después de los scripts del módulo -->
+<script src="../comun/visor-pdf.idiomas.js"></script>
+<script src="../comun/visor-pdf.js"></script>
 </body>
 </html>

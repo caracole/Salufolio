@@ -18,22 +18,43 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 #panel-tabla{display:block;padding:12px 20px 40px}
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
 .module-version-corner{display:none}
+/* un año sin análisis : columna estrecha y gris (P-H, 05/11/2026) — todo por variables */
+th.tbl-vacio,td.tbl-vacio{background:var(--surface2) !important;color:var(--muted) !important;width:var(--tbl-vacio-ancho,38px);min-width:var(--tbl-vacio-ancho,38px);max-width:var(--tbl-vacio-ancho,38px);padding:6px 1px !important;font-size:9px !important;font-weight:400 !important;text-align:center;opacity:.7}
+th.tbl-vacio{cursor:help}
+/* el constat de un año (P-H, 05/11/2026) — todo por variables */
+th.tc-clic{cursor:pointer}
+th.tc-clic:hover{text-decoration:underline}
+.tc-ayuda{font-size:12px;color:var(--muted);margin-bottom:6px;line-height:1.5}
+.tc-tit{margin:12px 0 4px;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--accent);font-weight:700;border-bottom:1px solid var(--border);padding-bottom:3px}
+.tc-fila{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:3px 0;border-bottom:1px dashed var(--border);font-size:12.5px}
+.tc-fila:last-child{border-bottom:0}
+.tc-n{flex:1 1 180px;min-width:0}
+.tc-v{font-family:var(--mono);white-space:nowrap}
+.tc-u,.tc-ref{color:var(--muted);font-size:10.5px}
+.tc-d{color:var(--muted);font-family:var(--mono);font-size:11px}
+.tc-mal{color:var(--danger);font-weight:700}
+.tc-fl{font-family:var(--mono);font-weight:700;white-space:nowrap}
+.tc-sube{color:var(--warn)} .tc-baja{color:var(--accent)}
+.tc-cruza{font-size:10.5px;color:var(--muted);border:1px solid var(--border);border-radius:var(--radio-s,6px);padding:0 5px}
+.tc-ia{font-size:12.5px;line-height:1.6;margin-top:4px}
+.tc-ia-pie{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.tc-nada{color:var(--muted);font-style:italic;font-size:12px;padding:2px 0}
 </style>
 </head>
 <body>
 <header data-cabecera>
-  <span id="titulo" class="mod-tit">📋 Tabla detallada</span>
+  <span id="titulo" class="mod-tit" data-idioma="titulo_mod">📋 Tabla detallada</span>
   <span class="chip" id="t-pac">—</span>
   <span class="chip" id="t-est"></span>
 </header>
 
 <div id="panel-tabla" class="panel">
   <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;position:relative">
-    <div class="section-label" style="margin-bottom:0" data-idioma="titulo_tabla">Tabla de síntesis cronológica</div>
+    <div class="section-label" style="margin-bottom:0" data-idioma="titulo_tabla">Análisis detallados</div>
     <select id="tbl-filter" multiple style="display:none"></select>
-    <button class="btn" id="btn-tbl-filter" onclick="toggleTableFilter()" style="font-size:11px;padding:4px 10px">🔽 Filtrar</button>
-    <button class="btn" id="btn-tbl-filter-reset" onclick="resetTableFilter()" style="font-size:11px;padding:4px 10px;display:none">✕ Quitar filtro</button>
-    <button class="btn" onclick="MF.abreGlosario()" data-tip-key="tip_glosario" style="font-size:11px;padding:4px 10px">❓ Glosario</button>
+    <button class="btn" id="btn-tbl-filter" onclick="toggleTableFilter()" style="font-size:11px;padding:4px 10px" data-idioma="filtrar">🔽 Filtrar</button>
+    <button class="btn" id="btn-tbl-filter-reset" onclick="resetTableFilter()" style="font-size:11px;padding:4px 10px;display:none" data-idioma="quitar">✕ Quitar filtro</button>
+    <button class="btn" onclick="MF.abreGlosario()" data-tip-key="tip_glosario" style="font-size:11px;padding:4px 10px" data-idioma="glosario">❓ Glosario</button>
   </div>
   <div class="data-table-wrap">
     <table class="data-table">
@@ -47,13 +68,27 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 </div>
 <div id="aviso" style="display:none"></div>
 
+<script src="../comun/prompt-comentario-curva.js"></script>
+<script src="../comun/prompt-comentario-anio.js"></script>
+<script src="../comun/modelos-ia.js"></script>
+<script src="../comun/comentario-ia.js"></script>
+<script src="../comun/paleta-colores.js"></script>
 <script src="tabla.js"></script>
 <script src="tabla.idiomas.js"></script>
+<script src="../comun/equivalencias.js"></script>
+<script src="../comun/sinonimos-parametros.js"></script>
 <script src="../comun/mf.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    TABLA DETALLADA — programa autónomo de Salufolio V2
-   Versión 2026.10.06-22:17:20
+   Versión 2026.11.05-13:12:33
+   (05/11/2026 : el tableau ocupa toda la altura de la ventana — P-H.)
+   (05/11/2026 : el constat de un año, etapa 2 — el comentario de la IA.)
+   (05/11/2026 : las curvas nuevas con un color de la paleta común, no negras — P-H.)
+   (05/11/2026 : el clic derecho, la curva y el comentario de la IA en la ventana común — P-H.)
+   (05/11/2026 : el constat de un año, sin la IA — P-H.)
+   (05/11/2026 : años sin análisis en gris ; título « Análisis detallados » — P-H.)
+   (04/11/2026 : por la tabla de sinónimos ; textos en 4 lenguas — P-H.)
 
    Extraído de la V1: core-table-js.js (36 funciones — la tabla, el filtro,
    los comentarios clínicos), core-panels-html.html (líneas 110-127), y sus
@@ -65,7 +100,7 @@ const APP_VERSION_DATE = SF_CONFIG.version;
 
 /* ══ LES PONTS vers mf.js ══ */
 var _DATOS=null;
-function loadData(){   return (_DATOS && _DATOS.mesures) || []; }
+function loadData(){   return (_DATOS && (MF.mesuresCanon ? MF.mesuresCanon(_DATOS) : _DATOS.mesures)) || []; }   /* por la tabla de sinónimos (P-H, 04/11/2026) */
 function loadEvents(){ return (_DATOS && _DATOS.events) || []; }
 function loadMeds(){   return (_DATOS && _DATOS.medicaments) || []; }
 function getPatientLabel(){ var p=MF.paciente(); return p.etiqueta || p.matricula || ''; }
@@ -174,14 +209,14 @@ function _pdfPopupAbrir(url, titulo, info) {
 function _pdfSinArchivo(nom, motivo) {
   var mat = ''; try { mat = (MF.paciente().matricula || ''); } catch (e) {}
   var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : 'archivo no encontrado en sources/';
-  var msg = '📄 ' + nom + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
+  var msg = '📄 ' + ((window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom) + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
   var det = document.getElementById('xz-cmt-detalle');
   if (det) { det.textContent = '🧪 ' + msg; return; }
   document.querySelectorAll('.sf-pdf-aviso').forEach(function(o) { o.remove(); });
   var o = document.createElement('div'); o.className = 'sf-pdf-aviso';
   o.style.cssText = 'position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:10003;max-width:min(520px,90vw);background:var(--surface);color:var(--text);border:2px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
   o.textContent = msg + ' ';
-  var b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
+  var b = document.createElement('button'); b.className = 'btn'; b.textContent = (window.MF && MF.palabra) ? MF.palabra('cerrar') : 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
   b.onclick = function() { o.remove(); }; o.appendChild(b); document.body.appendChild(o);
 }
 
@@ -334,7 +369,7 @@ function _chartVerInforme(s, key) {
      l'extension que l'ancien code n'ajoutait pas. Zéro dépendance. */
   var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
   var dir = (typeof pdfCarpeta === 'function') ? pdfCarpeta(id) : '';
-  try { _pdfPopupAbrirEnPagina('', nom, info, nom); return; } catch (e) {}   /* P-H 06/10/2026 : la Casa sirve sources/ */
+  try { _pdfPopupAbrirEnPagina('', (window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom, info, nom); return; } catch (e) {}   /* P-H 04/11/2026 : PDF009:DSF2026/RPE_….pdf */   /* P-H 06/10/2026 : la Casa sirve sources/ */
   /* v2026.7.21.20 — plus d'aboiement du navigateur (demande P-H) : le repli
      passe par la BANDE DU PAVÉ quand elle existe, et nomme le bon guichet
      (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si
@@ -465,7 +500,7 @@ function makeChart(canvasId, key, data, opts) {
         x: { grid: { color: rejilla } },
         y: { type: esLog ? 'logarithmic' : 'linear',
              grid: { color: rejilla }, ticks: { maxTicksLimit: 6 },
-             title: { display: true, text: p.unit + ' — vista ' + (esLog ? 'LOG' : 'LIN') } }
+             title: { display: true, text: p.unit + ' — ' + _tblTx('vista') + ' ' + (esLog ? 'LOG' : 'LIN') } }
       }
     },
     plugins: [{
@@ -799,7 +834,7 @@ function paramSpan(key, shortLabel, extraStyle) {
   /* P-H 07/08 : fondu avec l'indication clic droit dans LA MÊME bulle
      rapide (data-ptip) — l'ancien title="" natif du <td> parent avait un
      délai imposé par le navigateur, impossible à raccourcir en JS. */
-  const tip = (p.desc || p.label) + (ref ? '\nRef: ' + ref : '') + '\n🖱️ Clic izq.: glosario · Clic der.: curva';
+  const tip = (p.desc || p.label) + (ref ? '\nRef: ' + ref : '') + '\n🖱️ ' + _tblTx('tip_clics');
   const label = shortLabel || p.label;
   return '<span class="param-tip" data-ptip="' + tip.replace(/"/g, '&quot;') + '" onclick="glosarioMostrarToast(\'' + key.replace(/'/g,"") + '\', event)" style="cursor:pointer' + (extraStyle ? ';'+extraStyle : '') + '">' + label + '</span>';
 }
@@ -940,6 +975,164 @@ function onParamChange() {
   } else {
     box.style.display = 'none';
   }
+}
+
+/* ══ LA TABLA DE SINÓNIMOS (P-H, 04/11/2026 : « Tableau détaillé, il apporte quoi ? ») ══
+   Con DSF2026 solo salían « Constantes (2) » : sus mesures dicen HEMOGLOBINA, SODIO, UREA — como el documento —
+   y aquí solo se conocían las claves del programa. Ahora loadData() pasa por MF.mesuresCanon (como Courbes),
+   y las claves que la tabla común conoce y este catálogo no (gasometría, proteinograma, escalas…) entran
+   con su etiqueta en la lengua de la casa, su unidad y su grupo ; sin rango de referencia (nadie lo ha dado). */
+(function(){
+  if (!window.SF_SINONIMOS_PARAMETROS || !MF.parametro || !MF.parametros) return;
+  /* un color de VERDAD para cada curva nueva (P-H, 05/11/2026 : « la couleur de la courbe est en noir ») : Chart.js no entiende
+     « var(--accent) » y pinta en negro. Un pavé de la paleta común, por turno, como en Courbes ; si falta, el acento tal como se ve. */
+  let _iCol = 0;
+  window._tblColorNuevo = function(){ const P = (window.SF_PALETA_COLORES && SF_PALETA_COLORES.paves) || [];
+    if (P.length) return P[_iCol++ % P.length].color;
+    return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#4a8fe8'; };
+  const otros = GRUPOS.OTROS; delete GRUPOS.OTROS;
+  MF.parametros().forEach(k => {
+    const e = MF.parametro(k);
+    if (!e || !e.curva) return;
+    const g = e.grupo || 'OTROS';
+    if (!PARAMS[k]) PARAMS[k] = { get label() { const x = MF.parametro(k); return (x && x.etiqueta) || k; }, unit: e.unidad || '', ref: null, color: _tblColorNuevo(),
+                                  get desc() { const x = MF.parametro(k); return (x && x.etiqueta) || k; } };
+    if (g === 'OTROS') { if (otros.indexOf(k) < 0 && grupoDe(k) === 'OTROS') otros.push(k); return; }
+    if (!GRUPOS[g]) GRUPOS[g] = [];
+    if (grupoDe(k) === 'OTROS' && GRUPOS[g].indexOf(k) < 0) GRUPOS[g].push(k);
+  });
+  GRUPOS.OTROS = otros;
+})();
+/* los textos de la página, en la lengua de la casa (tabla.idiomas.js) ; un grupo : su nombre en la tabla, o en la tabla común */
+function _tblTx(k){ const T = (window.SF_TEXTOS && SF_TEXTOS.textos) || {}; let lg = 'es'; try { lg = MF.idioma() || 'es'; } catch (e) {} return (T[lg] && T[lg][k]) || (T.es && T.es[k]) || k; }
+function _tblGrupoNom(g){
+  const T = (window.SF_TEXTOS && SF_TEXTOS.textos) || {}; let lg = 'es'; try { lg = MF.idioma() || 'es'; } catch (e) {}
+  const x = (T[lg] && T[lg]['grupo_' + g]) || (((window.SF_SINONIMOS_PARAMETROS || {}).grupos || {})[g] || {})[lg] || g;
+  return String(x).toUpperCase();
+}
+
+/* ══ EL CONSTAT DE UN AÑO (P-H, 05/11/2026 : « si on clique sur une année, un commentaire d'évolution ? » — GO 1) ══
+   Sin la IA, al instante, cada línea sale directamente de las cifras :
+   · lo que está fuera de las normas ese año ;
+   · los mayores cambios frente al año anterior que tiene análisis ;
+   · las anomalías que duran (fuera de las normas varios años seguidos, entre los años en que se midió).
+   Lo regulable en tabla.js (« constat ») ; los textos en tabla.idiomas.js. La IA vendrá después (etapa 2). */
+function _tblCfgConstat(){ return Object.assign({ cambio: 0.2, banda: 0.5, max_cambios: 10, min_anios_dura: 2 }, (window.SF_CONFIG && SF_CONFIG.constat) || {}); }
+function _tblEsc(s){ return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function _tblF(d){ return d && d.length >= 10 ? d.slice(8, 10) + '/' + d.slice(5, 7) + '/' + d.slice(0, 4) : (d || ''); }
+function _tblUltimo(k, anio){   /* la última toma de ese parámetro en ese año : [fecha, valor, n tomas, n fuera] */
+  const L = (tblState.data || []).filter(m => m.date && m.date.slice(0, 4) === anio && m.vals && m.vals[k] !== undefined && !isNaN(parseFloat(m.vals[k])))
+    .sort((a, b) => a.date < b.date ? -1 : 1);
+  if (!L.length) return null;
+  const u = L[L.length - 1], M = L.filter(m => getStatus(k, parseFloat(m.vals[k])) === 'bad'), um = M[M.length - 1];
+  /* [fecha, valor, n tomas, n fuera, fecha y valor de la última FUERA de las normas] */
+  return [u.date, parseFloat(u.vals[k]), L.length, M.length, um ? um.date : null, um ? parseFloat(um.vals[k]) : null];
+}
+function _tblRefTxt(r){   /* [lo, hi] → « 70–110 », « ≤ 116 », « ≥ 60 » */
+  if (!r) return ''; const lo = r[0], hi = r[1];
+  return lo !== null && hi !== null ? lo + '–' + hi : hi !== null ? '≤ ' + hi : lo !== null ? '≥ ' + lo : '';
+}
+function _tblConstat(anio){
+  const C = _tblCfgConstat(), keys = (tblState.filter && tblState.filter.length) ? tblState.filter : (tblState.keys || []);
+  const anios = [...new Set((tblState.data || []).map(m => (m.date || '').slice(0, 4)).filter(Boolean))].sort().reverse();
+  const prev = anios.find(a => a < anio);                       /* el año anterior QUE TIENE análisis */
+  const nom = k => _tblEsc((PARAMS[k] && PARAMS[k].label) || k), uni = k => _tblEsc((PARAMS[k] && PARAMS[k].unit) || '');
+  const ref = k => { const s = _tblRefTxt(PARAMS[k] && PARAMS[k].ref); return s ? ' <span class="tc-ref">' + _tblEsc(_tblTx('tc_normes').split('{r}').join(s)) + '</span>' : ''; };
+  /* 1 · fuera de las normas */
+  const fuera = [];
+  keys.forEach(k => { const u = _tblUltimo(k, anio); if (u && u[3]) fuera.push({ k: k, u: u }); });
+  /* 2 · los mayores cambios frente a prev */
+  const cambios = [];
+  if (prev) keys.forEach(k => {
+    const u = _tblUltimo(k, anio), p = _tblUltimo(k, prev); if (!u || !p) return;
+    const c = (u[1] - p[1]) / (Math.abs(p[1]) || 1); if (Math.abs(c) < C.cambio) return;
+    /* lo que cuenta para un médico : cruzar el límite de las normas, o moverse una buena parte de su anchura —
+       0.1 → 0 basófilos es un -100 % que no dice nada */
+    const r = PARAMS[k] && PARAMS[k].ref, ancho = (r && r[0] !== null && r[1] !== null) ? (r[1] - r[0]) : null;
+    const cruza = getStatus(k, u[1]) !== getStatus(k, p[1]), peso = ancho ? Math.abs(u[1] - p[1]) / ancho : Math.abs(c);
+    if (!cruza && ancho && peso < C.banda) return;
+    cambios.push({ k: k, u: u, p: p, c: c, cruza: cruza, peso: peso });
+  });
+  cambios.sort((a, b) => (b.cruza - a.cruza) || (b.peso - a.peso));
+  /* 3 · lo que dura : fuera de las normas este año y los años anteriores en que se midió, seguidos */
+  const dura = [];
+  fuera.forEach(x => {
+    const serie = anios.filter(a => a <= anio && _tblUltimo(x.k, a)); let n = 0, desde = anio;
+    for (const a of serie) { const u = _tblUltimo(x.k, a); if (u && u[3]) { n++; desde = a; } else break; }
+    if (n >= C.min_anios_dura) dura.push({ k: x.k, n: n, desde: desde });
+  });
+  dura.sort((a, b) => b.n - a.n);
+  /* la ventana */
+  let h = '<div class="tc-ayuda">' + _tblEsc(_tblTx('tc_ayuda')) + '</div>';
+  h += '<div class="tc-tit">' + _tblEsc(_tblTx('tc_fuera')) + ' · ' + fuera.length + '</div>';
+  h += fuera.length ? fuera.map(x => '<div class="tc-fila"><span class="tc-n">' + nom(x.k) + '</span><span class="tc-v tc-mal">' + _tblEsc(x.u[5]) + ' <span class="tc-u">' + uni(x.k) + '</span></span>'
+       + '<span class="tc-d">' + _tblF(x.u[4]) + (x.u[2] > 1 ? ' · ' + _tblEsc(_tblTx(x.u[3] === 1 ? 'tc_n_fuera_1' : 'tc_n_fuera').split('{a}').join(x.u[3]).split('{b}').join(x.u[2])) : '') + '</span>' + ref(x.k) + '</div>').join('')
+     : '<div class="tc-nada">' + _tblEsc(_tblTx('tc_ninguno')) + '</div>';
+  h += '<div class="tc-tit">' + _tblEsc(prev ? _tblTx('tc_cambios').split('{a}').join(prev) : _tblTx('tc_sin_prev')) + (prev ? ' · ' + Math.min(cambios.length, C.max_cambios) : '') + '</div>';
+  if (prev) h += cambios.length ? cambios.slice(0, C.max_cambios).map(x => '<div class="tc-fila"><span class="tc-n">' + nom(x.k) + '</span>'
+       + '<span class="tc-v">' + _tblEsc(x.p[1]) + ' → <b class="' + (getStatus(x.k, x.u[1]) === 'bad' ? 'tc-mal' : '') + '">' + _tblEsc(x.u[1]) + '</b> <span class="tc-u">' + uni(x.k) + '</span></span>'
+       + '<span class="tc-fl ' + (x.c > 0 ? 'tc-sube' : 'tc-baja') + '">' + (x.c > 0 ? '↑ +' : '↓ ') + Math.round(x.c * 100) + ' %</span>'
+       + (x.cruza ? '<span class="tc-cruza">' + _tblEsc(_tblTx(getStatus(x.k, x.u[1]) === 'bad' ? 'tc_sale' : 'tc_vuelve')) + '</span>' : '') + '</div>').join('')
+     : '<div class="tc-nada">' + _tblEsc(_tblTx('tc_sin_cambios').split('{p}').join(Math.round(C.cambio * 100))) + '</div>';
+  h += '<div class="tc-tit">' + _tblEsc(_tblTx('tc_dura')) + ' · ' + dura.length + '</div>';
+  h += dura.length ? dura.map(x => '<div class="tc-fila"><span class="tc-n">' + nom(x.k) + '</span><span class="tc-d">'
+       + _tblEsc(_tblTx('tc_n_anios').split('{n}').join(x.n).split('{a}').join(x.desde).split('{b}').join(anio)) + '</span></div>').join('')
+     : '<div class="tc-nada">' + _tblEsc(_tblTx('tc_nada_dura')) + '</div>';
+  /* lo que la IA recibirá : los parámetros del constat, desde el año de comparación (o el comienzo de « lo que dura ») */
+  const _ks = [...new Set(fuera.map(x => x.k).concat(cambios.slice(0, C.max_cambios).map(x => x.k)).concat(dura.map(x => x.k)))];
+  const _desde = [prev || anio].concat(dura.map(x => x.desde)).sort()[0];
+  _tcUltimo = { anio: anio, prev: prev || '', desde: _desde, ks: _ks,
+    huella: _ks.map(k => { const u = _tblUltimo(k, anio); return k + ':' + (u ? u[0] + '=' + u[1] : ''); }).join(',') };
+  h += _tblConstatIAHtml(anio);
+  if (_tcVentana && _tcVentana.cierra) { try { _tcVentana.cierra(); } catch (e) {} }
+  _tcVentana = MF.ventana('📅 ' + _tblEsc(_tblTx('tc_titulo').split('{a}').join(anio)), h, { ancho: '640px' });
+}
+
+/* ── EL CONSTAT, ETAPA 2 : EL COMENTARIO DE LA IA (P-H, 05/11/2026) ──
+   El texto de la demanda vive en comun/prompt-comentario-anio.js, nunca aquí. Se envían los valores
+   del año, del año de comparación (y desde el comienzo de « lo que dura »), con sexo, edad y — si la
+   casilla está marcada — los diagnósticos : jamás nombre, SIP ni número de expediente.
+   Se guarda por paciente y por año ; se imprime con o sin nombre y SIP, como el de las curvas. */
+let _tcVentana = null, _tcUltimo = null;
+function _tblConstatIAHtml(anio){
+  const u = _tcUltimo; if (!u || u.anio !== anio || !window.SF_COMENTARIO_IA) return '';
+  const memo = SF_COMENTARIO_IA.lee(_matCur(), 'anio:' + anio), apiKey = MF.claveIA ? MF.claveIA() : '';
+  const cambio = memo && memo.huella && memo.huella !== u.huella;
+  let h = '<div class="tc-tit">🧠 ' + _tblEsc(_tblTx('tc_ia_tit')) + '</div>';
+  if (memo && memo.texto) {
+    h += '<div class="tc-ia">' + SF_COMENTARIO_IA.formatea(memo.texto) + '</div>'
+       + '<div class="tc-ia-pie"><span class="sf-ia-nota">' + _tblTx('nota_comentario').replace('{modelo}', memo.modelo || '').replace('{fecha}', memo.fecha || '') + '</span>'
+       + '<button class="btn" style="font-size:11px;padding:4px 12px" onclick="_tblConstatImprime(\'' + anio + '\')">🖨 ' + _tblTx('btn_imprimir') + '</button></div>';
+    if (cambio) h += '<div class="sf-ia-aviso">⚠ ' + _tblTx('aviso_datos_cambiaron') + '</div>';
+  }
+  if (!apiKey) return h + '<div class="tc-nada">💡 ' + MF.textoClave('invita') + ' <a href="#" onclick="MF.pideClave(function(){ _tblConstat(\'' + anio + '\'); });return false;" style="color:var(--accent)">🔑 ' + MF.textoClave('poner') + '</a></div>';
+  if (!memo || !memo.texto || cambio)
+    h += SF_COMENTARIO_IA.lineaContexto(_DATOS) + '<div style="display:flex;align-items:center;gap:8px;margin-top:6px"><button id="tc-ia-btn" class="btn" style="font-size:11px;padding:5px 12px" onclick="_tblConstatIA(\'' + anio + '\')">'
+       + (memo && memo.texto ? '🔄 ' + _tblEsc(_tblTx('btn_actualizar')) : '🧠 ' + _tblEsc(_tblTx('tc_ia_btn'))) + '</button><span class="tc-d">' + SF_COMENTARIO_IA.tx('se_guarda') + '</span></div>';
+  return h;
+}
+async function _tblConstatIA(anio){
+  const u = _tcUltimo; if (!u || u.anio !== anio) return;
+  if (!(MF.claveIA && MF.claveIA())) { MF.pideClave(function(){ _tblConstat(anio); }); return; }
+  const b = document.getElementById('tc-ia-btn'); if (b) { b.disabled = true; b.textContent = '⏳ ' + SF_COMENTARIO_IA.tx('consultando'); }
+  const desde = u.desde, series = u.ks.map(k => { const p = PARAMS[k] || {};
+    return { etiqueta: p.label || k, unidad: p.unit || '', ref: p.ref || null, desc: '',
+             puntos: getSeriesForParam(tblState.data || [], k).filter(s => String(s.x).slice(0, 4) >= desde && String(s.x).slice(0, 4) <= anio).map(s => ({ x: s.x, y: s.y })) }; }).filter(s => s.puntos.length);
+  const P = window.SF_PROMPT_COMENTARIO_ANIO;
+  try {
+    const r = await SF_COMENTARIO_IA.pide(_DATOS, series, { prompt: P, huecos: { anio: anio, prev: u.prev || (P && P.sin_prev) || '—' } });
+    SF_COMENTARIO_IA.guarda(_matCur(), 'anio:' + anio, { texto: r.texto, modelo: r.modelo, fecha: r.fecha, huella: u.huella, enviado: SF_COMENTARIO_IA.resumen(_DATOS) });
+    _tblConstat(anio);
+  } catch (err) {
+    if (b) { b.disabled = false; b.textContent = '🧠 ' + _tblTx('tc_ia_btn'); }
+    const z = document.getElementById('tc-ia-btn'); if (z && z.parentNode) { const a = document.createElement('div'); a.style.cssText = 'color:var(--warn);font-size:11px;margin-top:6px'; a.textContent = '⚠ ' + SF_COMENTARIO_IA.tx('error', { msg: err.message }); z.parentNode.appendChild(a); }
+  }
+}
+function _tblConstatImprime(anio){
+  const memo = SF_COMENTARIO_IA.lee(_matCur(), 'anio:' + anio); if (!memo) return;
+  const IMP = (SF_CONFIG.comentario || {}).impresion || {}, pa = MF.paciente() || {}, sip = pa.sip || (_DATOS && (_DATOS.sip || (_DATOS.paciente || {}).sip)) || '';
+  SF_COMENTARIO_IA.preguntaImpresion(f => SF_COMENTARIO_IA.imprime({ titulo: _tblTx('tc_titulo').split('{a}').join(anio), paciente: f.nombre ? (pa.etiqueta || '') : '', sip: f.sip ? sip : '',
+    imagen: '', comentario: memo.texto, enviado: memo.enviado || '', nota: _tblTx('nota_comentario').replace('{modelo}', memo.modelo || '').replace('{fecha}', memo.fecha || ''), colores: IMP }), { haySip: !!sip });
 }
 
 function registerCustomParam() {
@@ -1338,7 +1531,7 @@ function buildTableFilter(allKeys) {
     tblState.filter = sel.length ? sel : null;
     try { localStorage.setItem(TBL_FILTER_KEY, JSON.stringify(sel)); } catch(e) {}
     const btn = document.getElementById('btn-tbl-filter');
-    if (btn) btn.textContent = sel.length ? '🔽 Filtrar (' + sel.length + ')' : '🔽 Filtrar';
+    if (btn) btn.textContent = sel.length ? _tblTx('filtrar') + ' (' + sel.length + ')' : _tblTx('filtrar');
     _tblResetVisible();
     renderTable();
   };
@@ -1350,7 +1543,7 @@ function buildTableFilter(allKeys) {
   }).join('');
   /* Bouton reflète l'état initial */
   const btn = document.getElementById('btn-tbl-filter');
-  if (btn && tblState.filter) btn.textContent = '🔽 Filtrar (' + tblState.filter.length + ')';
+  if (btn && tblState.filter) btn.textContent = _tblTx('filtrar') + ' (' + tblState.filter.length + ')';
   _tblResetVisible();
 }
 function resetTableFilter() {
@@ -1359,7 +1552,7 @@ function resetTableFilter() {
   const el = document.getElementById('tbl-filter');
   if (el) Array.from(el.options).forEach(o => o.selected = false);
   const btn = document.getElementById('btn-tbl-filter');
-  if (btn) btn.textContent = '🔽 Filtrar';
+  if (btn) btn.textContent = _tblTx('filtrar');
   _tblResetVisible();
   renderTable();
 }
@@ -1425,66 +1618,46 @@ function formatearComentarioClaude(texto) {
    plus jamais de page mixte commentaire+courbe (« inexploitable »). La
    courbe reste dans la grille, chacun son espace. */
 function tblShowComentario(keys, autoComentar) {
+  /* P-H, 05/11/2026 : « on voyait la courbe + suggestion commentaire de l'IA » — la MISMA ventana que en Courbes
+     (comun/comentario-ia.js) : la curva arriba, en su piso de altura fija ; el comentario de la IA a la demanda ;
+     guardado por paciente ; impresión con o sin nombre y SIP. La maquinaria antigua del Tableau ya no se llama. */
   if (!Array.isArray(keys)) keys = [keys];
-  document.querySelectorAll('.tblcurve-comentario-popup').forEach(o => o.remove());
   const data = loadData();
   const parCle = keys.map(k => { const serie = getSeriesForParam(data, k); return { k, serie, dern: serie[serie.length - 1] }; }).filter(x => x.serie.length);
   if (!parCle.length) return;
   const esCombo = keys.length > 1;
-  const titre = keys.map(k => '<span style="color:' + ((PARAMS[k]||{}).color || 'var(--accent)') + '">' + ((PARAMS[k]||{}).label || k) + '</span>').join(' ⇆ ');
-  const stats = parCle.map(x => ((PARAMS[x.k]||{}).label || x.k) + ': última ' + x.dern.y + ' ' + ((PARAMS[x.k]||{}).unit || '') + ' (' + fmtDate(x.dern.x) + ')').join(' · ');
-  const huella = esCombo
-    ? parCle.map(x => x.k + ':' + x.serie.length + '|' + x.dern.x + '|' + x.dern.y).join(',')
-    : (parCle[0].serie.length + '|' + parCle[0].dern.x + '|' + parCle[0].dern.y);
-  const apiKey = localStorage.getItem('mt_apikey');
+  const titre = keys.map(k => '<span style="color:' + ((PARAMS[k] || {}).color || 'var(--accent)') + '">' + ((PARAMS[k] || {}).label || k) + '</span>').join(' ⇆ ');
+  const stats = parCle.map(x => ((PARAMS[x.k] || {}).label || x.k) + ': ' + _tblTx('ultima') + ' ' + x.dern.y + ' ' + ((PARAMS[x.k] || {}).unit || '') + ' (' + fmtDate(x.dern.x) + ')').join(' · ');
+  const huella = esCombo ? parCle.map(x => x.k + ':' + x.serie.length + '|' + x.dern.x + '|' + x.dern.y).join(',')
+                         : (parCle[0].serie.length + '|' + parCle[0].dern.x + '|' + parCle[0].dern.y);
+  const apiKey = (MF.claveIA ? MF.claveIA() : '');
   const cleMemo = esCombo ? 'combo:' + keys.slice().sort().join('+') : keys[0];
-  const memo = loadComentariosCurvas()[cleMemo];
+  const memo = SF_COMENTARIO_IA.lee(_matCur(), cleMemo);
   const cambioDatos = memo && memo.huella && memo.huella !== huella;
-  const clesJs = "['" + keys.map(k => k.replace(/'/g,"")).join("','") + "']";
-  var boutonAction = '';
-  if (!memo || !memo.texto) boutonAction = '<button id="tblcurve-btn" class="btn" style="font-size:11px;padding:5px 12px" onclick="tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')">🧠 Comentario clínico (Claude)</button>';
-  else if (cambioDatos) boutonAction = '<button id="tblcurve-btn" class="btn primary" style="font-size:11px;padding:5px 12px" onclick="tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')">🔄 Actualizar comentario</button>';
-  const zona = apiKey ? (
-    '<div id="tblcurve-topbar" style="display:flex;flex-direction:column;flex:1;min-height:0">' +
-    (memo && memo.texto ? formatearComentarioClaude(memo.texto) +
-      '<div style="flex:0 0 auto;margin-top:4px;font-size:10px;color:var(--muted);font-style:italic">Comentario de Claude (' + (memo.modelo||'') + ') del ' + (memo.fecha||'') + ' — no sustituye el juicio clínico.</div>' +
-      (cambioDatos ? '<div style="flex:0 0 auto;margin-top:6px;font-size:11px;color:var(--warn,#e8a33d)">⚠ Los datos han cambiado desde este comentario.</div>' : '') : '') +
-    (boutonAction ? '<div style="flex:0 0 auto;margin-top:8px;display:flex;align-items:center;gap:8px">' + boutonAction + '<span style="font-size:10px;color:var(--muted)">se guarda en el expediente</span></div>' : '') + '</div>'
-  ) : (
-    '<div id="tblcurve-topbar" style="font-size:11px;color:var(--muted)">💡 Puede pedir una segunda opinión a Claude — configure su clave API en <a href="#" onclick="showPanel(\'importar\',document.getElementById(\'tour-tab-importar\'));this.closest(\'.tblcurve-comentario-popup\').remove();return false;" style="color:var(--accent)">📥 Datos</a>.</div>'
-  );
-  const pop = document.createElement('div');
-  pop.className = 'tblcurve-comentario-popup';
-  /* P-H 09/08 : popup redimensionnable — poignée native du navigateur au
-     coin bas-droit, surtout pour pouvoir le RÉDUIRE. */
-  pop.style.cssText = 'position:fixed;z-index:10002;width:min(860px,96vw);max-height:88vh;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.5);padding:4px;display:flex;flex-direction:column;resize:both;overflow:hidden;min-width:260px;min-height:110px';
-  pop.style.left = 'calc(50% - min(430px,48vw))';
-  pop.style.top = '60px';
-  pop.innerHTML =
-    '<div class="tblcurve-toast-drag" style="cursor:move;user-select:none;flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 6px;border-bottom:1px solid var(--border)">' +
-    '<b style="font-size:14px">' + titre + '</b>' +
-    '<span style="display:inline-flex;align-items:center;gap:8px">' +
-    (esCombo ? (patronExiste(keys) ? '<span style="font-size:11px;color:var(--ok,#3fb950)">✓ Patrón conservado</span>'
-      : '<button id="tblcombo-conservar" class="btn" style="font-size:11px;padding:3px 8px" onclick="patronConservar(' + JSON.stringify(keys).replace(/"/g,"\'") + ')">💾 Conservar este patrón</button>') : '') +
-    '<span style="cursor:pointer;color:var(--muted);font-size:16px" onclick="this.closest(\'.tblcurve-comentario-popup\').remove()">✕</span></span></div>' +
-    '<div style="flex:0 0 auto;font-size:11px;color:var(--muted);padding:4px 6px">' + stats + '</div>' +
-    '<div style="flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;padding:4px 6px">' + zona + '</div>';
-  document.body.appendChild(pop);
-  (function() {
-    var poignee = pop.querySelector('.tblcurve-toast-drag');
-    var dragging = false, sx = 0, sy = 0, ol = 0, ot = 0;
-    function pt(e) { return e.touches && e.touches[0] ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY }; }
-    function down(e) { if (e.target.closest('button') || (e.target.tagName === 'SPAN' && e.target.getAttribute('onclick'))) return; dragging = true; var p = pt(e); sx = p.x; sy = p.y; var r = pop.getBoundingClientRect(); ol = r.left; ot = r.top; e.preventDefault(); }
-    function move(e) { if (!dragging) return; var p = pt(e); pop.style.left = Math.max(0, Math.min(window.innerWidth - pop.offsetWidth, ol + p.x - sx)) + 'px'; pop.style.top = Math.max(0, Math.min(window.innerHeight - 40, ot + p.y - sy)) + 'px'; }
-    function up() { dragging = false; }
-    poignee.addEventListener('mousedown', down);
-    poignee.addEventListener('touchstart', down, { passive: false });
-    window.addEventListener('mousemove', move);
-    window.addEventListener('touchmove', move, { passive: false });
-    window.addEventListener('mouseup', up);
-    window.addEventListener('touchend', up);
-  })();
-  if (autoComentar && apiKey && !(memo && memo.texto)) setTimeout(function() { tblCurveComentario(esCombo ? keys : keys[0], huella); }, 200);
+  const clesJs = "['" + keys.map(k => k.replace(/'/g, "")).join("','") + "']";
+  const llamada = 'tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g, "") + '\')';
+  let boton = '';
+  if (!memo || !memo.texto) boton = '<button id="tblcurve-btn" class="btn" style="font-size:11px;padding:5px 12px" onclick="' + llamada + '">🧠 ' + _tblTx('btn_comentario') + '</button>';
+  else if (cambioDatos) boton = '<button id="tblcurve-btn" class="btn primary" style="font-size:11px;padding:5px 12px" onclick="' + llamada + '">🔄 ' + _tblTx('btn_actualizar') + '</button>';
+  let cuerpo = '', pie = '';
+  if (!apiKey) {
+    pie = '<div>💡 ' + MF.textoClave('invita') + ' <a href="#" onclick="MF.pideClave(function(){ tblShowComentario(' + clesJs + ', false); });return false;" style="color:var(--accent)">🔑 ' + MF.textoClave('poner') + '</a></div>';
+  } else {
+    if (memo && memo.texto) {
+      cuerpo += SF_COMENTARIO_IA.formatea(memo.texto);
+      pie += '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="sf-ia-nota" style="flex:1">' + _tblTx('nota_comentario').replace('{modelo}', memo.modelo || '').replace('{fecha}', memo.fecha || '') + '</span>' +
+        '<button class="btn" style="font-size:11px;padding:4px 12px" data-ptip="' + _tblTx('tip_imprimir') + '" onclick="_iaImprime(' + clesJs + ')">🖨 ' + _tblTx('btn_imprimir') + '</button></div>';
+      if (cambioDatos) pie += '<div class="sf-ia-aviso">⚠ ' + _tblTx('aviso_datos_cambiaron') + '</div>';
+    }
+    if (boton) pie += SF_COMENTARIO_IA.lineaContexto(_DATOS) + '<div style="display:flex;align-items:center;gap:8px">' + boton + '<span>' + SF_COMENTARIO_IA.tx('se_guarda') + '</span></div>';
+  }
+  const extra = esCombo ? (patronExiste(keys) ? '<span style="font-size:11px;color:var(--ok)">✓ ' + _tblTx('est_conservado') + '</span>'
+      : '<button id="tblcombo-conservar" class="btn" style="font-size:11px;padding:3px 8px" onclick="patronConservar(' + JSON.stringify(keys).replace(/"/g, "\'") + ')">💾 ' + _tblTx('btn_conservar') + '</button>') : '';
+  /* la curva : la de un parámetro (una superposición se mira en Courbes) */
+  SF_COMENTARIO_IA.ventana({ clase: 'tblcurve-comentario-popup', titulo: titre, extra: extra, stats: stats, cuerpo: cuerpo, pie: pie,
+    curva: esCombo ? '' : '<canvas id="ia-curva"></canvas>', altoCurva: (SF_CONFIG.comentario || {}).alto_curva || 200 });
+  if (!esCombo) setTimeout(() => { makeChart('ia-curva', keys[0], data); const ch = chartInstances['ia-curva']; if (ch) { ch.options.maintainAspectRatio = false; ch.resize(); } }, 30);
+  if (autoComentar && apiKey && !(memo && memo.texto)) setTimeout(function(){ tblCurveComentario(keys, huella); }, 200);
 }
 /* Alias de compatibilité : tous les anciens appelants (TABLA, liste
    Consultas, menus) aboutissent maintenant au popup commentaire seul. */
@@ -1558,78 +1731,55 @@ function loadComentariosCurvas() {
 }
 function saveComentariosCurvas(c) { localStorage.setItem(COMCURVAS_KEY, JSON.stringify(c)); }
 
+function _matCur(){ try { return (MF.paciente() || {}).matricula || ''; } catch (e) { return ''; } }
 async function tblCurveComentario(key, huella) {
-  /* P-H 08/08 : « superposer et demander une évaluation » — key peut
-     être une seule clé (comme avant) ou un tableau (comparaison combinée
-     de plusieurs paramètres, comme leucocitos + dímero D). */
+  /* la petición común (comun/comentario-ia.js) : el texto de la demanda vive en comun/prompt-comentario-curva.js, nunca en el código ;
+     se envía sexo, edad y — si la casilla está marcada — los diagnósticos : jamás nombre, SIP ni número de expediente */
   const keys = Array.isArray(key) ? key : [key];
-  const esCombo = keys.length > 1;
-  const apiKey = localStorage.getItem('mt_apikey');
-  const etiqueta = keys.map(k => (PARAMS[k] && PARAMS[k].label) || k).join(' + ');
-  if (!apiKey) {
-    tblCurveComentarioToast(etiqueta,
-      '⚠ No se encontró la clave API (mt_apikey vacío). Vaya a la pestaña 📥 Datos, pegue su clave en el campo "Clave API" y vuelva a intentarlo.', '', '');
-    return;
-  }
+  if (!(MF.claveIA && MF.claveIA())) { MF.pideClave(function(){ tblShowComentario(keys, false); }); return; }
   const btn = document.getElementById('tblcurve-btn');
-  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="sablier-girant">⏳</span> Consultando…'; }
-  const cfg = (typeof getApiConfig === 'function') ? getApiConfig() : { model: 'claude-sonnet-5' };
-  const bloques = keys.map(k => {
-    const p = PARAMS[k] || {};
-    const serie = getSeriesForParam(loadData(), k);
-    return 'Parámetro: ' + (p.label || k) + ' (' + (p.unit || '') + ')' + (p.ref ? ' — referencia ' + p.ref.filter(v => v !== null).join('–') : '') +
-      (p.desc ? '\nDescripción: ' + p.desc : '') +
-      '\nSerie (fecha, valor): ' + serie.map(s => s.x + '=' + s.y).join(' ; ');
-  }).join('\n\n');
-  const prompt =
-    'Eres un asistente que comenta series analíticas para una familia que prepara consultas médicas. ' +
-    'NO das diagnósticos ni consejos de tratamiento; describes la evolución' +
-    (esCombo ? ' y comentas especialmente si hay relación temporal entre los distintos parámetros' : '') +
-    ' y señalas lo destacable. ' +
-    'Si procede, termina SIEMPRE con una sección separada que empiece EXACTAMENTE por el texto ' +
-    '"Preguntas sugeridas para el médico:" seguido de 1-2 preguntas — nunca otra formulación. Máximo ' + (esCombo ? '10' : '6') + ' líneas, español claro.\n\n' +
-    'Paciente: mujer de 87 años (contexto: TEP crónico anticoagulado; demencia).\n\n' +
-    bloques;
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + SF_COMENTARIO_IA.tx('consultando'); }
+  const data = loadData();
+  const series = keys.map(k => { const p = PARAMS[k] || {};
+    return { etiqueta: p.label || k, unidad: p.unit || '', ref: p.ref || null, desc: p.desc || '', puntos: getSeriesForParam(data, k).map(s => ({ x: s.x, y: s.y })) }; });
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: cfg.model, max_tokens: cfg.maxTokens, messages: [{ role: 'user', content: prompt }] })
-    });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const data = await resp.json();
-    const texte = (data.content || []).map(c => c.text || '').join('');
-    const fecha = new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
-    /* clé de mémorisation : la clé seule si un paramètre, sinon les
-       clés triées jointes — stable, jamais dépendante de l'ordre de clic */
-    const cleMemo = esCombo ? 'combo:' + keys.slice().sort().join('+') : keys[0];
-    const memos = loadComentariosCurvas();
-    memos[cleMemo] = { texto: texte, modelo: cfg.model, fecha: fecha, huella: huella };
-    saveComentariosCurvas(memos);
-    /* P-H 08/08 : « la popup devenue inutile » — le popup (TABLA comme
-       Curvas) est TOUJOURS déjà ouvert quand ce succès arrive, sa zone
-       du haut affiche déjà le résultat : le Toast à part était devenu
-       une pure redondance, jamais un vrai besoin. Retiré. */
-    const topbar = document.getElementById('tblcurve-topbar');
-    if (topbar) {
-      const contenuTexte = topbar.querySelector('div');
-      if (contenuTexte) {
-        /* P-H 08/08 : « je n'avais demandé que si les données ont
-           évolué » — un commentaire tout juste régénéré COLLE aux
-           données actuelles par définition (huella = huella), donc
-           aucun bouton n'a de raison d'être ici. Corrigé : plus de
-           bouton systématique après un succès. */
-        topbar.innerHTML = formatearComentarioClaude(texte) +
-          '<div style="flex:0 0 auto;margin-top:4px;font-size:10px;color:var(--muted);font-style:italic">Comentario de Claude (' + cfg.model + ') del ' + fecha + ' — no sustituye el juicio clínico.</div>';
-      }
-    }
+    const r = await SF_COMENTARIO_IA.pide(_DATOS, series);
+    const cleMemo = keys.length > 1 ? 'combo:' + keys.slice().sort().join('+') : keys[0];
+    SF_COMENTARIO_IA.guarda(_matCur(), cleMemo, { texto: r.texto, modelo: r.modelo, fecha: r.fecha, huella: huella, enviado: SF_COMENTARIO_IA.resumen(_DATOS) });
+    tblShowComentario(keys, false);
   } catch (err) {
-    if (btn) { btn.disabled = false; btn.textContent = '🧠 Comentario clínico (Claude)'; }
-    tblCurveComentarioToast(etiqueta, '⚠ Error: ' + err.message + ' — reintente o verifique su clave API.', '', '');
+    if (btn) { btn.disabled = false; btn.textContent = '🧠 ' + _tblTx('btn_comentario'); }
+    const z = document.querySelector('.tblcurve-comentario-popup .sf-ia-pie');
+    if (z) { const a = document.createElement('div'); a.style.cssText = 'color:var(--warn);font-size:11px;margin-top:6px'; a.textContent = '⚠ ' + SF_COMENTARIO_IA.tx('error', { msg: err.message }); z.appendChild(a); }
   }
 }
-
+/* imprimir : una hoja blanca con la curva y el comentario ; con o sin nombre y SIP (P-H, 04/11/2026) */
+function _iaImprime(keys){
+  keys = Array.isArray(keys) ? keys : [keys];
+  const cleMemo = keys.length > 1 ? 'combo:' + keys.slice().sort().join('+') : keys[0];
+  const memo = SF_COMENTARIO_IA.lee(_matCur(), cleMemo); if (!memo) return;
+  const IMP = (SF_CONFIG.comentario || {}).impresion || {};
+  const c = chartInstances['ia-curva'], cv = document.getElementById('ia-curva');
+  let imagen = '';
+  if (c && cv) {
+    const sav = {};
+    Object.keys(c.options.scales || {}).forEach(id => { const s = c.options.scales[id];
+      sav[id] = [s.ticks && s.ticks.color, s.title && s.title.color, s.grid && s.grid.color];
+      if (s.ticks) s.ticks.color = IMP.tinta; if (s.title) s.title.color = IMP.tinta; if (s.grid) s.grid.color = IMP.linea; });
+    c.update('none');
+    const t = document.createElement('canvas'); t.width = cv.width; t.height = cv.height;
+    const x = t.getContext('2d'); x.fillStyle = IMP.papel; x.fillRect(0, 0, t.width, t.height); x.drawImage(cv, 0, 0);
+    imagen = t.toDataURL('image/png');
+    Object.keys(sav).forEach(id => { const s = c.options.scales[id], [a, b, g] = sav[id]; if (!s) return;
+      if (s.ticks) s.ticks.color = a; if (s.title) s.title.color = b; if (s.grid) s.grid.color = g; });
+    c.update('none');
+  }
+  const titulo = keys.map(k => (PARAMS[k] || {}).label || k).join(' + ');
+  const pa = MF.paciente() || {}, sip = pa.sip || (_DATOS && (_DATOS.sip || (_DATOS.paciente || {}).sip)) || '';
+  SF_COMENTARIO_IA.preguntaImpresion(f => SF_COMENTARIO_IA.imprime({ titulo: titulo, paciente: f.nombre ? (pa.etiqueta || '') : '', sip: f.sip ? sip : '',
+    imagen: imagen, comentario: memo.texto, enviado: memo.enviado || '',
+    nota: _tblTx('nota_comentario').replace('{modelo}', memo.modelo || '').replace('{fecha}', memo.fecha || ''), colores: IMP }), { haySip: !!sip });
+}
 function tblCurveComentarioToast(titulo, texto, modelo, fecha) {
   document.querySelectorAll('.tblcurve-comentario-toast').forEach(t => t.remove());
   const toast = document.createElement('div');
@@ -1664,6 +1814,23 @@ function tblCurveComentarioToast(titulo, texto, modelo, fecha) {
   }, 50);
 }
 
+/* ══ CADA VALOR LLEVA A SU DOCUMENTO (P-H, 06/11/2026 : « la même technique dans Tableau détaillé ») ══
+   Un clic en un valor abre su documento con el rotulador — o la ficha si el documento falta. */
+function _tblDocAttr(k, pt) {
+  if (!pt || !pt.pdf) return '';
+  const e = s => String(s === undefined || s === null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  return ' data-doc="' + e(pt.pdf) + '" data-k="' + e(k) + '" data-v="' + e(pt.v) + '" data-f="' + e(pt.date) + '" data-ptip="' + e(_tblTx('tip_doc')) + '"';
+}
+document.addEventListener('click', function(ev) {
+  const el = ev.target && ev.target.closest ? ev.target.closest('[data-doc]') : null;
+  if (!el || !window.SF_VISOR) return;
+  ev.stopPropagation(); ev.preventDefault();
+  document.querySelectorAll('.tbl-multi-overlay').forEach(o => o.remove());   /* la lista desplegada no tapa el documento */
+  const k = el.dataset.k, p = (typeof PARAMS === 'object' && PARAMS[k]) || {};
+  let col = ''; try { col = typeof colorCurva === 'function' ? colorCurva(k) : ''; } catch (e) {}
+  SF_VISOR.abre({ pdf_id: el.dataset.doc, clave: k, valor: el.dataset.v, fecha: el.dataset.f, etiqueta: p.label || k, unidad: p.unit || '', color: col });
+}, true);
+
 function tblToggleMulti(td) {
   /* P-H 07/08, 3e passe : « moins gênant de voir la table changer de
      dimensions » — le détail s'affiche en SUPERPOSITION (overlay fixe,
@@ -1692,7 +1859,20 @@ function tblToggleMulti(td) {
   }, 50);
 }
 
+/* LA ALTURA (P-H, 05/11/2026 : « la table n'occupe pas toute la hauteur du container ») — la hoja común lo limitaba a 75vh.
+   El marco llega al pie de la ventana : menos lo que hay debajo (el letrero de demostración) y un margen ; la página no se desplaza. */
+function _tblAltura(){
+  const w = document.querySelector('.data-table-wrap'); if (!w) return;
+  const cs = getComputedStyle(document.documentElement), marge = parseInt(cs.getPropertyValue('--tbl-marge-bas')) || 12;
+  const demo = document.getElementById('sf-demo'), abajo = demo ? demo.getBoundingClientRect().height : 0;
+  let h = Math.max(200, window.innerHeight - w.getBoundingClientRect().top - abajo - marge);
+  w.style.maxHeight = h + 'px'; w.style.height = h + 'px';
+  const exc = document.documentElement.scrollHeight - window.innerHeight;   /* lo que aún sobresale (márgenes del panel) */
+  if (exc > 0) { h = Math.max(200, h - exc); w.style.maxHeight = h + 'px'; w.style.height = h + 'px'; }
+}
+window.addEventListener('resize', function(){ clearTimeout(window._tblAT); window._tblAT = setTimeout(_tblAltura, 120); });
 function renderTable() {
+  setTimeout(_tblAltura, 0);   /* cada vez que se dibuja : filtro, plegado, lengua */
   /* ── COLONNES-ANNÉES (P-H 07/08, pensé au déjeuner) : une seule colonne
      par année, plus jamais de répétition — fini le "année en gris" qui
      ne faisait que déguiser plusieurs colonnes-dates pour la même année.
@@ -1709,11 +1889,16 @@ function renderTable() {
   data.forEach(m => {
     if (!parDate[m.date]) parDate[m.date] = { vals: {}, srcs: [] };
     Object.assign(parDate[m.date].vals, m.vals || {});
+    if (m.pdf_id) Object.keys(m.vals || {}).forEach(k => { (parDate[m.date].pdf = parDate[m.date].pdf || {})[k] = m.pdf_id; });   /* P-H 06/11/2026 : el documento de cada valor */
     if (m.src) parDate[m.date].srcs.push(m.src);
   });
-  const anneesUtiles = [...new Set(data.map(m => m.date.slice(0, 4)))]
+  const _conDatos = [...new Set(data.map(m => m.date.slice(0, 4)))]
     .filter(a => visKeys.some(k => data.some(m => m.date.slice(0, 4) === a && m.vals && m.vals[k] !== undefined)))
     .sort().reverse();
+  /* P-H, 05/11/2026 : « étrange qu'en 2019 il n'y a rien ? » — todos los años entre el primero y el último ;
+     un año sin análisis queda a la vista, estrecho y gris (« ça évite les questions ») */
+  const anneesUtiles = [];
+  if (_conDatos.length) for (let y = +_conDatos[0]; y >= +_conDatos[_conDatos.length - 1]; y--) anneesUtiles.push(String(y));
   /* toutes les dates d'une année donnée, triées chronologiquement */
   const datesDeAnnee = {};
   anneesUtiles.forEach(a => { datesDeAnnee[a] = [...new Set(data.map(m => m.date))].filter(d => d.slice(0, 4) === a).sort(); });
@@ -1724,10 +1909,11 @@ function renderTable() {
   const sep = 'border-left:1px solid var(--border);';   /* séparateur de colonnes (P-H) */
   head.innerHTML = '';
   const tr = document.createElement('tr');
-  tr.innerHTML = '<th style="' + stickyTh + ';cursor:pointer" onclick="tblToggleTodo()" title="Desplegar / plegar todo">Parámetro ⇕</th>' +
+  tr.innerHTML = '<th style="' + stickyTh + ';cursor:pointer" onclick="tblToggleTodo()" data-ptip="' + _tblTx('tip_todo') + '">' + _tblTx('lbl_param') + ' ⇕</th>' +
     anneesUtiles.map(a => {
       const srcTip = datesDeAnnee[a].flatMap(d => parDate[d].srcs).join(String.fromCharCode(10)).replace(/"/g, '&quot;');
-      return '<th class="param-tip" data-ptip="' + srcTip + '" style="' + sep + 'padding:6px 8px;white-space:nowrap;font-size:11px;vertical-align:bottom;text-align:center;cursor:default;font-weight:700;color:var(--accent)">' + a + '</th>';
+      if (!datesDeAnnee[a].length) return '<th class="tbl-vacio" data-ptip="' + _tblTx('anio_vacio') + '" style="' + sep + '">' + a + '</th>';
+      return '<th class="param-tip tc-clic" onclick="_tblConstat(\'' + a + '\')" data-ptip="' + _tblTx('tc_tip') + '&#10;' + srcTip + '" style="' + sep + 'padding:6px 8px;white-space:nowrap;font-size:11px;vertical-align:bottom;text-align:center;font-weight:700;color:var(--accent)">' + a + '</th>';
     }).join('');
   head.appendChild(tr);
 
@@ -1750,6 +1936,7 @@ function renderTable() {
        les normes, rouge si tout est hors normes, orange si mélange (P-H
        13/07) — désormais agrégée sur TOUTES les dates de l'année. */
     const cellules = anneesUtiles.map(a => {
+      if (!datesDeAnnee[a].length) return '<td class="tbl-vacio" style="' + sep + '"></td>';
       if (!ferme) return '<td style="' + sep + 'background:rgba(128,128,128,.05)"></td>';
       let ok = 0, mal = 0;
       datesDeAnnee[a].forEach(d => {
@@ -1765,11 +1952,11 @@ function renderTable() {
       const G = Math.round(185 + (81 - 185) * r);
       const B = Math.round(80 + (73 - 80) * r);
       const fond = 'rgba(' + R + ',' + G + ',' + B + ',.58)';
-      const info = ok + ' ok' + (mal ? ' · ' + mal + ' fuera de rango (' + Math.round(r * 100) + '%)' : '');
-      return '<td style="' + sep + 'background:' + fond + '" title="' + info + '"></td>';
+      const info = ok + ' ' + _tblTx('dentro_rango') + (mal ? ' · ' + mal + ' ' + _tblTx('fuera_rango') + ' (' + Math.round(r * 100) + '%)' : '');
+      return '<td style="' + sep + 'background:' + fond + '" data-ptip="' + info + '"></td>';
     }).join('');
     trg.innerHTML = '<td style="' + stickyTd + ';font-size:10px;letter-spacing:.6px;color:var(--accent);font-weight:700;padding-top:10px">' +
-      (ferme ? '▸ ' : '▾ ') + g + ' <span style="color:var(--muted);font-weight:400">(' + parGrupo[g].length + ')</span></td>' + cellules;
+      (ferme ? '▸ ' : '▾ ') + _tblGrupoNom(g) + ' <span style="color:var(--muted);font-weight:400">(' + parGrupo[g].length + ')</span></td>' + cellules;
     body.appendChild(trg);
     if (ferme) return;
     parGrupo[g].forEach(k => {
@@ -1779,11 +1966,11 @@ function renderTable() {
       trp.innerHTML = '<td style="' + stickyTd + ';cursor:context-menu">' + paramSpan(k) +
         ' <span style="color:var(--muted);font-size:9px">' + (p.unit || '') + '</span></td>' +
         anneesUtiles.map(a => {
-          const puntos = datesDeAnnee[a].map(d => ({ date: d, v: parDate[d].vals[k] })).filter(x => x.v !== undefined);
-          if (!puntos.length) return '<td style="' + sep + 'color:var(--border);text-align:center">·</td>';
+          const puntos = datesDeAnnee[a].map(d => ({ date: d, v: parDate[d].vals[k], pdf: (parDate[d].pdf || {})[k] })).filter(x => x.v !== undefined);
+          if (!puntos.length) return datesDeAnnee[a].length ? '<td style="' + sep + 'color:var(--border);text-align:center">·</td>' : '<td class="tbl-vacio" style="' + sep + '"></td>';
           if (puntos.length === 1) {
             const st = getStatus(k, puntos[0].v);
-            return '<td style="' + sep + 'text-align:center;white-space:nowrap"><span class="' + (st === 'bad' ? 'badge-bad' : 'badge-ok') + '">' + puntos[0].v + '</span></td>';
+            return '<td style="' + sep + 'text-align:center;white-space:nowrap"><span class="' + (st === 'bad' ? 'badge-bad' : 'badge-ok') + '"' + _tblDocAttr(k, puntos[0]) + '>' + puntos[0].v + '</span></td>';
           }
           /* PLUSIEURS valeurs la même année (P-H 07/08, 2e passe : « pas de
              toast » — la cellule s'ouvre sur elle-même) : affiche la plus
@@ -1796,7 +1983,7 @@ function renderTable() {
           const expandHtml = puntos.slice().reverse().map(pt => {
             const st = getStatus(k, pt.v);
             const jm = pt.date.slice(8, 10) + '/' + pt.date.slice(5, 7);
-            return '<div style="display:flex;justify-content:space-between;gap:6px;font-size:9px;line-height:1.5"><span style="color:var(--muted)">' + jm + '</span><span class="' + (st === 'bad' ? 'badge-bad' : 'badge-ok') + '">' + pt.v + '</span></div>';
+            return '<div style="display:flex;justify-content:space-between;gap:6px;font-size:9px;line-height:1.5"><span style="color:var(--muted)">' + jm + '</span><span class="' + (st === 'bad' ? 'badge-bad' : 'badge-ok') + '"' + _tblDocAttr(k, pt) + '>' + pt.v + '</span></div>';
           }).join('');
           const cellId = 'tblc-' + k + '-' + a;
           return '<td style="' + sep + 'text-align:center;white-space:nowrap;cursor:pointer" id="' + cellId + '" data-collapsed="' + collapseHtml.replace(/"/g, '&quot;') + '" data-expanded="' + expandHtml.replace(/"/g, '&quot;') + '" onclick="tblToggleMulti(this)">' + collapseHtml + '</td>';
@@ -1820,7 +2007,7 @@ MF.arranca({
     var pa=MF.paciente();
     document.getElementById('t-pac').textContent = pa.etiqueta || pa.matricula || '';
     document.getElementById('t-est').textContent =
-      (d.mesures||[]).length + ' extracciones';
+      _tblTx((d.mesures||[]).length === 1 ? 'k_est_1' : 'k_est').split('{n}').join((d.mesures||[]).length);
     document.getElementById('aviso').style.display='none';
     try{
       buildTable(loadData(), loadEvents());
@@ -1840,5 +2027,9 @@ MF.arranca({
   }
 });
 </script>
+<script src="../comun/pdfjs/pdf.min.js"></script>
+<!-- el visor de documentos, común (P-H, 06/11/2026) : después de los scripts del módulo -->
+<script src="../comun/visor-pdf.idiomas.js"></script>
+<script src="../comun/visor-pdf.js"></script>
 </body>
 </html>

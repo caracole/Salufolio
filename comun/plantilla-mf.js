@@ -40,7 +40,7 @@
 
 var SF_PLANTILLA = window.SF_PLANTILLA = {
 
-  version: '2026.09.19-18:12:56',
+  version: '2026.11.03-17:24:23',
 
   fuentes: {
     A: { nombre:'API',        que:'lectura automática de un documento' },
@@ -64,6 +64,7 @@ var SF_PLANTILLA = window.SF_PLANTILLA = {
     'enfermeria_dx', 'enfermeria_int',
     'enfermeria_dx_registro', 'enfermeria_int_registro',
     'servicios', 'centros', 'prescriptores',
+    'referencias',
     'custom_params', 'correcciones', 'auditoria_conformes',
     'comentarios_curvas', 'listas', 'dudas', 'identificadores_dudosos',
     'pdfs'
@@ -93,6 +94,12 @@ var SF_PLANTILLA = window.SF_PLANTILLA = {
         historial: 'modificacion = se había escrito falso · '
                  + 'actualizacion = se enriquece con algo nuevo',
         fechas: 'AAAA-MM-DD-HH:MM:SS, hora de donde se trabaja',
+        referencias: 'Cada centro, servicio y profesional se escribe UNA vez, '
+                   + 'con su código (CNT001, SER001, PRO001). Una procedencia '
+                   + '(PRC001) junta centro + servicio + profesional firmante; '
+                   + 'cada dato lleva solo su prc_id. No confundir: « fuente » '
+                   + '(A·X·P·S) dice CÓMO entró el dato; « procedencia » dice '
+                   + 'DE DÓNDE viene el documento.',
         el_patron: 'comun/patron-comentado.txt — cada campo explicado'
       },
 
@@ -183,6 +190,37 @@ var SF_PLANTILLA = window.SF_PLANTILLA = {
       servicios: [],
       centros: [],
       prescriptores: [],
+
+      /* ══════════════════════════════════════════════════════════════
+         LAS TABLAS DE REFERENCIA (P-H, 03/11/2026)
+
+         « rien que dans un ICU on répète 16 fois le même nom d'hôpital »
+
+         Doctrina de 1966: cada cosa se escribe UNA vez, en su tabla, con
+         su código; los datos llevan solo la dirección. El árbol nace de
+         los enlaces, no del anidamiento: un médico que pasa de un
+         servicio a otro, o de un hospital a otro, no se copia dos veces.
+
+           centros        CNT001 → « HOSPITAL GENERAL DE CASTELLON »
+           servicios      SER001 → « Neumología »
+           profesionales  PRO001 → { nombre, rol }
+           procedencias   PRC001 → { centro, servicio, profesional }
+
+         El profesional firmante solo entra si el documento lo lleva
+         (un PDF anonimizado no lo lleva). La planta o unidad
+         (« 6B -NEM ») no se guarda: el servicio basta.
+
+         « servicios », « centros » y « prescriptores » de arriba se
+         quedan como estaban — nunca se modifica una clave, solo se
+         añade — pero ya no se escriben.
+         ══════════════════════════════════════════════════════════════ */
+      referencias: {
+        centros: {},
+        servicios: {},
+        profesionales: {},
+        procedencias: {}
+      },
+
       custom_params: [],
       correcciones: [],
       auditoria_conformes: [],
@@ -298,6 +336,14 @@ var SF_PLANTILLA = window.SF_PLANTILLA = {
     if(!Array.isArray(d.historial.actualizacion)) d.historial.actualizacion = [];
     if(!d.pdfs || typeof d.pdfs !== 'object') d.pdfs = { directorio:'', archivos:{} };
     if(!d.pdfs.archivos) d.pdfs.archivos = {};
+
+    /* las tablas de referencia — pueden existir a medias (P-H, 03/11) */
+    if(!d.referencias || typeof d.referencias !== 'object' || Array.isArray(d.referencias))
+      d.referencias = {};
+    ['centros','servicios','profesionales','procedencias'].forEach(function(k){
+      var t = d.referencias[k];
+      if(!t || typeof t !== 'object' || Array.isArray(t)) d.referencias[k] = {};
+    });
 
     return SF_PLANTILLA.ordena(d);
   },

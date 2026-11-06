@@ -1,7 +1,7 @@
 /* BACTERIOLOGÍA — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "bacteriologia",
-  "version": "2026.09.19-18:12:56",
+  "version": "2026.11.05-15:44:58",
   "programa": "bacteriologia.html",
   "lanzador": "../casa/casa.js",
   "icono": "🦠",

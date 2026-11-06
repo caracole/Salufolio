@@ -6,6 +6,9 @@
 <title>Radar · Salufolio</title>
 <script src="../comun/chart.umd.min.js"></script>
 <script src="../comun/glosario-datos.js"></script>
+<!-- los sinónimos de los parámetros (P-H, 04/11/2026) : el motor y la tabla -->
+<script src="../comun/equivalencias.js"></script>
+<script src="../comun/sinonimos-parametros.js"></script>
 <link rel="stylesheet" href="../comun/salufolio.css">
 <style>
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
@@ -118,7 +121,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    RADAR — programa autónomo de Salufolio V2
-   Versión 2026.10.06-22:17:20
+   Versión 2026.11.05-15:36:21
 
    Extraído de la V1: radar-js.js (12 funciones), core-panels-html.html
    (líneas 34-107), y sus dependencias tomadas en su fuente.
@@ -133,7 +136,17 @@ const APP_VERSION_DATE = SF_CONFIG.version;
 
 /* ══ LES PONTS vers mf.js ══ */
 var _DATOS=null;
-function loadData(){   return (_DATOS && _DATOS.mesures) || []; }
+/* P-H, 04/11/2026 : cada medida bajo su clave única (comun/sinonimos-parametros.js) — el .sf no cambia */
+/* el aviso « hacen falta 3 parámetros » : antes se dibujaba en el lienzo, centrado, y se cortaba por los dos lados */
+function _radarAviso(texto){
+  const cv = document.getElementById('radar-chart'); if (!cv) return;
+  let a = document.getElementById('radar-aviso');
+  if (!a) { a = document.createElement('div'); a.id = 'radar-aviso';
+    a.style.cssText = 'padding:var(--pad-m,24px);text-align:center;color:var(--muted);font-size:var(--tam-nor,14px);line-height:1.5;white-space:normal;max-width:36em;margin:0 auto';
+    cv.parentNode.insertBefore(a, cv); }
+  a.textContent = texto; a.style.display = texto ? 'block' : 'none'; cv.style.display = texto ? 'none' : '';
+}
+function loadData(){   return (_DATOS && (MF.mesuresCanon ? MF.mesuresCanon(_DATOS) : _DATOS.mesures)) || []; }
 function loadEvents(){ return (_DATOS && _DATOS.events) || []; }
 function loadMeds(){   return (_DATOS && _DATOS.medicaments) || []; }
 function getPatientLabel(){ var p=MF.paciente(); return p.etiqueta || p.matricula || ''; }
@@ -1193,6 +1206,7 @@ function alternaCuadro(id, abrir) {
   c.classList.toggle('cerrado', cerrar);
   const f = c.querySelector('.flecha');
   if (f) f.textContent = cerrar ? '▸' : '▾';
+  const cab = c.querySelector('.cuadro-cab'); if (cab) if (window.MF && MF.plegableTip) MF.plegableTip(cab, !cerrar);   /* « Clic para cerrar / abrir » */
 }
 function textoNumero(clave, n) { return tx(clave + (n === 1 ? '_1' : '_n')).replace('{n}', n); }
 /* La altura del radar = lo que queda libre de verdad : se MIDE dónde empieza la columna
@@ -1466,12 +1480,10 @@ function buildRadar(data) {
     const ctx = canvas.getContext('2d');
     if (radarChart) { radarChart.destroy(); radarChart = null; }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--muted');
-    ctx.font = '16px IBM Plex Sans';
-    ctx.textAlign = 'center';
-    ctx.fillText('Se necesitan al menos 3 parámetros con datos para el radar.', canvas.width/2, canvas.height/2);
+    _radarAviso(tx('pocos_params'));   /* un texto que pasa a la línea, no dibujado en el lienzo (P-H, 04/11/2026 : salía cortado) */
     return;
   }
+  _radarAviso('');
 
   buildRadarLeyendaTop();
   buildRadarLeyenda(data);

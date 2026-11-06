@@ -7,6 +7,7 @@
 <script src="../comun/chart.umd.min.js"></script>
 <script src="../medicamentos/principios.js"></script>
 <script src="../comun/glosario-datos.js"></script>
+<script src="../comun/alias-campos.js"></script>
 <link rel="stylesheet" href="../comun/salufolio.css">
 <style>
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
@@ -31,31 +32,12 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <!-- ===== PANEL MEDICAMENTOS ===== -->
 <div id="panel-medicamentos" class="panel">
 
-  <!-- Barre de sélection fixe (gérée par JS) -->
-  <div id="meds-fixed-bar" style="display:none;position:fixed;top:44px;left:0;right:0;z-index:200;background:var(--bg);padding:6px 20px;border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.2)">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:4px">
-      <select id="meds-quicknav-fixed" onchange="jumpToMed(this.value);document.getElementById('meds-quicknav').value=this.value" style="font-family:var(--mono);font-size:13px;padding:6px 10px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer">
-        <option value="">— Seleccionar —</option>
-      </select>
-      <button onclick="medNavPrev()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Anterior">▲</button>
-      <button onclick="medNavNext()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Siguiente">▼</button>
-      <button onclick="medNavTop()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Inicio">⏏</button>
-      <button onclick="medNuevoMedicamento()" style="font-size:11px;padding:5px 10px;border:1px solid var(--accent);border-radius:6px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer" title="Añadir un medicamento nuevo (no viene de un PDF)">➕ Nuevo</button>
-      <button onclick="medDeducirPrescriptores()" style="font-size:11px;padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);cursor:pointer" title="Deducir los prescriptores desde los firmantes de los documentos">🔗</button>
-      <select id="meds-filter-fixed" onchange="window._medFiltroUsuarioEligio=true;medFilterStatus(this.value);document.getElementById('meds-filter').value=this.value" style="font-family:var(--mono);font-size:12px;padding:6px 8px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer" title="Filtrar por estado">
-        <option value="">Todos</option>
-        <option value="en_cours">🟢 En curso</option>
-        <option value="nouveau">🆕 Nuevo</option>
-        <option value="a_demanda">💊 Si necesario</option>
-        <option value="suspendu">⏸️ Suspendido</option>
-        <option value="abandonne">🔴 Abandonado</option>
-        <option value="terminado">✅ Terminado</option>
-      </select>
-    </div>
-  </div>
-
+  <!-- v2026.11.04 (P-H : « le bandeau supérieur — liste des médicaments et
+       périodes — le laisser toujours visible en haut ») : la copie fixe
+       « meds-fixed-bar » est retirée ; un seul bandeau, collé en haut. -->
+  <div id="meds-cabecera" style="position:sticky;top:0;z-index:200;background:var(--bg);padding:8px 0 2px;margin-bottom:10px;border-bottom:1px solid var(--border)">
   <!-- Listbox normale (en haut du panneau) -->
-  <div id="meds-bar-anchor" style="margin-bottom:12px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+  <div id="meds-bar-anchor" style="margin-bottom:8px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">
     <select id="meds-quicknav" onchange="jumpToMed(this.value)" style="font-family:var(--mono);font-size:14px;padding:8px 12px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer">
       <option value="">— Seleccionar —</option>
     </select>
@@ -73,6 +55,8 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
       <option value="abandonne">🔴 Abandonado</option>
       <option value="terminado">✅ Terminado</option>
     </select>
+  </div>
+  <div id="meds-periodo"></div>
   </div>
 
   <div id="meds-content"></div>
@@ -112,7 +96,13 @@ const APP_VERSION_DATE = SF_CONFIG.version;
 var _DATOS=null;
 function loadData(){   return (_DATOS && _DATOS.mesures) || []; }
 function loadEvents(){ return (_DATOS && _DATOS.events) || []; }
-function loadMeds(){   return (_DATOS && _DATOS.medicaments) || []; }
+/* v2026.11.04-09:40 (P-H) : les médicaments écrits par la V2 (nombre, desde,
+   dosis…) se lisent ici sous leurs noms V1 (nom, date, dose…) par des alias
+   invisibles — MF.aliasMeds, table comun/alias-campos.js. Le .sf ne change pas. */
+function loadMeds(){
+  var L = (_DATOS && _DATOS.medicaments) || [];
+  return (MF.aliasMeds ? MF.aliasMeds(L) : L);
+}
 function saveMeds(lista){
   if(!_DATOS) return;
   _DATOS.medicaments = lista || _DATOS.medicaments;
@@ -1083,7 +1073,8 @@ function customAlert(title, message, icon='ℹ️', color='var(--accent)') {
 
 function prescriptorNombre(id) {
   if (!id) return '';
-  return loadPrescriptores()[id] || id;
+  /* v2026.11.04 : un code PRO… vient des tables de référence du .sf */
+  return loadPrescriptores()[id] || (MF.profesional && MF.profesional(id)) || id;
 }
 
 function prescriptorResolverId(nombre) {
@@ -1234,12 +1225,8 @@ function getMedMotifsList() {
 }
 
 function quickMedRazon(actionLabel, callback, motifsList) {
-  var ov = document.createElement('div');
-  ov.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center';
-
-  var box = document.createElement('div');
-  box.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;min-width:320px;max-width:480px;box-shadow:0 8px 40px rgba(0,0,0,0.5)';
-
+  /* v2026.11.04 (P-H : « la fenêtre popup devrait être draggable ») :
+     MF.ventana — on la tire par son en-tête, comme celle de la date de fin. */
   var hasList = motifsList && motifsList.length > 0;
   var selectHtml = '';
   if (hasList) {
@@ -1249,21 +1236,14 @@ function quickMedRazon(actionLabel, callback, motifsList) {
       '<option value="__otro__">Otro (especificar)…</option>' +
       '</select>';
   }
-
-  box.innerHTML =
-    '<div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px">Motivo de ' + actionLabel.toLowerCase() + '</div>' +
-    selectHtml +
-    '<textarea id="quick-razon-inp" placeholder="Indique el motivo…" rows="3" style="width:100%;box-sizing:border-box;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--sans);font-size:13px;resize:vertical;outline:none' + (hasList ? ';display:none' : '') + '"></textarea>' +
-    '<div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">' +
-      '<button id="quick-razon-cancel" class="btn" style="font-size:12px;padding:5px 14px">Cancelar</button>' +
-      '<button id="quick-razon-ok" class="btn primary" style="font-size:12px;padding:5px 14px">Confirmar</button>' +
-    '</div>';
-
-  ov.appendChild(box);
-  document.body.appendChild(ov);
-
-  var inp = document.getElementById('quick-razon-inp');
-  var sel = document.getElementById('quick-razon-select');
+  var cuerpo = selectHtml +
+    '<textarea id="quick-razon-inp" placeholder="Indique el motivo…" rows="3" style="width:100%;box-sizing:border-box;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--sans);font-size:13px;resize:vertical;outline:none' + (hasList ? ';display:none' : '') + '"></textarea>';
+  var pie = '<span style="flex:1"></span>' +
+    '<button id="quick-razon-cancel" class="btn" style="font-size:12px;padding:5px 14px">' + txtMed('cancelar') + '</button>' +
+    '<button id="quick-razon-ok" class="btn primary" style="font-size:12px;padding:5px 14px">' + txtMed('confirmar') + '</button>';
+  var v = MF.ventana('Motivo de ' + actionLabel.toLowerCase(), cuerpo, { ancho: '480px', alPie: pie });
+  var inp = v.caja.querySelector('#quick-razon-inp');
+  var sel = v.caja.querySelector('#quick-razon-select');
   if (sel) {
     sel.focus();
     sel.onchange = function() {
@@ -1273,19 +1253,13 @@ function quickMedRazon(actionLabel, callback, motifsList) {
   } else {
     inp.focus();
   }
-
-  document.getElementById('quick-razon-cancel').onclick = function() { ov.remove(); };
-  document.getElementById('quick-razon-ok').onclick = function() {
+  v.caja.querySelector('#quick-razon-cancel').onclick = function() { v.cierra(); };
+  v.caja.querySelector('#quick-razon-ok').onclick = function() {
     var razon = (sel && sel.value && sel.value !== '__otro__') ? sel.value : inp.value.trim();
     if (!razon) { (sel && inp.style.display === 'none' ? sel : inp).style.border = '1px solid var(--danger)'; return; }
-    ov.remove();
+    v.cierra();
     callback(razon);
   };
-  inp.onkeydown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('quick-razon-ok').onclick(); }
-    if (e.key === 'Escape') ov.remove();
-  };
-  ov.onclick = function(e) { if (e.target === ov) ov.remove(); };
 }
 
 function quickMedAction(medName, anchor) {
@@ -1314,15 +1288,10 @@ function quickMedAction(medName, anchor) {
     item.onmouseleave = function(){ item.style.background=''; };
     item.onclick = function() {
       menu.remove();
-      if (a.razon) {
-        /* Mini popup maison pour la raison, avec la même liste de motifs
-           que la popup Editar (Abandonado / No administrado) */
-        quickMedRazon(a.label, function(razon) {
-          applyQuickMedStatut(medName, a.statut, razon);
-        }, getMedMotifsList());
-      } else {
-        applyQuickMedStatut(medName, a.statut, '');
-      }
+      /* v2026.11.04 : raison si demandée, puis date de fin (P-H) */
+      var clave = medKeyCanon(medName.replace(/\s*\(\d+\)$/, ''));
+      var lineas = loadMeds().filter(function(m) { return medKeyCanon(m.nom) === clave; });
+      quickMedPide(a, lineas, function(razon, f) { applyQuickMedStatut(medName, a.statut, razon, f); });
     };
     menu.appendChild(item);
   });
@@ -1366,8 +1335,7 @@ function quickMedActionForEntry(entry, anchor) {
     item.onmouseleave = function(){ item.style.background=''; };
     item.onclick = function() {
       menu.remove();
-      if (a.razon) quickMedRazon(a.label, function(razon){ applyQuickMedStatutForEntry(entry, a.statut, razon); }, getMedMotifsList());
-      else applyQuickMedStatutForEntry(entry, a.statut, '');
+      quickMedPide(a, [entry], function(razon, f) { applyQuickMedStatutForEntry(entry, a.statut, razon, f); });
     };
     menu.appendChild(item);
   });
@@ -1383,31 +1351,181 @@ function quickMedActionForEntry(entry, anchor) {
   }, 10);
 }
 
-function applyQuickMedStatutForEntry(entry, statut, razon) {
+/* ══ LA FIN D'UN TRAITEMENT (P-H, 04/11/2026) ═══════════════════════════
+   « Terminado » mettait la date du jour comme fin, MÊME sur une ligne dont
+   l'ordonnance imprimait déjà une fin : le Xarelto « 150 jours » du HCR se
+   retrouvait pris jusqu'au jour du clic. Règle de P-H (« GO B à condition de
+   pouvoir modifier la date hasta par une date antérieure — valable aussi
+   pour abandon ») :
+     · on demande la date de fin ; par défaut aujourd'hui, ou la fin imprimée
+       si elle est déjà passée ;
+     · elle peut être AVANCÉE (traitement arrêté plus tôt), jamais RECULÉE
+       au-delà de la fin imprimée ni au-delà d'aujourd'hui ;
+     · la fin imprimée remplacée est gardée dans « hasta_receta » ;
+     · la date du geste va dans « estado_fecha ».
+   Vaut pour Terminado, Abandonado et Suspendido.
+   ═══════════════════════════════════════════════════════════════════════ */
+var MED_CIERRA = ['terminado', 'abandonne', 'suspendu'];
+/* ══ LA CATÉGORIE AFFICHÉE (P-H, 04/11/2026) ══════════════════════════════
+   « ne pourrait-on pas dans la liste avoir : Seleccionar Medicamentos,
+     Seleccionar Parafarmacia, et derrière la liste ? »
+   La liste déroulante commence par les deux catégories ; la page ne montre
+   que celle qui est choisie. Mémorisé dans le navigateur, comme la période. */
+var MED_NAV_CAB = 3;                    /* 2 catégories + 1 séparateur */
+function medsCategoria() {
+  try { return localStorage.getItem('sf_meds_categoria') === 'otros' ? 'otros' : 'medicamento'; }
+  catch (e) { return 'medicamento'; }
+}
+function medsCategoriaSet(c) {
+  try { localStorage.setItem('sf_meds_categoria', c === 'otros' ? 'otros' : 'medicamento'); } catch (e) {}
+  buildMedicamentos();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function medEnCategoria(key) { return medEsMedicamento(key) === (medsCategoria() === 'medicamento'); }
+function medNomCategoria(c) {
+  var C = ((typeof SF_PRINCIPIOS !== 'undefined') && SF_PRINCIPIOS._categorias) || {};
+  var lg = (typeof MF !== 'undefined' && MF.idioma && MF.idioma()) || 'es';
+  function n(k) { return C[k] ? (C[k][lg] || C[k].es) : ''; }
+  return c === 'otros' ? '🧴 ' + ([n('parafarmacia'), n('material')].filter(Boolean).join(' · ') || 'Parafarmacia · Material')
+                       : '💊 ' + (n('medicamento') || 'Medicamentos');
+}
+function txtMed(k) {
+  var T = (typeof SF_TEXTOS !== 'undefined' && SF_TEXTOS.textos) || {};
+  var lg = (typeof MF !== 'undefined' && MF.idioma && MF.idioma()) || 'es';
+  return (T[lg] && T[lg][k]) || (T.es && T.es[k]) || k;
+}
+function medHoy() { return new Date().toISOString().slice(0, 10); }
+/* ══ LA DATE DU DOCUMENT (P-H, 04/11/2026) ═════════════════════════════════
+   « Prescrito el » sans date, alors que la recette vient d'un rapport daté :
+   « on a la date d'alta, ou sinon la date du document ». On la cherche par le
+   pdf_id dans les événements du même PDF — POUR L'AFFICHAGE SEULEMENT : rien
+   n'est écrit dans le .sf (pas de date de début inventée, règle du 30/10).
+   Ordre : fecha_informe d'un événement « ingreso » (alta), puis fecha_informe,
+   puis la date de l'événement le plus récent de ce PDF. */
+var _medDocCache = null;
+function medFechaDoc(m) {
+  var id = m && m.pdf_id; if (!id) return null;
+  if (!_medDocCache) {
+    _medDocCache = {};
+    ((_DATOS && _DATOS.events) || []).forEach(function(e) {
+      if (!e || !e.pdf_id) return;
+      var c = _medDocCache[e.pdf_id] || (_medDocCache[e.pdf_id] = {});
+      if (e.fecha_informe) {
+        if (e.type === 'ingreso') c.alta = e.fecha_informe;
+        else if (!c.informe) c.informe = e.fecha_informe;
+      }
+      var d = e.date || e.fecha || '';
+      if (d && (!c.doc || d > c.doc)) c.doc = d;
+    });
+  }
+  var c = _medDocCache[id]; if (!c) return null;
+  if (c.alta)    return { fecha: c.alta,    tipo: 'alta' };
+  if (c.informe) return { fecha: c.informe, tipo: 'informe' };
+  if (c.doc)     return { fecha: c.doc,     tipo: 'documento' };
+  return null;
+}
+/* le texte : « Documento del 19/07/2025 (alta) » */
+function medFechaDocTxt(m) {
+  var d = medFechaDoc(m); if (!d) return '';
+  return txtMed('documento_del') + ' ' + fmtDate(d.fecha) + (d.tipo !== 'documento' ? ' (' + txtMed('doc_' + d.tipo) + ')' : '');
+}
+/* la fin actuelle d'une ligne : hasta (V2) ou date_fin (V1) — jamais par l'alias seul */
+function medFinDe(m) { return m.hasta || m.date_fin || ''; }
+function medPonFin(m, fecha) {
+  if (Object.prototype.hasOwnProperty.call(m, 'nombre')) m.hasta = fecha; else m.date_fin = fecha;
+}
+/* applique une fin choisie à une ligne, selon la règle */
+function medCierra(m, statut, elegida) {
+  var hoy = medHoy();
+  m.statut = statut;
+  m.estado_fecha = hoy;
+  if (MED_CIERRA.indexOf(statut) < 0) return;
+  var fin = medFinDe(m);
+  var f = elegida || hoy;
+  if (f > hoy) f = hoy;
+  if (!fin) { medPonFin(m, f); return; }
+  if (f < fin) {                       /* avancée : on garde la fin imprimée */
+    if (!m.hasta_receta) m.hasta_receta = fin;
+    medPonFin(m, f);
+  }                                    /* sinon : la fin imprimée reste */
+}
+/* la petite fenêtre de la date de fin — déplaçable (MF.ventana), avec le
+   rappel de la prescription (P-H 04/11 : « on ne sait pas la date de prescription ») */
+function quickMedFecha(actionLabel, lineas, callback) {
+  var hoy = medHoy();
+  /* la prescription de référence : la plus récente */
+  var ref = null;
+  (lineas || []).forEach(function(m) {
+    var d = String(m.desde || m.date_debut || m.date || '');
+    if (!ref || d >= String(ref.desde || ref.date_debut || ref.date || '')) ref = m;
+  });
+  /* une seule ligne : jamais au-delà de sa fin ; un groupe : au plus aujourd'hui,
+     chaque ligne gardant ensuite sa propre fin si elle est antérieure (medCierra) */
+  var finRef = ref ? medFinDe(ref) : '';
+  var finMax = ((lineas || []).length === 1 && finRef && finRef < hoy) ? finRef : hoy;
+  var defecto = (finRef && finRef < hoy) ? finRef : hoy;
+  var rappel = '';
+  if (ref) {
+    var dIni = ref.desde || ref.date_debut || ref.date || '';
+    var dFin = ref.hasta_receta || medFinDe(ref);
+    rappel = '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:10px;font-size:12px;line-height:1.6">' +
+      '<div style="font-weight:600;color:var(--text)">' + (ref.nom || '') + '</div>' +
+      '<div>' + (dIni ? txtMed('prescrito_el') + ' <b>' + fmtDate(dIni) + '</b>'
+                      : '<i>' + (medFechaDocTxt(ref) || txtMed('fecha_no_indicada')) + '</i>') + ' · ' +
+        (dFin ? txtMed('fin_prevista') + ' <b>' + fmtDate(dFin) + '</b>' : '<i>' + txtMed('sin_fin') + '</i>') + '</div>' +
+      ((ref.frequence || ref.frecuencia) ? '<div style="color:var(--muted)">' + (ref.frequence || ref.frecuencia) + '</div>' : '') +
+      (ref.source ? '<div style="color:var(--muted)">' + txtMed('receta_de') + ' ' + ref.source + '</div>' : '') +
+      ((lineas || []).length > 1 ? '<div style="color:var(--warn);margin-top:3px">' + txtMed('se_aplica').replace('{n}', lineas.length) + '</div>' : '') +
+    '</div>';
+  }
+  var cuerpo = rappel +
+    '<div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5">' + txtMed('fin_explica') + '</div>' +
+    '<input type="date" id="quick-fin-inp" value="' + defecto + '" max="' + finMax + '" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:7px 9px;color:var(--text);font-size:13px">' +
+    '<div id="quick-fin-err" style="font-size:11px;color:var(--danger);min-height:16px;margin-top:4px"></div>';
+  var pie = '<span style="flex:1"></span>' +
+    '<button id="quick-fin-cancel" class="btn" style="font-size:12px;padding:5px 14px">' + txtMed('cancelar') + '</button>' +
+    '<button id="quick-fin-ok" class="btn primary" style="font-size:12px;padding:5px 14px">' + txtMed('confirmar') + '</button>';
+  var v = MF.ventana(actionLabel + ' — ' + txtMed('fin_titulo'), cuerpo, { ancho: '480px', alPie: pie });
+  var inp = v.caja.querySelector('#quick-fin-inp'); inp.focus();
+  v.caja.querySelector('#quick-fin-cancel').onclick = function() { v.cierra(); };
+  v.caja.querySelector('#quick-fin-ok').onclick = function() {
+    var val = inp.value, err = v.caja.querySelector('#quick-fin-err');
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(val)) { err.textContent = txtMed('fin_invalida'); return; }
+    if (val > finMax) { err.textContent = txtMed('fin_posterior') + ' ' + fmtDate(finMax); return; }
+    v.cierra(); callback(val);
+  };
+}
+/* enchaîne raison (si demandée) puis date de fin (si l'état ferme le traitement) */
+function quickMedPide(a, lineas, alFin) {
+  function conFecha(razon) {
+    if (MED_CIERRA.indexOf(a.statut) >= 0) quickMedFecha(a.label, lineas, function(f) { alFin(razon, f); });
+    else alFin(razon, '');
+  }
+  if (a.razon) quickMedRazon(a.label, conFecha, getMedMotifsList());
+  else conFecha('');
+}
+
+function applyQuickMedStatutForEntry(entry, statut, razon, fecha) {
   var allMeds = loadMeds();
   var idx = allMeds.findIndex(function(m) {
     return m.nom === entry.nom && m.date === entry.date && (m.source||'') === (entry.source||'') && (m.dose||'') === (entry.dose||'');
   });
   if (idx === -1) { status('⚠ No se encontró la entrada exacta'); return; }
-  allMeds[idx].statut = statut;
+  medCierra(allMeds[idx], statut, fecha);
   if (razon) allMeds[idx].motif_suspension = razon;
-  if (statut === 'terminado' || statut === 'abandonne' || statut === 'suspendu') allMeds[idx].date_fin = new Date().toISOString().slice(0,10);
   saveMeds(allMeds);
   buildMedicamentos();
   status('⚡ ' + entry.nom + ' (' + fmtDate(entry.date) + ') → ' + statut);
 }
 
-function applyQuickMedStatut(medName, statut, razon) {
+function applyQuickMedStatut(medName, statut, razon, fecha) {
   var allMeds = loadMeds();
   var changed = false;
   for (var i = 0; i < allMeds.length; i++) {
     var m = allMeds[i];
     if (medKeyCanon(m.nom) === medKeyCanon(medName.replace(/\s*\(\d+\)$/, ''))) {
-      m.statut = statut;
+      medCierra(m, statut, fecha);
       if (razon) m.motif_suspension = razon;
-      if (statut === 'terminado' || statut === 'abandonne' || statut === 'suspendu') {
-        m.date_fin = new Date().toISOString().slice(0,10);
-      }
       changed = true;
     }
   }
@@ -1456,25 +1574,41 @@ function medsFiltroGet() {
    ligne par paire, à enrichir toi-même au fil des découvertes. Sans cette
    table, deux noms de la même molécule sont vus comme deux médicaments
    différents (ex. le faux « no consta en receta electrónica »). */
-const MED_SINONIMOS = {
-  'xarelto': 'rivaroxaban',
-};
+/* v2026.11.04 (P-H : « NOLOTIL et METAMIZOL c'est la même chose ») : la table
+   en dur MED_SINONIMOS (une seule paire) disparaît — la clé vient de la table
+   commune ../medicamentos/principios.js, par MF.principioDe :
+     1. le nom entier (« NOLOTIL 575 MG… » → metamizol ; « ABSORBENTE… » → @absorbente)
+     2. sinon le dernier nom entre parenthèses (« LIXBEN … (DONEPEZILO) »)
+     3. sinon, comme avant, le premier mot. */
 function medKeyCanon(s) {
-  s = (s || '').replace(/\s*\(.*?\)/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-  const primera = (s.split(/\s+/)[0] || s);
-  return MED_SINONIMOS[primera] || primera;
+  s = String(s || '');
+  if (typeof MF !== 'undefined' && MF.principioDe && MF.cargaPrincipios) {
+    MF.cargaPrincipios();
+    var k = MF.principioDe(s);
+    if (!k) {
+      var par = (s.match(/\(([^()]+)\)[^()]*$/) || [])[1];
+      if (par) k = MF.principioDe(par);
+    }
+    if (k) return k;
+  }
+  var t = s.replace(/\s*\([^()]*\)/g, '').replace(/[()]/g, ' ')
+           .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  return (t.split(/\s+/)[0] || t);
 }
-/* Dispositifs & matériel (P-H 15/07) : l'oxygène et les Incopack ne sont pas
-   des médicaments — catégorie propre, unités propres (L/min, unidades/día). */
-const DISPOSITIVO_PAT = ['oxigen', 'incopack', 'panal', 'pañal', 'absorbente', 'aposito',
-  'apósito', 'tiras react', 'lanceta', 'aguja', 'jeringa', 'camara inhal', 'cámara inhal',
-  'aerochamber', 'sonda', 'colector', 'nebulizador', 'andador', 'colchon', 'colchón'];
-function esDispositivo(nom) {
-  const n = (nom || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  return DISPOSITIVO_PAT.some(function(p) {
-    return n.indexOf(p.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) !== -1;
-  });
+/* le nom d'un groupe : celui de la table, sinon le premier mot (comme avant) */
+function medNombreGrupo(key, nom) {
+  var P = (typeof SF_PRINCIPIOS !== 'undefined') ? SF_PRINCIPIOS : {};
+  var e = key && key.charAt(0) === '@' ? (P.productos || {})[key.substring(1)] : (P.principios || {})[key];
+  if (e && e.nombre) return e.nombre.toUpperCase();
+  return (nom || '').trim().split(/\s+/)[0].toUpperCase();
 }
+/* médicament, ou parafarmacia / material (P-H 04/11 : section à part, repliable) */
+function medEsMedicamento(key) {
+  return !(typeof MF !== 'undefined' && MF.categoriaDe) || MF.categoriaDe(key) === 'medicamento';
+}
+/* v2026.11.04 : DISPOSITIVO_PAT et esDispositivo() (jamais appelés depuis la V1,
+   et en dur) sont retirés : le matériel et la parafarmacia sont désormais dans
+   ../medicamentos/principios.js (productos, avec leur catégorie). */
 /* Ancienneté : une prescription non renouvelée depuis N mois n'est pas un
    traitement courant (les cures d'antibiotiques jamais clôturées). */
 function medEsAntiguo(entry, meses) {
@@ -1488,7 +1622,7 @@ function medGruposCanon() {
   const byName = {};
   meds.forEach(function(m) {
     const key = medKeyCanon(m.nom);
-    if (!byName[key]) byName[key] = { displayName: (m.nom || '').trim().split(/\s+/)[0].toUpperCase(), entries: [] };
+    if (!byName[key]) byName[key] = { displayName: medNombreGrupo(key, m.nom), entries: [] };
     byName[key].entries.push(m);
   });
   Object.values(byName).forEach(function(g) {
@@ -1500,6 +1634,7 @@ function medGruposCanon() {
 }
 
 function buildMedicamentos() {
+  _medDocCache = null;               /* les événements ont pu changer */
   const todos = loadMeds();
   const el = document.getElementById('meds-content');
   el.innerHTML = '';
@@ -1510,13 +1645,17 @@ function buildMedicamentos() {
   if (f.mode === '12m') { const d = new Date(); d.setFullYear(d.getFullYear() - 1); limite = d.toISOString().slice(0, 10); }
   else if (f.mode === 'anno') { limite = new Date().getFullYear() + '-01-01'; }
   else if (f.mode === 'desde' && f.desde) { limite = f.desde; }
-  const meds = limite ? todos.filter(m => (m.date || m.date_debut || '') >= limite) : todos;
+  const meds = (limite ? todos.filter(m => (m.date || m.date_debut || '') >= limite) : todos)
+    .filter(function(m) { return medEnCategoria(medKeyCanon(m.nom)); });   /* la catégorie choisie (P-H 04/11) */
 
   const btnP = (mode, label) => '<button class="btn" style="font-size:11px;padding:4px 12px;border-radius:14px;' +
     (f.mode === mode ? 'background:var(--accent);color:#fff;border-color:var(--accent)' : '') +
     '" onclick="medsFiltroSet(\'' + mode + '\')">' + label + '</button>';
-  el.innerHTML +=
-    '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:10px">' +
+  /* v2026.11.04 : la barre des périodes vit dans le bandeau collé en haut */
+  var _zonaPer = document.getElementById('meds-periodo');
+  if (_zonaPer) _zonaPer.innerHTML = ''; else _zonaPer = el;
+  _zonaPer.innerHTML +=
+    '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:10px">' +
     '<span style="font-size:11px;color:var(--muted)">Periodo:</span>' +
     btnP('12m', 'Últimos 12 meses') + btnP('anno', 'Este año') + btnP('todo', 'Todo') +
     '<span style="font-size:11px;color:var(--muted);margin-left:6px">desde año</span>' +
@@ -1547,7 +1686,12 @@ function buildMedicamentos() {
   /* Regroupement et tri chronologique : LA loi unique (medGruposCanon) */
   const byName = medGruposCanon();
 
-  const keys = Object.keys(byName).sort();
+  /* la catégorie choisie seulement (P-H 04/11 : choix dans la liste) */
+  const keysTodas = Object.keys(byName);
+  const nMed = keysTodas.filter(medEsMedicamento).length, nOtros = keysTodas.length - nMed;
+  const keys = keysTodas.filter(medEnCategoria).sort(function(a, b) {
+    return byName[a].displayName.localeCompare(byName[b].displayName);
+  });
   const uniqueDates = [...new Set(meds.map(m => m.date))].sort();
 
   /* Mettre à jour le tooltip de l'onglet Medicamentos avec les infos dynamiques */
@@ -1644,7 +1788,7 @@ function buildMedicamentos() {
         row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:3px 0;font-family:var(--mono);font-size:11px';
         row.innerHTML = `
           <span style="color:${st.border};font-size:12px">${i === entries.length-1 ? '●' : '│'}</span>
-          <span style="color:var(--muted);min-width:80px">${fmtDate(entry.date)}</span>
+          <span style="color:var(--muted);min-width:80px">${entry.date ? fmtDate(entry.date) : (medFechaDoc(entry) ? '<i style="opacity:.75" data-ptip="' + medFechaDocTxt(entry).replace(/"/g,'&quot;') + '">' + fmtDate(medFechaDoc(entry).fecha) + '</i>' : '')}</span>
           <span style="color:var(--accent);min-width:120px">${entry.nom || ''}</span>
           <span style="color:var(--text)">${entry.dose}${entry.frequence ? ' · ' + entry.frequence : ''}</span>
           <span style="color:var(--muted);font-size:10px">— ${entry.source || ''}</span>
@@ -1670,7 +1814,11 @@ function buildMedicamentos() {
   var nav = document.getElementById('meds-quicknav');
   var navFixed = document.getElementById('meds-quicknav-fixed');
   if (nav) {
-    nav.innerHTML = '<option value="">— Seleccionar medicamento —</option>';
+    var _cat = medsCategoria();
+    nav.innerHTML =
+      '<option value="@cat:medicamento"' + (_cat === 'medicamento' ? ' selected' : '') + '>' + medNomCategoria('medicamento') + ' (' + nMed + ')</option>' +
+      '<option value="@cat:otros"' + (_cat === 'otros' ? ' selected' : '') + '>' + medNomCategoria('otros') + ' (' + nOtros + ')</option>' +
+      '<option value="" disabled>──────────────</option>';
     keys.forEach(function(key) {
       var opt = document.createElement('option');
       opt.value = 'med-card-' + key;
@@ -1700,37 +1848,26 @@ function buildMedicamentos() {
   }
 }
 
-/* Afficher/masquer la barre fixed quand la listbox normale sort de l'écran */
-var _medScrollWatchActive = false;
+/* v2026.11.04 : plus de barre fixe en double — le bandeau est « sticky ».
+   On le colle juste sous l'en-tête du module si celui-ci reste lui-même
+   en haut (sticky/fixed) ; sinon tout en haut. */
 function medInitScrollWatch() {
-  if (_medScrollWatchActive) return;
-  _medScrollWatchActive = true;
-  var anchor = document.getElementById('meds-bar-anchor');
-  var fixedBar = document.getElementById('meds-fixed-bar');
-  if (!anchor || !fixedBar) return;
-  
-  /* Ajuster le top de la barre fixe selon la hauteur réelle de la navbar */
-  var navBar = document.querySelector('.nav');
-  var navH = navBar ? navBar.offsetHeight : 44;
-  fixedBar.style.top = navH + 'px';
-  
-  /* IntersectionObserver : quand l'ancre sort de l'écran → afficher la barre fixe */
-  var observer = new IntersectionObserver(function(entries) {
-    var panel = document.getElementById('panel-medicamentos');
-    if (!panel || !panel.classList.contains('active')) { fixedBar.style.display = 'none'; return; }
-    entries.forEach(function(entry) {
-      fixedBar.style.display = entry.isIntersecting ? 'none' : 'block';
-    });
-  }, { threshold: 0, rootMargin: '-' + navH + 'px 0px 0px 0px' });
-  
-  observer.observe(anchor);
+  var cab = document.getElementById('meds-cabecera');
+  if (!cab) return;
+  var h = document.querySelector('header[data-cabecera]');
+  var alto = 0;
+  if (h) {
+    var pos = getComputedStyle(h).position;
+    if ((pos === 'sticky' || pos === 'fixed') && h.offsetHeight) alto = h.offsetHeight;
+  }
+  cab.style.top = alto + 'px';
 }
 
 function medNavTop() {
   var nav = document.getElementById('meds-quicknav');
   var navFixed = document.getElementById('meds-quicknav-fixed');
-  if (nav) nav.selectedIndex = 0;
-  if (navFixed) navFixed.value = '';
+  if (nav) nav.value = '@cat:' + medsCategoria();
+  if (navFixed) navFixed.value = '@cat:' + medsCategoria();
   var panel = document.getElementById('panel-medicamentos');
   if (panel) {
     var navBar = document.querySelector('.nav');
@@ -1761,27 +1898,27 @@ function medFilterStatus(statut) {
 
   /* Mettre à jour la listbox pour n'afficher que les médicaments visibles */
   if (nav) {
-    for (var i = 1; i < nav.options.length; i++) {
+    for (var i = MED_NAV_CAB; i < nav.options.length; i++) {
       var cardId = nav.options[i].value;
       var card = document.getElementById(cardId);
       nav.options[i].style.display = (card && card.style.display !== 'none') ? '' : 'none';
     }
-    nav.selectedIndex = 0;
+    nav.value = '@cat:' + medsCategoria();
   }
   if (navFixed) {
-    for (var i = 1; i < navFixed.options.length; i++) {
+    for (var i = MED_NAV_CAB; i < navFixed.options.length; i++) {
       var cardId = navFixed.options[i].value;
       var card = document.getElementById(cardId);
       navFixed.options[i].style.display = (card && card.style.display !== 'none') ? '' : 'none';
     }
-    navFixed.selectedIndex = 0;
+    navFixed.value = '@cat:' + medsCategoria();
   }
 }
 
 /* Navigation précédent/suivant dans la listbox */
 function medNavPrev() {
   var nav = document.getElementById('meds-quicknav');
-  if (!nav || nav.selectedIndex <= 1) return;
+  if (!nav || nav.selectedIndex <= MED_NAV_CAB) return;
   nav.selectedIndex--;
   jumpToMed(nav.value);
   var navFixed = document.getElementById('meds-quicknav-fixed');
@@ -1790,7 +1927,7 @@ function medNavPrev() {
 function medNavNext() {
   var nav = document.getElementById('meds-quicknav');
   if (!nav || nav.selectedIndex >= nav.options.length - 1) return;
-  if (nav.selectedIndex === 0) nav.selectedIndex = 1; else nav.selectedIndex++;
+  if (nav.selectedIndex < MED_NAV_CAB) nav.selectedIndex = MED_NAV_CAB; else nav.selectedIndex++;
   jumpToMed(nav.value);
   var navFixed = document.getElementById('meds-quicknav-fixed');
   if (navFixed) navFixed.value = nav.value;
@@ -1798,6 +1935,7 @@ function medNavNext() {
 
 function jumpToMed(id) {
   if (!id) return;
+  if (id.indexOf('@cat:') === 0) { medsCategoriaSet(id.substring(5)); return; }   /* P-H 04/11 */
   var el = document.getElementById(id);
   if (!el) return;
   /* Synchroniser les deux listbox */
@@ -1805,12 +1943,10 @@ function jumpToMed(id) {
   var navFixed = document.getElementById('meds-quicknav-fixed');
   if (nav) nav.value = id;
   if (navFixed) navFixed.value = id;
-  /* Calculer la position : sous la barre (fixed ou normale) */
-  var topOffset = 52; /* hauteur navbar */
-  var fixedBar = document.getElementById('meds-fixed-bar');
-  if (fixedBar && fixedBar.style.display !== 'none') {
-    topOffset = fixedBar.getBoundingClientRect().bottom;
-  }
+  /* sous le bandeau collé en haut (v2026.11.04) */
+  var topOffset = 0;
+  var _cab = document.getElementById('meds-cabecera');
+  if (_cab) topOffset = _cab.getBoundingClientRect().bottom;
   var cardRect = el.getBoundingClientRect();
   window.scrollBy({ top: cardRect.top - topOffset - 8, behavior: 'smooth' });
   /* Surbrillance */
@@ -2333,7 +2469,12 @@ function editMedStatut(medName) {
   }, 50);
 
   bo.onclick = function() {
-    var nuevoNombre = document.getElementById('med-edit-nombre').value.trim() || medName;
+    /* v2026.11.04 (P-H : « XARELTO (19) » enregistré comme nom) : le titre de la
+       carte porte un compteur — il ne doit jamais entrer dans le nom ; et le nom
+       imprimé de la ligne ne change que si l'aidant a VRAIMENT retapé le champ. */
+    var _titulo = String(medName || '').replace(/\s*\(\d+\)$/, '').trim();
+    var nuevoNombre = (document.getElementById('med-edit-nombre').value.trim() || _titulo).replace(/\s*\(\d+\)$/, '').trim();
+    var _renombra = nuevoNombre.toUpperCase() !== _titulo.toUpperCase();
     var statut = document.getElementById('med-edit-statut').value;
     var debut = document.getElementById('med-edit-debut').value;
     var finInput = document.getElementById('med-edit-fin');
@@ -2370,10 +2511,12 @@ function editMedStatut(medName) {
 
     var allMeds = loadMeds();
     /* la fiche modifiée = la ligne que la carte montre (dernière par date) */
-    var _blanco = medName.toUpperCase().replace(/\s*\(\d+\)$/, '');
+    var _blanco = _titulo.toUpperCase();
+    var _claveTit = medKeyCanon(_titulo);
     var _iDestino = -1, _fDestino = '';
     allMeds.forEach(function(x, j) {
-      if (x.nom === medName || (x.nom && x.nom.toUpperCase().startsWith(_blanco))) {
+      /* v2026.11.04 : le groupe se reconnaît par sa clé (principe actif), plus par le début du nom */
+      if (x.nom === medName || medKeyCanon(x.nom) === _claveTit || (x.nom && x.nom.toUpperCase().startsWith(_blanco))) {
         var f = String(x.date_debut || x.date || '');
         if (_iDestino < 0 || f >= _fDestino) { _iDestino = j; _fDestino = f; }
       }
@@ -2381,11 +2524,18 @@ function editMedStatut(medName) {
     try {
     for (var i = _iDestino; i >= 0 && i === _iDestino; i--) {
       if (true) {
-        allMeds[i].nom = nuevoNombre;
+        if (_renombra || !allMeds[i].nom) allMeds[i].nom = nuevoNombre;
         delete allMeds[i]._borrador; /* geste humain = la fiche existe pour de vrai */
-        allMeds[i].statut = statut;
+        if (allMeds[i].statut !== statut) { allMeds[i].statut = statut; allMeds[i].estado_fecha = medHoy(); }
         if (debut) allMeds[i].date_debut = debut;
-        if (fin) allMeds[i].date_fin = fin;
+        /* v2026.11.04 (règle de P-H) : la fin peut être AVANCÉE, jamais reculée
+           au-delà de la fin imprimée ; la fin imprimée remplacée est gardée */
+        if (fin) {
+          var _finAnt = medFinDe(allMeds[i]);
+          if (!_finAnt) medPonFin(allMeds[i], fin);
+          else if (fin < _finAnt) { if (!allMeds[i].hasta_receta) allMeds[i].hasta_receta = _finAnt; medPonFin(allMeds[i], fin); }
+          else if (fin > _finAnt) status('⚠ ' + txtMed('fin_posterior') + ' ' + fmtDate(_finAnt));
+        }
         /* motif / remplace_par : plus dans l'UI (maquette 06/08) — préservés tels quels */
         if (prescriptor) {
           allMeds[i].prescriptor = prescId; /* nom tapé -> id (P-H 06/08) */
@@ -2414,7 +2564,7 @@ function editMedStatut(medName) {
        défaut « En curso »), et le saut vers un élément invisible produisait
        un défilement erroné au lieu d'un simple rafraîchissement propre. */
     if (!_esNuevo) {
-      var normKey = nuevoNombre.replace(/\s*\(.*?\)/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+      var normKey = medKeyCanon(nuevoNombre);
       setTimeout(function() { jumpToMed('med-card-' + normKey); }, 200);
     }
   };

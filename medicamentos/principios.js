@@ -12,7 +12,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
   "_doctrina": "LOS PRINCIPIOS ACTIVOS (P-H, 07/09/2026)\n\nXarelto y Rivaroxaban son el mismo tratamiento: uno es el nombre comercial, el otro el principio activo. El programa no puede adivinarlo — hace falta esta tabla.\n\nVive en /Salufolio/Medicamentos/ y NO en V2/comun/: sirve a TODOS los pacientes y sobrevivira a las versiones del programa. Los datos de un lado, el codigo del otro.\n\nCrece con el uso: cuando un nombre no esta aqui, el programa lo senala y usted lo anade.",
-  "version": "2026.09.30-09:10:00",
+  "version": "2026.11.04-10:12:00",
   "_como": "clave = principio activo (normalizado) · valor = { nombre, comerciales[], grupo }",
   "principios": {
     "rivaroxaban": {
@@ -28,11 +28,19 @@ var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
       "comerciales": [
         "aricept",
         "neuralex",
-        "lixben",
-        "protalon"
+        "lixben"
       ],
       "grupo": "alzheimer",
       "categoria": "medicamento"
+    },
+    "memantina": {
+      "nombre": "Memantina",
+      "comerciales": [
+        "protalon"
+      ],
+      "grupo": "alzheimer",
+      "categoria": "medicamento",
+      "_nota": "P-H, 04/11/2026 : Protalon es memantina (CIMA N06DX01), no donepezilo."
     },
     "acido acetilsalicilico": {
       "nombre": "Ácido acetilsalicílico",
@@ -137,7 +145,6 @@ var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
       "comerciales": [
         "urbason",
         "solu-moderin",
-        "actocortina",
         "solumoderin"
       ],
       "grupo": "corticoide",
@@ -643,7 +650,10 @@ var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
     },
     "hidrocortisona": {
       "nombre": "Hidrocortisona",
-      "comerciales": [],
+      "comerciales": [
+        "actocortina"
+      ],
+      "_nota": "P-H, 04/11/2026 : Actocortina es hidrocortisona (CIMA H02AB09), no metilprednisolona.",
       "grupo": "corticoide tópico",
       "categoria": "medicamento"
     },
@@ -785,21 +795,43 @@ var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
   "productos": {
     "oxigeno domiciliario": {
       "nombre": "Oxígeno domiciliario",
+      "comerciales": [
+        "oxigeno",
+        "oxigenoterapia",
+        "ocd"
+      ],
       "grupo": "oxigenoterapia",
       "categoria": "material"
     },
-    "incopack pants t media 80 u absorb inc orina dia": {
-      "nombre": "Incopack — día",
-      "grupo": "absorbente",
-      "categoria": "parafarmacia"
+    "bipap": {
+      "nombre": "BiPAP",
+      "comerciales": [],
+      "grupo": "ventilación",
+      "categoria": "material"
     },
-    "incopack pants t media 80 u absorb inc orina sup noc": {
-      "nombre": "Incopack — noche",
+    "filtamask": {
+      "nombre": "Filtamask",
+      "comerciales": [],
+      "grupo": "oxigenoterapia",
+      "categoria": "material"
+    },
+    "absorbente": {
+      "nombre": "Absorbente",
+      "comerciales": [
+        "incopack",
+        "panal",
+        "absorbente inc orina"
+      ],
       "grupo": "absorbente",
-      "categoria": "parafarmacia"
+      "categoria": "parafarmacia",
+      "_nota": "P-H, 04/11/2026 : « ABSORBENTE et INCOPACK c'est la même chose » — día y noche juntos."
     },
     "thick and easy sabor neutro": {
-      "nombre": "Thick and Easy",
+      "nombre": "Espesante",
+      "comerciales": [
+        "thick",
+        "espesante"
+      ],
       "grupo": "espesante",
       "categoria": "parafarmacia"
     },

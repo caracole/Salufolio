@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    LAS EQUIVALENCIAS — /Salufolio/comun/equivalencias.js
-   Versión 2026.09.29-12:50:00
+   Versión 2026.11.04-13:03:28  (04/11/2026 : modo « entera », para los parámetros)
 
    « Tu devrais avoir une fonction générique qui, si tu lui donnes A ou B
      et que dans la table il y a A = B = C, te dise OK. »  (P-H, 29/09/2026)
@@ -69,7 +69,14 @@ var SF_EQUIV = window.SF_EQUIV = (function(){
   }
   var NORMALIZA = {
     todo:            function(s){ return base(s); },
-    primera_palabra: function(s){ return base(s).split(' ')[0] || ''; }
+    primera_palabra: function(s){ return base(s).split(' ')[0] || ''; },
+    /* el nombre ENTERO, paréntesis y % incluidos (P-H, 04/11/2026) : para los
+       parámetros, « HEMOGLOBINA (EN ORINA) » no es « HEMOGLOBINA », ni
+       « NEUTROFILOS % » es « NEUTROFILOS ». */
+    entera:          function(s){ return String(s == null ? '' : s).toUpperCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/%/g, ' PCT ').replace(/[^A-Z0-9 ]/g, ' ')
+      .replace(/\s+/g, ' ').trim(); }
   };
 
   function pela(dom, s){

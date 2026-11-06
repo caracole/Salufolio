@@ -5,9 +5,32 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Curvas · Salufolio</title>
 <script src="../comun/chart.umd.min.js"></script>
+<script src="../comun/pdfjs/pdf.min.js"></script>
+<script>/* el rotulador necesita pdf.js ; su « worker » vive a su lado (P-H, 05/11/2026) */
+try { if (window.pdfjsLib) { var _sPdf = document.currentScript.previousElementSibling; pdfjsLib.GlobalWorkerOptions.workerSrc = _sPdf.src.replace(/pdf\.min\.js(\?.*)?$/, 'pdf.worker.min.js'); } } catch (e) {}</script>
 <script src="../medicamentos/principios.js"></script>
+<!-- los sinónimos de los parámetros (P-H, 04/11/2026) : el motor y la tabla -->
+<script src="../comun/equivalencias.js"></script>
+<script src="../comun/sinonimos-parametros.js"></script>
+<!-- el comentario de la IA (P-H, 04/11/2026) : el prompt fuera del código, la maquinaria común -->
+<script src="../comun/prompt-comentario-curva.js"></script>
+<script src="../comun/modelos-ia.js"></script>
+<script src="../comun/comentario-ia.js"></script>
 <link rel="stylesheet" href="../comun/salufolio.css">
 <style>
+.sf-aus{padding:10px 14px;text-align:left;font-size:13px;line-height:1.5}
+.sf-aus-cab{position:sticky;top:0;z-index:1;background:var(--surface);padding:6px 0;border-bottom:1px solid var(--border)}
+.sf-aus-nota{color:var(--muted);font-style:italic;margin-bottom:8px}
+.sf-aus-dato{margin:2px 0}
+.sf-aus-sub{margin:12px 0 4px;font-weight:600;color:var(--accent);font-size:12px;text-transform:uppercase}
+.sf-aus-tabla{border-collapse:collapse}
+.sf-aus-tabla td{padding:2px 10px 2px 2px;border-bottom:1px solid var(--border)}
+.sf-aus-v{text-align:right;font-weight:600}
+.sf-aus-u,.sf-aus-f{color:var(--muted)}
+.sf-aus-feutre td{background:var(--feutre-fondo);outline:1px solid var(--feutre-borde)}
+.sf-aus-ev{margin:4px 0 8px}
+.sf-aus-lista{margin:2px 0}
+.sf-feutre{position:absolute;background:var(--feutre-fondo);outline:1.5px solid var(--feutre-borde);border-radius:2px;pointer-events:none}
 /* Rien en dur : tout par variables (P-H) */
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
 header[data-cabecera]{display:flex;align-items:baseline;gap:var(--gap-m,12px);
@@ -29,6 +52,8 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 .cuadro-cab .flecha{width:1em;color:var(--muted)}
 .cuadro-cuerpo{padding:0 16px 12px;font-size:13.5px;color:var(--muted);line-height:1.6}
 .cuadro.cerrado .cuadro-cuerpo{display:none}
+.cur-num{position:absolute;right:var(--cur-num-margen,10px);bottom:var(--cur-num-margen-b,6px);font-family:var(--mono);font-size:var(--cur-num-tam,10px);color:var(--muted);opacity:.7;cursor:default}
+.cur-sug{padding:4px 12px;cursor:pointer}.cur-sug:hover{background:var(--surface2)}
 </style>
 </head>
 <body>
@@ -50,13 +75,14 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 </div>
 <div id="aviso" style="display:none"></div>
 
+<script src="../comun/paleta-colores.js"></script>
 <script src="curvas.js"></script>
 <script src="curvas.idiomas.js"></script>
 <script src="../comun/mf.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    CURVAS — programa autónomo de Salufolio V2
-   Versión 2026.10.06-22:17:20
+   Versión 2026.11.05-15:36:21
 
    Extraído de la V1: core-charts-js.js (el motor, con la superposición de
    curvas), core-panels-html.html (el panel), y sus dependencias tomadas en
@@ -72,7 +98,8 @@ const APP_VERSION_DATE = SF_CONFIG.version;
 
 /* ══ LES PONTS vers mf.js — ils remplacent core-data-js.js ══ */
 var _DATOS=null;
-function loadData(){   return (_DATOS && _DATOS.mesures) || []; }
+/* P-H, 04/11/2026 : cada medida bajo su clave única (comun/sinonimos-parametros.js) — el .sf no cambia */
+function loadData(){   return (_DATOS && (MF.mesuresCanon ? MF.mesuresCanon(_DATOS) : _DATOS.mesures)) || []; }
 function loadEvents(){ return (_DATOS && _DATOS.events) || []; }
 function loadMeds(){   return (_DATOS && _DATOS.medicaments) || []; }
 function getPatientLabel(){ var p=MF.paciente(); return p.etiqueta || p.matricula || ''; }
@@ -85,16 +112,7 @@ function loadChartsCombos(){ try{ return JSON.parse(localStorage.getItem('sf_cur
 var CURVAS_VISTA = {
   cuadros: [ { id: 'comoutilizar', abierto: true } ],
   /* paleta de 8 pavés para elegir el color de una curva (rol + color) */
-  paleta: [
-    { rol: 'rojo',     color: '#d94b4b' },
-    { rol: 'naranja',  color: '#e8913a' },
-    { rol: 'ambar',    color: '#d4b030' },
-    { rol: 'verde',    color: '#4caf6e' },
-    { rol: 'turquesa', color: '#2fb5b0' },
-    { rol: 'azul',     color: '#4a8fe0' },
-    { rol: 'violeta',  color: '#8d6cd0' },
-    { rol: 'rosa',     color: '#d86ab0' }
-  ],
+  paleta: (window.SF_PALETA_COLORES && SF_PALETA_COLORES.paves) || [],   /* la paleta común : ../comun/paleta-colores.js (P-H, 04/11/2026) */
   /* una forma por rango en una superposición : símbolo del título y estilo de los puntos */
   formas: [
     { simbolo: '●', punto: 'circle' },
@@ -102,21 +120,32 @@ var CURVAS_VISTA = {
     { simbolo: '▲', punto: 'triangle' },
     { simbolo: '◆', punto: 'rectRot' }
   ],
-  claveColores: 'sf_curvas_colores'
+  claveColores: 'sf_curvas_colores',
+  /* en una superposición, dos colores más cerca que esto (distancia RGB, de 0 a 441) se confunden : la segunda curva toma otro pavé (P-H, 04/11/2026) */
+  distancia_color: 60
 };
 /* ── Colores : el del usuario si lo eligió, si no el del catálogo ── */
 function _coloresUsuario(){ try{ return JSON.parse(localStorage.getItem(CURVAS_VISTA.claveColores)||'{}'); }catch(e){ return {}; } }
 function colorCurva(k){ var u=_coloresUsuario(); return u[k] || ((PARAMS[k]||{}).color) || 'var(--accent)'; }
 /* en una superposición, dos curvas no comparten color : la segunda toma el primer pavé libre */
+function _rgbCur(c){ var m = /^#([0-9a-f]{6})$/i.exec(String(c || '').trim()); if(!m) return null; var n = parseInt(m[1], 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+function _colorCerca(a, b){
+  var x = _rgbCur(a), y = _rgbCur(b);
+  if(!x || !y) return String(a).toLowerCase() === String(b).toLowerCase();
+  return Math.sqrt(Math.pow(x[0]-y[0],2) + Math.pow(x[1]-y[1],2) + Math.pow(x[2]-y[2],2)) < (CURVAS_VISTA.distancia_color || 60);
+}
+/* P-H, 04/11/2026 : créatinine et filtrat, deux verts presque pareils — ya no basta con « no idénticos » :
+   un color DEMASIADO CERCA de uno ya usado cede su sitio al primer pavé bien distinto. El color que el
+   usuario eligió él mismo se respeta siempre. */
 function coloresCombo(keys){
-  var usados=[], out=[];
+  var usados = [], out = [], elegidos = _coloresUsuario();
   keys.forEach(function(k){
-    var c=colorCurva(k);
-    if(usados.indexOf(c.toLowerCase())>=0){
-      var libre=CURVAS_VISTA.paleta.filter(function(q){ return usados.indexOf(q.color.toLowerCase())<0; })[0];
-      if(libre) c=libre.color;
+    var c = colorCurva(k);
+    if(!elegidos[k] && usados.some(function(u){ return _colorCerca(u, c); })){
+      var libre = CURVAS_VISTA.paleta.filter(function(q){ return !usados.some(function(u){ return _colorCerca(u, q.color); }); })[0];
+      if(libre) c = libre.color;
     }
-    usados.push(c.toLowerCase()); out.push(c);
+    usados.push(c); out.push(c);
   });
   return out;
 }
@@ -149,6 +178,7 @@ function alternaCuadro(id, abrir) {
   var cerrar = (abrir === undefined) ? !c.classList.contains('cerrado') : !abrir;
   c.classList.toggle('cerrado', cerrar);
   var f = c.querySelector('.flecha'); if (f) f.textContent = cerrar ? '▸' : '▾';
+  var cab = c.querySelector('.cuadro-cab'); if (cab) if (window.MF && MF.plegableTip) MF.plegableTip(cab, !cerrar);   /* « Clic para cerrar / abrir » */
 }
 /* los elementos con data-tx="clave" se traducen ; **negrita** y saltos de línea admitidos */
 function aplicaTextosCur() {
@@ -213,7 +243,7 @@ function getSeriesForParam(data, key) {
   /* v2026.7.21.10 — chaque point porte sa ROCHE-MÈRE : pdf_id + pdf voyagent
      avec la valeur (Lavoisier appliqué aux graphiques). */
   return data.filter(m => m.vals && (m.vals||{})[key] !== undefined)
-             .map(m => ({ x: m.date, y: (m.vals||{})[key], src: m.src, pdf_id: m.pdf_id, pdf: m.pdf }))
+             .map(m => ({ x: m.date, y: (m.vals||{})[key], src: m.src, pdf_id: m.pdf_id, pdf: m.pdf, imp: (m.impresos||{})[key] }))
              .sort((a,b) => a.x.localeCompare(b.x));
 }
 
@@ -270,7 +300,7 @@ function _pdfPopupAbrir(url, titulo, info) {
 function _pdfSinArchivo(nom, motivo) {
   var mat = ''; try { mat = (MF.paciente().matricula || ''); } catch (e) {}
   var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : trad('pdf_sin_archivo');
-  var msg = '📄 ' + nom + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
+  var msg = '📄 ' + ((window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom) + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
   var det = document.getElementById('xz-cmt-detalle');
   if (det) { det.textContent = '🧪 ' + msg; return; }
   document.querySelectorAll('.sf-pdf-aviso').forEach(function(o) { o.remove(); });
@@ -311,54 +341,23 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
   }
   catch (e) { if (url) { _pdfPopupAbrir(url, titulo, info); return; } _pdfSinArchivo(nom, String((e && e.message) || '').replace(/^sin-pdf:?/, '')); return; }
   try {
-    var labelMin = (info && info.label) ? info.label.toLowerCase() : null;
-    /* Les formes sous lesquelles le laboratoire peut écrire CETTE valeur.
-       P-H 11/08 : le feutre ratait les valeurs > 1000 — le .sf porte 2583
-       mais le PDF imprime « 2.583,00 » (point de milliers à l'espagnole).
-       Faute de la trouver, le feutre continuait et surlignait le LABEL sur
-       une autre page (« elevación de Dímero D... » p4 au lieu du 2.583 p2).
-       On fabrique donc toutes les écritures plausibles de la même valeur. */
-    var valores = [];
-    if (info) {
-      var n = Number(info.valor);
-      var brut = String(info.valor);
-      valores.push(brut);                         /* 2583   ·  13.8   */
-      valores.push(brut.replace('.', ','));       /* 2583   ·  13,8   */
-      if (isFinite(n) && Math.abs(n) >= 1000) {
-        /* séparateur de milliers espagnol : le point */
-        var ent = Math.trunc(Math.abs(n));
-        var dec = brut.indexOf('.') >= 0 ? brut.split('.')[1] : '';
-        var mil = String(ent).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        valores.push(mil);                        /* 2.583            */
-        valores.push(mil + ',' + (dec || '00'));  /* 2.583,00         */
-        valores.push(mil + ',' + (dec || '0'));   /* 2.583,0          */
-      } else if (isFinite(n) && Number.isInteger(n)) {
-        /* un entier peut être imprimé avec décimales : 235 → 235,00 */
-        valores.push(brut + ',00');
-        valores.push(brut + ',0');
-      }
-      valores = valores.filter(function (v, i, a) { return v && a.indexOf(v) === i; });
+    /* ══ EL ROTULADOR (P-H, 05/11/2026 : « je veux qu'un feutre désigne ce qu'on doit voir ») ══
+       Se busca, en el texto del PDF, la LÍNEA donde está el nombre del parámetro tal como lo imprime
+       el laboratorio (sinonimos-parametros.js : etiqueta, impresos, buscar) y, en esa misma línea,
+       su valor (todas sus escrituras : 13,8 · 2.583,00…). Si el documento lleva varias fechas, se
+       prefiere el valor de la línea o de la columna de la fecha del punto. Todo en este navegador. */
+    var marca = _feutrePlan(info);
+    var paginas = [], textoVacio = true, mejor = null;
+    for (var pnum = 1; pnum <= doc.numPages; pnum++) {
+      var pg = await doc.getPage(pnum);
+      var tc0 = await pg.getTextContent();
+      if (tc0.items.some(function(it) { return (it.str || '').trim(); })) textoVacio = false;
+      var r0 = _feutreBusca(tc0.items, marca);
+      paginas[pnum] = r0;
+      if (r0.nivel && (!mejor || r0.nivel > mejor.nivel)) { mejor = r0; mejor.p = pnum; }
+      if (mejor && mejor.nivel === 3) break;   /* nombre + valor en la misma línea : es la página */
     }
-    /* P-H 10/08 : « affiche la page qui tient le 1er feutre ». On ouvre
-       donc la première page où quelque chose SERA surligné — c.-à-d. la
-       valeur (le repère le plus sûr) ou, à défaut, le label. On cherche
-       la valeur en priorité (page du vrai feutre), le label ne servant
-       que de repli s'il n'y a aucune valeur nulle part. */
-    var pagina = 1, pageValeur = 0, pageLabel = 0, textoVacio = true;
-    if (labelMin || valores.length) {
-      for (var pnum = 1; pnum <= doc.numPages; pnum++) {
-        var pg = await doc.getPage(pnum);
-        var tc0 = await pg.getTextContent();
-        var texto = tc0.items.map(function(it) { return it.str; }).join(' ');
-        if (texto.trim()) textoVacio = false;
-        var tl = texto.toLowerCase();
-        if (!pageValeur && valores.some(function(v) { return v && texto.indexOf(v) !== -1; })) pageValeur = pnum;
-        if (!pageLabel && labelMin && tl.indexOf(labelMin) !== -1) pageLabel = pnum;
-        if (pageValeur) break; /* la page du feutre-valeur trouvée, on s'arrête */
-      }
-      pagina = pageValeur || pageLabel || 1;
-    }
-    if (textoVacio) { try { doc.destroy(); } catch (e) {} _pdfPopupAbrir(url, titulo, info); return; } /* scan sans OCR */
+    var pagina = mejor ? mejor.p : 1;
     var sh = _pdfPopupShell(titulo, info);
     var barra = document.createElement('div');
     barra.style.cssText = 'flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:3px 6px;border-bottom:1px solid var(--border);font-size:12px';
@@ -385,24 +384,26 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
       wrapper.appendChild(canvas);
       sh.cuerpo.appendChild(wrapper);
       await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
-      var tc = await page.getTextContent();
-      var nb = 0, premierTop = null;
-      tc.items.forEach(function(it) {
-        var s = (it.str || '');
-        var hit = (labelMin && s.toLowerCase().indexOf(labelMin) !== -1) ||
-                  valores.some(function(v) { return v && s.indexOf(v) !== -1; });
-        if (!hit) return;
-        nb++;
+      var r = paginas[pnum];
+      if (!r) { var tc = await page.getTextContent(); r = paginas[pnum] = _feutreBusca(tc.items, marca); }
+      var premierTop = null;
+      r.marcas.forEach(function(it) {
         var tx = pdfjsLib.Util.transform(vp.transform, it.transform);
         var h = Math.hypot(tx[2], tx[3]) || 12;
         var d = document.createElement('div');
-        d.style.cssText = 'position:absolute;background:rgba(255,200,0,.45);outline:1.5px solid rgba(230,150,0,.9);border-radius:2px;pointer-events:none;left:' + (tx[4] - 2) + 'px;top:' + (tx[5] - h) + 'px;width:' + (it.width * scale + 4) + 'px;height:' + (h * 1.2) + 'px';
+        d.className = 'sf-feutre';
+        d.style.cssText = 'left:' + (tx[4] - 3) + 'px;top:' + (tx[5] - h * 1.05) + 'px;width:' + (it.width * scale + 6) + 'px;height:' + (h * 1.35) + 'px';
         wrapper.appendChild(d);
-        if (premierTop === null) premierTop = tx[5] - h;
+        if (premierTop === null || tx[5] - h < premierTop) premierTop = tx[5] - h;
       });
       barra.querySelector('.pdf-pg-info').textContent = trad('pdf_pagina') + ' ' + pnum + ' / ' + doc.numPages;
-      barra.querySelector('.pdf-pg-nb').textContent = nb ? ('🟡 ' + nb + ' ' + trad(nb > 1 ? 'pdf_resaltados' : 'pdf_resaltado')) : '';
-      if (premierTop !== null) sh.cuerpo.scrollTop = Math.max(0, premierTop - 60);
+      var aviso = textoVacio ? trad('feutre_escaneado')
+        : r.nivel === 3 ? '🟡 ' + trad('feutre_linea')
+        : r.nivel === 2 ? '🟡 ' + trad('feutre_solo_valor')
+        : r.nivel === 1 ? '🟡 ' + trad('feutre_solo_nombre')
+        : (mejor ? trad('feutre_otra_pagina').replace('{p}', mejor.p) : trad('feutre_nada'));
+      barra.querySelector('.pdf-pg-nb').textContent = aviso;
+      if (premierTop !== null) sh.cuerpo.scrollTop = Math.max(0, premierTop - 80);
     }
     barra.querySelector('.pdf-pg-prev').onclick = function() { if (actual > 1) dibujar(actual - 1); };
     barra.querySelector('.pdf-pg-next').onclick = function() { if (actual < doc.numPages) dibujar(actual + 1); };
@@ -416,21 +417,160 @@ async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
   }
 }
 
+/* ══ EL ROTULADOR — lo que se busca (P-H, 05/11/2026) ══ */
+function _feutreNorm(s) {
+  return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
+}
+function _feutreEsc(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function _feutrePlan(info) {
+  info = info || {};
+  /* los nombres : los que imprime el laboratorio (tabla de sinónimos) y la etiqueta de la pantalla */
+  var P = ((window.SF_SINONIMOS_PARAMETROS || {}).parametros || {})[info.key] || {};
+  var nombres = [].concat(P.impresos || [], P.buscar || [], Object.values(P.etiqueta || {}), [info.label || '', info.key || '']);
+  /* « GOT (AST) » : también sus dos mitades, GOT y AST */
+  nombres.slice().forEach(function(n) { var m = /^(.+?)\s*\((.+)\)\s*$/.exec(n || ''); if (m) nombres.push(m[1], m[2]); });
+  nombres = nombres.map(_feutreNorm).filter(function(n, i, a) { return n.length >= 2 && a.indexOf(n) === i; })
+                   .sort(function(a, b) { return b.length - a.length; });
+  var rxNombres = nombres.map(function(n) { return new RegExp('(^|[^a-z0-9])' + _feutreEsc(n) + '($|[^a-z0-9])'); });
+  /* el valor : todas las escrituras plausibles (P-H 11/08 : 2583 → « 2.583,00 ») */
+  var valores = [];
+  if (info.valor !== undefined && info.valor !== null && info.valor !== '') {
+    var n = Number(info.valor), brut = String(info.valor);
+    valores.push(brut, brut.replace('.', ','));
+    if (isFinite(n) && Math.abs(n) >= 1000) {
+      var ent = Math.trunc(Math.abs(n)), dec = brut.indexOf('.') >= 0 ? brut.split('.')[1] : '';
+      var mil = String(ent).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      valores.push(mil, mil + ',' + (dec || '00'), mil + ',' + (dec || '0'));
+    }
+    if (isFinite(n) && Number.isInteger(n)) valores.push(brut + ',00', brut + ',0', brut + '.0', brut + '.00');
+    if (isFinite(n) && !Number.isInteger(n)) { var c2 = n.toFixed(2); valores.push(c2, c2.replace('.', ',')); }
+  }
+  valores = valores.filter(function(v, i, a) { return v && a.indexOf(v) === i; });
+  /* « 55 » no es « 155 » ni « 5,55 » : bordes */
+  var rxValores = valores.map(function(v) { return new RegExp('(^|[^0-9.,])' + _feutreEsc(v) + '(?![0-9]|[.,][0-9])'); });
+  /* la fecha del punto, escrita como la escriben los informes */
+  var fechas = [], m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(info.fecha || ''));
+  if (m) {
+    var d = m[3], mo = m[2], y = m[1], y2 = y.slice(2), d1 = String(+d), mo1 = String(+mo);
+    fechas = [d + '/' + mo + '/' + y, d + '/' + mo + '/' + y2, d1 + '/' + mo1 + '/' + y, d + '-' + mo + '-' + y, d + '.' + mo + '.' + y, d + '-' + mo + '-' + y2];
+  }
+  return { rxNombres: rxNombres, rxValores: rxValores, fechas: fechas };
+}
+/* las marcas de una página : nivel 3 = nombre + valor en la misma línea ; 2 = el valor solo ; 1 = el nombre solo ; 0 = nada */
+function _feutreBusca(items, plan) {
+  var its = (items || []).filter(function(it) { return it && it.transform && (it.str || '').trim(); });
+  var alto = function(it) { return Math.hypot(it.transform[2], it.transform[3]) || it.height || 10; };
+  var y = function(it) { return it.transform[5]; }, x = function(it) { return it.transform[4]; };
+  var misma = function(a, b) { return Math.abs(y(a) - y(b)) < Math.max(alto(a), alto(b)) * 0.6; };
+  var esNombre = function(it) { var t = ' ' + _feutreNorm(it.str) + ' '; return plan.rxNombres.some(function(r) { return r.test(t); }); };
+  var esValor = function(it) { var t = ' ' + String(it.str) + ' '; return plan.rxValores.some(function(r) { return r.test(t); }); };
+  var esFecha = function(it) { var t = String(it.str); return plan.fechas.some(function(f) { return t.indexOf(f) >= 0; }); };
+  var N = its.filter(esNombre), V = its.filter(esValor), F = its.filter(esFecha);
+  /* nombre y valor en la misma línea ; el valor a la derecha del nombre */
+  var pares = [];
+  V.forEach(function(v) { N.forEach(function(nm) { if (misma(nm, v) && x(v) >= x(nm)) pares.push([nm, v]); }); });
+  if (pares.length) {
+    var mejor = pares[0];
+    if (pares.length > 1 && F.length) {
+      /* varias líneas o columnas : la de la fecha del punto — misma línea, o la columna más cercana */
+      var dist = function(p) { return Math.min.apply(null, F.map(function(f) { return misma(f, p[1]) ? 0 : Math.abs(x(f) - x(p[1])) + 1; })); };
+      pares.sort(function(a, b) { return dist(a) - dist(b); }); mejor = pares[0];
+    } else if (pares.length > 1) {
+      /* sin fecha que ayude : el valor más cercano a su nombre */
+      pares.sort(function(a, b) { return (x(a[1]) - x(a[0])) - (x(b[1]) - x(b[0])); }); mejor = pares[0];
+    }
+    return { nivel: 3, marcas: mejor };
+  }
+  if (V.length && V.length <= 3) return { nivel: 2, marcas: V };
+  if (N.length) return { nivel: 1, marcas: N.slice(0, 3) };
+  return { nivel: 0, marcas: [] };
+}
+
+/* ══ « PDF ABSENT » : LO QUE EL EXPEDIENTE SABE DEL DOCUMENTO (P-H, 06/11/2026 : « quand on affiche PDF absent,
+   il faudrait trouver quelque part une clé avec le même pdf_id qui contient du texte ») ══
+   En lugar de la página blanca : la procedencia, todas las medidas del mismo documento (la del punto con
+   rotulador), sus acontecimientos, medicamentos y antecedentes. NO es el documento : es lo que se leyó de él. */
+function _pdfEsAusente(id) {
+  var A = ((_DATOS && _DATOS.pdfs) || {}).archivos || {};
+  var aus = (window.SF_CONFIG && SF_CONFIG.pdf_ausente) || 'PDF ABSENT.pdf';
+  return Object.prototype.hasOwnProperty.call(A, id) && A[id] === aus;
+}
+function _ausEsc(s) { return String(s === undefined || s === null ? '' : s).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function _ausF(f) { return (typeof fmtDate === 'function' && f) ? fmtDate(f) : (f || ''); }
+function _ausNombre(k) {
+  if (typeof PARAMS === 'object' && PARAMS[k] && PARAMS[k].label) return PARAMS[k].label;
+  var lg = 'es'; try { lg = MF.idioma() || 'es'; } catch (e) {}
+  var P = ((window.SF_SINONIMOS_PARAMETROS || {}).parametros || {})[k];
+  return (P && P.etiqueta && (P.etiqueta[lg] || P.etiqueta.es)) || k;
+}
+function _ausUnidad(k, m) {
+  return (m && m.unidades && m.unidades[k]) || (typeof PARAMS === 'object' && PARAMS[k] && PARAMS[k].unit) || '';
+}
+function _pdfFichaAusente(id, s, key, info) {
+  var D = _DATOS || {}, tit = id + ' — ' + trad('aus_tit');
+  var sh = _pdfPopupShell(_ausEsc(tit), info);
+  var med = (loadData() || []).filter(function(m) { return m && m.pdf_id === id; });
+  var cita = function(L) { return (Array.isArray(L) ? L : []).filter(function(x) { return x && x.pdf_id === id; }); };
+  var ev = cita(D.events), md = cita(D.medicaments), an = cita(D.antecedentes);
+  /* la procedencia : la tabla de fuentes por src_id, si no lo que dicen los datos */
+  var F = D.fuentes || {}, prov = [];
+  var ponP = function(t) { t = (t && typeof t === 'object') ? (t.nombre || t.etiqueta || '') : t; if (t && prov.indexOf(t) < 0) prov.push(t); };
+  med.forEach(function(m) { if (m.src_id) ponP(F[m.src_id]); });
+  ev.concat(md, an, med).forEach(function(x) { ponP(x.source || x.src); });
+  var fechas = []; med.concat(ev).forEach(function(x) { var f = x.date || x.fecha; if (f && fechas.indexOf(f) < 0) fechas.push(f); });
+  fechas.sort();
+  var h = '<div class="sf-aus"><div class="sf-aus-cab">'
+    + '<div class="sf-aus-nota">⚠ ' + _ausEsc(trad('aus_nota')) + '</div>'
+    + '<div class="sf-aus-dato"><b>' + _ausEsc(trad('aus_fecha')) + '</b> ' + _ausEsc(fechas.map(_ausF).join(' · ') || '—') + '</div>'
+    + '<div class="sf-aus-dato"><b>' + _ausEsc(trad('aus_procedencia')) + '</b> ' + _ausEsc(prov.join(' · ') || '—') + '</div></div>';
+  var marca = null;
+  if (med.length) {
+    var varias = med.map(function(m) { return m.date || m.fecha || ''; }).filter(function(f, i, a) { return a.indexOf(f) === i; }).length > 1;
+    h += '<div class="sf-aus-sub">' + _ausEsc(trad('aus_valores')) + '</div><table class="sf-aus-tabla">';
+    med.forEach(function(m) {
+      var f = m.date || m.fecha || '';
+      Object.keys(m.vals || {}).forEach(function(k) {
+        var es = (k === key && f === s.x && String(m.vals[k]) === String(s.y));
+        h += '<tr' + (es ? ' class="sf-aus-feutre"' : '') + '>' + (varias ? '<td class="sf-aus-f">' + _ausEsc(_ausF(f)) + '</td>' : '')
+          + '<td>' + _ausEsc(_ausNombre(k)) + '</td><td class="sf-aus-v">' + _ausEsc(m.vals[k]) + '</td><td class="sf-aus-u">' + _ausEsc(_ausUnidad(k, m)) + '</td></tr>';
+        if (es) marca = true;
+      });
+    });
+    h += '</table>';
+  }
+  if (ev.length) {
+    h += '<div class="sf-aus-sub">' + _ausEsc(trad('aus_eventos')) + '</div>';
+    ev.forEach(function(e) {
+      h += '<div class="sf-aus-ev"><b>' + _ausEsc(_ausF(e.date || e.fecha)) + ' · ' + _ausEsc(e.title || e.titre || e.titulo || '') + '</b>'
+        + ((e.text || e.texto) ? '<div>' + _ausEsc(e.text || e.texto) + '</div>' : '') + '</div>';
+    });
+  }
+  if (md.length) h += '<div class="sf-aus-sub">' + _ausEsc(trad('aus_meds')) + '</div><div class="sf-aus-lista">' + md.map(function(m) { return _ausEsc(m.nombre || m.nom || ''); }).filter(Boolean).join(' · ') + '</div>';
+  if (an.length) h += '<div class="sf-aus-sub">' + _ausEsc(trad('aus_antec')) + '</div><div class="sf-aus-lista">' + an.map(function(a) { return _ausEsc(a.descripcion || a.nombre || ''); }).filter(Boolean).join(' · ') + '</div>';
+  if (!med.length && !ev.length && !md.length && !an.length) h += '<div class="sf-aus-dato">' + _ausEsc(trad('aus_nada')) + '</div>';
+  h += '</div>';
+  sh.cuerpo.innerHTML = h;
+  var fila = sh.cuerpo.querySelector('.sf-aus-feutre');
+  var cab = sh.cuerpo.querySelector('.sf-aus-cab');
+  if (fila) sh.cuerpo.scrollTop = Math.max(0, fila.offsetTop - (cab ? cab.offsetHeight : 0) - 60);
+}
+
 function _chartVerInforme(s, key) {
   var id = s && (s.pdf_id || s.pdf); if (!id) return;
   /* P-H 09/08 : le popup annonce CE QU'ON EST VENU VÉRIFIER — paramètre,
      valeur, date — et l'URL porte #search= (honoré par certains visores). */
   var info = null;
   if (key && typeof PARAMS === 'object' && PARAMS[key]) {
-    info = { label: PARAMS[key].label || key, valor: s.y, unidad: PARAMS[key].unit || '', fecha: s.x, color: colorCurva(key) };
+    info = { key: key, label: PARAMS[key].label || key, valor: s.y, unidad: PARAMS[key].unit || '', fecha: s.x, color: colorCurva(key) };
   }
   /* P-H 09/08 (« je n'ai pas besoin d'un serveur pour lire un pdf ») :
      ouverture DIRECTE en file:// — les fichiers de sources/ portent
      désormais leur nom exact PDFxxx.pdf, il suffisait d'ajouter
      l'extension que l'ancien code n'ajoutait pas. Zéro dépendance. */
+  if (_pdfEsAusente(id)) { _pdfFichaAusente(id, s, key, info); return; }   /* P-H 06/11/2026 : lo que se sabe del documento ausente */
   var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
   var dir = (typeof pdfCarpeta === 'function') ? pdfCarpeta(id) : '';
-  try { _pdfPopupAbrirEnPagina('', nom, info, nom); return; } catch (e) {}   /* P-H 06/10/2026 : la Casa sirve sources/ */
+  try { _pdfPopupAbrirEnPagina('', (window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom, info, nom); return; } catch (e) {}   /* P-H 04/11/2026 : PDF009:DSF2026/RPE_….pdf */   /* P-H 06/10/2026 : la Casa sirve sources/ */
   /* v2026.7.21.20 — plus d'aboiement du navigateur (demande P-H) : le repli
      passe par la BANDE DU PAVÉ quand elle existe, et nomme le bon guichet
      (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si
@@ -553,6 +693,7 @@ function makeChart(canvasId, key, data, opts) {
           const l = [fuera ? '⚠ ' + trad('est_fuera') : '✓ ' + trad('est_normal')];
           const doc = (typeof pdfNombre === 'function' && (s.pdf_id || s.pdf)) ? pdfNombre(s.pdf_id || s.pdf) : (s.src || '');
           if (doc) l.push('📄 ' + doc);
+          if (s.imp && s.imp !== key) l.push('🏷 ' + s.imp);   /* el nombre impreso : MDRD-4 o CKD-EPI… (P-H, 04/11/2026) */
           if (s.pdf_id || s.pdf) l.push('(' + trad('clic_informe') + ')');
           return l;
         }
@@ -599,7 +740,7 @@ const GRUPOS_DEFECTO = ["COAGULACIÓN", "HEMATOLOGÍA"];
 const GRUPOS = {
   "HEMATOLOGÍA":   ["hemoglobina","hematocrito","vcm","hcm","chcm","rdw","leucocitos","neutrofilos","linfocitos","monocitos","plaquetas","vsg"],
   "COAGULACIÓN":   ["dimero_d","fibrinogeno","inr","tp","ttpa","actividad_protrombina"],
-  "BIOQUÍMICA":    ["glucosa","hba1c","creatinina","filtrado","filtrado_glomerular","urea","acido_urico","urato","sodio","potasio","cloro","cloruro","calcio","fosforo","magnesio","bicarbonato","proteinas","albumina"],
+  "BIOQUÍMICA":    ["glucosa","hba1c","creatinina","filtrado","filtrado_glomerular","urea","acido_urico","urato","sodio","potasio","cloro","cloruro","calcio","fosforo","magnesio","proteinas","albumina"],
   "HEPÁTICO":      ["gpt","got","ggt","fosfatasa","fosfatasa_alcalina","bilirrubina","ldh","cpk"],
   "LÍPIDOS":       ["colesterol","colesterol_hdl","colesterol_ldl","trigliceridos","no_hdl"],
   "CARDÍACO":      ["troponina","bnp"],
@@ -1038,6 +1179,30 @@ function onParamChange() {
   }
 }
 
+/* ══ LAS CLAVES NUEVAS DE LA TABLA DE SINÓNIMOS (P-H, 04/11/2026) ══
+   La tabla (comun/sinonimos-parametros.js) conoce claves que este catálogo
+   no tenía : gasometría, proteinograma, escalas, eosinófilos… Se añaden
+   aquí, con su etiqueta en la lengua de la casa, su unidad y un color de
+   la paleta de la vista ; sin rango de referencia (nadie lo ha dado).
+   Sus grupos nuevos se ponen delante de « OTROS ». Lo que no tiene curva
+   (orina, pruebas de virus) no entra. */
+(function(){
+  if (!window.SF_SINONIMOS_PARAMETROS || !MF.parametro) return;
+  const PAL = CURVAS_VISTA.paleta;
+  let i = 0;
+  const otros = GRUPOS.OTROS; delete GRUPOS.OTROS;
+  MF.parametros().forEach(k => {
+    const e = MF.parametro(k);
+    if (!e || !e.curva || PARAMS[k]) return;
+    if (e.grupo && !GRUPOS[e.grupo]) GRUPOS[e.grupo] = [];
+    const col = PAL[i++ % PAL.length].color;
+    PARAMS[k] = { get label() { const x = MF.parametro(k); return (x && x.etiqueta) || k; },
+                  unit: e.unidad || '', ref: null, color: col,
+                  get desc() { const x = MF.parametro(k); return (x && x.etiqueta) || k; } };
+  });
+  GRUPOS.OTROS = otros;
+})();
+
 function registerCustomParam() {
   const label = document.getElementById('cp-label').value.trim();
   const unit  = document.getElementById('cp-unit').value.trim() || '';
@@ -1081,67 +1246,234 @@ function registerCustomParam() {
 
 
 
+/* ══════════════════════════════════════════════════════════════════════
+   EL COMENTARIO CLÍNICO (P-H, 04/11/2026) — « Curvas : le commentaire
+   clinique ne fonctionne pas, muet ». La ventana venía de la V1, la
+   maquinaria no : vive ahora en comun/comentario-ia.js (prompt aparte,
+   contexto del expediente, clave única, cuatro lenguas).
+   ══════════════════════════════════════════════════════════════════════ */
+function _matCur(){ try{ return (MF.paciente() || {}).matricula || ''; }catch(e){ return ''; } }
+async function tblCurveComentario(key, huella){
+  const keys = Array.isArray(key) ? key : [key];
+  if (!(MF.claveIA && MF.claveIA())) { MF.pideClave(function(){ tblShowComentario(keys, false); }); return; }
+  const btn = document.getElementById('tblcurve-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + SF_COMENTARIO_IA.tx('consultando'); }
+  const data = loadData();
+  const series = keys.map(k => { const p = PARAMS[k] || {};
+    return { etiqueta: p.label || k, unidad: p.unit || '', ref: p.ref || null, desc: p.desc || '',
+             puntos: getSeriesForParam(data, k).map(s => ({ x: s.x, y: s.y })) }; });
+  try {
+    const r = await SF_COMENTARIO_IA.pide(_DATOS, series);
+    const cleMemo = keys.length > 1 ? 'combo:' + keys.slice().sort().join('+') : keys[0];
+    SF_COMENTARIO_IA.guarda(_matCur(), cleMemo, { texto: r.texto, modelo: r.modelo, fecha: r.fecha, huella: huella, enviado: SF_COMENTARIO_IA.resumen(_DATOS) });
+    tblShowComentario(keys, false);   /* la ventana común se rehace en el mismo sitio */
+  } catch (err) {
+    if (btn) { btn.disabled = false; btn.textContent = '🧠 ' + trad('btn_comentario'); }
+    const z = document.querySelector('.tblcurve-comentario-popup .sf-ia-pie');
+    if (z) { const a = document.createElement('div'); a.style.cssText = 'color:var(--warn);font-size:11px;margin-top:6px';
+             a.textContent = '⚠ ' + SF_COMENTARIO_IA.tx('error', { msg: err.message }); z.appendChild(a); }
+  }
+}
+/* las superposiciones que se quieren volver a ver (V1, P-H 08/08) — misma memoria que la Tabla */
+const PATRONES_KEY = 'mt_patrones_curvas';
+function loadPatronesCurvas() { try { return JSON.parse(localStorage.getItem(PATRONES_KEY) || '[]'); } catch (e) { return []; } }
+function patronExiste(keys) { const n = keys.slice().sort().join('+'); return loadPatronesCurvas().find(p => p.keys.slice().sort().join('+') === n); }
+function patronConservar(keys) {
+  if (patronExiste(keys)) return;
+  const L = loadPatronesCurvas(); L.push({ id: 'PT' + Date.now(), keys: keys, fecha: new Date().toISOString().slice(0, 10) });
+  try { localStorage.setItem(PATRONES_KEY, JSON.stringify(L)); } catch (e) {}
+  const b = document.getElementById('tblcombo-conservar'); if (b) { b.textContent = '✓ ' + trad('est_conservado'); b.disabled = true; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA BÚSQUEDA RÁPIDA (P-H, 04/11/2026) — « pour un médecin pressé »
+   « Sodium, potasio, creatinine + filtration » : la COMA separa las
+   tarjetas, el + SUPERPONE en una misma. Se busca en todas las lenguas,
+   sin acentos ni mayúsculas, en los nombres impresos por los laboratorios
+   (tabla de sinónimos), por el comienzo de una palabra, o por el número
+   fijo de la curva. Es una vista de paso : la selección habitual no cambia.
+   ══════════════════════════════════════════════════════════════════════ */
+let _busqueda = null, _busquedaTexto = '', _busquedaFaltan = [];
+function _escB(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function _pelaB(s){ return String(s || '').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Z0-9]+/g, ' ').trim(); }
+/* P-H, 04/11/2026 : « il faut mettre le texte exact, sinon ça ne marche pas » (creatinine+filtration glom,
+   Casa en espagnol). Ahora : palabra por palabra, en cualquier orden ; los nombres de Curvas en las CUATRO
+   lenguas ; una falta tolerada desde 5 letras, dos desde 10 ; las palabras del médico (tabla de sinónimos,
+   « buscar ») ; y un orden de preferencia (tabla, « prioridad ») cuando varias claves responden. */
+function _faltasB(a, b){                      /* distancia de Damerau (letra de más, de menos, cambiada, invertida) */
+  const m = a.length, n = b.length; if (Math.abs(m - n) > 2) return 9;
+  const d = []; for (let i = 0; i <= m; i++) { d[i] = [i]; } for (let j = 0; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) {
+    const c = a[i-1] === b[j-1] ? 0 : 1;
+    d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + c);
+    if (i > 1 && j > 1 && a[i-1] === b[j-2] && a[i-2] === b[j-1]) d[i][j] = Math.min(d[i][j], d[i-2][j-2] + 1);
+  }
+  return d[m][n];
+}
+function _tolB(q){ return q.length >= 10 ? 2 : (q.length >= 5 ? 1 : 0); }
+/* ¿la palabra tecleada q empieza la palabra w ? exacto → 0 ; con faltas → su número ; nada → -1 */
+function _palabraB(q, w){
+  if (w.startsWith(q)) return 0;
+  const t = _tolB(q); if (!t) return -1;
+  const f = Math.min(_faltasB(q, w.slice(0, q.length)), _faltasB(q, w), q.length > 1 ? _faltasB(q, w.slice(0, q.length + 1)) : 9, _faltasB(q, w.slice(0, Math.max(1, q.length - 1))));
+  return f <= t ? f : -1;
+}
+function _candidatosB(){
+  const S = window.SF_SINONIMOS_PARAMETROS || {}, T = S.parametros || {};
+  const I = (typeof PARAMS_I18N !== 'undefined') ? PARAMS_I18N : {};
+  return _avecDonnees(loadData()).map(k => {
+    const e = T[k] || {}, lab = (PARAMS[k] && PARAMS[k].label) || k;
+    const nombres = [k.replace(/_/g, ' '), lab]
+      .concat(Object.keys(I).map(l => (I[l] && I[l][k] && I[l][k].label) || ''))
+      .concat(Object.values(e.etiqueta || {}), e.impresos || [], e.buscar || [])
+      .filter(Boolean).map(_pelaB);
+    return { k: k, lab: lab, num: e.n ? String(e.n) : '', prio: e.prioridad || 0, labP: _pelaB(lab),
+             n: [...new Set(nombres)], w: [...new Set(nombres.join(' ').split(' '))] };
+  });
+}
+function _buscaTermino(t, C){
+  const p = _pelaB(t); if (!p) return [];
+  if (/^\d+$/.test(p)) { const r = C.filter(c => c.num === p); if (r.length) return r; }
+  const Q = p.split(' ');
+  return C.map(c => {
+    let s;
+    if (c.n.includes(p)) s = 1000;                                    /* el nombre entero, tal cual */
+    else {
+      let faltas = 0;
+      for (const q of Q) {                                            /* cada palabra tecleada empieza alguna palabra del nombre */
+        let mejor = -1;
+        for (const n of c.n) for (const w of n.split(' ')) { const f = _palabraB(q, w); if (f >= 0 && (mejor < 0 || f < mejor)) mejor = f; if (mejor === 0) break; }
+        if (mejor < 0) return null;
+        faltas += mejor;
+      }
+      s = 500 - faltas * 100 + (c.labP.startsWith(p) ? 50 : 0) + (c.n.some(n => n.startsWith(p)) ? 20 : 0);
+    }
+    return { c: c, s: s + c.prio * 10 };
+  }).filter(Boolean).sort((a, b) => b.s - a.s || a.c.lab.localeCompare(b.c.lab)).map(x => x.c);
+}
+/* las palabras que valen por VARIAS curvas a la vez (« tension » → sistólica + diastólica) — tabla de sinónimos */
+function _variosB(t){
+  const V = ((window.SF_SINONIMOS_PARAMETROS || {}).busqueda || {}).varios || {}, p = _pelaB(t);
+  for (const k of Object.keys(V)) if (_pelaB(k) === p) return V[k];
+  return null;
+}
+function _busquedaAplica(texto){
+  const C = _candidatosB(), con = C.map(c => c.k), tarjetas = [], faltan = [];
+  String(texto || '').split(',').forEach(parte => {
+    const g = [];
+    parte.split('+').forEach(t => { if (!t.trim()) return;
+      const v = _variosB(t);
+      if (v) { const ok = v.filter(k => con.includes(k)); if (!ok.length) faltan.push(t.trim()); ok.forEach(k => { if (!g.includes(k)) g.push(k); }); return; }
+      const r = _buscaTermino(t, C);
+      if (!r.length) faltan.push(t.trim()); else if (!g.includes(r[0].k)) g.push(r[0].k); });
+    if (g.length) tarjetas.push(g);
+  });
+  _busquedaTexto = texto; _busquedaFaltan = faltan; _busqueda = tarjetas.length ? tarjetas : null;
+  buildAllCharts();
+  const i = document.getElementById('cur-busca'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+}
+function _busquedaQuita(){ _busqueda = null; _busquedaTexto = ''; _busquedaFaltan = []; buildAllCharts(); }
+function _busquedaSugiere(inp){
+  const z = document.getElementById('cur-sugiere'); if (!z) return;
+  const v = inp.value, m = /[^,+]*$/.exec(v), ult = m ? m[0] : '';
+  if (_pelaB(ult).length < 2) { z.style.display = 'none'; return; }
+  const r = _buscaTermino(ult, _candidatosB()).slice(0, 8);
+  if (!r.length) { z.style.display = 'none'; return; }
+  z.innerHTML = r.map(c => '<div class="cur-sug" data-l="' + _escB(c.lab) + '">' + _escB(c.lab) + (c.num ? ' <span style="color:var(--muted)">' + trad('lbl_num') + ' ' + c.num + '</span>' : '') + '</div>').join('');
+  z.style.display = 'block';
+  z.querySelectorAll('.cur-sug').forEach(d => d.onmousedown = e => { e.preventDefault();
+    inp.value = v.slice(0, v.length - ult.length) + (/^\s/.test(ult) ? ' ' : '') + d.getAttribute('data-l'); z.style.display = 'none'; inp.focus(); });
+}
+function _cajaBusqueda(){
+  return '<span style="position:relative;display:inline-flex;align-items:center;gap:4px;margin:2px 12px 2px 0">' +
+    '<span data-ptip="' + _escB(trad('tip_buscar')) + '" style="cursor:default">🔍</span>' +
+    '<input id="cur-busca" type="search" autocomplete="off" value="' + _escB(_busquedaTexto) + '" placeholder="' + _escB(trad('ph_buscar')) + '" ' +
+    'style="font-size:11px;padding:4px 10px;border-radius:14px;border:1px solid ' + (_busqueda ? 'var(--accent)' : 'var(--border)') + ';background:var(--surface2);color:var(--text);width:22em;max-width:60vw" ' +
+    'onkeydown="if(event.key===\'Enter\'){event.preventDefault();_busquedaAplica(this.value);}else if(event.key===\'Escape\'){_busquedaQuita();}" ' +
+    'oninput="_busquedaSugiere(this)" onblur="setTimeout(function(){var z=document.getElementById(\'cur-sugiere\');if(z)z.style.display=\'none\';},150)">' +
+    (_busqueda ? '<button onclick="_busquedaQuita()" data-ptip="' + _escB(trad('tip_buscar_quitar')) + '" style="cursor:pointer;font-size:11px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--muted);padding:2px 8px">✕</button>' : '') +
+    '<div id="cur-sugiere" style="display:none;position:absolute;top:100%;left:22px;z-index:60;min-width:16em;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.35);padding:4px 0;font-size:11.5px"></div></span>' +
+    (_busquedaFaltan.length ? '<span style="font-size:11px;color:var(--danger);margin-right:10px">' + _escB(trad('buscar_no').replace('{t}', _busquedaFaltan.join(', '))) + '</span>' : '');
+}
+
+/* ══ IMPRIMIR EL COMENTARIO (P-H, 04/11/2026) — una hoja limpia, en blanco, con la curva ══
+   La curva de la ventana se vuelve a pintar UN instante con los colores de papel (curvas.js →
+   comentario.impresion), se fotografía sobre blanco, y vuelve a la paleta de la pantalla. */
+function _iaImprime(keys){
+  keys = Array.isArray(keys) ? keys : [keys];
+  const cleMemo = keys.length > 1 ? 'combo:' + keys.slice().sort().join('+') : keys[0];
+  const memo = SF_COMENTARIO_IA.lee(_matCur(), cleMemo); if (!memo) return;
+  const IMP = (SF_CONFIG.comentario || {}).impresion || {};
+  const c = chartInstances['ia-curva'], cv = document.getElementById('ia-curva');
+  let imagen = '';
+  if (c && cv) {
+    /* se guardan los colores POR EJE (tras update(), Chart.js rehace sus objetos : se vuelven a buscar por su nombre) */
+    const sav = {};
+    Object.keys(c.options.scales || {}).forEach(id => { const s = c.options.scales[id];
+      sav[id] = [s.ticks && s.ticks.color, s.title && s.title.color, s.grid && s.grid.color];
+      if (s.ticks) s.ticks.color = IMP.tinta; if (s.title) s.title.color = IMP.tinta; if (s.grid) s.grid.color = IMP.linea; });
+    c.update('none');
+    const t = document.createElement('canvas'); t.width = cv.width; t.height = cv.height;
+    const x = t.getContext('2d'); x.fillStyle = IMP.papel; x.fillRect(0, 0, t.width, t.height); x.drawImage(cv, 0, 0);
+    imagen = t.toDataURL('image/png');
+    Object.keys(sav).forEach(id => { const s = c.options.scales[id], [a, b, g] = sav[id]; if (!s) return;
+      if (s.ticks) s.ticks.color = a; if (s.title) s.title.color = b; if (s.grid) s.grid.color = g; });
+    c.update('none');
+  }
+  const titulo = keys.map(k => (PARAMS[k] || {}).label || k).join(' + ');
+  /* P-H, 04/11/2026 : « au moment de l'impression une petite popup — ajouter les données du patient » :
+     una hoja CON nombre para él, otra SIN nombre para enseñar */
+  const pa = MF.paciente() || {}, sip = pa.sip || (_DATOS && (_DATOS.sip || (_DATOS.paciente || {}).sip)) || '';
+  SF_COMENTARIO_IA.preguntaImpresion(f => SF_COMENTARIO_IA.imprime({ titulo: titulo, paciente: f.nombre ? (pa.etiqueta || '') : '', sip: f.sip ? sip : '',
+    imagen: imagen, comentario: memo.texto, enviado: memo.enviado || '',
+    nota: trad('nota_comentario').replace('{modelo}', memo.modelo || '').replace('{fecha}', memo.fecha || ''), colores: IMP }), { haySip: !!sip });
+}
+
 function tblShowComentario(keys, autoComentar) {
+  /* P-H, 04/11/2026 (tarde) : « il y a un problème de conception de la fenêtre » — la de la V1
+     dejaba al comentario sin altura y la nota se le montaba encima. Ahora la ventana común de
+     tres pisos (SF_COMENTARIO_IA.ventana) : cabecera · cuerpo que se desplaza · pie siempre visible. */
   if (!Array.isArray(keys)) keys = [keys];
-  document.querySelectorAll('.tblcurve-comentario-popup').forEach(o => o.remove());
   const data = loadData();
   const parCle = keys.map(k => { const serie = getSeriesForParam(data, k); return { k, serie, dern: serie[serie.length - 1] }; }).filter(x => x.serie.length);
   if (!parCle.length) return;
   const esCombo = keys.length > 1;
-  const titre = keys.map(k => '<span style="color:' + colorCurva(k) + '">' + ((PARAMS[k]||{}).label || k) + '</span>').join(' ⇆ ');
+  const _ct = coloresCombo(keys);   /* el título con los MISMOS colores que la curva */
+  const titre = keys.map((k, r) => '<span style="color:' + _ct[r] + '">' + ((PARAMS[k]||{}).label || k) + '</span>').join(' ⇆ ');
   const stats = parCle.map(x => ((PARAMS[x.k]||{}).label || x.k) + ': ' + trad('ultima') + ' ' + x.dern.y + ' ' + ((PARAMS[x.k]||{}).unit || '') + ' (' + fmtDate(x.dern.x) + ')').join(' · ');
   const huella = esCombo
     ? parCle.map(x => x.k + ':' + x.serie.length + '|' + x.dern.x + '|' + x.dern.y).join(',')
     : (parCle[0].serie.length + '|' + parCle[0].dern.x + '|' + parCle[0].dern.y);
-  const apiKey = localStorage.getItem('mt_apikey');
+  const apiKey = (MF.claveIA ? MF.claveIA() : '');
   const cleMemo = esCombo ? 'combo:' + keys.slice().sort().join('+') : keys[0];
-  const memo = loadComentariosCurvas()[cleMemo];
+  const memo = SF_COMENTARIO_IA.lee(_matCur(), cleMemo);
   const cambioDatos = memo && memo.huella && memo.huella !== huella;
   const clesJs = "['" + keys.map(k => k.replace(/'/g,"")).join("','") + "']";
-  var boutonAction = '';
-  if (!memo || !memo.texto) boutonAction = '<button id="tblcurve-btn" class="btn" style="font-size:11px;padding:5px 12px" onclick="tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')">🧠 ' + trad('btn_comentario') + '</button>';
-  else if (cambioDatos) boutonAction = '<button id="tblcurve-btn" class="btn primary" style="font-size:11px;padding:5px 12px" onclick="tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')">🔄 ' + trad('btn_actualizar') + '</button>';
-  const zona = apiKey ? (
-    '<div id="tblcurve-topbar" style="display:flex;flex-direction:column;flex:1;min-height:0">' +
-    (memo && memo.texto ? formatearComentarioClaude(memo.texto) +
-      '<div style="flex:0 0 auto;margin-top:4px;font-size:10px;color:var(--muted);font-style:italic">' + trad('nota_comentario').replace('{modelo}', memo.modelo||'').replace('{fecha}', memo.fecha||'') + '</div>' +
-      (cambioDatos ? '<div style="flex:0 0 auto;margin-top:6px;font-size:11px;color:var(--warn,#e8a33d)">⚠ ' + trad('aviso_datos_cambiaron') + '</div>' : '') : '') +
-    (boutonAction ? '<div style="flex:0 0 auto;margin-top:8px;display:flex;align-items:center;gap:8px">' + boutonAction + '<span style="font-size:10px;color:var(--muted)">' + trad('se_guarda') + '</span></div>' : '') + '</div>'
-  ) : (
-    '<div id="tblcurve-topbar" style="font-size:11px;color:var(--muted)">💡 ' + trad('aviso_clave_pre') + ' <a href="#" onclick="showPanel(\'importar\',document.getElementById(\'tour-tab-importar\'));this.closest(\'.tblcurve-comentario-popup\').remove();return false;" style="color:var(--accent)">📥 ' + trad('aviso_clave_datos') + '</a>.</div>'
-  );
-  const pop = document.createElement('div');
-  pop.className = 'tblcurve-comentario-popup';
-  /* P-H 09/08 : popup redimensionnable — poignée native du navigateur au
-     coin bas-droit, surtout pour pouvoir le RÉDUIRE. */
-  pop.style.cssText = 'position:fixed;z-index:10002;width:min(860px,96vw);max-height:88vh;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.5);padding:4px;display:flex;flex-direction:column;resize:both;overflow:hidden;min-width:260px;min-height:110px';
-  pop.style.left = 'calc(50% - min(430px,48vw))';
-  pop.style.top = '60px';
-  pop.innerHTML =
-    '<div class="tblcurve-toast-drag" style="cursor:move;user-select:none;flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 6px;border-bottom:1px solid var(--border)">' +
-    '<b style="font-size:14px">' + titre + '</b>' +
-    '<span style="display:inline-flex;align-items:center;gap:8px">' +
-    (esCombo ? (patronExiste(keys) ? '<span style="font-size:11px;color:var(--ok,#3fb950)">✓ ' + trad('est_conservado') + '</span>'
-      : '<button id="tblcombo-conservar" class="btn" style="font-size:11px;padding:3px 8px" onclick="patronConservar(' + JSON.stringify(keys).replace(/"/g,"\'") + ')">💾 ' + trad('btn_conservar') + '</button>') : '') +
-    '<span style="cursor:pointer;color:var(--muted);font-size:16px" onclick="this.closest(\'.tblcurve-comentario-popup\').remove()">✕</span></span></div>' +
-    '<div style="flex:0 0 auto;font-size:11px;color:var(--muted);padding:4px 6px">' + stats + '</div>' +
-    '<div style="flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;padding:4px 6px">' + zona + '</div>';
-  document.body.appendChild(pop);
-  (function() {
-    var poignee = pop.querySelector('.tblcurve-toast-drag');
-    var dragging = false, sx = 0, sy = 0, ol = 0, ot = 0;
-    function pt(e) { return e.touches && e.touches[0] ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY }; }
-    function down(e) { if (e.target.closest('button') || (e.target.tagName === 'SPAN' && e.target.getAttribute('onclick'))) return; dragging = true; var p = pt(e); sx = p.x; sy = p.y; var r = pop.getBoundingClientRect(); ol = r.left; ot = r.top; e.preventDefault(); }
-    function move(e) { if (!dragging) return; var p = pt(e); pop.style.left = Math.max(0, Math.min(window.innerWidth - pop.offsetWidth, ol + p.x - sx)) + 'px'; pop.style.top = Math.max(0, Math.min(window.innerHeight - 40, ot + p.y - sy)) + 'px'; }
-    function up() { dragging = false; }
-    poignee.addEventListener('mousedown', down);
-    poignee.addEventListener('touchstart', down, { passive: false });
-    window.addEventListener('mousemove', move);
-    window.addEventListener('touchmove', move, { passive: false });
-    window.addEventListener('mouseup', up);
-    window.addEventListener('touchend', up);
-  })();
-  if (autoComentar && apiKey && !(memo && memo.texto)) setTimeout(function() { tblCurveComentario(esCombo ? keys : keys[0], huella); }, 200);
+  let boton = '';
+  const llamada = 'tblCurveComentario(' + clesJs + ',\'' + huella.replace(/'/g,"") + '\')';
+  if (!memo || !memo.texto) boton = '<button id="tblcurve-btn" class="btn" style="font-size:11px;padding:5px 12px" onclick="' + llamada + '">🧠 ' + trad('btn_comentario') + '</button>';
+  else if (cambioDatos) boton = '<button id="tblcurve-btn" class="btn primary" style="font-size:11px;padding:5px 12px" onclick="' + llamada + '">🔄 ' + trad('btn_actualizar') + '</button>';
+  /* P-H, 04/11/2026 : « afficher la courbe sélectionnée » — arriba del cuerpo */
+  let cuerpo = '', pie = '';
+  if (!apiKey) {
+    pie = '<div>💡 ' + MF.textoClave('invita') + ' <a href="#" onclick="MF.pideClave(function(){ tblShowComentario(' + clesJs + ', false); });return false;" style="color:var(--accent)">🔑 ' + MF.textoClave('poner') + '</a></div>';
+  } else {
+    if (memo && memo.texto) {
+      cuerpo += SF_COMENTARIO_IA.formatea(memo.texto);
+      pie += '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="sf-ia-nota" style="flex:1">' + trad('nota_comentario').replace('{modelo}', memo.modelo || '').replace('{fecha}', memo.fecha || '') + '</span>' +
+        '<button class="btn" style="font-size:11px;padding:4px 12px" data-ptip="' + trad('tip_imprimir') + '" onclick="_iaImprime(' + clesJs + ')">🖨 ' + trad('btn_imprimir') + '</button></div>';
+      if (cambioDatos) pie += '<div class="sf-ia-aviso">⚠ ' + trad('aviso_datos_cambiaron') + '</div>';
+    }
+    if (boton) pie += SF_COMENTARIO_IA.lineaContexto(_DATOS) +
+      '<div style="display:flex;align-items:center;gap:8px">' + boton + '<span>' + SF_COMENTARIO_IA.tx('se_guarda') + '</span></div>';
+  }
+  const extra = esCombo ? (patronExiste(keys) ? '<span style="font-size:11px;color:var(--ok)">✓ ' + trad('est_conservado') + '</span>'
+      : '<button id="tblcombo-conservar" class="btn" style="font-size:11px;padding:3px 8px" onclick="patronConservar(' + JSON.stringify(keys).replace(/"/g,"\'") + ')">💾 ' + trad('btn_conservar') + '</button>') : '';
+  SF_COMENTARIO_IA.ventana({ clase: 'tblcurve-comentario-popup', titulo: titre, extra: extra, stats: stats, cuerpo: cuerpo, pie: pie,
+    curva: '<canvas id="ia-curva"></canvas>', altoCurva: (SF_CONFIG.comentario || {}).alto_curva || 200 });
+  /* la curva llena su piso, de altura fija : sin proporción que seguir, no hay vaivén (P-H, 04/11/2026) */
+  setTimeout(() => { if (esCombo) makeComboChart('ia-curva', keys, data); else makeChart('ia-curva', keys[0], data);
+    const ch = chartInstances['ia-curva']; if (ch) { ch.options.maintainAspectRatio = false; ch.resize(); } }, 30);
 }
 
 
@@ -1167,7 +1499,9 @@ let _dragKey = null;
 
 function grupoDe(key) {
   for (const [g, cles] of Object.entries(GRUPOS)) if (cles.includes(key)) return g;
-  return 'OTROS';
+  /* una clave nueva : su grupo viene de la tabla de sinónimos (P-H, 04/11/2026) */
+  const e = MF.parametro ? MF.parametro(key) : null;
+  return (e && e.grupo && GRUPOS[e.grupo]) ? e.grupo : 'OTROS';
 }
 function unitOf(key) { return ((PARAMS[key] && PARAMS[key].unit) || '').trim(); }
 function comboUnits(keys) { return [...new Set(keys.map(unitOf))]; }
@@ -1191,6 +1525,7 @@ function buildAllCharts(data) {
     if (!sel.length) sel = avecDonnees.slice();
   }
   sel = sel.filter(k => avecDonnees.includes(k));
+  if (_busqueda) sel = [].concat(..._busqueda).filter(k => avecDonnees.includes(k));   /* la búsqueda rápida manda (P-H, 04/11/2026) */
 
   /* ── barre des rubriques ── */
   const rubriques = [...new Set(avecDonnees.map(grupoDe))];
@@ -1215,8 +1550,8 @@ function buildAllCharts(data) {
         (actif ? 'var(--accent)' : 'var(--border)') + ';border-left:none;background:var(--surface);color:var(--muted)">' +
       (_grupoOuvert === g ? '▴' : '▾') + '</button></span>';
   };
-  let html = '<div style="display:flex;flex-wrap:wrap;align-items:center">' + rubriques.map(puce).join('') +
-    '<span style="margin-left:auto;font-size:11px;color:var(--muted)">' + trad('resumen_params').replace('{n}', sel.length).replace('{total}', avecDonnees.length) + '</span></div>';
+  let html = '<div style="display:flex;flex-wrap:wrap;align-items:center">' + _cajaBusqueda() + rubriques.map(puce).join('') +
+    '<span style="margin-left:auto;font-size:11px;color:var(--muted)">' + (_busqueda ? trad('buscar_resumen').replace('{n}', _busqueda.length) : trad('resumen_params').replace('{n}', sel.length).replace('{total}', avecDonnees.length)) + '</span></div>';
   if (_grupoOuvert && rubriques.includes(_grupoOuvert)) {
     const cles = avecDonnees.filter(k => grupoDe(k) === _grupoOuvert);
     html += '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);display:flex;flex-wrap:wrap;gap:4px 12px">' +
@@ -1228,7 +1563,7 @@ function buildAllCharts(data) {
   bar.innerHTML = html;
 
   /* ── combos valides (toutes rubriques : indépendants de sel) ── */
-  const combos = loadChartsCombos().filter(c => c.keys.every(k => avecDonnees.includes(k)));
+  const combos = (_busqueda ? _busqueda.filter(g => g.length > 1).map(g => ({ keys: g, taille: 'aqui' })) : loadChartsCombos()).filter(c => c.keys.every(k => avecDonnees.includes(k)));
   const membre = new Map();               /* clé → index combo */
   combos.forEach((c, i) => c.keys.forEach(k => membre.set(k, i)));
   const rendus = new Set();
@@ -1244,10 +1579,10 @@ function buildAllCharts(data) {
       return '<span class="combo-nom" data-combo="' + i + '" data-k="' + k + '" data-ptip="' + trad('tip_vercacher') + '" onclick="_comboVerCacher(' + i + ',\'' + k.replace(/'/g, '') + '\')" style="cursor:pointer;color:' + _cols[r] + (oc ? ';opacity:.4;text-decoration:line-through' : '') + '">' + _formaRango(r).simbolo + ' ' + (PARAMS[k].label || k) + '</span>';
     }).join(' ⇆ ');
     div.innerHTML = '<div class="chart-title">' + titres +
-      '<span style="float:right;display:inline-flex;gap:4px">' +
+      (_busqueda ? '' : '<span style="float:right;display:inline-flex;gap:4px">' +
       '<button onclick="_comboTaille(' + i + ')" data-ptip="' + trad(grande ? 'tip_reducir' : 'tip_ampliar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">' + (grande ? '📍' : '⛶') + '</button>' +
       '<button onclick="_comboSupprimer(' + i + ')" data-ptip="' + trad('tip_separar') + '" style="cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px">✕</button>' +
-      '</span></div>' +
+      '</span>') + '</div>' +
       '<canvas id="ac-combo-' + i + '" height="' + (grande ? 90 : 150) + '"></canvas>';
     div.addEventListener('contextmenu', e => { e.preventDefault(); _menuOuvrir(e, { combo: i }); });
     el.appendChild(div);
@@ -1255,7 +1590,7 @@ function buildAllCharts(data) {
   };
 
   /* ── cartes, ordre du catalogue ── */
-  Object.keys(PARAMS).forEach(key => {
+  (_busqueda ? [].concat(..._busqueda) : Object.keys(PARAMS)).forEach(key => {
     if (membre.has(key)) {
       const i = membre.get(key);
       if (!rendus.has(i) && (sel.includes(key) || combos[i].keys.every(k => !sel.includes(k)))) {
@@ -1287,7 +1622,11 @@ function buildAllCharts(data) {
     const _btnEsc = _ampli > 20
       ? `<button class="scale-btn" onclick="_chartToggleScale('${key}','ac-${key}')" data-ptip="${trad('tip_escala')}">⇄ ${trad('btn_escala')}</button>`
       : '';
-    div.innerHTML = `<div class="chart-title">${paramSpan(key)}${_btnEsc}</div><div class="chart-sub">${p.unit}${p.ref?'·'+trad('lbl_ref')+p.ref.filter(v=>v!==null).join('–'):''}</div><canvas id="ac-${key}" height="150"></canvas>`;
+    /* el número fijo de la curva (P-H, 04/11/2026) : discreto, en un rincón — « courbe 69 » */
+    const _nE = (window.SF_SINONIMOS_PARAMETROS && (SF_SINONIMOS_PARAMETROS.parametros || {})[key]) || null;
+    const _num = (_nE && _nE.n) ? `<span class="cur-num" data-ptip="${trad('tip_num')}">${trad('lbl_num')} ${_nE.n}</span>` : '';
+    div.style.position = 'relative';
+    div.innerHTML = `${_num}<div class="chart-title">${paramSpan(key)}${_btnEsc}</div><div class="chart-sub">${p.unit}${p.ref?'·'+trad('lbl_ref')+p.ref.filter(v=>v!==null).join('–'):''}</div><canvas id="ac-${key}" height="150"></canvas>`;
     el.appendChild(div);
     setTimeout(() => makeChart('ac-'+key, key, data), 50);
   });
@@ -1460,6 +1799,7 @@ function _comboTaille(i) {
   saveChartsCombos(combos); buildAllCharts();
 }
 function _grupoToggle(g) {
+  _busqueda = null; _busquedaTexto = ''; _busquedaFaltan = [];   /* tocar un grupo sale de la búsqueda */
   const data = loadData();
   const avecDonnees = _avecDonnees(data);
   const cles = avecDonnees.filter(k => grupoDe(k) === g);
@@ -1601,5 +1941,8 @@ MF.arranca({
   }
 });
 </script>
+<!-- el visor de documentos, común (P-H, 06/11/2026) : después de los scripts del módulo -->
+<script src="../comun/visor-pdf.idiomas.js"></script>
+<script src="../comun/visor-pdf.js"></script>
 </body>
 </html>

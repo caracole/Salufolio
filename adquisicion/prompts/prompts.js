@@ -7,13 +7,13 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_PROMPTS = window.SF_PROMPTS = {
  "_doctrina": "LOS PROMPTS VIVEN AQUÍ, FUERA DEL CÓDIGO (P-H, 11/08/2026).\n\nEl 11/08 el prompt estaba metido en el template literal de un .js: se\ncargó una versión equivocada y nadie lo vio. Si hubiera sido un .txt\naparte, habría bastado con cambiar el fichero.\n\nLos tres programas de adquisición —manual, asistida, automática— leen\nesta tabla. Cada uno toma el prompt que le conviene.",
- "version": "2026.09.19-18:12:56",
+ "version": "2026.11.04-10:30:56",
  "carpeta": "./prompts/",
  "prompts": [
   {
    "id": "extraccion",
    "fichero": "prompt-extraccion.js",
-   "version": "2026.09.09",
+   "version": "2026.11.04-10:30:56",
    "por_defecto": true,
    "para_modo": [
     "A"
@@ -38,12 +38,13 @@ var SF_PROMPTS = window.SF_PROMPTS = {
     "eventos",
     "dudas"
    ],
+   "_cambio": "04/11/2026 : medicamentos[].principio_activo, atc, categoria. — 03/11/2026 : documento.servicio sin planta, documento.unidad, documento.firmante {nombre, rol}, medicamentos[].prescriptor (tablas de referencia del .sf).",
    "variable": "SF_PROMPT_EXTRACCION"
   },
   {
    "id": "extraccion-ocr",
    "fichero": "prompt-extraccion-ocr.js",
-   "version": "2026.09.14",
+   "version": "2026.11.04-10:30:56",
    "para_modo": [
     "S"
    ],

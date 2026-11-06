@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Versión 2026.09.19-18:15:47 -->
+<!-- Versión 2026.11.05-15:44:58 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Ayuda · Cronología</title>
@@ -22,15 +22,26 @@ p{margin:0 0 12px;font-size:14px}
 </head>
 <body><div class="env">
 <h1>📅 Cronología</h1>
-<div class="sub">La historia del expediente en el tiempo</div>
+<div class="sub">La historia del expediente en el tiempo, servicio por servicio</div>
 
-<h2>📊 Asistencial</h2>
-<p>Un gantt por especialidad: cada línea es un servicio — cardiología, neumología, urgencias — y cada barra el período durante el cual siguió al paciente. Se ve de un vistazo quién ha llevado qué, y cuándo se pasó de uno a otro.</p>
-<p>Pase el cursor sobre una barra para ver las fechas exactas y los informes de ese período.</p>
+<h2>👁️ Lo que se ve</h2>
+<p>Cada línea es un servicio — urgencias, hospitalización, atención primaria, neumología… — con su color, el mismo que en el Resumen. Los años van del más reciente, a la izquierda, al más antiguo, a la derecha.</p>
+<p>Cada rectángulo es una vez que el paciente fue visto, colocado en su fecha dentro del año. La cifra entre paréntesis, junto al nombre del servicio, da el número de consultas.</p>
 
-<h2>📅 Clínica</h2>
-<p>La línea del tiempo de los acontecimientos: consultas, urgencias, ingresos, altas. En orden, del más antiguo al más reciente.</p>
+<h2>💉 Vacunas y enfermería</h2>
+<p>Las vacunas y los cuidados de enfermería tienen su propia línea. Una vacuna cuenta una sola vez por día, aunque se pongan varias el mismo día.</p>
+<p>Estas dos líneas se ven siempre. Si el expediente no tiene todavía ningún dato de ese tipo, aparecen en gris, al final de la lista: no es un error, solo quiere decir que aún no hay nada.</p>
 
-<div class="nota">Las especialidades se deducen del texto de los informes. Un informe mal clasificado se puede corregir en el módulo de auditoría.</div>
-</div></body>
+<h2>🖱️ Lo que se puede hacer</h2>
+<p>Pase el ratón sobre un rectángulo: verá su fecha, su motivo y de dónde viene.</p>
+<p>Pulse el nombre de un servicio para ver todas sus consultas; una segunda pulsación lo deselecciona. Pulse un año para ver las consultas de ese año. Pulse una casilla para ver un servicio y un año a la vez.</p>
+<p>En la ventana que se abre, las consultas van de la más reciente a la más antigua. El botón 📄 muestra el documento de origen.</p>
+
+<h2>💡 El cuadro «&nbsp;Cómo leer&nbsp;»</h2>
+<p>Encima del gráfico, el cuadro «&nbsp;Cómo leer&nbsp;» resume todo esto. Se abre y se cierra con un clic en su título, y la página recuerda si usted lo dejó cerrado.</p>
+
+<div class="nota">Los servicios se deducen de los informes: del servicio que los firma y de las palabras de su título. Por eso, alguna vez, un informe puede aparecer en una línea distinta de la que usted esperaba.</div>
+</div><!-- la paleta y la lengua de la casa (P-H, 04/11/2026) -->
+<script src="../comun/oye-casa.js"></script>
+</body>
 </html>

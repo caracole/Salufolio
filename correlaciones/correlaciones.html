@@ -6,6 +6,9 @@
 <title>Correlaciones · Salufolio</title>
 <script src="../comun/chart.umd.min.js"></script>
 <script src="../comun/glosario-datos.js"></script>
+<!-- los sinónimos de los parámetros (P-H, 04/11/2026) : el motor y la tabla -->
+<script src="../comun/equivalencias.js"></script>
+<script src="../comun/sinonimos-parametros.js"></script>
 <link rel="stylesheet" href="../comun/salufolio.css">
 <style>
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
@@ -21,6 +24,8 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
                box-shadow:0 3px 14px rgba(0,0,0,.4)}
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
 .module-version-corner{display:none}
+.corr-num{position:absolute;right:var(--cur-num-margen,10px);bottom:var(--cur-num-margen-b,6px);font-family:var(--mono);font-size:var(--cur-num-tam,10px);color:var(--muted);opacity:.7;cursor:default}
+.corr-esc{float:right;cursor:pointer;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);padding:0 6px}
 </style>
 </head>
 <body>
@@ -82,7 +87,8 @@ const APP_VERSION_DATE = SF_CONFIG.version;
 
 /* ══ LES PONTS vers mf.js ══ */
 var _DATOS=null;
-function loadData(){   return (_DATOS && _DATOS.mesures) || []; }
+/* P-H, 04/11/2026 : cada medida bajo su clave única (comun/sinonimos-parametros.js) — el .sf no cambia */
+function loadData(){   return (_DATOS && (MF.mesuresCanon ? MF.mesuresCanon(_DATOS) : _DATOS.mesures)) || []; }
 function loadEvents(){ return (_DATOS && _DATOS.events) || []; }
 function loadMeds(){   return (_DATOS && _DATOS.medicaments) || []; }
 function getPatientLabel(){ var p=MF.paciente(); return p.etiqueta || p.matricula || ''; }
@@ -189,14 +195,14 @@ function _pdfPopupAbrir(url, titulo, info) {
 function _pdfSinArchivo(nom, motivo) {
   var mat = ''; try { mat = (MF.paciente().matricula || ''); } catch (e) {}
   var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : 'archivo no encontrado en sources/';
-  var msg = '📄 ' + nom + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
+  var msg = '📄 ' + ((window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom) + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
   var det = document.getElementById('xz-cmt-detalle');
   if (det) { det.textContent = '🧪 ' + msg; return; }
   document.querySelectorAll('.sf-pdf-aviso').forEach(function(o) { o.remove(); });
   var o = document.createElement('div'); o.className = 'sf-pdf-aviso';
   o.style.cssText = 'position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:10003;max-width:min(520px,90vw);background:var(--surface);color:var(--text);border:2px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
   o.textContent = msg + ' ';
-  var b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
+  var b = document.createElement('button'); b.className = 'btn'; b.textContent = (window.MF && MF.palabra) ? MF.palabra('cerrar') : 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
   b.onclick = function() { o.remove(); }; o.appendChild(b); document.body.appendChild(o);
 }
 
@@ -349,7 +355,7 @@ function _chartVerInforme(s, key) {
      l'extension que l'ancien code n'ajoutait pas. Zéro dépendance. */
   var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
   var dir = (typeof pdfCarpeta === 'function') ? pdfCarpeta(id) : '';
-  try { _pdfPopupAbrirEnPagina('', nom, info, nom); return; } catch (e) {}   /* P-H 06/10/2026 : la Casa sirve sources/ */
+  try { _pdfPopupAbrirEnPagina('', (window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom, info, nom); return; } catch (e) {}   /* P-H 04/11/2026 : PDF009:DSF2026/RPE_….pdf */   /* P-H 06/10/2026 : la Casa sirve sources/ */
   /* v2026.7.21.20 — plus d'aboiement du navigateur (demande P-H) : le repli
      passe par la BANDE DU PAVÉ quand elle existe, et nomme le bon guichet
      (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si
@@ -480,7 +486,7 @@ function makeChart(canvasId, key, data, opts) {
         x: { grid: { color: rejilla } },
         y: { type: esLog ? 'logarithmic' : 'linear',
              grid: { color: rejilla }, ticks: { maxTicksLimit: 6 },
-             title: { display: true, text: p.unit + ' — vista ' + (esLog ? 'LOG' : 'LIN') } }
+             title: { display: true, text: p.unit + ' — ' + txc('vista') + ' ' + (esLog ? 'LOG' : 'LIN') } }
       }
     },
     plugins: [{
@@ -1234,150 +1240,40 @@ function filterCorrGraphs() {
   });
 }
 
+/* ══ LAS CORRELACIONES SALEN DE LA TABLA (P-H, 04/11/2026) ══
+   Antes eran 12 bloques escritos en el código, en español. Ahora viven en correlaciones.js
+   (SF_CONFIG.correlaciones), con sus textos en las cuatro lenguas ; cada una lleva su número
+   fijo « n », y cada curva el suyo, el de la tabla de sinónimos. Las claves, colores, escalas
+   y umbrales no han cambiado. */
+function _lgC(){ try { return MF.idioma() || 'es'; } catch (e) { return 'es'; } }
+function txc(k){ const T = (window.SF_TEXTOS && SF_TEXTOS.textos) || {}; return (T[_lgC()] && T[_lgC()][k]) || (T.es && T.es[k]) || k; }
+function _corrsDeLaTabla(){
+  const L = SF_CONFIG.correlaciones || [], lg = _lgC(), S = ((window.SF_SINONIMOS_PARAMETROS || {}).parametros) || {};
+  return L.map(c => { const t = (c.textos || {})[lg] || (c.textos || {}).es || {};
+    return { n: c.n, title: t.titulo || '', desc: t.desc || '', sub: t.unidades || '', ref: c.ref, refLabel: t.umbral || '', med: c.med || null,
+             params: (c.params || []).map((p, i) => Object.assign({}, p, { label: (t.curvas || [])[i] || p.key, num: (S[p.key] || {}).n || '' })) }; });
+}
+/* la escala de cada correlación, lineal o logarítmica — se recuerda en este navegador */
+function _corrEscala(n){ try { return (JSON.parse(localStorage.getItem('sf_corr_escala') || '{}')[n]) || 'linear'; } catch (e) { return 'linear'; } }
+function _corrCambiaEscala(n){
+  let o = {}; try { o = JSON.parse(localStorage.getItem('sf_corr_escala') || '{}'); } catch (e) {}
+  o[n] = (o[n] === 'logarithmic') ? 'linear' : 'logarithmic';
+  try { localStorage.setItem('sf_corr_escala', JSON.stringify(o)); } catch (e) {}
+  redibuja();
+}
+
 function buildCorrelaciones(data) {
   if (!data) data = loadData();
   const grid = document.getElementById('corr-grid');
   if (!grid) return;
   grid.innerHTML = '';
   if (!data || !data.length) {
-    grid.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">Sin datos de correlaciones — importe mediciones en el expediente .sf</p>';
+    grid.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">' + txc('sin_datos') + '</p>';
     return;
   }
 
-  /* Corrélations génériques — basées sur les paramètres disponibles */
-  const CORRS = [
-    {
-      title: 'Colesterol total + LDL',
-      desc: 'Colesterol total y LDL (malo).\nObjetivo Total <200 · LDL <100 mg/dL',
-      sub: 'mg/dL',
-      params: [
-        { key:'colesterol', label:'Colesterol total', color:'#7d3c98' },
-        { key:'colesterol_ldl',        label:'LDL',              color:'#e84a4a', dash:true },
-      ],
-      med: null,
-      ref: 200, refLabel:'Colesterol objetivo <200'
-    },
-    {
-      title: 'Función renal — Filtrado + Creatinina',
-      desc: 'Seguimiento función renal.\nFiltrado glomerular y creatinina.\nFG <60 = insuficiencia renal crónica',
-      sub: 'ml/min',
-      params: [
-        { key:'filtrado', label:'FG CKD-EPI', color:'#117a65' },
-        { key:'creatinina', label:'Creatinina (×50)', color:'#4a8fe8', dash:true, scale:50 },
-      ],
-      med: null,
-      ref: 60, refLabel:'Límite inferior FG'
-    },
-    {
-      title: 'Vitamina D',
-      sub: 'ng/mL',
-      params: [
-        { key:'vitamina_d', label:'Vitamina D', color:'#c8a000' },
-      ],
-      med: null,
-      ref: 30, refLabel:'Mínimo referencia (30)'
-    },
-    {
-      title: 'Vitamina B12 + VCM',
-      desc: 'B12 y volumen corpuscular medio.\nCarencia B12: anemia macrocítica + síntomas neurológicos',
-      sub: 'B12 pg/mL · VCM fL',
-      params: [
-        { key:'vitamina_b12', label:'B12 (pg/mL)', color:'#a06000' },
-        { key:'vcm', label:'VCM (fL × 2)', color:'#e84a4a', dash:true, scale:2 },
-      ],
-      med: null,
-      ref: 180, refLabel:'B12 mínimo (180)'
-    },
-    {
-      title: 'Hemoglobina + Ferritina',
-      desc: 'Anemia: Hemoglobina y ferritina.\nHb normal: >12 g/dL (mujeres) >13 (hombres)',
-      sub: 'g/dL · ng/mL',
-      params: [
-        { key:'hemoglobina', label:'Hemoglobina', color:'#922b21' },
-        { key:'ferritina', label:'Ferritina (÷10)', color:'#4a8fe8', dash:true, scale:0.1 },
-      ],
-      med: null,
-      ref: 12, refLabel:'Hb mínimo (12)'
-    },
-    {
-      title: 'Tensión arterial — Sistólica + Diastólica',
-      desc: 'Presión arterial sistólica y diastólica.\nObjetivo: <140/90 mmHg\n<130/80 en alto riesgo cv',
-      sub: 'mmHg',
-      params: [
-        { key:'TA_sys', label:'TAS (sistólica)', color:'#e74c3c' },
-        { key:'TA_dia', label:'TAD (diastólica)', color:'#e8874a', dash:true },
-      ],
-      med: null,
-      ref: 140, refLabel:'Objetivo TAS <140'
-    },
-    {
-      title: 'Frecuencia cardíaca + SpO2',
-      desc: 'Frecuencia cardíaca y saturación O2.\nFC normal: 60-100 lpm\nSpO2 normal: >95%',
-      sub: 'lpm · %',
-      params: [
-        { key:'FC', label:'FC (lpm)', color:'#e67e22' },
-        { key:'SpO2', label:'SpO2 (% ×1.5)', color:'#2980b9', dash:true, scale:1.5 },
-      ],
-      med: null,
-      ref: 100, refLabel:'FC límite (100 lpm)'
-    },
-    {
-      title: 'TAS vs Frecuencia cardíaca',
-      desc: 'Tensión sistólica vs frecuencia cardíaca.\nDetecta hipertensión+taquicardia',
-      sub: 'mmHg · lpm',
-      params: [
-        { key:'TA_sys', label:'TAS (mmHg)', color:'#e74c3c' },
-        { key:'FC', label:'FC (lpm × 1.2)', color:'#e67e22', dash:true, scale:1.2 },
-      ],
-      med: null,
-      ref: 140, refLabel:'TAS objetivo <140'
-    },
-    {
-      title: '⚠ Alerta cardiovascular — TAS + FC + SpO2',
-      desc: 'TAS alta + FC alta + SpO2 baja\\n= posible alerta cardiovascular/respiratoria.\\nEscalas: TAS /1, FC /1, SpO2 ×1.5',
-      sub: 'mmHg · lpm · %',
-      params: [
-        { key:'TA_sys', label:'TAS (mmHg)', color:'#e74c3c' },
-        { key:'FC',     label:'FC (lpm)',   color:'#e67e22', dash:true },
-        { key:'SpO2',   label:'SpO2 (%)',        color:'#2980b9', dash:true, yAxis:'y2' },
-      ],
-      med: null,
-      ref: 140, refLabel:'TAS objetivo <140'
-    },
-    {
-      title: 'Bilan hepático — GPT + GGT',
-      desc: 'Enzimas hepáticas.\nGPT (ALT) específico del hígado.\nGGT sensible al alcohol y fármacos.',
-      sub: 'UI/L',
-      params: [
-        { key:'gpt', label:'GPT (ALT)', color:'#e67e22' },
-        { key:'ggt', label:'GGT',       color:'#7f8c8d', dash:true },
-      ],
-      med: null,
-      ref: 37, refLabel:'GPT normal <37'
-    },
-    {
-      title: 'Función renal — Creatinina + FG',
-      desc: 'Creatinina y filtrado glomerular.\nFG <60 = ERC. FG <30 = grave.',
-      sub: 'mg/dL · ml/min÷10',
-      params: [
-        { key:'creatinina',          label:'Creatinina (mg/dL)', color:'#e74c3c' },
-        { key:'filtrado', label:'FG (÷10)',            color:'#117a65', dash:true, scale:0.1 },
-      ],
-      med: null,
-      ref: 1.2, refLabel:'Creatinina <1.2'
-    },
-    {
-      title: 'Ionograma — Sodio + Potasio',
-      desc: 'Electrolitos vitales.\nSodio: hidratación y TA.\nPotasio: función cardíaca.',
-      sub: 'mmol/L',
-      params: [
-        { key:'sodio',   label:'Sodio (mmol/L)',   color:'#148f77' },
-        { key:'potasio', label:'Potasio (×20)',     color:'#1a5276', dash:true, scale:20 },
-      ],
-      med: null,
-      ref: 134, refLabel:'Sodio mínimo 134'
-    },
-  ];
+  /* Las 12 correlaciones viven en correlaciones.js, en cuatro lenguas (P-H, 04/11/2026 : « rien en dur ») */
+  const CORRS = _corrsDeLaTabla();
 
   /* Filtrer: ne garder que les corrélations ayant des données */
   const validCorrs = CORRS.filter(corr =>
@@ -1385,7 +1281,7 @@ function buildCorrelaciones(data) {
   );
 
   if (!validCorrs.length) {
-    grid.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">Sin datos suficientes para correlaciones</p>';
+    grid.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">' + txc('sin_suficientes') + '</p>';
     return;
   }
 
@@ -1406,9 +1302,11 @@ function buildCorrelaciones(data) {
   validCorrs.forEach((corr, idx) => {
     const div = document.createElement('div');
     div.className = 'corr-card';
+    div.style.position = 'relative';
     div.id = 'corr-card-' + idx;
     div.innerHTML = `
-      <div class="chart-title">${corr.title}</div>
+      <span class="corr-num" data-ptip="${txc('tip_num_corr')}">${txc('lbl_num_corr')} ${corr.n}</span>
+      <div class="chart-title">${corr.title}<button class="corr-esc" data-ptip="${txc('tip_escala')}" onclick="_corrCambiaEscala(${corr.n})">⇄ ${_corrEscala(corr.n) === 'logarithmic' ? txc('btn_lin') : txc('btn_log')}</button></div>
       <div class="chart-sub">${corr.sub}</div>
       ${corr.note ? `<div style="font-family:var(--mono);font-size:9px;color:var(--warn);margin-bottom:8px">⚠ ${corr.note}</div>` : ''}
       <canvas id="corr-${idx}" height="180"></canvas>`;
@@ -1430,7 +1328,8 @@ function buildCorrelaciones(data) {
         /* Détecter si au moins une valeur est calculée (négative) */
         var hasCalc = data.some(m => m.vals && (m.vals||{})[p.key] !== undefined && (m.vals||{})[p.key] < 0);
         return {
-          label: p.label + (hasCalc ? ' (calc.)' : ''),
+          label: p.label + (p.num ? ' · ' + txc('lbl_num') + ' ' + p.num : '') + (hasCalc ? ' (' + txc('calc') + ')' : ''),
+          yAxisID: p.yAxis || 'y',   /* el eje de la derecha que la tabla pedía y nadie dibujaba (n° 9, SpO₂) */
           data: allDates.map(d => {
             const row = data.find(m => m.date === d && m.vals && (m.vals||{})[p.key] !== undefined);
             if (!row) return null;
@@ -1481,10 +1380,12 @@ function buildCorrelaciones(data) {
             legend: { display: true, position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } },
             tooltip: { bodyFont: { size: 10 } },
           },
-          scales: {
+          scales: Object.assign({
             x: { grid: { color: '#2a3348' }, ticks: { font: { size: 8 } } },
-            y: { grid: { color: '#2a3348' }, ticks: { font: { size: 9 }, maxTicksLimit: 5 } }
-          }
+            y: { type: _corrEscala(corr.n), grid: { color: '#2a3348' }, ticks: { font: { size: 9 }, maxTicksLimit: 5 } }
+          }, corr.params.some(p => p.yAxis === 'y2') ? {
+            y2: { type: _corrEscala(corr.n), position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 9 }, maxTicksLimit: 5 } }
+          } : {})
         }
       });
     }, idx * 100);
@@ -1504,7 +1405,7 @@ MF.arranca({
     _DATOS=d;
     var pa=MF.paciente();
     document.getElementById('c-pac').textContent = pa.etiqueta || pa.matricula || '';
-    document.getElementById('c-est').textContent = (d.mesures||[]).length + ' extracciones';
+    document.getElementById('c-est').textContent = (d.mesures||[]).length + ' ' + txc('extracciones');
     document.getElementById('aviso').style.display='none';
     try{
       buildCorrelaciones(loadData());

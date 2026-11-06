@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Versión 2026.09.19-18:15:47 -->
+<!-- Versión 2026.11.04-12:39:11 — rúbrica « Novedades » (P-H, 04/11/2026) -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Ayuda · La casa</title>
@@ -34,12 +34,22 @@ td:first-child{white-space:nowrap;width:1%;padding-right:16px;font-size:16px;
 #lenguas button.on{opacity:1;border-color:var(--accent)}
 [data-lg]{display:none}
 [data-lg].on{display:block}
+/* ── las novedades (P-H, 04/11/2026) ── */
+.nov-mes{font-size:13px;color:var(--muted);margin:14px 0 4px;text-transform:capitalize}
+.nov-donde{font-weight:600;font-size:13.5px;margin:8px 0 2px}
+.nov ul{margin:2px 0 8px 18px;padding:0}
+.nov li{font-size:13.5px;margin:2px 0}
+.nov-ret li{color:var(--muted)}
 </style>
 </head>
 <body>
 
 <div id="lenguas"></div>
 <div class="env" id="cuerpo"></div>
+
+<!-- las novedades : las escribe el taller a partir de sus diarios ; si el
+     fichero falta, la rúbrica no aparece -->
+<script src="novedades.js"></script>
 
 <script>
 /* ══════════════════════════════════════════════════════════════════════
@@ -303,6 +313,44 @@ look up: almost always a record just needs picking.</div>
 `
 };
 
+/* ══ LAS NOVEDADES (P-H, 04/11/2026) ══════════════════════════════════════
+   « ce qui est nouveau et ce qui n'existe plus ou obsolète »
+   Las frases vienen de novedades.js — escritas para el usuario, sin una
+   palabra técnica. Aquí solo se ordenan : por mes, lo nuevo y lo que ya
+   no existe, agrupado por programa. */
+var NOV_TXT = {
+  es: { titulo:'Novedades', nuevo:'Lo nuevo', retirado:'Ya no existe' },
+  fr: { titulo:'Nouveautés', nuevo:'Ce qui est nouveau', retirado:'Ce qui n\'existe plus' },
+  ca: { titulo:'Novetats', nuevo:'El que és nou', retirado:'Ja no existeix' },
+  en: { titulo:'What\'s new', nuevo:'New', retirado:'No longer there' }
+};
+function novedadesHTML(l){
+  var N = (window.SF_NOVEDADES && SF_NOVEDADES.novedades) || [];
+  if(!N.length) return '';
+  var T = NOV_TXT[l] || NOV_TXT.es;
+  function esc(x){ return String(x == null ? '' : x).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  var meses = {};
+  N.forEach(function(x){ var m = String(x.fecha || '').slice(0, 7); (meses[m] = meses[m] || []).push(x); });
+  var h = '<h2>🆕 ' + T.titulo + '</h2><div class="nov">';
+  Object.keys(meses).sort().reverse().forEach(function(m){
+    var d = new Date(m + '-01T12:00:00');
+    var nom = isNaN(d) ? m : d.toLocaleDateString(l === 'ca' ? 'ca-ES' : l, { month:'long', year:'numeric' });
+    h += '<div class="nov-mes">' + esc(nom) + '</div>';
+    ['nuevo', 'retirado'].forEach(function(c){
+      var L = meses[m].filter(function(x){ return x.clase === c; });
+      if(!L.length) return;
+      h += '<div class="nov-donde">' + (c === 'nuevo' ? '➕ ' : '➖ ') + T[c] + '</div>';
+      var por = {}, orden = [];
+      L.forEach(function(x){ var k = (x.donde && (x.donde[l] || x.donde.es)) || ''; if(!por[k]){ por[k] = []; orden.push(k); } por[k].push(x[l] || x.es); });
+      orden.forEach(function(k){
+        h += '<div class="sordo" style="margin-top:4px">' + esc(k) + '</div><ul' + (c === 'retirado' ? ' class="nov-ret"' : '') + '>'
+           + por[k].map(function(t){ return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>';
+      });
+    });
+  });
+  return h + '</div>';
+}
+
 /* ── la lengua : la que dejó el usuario, o la del navegador ── */
 function lenguaDe(){
   var l = '';
@@ -312,7 +360,7 @@ function lenguaDe(){
 }
 
 function pon(l){
-  document.getElementById('cuerpo').innerHTML = AYUDA[l] || AYUDA.es;
+  document.getElementById('cuerpo').innerHTML = (AYUDA[l] || AYUDA.es) + novedadesHTML(l);
   document.documentElement.lang = l;
   document.querySelectorAll('#lenguas button').forEach(function(b){
     b.classList.toggle('on', b.dataset.l === l);
@@ -322,10 +370,12 @@ function pon(l){
 
 document.getElementById('lenguas').innerHTML = LENGUAS.map(function(x){
   return '<button data-l="' + x.id + '" onclick="pon(\'' + x.id + '\')" '
-       + 'title="' + x.nombre + '">' + x.bandera + '</button>';
+       + 'data-tip="' + x.nombre + '">' + x.bandera + '</button>';
 }).join('');
 
 pon(lenguaDe());
 </script>
+<!-- la paleta y la lengua de la casa (P-H, 04/11/2026) -->
+<script src="../comun/oye-casa.js"></script>
 </body>
 </html>

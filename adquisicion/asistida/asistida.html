@@ -115,7 +115,7 @@ textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ADQUISICIÓN ASISTIDA — Salufolio
-   Versión 2026.09.19-18:12:56
+   Versión 2026.11.05-22:43:03
 
    El segundo de los tres modos (P-H, 09/09):
      manual     · a mano, sin documento
@@ -440,12 +440,8 @@ function guardaLoLeido(parsed, nombreFichero){
                           : (parsed.source || '');
   var fecha = doc.fecha_informe || doc.fecha_ingreso || parsed.date || '';
 
-  var A = loadPdfs(), pdfId = null;
-  Object.keys(A).forEach(function(k){ if(A[k]===nombreFichero) pdfId=k; });
-  if(!pdfId){
-    var n=1; while(A['PDF'+String(n).padStart(3,'0')]) n++;
-    pdfId='PDF'+String(n).padStart(3,'0'); A[pdfId]=nombreFichero; savePdfs(A);
-  }
+  /* v2026.11.05-22:43:03 (P-H) : MF.pdfAlta — el del fichero, si no el primer hueco "", si no contador + 1 */
+  var pdfId = MF.pdfAlta(_asegura(), nombreFichero);
 
   var nMed=0, nEv=0, nTrat=0;
 

@@ -1,13 +1,17 @@
 /* INFORMES PARA EL MÉDICO — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "informe",
-  "version": "2026.10.28-16:10:59",
+  "version": "2026.11.04-15:09:43",
   "programa": "informe.html",
   "lanzador": "../casa/casa.js",
   "carpeta": "informe/",
   "icono": "📋",
   "familia": "ver",
   "paleta": "papel",
+  "paletas_permitidas": ["papel", "sepia", "claro"],
+  "_paletas_permitidas": "P-H, 04/11/2026 : « on peut admettre papel, sepia ou blanc ». Un informe se imprime : solo paletas claras. Mientras el informe está abierto, la casa no propone las otras ; al imprimir, siempre los colores de « colores » (blanco).",
+  "de_la_paleta": { "papel": "--bg", "papel_suave": "--surface", "tinta": "--text", "tinta_suave": "--muted", "linea": "--border" },
+  "_de_la_paleta": "Qué color de la paleta de la casa toma cada color del informe. Los demás (grave, aviso, bien…) no cambian.",
   "nombre": {
     "es": "Informes para el médico",
     "fr": "Rapports pour le médecin",

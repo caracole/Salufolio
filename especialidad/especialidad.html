@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Especialidad · Salufolio</title>
+<script src="../comun/chart.umd.min.js"></script>
+<link rel="stylesheet" href="../comun/salufolio.css">
+<style>
+/* Rien en dur : tout par variables (P-H, 05/09) */
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,system-ui,sans-serif)}
+#e-cab{display:flex;align-items:baseline;gap:var(--gap-m,12px);padding:var(--pad-s,10px) var(--pad-m,18px);border-bottom:1px solid var(--border)}
+#titulo{font-family:var(--serif);font-size:var(--tam-tit,18px);font-weight:600;color:var(--text)}
+#e-cab .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-radius:var(--radio-s,6px);padding:1px 8px;color:var(--muted)}
+.panel{display:block}
+#aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
+.es-banda{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;padding:var(--pad-s,10px) var(--pad-m,18px);font-size:var(--tam-nor,13px);border-bottom:1px solid var(--border)}
+.es-banda b{font-size:calc(var(--tam-nor,13px) + 2px)}
+.es-banda span{color:var(--muted)}
+.es-banda .es-nombre{font-family:var(--serif);font-size:calc(var(--tam-tit,18px) - 1px);font-weight:600;color:var(--text)}
+.es-imp{margin-left:auto;background:transparent;border:1px solid var(--border);border-radius:var(--radio-s,6px);color:var(--text);cursor:pointer;font-size:var(--tam-nor,13px);padding:3px 10px}
+.es-imp:hover{border-color:var(--accent)}
+.es-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:var(--gap-m,12px);padding:var(--gap-m,12px) var(--pad-m,18px);align-items:start}
+.es-col{display:flex;flex-direction:column;gap:var(--gap-m,12px);min-width:0}
+.es-carta{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius,10px);padding:10px 14px;min-width:0;display:flex;flex-direction:column}
+.es-carta.es-clave{border-left:4px solid var(--accent)}
+.es-carta h3{margin:0 0 6px;font-size:var(--tam-min,11px);letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);font-weight:700}
+.es-carta h3 small{text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400;margin-left:6px}
+.es-cuerpo{min-height:0;overflow-y:auto;scrollbar-gutter:stable;padding-right:2px}
+.es-sub{margin:8px 0 3px;font-size:calc(var(--tam-min,11px) - 1px);letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
+.es-sub:first-child{margin-top:0}
+.es-fila{display:flex;gap:10px;align-items:baseline;padding:4px 0;border-bottom:1px dashed var(--border);font-size:calc(var(--tam-nor,13px) - .5px)}
+.es-fila:last-child{border-bottom:0}
+.es-fila.es-clic{cursor:pointer}.es-fila.es-clic:hover .es-c{color:var(--accent)}
+.es-f{flex:0 0 76px;font-family:var(--mono);font-size:var(--tam-min,11px);color:var(--muted)}
+.es-c{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.es-der{flex:0 0 auto;text-align:right;font-family:var(--mono);font-size:var(--tam-min,11px);color:var(--muted)}
+.es-pastilla{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}
+.es-doc{flex:0 0 auto;cursor:pointer;background:transparent;border:1px solid var(--border);border-radius:var(--radio-s,6px);padding:0 5px;font-size:12px;color:var(--text)}
+.es-doc:hover{border-color:var(--accent)}
+.es-v{display:grid;grid-template-columns:16px 1fr auto 18px 84px 74px;gap:8px;align-items:center;padding:3px 0;border-bottom:1px dashed var(--border);font-size:calc(var(--tam-nor,13px) - .5px);cursor:pointer}
+.es-v:last-child{border-bottom:0}
+.es-v:hover .es-c{color:var(--accent)}
+.es-num{font-family:var(--mono);font-weight:700;text-align:right}
+.es-num.es-fuera{color:var(--danger)}
+.es-u{color:var(--muted);font-weight:400;font-size:calc(var(--tam-min,11px) - .5px);margin-left:3px}
+.es-fl{text-align:center;font-weight:700}
+.es-sube{color:var(--warn)} .es-baja{color:var(--accent)} .es-igual{color:var(--muted)}
+.es-svg polyline{fill:none;stroke:var(--accent);stroke-width:1.5}
+.es-nada{color:var(--muted);font-size:12px;font-style:italic}
+.es-sin{color:var(--muted);font-size:var(--tam-min,11px);margin-top:6px}
+.es-cron{font-size:calc(var(--tam-min,11px) - 1px);color:var(--muted);border:1px solid var(--border);border-radius:var(--radio-s,6px);padding:0 4px;margin-left:4px}
+.es-caduca .es-c b,.es-caduca .es-der{color:var(--warn)}
+.es-ant .es-c{color:var(--muted)}
+.es-texto{white-space:pre-wrap;font-size:13px;line-height:1.55}
+.es-texto-pr{color:var(--muted);font-size:12px;margin-bottom:8px}
+.es-curva{position:relative;height:var(--es-alto-curva,260px)}
+.es-pdf{width:100%;height:calc(100vh - 170px);border:0;background:var(--bg)}
+/* étape 2 (P-H, 05/11/2026) : el comentario de la IA, las preguntas para el médico */
+.es-ia{margin-top:10px;border-top:1px solid var(--border);padding-top:8px}
+.es-ia-txt{font-size:12.5px;line-height:1.55}
+.es-ia-txt .sf-ia-dos{display:grid;grid-template-columns:1fr;gap:8px}.es-ia-txt .sf-ia-dos>div{border:1px solid var(--border);border-radius:6px;padding:6px 8px}
+.es-ia-txt .sf-ia-tit{margin:4px 0 2px;font-weight:700;color:var(--accent)}
+.es-ia-pie{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:var(--tam-min,11px);color:var(--muted);margin-top:6px}
+.es-ia-aviso{color:var(--warn);font-size:var(--tam-min,11px);margin-top:4px}
+.es-ia-ctx{font-size:var(--tam-min,11px);color:var(--muted);margin:4px 0}
+.es-btn{background:transparent;border:1px solid var(--border);border-radius:var(--radio-s,6px);color:var(--text);cursor:pointer;font-size:12px;padding:3px 10px}
+.es-btn:hover{border-color:var(--accent)}.es-btn:disabled{opacity:.6;cursor:default}
+.es-preg{width:100%;box-sizing:border-box;min-height:110px;resize:vertical;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--radio-s,6px);padding:6px 8px;font-family:inherit;font-size:13px;line-height:1.5}
+.es-preg:focus{outline:none;border-color:var(--accent)}
+/* los pliegues, la casilla de impresión, las sugeridas (P-H, 05/11/2026, 19:03) */
+.es-pleg{margin-bottom:6px}.es-pleg-cab{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:calc(var(--tam-min,11px) - 1px);letter-spacing:1.2px;color:var(--muted);text-transform:uppercase;padding:4px 0}
+.es-pleg-cab:hover{color:var(--accent)}.es-pleg-cab .flecha{width:1em}.es-pleg.cerrado .es-pleg-cuerpo{display:none}
+.es-chk{margin:0;cursor:pointer;accent-color:var(--accent)}
+.es-sug{display:flex;gap:6px;align-items:baseline;padding:3px 0;font-size:12.5px;border-bottom:1px dashed var(--border)}.es-sug:last-child{border-bottom:0}
+.es-mini{padding:0 6px;font-size:11px;line-height:18px}
+.es-citas .es-fila b{color:var(--text)}
+.es-preg-pie{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:center;font-size:var(--tam-min,11px);color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<header id="e-cab" data-cabecera>
+  <span id="titulo" class="mod-tit">🩺 Especialidad</span>
+  <span class="chip" id="e-pac">—</span>
+  <span class="chip" id="e-est"></span>
+</header>
+<main>
+<div id="panel-especialidad" class="panel">
+  <div class="es-banda" id="es-banda"></div>
+  <div class="es-grid" id="es-grid">
+    <div class="es-col">
+      <div class="es-carta es-clave"><h3 id="es-h-desde"></h3><div class="es-cuerpo" id="es-desde"></div></div>
+      <div class="es-carta"><h3 id="es-h-consultas"></h3><div class="es-cuerpo" id="es-consultas"></div></div>
+    </div>
+    <div class="es-carta"><h3 id="es-h-param"></h3><div class="es-cuerpo" id="es-param"></div></div>
+    <div class="es-col">
+      <div class="es-carta es-citas" id="es-c-citas" style="display:none"><h3 id="es-h-citas"></h3><div id="es-citas"></div></div>
+      <div class="es-carta"><h3 id="es-h-trat"></h3><div class="es-cuerpo" id="es-trat"></div></div>
+      <div class="es-carta es-clave"><h3 id="es-h-prep"></h3><div class="es-cuerpo" id="es-prep"></div></div>
+    </div>
+  </div>
+  <div class="module-version-corner">
+    <span class="module-version-tag" data-module="core"></span>
+  </div>
+</div>
+<div id="aviso" style="display:none"></div>
+</main>
+
+<script src="../medicamentos/principios.js"></script>
+<script src="../comun/especialidades.js"></script>
+<script src="../comun/prompt-comentario-curva.js"></script>
+<script src="../comun/prompt-comentario-especialidad.js"></script>
+<script src="../comun/modelos-ia.js"></script>
+<script src="../comun/comentario-ia.js"></script>
+<script src="especialidad.js"></script>
+<script src="especialidad.idiomas.js"></script>
+<script src="../comun/equivalencias.js"></script>
+<script src="../comun/sinonimos-parametros.js"></script>
+<script src="../comun/alias-campos.js"></script>
+<script src="../comun/mf.js"></script>
+<script>
+/* ═════════════════════════════════════════════════════════════════════
+   ESPECIALIDAD — programa autónomo de Salufolio V2
+   Versión 2026.11.05-20:12:21
+   (05/11/2026, 19:03 : P-H — tratamientos plegables ; una sola carta « Preparar la consulta » ; la hoja : en curso, abandonados del año con su razón, el año en curso, próximas citas, valores marcados ☑ ; sin página en blanco.)
+   (05/11/2026 : étape 2 — el comentario de la IA « desde la última consulta », las preguntas para el médico ; Neurología.)
+   (05/11/2026 : creado — P-H : « avoir des cartes par spécialités, à cause des RV Neumólogo et Cardiólogo ».)
+
+   Una tarjeta por especialidad en la casa, UN SOLO programa : la tarjeta
+   dice cuál (?esp=neumologia) ; la tabla común comun/especialidades.js dice
+   lo que se muestra (« ficha » : parámetros con su normal, medicamentos).
+   Cuatro cartas : desde la última consulta · las consultas · los valores ·
+   los tratamientos ; y una hoja para imprimir. La página solo LEE.
+
+       especialidad.html?esp=neumologia&mf=DSF2026&carpeta=../pacientes/DSF2026/
+   ═════════════════════════════════════════════════════════════════════ */
+const VERSION_PROGRAMA = SF_CONFIG.version;
+var _DATOS = null;
+const _ESP_ID = new URLSearchParams(location.search).get('esp') || '';
+
+/* ── los textos, la lengua, lo pequeño ── */
+function _esLg(){ try { return MF.idioma() || 'es'; } catch (e) { return 'es'; } }
+function txe(k, v){
+  const T = (window.SF_TEXTOS && SF_TEXTOS.textos) || {}, L = T[_esLg()] || {};
+  if (v && v.n === 1 && (L[k + '_1'] || (T.es && T.es[k + '_1']))) k = k + '_1';
+  let s = L[k] || (T.es && T.es[k]) || k;
+  Object.keys(v || {}).forEach(x => { s = s.split('{' + x + '}').join(v[x]); });
+  return s;
+}
+function _esEsc(s){ return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function _esF(d){ return d && d.length >= 10 ? d.slice(8, 10) + '/' + d.slice(5, 7) + '/' + d.slice(0, 4) : (d || ''); }
+function _esHoy(){ const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function _esMenosMeses(iso, m){ const d = new Date(iso + 'T12:00:00'); d.setMonth(d.getMonth() - m); return d.toISOString().slice(0, 10); }
+function _esCfg(){ return Object.assign({ meses_sin_visita: 12, meses_tratamiento: 12, estados_fin: [], max_anteriores: 8, umbral_flecha: 0.05, impresion: {} }, SF_CONFIG.ficha || {}); }
+
+/* ── las especialidades : la tabla común, preparada una vez ── */
+function _esTabla(){
+  return ((window.SF_ESPECIALIDADES && SF_ESPECIALIDADES.especialidades) || []).map(e => Object.assign({}, e, {
+    _srv: e.servicios ? new RegExp(e.servicios, 'i') : null, _pal: e.palabras ? new RegExp(e.palabras, 'i') : null }));
+}
+function _esNom(e){ const t = (e && e.etiqueta) || {}; return t[_esLg()] || t.es || (e && e.id) || ''; }
+/* la especialidad de un acontecimiento — la misma regla que la Cronología y el Resumen */
+function _esDe(ev, T){
+  if (ev && ev._esp) { const f = T.find(e => e.id === ev._esp); if (f) return f; }
+  const pr = MF.procedencia ? MF.procedencia(ev, true) : { servicio: '' };
+  const ts = (ev.type || '') + ' ' + (pr.servicio || '');
+  for (const e of T.slice().sort((a, b) => (a.orden || 99) - (b.orden || 99))) if (e._srv && e._srv.test(ts)) return e;
+  const bl = (ev.titre || ev.title || '') + ' ' + (ev.description || ev.text || '');
+  for (const e of T) if (e._pal && e._pal.test(e.solo_titulo ? String(ev.titre || ev.title || '') : bl)) return e;
+  return T.find(e => e.por_defecto) || T[T.length - 1] || {};
+}
+/* los acontecimientos, una vez cada uno, del más reciente al más antiguo */
+function _esEventos(d, T){
+  const visto = {}, vistoEsp = {}, out = [];
+  (d.events || []).concat((MF.eventosRegistros ? MF.eventosRegistros(d) : [])).forEach(e => {
+    if (!e || !e.date || isNaN(new Date(e.date).getTime())) return;
+    if (e.date > _esHoy()) return;   /* lo que aún no ha pasado es una cita : va a « Próximas citas », no a las consultas */
+    const k = e.date + '|' + String(e.titre || e.title || e.type || '').trim().toUpperCase();
+    if (visto[k]) return; visto[k] = 1;
+    const esp = _esDe(e, T), kd = e.date + '|' + esp.id;
+    if (e._registro ? vistoEsp[kd] : (esp.uno_por_dia && vistoEsp[kd])) return;
+    if (!e._registro) vistoEsp[kd] = 1;
+    out.push({ ev: e, esp: esp });
+  });
+  return out.sort((a, b) => a.ev.date < b.ev.date ? 1 : -1);
+}
+
+/* ── los valores : todas las series, bajo su clave única ── */
+function _esSeries(d){
+  const S = {};
+  (MF.mesuresCanon ? MF.mesuresCanon(d) : []).forEach(t => Object.keys(t.vals || {}).forEach(k => {
+    const v = parseFloat(t.vals[k]); if (isNaN(v)) return; (S[k] = S[k] || []).push([t.date, v, t.pdf_id || '']); }));
+  Object.keys(S).forEach(k => S[k].sort((a, b) => a[0] < b[0] ? -1 : 1));
+  return S;
+}
+function _esEtiq(k){ const P = ((window.SF_SINONIMOS_PARAMETROS || {}).parametros || {})[k] || {}; const e = P.etiqueta || {}; return [e[_esLg()] || e.es || k, P.unidad || '']; }
+function _esFuera(v, n){ return !!n && ((n[0] != null && v < n[0]) || (n[1] != null && v > n[1])); }
+function _esRango(n){ if (!n) return ''; return n[0] != null && n[1] != null ? n[0] + '–' + n[1] : n[0] != null ? '≥ ' + n[0] : '≤ ' + n[1]; }
+function _esCurvita(s, color){
+  const w = 84, h = 20, ys = s.map(x => x[1]), mn = Math.min.apply(null, ys), r = (Math.max.apply(null, ys) - mn) || 1;
+  const pts = s.map((x, i) => ((s.length > 1 ? i * (w - 4) / (s.length - 1) + 2 : w / 2).toFixed(1) + ',' + (h - 3 - (x[1] - mn) / r * (h - 6)).toFixed(1))).join(' ');
+  return '<svg class="es-svg" width="' + w + '" height="' + h + '"><polyline points="' + pts + '"' + (color ? ' style="stroke:' + color + '"' : '') + '/></svg>';
+}
+
+/* ── los tratamientos — la regla del Resumen (P-H, 04/11/2026) ── */
+function _esMedFecha(m, a, b, c){ return m[a] || m[b] || m[c] || ''; }
+function _esTratamientos(d, rx){
+  const C = _esCfg(), hoy = _esHoy(), lim = _esMenosMeses(hoy, C.meses_tratamiento), fin = (C.estados_fin || []).map(x => String(x).toLowerCase());
+  const raw = (d.medicaments || []).filter(m => m && rx.test(String(m.nombre || m.nom || '') + ' ' + String((MF.principioDe && MF.principioDe(m.nombre || m.nom || '')) || '')));
+  const cron = {};
+  raw.forEach(m => { if (MF.esCronico && MF.esCronico(m)) { const u = MF.medicamentosUnicos([m])[0]; if (u) cron[u._clave] = 1; } });
+  const curso = [], ant = [];
+  (MF.medicamentosUnicos ? MF.medicamentosUnicos(raw) : raw).forEach(m => {
+    const est = String(m.estado || m.statut || '').toLowerCase(), desde = _esMedFecha(m, 'desde', 'date_debut', 'date'), hasta = _esMedFecha(m, 'hasta', 'date_fin', 'fin');
+    const esCron = (MF.esCronico && MF.esCronico(m)) || !!cron[m._clave], x = { m: m, desde: desde, hasta: hasta, cron: esCron };
+    const parado = est && fin.indexOf(est) >= 0;
+    if (!parado && desde && desde >= lim && hasta && hasta > hoy) curso.push(x);
+    else if (!parado && esCron && !hasta) curso.push(x);
+    else if (!parado && esCron && hasta) { x.caducado = hasta; curso.push(x); }
+    else ant.push(x);
+  });
+  ant.sort((a, b) => (b.hasta || b.desde) < (a.hasta || a.desde) ? -1 : 1);
+  return { curso: curso, ant: ant };
+}
+
+/* ── LA VISTA ── */
+let _ES = null;   /* lo calculado, para la hoja impresa */
+function buildEspecialidad(){
+  const d = _DATOS; if (!d) return;
+  const T = _esTabla(), esp = T.find(e => e.id === _ESP_ID), C = _esCfg(), hoy = _esHoy();
+  if (!esp) { const a = document.getElementById('aviso'); a.style.display = 'block'; a.textContent = txe('es_sin_esp'); document.getElementById('panel-especialidad').style.display = 'none'; return; }
+  const F = esp.ficha || {}, nombre = (F.icono || '') + ' ' + _esNom(esp);
+  document.title = _esNom(esp) + ' · Salufolio';
+  const ti = document.getElementById('titulo'); if (ti) ti.textContent = nombre;
+  const E = _esEventos(d, T), mias = E.filter(x => x.esp.id === esp.id), S = _esSeries(d);
+  const ult = mias[0] ? mias[0].ev.date : '', desde = ult || _esMenosMeses(hoy, C.meses_sin_visita);
+  const nada = '<div class="es-nada">' + _esEsc(txe('es_nada')) + '</div>';
+  const R = { esp: esp, nombre: nombre, ult: ult, desde: desde };
+
+  /* la banda : sexo, edad, consultas, período, la última — nunca el nombre */
+  const b = ['<span class="es-nombre">' + _esEsc(nombre) + '</span>'], nac = parseInt(d.nacimiento || '', 10), sx = String(d.sexo || '').toLowerCase();
+  const sxk = /^(muj|fem|f$|wom|dona)/.test(sx) ? 'es_mujer' : /^(hom|masc|m$|male|man|h$)/.test(sx) ? 'es_hombre' : '';
+  if (sxk) b.push('<b>' + _esEsc(txe(sxk)) + '</b>');
+  if (nac > 1900) b.push('<b>' + _esEsc(txe('es_anos', { n: new Date().getFullYear() - nac })) + '</b>');
+  if (mias.length) {
+    const pr = MF.procedencia ? MF.procedencia(mias[0].ev) : '';
+    b.push('<span>' + _esEsc(txe('es_consultas', { n: mias.length })) + ' · ' + _esEsc(txe('es_periodo', { a: mias[mias.length - 1].ev.date.slice(0, 4), b: ult.slice(0, 4) })) + '</span>');
+    b.push('<span' + (pr ? ' data-ptip="' + _esEsc(pr) + '"' : '') + '>' + _esEsc(txe('es_ultima', { f: _esF(ult) })) + '</span>');
+  } else b.push('<span>' + _esEsc(txe('es_ninguna')) + '</span>');
+  b.push('<button class="es-imp" data-ptip="' + _esEsc(txe('es_tip_imprimir')) + '" onclick="esImprime()">' + _esEsc(txe('es_imprimir')) + '</button>');
+  document.getElementById('es-banda').innerHTML = b.join('');
+  R.banda = b.slice(1, -1).map(x => x.replace(/<[^>]+>/g, '')).filter(Boolean).join(' · ');
+
+  /* 1 · DESDE LA ÚLTIMA CONSULTA — lo que el médico quiere saber */
+  document.getElementById('es-h-desde').innerHTML = _esEsc(txe('es_desde_tit')) + '<small>' + _esEsc(ult ? txe('es_desde_sub', { f: _esF(ult) }) : txe('es_desde_sub_sin', { m: C.meses_sin_visita })) + '</small>';
+  const desp = E.filter(x => x.ev.date > desde && x.esp.id !== esp.id);
+  const urg = desp.filter(x => x.esp.orden), otras = {};
+  desp.filter(x => !x.esp.orden).forEach(x => { otras[x.esp.id] = otras[x.esp.id] || { e: x.esp, n: 0 }; otras[x.esp.id].n++; });
+  const todos = (d.medicaments || []), U = MF.medicamentosUnicos ? MF.medicamentosUnicos(todos) : todos;
+  const nuevos = U.filter(m => { const f = _esMedFecha(m, 'desde', 'date_debut', 'date'); return f && f > desde; });
+  const fins = (C.estados_fin || []).map(x => String(x).toLowerCase());
+  const parados = U.filter(m => { const h = _esMedFecha(m, 'hasta', 'date_fin', 'fin'), est = String(m.estado || m.statut || '').toLowerCase(); return h && h > desde && h <= hoy && fins.indexOf(est) >= 0; });
+  const fuera = [];
+  (F.parametros || []).forEach(p => { const s = S[p.k]; if (!s) return; s.filter(x => x[0] > desde && _esFuera(x[1], p.normal)).slice(-1).forEach(x => fuera.push({ k: p.k, v: x[1], f: x[0], n: p.normal })); });
+  let h = '';
+  const sub = t => '<div class="es-sub">' + _esEsc(t) + '</div>';
+  R.desp = desp; R.desde_urg = urg; R.desde_otras = otras; R.nuevos = nuevos; R.parados = parados; R.fuera = fuera;
+  if (urg.length) h += sub(txe('es_desde_urg')) + urg.map(x => _esFilaEv(x)).join('');
+  if (Object.keys(otras).length) h += sub(txe('es_desde_otras')) + '<div class="es-fila"><span class="es-c" style="white-space:normal">' + Object.values(otras).sort((a, c) => c.n - a.n).map(o => '<span class="es-pastilla" style="background:' + _esEsc(o.e.color || 'var(--muted)') + '"></span>' + _esEsc(_esNom(o.e)) + ' ' + o.n).join(' · ') + '</span></div>';
+  if (fuera.length) h += sub(txe('es_desde_fuera')) + fuera.map(x => { const L = _esEtiq(x.k); return '<div class="es-fila es-clic" onclick="esCurva(\'' + _esEsc(x.k) + '\')" data-ptip="' + _esEsc(txe('es_tip_normal', { r: _esRango(x.n) })) + '"><span class="es-f">' + _esF(x.f) + '</span><span class="es-c">' + _esEsc(L[0]) + '</span><span class="es-der es-num es-fuera">' + _esEsc(x.v) + '<span class="es-u">' + _esEsc(L[1]) + '</span></span></div>'; }).join('');
+  if (nuevos.length) h += sub(txe('es_desde_nuevos')) + nuevos.map(m => '<div class="es-fila"><span class="es-f">' + _esF(_esMedFecha(m, 'desde', 'date_debut', 'date')) + '</span><span class="es-c">💊 <b>' + _esEsc(m._principio || m.nombre || '') + '</b> ' + _esEsc(m.dosis || '') + '</span></div>').join('');
+  if (parados.length) h += sub(txe('es_desde_parados')) + parados.map(m => '<div class="es-fila es-ant"><span class="es-f">' + _esF(_esMedFecha(m, 'hasta', 'date_fin', 'fin')) + '</span><span class="es-c">💊 ' + _esEsc(m._principio || m.nombre || '') + '</span></div>').join('');
+  document.getElementById('es-desde').innerHTML = h || '<div class="es-nada">' + _esEsc(txe('es_desde_nada')) + '</div>';
+
+  /* 2 · SUS CONSULTAS */
+  document.getElementById('es-h-consultas').innerHTML = _esEsc(txe('es_consultas_tit')) + (mias.length ? '<small>' + mias.length + '</small>' : '');
+  document.getElementById('es-consultas').innerHTML = mias.length ? mias.map(x => _esFilaEv(x)).join('') : nada;
+  R.mias = mias;
+
+  /* 3 · SUS VALORES : el último, la flecha, la curvita ; fuera de la normal en rojo */
+  document.getElementById('es-h-param').textContent = txe('es_param_tit');
+  const sinMedida = [], noImp = _esNoImprimir();
+  const filas = (F.parametros || []).map(p => {
+    const s = S[p.k], L = _esEtiq(p.k); if (!s) { sinMedida.push(L[0]); return ''; }
+    const u = s[s.length - 1], a = s.length > 1 ? s[s.length - 2] : null;
+    let fl = '', cl = 'es-igual', tip = txe('es_tip_curva') + (p.normal ? ' · ' + txe('es_tip_normal', { r: _esRango(p.normal) }) : '');
+    if (a) { const c = (u[1] - a[1]) / (Math.abs(a[1]) || 1); fl = c > C.umbral_flecha ? '↑' : c < -C.umbral_flecha ? '↓' : '→'; cl = fl === '↑' ? 'es-sube' : fl === '↓' ? 'es-baja' : 'es-igual'; tip += '\n' + txe('es_tip_antes', { v: a[1], f: _esF(a[0]) }); }
+    return '<div class="es-v" onclick="esCurva(\'' + _esEsc(p.k) + '\')" data-ptip="' + _esEsc(tip) + '">'
+      + '<input type="checkbox" class="es-chk"' + (noImp.indexOf(p.k) < 0 ? ' checked' : '') + ' data-ptip="' + _esEsc(txe('es_tip_chk')) + '" onclick="event.stopPropagation()" onchange="esImpParam(\'' + _esEsc(p.k) + '\', this.checked)">'
+      + '<span class="es-c">' + _esEsc(L[0]) + '</span>'
+      + '<span class="es-num' + (_esFuera(u[1], p.normal) ? ' es-fuera' : '') + '">' + _esEsc(u[1]) + '<span class="es-u">' + _esEsc(L[1]) + '</span></span>'
+      + '<span class="es-fl ' + cl + '">' + fl + '</span>' + _esCurvita(s) + '<span class="es-f es-der">' + _esF(u[0]) + '</span></div>';
+  }).filter(Boolean);
+  document.getElementById('es-param').innerHTML = (filas.length ? filas.join('') : nada) + (sinMedida.length ? '<div class="es-sin">' + _esEsc(txe('es_param_sin', { l: sinMedida.join(', ') })) + '</div>' : '');
+  R.S = S; R.sinMedida = sinMedida;
+
+  /* 4 · SUS TRATAMIENTOS : en curso, luego los anteriores */
+  document.getElementById('es-h-trat').textContent = txe('es_trat_tit');
+  let rx = null; try { rx = F.medicamentos ? new RegExp(F.medicamentos, 'i') : null; } catch (e) { rx = null; }
+  const TR = rx ? _esTratamientos(d, rx) : { curso: [], ant: [] };
+  const anio = _esHoy().slice(0, 4), y0 = anio + '-01-01', antA = TR.ant.filter(x => (x.hasta || x.desde || '') >= y0);   /* pantalla : los anteriores del año (P-H, 05/11/2026) */
+  let t = '';
+  t += _esPliegue('curso', txe('es_trat_curso') + ' · ' + TR.curso.length, TR.curso.length ? TR.curso.map(x => '<div class="es-fila' + (x.caducado ? ' es-caduca' : '') + '"><span class="es-c">💊 <b>' + _esEsc(x.m._principio || x.m.nombre || '') + '</b> ' + _esEsc(x.m.dosis || '')
+      + (x.cron ? ' <span class="es-cron" data-ptip="' + _esEsc(txe('es_tip_cronico')) + '">' + _esEsc(txe('es_trat_cronico')) + '</span>' : '') + '</span>'
+      + '<span class="es-der">' + _esEsc(x.caducado ? txe('es_trat_caducado', { f: _esF(x.caducado) }) : (x.hasta ? txe('es_trat_hasta', { f: _esF(x.hasta) }) : '')) + '</span></div>').join('') : nada);
+  t += _esPliegue('ant', txe('es_trat_ant_anio', { a: anio }) + ' · ' + antA.length, antA.length ? antA.map(x => '<div class="es-fila es-ant"><span class="es-c">💊 ' + _esEsc(x.m._principio || x.m.nombre || '') + ' ' + _esEsc(x.m.dosis || '') + '</span>'
+      + '<span class="es-der">' + _esEsc(x.hasta ? txe('es_trat_fin', { f: _esF(x.hasta) }) : _esF(x.desde)) + '</span></div>').join('') : nada);
+  document.getElementById('es-trat').innerHTML = t;
+  document.querySelectorAll('#es-trat .es-pleg-cab').forEach(c => { if (MF.plegableTip) MF.plegableTip(c, !c.parentNode.classList.contains('cerrado')); });
+  /* los próximos rendez-vous */
+  const citas = _esCitas(d), cc = document.getElementById('es-c-citas');
+  if (cc) { cc.style.display = citas.length ? '' : 'none'; document.getElementById('es-h-citas').textContent = '📅 ' + txe('es_citas_tit');
+    document.getElementById('es-citas').innerHTML = citas.map(c => '<div class="es-fila"><span class="es-f">' + _esF(c.fecha) + '</span><span class="es-c"><b>' + _esEsc(c.texto) + '</b></span></div>').join(''); }
+  R.TR = TR;
+  _ES = R;
+  R.huella = _esHuella(R);
+  _esPrep();
+  _esAltura();
+}
+/* una fila de acontecimiento : fecha · servicio · título · 📄 */
+function _esFilaEv(x){
+  const e = x.ev, i = _esIdx(e), pr = MF.procedencia ? MF.procedencia(e) : '';
+  return '<div class="es-fila es-clic" onclick="esTexto(' + i + ')" data-ptip="' + _esEsc(txe('es_tip_fila') + (pr ? '\n' + pr : '')) + '"><span class="es-f">' + _esF(e.date) + '</span>'
+    + '<span class="es-c"><span class="es-pastilla" style="background:' + _esEsc(x.esp.color || 'var(--muted)') + '"></span>' + _esEsc(e.title || e.titre || e.type || '') + '</span>'
+    + (e.pdf_id ? '<button class="es-doc" data-ptip="' + _esEsc(txe('es_tip_doc')) + '" onclick="event.stopPropagation();esDoc(\'' + _esEsc(e.pdf_id) + '\')">📄</button>' : '') + '</div>';
+}
+/* los acontecimientos se nombran por su sitio en una lista de la página (no se escribe nada en el dato) */
+let _esLista = [];
+function _esIdx(e){ let i = _esLista.indexOf(e); if (i < 0) { _esLista.push(e); i = _esLista.length - 1; } return i; }
+
+/* ── el texto completo de una consulta ── */
+function esTexto(i){
+  const e = _esLista[i]; if (!e) return;
+  const pr = MF.procedencia ? MF.procedencia(e) : '', txt = String(e.description || e.text || '').trim();
+  const h = (pr ? '<div class="es-texto-pr">' + _esEsc(pr) + '</div>' : '') + '<div class="es-texto">' + _esEsc(txt || txe('es_sin_texto')) + '</div>'
+    + (e.pdf_id ? '<p><button class="es-doc" onclick="esDoc(\'' + _esEsc(e.pdf_id) + '\')">📄 ' + _esEsc(txe('es_tip_doc')) + '</button></p>' : '');
+  MF.ventana(_esEsc(_esF(e.date) + ' · ' + (e.title || e.titre || e.type || '')), h, { ancho: '640px' });
+}
+/* ── el documento de origen : se pide a la casa, solo en la carpeta del paciente ── */
+async function esDoc(id){
+  if (window.SF_VISOR) { SF_VISOR.abre({ pdf_id: id }); return; }   /* P-H 06/11/2026 : el visor común — el PDF, o la ficha si falta */
+  const nom = /\.pdf$/i.test(id) ? id : id + '.pdf';
+  try {
+    const r = await MF.pdfRespuesta(nom);
+    if (r && r.ok) {
+      const url = URL.createObjectURL(await r.blob());
+      MF.ventana('📄 ' + _esEsc(MF.tituloPdf ? MF.tituloPdf(nom) : nom), '<iframe class="es-pdf" src="' + url + '"></iframe>', { ancho: 'min(1000px, 94vw)' });
+      return;
+    }
+  } catch (e) {}
+  MF.ventana('📄 ' + _esEsc(nom), '<p>' + _esEsc(txe('es_doc_falta', { n: nom })) + '</p>', { ancho: '420px' });
+}
+/* ── la curva de un valor, con su normal ── */
+let _esGraf = null;
+function esCurva(k){
+  const s = (_ES && _ES.S && _ES.S[k]) || []; if (!s.length || typeof Chart === 'undefined') return;
+  const F = (_ES.esp.ficha || {}), p = (F.parametros || []).find(x => x.k === k) || {}, L = _esEtiq(k), n = p.normal;
+  const cs = getComputedStyle(document.documentElement), col = v => (cs.getPropertyValue(v) || '').trim();
+  const v = MF.ventana(_esEsc(L[0] + (L[1] ? ' (' + L[1] + ')' : '')) + (n ? ' <small style="color:var(--muted)">· ' + _esEsc(txe('es_normal')) + ' ' + _esEsc(_esRango(n)) + '</small>' : ''), '<div class="es-curva"><canvas id="es-graf"></canvas></div>', { ancho: '720px' });
+  if (_esGraf) { try { _esGraf.destroy(); } catch (e) {} }
+  const ds = [{ data: s.map(x => ({ x: x[0], y: x[1] })), borderColor: col('--accent'), backgroundColor: col('--accent'), tension: .2, pointRadius: 3,
+                pointBackgroundColor: s.map(x => _esFuera(x[1], n) ? col('--danger') : col('--accent')) }];
+  if (n) [0, 1].forEach(i => { if (n[i] != null) ds.push({ data: [{ x: s[0][0], y: n[i] }, { x: s[s.length - 1][0], y: n[i] }], borderColor: col('--ok') || col('--muted'), borderDash: [4, 4], pointRadius: 0, borderWidth: 1 }); });
+  _esGraf = new Chart(document.getElementById('es-graf'), { type: 'line', data: { datasets: ds },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } },
+      scales: { x: { type: 'category', labels: s.map(x => x[0]), ticks: { color: col('--muted'), callback: function(val){ const l = this.getLabelForValue(val); return _esF(l); } }, grid: { color: col('--border') } },
+                y: { ticks: { color: col('--muted') }, grid: { color: col('--border') } } } } });
+  if (v && v.caja) v.caja.querySelectorAll('.sf-ventana-x').forEach(x => x.addEventListener('click', () => { try { _esGraf.destroy(); } catch (e) {} _esGraf = null; }));
+}
+
+/* ── LA HOJA PARA LA CITA — reglas de P-H (05/11/2026, 19:03) : solo la hoja ; la pantalla lo enseña todo ──
+   · tratamientos : los en curso ; los abandonados o suspendidos del año, con su razón ; nunca los terminados
+   · urgencias, ingresos, consultas : solo los del año en curso ; nunca las citas ya pasadas
+   · los próximos rendez-vous ; los valores marcados ☑, del más reciente al más antiguo */
+function _esEsCita(ev){ return /^\s*cita\b/i.test(String(ev.title || ev.titre || '')) || String(ev.type || '').toLowerCase() === 'cita'; }
+function _esCitas(d){
+  const hoy = _esHoy(), out = [];
+  (d.events || []).forEach(e => { if (e && e.date && e.date >= hoy && _esEsCita(e)) out.push({ fecha: e.date, texto: String(e.title || e.titre || '').replace(/^\s*cita\s*:?\s*/i, ''), ev: e }); });
+  (Array.isArray(d.citas) ? d.citas : []).forEach(c => { const f = c && (c.fecha || c.date); if (f && f >= hoy) out.push({ fecha: f, texto: c.titulo || c.title || c.motivo || c.servicio || c.descripcion || '' }); });
+  return out.sort((a, b) => a.fecha < b.fecha ? -1 : 1);
+}
+/* los abandonados o suspendidos del año, con su razón — de la ficha de la especialidad, una vez por principio */
+function _esAbandonos(d, rx, y0){
+  const C = _esCfg(), ab = (C.estados_abandono || []).map(x => String(x).toLowerCase()), vis = {}, out = [];
+  (d.medicaments || []).filter(m => m && rx && rx.test(String(m.nombre || m.nom || '') + ' ' + String((MF.principioDe && MF.principioDe(m.nombre || m.nom || '')) || '')))
+    .filter(m => ab.indexOf(String(m.estado || m.statut || '').toLowerCase()) >= 0 && _esMedFecha(m, 'hasta', 'date_fin', 'fin') >= y0)
+    .sort((a, b) => _esMedFecha(b, 'hasta', 'date_fin', 'fin') < _esMedFecha(a, 'hasta', 'date_fin', 'fin') ? -1 : 1)
+    .forEach(m => { const n = m.nombre || m.nom || '', k = (MF.principioDe && MF.principioDe(n)) || n.toUpperCase(); if (vis[k]) return; vis[k] = 1;
+      const u = MF.medicamentosUnicos ? MF.medicamentosUnicos([m])[0] : m;
+      out.push({ nombre: (u && (u._principio || u.nombre)) || n, fecha: _esMedFecha(m, 'hasta', 'date_fin', 'fin'), motivo: m.motif_suspension || m.motivo || m.motif || '' }); });
+  return out;
+}
+function _esNoImprimir(){ const p = _DATOS && _DATOS.preferencias && _DATOS.preferencias.especialidades; return ((p && p[_ESP_ID]) || {}).no_imprimir || []; }
+function esImpParam(k, si){
+  if (!_DATOS) return;
+  const P = _DATOS.preferencias = _DATOS.preferencias || {}, E = P.especialidades = P.especialidades || {}, X = E[_ESP_ID] = E[_ESP_ID] || {};
+  const L = (X.no_imprimir || []).filter(x => x !== k); if (!si) L.push(k);
+  X.no_imprimir = L; X.fecha = _esHoy();
+  try { MF.tocado(); } catch (e) {}
+}
+function esImprime(){
+  if (!_ES || !window.SF_COMENTARIO_IA) return;
+  const R = _ES, C = _esCfg(), I = C.impresion || {}, F = R.esp.ficha || {}, d = _DATOS, hoy = _esHoy(), anio = hoy.slice(0, 4), y0 = anio + '-01-01';
+  const pa = MF.paciente() || {}, sip = pa.sip || (d && (d.sip || (d.paciente || {}).sip)) || '';
+  const fins = (C.estados_fin || []).map(x => String(x).toLowerCase()), terminado = m => fins.indexOf(String(m.estado || m.statut || '').toLowerCase()) >= 0;
+  const e = _esEsc, sub = t => '<h2>' + e(t) + '</h2>', fila = (a, b, c) => '<tr><td class="f">' + e(a) + '</td><td>' + b + '</td><td class="d">' + (c || '') + '</td></tr>';
+  let h = '<p class="banda">' + e(R.banda) + '</p>';
+  /* los próximos rendez-vous */
+  const citas = _esCitas(d);
+  if (citas.length) h += sub(txe('es_citas_tit')) + '<table>' + citas.map(c => fila(_esF(c.fecha), '<b>' + e(c.texto) + '</b>', '')).join('') + '</table>';
+  /* desde la última consulta — solo el año en curso, sin citas pasadas */
+  h += sub(txe('es_desde_tit') + ' — ' + (R.ult ? txe('es_desde_sub', { f: _esF(R.ult) }) : txe('es_desde_sub_sin', { m: C.meses_sin_visita })) + ' · ' + txe('es_imp_anio', { a: anio }));
+  const enAnio = x => x.ev.date >= y0 && !_esEsCita(x.ev);
+  const urg = R.desde_urg.filter(enAnio), otras = {};
+  (R.desp || []).filter(x => !x.esp.orden && enAnio(x)).forEach(x => { otras[x.esp.id] = otras[x.esp.id] || { e: x.esp, n: 0 }; otras[x.esp.id].n++; });
+  const noImp = _esNoImprimir();
+  const fuera = R.fuera.filter(x => noImp.indexOf(x.k) < 0).sort((a, b) => a.f < b.f ? 1 : -1);
+  const nuevos = R.nuevos.filter(m => !terminado(m));
+  let dd = '';
+  if (urg.length) dd += '<tr><th colspan="3">' + e(txe('es_desde_urg')) + '</th></tr>' + urg.map(x => fila(_esF(x.ev.date), e(_esNom(x.esp) + ' · ' + (x.ev.title || x.ev.titre || '')), '')).join('');
+  if (Object.keys(otras).length) dd += '<tr><th colspan="3">' + e(txe('es_desde_otras')) + '</th></tr><tr><td colspan="3">' + Object.values(otras).sort((a, c) => c.n - a.n).map(o => e(_esNom(o.e) + ' ' + o.n)).join(' · ') + '</td></tr>';
+  if (fuera.length) dd += '<tr><th colspan="3">' + e(txe('es_desde_fuera')) + '</th></tr>' + fuera.map(x => { const L = _esEtiq(x.k); return fila(_esF(x.f), e(L[0]), '<b class="fuera">' + e(x.v + ' ' + L[1]) + '</b> <span class="n">(' + e(_esRango(x.n)) + ')</span>'); }).join('');
+  if (nuevos.length) dd += '<tr><th colspan="3">' + e(txe('es_desde_nuevos')) + '</th></tr>' + nuevos.map(m => fila(_esF(_esMedFecha(m, 'desde', 'date_debut', 'date')), '<b>' + e(m._principio || m.nombre || '') + '</b> ' + e(m.dosis || ''), '')).join('');
+  h += dd ? '<table>' + dd + '</table>' : '<p class="nada">' + e(txe('es_desde_nada')) + '</p>';
+  /* los valores marcados, del más reciente al más antiguo */
+  const vals = (F.parametros || []).filter(p => R.S[p.k] && noImp.indexOf(p.k) < 0).map(p => ({ p: p, s: R.S[p.k] })).sort((a, b) => a.s[a.s.length - 1][0] < b.s[b.s.length - 1][0] ? 1 : -1);
+  if (vals.length) {
+    h += sub(txe('es_param_tit'));
+    h += '<table class="valores">' + vals.map(o => { const s = o.s, p = o.p, u = s[s.length - 1], a = s.length > 1 ? s[s.length - 2] : null, L = _esEtiq(p.k);
+      return '<tr><td class="f">' + e(_esF(u[0])) + '</td><td>' + e(L[0]) + '</td><td class="v' + (_esFuera(u[1], p.normal) ? ' fuera' : '') + '">' + e(u[1] + ' ' + L[1]) + '</td><td class="n">' + e(a ? txe('es_tip_antes', { v: a[1], f: _esF(a[0]) }) : '') + '</td><td class="n">' + e(p.normal ? _esRango(p.normal) : '') + '</td><td>' + _esCurvita(s, I.acento) + '</td></tr>'; }).join('') + '</table>';
+  }
+  /* los tratamientos : en curso ; abandonados del año con su razón ; nunca los terminados */
+  let rx = null; try { rx = F.medicamentos ? new RegExp(F.medicamentos, 'i') : null; } catch (x) {}
+  const ab = _esAbandonos(d, rx, y0);
+  let tt = '';
+  if (R.TR.curso.length) tt += '<tr><th colspan="3">' + e(txe('es_trat_curso')) + '</th></tr>' + R.TR.curso.map(x => fila('', '<b>' + e(x.m._principio || x.m.nombre || '') + '</b> ' + e(x.m.dosis || '') + (x.cron ? ' · ' + e(txe('es_trat_cronico')) : ''), e(x.caducado ? txe('es_trat_caducado', { f: _esF(x.caducado) }) : (x.hasta ? txe('es_trat_hasta', { f: _esF(x.hasta) }) : '')))).join('');
+  if (ab.length) tt += '<tr><th colspan="3">' + e(txe('es_abandonos', { a: anio })) + '</th></tr>' + ab.map(x => fila(_esF(x.fecha), '<b>' + e(x.nombre) + '</b>', e(x.motivo))).join('');
+  if (tt) h += sub(txe('es_trat_tit')) + '<table>' + tt + '</table>';
+  /* las preguntas ; lo que la IA ha notado (sin sus preguntas : las retenidas están en la lista) */
+  const memo = _esMemo(), pq = _esPregLee();
+  if (pq && pq.texto && pq.texto.trim()) h += sub(txe('es_preg_tit')) + '<div class="preg">' + e(pq.texto).replace(/\n/g, '<br>') + '</div>';
+  if (memo && memo.texto) h += sub('🧠 ' + txe('es_ia_ve')) + SF_COMENTARIO_IA.formatea(_esSinPreguntas(memo.texto)) + '<p class="n">' + e(txe('es_ia_nota', { f: memo.fecha || '' })) + (memo.enviado ? ' · ' + e(SF_COMENTARIO_IA.tx('envia')) + ' ' + e(memo.enviado) : '') + '</p>';
+  /* las consultas del año, sin las citas */
+  const mias = R.mias.filter(enAnio);
+  if (mias.length) h += sub(txe('es_consultas_anio', { a: anio }) + ' (' + mias.length + ')') + '<table>' + mias.map(x => fila(_esF(x.ev.date), e(x.ev.title || x.ev.titre || ''), e(MF.procedencia ? MF.procedencia(x.ev) : ''))).join('') + '</table>';
+  /* la página en blanco (P-H : « dépend de la longueur du texte ») : ningún salto forzado, nada que empuje un trozo a una hoja nueva */
+  const css = 'h2{font-size:11pt;color:' + I.acento + ';margin:12pt 0 4pt;border-bottom:.5pt solid ' + I.linea + ';padding-bottom:2pt;break-after:auto;page-break-after:auto}'
+    + 'table{width:100%;border-collapse:collapse;font-size:9.5pt}td,th{padding:2pt 4pt;vertical-align:top;text-align:left;border-bottom:.3pt solid ' + I.linea + '}'
+    + 'th{color:' + I.suave + ';font-weight:600;font-size:8.5pt;text-transform:uppercase;letter-spacing:.5pt;border-bottom:0;padding-top:6pt}'
+    + 'td.f{white-space:nowrap;color:' + I.suave + ';width:62pt}td.d{color:' + I.suave + ';font-size:8.5pt}.n{color:' + I.suave + ';font-size:8.5pt}'
+    + '.valores td.v{font-weight:700;white-space:nowrap}.fuera{color:' + I.fuera + '}.banda{color:' + I.suave + ';margin:0 0 6pt}.nada{color:' + I.suave + ';font-style:italic}'
+    + '.es-svg polyline{fill:none;stroke-width:1.2}.preg{border:.5pt solid ' + I.linea + ';border-radius:3pt;padding:5pt 7pt;font-size:10pt}'
+    + 'p,li,h1,h2,div,tr,table{break-inside:auto!important;page-break-inside:auto!important}h1{break-after:auto!important}.sf-ia-dos{display:block!important}.sf-ia-dos>div{margin-bottom:6pt}'
+    + '.pie:empty{display:none!important}body>*:last-child{margin-bottom:0!important;padding-bottom:0!important}';
+  SF_COMENTARIO_IA.preguntaImpresion(f => SF_COMENTARIO_IA.imprime({ titulo: txe('es_hoja_tit', { e: R.nombre.trim() }), paciente: f.nombre ? (pa.etiqueta || '') : '', sip: f.sip ? sip : '',
+    cuerpo: h, css: css, colores: I }), { haySip: !!sip });
+}
+
+/* ── la altura : en pantalla ancha, cada carta con su propio ascensor, la página no se desplaza ── */
+function _esAltura(){
+  const g = document.getElementById('es-grid'); if (!g) return;
+  const tres = getComputedStyle(g).gridTemplateColumns.split(' ').filter(Boolean).length >= 3;
+  g.querySelectorAll('.es-cuerpo').forEach(c => { c.style.maxHeight = ''; });
+  if (!tres) return;
+  const alto = Math.max(260, window.innerHeight - g.getBoundingClientRect().top - 30);
+  g.querySelectorAll(':scope > .es-carta > .es-cuerpo').forEach(c => { c.style.maxHeight = (alto - 40) + 'px'; });
+  /* una columna de varias cartas : lo que queda, repartido entre sus cuerpos que se desplazan */
+  g.querySelectorAll(':scope > .es-col').forEach(col => {
+    const cs = Array.from(col.querySelectorAll('.es-cuerpo')); if (!cs.length) return;
+    const fijo = col.offsetHeight - cs.reduce((s, c) => s + c.offsetHeight, 0);
+    const cada = Math.max(80, Math.round((alto - fijo) / cs.length));
+    cs.forEach(c => { if (c.scrollHeight > cada) c.style.maxHeight = cada + 'px'; });
+  });
+}
+window.addEventListener('resize', function(){ clearTimeout(window._esAT); window._esAT = setTimeout(_esAltura, 120); });
+
+/* el nombre y la versión, en la infobulle */
+MF.tip(document.getElementById('titulo'), 'v' + VERSION_PROGRAMA);
+if (MF.ptips) MF.ptips();   /* las burbujas data-ptip de la página : la de la casa */
+
+/* ══ ÉTAPE 2 (P-H, 05/11/2026) — EL COMENTARIO DE LA IA « DESDE LA ÚLTIMA CONSULTA » ══
+   Lo que sale hacia la IA, y nada más : sexo, edad, los diagnósticos si se marca la casilla
+   (SF_COMENTARIO_IA.lineaContexto), los TÍTULOS y fechas de los acontecimientos desde la última
+   consulta, los nombres de los medicamentos, las series de la ficha. Nunca un nombre, un SIP,
+   una historia, una procedencia ni un texto de informe. El prompt vive en su fichero :
+   comun/prompt-comentario-especialidad.js. El comentario se guarda en este navegador. */
+function _esMat(){ try { return (MF.matricula && MF.matricula()) || (MF.paciente() || {}).matricula || ''; } catch (e) { return ''; } }
+function _esClaveMemo(){ return 'esp:' + _ESP_ID; }
+function _esMemo(){ return (window.SF_COMENTARIO_IA && SF_COMENTARIO_IA.lee(_esMat(), _esClaveMemo())) || null; }
+/* lo que se manda, en texto — sirve también de huella : si cambia, el comentario ya no corresponde */
+function _esEntrada(R){
+  const P = window.SF_PROMPT_COMENTARIO_ESPECIALIDAD || {}, E = P.etiquetas || {};
+  const ev = R.desde_urg.map(x => x.ev.date + ' · ' + _esNomEs(x.esp) + ' · ' + String(x.ev.title || x.ev.titre || '').slice(0, 140))
+    .concat(Object.values(R.desde_otras).map(o => (E.otras || 'otras consultas') + ' · ' + _esNomEs(o.e) + ' : ' + o.n));
+  const med = R.TR.curso.map(x => (E.en_curso || 'en curso') + ' : ' + (x.m._principio || x.m.nombre || '') + (x.cron ? ' (' + (E.cronico || 'crónico') + ')' : ''))
+    .concat(R.nuevos.map(m => (E.nuevo || 'nuevo') + ' ' + _esMedFecha(m, 'desde', 'date_debut', 'date') + ' : ' + (m._principio || m.nombre || '')))
+    .concat(R.parados.map(m => (E.parado || 'terminado') + ' ' + _esMedFecha(m, 'hasta', 'date_fin', 'fin') + ' : ' + (m._principio || m.nombre || '')));
+  const F = R.esp.ficha || {}, max = P.puntos_max || 10;
+  const series = (F.parametros || []).filter(p => R.S[p.k]).map(p => { const L = _esEtiqEs(p.k);
+    return { etiqueta: L[0], unidad: L[1], ref: p.normal || null, desc: '', puntos: R.S[p.k].slice(-max).map(x => ({ x: x[0], y: x[1] })) }; });
+  return { acontecimientos: ev.join('\n') || (E.nada || '—'), medicacion: med.join('\n') || (E.nada || '—'), series: series };
+}
+/* las etiquetas EN ESPAÑOL para el prompt (la lengua de la respuesta la dice {lengua}) */
+function _esNomEs(e){ const t = (e && e.etiqueta) || {}; return t.es || (e && e.id) || ''; }
+function _esEtiqEs(k){ const P = ((window.SF_SINONIMOS_PARAMETROS || {}).parametros || {})[k] || {}; return [((P.etiqueta || {}).es) || k, P.unidad || '']; }
+function _esHuella(R){ try { const s = JSON.stringify([R.desde, _esEntrada(R)]); let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return String(h); } catch (e) { return ''; } }
+async function esPideIA(){
+  if (!_ES) return;
+  if (!(MF.claveIA && MF.claveIA())) { MF.pideClave(function(){ _esIA(); }); return; }
+  const b = document.getElementById('es-ia-btn'); if (b) { b.disabled = true; b.textContent = '⏳ ' + SF_COMENTARIO_IA.tx('consultando'); }
+  const P = window.SF_PROMPT_COMENTARIO_ESPECIALIDAD, x = _esEntrada(_ES), E = (P && P.etiquetas) || {};
+  try {
+    const r = await SF_COMENTARIO_IA.pide(_DATOS, x.series, { prompt: P, huecos: { especialidad: _esNomEs(_ES.esp),
+      desde: _ES.ult ? (E.desde || 'desde el {f}').replace('{f}', _ES.ult) : (E.sin_consulta || 'sin consulta previa : los últimos {m} meses').replace('{m}', _esCfg().meses_sin_visita),
+      acontecimientos: x.acontecimientos, medicacion: x.medicacion } });
+    SF_COMENTARIO_IA.guarda(_esMat(), _esClaveMemo(), { texto: r.texto, modelo: r.modelo, fecha: r.fecha, huella: _ES.huella, enviado: SF_COMENTARIO_IA.resumen(_DATOS) });
+    _esIA(); _esSug();
+  } catch (err) {
+    if (b) { b.disabled = false; b.textContent = '🧠 ' + txe('es_ia_btn'); }
+    const z = document.getElementById('es-ia-btn');
+    if (z && z.parentNode) { const a = document.createElement('div'); a.className = 'es-ia-aviso'; a.textContent = '⚠ ' + SF_COMENTARIO_IA.tx('error', { msg: err.message }); z.parentNode.appendChild(a); }
+  }
+}
+/* las preguntas que la IA sugiere : lo que sigue al marcador, una por línea */
+function _esSugeridas(texto){
+  const M = SF_COMENTARIO_IA.tx('marcador'), i = String(texto || '').indexOf(M); if (i < 0) return [];
+  return texto.slice(i + M.length).split('\n').map(l => l.replace(/^\s*(\*\*|[-*•]|\d+[.)])\s*/, '').replace(/\*\*/g, '').trim()).filter(l => l.length > 3);
+}
+
+/* ── PREPARAR LA CONSULTA (P-H, 05/11/2026, 18:36 : « pourquoi un cadre preguntas alors qu'il y a les questions suggérées par l'IA ? repenser ») ──
+   Una sola carta : lo que la IA nota (sin sus preguntas) ; UNA sola lista de preguntas, la del usuario ;
+   las sugeridas por la IA debajo, cada una con su ➕ — la que se toma desaparece de las sugeridas. */
+function _esSinPreguntas(texto){ const M = SF_COMENTARIO_IA.tx('marcador'), i = String(texto || '').indexOf(M); return (i < 0 ? String(texto || '') : texto.slice(0, i)).replace(/\**\s*$/, '').trim(); }
+function _esPrep(){
+  const z = document.getElementById('es-prep'); if (!z) return;
+  document.getElementById('es-h-prep').textContent = '🧠 ' + txe('es_prep_tit');
+  z.innerHTML = '<div id="es-prep-ia"></div><div id="es-prep-preg"></div>';
+  _esIA(); _esPreguntas();
+}
+function _esIA(){
+  const z = document.getElementById('es-prep-ia'); if (!z || !window.SF_COMENTARIO_IA || !_ES) return;
+  const memo = _esMemo(), clave = MF.claveIA ? MF.claveIA() : '', cambio = memo && memo.huella && memo.huella !== _ES.huella;
+  let h = '<div class="es-sub">' + _esEsc(txe('es_ia_ve')) + '</div>';
+  if (memo && memo.texto) {
+    h += '<div class="es-ia-txt">' + SF_COMENTARIO_IA.formatea(_esSinPreguntas(memo.texto)) + '</div><div class="es-ia-pie"><span>' + _esEsc(txe('es_ia_nota', { f: memo.fecha || '' })) + '</span></div>';
+    if (cambio) h += '<div class="es-ia-aviso">⚠ ' + _esEsc(txe('es_ia_aviso')) + '</div>';
+  }
+  if (!clave) h += '<div class="es-ia-ctx">💡 ' + _esEsc(MF.textoClave ? MF.textoClave('invita') : '') + ' <a href="#" onclick="MF.pideClave(function(){ _esIA(); });return false;" style="color:var(--accent)">🔑 ' + _esEsc(MF.textoClave ? MF.textoClave('poner') : '') + '</a></div>';
+  else if (!memo || !memo.texto || cambio)
+    h += '<div class="es-ia-ctx">' + SF_COMENTARIO_IA.lineaContexto(_DATOS) + '<div style="margin-top:3px">' + _esEsc(txe('es_ia_envia_mas')) + '</div></div>'
+       + '<div class="es-ia-pie"><button id="es-ia-btn" class="es-btn" onclick="esPideIA()">' + (memo && memo.texto ? '🔄 ' + _esEsc(txe('es_ia_act')) : '🧠 ' + _esEsc(txe('es_ia_btn'))) + '</button><span>' + _esEsc(SF_COMENTARIO_IA.tx('se_guarda')) + '</span></div>';
+  z.innerHTML = h;
+}
+function _esPregLee(){ const q = _DATOS && _DATOS.preguntas_consulta; return (q && q[_ESP_ID]) || null; }
+function _esPreguntas(){
+  const z = document.getElementById('es-prep-preg'); if (!z) return;
+  const q = _esPregLee();
+  z.innerHTML = '<div class="es-sub" style="margin-top:10px">' + _esEsc(txe('es_preg_tit')) + '</div>'
+    + '<textarea class="es-preg" id="es-preg" placeholder="' + _esEsc(txe('es_preg_ph')) + '" data-ptip="' + _esEsc(txe('es_tip_preg')) + '" oninput="esPregGuarda()">' + _esEsc((q && q.texto) || '') + '</textarea>'
+    + '<div class="es-preg-pie"><span id="es-preg-fecha">' + (q && q.fecha ? _esEsc(txe('es_preg_guardado', { f: _esF(q.fecha) })) : '') + '</span></div><div id="es-sug"></div>';
+  _esSug();
+}
+/* las sugeridas que aún no están en la lista */
+let _esSugL = [];
+function _esSug(){
+  const z = document.getElementById('es-sug'), el = document.getElementById('es-preg'), memo = _esMemo(); if (!z) return;
+  const ya = el ? el.value : '';
+  _esSugL = memo && memo.texto ? _esSugeridas(memo.texto).filter(l => ya.indexOf(l) < 0) : [];
+  z.innerHTML = _esSugL.length ? '<div class="es-sub" style="margin-top:8px">' + _esEsc(txe('es_sug_tit')) + (_esSugL.length > 1 ? ' <button class="es-btn es-mini" onclick="esPregToma(-1)" data-ptip="' + _esEsc(txe('es_tip_todas')) + '">' + _esEsc(txe('es_sug_todas')) + '</button>' : '') + '</div>'
+    + _esSugL.map((l, i) => '<div class="es-sug"><button class="es-btn es-mini" onclick="esPregToma(' + i + ')" data-ptip="' + _esEsc(txe('es_tip_toma')) + '">➕</button><span>' + _esEsc(l) + '</span></div>').join('') : '';
+}
+function esPregToma(i){
+  const el = document.getElementById('es-preg'); if (!el) return;
+  const L = i < 0 ? _esSugL.slice() : [_esSugL[i]].filter(Boolean); if (!L.length) return;
+  el.value = (el.value.trim() ? el.value.replace(/\s*$/, '') + '\n' : '') + L.map(l => '• ' + l).join('\n');
+  esPregGuarda(true); _esSug();
+}
+let _esPregT = null;
+function esPregGuarda(ya){
+  clearTimeout(_esPregT);
+  const hazlo = function(){
+    const el = document.getElementById('es-preg'); if (!el || !_DATOS) return;
+    _DATOS.preguntas_consulta = _DATOS.preguntas_consulta || {};
+    _DATOS.preguntas_consulta[_ESP_ID] = { texto: el.value, fecha: _esHoy() };
+    try { MF.tocado(); } catch (e) {}
+    const f = document.getElementById('es-preg-fecha'); if (f) f.textContent = txe('es_preg_guardado', { f: _esF(_esHoy()) });
+  };
+  if (ya === true) hazlo(); else _esPregT = setTimeout(function(){ hazlo(); _esSug(); }, 600);
+}
+/* ── los pliegues de los tratamientos : en curso abierto, anteriores cerrado (P-H, 05/11/2026) ── */
+const _esPl = { curso: true, ant: false };
+function _esPliegue(id, titulo, cuerpo){
+  const ab = !!_esPl[id];
+  return '<div class="es-pleg' + (ab ? '' : ' cerrado') + '" data-pl="' + id + '"><div class="es-pleg-cab" onclick="esPlegar(this)"><span class="flecha">' + (ab ? '▾' : '▸') + '</span>' + _esEsc(titulo) + '</div><div class="es-pleg-cuerpo">' + cuerpo + '</div></div>';
+}
+function esPlegar(cab){
+  const c = cab.parentNode, id = c.getAttribute('data-pl'), cerrar = !c.classList.contains('cerrado');
+  c.classList.toggle('cerrado', cerrar); cab.querySelector('.flecha').textContent = cerrar ? '▸' : '▾'; _esPl[id] = !cerrar;
+  if (MF.plegableTip) MF.plegableTip(cab, !cerrar);
+  _esAltura();
+}
+
+function redibuja(){ if (_DATOS) try { buildEspecialidad(); } catch (e) { console.warn(e); } }
+MF.arranca({
+  alIdioma: redibuja,
+  alPaleta: redibuja,
+  alEstilos: redibuja,
+  alCargar: function(d){
+    _DATOS = d;
+    const pa = MF.paciente();
+    document.getElementById('e-pac').textContent = pa.etiqueta || pa.matricula || '';
+    document.getElementById('aviso').style.display = 'none';
+    try { buildEspecialidad(); document.getElementById('e-est').textContent = txe('es_k_est', { n: (_ES && _ES.mias || []).length }); }
+    catch (e) {
+      const a = document.getElementById('aviso'); a.style.display = 'block';
+      a.innerHTML = '<b>' + _esEsc(txe('es_err')) + '</b><br><code>' + _esEsc(String(e.message)) + '</code>'; console.error(e);
+    }
+  },
+  alFallar: function(msg){
+    const a = document.getElementById('aviso'); a.style.display = 'block';
+    a.innerHTML = '<b>' + _esEsc(msg) + '</b><br><br><code>especialidad.html?esp=neumologia&amp;mf=APA0000&amp;carpeta=../pacientes/APA0000/</code>';
+  }
+});
+</script>
+<script src="../comun/pdfjs/pdf.min.js"></script>
+<!-- el visor de documentos, común (P-H, 06/11/2026) : después de los scripts del módulo -->
+<script src="../comun/visor-pdf.idiomas.js"></script>
+<script src="../comun/visor-pdf.js"></script>
+</body>
+</html>
