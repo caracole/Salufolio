@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.11.05-21:22:06",
+  "version": "2026.11.10-09:58:00",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -541,6 +541,27 @@ var SF_LANZADOR = {
     }
   },
   "banda_arriba": {
+    "_paleta_lista": "La lista de las paletas (P-H, 10/11/2026) : se pone justo debajo del 🌓 ; queda abierta para probar otras ; se cierra por su ✕, por un segundo toque en 🌓 o por Escape — tocar al lado NO la cierra, para poder bajar por la página y juzgar el color.",
+    "paleta_lista": {
+      "titulo": {
+        "es": "Paleta de colores",
+        "fr": "Palette de couleurs",
+        "ca": "Paleta de colors",
+        "en": "Colour palette"
+      },
+      "titulo_modulo": {
+        "es": "Paleta de este módulo",
+        "fr": "Palette de ce module",
+        "ca": "Paleta d'este mòdul",
+        "en": "This module's palette"
+      },
+      "cerrar": {
+        "es": "Cerrar",
+        "fr": "Fermer",
+        "ca": "Tancar",
+        "en": "Close"
+      }
+    },
     "_fijos": "Los cuatro elementos que el lanzador dibuja en su sitio (la abeja a la izquierda, el titulo, el paciente, el disquete) no pueden entrar en « botones »: su lugar es fijo. Pero su burbuja no tiene por que vivir en el codigo — vive aqui, como las demas. « Note-le pour tous les tooltips present et a venir » (P-H, 22/09/2026).",
     "fijos": {
       "panal": {
@@ -791,6 +812,59 @@ var SF_LANZADOR = {
   "banda_abajo": {
     "_doi": "DOI de Zenodo retirado (P-H, 15/10/2026) : las versiones publicadas en Zenodo están obsoletas y no se pueden borrar — un médico que pulsa y cae en una versión vieja se decepciona. Volverá cuando haya una versión nueva presentable.",
     "izquierda": "© 2026 Pierre-Henri Giraud · Salufolio",
+    "_versiones": "LAS VERSIONES DE LOS MODULOS (P-H, 06/11/2026) : la palabra « Salufolio » del copyright es un enlace ; abre la lista de todos los programas con su version y su fecha, la mas reciente arriba. La lista se CALCULA : la casa ya ha leido el SF_CONFIG de cada programa al arrancar ; aqui solo los textos. « palabra » = la palabra del copyright que se vuelve enlace.",
+    "versiones": {
+      "palabra": "Salufolio",
+      "burbuja": {
+        "es": "Versiones de los módulos",
+        "fr": "Versions des modules",
+        "ca": "Versions dels mòduls",
+        "en": "Module versions"
+      },
+      "titulo": {
+        "es": "Versiones de los módulos de Salufolio",
+        "fr": "Versions des modules de Salufolio",
+        "ca": "Versions dels mòduls de Salufolio",
+        "en": "Salufolio module versions"
+      },
+      "casa": {
+        "es": "Casa",
+        "fr": "Casa",
+        "ca": "Casa",
+        "en": "Casa"
+      },
+      "icono_casa": "🏠",
+      "col_modulo": {
+        "es": "Módulo",
+        "fr": "Module",
+        "ca": "Mòdul",
+        "en": "Module"
+      },
+      "col_version": {
+        "es": "Versión",
+        "fr": "Version",
+        "ca": "Versió",
+        "en": "Version"
+      },
+      "col_fecha": {
+        "es": "Fecha",
+        "fr": "Date",
+        "ca": "Data",
+        "en": "Date"
+      },
+      "sin_version": {
+        "es": "sin versión",
+        "fr": "sans version",
+        "ca": "sense versió",
+        "en": "no version"
+      },
+      "cerrar": {
+        "es": "Cerrar",
+        "fr": "Fermer",
+        "ca": "Tancar",
+        "en": "Close"
+      }
+    },
     "centro": [
       {
         "texto": "Software libre · GNU GPL v3",

@@ -37,9 +37,15 @@ body{display:flex;flex-direction:column}
 .b-b.bandera.on{opacity:1;transform:scale(1.15)}
 #banderas{align-items:center}
 #paleta{align-items:center}
-.pal-lista{position:absolute;top:34px;right:60px;z-index:9000;width:190px;
+.pal-lista{position:fixed;top:40px;left:6px;z-index:9000;width:190px;overflow-y:auto;
            background:var(--surface);border:1px solid var(--warn);border-radius:9px;
            padding:5px;box-shadow:0 8px 28px rgba(0,0,0,.6)}
+/* la cabecera de la lista : su título y la ✕ (P-H, 10/11/2026) */
+.pal-cab{display:flex;align-items:center;gap:6px;padding:2px 2px 5px 10px}
+.pal-cab span{flex:1;font-size:10.5px;color:var(--muted)}
+.pal-x{flex:0 0 auto;width:30px;height:30px;border:1px solid var(--border);border-radius:6px;
+       background:var(--surface2);color:var(--text);font-size:15px;line-height:1;cursor:pointer;padding:0}
+.pal-x:hover{border-color:var(--warn)}
 .pal-fila{display:flex;align-items:center;gap:7px;padding:7px 10px;margin-bottom:3px;
           border-radius:6px;cursor:pointer;font-size:12.5px;border:1px solid transparent;
           transition:all .15s}
@@ -50,7 +56,7 @@ body{display:flex;flex-direction:column}
 /* v13 (P-H) : cadre jaune — plus lisible sur fond sombre que le bleu */
 /* les infobulles suivent la palette : sur fond clair, l'ambre serait
    illisible — c'est la couleur du texte courant qui commande. */
-.tip{position:fixed;z-index:9999;display:none;background:var(--surface);
+.tip{position:fixed;z-index:10001;display:none;background:var(--surface);
      border:1px solid var(--warn);border-radius:8px;padding:5px 11px;
      font-size:12px;color:var(--text);box-shadow:0 5px 20px rgba(0,0,0,.45);
      pointer-events:none;white-space:nowrap;max-width:220px}
@@ -59,6 +65,15 @@ body{display:flex;flex-direction:column}
 
 #banda-abj a{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted)}
 #banda-abj a:hover{color:var(--accent)}
+/* LAS VERSIONES DE LOS MÓDULOS (P-H, 06/11/2026) — todo en variables de la paleta */
+.vm-tab{width:100%;border-collapse:collapse;font-size:13px;color:var(--text)}
+.vm-tab th{text-align:left;font-weight:600;font-size:11px;color:var(--muted);
+           text-transform:uppercase;letter-spacing:.6px;padding:3px 8px;border-bottom:1px solid var(--border)}
+.vm-tab td{padding:4px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.vm-ic{width:22px;text-align:center}
+.vm-ver{font-family:var(--mono,monospace);font-size:12px;color:var(--muted);white-space:nowrap}
+.vm-fec{color:var(--muted);white-space:nowrap}
+.vm-sin{color:var(--warn)}
 
 #marco-mod{width:100%;height:100%;border:0;display:none;background:var(--bg)}
 /* la ayuda en ventana, por encima del módulo (P-H, 05/11/2026 : « comment revenir dans le module ? ») */
@@ -263,8 +278,7 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
                 style="border-color:var(--warn);color:var(--warn)">➕ Nuevo</button>
         <button onclick="abreSuprime()" class="bmini" id="b-suprime" disabled
                 style="border-color:var(--danger);color:var(--danger);opacity:.45">🗑 Suprimir</button>
-        <button onclick="abreSuelto()" class="bmini" id="b-suelto"
-                title="abrir un fichero que esté en otro sitio">📂</button>
+        <button onclick="abreSuelto()" class="bmini" id="b-suelto">📂</button>
       </div>
 
       <div id="caja-expedientes" style="display:none;margin-top:12px">
@@ -488,19 +502,70 @@ function pintaBandas(){
   /* v11 (P-H) : « fichero » se montre dans l'écran, « enlace » s'ouvre
      dehors. Zenodo et les sites sérieux interdisent l'iframe, d'où le
      PDF gardé en local — et le lien vers la source à côté. */
-  z.innerHTML='<span>'+(ab.izquierda||'')+'</span><span class="b-sep"></span>'
+  z.innerHTML='<span>'+pieIzquierda(ab)+'</span><span class="b-sep"></span>'
     + ((ab.centro||[]).map(function(c,i){
         /* cada enlace lleva su marca, para que la visita lo encuentre
            (P-H, 19/09) : la sala « la banda de abajo » los senala */
         var m = c.marca ? ' data-pie="'+c.marca+'"' : '';
-        if(c.fichero) return '<a href="#" data-doc="'+i+'"'+m+' title="'+(c.titulo||'')+'">'+c.texto+'</a>';
+        if(c.fichero) return '<a href="#" data-doc="'+i+'"'+m+'>'+c.texto+'</a>';
         return c.enlace? '<a href="'+c.enlace+'"'+m+' target="_blank">'+c.texto+'</a>'
                        : '<span'+m+'>'+c.texto+'</span>';
       }).join('<span> · </span>'))
     + '<span class="b-sep"></span><span>v'+(T.version||'')+'</span>';
   z.querySelectorAll('[data-doc]').forEach(function(e){
     e.onclick=function(ev){ ev.preventDefault(); abreDoc(+e.dataset.doc); };
+    ponTip(e, t(((ab.centro||[])[+e.dataset.doc]||{}).titulo));   /* burbuja maison, no title= (P-H, 06/11/2026) */
   });
+  var vl=document.getElementById('b-versiones');
+  if(vl) vl.onclick=function(ev){ ev.preventDefault(); abreVersiones(); };
+  ponTipsFijos();
+}
+
+/* ══ LAS VERSIONES DE LOS MÓDULOS (P-H, 06/11/2026) ══
+   « Quelque part, un click nous affiche toute la liste des modules avec date
+     et version, comme ça on sait avec précision où on en est. »
+   La palabra « Salufolio » del copyright se vuelve un enlace. La lista se
+   CALCULA : la casa ya ha leído el SF_CONFIG de cada programa al arrancar
+   (MODULOS) ; nada que tener al día a mano. Los textos, en casa.js
+   (« banda_abajo.versiones »). */
+function pieIzquierda(ab){
+  var txt=String(ab.izquierda||''), V=ab.versiones||{}, w=V.palabra||'';
+  var i=w ? txt.lastIndexOf(w) : -1;
+  if(i<0) return esc(txt);
+  return esc(txt.slice(0,i))+'<a href="#" id="b-versiones">'+esc(w)+'</a>'+esc(txt.slice(i+w.length));
+}
+/* las burbujas que dependen de la lengua y no se vuelven a pintar solas */
+function ponTipsFijos(){
+  var V=(T && T.banda_abajo && T.banda_abajo.versiones)||{};
+  var vl=document.getElementById('b-versiones'); if(vl) ponTip(vl, t(V.burbuja));
+  var bs=document.getElementById('b-suelto');    if(bs) ponTip(bs, tx('suelto'));
+}
+function fechaDeVersion(v){
+  var m=/^(\d{4})\.(\d{2})\.(\d{2})-(\d{2}):(\d{2})/.exec(v||'');
+  if(!m) return '';
+  var d=new Date(+m[1], m[2]-1, +m[3], +m[4], +m[5]);
+  var loc={es:'es-ES', fr:'fr-FR', ca:'ca-ES', en:'en-GB'}[LANG]||LANG;
+  try{ return d.toLocaleString(loc,{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+  catch(e){ return d.toLocaleString(); }
+}
+function abreVersiones(){
+  var V=(T && T.banda_abajo && T.banda_abajo.versiones)||{};
+  var filas=[{ icono:V.icono_casa||'', nombre:t(V.casa), version:(T&&T.version)||'' }]
+    .concat(MODULOS.map(function(m){ return { icono:m.icono||'', nombre:t(m.nombre)||m.id, version:m.version||'' }; }));
+  /* la más reciente arriba ; sin versión, al final */
+  filas.sort(function(a,b){ return a.version===b.version ? 0 : (!a.version ? 1 : (!b.version ? -1 : (a.version < b.version ? 1 : -1))); });
+  var cuerpo='<div style="overflow-x:auto"><table class="vm-tab"><thead><tr>'
+    + '<th></th><th>'+esc(t(V.col_modulo))+'</th><th>'+esc(t(V.col_version))+'</th><th>'+esc(t(V.col_fecha))+'</th>'
+    + '</tr></thead><tbody>'
+    + filas.map(function(f){
+        return '<tr><td class="vm-ic">'+f.icono+'</td><td>'+esc(f.nombre)+'</td>'
+          + (f.version
+             ? '<td class="vm-ver">v'+esc(f.version)+'</td><td class="vm-fec">'+esc(fechaDeVersion(f.version))+'</td>'
+             : '<td class="vm-ver vm-sin">?</td><td class="vm-fec vm-sin">'+esc(t(V.sin_version))+'</td>')
+          + '</tr>';
+      }).join('')
+    + '</tbody></table></div>';
+  ventanaCasa(esc(t(V.titulo)), cuerpo, '', null, { movil:true, cruz:t(V.cerrar), aire_pie:0 });
 }
 
 /* ── un document dans l'écran ── */
@@ -865,8 +930,7 @@ function pideOpinion(etapa, total, e, terminada, nota, salas){
     + '<div class="op-lin">' + tx('op_nota') + '</div>'
     + '<div class="op-caras" id="op-caras">'
     + CARAS.map(function(c){
-        return '<button class="op-c" data-n="' + c.n + '" title="'
-             + tx('op_c_' + c.n) + '">' + c.cara + '</button>'; }).join('')
+        return '<button class="op-c" data-n="' + c.n + '">' + c.cara + '</button>'; }).join('')
     + '</div>'
 
     /* ══ EL CUESTIONARIO, SEGÚN EL HUMOR (Mattieu, 18/09/2026) ══
@@ -922,6 +986,9 @@ function pideOpinion(etapa, total, e, terminada, nota, salas){
   var ADIOS = false;
   var v = ventanaCasa('💬 ' + titulo, cuerpo, pie,
     function(){ if(!ADIOS && !terminada) SF_TOUR_MOTOR.sigue(); });
+
+  /* burbuja maison sobre cada cara, no title= (P-H, 06/11/2026) */
+  v.caja.querySelectorAll('.op-c').forEach(function(b){ ponTip(b, tx('op_c_' + b.dataset.n)); });
 
   var elegido = { perfil:yaSePerfil, nota:0 };
 
@@ -2516,6 +2583,7 @@ async function suprimePaciente(mat, raiz, dir, archivar){
 
 window.addEventListener('beforeunload', function(e){ if(SUCIO){ e.preventDefault(); e.returnValue=''; } });
 document.addEventListener('keydown', function(e){
+  if(e.key==='Escape' && paletaAbierta()){ cierraPaleta(); return; }  /* Échap cierra primero la lista de paletas */
   if(e.key==='Escape' && ayudaAbierta()){ cierraAyuda(); return; }   /* Échap cierra primero la ayuda */
   if(e.key==='Escape' && ACTUAL) volverInicio();
 });
@@ -2769,7 +2837,7 @@ function toggleBanderas(){
 }
 function ponIdioma(l){
   LANG=l;
-  pintaBanderas(); pintaPerfiles(); pintaModulos(); traduceFormulario();
+  pintaBanderas(); pintaPerfiles(); pintaModulos(); traduceFormulario(); ponTipsFijos();
   if(DATOS) ponEstado('');        /* le bandeau se retrace dans la nouvelle langue */
   /* le titre du programme ouvert se retraduit aussi */
   if(ACTUAL && ACTUAL.nombre){
@@ -2803,6 +2871,7 @@ var TX={
 };
 /* ══ LOS TEXTOS DEL GUARDADO (P-H, 01/10/2026) — en la tabla, no en el código ══ */
 Object.assign(TX.es, {
+  suelto:'Abrir un expediente que está en otro sitio',
   suprimir:'🗑 Suprimir',
   sup_titulo:'Suprimir a {nombre}',
   sup_cuerpo:'Se va a suprimir la carpeta <b>{mat}</b> entera : {n} ficheros, {o}. <b>No se puede deshacer.</b>',
@@ -2826,6 +2895,7 @@ Object.assign(TX.es, {
   sf_fallo:'No se ha podido guardar: {msg}. Sus cambios siguen en la memoria de trabajo.',
   sf_varios:'⚠ Hay {n} ficheros de expediente en la carpeta del paciente: solo debería haber uno.' });
 Object.assign(TX.fr, {
+  suelto:'Ouvrir un dossier rangé ailleurs',
   suprimir:'🗑 Supprimer',
   sup_titulo:'Supprimer {nombre}',
   sup_cuerpo:'Le dossier <b>{mat}</b> va être supprimé en entier : {n} fichiers, {o}. <b>Impossible de revenir en arrière.</b>',
@@ -2849,6 +2919,7 @@ Object.assign(TX.fr, {
   sf_fallo:'Enregistrement impossible : {msg}. Vos modifications restent dans la mémoire de travail.',
   sf_varios:'⚠ Il y a {n} fichiers d’expediente dans le dossier du patient : il ne devrait y en avoir qu’un.' });
 Object.assign(TX.ca, {
+  suelto:'Obrir un expedient que està en un altre lloc',
   suprimir:'🗑 Suprimir',
   sup_titulo:'Suprimir {nombre}',
   sup_cuerpo:'Se suprimirà la carpeta <b>{mat}</b> sencera: {n} fitxers, {o}. <b>No es pot desfer.</b>',
@@ -2872,6 +2943,7 @@ Object.assign(TX.ca, {
   sf_fallo:'No s’ha pogut desar: {msg}. Els canvis resten a la memòria de treball.',
   sf_varios:'⚠ Hi ha {n} fitxers d’expedient a la carpeta del pacient: només n’hi hauria d’haver un.' });
 Object.assign(TX.en, {
+  suelto:'Open a record stored elsewhere',
   suprimir:'🗑 Delete',
   sup_titulo:'Delete {nombre}',
   sup_cuerpo:'The folder <b>{mat}</b> will be deleted entirely: {n} files, {o}. <b>This cannot be undone.</b>',
@@ -3110,8 +3182,10 @@ function _palPermitida(p){
 function pintaPaleta(){
   var z=document.getElementById('paleta');
   if(!z) return;
+  var PL=(T && T.banda_arriba && T.banda_arriba.paleta_lista)||{};
   z.innerHTML='<div class="pal-lista">'
-    + (ACTUAL? '<div style="font-size:10.5px;color:var(--muted);padding:3px 10px 5px">Paleta de este módulo</div>':'')
+    + '<div class="pal-cab"><span>'+esc(t(ACTUAL? PL.titulo_modulo : PL.titulo))+'</span>'
+    +   '<button class="pal-x" id="pal-x">✕</button></div>'
     + PALETAS.filter(_palPermitida).map(function(p){
         var actual = (ACTUAL && PAL_MOD)? PAL_MOD : PALETA;
         return '<div class="pal-fila'+(p.id===actual?' on':'')+'" data-p="'+p.id+'" '
@@ -3126,12 +3200,34 @@ function pintaPaleta(){
   z.querySelectorAll('[data-p]').forEach(function(e){
     e.onclick=function(ev){ ev.stopPropagation(); aplicaPaleta(e.dataset.p); };
   });
+  /* la lista queda abierta para probar otras ; se cierra por su ✕ (P-H, 10/11/2026 :
+     « si on touche à côté pour faire défiler la page, la palette se refermera ») */
+  var x=document.getElementById('pal-x');
+  if(x){ x.onclick=function(ev){ ev.stopPropagation(); cierraPaleta(); }; ponTip(x, t(PL.cerrar)); }
+  colocaPaleta();
 }
+/* JUSTO DEBAJO DEL 🌓, donde esté (P-H, 10/11/2026) : en el teléfono la banda
+   de arriba pasa a dos líneas y la lista, puesta en un sitio fijo, tapaba el
+   botón — ya no se podía cerrar. Nunca sale de la pantalla. */
+function colocaPaleta(){
+  var z=document.getElementById('paleta'); if(!z || z.style.display==='none') return;
+  var L=z.querySelector('.pal-lista'), b=document.querySelector('.b-b[data-b="tema"]');
+  if(!L || !b) return;
+  var r=b.getBoundingClientRect(), ancho=document.documentElement.clientWidth || window.innerWidth;
+  var alto=window.innerHeight, top=Math.round(r.bottom + 6);
+  var x=r.left + r.width/2 - L.offsetWidth/2;
+  x=Math.max(6, Math.min(x, ancho - L.offsetWidth - 6));
+  L.style.left=Math.round(x)+'px'; L.style.top=top+'px';
+  L.style.maxHeight=Math.max(120, alto - top - 8)+'px';
+}
+function paletaAbierta(){ var z=document.getElementById('paleta'); return !!z && z.style.display!=='none'; }
+function cierraPaleta(){ var z=document.getElementById('paleta'); if(z) z.style.display='none'; }
 function togglePaleta(){
   var z=document.getElementById('paleta');
-  if(z.style.display==='none'){ pintaPaleta(); z.style.display='inline'; }
-  else z.style.display='none';
+  if(z.style.display==='none'){ z.style.display='inline'; pintaPaleta(); }
+  else cierraPaleta();
 }
+window.addEventListener('resize', colocaPaleta);
 try{ if(!localStorage.getItem('sf_paleta_defecto_papel')){ localStorage.removeItem('sf_paleta'); localStorage.setItem('sf_paleta_defecto_papel','1'); } }catch(e){}
 try{ var g=localStorage.getItem('sf_paleta'); if(g) setTimeout(function(){ aplicaPaleta(g); }, 40); }catch(e){}
 
