@@ -459,6 +459,20 @@ function t(campo){
   return campo[LANG] || campo[(T&&T.idioma_defecto)||'es'] || '';
 }
 
+/* LAS BURBUJAS DE LA BANDA DE ARRIBA (P-H, 10/11/2026 : « c'est le tooltip de la
+   palette qui est en espagnol ») : se ponían una sola vez, al arrancar, en la lengua
+   de ese momento ; ahora ponIdioma las vuelve a poner en la lengua nueva. */
+function ponTipsBanda(){
+  document.querySelectorAll('#banda-arr .b-b[data-b]').forEach(function(e){
+    if(e.dataset.b !== 'tour') ponTip(e, tipDe(e.dataset.b));
+  });
+  if(typeof ponTour === 'function') ponTour();
+  ponTip(document.getElementById('b-b-panal'), tipDe('panal'));
+  ponTip(document.getElementById('b-b-guardar'), tipDe('guardar'));
+  ponTip(document.getElementById('b-pac'), tipDe('paciente'));
+  if(!ACTUAL) ponTip(document.getElementById('b-tit'), tipDe('titulo'));
+}
+
 /* ── les deux bandes, dessinées d'après la table ── */
 /* ══ LE LOGO : une alvéole, et « Salu » droit / « folio » italique bleu ══ */
 function logoSVG(){ return ''; }   /* hexagone retiré (P-H, 04/09) */
@@ -489,12 +503,8 @@ function pintaBandas(){
       }).join('');
   a.querySelectorAll('[data-b]').forEach(function(e){
     e.onclick=function(ev){ ev.stopPropagation(); manda(e.dataset.b); };
-    ponTip(e, tipDe(e.dataset.b));
   });
-  ponTip(document.getElementById('b-b-panal'), tipDe('panal'));
-  ponTip(document.getElementById('b-b-guardar'), tipDe('guardar'));
-  ponTip(document.getElementById('b-pac'), tipDe('paciente'));
-  ponTip(document.getElementById('b-tit'), tipDe('titulo'));
+  ponTipsBanda();
   pintaBanderas();
 
   var z=document.getElementById('banda-abj');
@@ -585,8 +595,8 @@ function abreDoc(i){
 /* ── les profils et les modules ── */
 function pintaPerfiles(){
   var z=document.getElementById('perfiles');
-  z.innerHTML='<span style="font-size:12px;color:var(--muted);margin-right:4px">¿Quién accede?</span>'
-    + '<button class="'+(PERFIL===null?'on':'')+'" onclick="ponPerfil(null)">Todo</button>'
+  z.innerHTML='<span style="font-size:12px;color:var(--muted);margin-right:4px">'+esc(tx('quien'))+'</span>'   /* de la tabla, no en duro (P-H, 10/11/2026) */
+    + '<button class="'+(PERFIL===null?'on':'')+'" onclick="ponPerfil(null)">'+esc(tx('todo'))+'</button>'
     + T.perfiles.map(function(p){
         return '<button class="'+(PERFIL===p.id?'on':'')+'" onclick="ponPerfil(\''+p.id+'\')">'+p.icono+' '+t(p.nombre)+'</button>';
       }).join('');
@@ -2837,7 +2847,7 @@ function toggleBanderas(){
 }
 function ponIdioma(l){
   LANG=l;
-  pintaBanderas(); pintaPerfiles(); pintaModulos(); traduceFormulario(); ponTipsFijos();
+  pintaBanderas(); pintaPerfiles(); pintaModulos(); traduceFormulario(); ponTipsFijos(); ponTipsBanda();
   if(DATOS) ponEstado('');        /* le bandeau se retrace dans la nouvelle langue */
   /* le titre du programme ouvert se retraduit aussi */
   if(ACTUAL && ACTUAL.nombre){
