@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Versión 2026.11.11-11:18:39 -->
+<!-- Versión 2026.11.11-21:07:03 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Salufolio</title>
@@ -378,6 +378,8 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
   /* El contador de visitas (P-H, 25/10/2026) : la tabla primero, el módulo después. */
   document.write('<script src="../comun/visitas-datos.js?'+V+'"><\/script>');
   document.write('<script src="../comun/visitas.js?'+V+'"><\/script>');
+  /* La espera (P-H, 11/11/2026) : la concha que gira mientras se carga un módulo. */
+  document.write('<script src="../comun/espera.js?'+V+'"><\/script>');
 })();
 </script>
 <script>
@@ -1432,6 +1434,8 @@ function carga(id, clave){
   if(NOMBRE && CARPETA) q += '&mf='+encodeURIComponent(NOMBRE)+'&carpeta='+encodeURIComponent(CARPETA);
   if(clave) q += '&termino='+encodeURIComponent(clave);
   if(m.parametros) q += '&' + m.parametros;   /* la tarjeta dice qué abrir : esp=neumologia (P-H, 05/11/2026) */
+  /* P-H, 11/11/2026 : « faire patienter » — la concha gira hasta que el módulo ha cargado */
+  if(window.SF_ESPERA) SF_ESPERA.marco(f, document.getElementById('pantalla'));
   f.src = m._carpeta + (m.programa || (m.id+'.html')) + q;
   f.style.display='block';
   document.getElementById('lista').style.display='none';
@@ -1463,6 +1467,7 @@ function carga(id, clave){
 function volverInicio(){
   if(ayudaAbierta()) cierraAyuda();
   ACTUAL=null; PAL_MOD=null; PILA=[]; ponTour();
+  if(window.SF_ESPERA) SF_ESPERA.cierraTodo();
   aplicaPaleta(PALETA);
   var f=document.getElementById('marco-mod');
   f.style.display='none'; f.src='about:blank';

@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════
    EL VISOR DE DOCUMENTOS — comun/visor-pdf.js
-   Versión 2026.11.06-09:20:17
+   Versión 2026.11.11-21:07:03
    (06/11/2026 : P-H — « tu dois appliquer la même technique dans Tableau détaillé et autres ».
     Un solo visor para todos los módulos : el PDF dibujado aquí, con el ROTULADOR sobre el nombre
     del parámetro y su valor ; si el documento falta (« PDF ABSENT »), la FICHA de lo que el
@@ -16,6 +16,8 @@
 (function(){
   var SCRIPT = document.currentScript;
   var AUSENTE = 'PDF ABSENT.pdf';                          /* el nombre que marca un documento ausente (Comparador, 05/11/2026) */
+  /* la espera (P-H, 11/11/2026) : la concha que gira mientras llega y se lee el documento */
+  try { if (!window.SF_ESPERA && SCRIPT) { var se = document.createElement('script'); se.charset = 'utf-8'; se.src = SCRIPT.src.replace(/visor-pdf\.js(\?.*)?$/, 'espera.js'); document.head.appendChild(se); } } catch (e) {}
   try { if (window.pdfjsLib && SCRIPT) pdfjsLib.GlobalWorkerOptions.workerSrc = SCRIPT.src.replace(/visor-pdf\.js(\?.*)?$/, 'pdfjs/pdf.worker.min.js'); } catch (e) {}
 
   function tx(k){
@@ -164,26 +166,33 @@
 
   /* ── ABRIR : la ficha si falta, si no el PDF dibujado con su rotulador ── */
   async function abre(o){
+    var esp = null;
+    try { return await abre2(o, function(){ return esp || (esp = window.SF_ESPERA ? SF_ESPERA.muestra(document.body, 'documento') : { cierra: function(){} }); }); }
+    finally { if (esp) esp.cierra(); }
+  }
+  async function abre2(o, espera){
     o = o || {};
     var id = o.pdf_id || o.pdf; if (!id) return;
     var info = (o.valor !== undefined && o.valor !== null) ? o : null;
     if (esAusente(id)) { ficha(id, info); return; }
+    var esp = espera();                                   /* la concha empieza a girar */
+    var ventanaV = function(t, i){ esp.cierra(); return ventana(t, i); };
     var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
     var titulo = (window.MF && MF.tituloPdf) ? MF.tituloPdf(nom) : nom;
     var r = null, buf = null;
     try { r = await MF.pdfRespuesta(nom.replace(/\.pdf$/i, '')); if (r && r.ok) buf = await r.arrayBuffer(); } catch (e) {}
     if (!buf) {
       var mo = (r && r.headers && r.headers.get('X-Sf-Motivo')) || '';
-      var sh0 = ventana(titulo, info); aviso(sh0, '📄 ' + titulo + ' — ' + ((window.MF && MF.motivoPdf) ? MF.motivoPdf(mo) : tx('sin_archivo')));
+      var sh0 = ventanaV(titulo, info); aviso(sh0, '📄 ' + titulo + ' — ' + ((window.MF && MF.motivoPdf) ? MF.motivoPdf(mo) : tx('sin_archivo')));
       return;
     }
     if (typeof pdfjsLib === 'undefined') {               /* sin pdf.js : el visor del navegador, sin rotulador */
-      var sh1 = ventana(titulo, info);
+      var sh1 = ventanaV(titulo, info);
       sh1.cuerpo.innerHTML = '<embed class="sf-visor-embed" type="application/pdf" src="' + URL.createObjectURL(new Blob([buf], { type: 'application/pdf' })) + '">';
       return;
     }
     var doc;
-    try { doc = await pdfjsLib.getDocument({ data: buf }).promise; } catch (e) { aviso(ventana(titulo, info), tx('no_abrir')); return; }
+    try { doc = await pdfjsLib.getDocument({ data: buf }).promise; } catch (e) { aviso(ventanaV(titulo, info), tx('no_abrir')); return; }
     var pl = plan(info ? { clave: o.clave, etiqueta: o.etiqueta, valor: o.valor, fecha: o.fecha } : {});
     var paginas = [], vacio = true, mejor = null;
     for (var p = 1; p <= doc.numPages; p++) {
@@ -193,7 +202,7 @@
       if (r0.nivel && (!mejor || r0.nivel > mejor.nivel)) { mejor = r0; mejor.p = p; }
       if ((mejor && mejor.nivel === 3) || !pl.activo) break;
     }
-    var sh = ventana(titulo, info);
+    var sh = ventanaV(titulo, info);
     var barra = document.createElement('div'); barra.className = 'sf-visor-barra';
     barra.innerHTML = '<button class="sf-visor-pg" data-d="-1">◀</button><span class="sf-visor-info"></span><button class="sf-visor-pg" data-d="1">▶</button><span class="sf-visor-nb"></span>';
     sh.pop.insertBefore(barra, sh.cuerpo);

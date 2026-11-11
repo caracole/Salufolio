@@ -121,7 +121,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    RADAR — programa autónomo de Salufolio V2
-   Versión 2026.11.05-15:36:21
+   Versión 2026.11.11-21:14:05
 
    Extraído de la V1: radar-js.js (12 funciones), core-panels-html.html
    (líneas 34-107), y sus dependencias tomadas en su fuente.
@@ -200,231 +200,12 @@ function getSeriesForParam(data, key) {
              .sort((a,b) => a.x.localeCompare(b.x));
 }
 
-/* v2026.7.21.10 — « el médico no se lo creerá: ¿dónde está el informe? » (P-H) :
-   un clic sur un point OUVRE le document source (résolu via le registre pdfs).
-   Sans carpeta configurée, on affiche au moins le nom du document. */
-/* P-H 09/08 : le PDF s'affiche dans un POPUP MAISON — déplaçable par sa
-   poignée, redimensionnable par le coin bas-droit (poignée native du
-   navigateur), fermable par ✕. Le document est rendu par la visionneuse
-   PDF intégrée de Brave, DANS le popup. Pur HTML, zéro serveur. */
-/* P-H 09/08-10/08 : « mets en relief HEMOGLOBINA dans le pdf » — la
-   visionneuse de Brave ne surligne pas sur commande, alors l'app dessine
-   ELLE-MÊME la page avec pdf.js (déjà embarqué pour l'OCR) et pose des
-   surlignages dorés sur chaque occurrence du paramètre ET de sa valeur.
-   Navigation ◀ ▶ entre les pages, redessin au redimensionnement du popup.
-   Sans pdf.js ou PDF illisible (scan) : repli sur la visionneuse embed. */
-function _pdfPopupShell(titulo, info) {
-  document.querySelectorAll('.pdf-popup-maison').forEach(function(o) { o.remove(); });
-  var pop = document.createElement('div');
-  pop.className = 'pdf-popup-maison';
-  pop.style.cssText = 'position:fixed;z-index:10002;width:min(900px,94vw);height:82vh;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.5);padding:4px;display:flex;flex-direction:column;resize:both;overflow:hidden;min-width:280px;min-height:160px';
-  pop.style.left = 'calc(50% - min(450px,47vw))';
-  pop.style.top = '40px';
-  var banda = info ? '<div class="pdf-popup-banda" style="flex:0 0 auto;padding:4px 6px;font-size:12px;border-bottom:1px solid var(--border)">🔍 Verificar en el documento: <b style="color:' + info.color + '">' + info.label + '</b> = <b>' + info.valor + '</b> ' + info.unidad + ' (' + (typeof fmtDate === 'function' ? fmtDate(info.fecha) : info.fecha) + ')<span class="pdf-popup-extra"></span></div>' : '';
-  pop.innerHTML =
-    '<div class="pdf-popup-drag" style="cursor:move;user-select:none;flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 6px;border-bottom:1px solid var(--border)">' +
-    '<b style="font-size:13px">📄 ' + titulo + '</b>' +
-    '<span style="cursor:pointer;color:var(--muted);font-size:16px" onclick="this.closest(\'.pdf-popup-maison\').remove()">✕</span></div>' + banda +
-    '<div class="pdf-popup-cuerpo" style="flex:1;min-height:0;overflow:auto;position:relative"></div>';
-  document.body.appendChild(pop);
-  (function() {
-    var poignee = pop.querySelector('.pdf-popup-drag');
-    var dragging = false, sx = 0, sy = 0, ol = 0, ot = 0;
-    function pt(e) { return e.touches && e.touches[0] ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY }; }
-    function down(e) { if (e.target.tagName === 'SPAN' && e.target.getAttribute('onclick')) return; dragging = true; var p = pt(e); sx = p.x; sy = p.y; var r = pop.getBoundingClientRect(); ol = r.left; ot = r.top; e.preventDefault(); }
-    function move(e) { if (!dragging) return; var p = pt(e); pop.style.left = Math.max(0, Math.min(window.innerWidth - 80, ol + p.x - sx)) + 'px'; pop.style.top = Math.max(0, Math.min(window.innerHeight - 40, ot + p.y - sy)) + 'px'; }
-    function up() { dragging = false; }
-    poignee.addEventListener('mousedown', down);
-    poignee.addEventListener('touchstart', down, { passive: false });
-    window.addEventListener('mousemove', move);
-    window.addEventListener('touchmove', move, { passive: false });
-    window.addEventListener('mouseup', up);
-    window.addEventListener('touchend', up);
-  })();
-  return { pop: pop, cuerpo: pop.querySelector('.pdf-popup-cuerpo'), extra: pop.querySelector('.pdf-popup-extra') };
-}
-
-function _pdfPopupAbrir(url, titulo, info) {
-  var sh = _pdfPopupShell(titulo, info);
-  sh.cuerpo.innerHTML = '<embed src="' + url + '" type="application/pdf" style="width:100%;height:100%;border:0">';
-}
-
-/* P-H 06/10/2026 : el PDF vive en pacientes/<matrícula>/sources/ — la Casa lo sirve ; si no está, se dice dónde debería estar */
-function _pdfSinArchivo(nom, motivo) {
-  var mat = ''; try { mat = (MF.paciente().matricula || ''); } catch (e) {}
-  var porque = (window.MF && MF.motivoPdf) ? MF.motivoPdf(motivo) : 'archivo no encontrado en sources/';
-  var msg = '📄 ' + nom + ' — ' + porque + ' (pacientes/' + (mat || '<matrícula>') + '/sources/)';
-  var det = document.getElementById('xz-cmt-detalle');
-  if (det) { det.textContent = '🧪 ' + msg; return; }
-  document.querySelectorAll('.sf-pdf-aviso').forEach(function(o) { o.remove(); });
-  var o = document.createElement('div'); o.className = 'sf-pdf-aviso';
-  o.style.cssText = 'position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:10003;max-width:min(520px,90vw);background:var(--surface);color:var(--text);border:2px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
-  o.textContent = msg + ' ';
-  var b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Cerrar'; b.style.cssText = 'font-size:12px;padding:3px 14px;margin-top:10px;display:block';
-  b.onclick = function() { o.remove(); }; o.appendChild(b); document.body.appendChild(o);
-}
-
-async function _pdfPopupAbrirEnPagina(url, titulo, info, nom) {
-  if (typeof pdfjsLib === 'undefined') {
-    /* sin pdf.js : se pide el archivo a la Casa y se muestra con el visor del navegador */
-    if (!url && nom && window.MF && MF.pdfRespuesta) {
-      var mo = ''; try { var rr = await MF.pdfRespuesta(nom); if (rr.ok) { _pdfPopupAbrir(URL.createObjectURL(await rr.blob()), titulo, info); return; } mo = rr.headers.get('X-Sf-Motivo') || ''; } catch (e) {}
-      _pdfSinArchivo(nom, mo); return;
-    }
-    _pdfPopupAbrir(url, titulo, info); return;
-  }
-  var doc;
-  /* P-H 10/08 : un file:// ne peut PAS être lu par fetch NI par le worker
-     pdf.js depuis une page file:// (CORS « origin null », mur définitif).
-     La seule voie propre pour récupérer les OCTETS (nécessaires au rendu
-     maison + surlignage) est le serveur, qui sert le PDF en http:// —
-     guichet /api/pdf déjà là. Repli sur l'embed file:// si pas de serveur
-     (l'embed, lui, le navigateur l'autorise). */
-  try {
-    var buf = null;
-    if (nom) {
-      var srv = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
-      var stem = /\.pdf$/i.test(nom) ? nom.slice(0, -4) : nom;
-      var r = await (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(stem) : fetch(srv + '/api/pdf?n=' + encodeURIComponent(stem)));
-      if (r.ok) buf = await r.arrayBuffer();
-    }
-    if (!buf && url) buf = await (await fetch(url)).arrayBuffer(); /* dernier recours file:// */
-    if (!buf) throw new Error('sin-pdf:' + ((typeof r !== 'undefined' && r && r.headers && r.headers.get('X-Sf-Motivo')) || ''));
-    doc = await pdfjsLib.getDocument({ data: buf }).promise;
-  }
-  catch (e) { if (url) { _pdfPopupAbrir(url, titulo, info); return; } _pdfSinArchivo(nom, String((e && e.message) || '').replace(/^sin-pdf:?/, '')); return; }
-  try {
-    var labelMin = (info && info.label) ? info.label.toLowerCase() : null;
-    /* Les formes sous lesquelles le laboratoire peut écrire CETTE valeur.
-       P-H 11/08 : le feutre ratait les valeurs > 1000 — le .sf porte 2583
-       mais le PDF imprime « 2.583,00 » (point de milliers à l'espagnole).
-       Faute de la trouver, le feutre continuait et surlignait le LABEL sur
-       une autre page (« elevación de Dímero D... » p4 au lieu du 2.583 p2).
-       On fabrique donc toutes les écritures plausibles de la même valeur. */
-    var valores = [];
-    if (info) {
-      var n = Number(info.valor);
-      var brut = String(info.valor);
-      valores.push(brut);                         /* 2583   ·  13.8   */
-      valores.push(brut.replace('.', ','));       /* 2583   ·  13,8   */
-      if (isFinite(n) && Math.abs(n) >= 1000) {
-        /* séparateur de milliers espagnol : le point */
-        var ent = Math.trunc(Math.abs(n));
-        var dec = brut.indexOf('.') >= 0 ? brut.split('.')[1] : '';
-        var mil = String(ent).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        valores.push(mil);                        /* 2.583            */
-        valores.push(mil + ',' + (dec || '00'));  /* 2.583,00         */
-        valores.push(mil + ',' + (dec || '0'));   /* 2.583,0          */
-      } else if (isFinite(n) && Number.isInteger(n)) {
-        /* un entier peut être imprimé avec décimales : 235 → 235,00 */
-        valores.push(brut + ',00');
-        valores.push(brut + ',0');
-      }
-      valores = valores.filter(function (v, i, a) { return v && a.indexOf(v) === i; });
-    }
-    /* P-H 10/08 : « affiche la page qui tient le 1er feutre ». On ouvre
-       donc la première page où quelque chose SERA surligné — c.-à-d. la
-       valeur (le repère le plus sûr) ou, à défaut, le label. On cherche
-       la valeur en priorité (page du vrai feutre), le label ne servant
-       que de repli s'il n'y a aucune valeur nulle part. */
-    var pagina = 1, pageValeur = 0, pageLabel = 0, textoVacio = true;
-    if (labelMin || valores.length) {
-      for (var pnum = 1; pnum <= doc.numPages; pnum++) {
-        var pg = await doc.getPage(pnum);
-        var tc0 = await pg.getTextContent();
-        var texto = tc0.items.map(function(it) { return it.str; }).join(' ');
-        if (texto.trim()) textoVacio = false;
-        var tl = texto.toLowerCase();
-        if (!pageValeur && valores.some(function(v) { return v && texto.indexOf(v) !== -1; })) pageValeur = pnum;
-        if (!pageLabel && labelMin && tl.indexOf(labelMin) !== -1) pageLabel = pnum;
-        if (pageValeur) break; /* la page du feutre-valeur trouvée, on s'arrête */
-      }
-      pagina = pageValeur || pageLabel || 1;
-    }
-    if (textoVacio) { try { doc.destroy(); } catch (e) {} _pdfPopupAbrir(url, titulo, info); return; } /* scan sans OCR */
-    var sh = _pdfPopupShell(titulo, info);
-    var barra = document.createElement('div');
-    barra.style.cssText = 'flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:3px 6px;border-bottom:1px solid var(--border);font-size:12px';
-    barra.innerHTML = '<button class="pdf-pg-prev" style="cursor:pointer;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:0 8px">◀</button>' +
-      '<span class="pdf-pg-info"></span>' +
-      '<button class="pdf-pg-next" style="cursor:pointer;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:0 8px">▶</button>' +
-      '<span class="pdf-pg-nb" style="color:var(--muted)"></span>';
-    sh.pop.insertBefore(barra, sh.cuerpo);
-    sh.cuerpo.style.background = colorDe('visor_fondo', 'background-color', '--surface2');
-    sh.cuerpo.style.textAlign = 'center';
-    var actual = pagina;
-    async function dibujar(pnum) {
-      actual = pnum;
-      sh.cuerpo.innerHTML = '';
-      var page = await doc.getPage(pnum);
-      var vp1 = page.getViewport({ scale: 1 });
-      var ancho = Math.max(300, sh.cuerpo.clientWidth - 20);
-      var scale = ancho / vp1.width;
-      var vp = page.getViewport({ scale: scale });
-      var wrapper = document.createElement('div');
-      wrapper.style.cssText = 'position:relative;display:inline-block;margin:8px 0;box-shadow:0 2px 10px rgba(0,0,0,.4)';
-      var canvas = document.createElement('canvas');
-      canvas.width = vp.width; canvas.height = vp.height;
-      wrapper.appendChild(canvas);
-      sh.cuerpo.appendChild(wrapper);
-      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
-      var tc = await page.getTextContent();
-      var nb = 0, premierTop = null;
-      tc.items.forEach(function(it) {
-        var s = (it.str || '');
-        var hit = (labelMin && s.toLowerCase().indexOf(labelMin) !== -1) ||
-                  valores.some(function(v) { return v && s.indexOf(v) !== -1; });
-        if (!hit) return;
-        nb++;
-        var tx = pdfjsLib.Util.transform(vp.transform, it.transform);
-        var h = Math.hypot(tx[2], tx[3]) || 12;
-        var d = document.createElement('div');
-        d.style.cssText = 'position:absolute;background:rgba(255,200,0,.45);outline:1.5px solid rgba(230,150,0,.9);border-radius:2px;pointer-events:none;left:' + (tx[4] - 2) + 'px;top:' + (tx[5] - h) + 'px;width:' + (it.width * scale + 4) + 'px;height:' + (h * 1.2) + 'px';
-        wrapper.appendChild(d);
-        if (premierTop === null) premierTop = tx[5] - h;
-      });
-      barra.querySelector('.pdf-pg-info').textContent = 'página ' + pnum + ' / ' + doc.numPages;
-      barra.querySelector('.pdf-pg-nb').textContent = nb ? ('🟡 ' + nb + ' resaltado' + (nb > 1 ? 's' : '')) : '';
-      if (premierTop !== null) sh.cuerpo.scrollTop = Math.max(0, premierTop - 60);
-    }
-    barra.querySelector('.pdf-pg-prev').onclick = function() { if (actual > 1) dibujar(actual - 1); };
-    barra.querySelector('.pdf-pg-next').onclick = function() { if (actual < doc.numPages) dibujar(actual + 1); };
-    /* redessin quand P-H redimensionne le popup (poignée du coin) */
-    var roT = null;
-    new ResizeObserver(function() { clearTimeout(roT); roT = setTimeout(function() { dibujar(actual); }, 200); }).observe(sh.cuerpo);
-    await dibujar(pagina);
-  } catch (e) {
-    try { doc.destroy(); } catch (e2) {}
-    _pdfPopupAbrir(url, titulo, info);
-  }
-}
-
-function _chartVerInforme(s, key) {
-  var id = s && (s.pdf_id || s.pdf); if (!id) return;
-  /* P-H 09/08 : le popup annonce CE QU'ON EST VENU VÉRIFIER — paramètre,
-     valeur, date — et l'URL porte #search= (honoré par certains visores). */
-  var info = null;
-  if (key && typeof PARAMS === 'object' && PARAMS[key]) {
-    info = { label: PARAMS[key].label || key, valor: s.y, unidad: PARAMS[key].unit || '', fecha: s.x, color: PARAMS[key].color || 'var(--accent)' };
-  }
-  /* P-H 09/08 (« je n'ai pas besoin d'un serveur pour lire un pdf ») :
-     ouverture DIRECTE en file:// — les fichiers de sources/ portent
-     désormais leur nom exact PDFxxx.pdf, il suffisait d'ajouter
-     l'extension que l'ancien code n'ajoutait pas. Zéro dépendance. */
-  var nom = /\.pdf$/i.test(String(id)) ? String(id) : String(id) + '.pdf';
-  var dir = (typeof pdfCarpeta === 'function') ? pdfCarpeta(id) : '';
-  try { _pdfPopupAbrirEnPagina('', nom, info, nom); return; } catch (e) {}   /* P-H 06/10/2026 : la Casa sirve sources/ */
-  /* v2026.7.21.20 — plus d'aboiement du navigateur (demande P-H) : le repli
-     passe par la BANDE DU PAVÉ quand elle existe, et nomme le bon guichet
-     (« Auditoría », pas « Trazabilidad »). L'alerte native ne sert que si
-     aucune bande n'est à l'écran. */
-  var msg = '📄 ' + nom + (dir
-    ? ' — carpeta: ' + dir + ' (no se pudo abrir)'
-    : ' — no encuentro el archivo en la carpeta sources/ del paciente.');
-  var det = document.getElementById('xz-cmt-detalle');
-  if (det) { det.innerHTML = '🧪 ' + msg; return; }
-  alert(msg);
-}
+/* EL DOCUMENTO DE UN PUNTO (P-H, 11/11/2026 : « dans tous les autres modules ils sont affichés dans une popup interne »).
+   El Radar tenía su propia copia antigua del visor, sin pdf.js cargado : el PDF salía en el visor del
+   navegador, sin rotulador. Ahora el clic de un punto pasa por el visor común (comun/visor-pdf.js,
+   cargado al final de la página), que define _chartVerInforme para todos los módulos :
+   la ventana interna, el ROTULADOR sobre el nombre y el valor, la ficha del documento ausente
+   y la concha que gira mientras se carga. */
 
 Chart.defaults.font.family = "'IBM Plex Mono', monospace";
 Chart.defaults.font.size = 10;
@@ -1115,37 +896,11 @@ function customAlert(title, message, icon='ℹ️', color='var(--accent)') {
 /* pdfNombre vient de la traçabilité complète, plus bas */
 
 
-/* P-H 06/10/2026 : el Radar llamaba a audAbrirVisor y audDiagnosticoPdf, que sólo existían en la Auditoría */
-function audAbrirVisor(url, nombreReal, nombreEsperado, buscar) {
-  window.open(url + (buscar ? '#search=' + encodeURIComponent(buscar) : ''), '_blank');
-}
-function audDiagnosticoPdf(nombreEsperado, buscar, motivo) {
-  document.querySelectorAll('.rad-pdf-aviso').forEach(function(o) { o.remove(); });
-  var o = document.createElement('div'); o.className = 'rad-pdf-aviso';
-  o.style.cssText = 'position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:10003;max-width:min(520px,90vw);background:var(--surface);color:var(--text);border:2px solid var(--accent);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.6;box-shadow:0 12px 40px rgba(0,0,0,.5)';
-  var mat = (typeof MF !== 'undefined' && MF.paciente ? (MF.paciente().matricula || '') : '') || '&lt;matrícula&gt;';
-  o.innerHTML = '<b>📄 ' + nombreEsperado + '</b><br>No encuentro el PDF en la carpeta del paciente.<br>Motivo : <b>' + motivo + '</b><br><br>' +
-    'Compruebe que el expediente está abierto con 📂 y la carpeta de pacientes autorizada en la Casa, y que el archivo está en <span style="font-family:var(--mono)">pacientes/' + mat + '/sources/</span>.<br><br>' +
-    '<button class="btn" style="font-size:12px;padding:3px 14px" onclick="this.parentNode.remove()">Cerrar</button>';
-  document.body.appendChild(o);
-}
-
-function audVerPdf(nombreEsperado, buscar) {
-  /* 1er choix : le serveur retrouve le PDF tout seul dans les carpetas
-     déclarées (récursif) — clic = pièce ouverte, zéro navigation.
-     Secours hors-ligne : le sélecteur de fichiers.
-     'buscar' : la valeur en cause — passée à la visionneuse (#search=…,
-     honorée par certains visores ; positionnement exact par page = futur,
-     quand l'Extractor émettra la page de chaque valeur). */
-  const base = (typeof baseSalufolio === 'function' && baseSalufolio()) ? baseSalufolio() : 'http://localhost:7777';
-  (window.MF && MF.pdfRespuesta ? MF.pdfRespuesta(nombreEsperado) : fetch(base + '/api/pdf?n=' + encodeURIComponent(nombreEsperado)))
-    .then(function(r) {
-      if (r.status === 404) throw new Error((window.MF && MF.motivoPdf) ? MF.motivoPdf(r.headers.get('X-Sf-Motivo')) : 'archivo no encontrado en sources/');
-      if (!r.ok) throw new Error('servidor respondió ' + r.status + ' (¿versión < 1.5.5?)');
-      return r.blob();
-    })
-    .then(function(b) { audAbrirVisor(URL.createObjectURL(b), nombreEsperado, nombreEsperado, buscar); })
-    .catch(function(e) { audDiagnosticoPdf(nombreEsperado, buscar, (e && e.message) ? e.message : 'servidor apagado o inaccesible'); });
+/* El botón 📄 de las fuentes (P-H, 11/11/2026) : antes abría el PDF en una PÁGINA nueva del navegador ;
+   ahora en la ventana interna del visor común, como en todos los módulos. */
+function audVerPdf(nombre) {
+  if (window.SF_VISOR) { SF_VISOR.abre({ pdf_id: String(nombre || '').replace(/\.pdf$/i, '') }); return; }
+  var d = document.getElementById('aviso'); if (d) { d.style.display = 'block'; d.textContent = '📄 ' + nombre; }
 }
 
 
@@ -1911,5 +1666,9 @@ MF.arranca({
   }
 });
 </script>
+<!-- El visor común de documentos (P-H, 11/11/2026) : al final, después de los scripts del módulo -->
+<script src="../comun/pdfjs/pdf.min.js"></script>
+<script src="../comun/visor-pdf.idiomas.js"></script>
+<script src="../comun/visor-pdf.js"></script>
 </body>
 </html>

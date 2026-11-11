@@ -1,11 +1,11 @@
 /* LAS VERSIONES DE SALUFOLIO
-   escrito por herramientas/versiones.py el 2026.11.11-18:41:36
+   escrito por herramientas/versiones.py el 2026.11.11-21:16:28
 
    Un .js y no un .json: asi la pagina funciona sin servidor.
    No se toca a mano — se rehace en cada pasada. */
 var SF_VERSIONES = window.SF_VERSIONES = {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.11.11-18:41:36",
+ "_ultima_pasada": "2026.11.11-21:16:28",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -188,11 +188,11 @@ var SF_VERSIONES = window.SF_VERSIONES = {
   },
   "casa/casa.js": {
    "suma": "b399e64f2e90",
-   "version": "2026.11.11-11:18:39"
+   "version": "2026.11.11-21:07:03"
   },
   "casa/index.html": {
-   "suma": "c2f497b6c439",
-   "version": "2026.11.11-11:18:39"
+   "suma": "c9b8188c51fb",
+   "version": "2026.11.11-21:07:03"
   },
   "casa/novedades.js": {
    "suma": "67214ce90a41",
@@ -2754,6 +2754,11 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "suma": "1b1c648d8595",
    "version": "2026.11.05-16:24:58"
   },
+  "comun/concha.svg": {
+   "muda": true,
+   "suma": "1024862df92b",
+   "version": "2026.11.11-21:07:03"
+  },
   "comun/demo.pdf": {
    "muda": true,
    "suma": "ac6397557a5b",
@@ -2766,6 +2771,14 @@ var SF_VERSIONES = window.SF_VERSIONES = {
   "comun/especialidades.js": {
    "suma": "9388759ac031",
    "version": "2026.11.10-15:56:30"
+  },
+  "comun/espera.idiomas.js": {
+   "suma": "f8b8a78270fa",
+   "version": "2026.11.11-21:07:03"
+  },
+  "comun/espera.js": {
+   "suma": "d035df508f25",
+   "version": "2026.11.11-21:07:03"
   },
   "comun/formulario.js": {
    "suma": "ade9410ddd3d",
@@ -2865,8 +2878,8 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "version": "2026.11.06-09:20:17"
   },
   "comun/visor-pdf.js": {
-   "suma": "c13505517076",
-   "version": "2026.11.06-09:20:17"
+   "suma": "b987dd9d1720",
+   "version": "2026.11.11-21:07:03"
   },
   "correlaciones/correlaciones.help.html": {
    "suma": "cf29f715c906",
@@ -3975,8 +3988,8 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "version": "2026.11.04-12:42:25"
   },
   "radar/radar.html": {
-   "suma": "db199253d82b",
-   "version": "2026.11.05-15:36:21"
+   "suma": "0c05da0d4bda",
+   "version": "2026.11.11-21:14:05"
   },
   "radar/radar.idiomas.js": {
    "suma": "9a8b7b1067d0",
@@ -3984,7 +3997,7 @@ var SF_VERSIONES = window.SF_VERSIONES = {
   },
   "radar/radar.js": {
    "suma": "4ca2417b039f",
-   "version": "2026.11.05-15:36:21"
+   "version": "2026.11.11-21:14:05"
   },
   "radar/radar_v2026-10-28_16h56.html": {
    "suma": "04e27b8eedab",
