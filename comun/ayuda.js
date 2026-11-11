@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.10.06-10:29:13
+   Versión 2026.10.06-10:32:56
    LAS AYUDAS — /Salufolio/comun/ayuda.js
 
    « Le ? va sur err 404 », « les textes gris sur fond blanc ne se voient

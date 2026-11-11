@@ -1,5 +1,5 @@
 /* ═════════════════════════════════════════════════
-   Versión 2026.10.06-18:37:37
+   Versión 2026.10.06-18:44:03
    LA TABLA DEL PACIENTE
    /Salufolio/comun/formularios/paciente.js
 

@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.09.19-18:15:47
+   Versión 2026.10.01-09:53:26
    LA TABLA DE LA ADQUISICIÓN MANUAL
    /Salufolio/comun/formularios/adquisicion.js
 

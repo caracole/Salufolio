@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.09.19-18:15:47
+   Versión 2026.09.23-18:05:54
    LA GARDE DU PACIENTE — /Salufolio/comun/guarda-paciente.js
 
    « Si le PDF porte un nom ou un SIP qui ne correspond pas au dossier

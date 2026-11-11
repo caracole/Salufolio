@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.10.06-17:05:00
+   Versión 2026.10.06-17:38:52
    EL FORMULARIO — /Salufolio/comun/formulario.js
 
    « Ce système est universel, on peut saisir n'importe quoi. Il suffit

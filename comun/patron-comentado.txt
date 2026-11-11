@@ -1,4 +1,4 @@
-Versión 2026.09.19-18:15:47
+Versión 2026.10.07-16:50:34
 ═══════════════════════════════════════════════════════════════════════════
   EL PATRÓN DEL .sf — cada campo, explicado
   Salufolio · septiembre de 2026
