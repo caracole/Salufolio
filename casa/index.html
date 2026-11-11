@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- Versión 2026.11.11-11:18:39 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Salufolio</title>
@@ -575,7 +576,7 @@ function abreVersiones(){
           + '</tr>';
       }).join('')
     + '</tbody></table></div>';
-  ventanaCasa(esc(t(V.titulo)), cuerpo, '', null, { movil:true, cruz:t(V.cerrar), aire_pie:0 });
+  ventanaCasa(esc(t(V.titulo)), cuerpo, '', null, { movil:true, cruz:t(V.cerrar), aire_pie:0, ancho:V.ancho||560 });
 }
 
 /* ── un document dans l'écran ── */
@@ -1346,14 +1347,15 @@ function ventanaCasa(titulo, cuerpo, pie, alCerrar, opc){
        modal : un clic al lado NO cierra (se perdería lo escrito)
        cruz  : la burbuja de la ✕ de arriba a la derecha ; sin cruz, no hay ✕
        movil : se mueve tirando del título, a ratón o a dedo, sin salir de la pantalla
-       aire_pie : el aire encima de los botones de abajo (12 px si no se dice) ══ */
+       aire_pie : el aire encima de los botones de abajo (12 px si no se dice)
+       ancho : la anchura máxima en px (560 si no se dice) — la lista de versiones pide más (P-H, 11/11/2026) ══ */
   opc = opc || {};
   var f = document.createElement('div');
   f.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.6);'
     + 'display:flex;justify-content:center;align-items:center;padding:20px';
   var c = document.createElement('div');
   c.style.cssText = 'background:var(--surface);border:2px solid var(--accent);'
-    + 'border-radius:13px;padding:16px 20px 14px;width:100%;max-width:560px;'
+    + 'border-radius:13px;padding:16px 20px 14px;width:100%;max-width:' + (opc.ancho || 560) + 'px;'
     + 'max-height:92vh;overflow-y:auto;box-shadow:0 14px 44px rgba(0,0,0,.5);box-sizing:border-box';
   c.innerHTML = '<div class="vc-tit" style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--accent);'
     + 'margin-bottom:9px' + (opc.movil ? ';cursor:grab;user-select:none;touch-action:none' : '') + '">'

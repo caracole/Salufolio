@@ -1,0 +1,72 @@
+{
+ "fichero": "PRI_17072026074229.pdf",
+ "pdf_id": "PDF028",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h49m53",
+ "segundos": 20,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 6130,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 791,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_episodio": "904645"
+  },
+  "documento": {
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "RADIOLOGIA GENERAL",
+   "firmante": {
+    "nombre": "MARCO DOMENECH, SANTIAGO",
+    "rol": "medico"
+   },
+   "tipo": "Informe de prueba diagnóstica",
+   "fecha_informe": "2017-05-12",
+   "fecha_firma": "2017-05-15",
+   "fecha_impresion": "2026-07-17"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2016-11",
+    "titulo": "Embolismo pulmonar",
+    "detalle": "Embolismo pulmonar diagnosticado en noviembre de 2016."
+   },
+   {
+    "fecha": "",
+    "titulo": "Antecedente de TBC infantil",
+    "detalle": "Antecedentes de TBC en infancia con paquipleuritis derecha residual."
+   },
+   {
+    "fecha": "2017-05-12",
+    "titulo": "TC Tórax con contraste",
+    "detalle": "Tractos engrosados apicales bilaterales compatibles con cambios post TBC. Elevación diafragmática derecha probablemente por relajación diafragmática. No hay signos radiológicos de paquipleuritis ni otros cambios post tuberculosos excepto los descritos. Pequeño defecto de repleción en arteria pulmonar derecha sugestivo de restos de embolismo previo convertido en tromboembolismo crónico. No hay cardiomegalia. Bocio endotorácico a expensas del LTI con medidas de 3 x 3 x 5 cm de ejes máximos, con porción endotorácica hasta la altura de la salida de los troncos supraaórticos. Hallazgo incidental: imagen de atrofia del polo inferior del riñón derecho, probablemente por infarto isquémico."
+   }
+  ],
+  "dudas": [
+   "SIP y NHC no están impresos con valor legible en el documento.",
+   "N_informe no está impreso con valor legible.",
+   "El episodio 904645 figura solo en el pie de página de impresión; podría corresponder al número de episodio o a otro identificador.",
+   "La fecha del evento 'TBC infantil' no consta en el documento.",
+   "La fecha de noviembre de 2016 solo indica mes y año, sin día exacto.",
+   "La fecha_informe se toma de la fecha de la exploración (12/05/2017); la fecha de firma es 15/05/2017. No queda claro cuál es formalmente la 'fecha del informe'.",
+   "La fecha de impresión 17/07/2026 parece anómala (posterior en muchos años al informe de 2017); se copia tal como figura."
+  ]
+ }
+}

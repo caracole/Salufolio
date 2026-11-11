@@ -1,0 +1,584 @@
+{
+ "fichero": "RPE_17072026065605.pdf",
+ "pdf_id": "PDF009",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h56m47",
+ "segundos": 122,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 43201,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 7674,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "sip": "",
+   "nhc": "",
+   "n_episodio": "",
+   "n_informe": "",
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "",
+   "servicio": "",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "Resumen de Paciente UE / EU Patient Summary",
+   "fecha_ingreso": "",
+   "fecha_alta": "",
+   "fecha_informe": "",
+   "fecha_firma": "",
+   "fecha_impresion": "2026-07-16"
+  },
+  "mediciones": [],
+  "medicamentos": [
+   {
+    "nombre": "RIVAROXABAN (XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA)",
+    "dosis": "20 mg",
+    "pauta": "Cada 24 horas, 1 comprimido",
+    "via": "ORAL",
+    "desde": "2026-05-21",
+    "hasta": ""
+   },
+   {
+    "nombre": "DONEPEZILO (LIXBEN 10MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA EFG)",
+    "dosis": "10 mg",
+    "pauta": "Cada 24 horas, 1 comprimido",
+    "via": "ORAL",
+    "desde": "2026-03-25",
+    "hasta": ""
+   },
+   {
+    "nombre": "ABSORBENTE INC ORINA SUPER NOCHE PANTS (INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT)",
+    "dosis": "",
+    "pauta": "Cada 60 días, 1 envase",
+    "via": "OTRAS VIAS",
+    "desde": "2025-12-12",
+    "hasta": ""
+   },
+   {
+    "nombre": "ABSORBENTE INC ORINA DIA PANTS (INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT)",
+    "dosis": "",
+    "pauta": "Cada 24 horas, 2 pañales",
+    "via": "OTRAS VIAS",
+    "desde": "2024-05-16",
+    "hasta": ""
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2019-12-10",
+    "titulo": "Vacunación gripe",
+    "detalle": "Vacuna contra la gripe (Influenza virus vaccine, SNOMED CT 46233009). Dosis 1. Lote no disponible."
+   },
+   {
+    "fecha": "2018-12-03",
+    "titulo": "Vacunación gripe",
+    "detalle": "Vacuna contra la gripe (Influenza virus vaccine, SNOMED CT 46233009). Dosis 1. Lote no disponible."
+   },
+   {
+    "fecha": "2017-11-13",
+    "titulo": "Vacunación gripe",
+    "detalle": "Vacuna contra la gripe (Influenza virus vaccine, SNOMED CT 46233009). Dosis 1. Lote no disponible."
+   },
+   {
+    "fecha": "2016-12-02",
+    "titulo": "Vacunación gripe",
+    "detalle": "Vacuna contra la gripe (Influenza virus vaccine, SNOMED CT 46233009). Dosis 1. Lote no disponible."
+   },
+   {
+    "fecha": "2014-10-30",
+    "titulo": "Vacunación gripe",
+    "detalle": "Vacuna contra la gripe (Influenza virus vaccine, SNOMED CT 46233009). Dosis 1. Lote no disponible."
+   },
+   {
+    "fecha": "2024-09-06",
+    "titulo": "Problema activo: Candidiasis de la piel y las uñas",
+    "detalle": "CIE-10-ES B37.2 - Candidiasis of skin and nail"
+   },
+   {
+    "fecha": "2025-02-17",
+    "titulo": "Problema activo: Candidiasis no especificada",
+    "detalle": "CIE-10-ES B37.9 - Candidiasis, unspecified"
+   },
+   {
+    "fecha": "2023-02-28",
+    "titulo": "Problema activo: Nódulo tiroideo único no tóxico",
+    "detalle": "CIE-10-ES E04.1 - Nontoxic single thyroid nodule"
+   },
+   {
+    "fecha": "2021-10-27",
+    "titulo": "Problema activo: Bocio endotorácico",
+    "detalle": "CIE-10-ES E04.9 - Nontoxic goiter, unspecified"
+   },
+   {
+    "fecha": "2023-03-15",
+    "titulo": "Problema activo: Carencia de vitamina D no especificada",
+    "detalle": "CIE-10-ES E55.9 - Vitamin D deficiency, unspecified"
+   },
+   {
+    "fecha": "2022-07-12",
+    "titulo": "Problema activo: Carencia de vitamina no especificada",
+    "detalle": "CIE-10-ES E56.9 - Vitamin deficiency, unspecified"
+   },
+   {
+    "fecha": "2017-11-13",
+    "titulo": "Problema activo: Hipercolesterolemia pura no especificada",
+    "detalle": "CIE-10-ES E78.00 - Pure hypercholesterolemia, unspecified"
+   },
+   {
+    "fecha": "2025-10-10",
+    "titulo": "Problema activo: Demencia vascular",
+    "detalle": "CIE-10-ES F01.50 - Vascular dementia without behavioral disturbance"
+   },
+   {
+    "fecha": "2022-12-22",
+    "titulo": "Problema activo: Demencia no especificada sin alteración de la conducta",
+    "detalle": "CIE-10-ES F03.90 - Unspecified dementia without behavioral disturbance"
+   },
+   {
+    "fecha": "2023-06-28",
+    "titulo": "Problema activo: Demencia no especificada con alteración de la conducta",
+    "detalle": "CIE-10-ES F03.91 - Unspecified dementia with behavioral disturbance"
+   },
+   {
+    "fecha": "2026-02-12",
+    "titulo": "Problema activo: Trastorno mental no especificado debido a afección fisiológica conocida",
+    "detalle": "CIE-10-ES F09 - Unspecified mental disorder due to known physiological condition"
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Problema activo: Enolismo",
+    "detalle": "CIE-10-ES F10.20 - Alcohol dependence, uncomplicated"
+   },
+   {
+    "fecha": "2025-11-21",
+    "titulo": "Problema activo: Otros trastornos psicóticos no debidos a sustancia ni afección fisiológica conocidas",
+    "detalle": "CIE-10-ES F28 - Other psychotic disorder not due to a substance or known physiological condition"
+   },
+   {
+    "fecha": "2022-07-26",
+    "titulo": "Problema activo: Trastorno depresivo mayor, episodio único, no especificado",
+    "detalle": "CIE-10-ES F32.9 - Major depressive disorder, single episode, unspecified"
+   },
+   {
+    "fecha": "2016-04-06",
+    "titulo": "Problema activo: Trastorno de ansiedad no especificado",
+    "detalle": "CIE-10-ES F41.9 - Anxiety disorder, unspecified"
+   },
+   {
+    "fecha": "2025-02-28",
+    "titulo": "Problema activo: Trastorno de conducta tipo de inicio en la niñez",
+    "detalle": "CIE-10-ES F91.1 - Conduct disorder, childhood-onset type"
+   },
+   {
+    "fecha": "2022-07-26",
+    "titulo": "Problema activo: Enfermedad de Alzheimer",
+    "detalle": "CIE-10-ES G30.9 - Alzheimer's disease, unspecified"
+   },
+   {
+    "fecha": "2022-01-05",
+    "titulo": "Problema activo: Deterioro cognitivo moderado",
+    "detalle": "CIE-10-ES G31.84 - Mild cognitive impairment, so stated"
+   },
+   {
+    "fecha": "2026-04-20",
+    "titulo": "Problema activo: Accidente isquémico cerebral transitorio no especificado",
+    "detalle": "CIE-10-ES G45.9 - Transient cerebral ischemic attack, unspecified"
+   },
+   {
+    "fecha": "2021-06-18",
+    "titulo": "Problema activo: Dolor ocular ojo izquierdo",
+    "detalle": "CIE-10-ES H57.12 - Ocular pain, left eye"
+   },
+   {
+    "fecha": "2025-11-21",
+    "titulo": "Problema activo: Hipertensión esencial (primaria)",
+    "detalle": "CIE-10-ES I10 - Essential (primary) hypertension"
+   },
+   {
+    "fecha": "2022-01-07",
+    "titulo": "Problema activo: TEP / Tromboembolismo pulmonar",
+    "detalle": "CIE-10-ES I26.99 - Other pulmonary embolism without acute cor pulmonale"
+   },
+   {
+    "fecha": "2025-09-01",
+    "titulo": "Problema activo: TEP crónico",
+    "detalle": "CIE-10-ES I27.82 - Chronic pulmonary embolism"
+   },
+   {
+    "fecha": "2023-06-05",
+    "titulo": "Problema activo: Bloqueo de rama derecha no especificado",
+    "detalle": "CIE-10-ES I45.10 - Unspecified right bundle-branch block"
+   },
+   {
+    "fecha": "2021-09-29",
+    "titulo": "Problema activo: Infarto vertebrobasilar",
+    "detalle": "CIE-10-ES I63.219 - Cerebral infarction due to unspecified occlusion or stenosis of unspecified vertebral arteries"
+   },
+   {
+    "fecha": "2021-09-29",
+    "titulo": "Problema activo: Ictus",
+    "detalle": "CIE-10-ES I63.9 - Cerebral infarction, unspecified"
+   },
+   {
+    "fecha": "2016-11-17",
+    "titulo": "Problema activo: Embolia y trombosis agudas de venas profundas no especificadas de extremidad inferior no especificada",
+    "detalle": "CIE-10-ES I82.409 - Acute embolism and thrombosis of unspecified deep veins of unspecified lower extremity"
+   },
+   {
+    "fecha": "2022-12-22",
+    "titulo": "Problema activo: Venas varicosas de extremidad inferior izquierda con úlcera e inflamación de localización no especificada",
+    "detalle": "CIE-10-ES I83.229 - Varicose veins of left lower extremity with both ulcer of unspecified site and inflammation"
+   },
+   {
+    "fecha": "2020-09-20",
+    "titulo": "Problema activo: Bronquitis aguda o subaguda",
+    "detalle": "CIE-10-ES J20.9 - Acute bronchitis, unspecified"
+   },
+   {
+    "fecha": "2022-10-27",
+    "titulo": "Problema activo: Bronquitis no especificada como aguda o crónica",
+    "detalle": "CIE-10-ES J40 - Bronchitis, not specified as acute or chronic"
+   },
+   {
+    "fecha": "2016-11-17",
+    "titulo": "Problema activo: Enfermedad pulmonar obstructiva crónica no especificada",
+    "detalle": "CIE-10-ES J44.9 - Chronic obstructive pulmonary disease, unspecified"
+   },
+   {
+    "fecha": "2026-02-12",
+    "titulo": "Problema activo: Insuficiencia respiratoria no especificada sin especificar si con hipoxia o con hipercapnia",
+    "detalle": "CIE-10-ES J96.90 - Respiratory failure, unspecified, unspecified whether with hypoxia or hypercapnia"
+   },
+   {
+    "fecha": "2026-01-13",
+    "titulo": "Problema activo: Insuficiencia respiratoria no especificada con hipercapnia",
+    "detalle": "CIE-10-ES J96.92 - Respiratory failure, unspecified with hypercapnia"
+   },
+   {
+    "fecha": "2016-04-06",
+    "titulo": "Problema activo: Trastornos del diafragma",
+    "detalle": "CIE-10-ES J98.6 - Disorders of diaphragm"
+   },
+   {
+    "fecha": "2024-01-22",
+    "titulo": "Problema activo: Absceso periapical sin sinus",
+    "detalle": "CIE-10-ES K04.7 - Periapical abscess without sinus"
+   },
+   {
+    "fecha": "2020-04-08",
+    "titulo": "Problema activo: Dolor dental y periodontal",
+    "detalle": "CIE-10-ES K08.9 - Disorder of teeth and supporting structures, unspecified"
+   },
+   {
+    "fecha": "2021-10-27",
+    "titulo": "Problema activo: Dispepsia funcional",
+    "detalle": "CIE-10-ES K30 - Functional dyspepsia"
+   },
+   {
+    "fecha": "2023-06-05",
+    "titulo": "Problema activo: Enfermedad hepática no especificada",
+    "detalle": "CIE-10-ES K76.9 - Liver disease, unspecified"
+   },
+   {
+    "fecha": "2021-07-14",
+    "titulo": "Problema activo: Dermatosis",
+    "detalle": "CIE-10-ES L98.9 - Disorder of the skin and subcutaneous tissue, unspecified"
+   },
+   {
+    "fecha": "2019-04-15",
+    "titulo": "Problema activo: Dolor en hombro no especificado",
+    "detalle": "CIE-10-ES M25.519 - Pain in unspecified shoulder"
+   },
+   {
+    "fecha": "2026-01-24",
+    "titulo": "Problema activo: Dolor en cadera derecha",
+    "detalle": "CIE-10-ES M25.551 - Pain in right hip"
+   },
+   {
+    "fecha": "2026-07-13",
+    "titulo": "Problema activo: Dolor en rodilla derecha",
+    "detalle": "CIE-10-ES M25.561 - Pain in right knee"
+   },
+   {
+    "fecha": "2022-07-23",
+    "titulo": "Problema activo: Dolor en rodilla no especificada",
+    "detalle": "CIE-10-ES M25.569 - Pain in unspecified knee"
+   },
+   {
+    "fecha": "2024-08-13",
+    "titulo": "Problema activo: Dolor en la parte inferior de la espalda",
+    "detalle": "CIE-10-ES M54.5 - Low back pain"
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Problema activo: Dolor mano",
+    "detalle": "CIE-10-ES M79.643 - Pain in unspecified hand"
+   },
+   {
+    "fecha": "2025-06-05",
+    "titulo": "Problema activo: Cistitis aguda sin hematuria",
+    "detalle": "CIE-10-ES N30.00 - Acute cystitis without hematuria"
+   },
+   {
+    "fecha": "2022-07-26",
+    "titulo": "Problema activo: Cistitis no especificada sin hematuria",
+    "detalle": "CIE-10-ES N30.90 - Cystitis, unspecified without hematuria"
+   },
+   {
+    "fecha": "2025-06-10",
+    "titulo": "Problema activo: Pólipo del cuerpo uterino",
+    "detalle": "CIE-10-ES N84.0 - Polyp of corpus uteri"
+   },
+   {
+    "fecha": "2022-10-21",
+    "titulo": "Problema activo: Bradicardia no especificada",
+    "detalle": "CIE-10-ES R00.1 - Bradycardia, unspecified"
+   },
+   {
+    "fecha": "2016-07-03",
+    "titulo": "Problema activo: Medida de presión arterial elevada sin diagnóstico de hipertensión",
+    "detalle": "CIE-10-ES R03.0 - Elevated blood-pressure reading, without diagnosis of hypertension"
+   },
+   {
+    "fecha": "2024-11-13",
+    "titulo": "Problema activo: Tos",
+    "detalle": "CIE-10-ES R05 - Cough"
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "Problema activo: Disnea",
+    "detalle": "CIE-10-ES R06.00 - Dyspnea, unspecified"
+   },
+   {
+    "fecha": "2025-12-10",
+    "titulo": "Problema activo: Disfagia no especificada",
+    "detalle": "CIE-10-ES R13.10 - Dysphagia, unspecified"
+   },
+   {
+    "fecha": "2026-01-15",
+    "titulo": "Problema activo: Dificultad para caminar no clasificada bajo otro concepto",
+    "detalle": "CIE-10-ES R26.2 - Difficulty in walking, not elsewhere classified"
+   },
+   {
+    "fecha": "2026-01-27",
+    "titulo": "Problema activo: Alteraciones de la marcha y de la movilidad no especificadas",
+    "detalle": "CIE-10-ES R26.9 - Unspecified abnormalities of gait and mobility"
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Problema activo: Trastorno neurológico deglución",
+    "detalle": "CIE-10-ES R29.818 - Other symptoms and signs involving the nervous system"
+   },
+   {
+    "fecha": "2022-07-12",
+    "titulo": "Problema activo: Incontinencia urinaria no especificada",
+    "detalle": "CIE-10-ES R32 - Unspecified urinary incontinence"
+   },
+   {
+    "fecha": "2023-03-15",
+    "titulo": "Problema activo: Mareo y desvanecimiento",
+    "detalle": "CIE-10-ES R42 - Dizziness and giddiness"
+   },
+   {
+    "fecha": "2018-09-21",
+    "titulo": "Problema activo: Alucinaciones no especificadas",
+    "detalle": "CIE-10-ES R44.3 - Hallucinations, unspecified"
+   },
+   {
+    "fecha": "2024-02-15",
+    "titulo": "Problema activo: Inquietud y agitación",
+    "detalle": "CIE-10-ES R45.1 - Restlessness and agitation"
+   },
+   {
+    "fecha": "2026-07-08",
+    "titulo": "Problema activo: Glucemia basal alterada",
+    "detalle": "CIE-10-ES R73.01 - Impaired fasting glucose"
+   },
+   {
+    "fecha": "2022-07-12",
+    "titulo": "Problema activo: Bacteriuria",
+    "detalle": "CIE-10-ES R82.71 - Bacteriuria"
+   },
+   {
+    "fecha": "2022-06-09",
+    "titulo": "Problema activo: Traumatismo superficial no especificado de cuero cabelludo, contacto sucesivo",
+    "detalle": "CIE-10-ES S00.00XD - Unspecified superficial injury of scalp, subsequent encounter"
+   },
+   {
+    "fecha": "2022-03-10",
+    "titulo": "Problema activo: Herida cuero cabelludo",
+    "detalle": "CIE-10-ES S01.00XD - Unspecified open wound of scalp, subsequent encounter"
+   },
+   {
+    "fecha": "2022-03-10",
+    "titulo": "Problema activo: TCE",
+    "detalle": "CIE-10-ES S06.9X0D - Unspecified intracranial injury without loss of consciousness, subsequent encounter"
+   },
+   {
+    "fecha": "2025-12-29",
+    "titulo": "Problema activo: Contusión de pared anterior no especificada del tórax, contacto sucesivo",
+    "detalle": "CIE-10-ES S20.219D - Contusion of unspecified front wall of thorax, subsequent encounter"
+   },
+   {
+    "fecha": "2022-05-17",
+    "titulo": "Problema activo: Contusión de parte inferior de espalda y pelvis, contacto sucesivo",
+    "detalle": "CIE-10-ES S30.0XXD - Contusion of lower back and pelvis, subsequent encounter"
+   },
+   {
+    "fecha": "2023-11-06",
+    "titulo": "Problema activo: Contusión de dedo anular izquierdo sin daños en la uña, contacto sucesivo",
+    "detalle": "CIE-10-ES S60.042D - Contusion of left ring finger without damage to nail, subsequent encounter"
+   },
+   {
+    "fecha": "2022-04-10",
+    "titulo": "Problema activo: Herida abierta no especificada de dedo de mano no especificado sin daños en la uña, contacto sucesivo",
+    "detalle": "CIE-10-ES S61.209D - Unspecified open wound of unspecified finger without damage to nail, subsequent encounter"
+   },
+   {
+    "fecha": "2022-05-31",
+    "titulo": "Problema activo: Contusión de cadera no especificada, contacto sucesivo",
+    "detalle": "CIE-10-ES S70.00XD - Contusion of unspecified hip, subsequent encounter"
+   },
+   {
+    "fecha": "2022-12-18",
+    "titulo": "Problema activo: Contusión de pierna izquierda, contacto sucesivo",
+    "detalle": "CIE-10-ES S80.12XD - Contusion of left lower leg, subsequent encounter"
+   },
+   {
+    "fecha": "2022-12-04",
+    "titulo": "Problema activo: Traumatismo superficial no especificado de pierna izquierda, contacto sucesivo",
+    "detalle": "CIE-10-ES S80.922D - Unspecified superficial injury of left lower leg, subsequent encounter"
+   },
+   {
+    "fecha": "2022-05-19",
+    "titulo": "Problema activo: Herida abierta no especificada de pierna izquierda, contacto sucesivo",
+    "detalle": "CIE-10-ES S81.802D - Unspecified open wound, left lower leg, subsequent encounter"
+   },
+   {
+    "fecha": "2023-12-15",
+    "titulo": "Problema activo: Esguince de ligamento no especificado de tobillo izquierdo, contacto sucesivo",
+    "detalle": "CIE-10-ES S93.402D - Sprain of unspecified ligament of left ankle, subsequent encounter"
+   },
+   {
+    "fecha": "2019-11-05",
+    "titulo": "Problema activo: Quemadura de grado no especificado de muñeca no especificada, secuela",
+    "detalle": "CIE-10-ES T23.079S - Burn of unspecified degree of unspecified wrist, sequela"
+   },
+   {
+    "fecha": "2025-07-06",
+    "titulo": "Problema activo: Caída en/de otras escaleras y escalones, contacto inicial",
+    "detalle": "CIE-10-ES W10.8XXA - Fall (on) (from) other stairs and steps, initial encounter"
+   },
+   {
+    "fecha": "2026-01-17",
+    "titulo": "Problema activo: Caída por el suelo, contacto sucesivo",
+    "detalle": "CIE-10-ES W13.3XXD - Fall through floor, subsequent encounter"
+   },
+   {
+    "fecha": "2026-01-24",
+    "titulo": "Problema activo: Caída no especificada, contacto sucesivo",
+    "detalle": "CIE-10-ES W19.XXXD - Unspecified fall, subsequent encounter"
+   },
+   {
+    "fecha": "2019-12-09",
+    "titulo": "Problema activo: Procedimiento y tratamiento no realizados debido a decisión del paciente por otras razones",
+    "detalle": "CIE-10-ES Z53.29 - Procedure and treatment not carried out because of patient's decision for other reasons"
+   },
+   {
+    "fecha": "2022-01-16",
+    "titulo": "Problema activo: Anticoagulación",
+    "detalle": "CIE-10-ES Z79.01 - Long term (current) use of anticoagulants"
+   },
+   {
+    "fecha": "2026-07-16",
+    "titulo": "Problema activo: Historia personal de infecciones del tracto urinario",
+    "detalle": "CIE-10-ES Z87.440 - Personal history of urinary (tract) infections"
+   },
+   {
+    "fecha": "2016-02-24",
+    "titulo": "Problema cerrado: Bronquitis",
+    "detalle": "CIE-9-ES 490 - Bronchitis, not specified as acute or chronic. Fecha cierre: 2018-11-23."
+   },
+   {
+    "fecha": "2016-04-06",
+    "titulo": "Problema cerrado: Vértigo",
+    "detalle": "CIE-9-ES 780.4 - Dizziness and giddiness. Fecha cierre: 2018-11-23."
+   },
+   {
+    "fecha": "2016-07-03",
+    "titulo": "Problema cerrado: Odinofagia",
+    "detalle": "CIE-9-ES 787.2 - Dysphagia. Fecha cierre: 2018-11-23."
+   },
+   {
+    "fecha": "2016-11-18",
+    "titulo": "Problema cerrado: Diarrea",
+    "detalle": "CIE-9-ES 787.91 - Diarrhea. Fecha cierre: 2018-11-23."
+   },
+   {
+    "fecha": "2017-02-14",
+    "titulo": "Problema cerrado: Otra embolia pulmonar sin cor pulmonale agudo",
+    "detalle": "CIE-10-ES I26.99 - Other pulmonary embolism without acute cor pulmonale. Fecha cierre: 2022-01-07."
+   },
+   {
+    "fecha": "2024-11-13",
+    "titulo": "Problema cerrado: Nasofaringitis aguda [resfriado común]",
+    "detalle": "CIE-10-ES J00 - Acute nasopharyngitis [common cold]. Fecha cierre: 2025-02-07."
+   },
+   {
+    "fecha": "2021-07-18",
+    "titulo": "Problema cerrado: EPOC agudizado",
+    "detalle": "CIE-10-ES J44.1 - Chronic obstructive pulmonary disease with (acute) exacerbation. Fecha cierre: 2026-03-07."
+   },
+   {
+    "fecha": "2021-06-18",
+    "titulo": "Problema cerrado: Disnea",
+    "detalle": "CIE-10-ES R06.00 - Dyspnea, unspecified. Fecha cierre: 2022-01-03."
+   },
+   {
+    "fecha": "2022-01-02",
+    "titulo": "Problema cerrado: Disnea",
+    "detalle": "CIE-10-ES R06.00 - Dyspnea, unspecified. Fecha cierre: 2022-01-06."
+   },
+   {
+    "fecha": "2023-12-11",
+    "titulo": "Problema cerrado: Inquietud y agitación",
+    "detalle": "CIE-10-ES R45.1 - Restlessness and agitation. Fecha cierre: 2024-02-15."
+   },
+   {
+    "fecha": "2016-11-17",
+    "titulo": "Problema cerrado: Anticoagulación oral",
+    "detalle": "CIE-9-ES V58.61 - Long-term (current) use of anticoagulants. Fecha cierre: 2018-11-23."
+   }
+  ],
+  "dudas": [
+   "El documento es un Resumen de Paciente UE (EU Patient Summary), no un informe clínico convencional. No figura nombre del centro, número de episodio, ni firmante concreto.",
+   "La fecha de actualización (16-07-2026) se ha consignado como fecha_impresion al ser la única fecha de generación del documento disponible; no se distingue fecha_informe separada.",
+   "La dosis del medicamento Rivaroxaban figura como 'No disponible' en el campo Strength, aunque el nombre comercial indica 20 mg; se ha inferido la dosis del nombre comercial (XARELTO 20MG) y se anota la duda.",
+   "La dosis del medicamento Donepezilo figura como 'No disponible' en el campo Strength, aunque el nombre comercial indica 10 mg; se ha inferido la dosis del nombre comercial (LIXBEN 10MG) y se anota la duda.",
+   "La duración del tratamiento de Rivaroxaban es 150 días desde 2026-05-21; la fecha de fin calculada sería aproximadamente 2026-10-18, pero no está impresa en el documento.",
+   "La duración del tratamiento de Donepezilo es 180 días desde 2026-03-25; la fecha de fin calculada sería aproximadamente 2026-09-21, pero no está impresa en el documento.",
+   "Los campos SIP, NHC y número de informe no figuran en el documento (datos personales anonimizados).",
+   "No hay mediciones clínicas (analíticas, constantes, gasometrías) en este documento."
+  ]
+ }
+}

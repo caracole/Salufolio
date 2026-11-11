@@ -1,0 +1,58 @@
+{
+ "fichero": "PRI_17072026074107.pdf",
+ "pdf_id": "PDF027",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h49m33",
+ "segundos": 11,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4204,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 448,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_informe": ""
+  },
+  "documento": {
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "RADIOLOGIA GENERAL",
+   "firmante": {
+    "nombre": "DE LAZARO Y DE MOLINA, SUSANA",
+    "rol": "medico"
+   },
+   "tipo": "Informe de prueba diagnóstica",
+   "fecha_informe": "2017-08-04",
+   "fecha_firma": "2017-08-04"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2017-08-04",
+    "titulo": "Angio-TC pulmonar (TC VASCULAR ARTERIAS PULMONARES)",
+    "detalle": "Control de TEP crónico. Gran elevación del hemidiafragma derecho. No se observan defectos de repleción en las arterias pulmonares sugestivos de TEP. No se aprecian alteraciones en parénquima pulmonar. Persiste bocio endotorácico izquierdo ya conocido y hipoplasia del polo inferior del riñón D."
+   }
+  ],
+  "dudas": [
+   "SIP y NHC no están impresos con valor en el documento (campos vacíos en la plantilla).",
+   "Número de informe no está cumplimentado en el documento.",
+   "Solo hay una fecha (04/08/2017) asociada tanto al informe como a la firma; no hay fecha de impresión separada.",
+   "La hora 10:54 figura junto a la exploración informada, no queda claro si es hora de realización o de registro."
+  ]
+ }
+}

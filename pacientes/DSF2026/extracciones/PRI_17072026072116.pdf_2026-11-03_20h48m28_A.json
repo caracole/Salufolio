@@ -1,0 +1,61 @@
+{
+ "fichero": "PRI_17072026072116.pdf",
+ "pdf_id": "PDF022",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h48m28",
+ "segundos": 15,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 6051,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 622,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_episodio": "15352466"
+  },
+  "documento": {
+   "emisor": "AGÈNCIA VALENCIANA DE SALUT",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "URGENCIAS GENERALES",
+   "firmante": {
+    "nombre": "COMPANY VALDEOLIVAS, ARANZAZU",
+    "rol": "medico"
+   },
+   "tipo": "Informe de prueba diagnóstica",
+   "fecha_informe": "2025-07-19",
+   "fecha_firma": "2025-07-19",
+   "fecha_impresion": "2026-07-17"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2025-07-19",
+    "titulo": "RX TÓRAX PA Y LATERAL",
+    "detalle": "Atelectasias laminares de predominio izquierdo. Elevación del hemidiafragma derecho con menor volumen del pulmón ipsilateral y desplazamiento de la silueta cardiaca hacia la izquierda (hallazgos previos conocidos). Derrame pleural izquierdo. Seno costofrénico derecho pinzado. Aumento de tamaño del mediastino superior con desplazamiento de la tráquea hacia la derecha en relación con bocio con componente endotorácico ya estudiado en TC de 2023. Sin alteraciones significativas en estructuras óseas. Sin otros hallazgos."
+   }
+  ],
+  "dudas": [
+   "SIP y NHC no están impresos en el documento (campos en blanco).",
+   "Número de informe no está impreso en el documento.",
+   "La fecha de impresión (17/07/2026) es posterior en un año a la fecha del informe (19/07/2025), lo que parece una anomalía o error tipográfico.",
+   "Hora de captura de la RX (19:51) se refiere al momento de captura por el técnico, no necesariamente a la hora de toma clínica; no se incluye en mediciones por no haber parámetros cuantificables.",
+   "Antecedente de TC realizado en 2023 (bocio con componente endotorácico) citado en el texto pero sin fecha exacta ni datos numéricos."
+  ]
+ }
+}

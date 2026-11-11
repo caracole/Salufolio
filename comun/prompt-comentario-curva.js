@@ -1,5 +1,5 @@
 /* EL PROMPT DEL COMENTARIO DE UNA CURVA — /Salufolio/comun/prompt-comentario-curva.js
-   Versión 2026.11.04-15:26:14
+   Versión 2026.11.04-15:28:03
    « Ne jamais mélanger le code JavaScript avec le prompt » (P-H, 11/08/2026) : el código
    (comun/comentario-ia.js) solo lo carga. Se cambia aquí, sin tocar el código.
    Los huecos {…} los rellena el código : {combo} {lengua} {marcador} {lineas} {contexto} {series}.

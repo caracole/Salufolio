@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    LOS ALIAS DE CAMPOS — /Salufolio/comun/alias-campos.js
-   Versión 2026.11.04-10:51:26
+   Versión 2026.11.04-11:00:08
 
    « Il ne faut pas toucher, sauf erreur, à la structure du sf, mais
      plutôt au niveau des modules. »                  — P-H, 04/11/2026
@@ -20,7 +20,7 @@
                valor se queda como un campo propio.
    ══════════════════════════════════════════════════════════════════════ */
 var SF_ALIAS = window.SF_ALIAS = {
-  "version": "2026.11.04-10:51:26",
+  "version": "2026.11.04-11:00:08",
   "medicaments": {
     "alias": {
       "nom":       "nombre",

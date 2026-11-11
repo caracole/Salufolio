@@ -12,7 +12,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_PRINCIPIOS = window.SF_PRINCIPIOS = {
   "_doctrina": "LOS PRINCIPIOS ACTIVOS (P-H, 07/09/2026)\n\nXarelto y Rivaroxaban son el mismo tratamiento: uno es el nombre comercial, el otro el principio activo. El programa no puede adivinarlo — hace falta esta tabla.\n\nVive en /Salufolio/Medicamentos/ y NO en V2/comun/: sirve a TODOS los pacientes y sobrevivira a las versiones del programa. Los datos de un lado, el codigo del otro.\n\nCrece con el uso: cuando un nombre no esta aqui, el programa lo senala y usted lo anade.",
-  "version": "2026.11.04-10:12:00",
+  "version": "2026.11.04-11:00:08",
   "_como": "clave = principio activo (normalizado) · valor = { nombre, comerciales[], grupo }",
   "principios": {
     "rivaroxaban": {

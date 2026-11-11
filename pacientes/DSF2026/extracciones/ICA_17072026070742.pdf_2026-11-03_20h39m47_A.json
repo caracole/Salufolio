@@ -1,0 +1,985 @@
+{
+ "fichero": "ICA_17072026070742.pdf",
+ "pdf_id": "PDF011",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h39m47",
+ "segundos": 146,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 24501,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 10575,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "sip": "",
+   "nhc": "",
+   "n_episodio": "",
+   "n_informe": "",
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "NEUROLOGIA",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": "medico"
+   },
+   "tipo": "Informe de Alta de Hospitalización",
+   "fecha_ingreso": "2021-09-01",
+   "fecha_alta": "2021-09-14",
+   "fecha_informe": "2021-09-14",
+   "fecha_firma": "2021-09-14",
+   "fecha_impresion": "2026-07-17"
+  },
+  "mediciones": [
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "glucemia",
+    "valor": "108",
+    "unidad": "mg/dl"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "TA",
+    "valor": "142/57",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "Tª (Timpánica)",
+    "valor": "36.9",
+    "unidad": "ºC"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "FC",
+    "valor": "50",
+    "unidad": "lat/min"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "Sat. O2",
+    "valor": "100",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "PH SANGUINEO",
+    "valor": "7.370",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "PCO2 SANGUINEO",
+    "valor": "39.0",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "PO2 SANGUINEO",
+    "valor": "83.0",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "CO2 total",
+    "valor": "23.7",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "EXCESO BASE ACTUAL",
+    "valor": "-2.5",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "EXCESO BASE STANDARD",
+    "valor": "-2.8",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "BICARBONATO ACTUAL",
+    "valor": "22.5",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "BICARBONATO STD",
+    "valor": "22.9",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "SATURACION OXIGENO",
+    "valor": "97.8",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "OXIHEMOGLOBINA",
+    "valor": "95.70",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "CARBOXIHEMOGLOBINA",
+    "valor": "1.40",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "METAHEMOGLOBINA",
+    "valor": "0.70",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "gasometria",
+    "condicion": "no especificada",
+    "parametro": "HEMOGLOBINA REDUCIDA",
+    "valor": "2.20",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA",
+    "valor": "117",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "30",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA",
+    "valor": "0.66",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOM.ESTIMADO CKD-EPI",
+    "valor": "81.99",
+    "unidad": "ml/min/sup"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "138",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "3.98",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CLORO",
+    "valor": "105",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "PROTEINA C REACTIVA",
+    "valor": "6.97",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T. PROTROMBINA",
+    "valor": "10.4",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "INDICE DE QUICK",
+    "valor": "120.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "INR",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TP RATIO",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TTPA RATIO",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T.TROMBOPLASTINA PARCIAL ACTIV",
+    "valor": "28.3",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FIBRINOGENO",
+    "valor": "306.00",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMATIES",
+    "valor": "4.31",
+    "unidad": "x 10^6/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA",
+    "valor": "13.8",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO",
+    "valor": "40.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO",
+    "valor": "93.6",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS",
+    "valor": "9.70",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS",
+    "valor": "5.20",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS",
+    "valor": "3.00",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS",
+    "valor": "1.30",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS",
+    "valor": "0.20",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS",
+    "valor": "0.10",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS",
+    "valor": "211",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA",
+    "valor": "120",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "25",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA",
+    "valor": "0.68",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOM.ESTIMADO CKD-EPI",
+    "valor": "81.23",
+    "unidad": "ml/min/sup"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "139",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "4.02",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CLORO",
+    "valor": "108",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CALCIO",
+    "valor": "8.9",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CALCIO CORREGIDO",
+    "valor": "9.5",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FOSFORO",
+    "valor": "2.2",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "PROTEINAS TOTALES",
+    "valor": "5.74",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "ALBUMINA",
+    "valor": "3.30",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "BILIRRUBINA TOTAL",
+    "valor": "0.58",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL",
+    "valor": "243",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HDL COLESTEROL",
+    "valor": "51",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "LDL COLESTEROL CALCULADO",
+    "valor": "160",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TRIGLICERIDOS",
+    "valor": "155",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "GPT",
+    "valor": "12",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "GGT",
+    "valor": "66",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FOSFATASA ALCALINA",
+    "valor": "80",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CPK",
+    "valor": "278",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "LDH",
+    "valor": "147",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "PROTEINA C REACTIVA",
+    "valor": "9.77",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "GLICOHEMOGLOBINA A1C (%)",
+    "valor": "6.11",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TSH 3ª GENERACIÓN",
+    "valor": "0.673",
+    "unidad": "mUI/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T4 LIBRE",
+    "valor": "0.98",
+    "unidad": "ng/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FOLICO",
+    "valor": "17.17",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "VITAMINA B12 (COBALAMINA)",
+    "valor": "207.0",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T. PROTROMBINA",
+    "valor": "10.8",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "INDICE DE QUICK",
+    "valor": "112.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "INR",
+    "valor": "0.94",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TP RATIO",
+    "valor": "0.94",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TTPA RATIO",
+    "valor": "0.92",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T.TROMBOPLASTINA PARCIAL ACTIV",
+    "valor": "28.9",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FIBRINOGENO",
+    "valor": "327.00",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMATIES",
+    "valor": "4.14",
+    "unidad": "x 10^6/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA",
+    "valor": "13.3",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO",
+    "valor": "38.9",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO",
+    "valor": "94.1",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HBG CORPUSCULAR MEDIA",
+    "valor": "32.1",
+    "unidad": "pg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CONC. HBG CORPUSCULAR MEDIA",
+    "valor": "34.1",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS %",
+    "valor": "58.9",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS %",
+    "valor": "28.9",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS %",
+    "valor": "10.2",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS %",
+    "valor": "1.4",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS %",
+    "valor": "0.6",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS",
+    "valor": "213",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T. PROTROMBINA (hemostasia básica)",
+    "valor": "10.4",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "INDICE DE QUICK (hemostasia básica)",
+    "valor": "120.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "INR (hemostasia básica)",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TP RATIO (hemostasia básica)",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TTPA RATIO (hemostasia básica)",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T.TROMBOPLASTINA PARCIAL ACTIV (hemostasia básica)",
+    "valor": "28.3",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FIBRINOGENO (hemostasia básica)",
+    "valor": "306.00",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-07",
+    "grupo": "constantes",
+    "parametro": "MMSE",
+    "valor": "16",
+    "unidad": "/30"
+   },
+   {
+    "fecha": "2021-09-02",
+    "grupo": "constantes",
+    "parametro": "TA",
+    "valor": "116/45",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2021-09-02",
+    "grupo": "constantes",
+    "parametro": "FC",
+    "valor": "50",
+    "unidad": "lpm"
+   },
+   {
+    "fecha": "2021-09-02",
+    "grupo": "constantes",
+    "parametro": "Tª",
+    "valor": "36.2",
+    "unidad": "ºC"
+   },
+   {
+    "fecha": "2021-09-02",
+    "grupo": "constantes",
+    "parametro": "Sat O2",
+    "valor": "97",
+    "unidad": "%",
+    "condicion": "GN 2 lpm"
+   }
+  ],
+  "medicamentos": [
+   {
+    "nombre": "ADIRO",
+    "dosis": "100",
+    "pauta": "0-1-0",
+    "via": "oral"
+   },
+   {
+    "nombre": "PLAVIX",
+    "dosis": "75",
+    "pauta": "0-1-0",
+    "via": "oral",
+    "hasta": "una caja y suspender"
+   },
+   {
+    "nombre": "SPIRIVA",
+    "dosis": "",
+    "pauta": "INH/12 si precisa",
+    "via": "inhalada"
+   },
+   {
+    "nombre": "PANTOPRAZOL",
+    "dosis": "40",
+    "pauta": "1-0-0",
+    "via": "oral"
+   },
+   {
+    "nombre": "espesante (néctar)",
+    "dosis": "",
+    "pauta": "con líquidos",
+    "via": "oral"
+   },
+   {
+    "nombre": "Xarelto (rivaroxabán)",
+    "dosis": "",
+    "pauta": "",
+    "via": "",
+    "detalle": "tratamiento previo por TEP 2016, ya suspendido antes del ingreso"
+   },
+   {
+    "nombre": "Seguril",
+    "dosis": "",
+    "pauta": "ocasional",
+    "via": ""
+   },
+   {
+    "nombre": "oxígeno",
+    "dosis": "2 lpm",
+    "pauta": "si Sat < 92%",
+    "via": "gafas nasales"
+   },
+   {
+    "nombre": "BiPAP",
+    "dosis": "",
+    "pauta": "nocturna",
+    "via": ""
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2016-11-08",
+    "titulo": "TVP + TEP bilateral en Francia",
+    "detalle": "Tras viaje prolongado en coche a Alemania. Anticoagulada con rivaroxabán (Xarelto). Ecocardiograma en Francia: VD dilatado normocinetico, PAPs 55-60 mmHg, HTP post embolia."
+   },
+   {
+    "fecha": "2017-05-01",
+    "titulo": "TAC torácico con CIV",
+    "detalle": "Tractos engrosados apicales bilaterales compatibles con cambios post TBC. Elevación diafragmática derecha. Pequeño defecto de repleción en arteria pulmonar derecha, sugestivo de tromboembolismo crónico. Bocio endotorácico a expensas LTI 3x3x5 cm. Sin paquipleuritis."
+   },
+   {
+    "fecha": "2017-05-01",
+    "titulo": "Gasometría arterial (antecedente)",
+    "detalle": "pH 7.41 pCO2 45 pO2 83 HCO3 27.5 Sat 96.3%"
+   },
+   {
+    "fecha": "2017-01-01",
+    "titulo": "Espirometría (antecedente, año 2017)",
+    "detalle": "FVC 930 ml 38%; FEV1 860 ml 52%; FEV1/FVC 93; TBD negativo"
+   },
+   {
+    "fecha": "2017-08-01",
+    "titulo": "AngioTC tórax agosto 2017",
+    "detalle": "Gran elevación hemidiafragma derecho. Sin defectos de repleción sugestivos de TEP. Sin alteraciones en parénquima. Bocio endotorácico izquierdo. Hipoplasia polo inferior riñón derecho."
+   },
+   {
+    "fecha": "2017-12-01",
+    "titulo": "Ecodoppler venoso diciembre 2017",
+    "detalle": "Descarta insuficiencia venosa profunda bilateral."
+   },
+   {
+    "fecha": "2017-11-01",
+    "titulo": "Ecocardiografía noviembre 2017",
+    "detalle": "Normal. FEVI >65%. No signos indirectos de HTP."
+   },
+   {
+    "fecha": "2021-07-18",
+    "titulo": "Consulta urgencias por disnea",
+    "detalle": "Consulta en URG el 18/07/2021 por disnea progresiva de 1 mes de evolución."
+   },
+   {
+    "fecha": "2021-08-30",
+    "titulo": "Celebración cumpleaños — ingesta excesiva de alcohol",
+    "detalle": "La paciente bebió más vino blanco y probablemente vermú. Esa noche presentó baja saturación de oxígeno."
+   },
+   {
+    "fecha": "2021-08-31",
+    "titulo": "Visita médico de AP a domicilio — madrugada",
+    "detalle": "Paciente aparentemente ebria sin BiPAP. SatO2 sin BiPAP 87%, con BiPAP 96%. Se ajustó BiPAP. Test antígeno COVID negativo."
+   },
+   {
+    "fecha": "2021-08-31",
+    "titulo": "Llamada al 112 por el marido",
+    "hora": "14:03",
+    "detalle": "Marido avisa al 112 a las 14:03h."
+   },
+   {
+    "fecha": "2021-08-31",
+    "titulo": "Inicio de dificultad para hablar y hemiparesia izquierda",
+    "detalle": "Según el marido, desde la mañana del 31/08/2021 presenta dificultad para hablar y para movilizar el hemicuerpo izquierdo. Requiere ayuda para levantarse, lavarse y vestirse. Última vez vista bien: tras la cena, sobre las 21h del 30/08/2021."
+   },
+   {
+    "fecha": "2021-09-01",
+    "hora": "00:55",
+    "titulo": "Derivación a Urgencias por médico de atención continuada",
+    "detalle": "Marido avisa porque no habla bien y le cuesta moverla. Paciente refiere torpeza en hemicuerpo izquierdo. Hematoma en dorso mano derecha y brazo izquierdo por caída."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "TC cráneo y Angio-TC urgencias",
+    "detalle": "Sin sangrado ni lesión isquémica aguda. Oclusión ACI izquierda."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "RM cerebro y RM vascular cerebro",
+    "detalle": "Infarto agudo paramediano derecho en la protuberancia de 7x18 mm. Focos isquémicos crónicos en coronas radiadas (Fazekas II). Área de gliosis córtico-subcortical parietal derecha (infarto antiguo). Depósito metálico inespecífico en ambos pálidos. Discreta pérdida difusa del parénquima. Trombosis ya conocida del segmento intracraneal de ACI izquierda. Listesis I/IV a nivel C4-C5 sin lisis."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Ingreso en Unidad de Ictus / Neurología",
+    "detalle": "NIHSS 5 puntos al ingreso. Disartria moderada. Hemiparesia izda 4/5 MS, 4-/5 MI. Test 3 tragos: tose en el segundo."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Interconsulta Endocrinología",
+    "detalle": "Bocio endotorácico objetivado en TC. Crecimiento bilateral, mayor en componente derecho, progresando a nivel endotorácico por debajo del manubrio esternal. Desplaza tráquea con discreta compresión pero manteniendo buena luz. Eutiroidea. No candidata probable a cirugía tiroidea por edad y antecedentes. Plan: remitir a endocrinólogo de zona al alta; ECO tiroidea ambulatoria."
+   },
+   {
+    "fecha": "2021-09-02",
+    "titulo": "Interconsulta Neumología",
+    "detalle": "Disnea en decúbito supino con SatO2 92-93%. BiPAP conectada para tratamiento nocturno. Solicita DD, NTproBNP, enzimas cardíacas; recomienda valoración por Cardiología (bradicardia, disnea crónica de esfuerzo/ortopnea)."
+   },
+   {
+    "fecha": "2021-09-03",
+    "titulo": "TEST MECV-V por enfermera especialista en disfagia",
+    "detalle": "Signos de pérdida de seguridad con textura líquida. Disfagia a líquidos. Viscosidad recomendada: néctar; volumen: medios. Indicaciones dadas al hermano."
+   },
+   {
+    "fecha": "2021-09-03",
+    "titulo": "Interconsulta Trabajo Social",
+    "detalle": "Viven en masía en Les Useres. Hasta el episodio actual era autónoma. Problemas de acceso a recursos sanitarios. Necesitarían servicios de ayuda a domicilio. Pareja (Pierre) comenta posible traslado a Navarra al alta."
+   },
+   {
+    "fecha": "2021-09-06",
+    "titulo": "Revisión imágenes TC — Endocrinología",
+    "detalle": "Confirmación de crecimiento de bocio bilateral, mayor en componente derecho, por debajo del manubrio esternal. Discreta compresión traqueal con buena luz mantenida."
+   },
+   {
+    "fecha": "2021-09-06",
+    "titulo": "Trabajo Social — información pareja sobre empadronamiento",
+    "detalle": "Para tarjeta SIP definitiva en Comunidad Valenciana necesita estar empadronada. Pareja comenta probable traslado a Navarra."
+   },
+   {
+    "fecha": "2021-09-07",
+    "titulo": "AngioTC pulmonar",
+    "detalle": "No se objetivan defectos de repleción en arterias pulmonares principales ni ramas lobares ni segmentarias. Patrón de perfusión en mosaico bilateral y difuso más marcado que en estudio previo. Placas de engrosamiento pleural parcialmente calcificadas predominio campo medio y base derechas. Pequeñas bronquiectasias cilíndricas/arrosariadas en LII y língula. Engrosamiento apical bilateral. No derrame pleural. Sin adenopatías. Bocio endotorácico a expensas lóbulo izquierdo con desplazamiento contralateral traqueal y esofágico. Gran elevación hemidiafragmática derecha. Hipotrofia renal derecha. Conclusión: No se evidencia TEP."
+   },
+   {
+    "fecha": "2021-09-14",
+    "titulo": "Alta hospitalaria",
+    "detalle": "Leve hemiparesia atáxica izda. NIHSS: 2, Rankin: 4, Barthel: 25. Marcha con ayuda. Disfagia ajustada. Disnea mejorada con BiPAP y O2 supervisado. Afebril. TA 130/60, FC ~50 lpm. Pendiente ecocardioTT y ecografía tiroidea ambulatorias."
+   }
+  ],
+  "dudas": [
+   "El nombre del firmante aparece como 'ADJUNTO' sin nombre concreto impreso; no se puede rellenar el campo firmante nombre.",
+   "Los números de identificación (SIP, NHC, n_episodio) están redactados/anonimizados en el documento y no son legibles.",
+   "Las dos analíticas de laboratorio del ingreso (urgencias y unidad de ictus) comparten la misma fecha 2021-09-01 pero no tienen hora impresa; no se puede distinguir la hora de cada extracción.",
+   "La gasometría de urgencias no especifica la FiO2 ni si es aire ambiente; se anota como 'no especificada'.",
+   "La gasometría registrada en la IC de Neumología (2/9/21) indica 'FiO2???' en el documento original; condición de medida no determinable con certeza.",
+   "La espirometría de 2017 y las gasometrías de 2017 son antecedentes citados en la IC de Neumología, no mediciones realizadas durante este ingreso; se han incluido como eventos, no como mediciones.",
+   "NT PROPEPTIDO NATRIURETICO BNP 58 pg/mL y DIMEROS D 320.00 ng/mL aparecen citados como antecedentes (de 2017) en la IC de Neumología, no como analítica de este ingreso; se han omitido de mediciones.",
+   "La fecha exacta de la espirometría de 2017 solo indica el año; se ha anotado como 2017-01-01 con advertencia de que solo consta el año.",
+   "La fecha exacta del AngioTC tórax agosto 2017 solo indica el mes y año; se ha anotado como 2017-08-01 con advertencia.",
+   "La fecha exacta del ecodoppler venoso diciembre 2017 solo indica el mes y año; se ha anotado como 2017-12-01 con advertencia.",
+   "La fecha exacta de la ecocardiografía noviembre 2017 solo indica el mes y año; se ha anotado como 2017-11-01 con advertencia.",
+   "El Xarelto (rivaroxabán) se cita como tratamiento previo ya suspendido; no hay dosis ni pauta documentadas en este ingreso."
+  ]
+ }
+}

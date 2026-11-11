@@ -1,5 +1,5 @@
 /* Los textos de Radar
-   Versión 2026.10.29-10:37:45 */
+   Versión 2026.11.04-17:05:42 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Radar, en su propia carpeta.",
   "textos": {

@@ -1,0 +1,69 @@
+{
+ "fichero": "PRI_17072026072908.pdf",
+ "pdf_id": "PDF025",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h49m08",
+ "segundos": 15,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4179,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 610,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_informe": ""
+  },
+  "documento": {
+   "emisor": "AGÈNCIA VALENCIANA DE SALUT",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "RADIOLOGIA",
+   "firmante": {
+    "nombre": "",
+    "rol": "medico"
+   },
+   "tipo": "informe de prueba diagnóstica",
+   "fecha_informe": "2022-09-13",
+   "fecha_firma": "2022-09-13"
+  },
+  "mediciones": [
+   {
+    "fecha": "2022-09-13",
+    "hora": "15:10",
+    "grupo": "laboratorio",
+    "parametro": "hipoecogenicidad (lesión fibrótica residual en región glútea izquierda)",
+    "valor": "9.5 x 3.2",
+    "unidad": "mm"
+   }
+  ],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2022-09-13",
+    "titulo": "ECOGRAFÍA MUSCULAR TENDINOSA",
+    "detalle": "Juicio clínico: hematoma encapsulado en región glútea izquierda de aparición espontánea. En el momento actual no se objetiva imagen que traduzca un hematoma encapsulado en región glútea; solo persiste pequeña hipoecogenicidad de 9.5 x 3.2 mm, en relación con lesión de carácter fibrótica residual."
+   }
+  ],
+  "dudas": [
+   "El número de informe figura en el documento pero no se puede leer (campo vacío o ilegible en el PDF).",
+   "El nombre del firmante aparece como 'RADIOLOGO RESPONSABLE', sin nombre concreto; se ha dejado vacío.",
+   "SIP y NHC aparecen como campos en la plantilla pero sus valores no son legibles en el PDF.",
+   "No se indica la fecha de impresión de forma explícita; la única fecha disponible es 2022-09-13, usada como fecha del informe y de firma.",
+   "El centro peticionario es CAP DE ATZENETA, pero no se distingue si es el centro emisor o solo el solicitante; se ha mantenido HOSPITAL GENERAL DE CASTELLON como centro emisor."
+  ]
+ }
+}

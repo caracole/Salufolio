@@ -1,0 +1,458 @@
+{
+ "fichero": "PRL_17072026071302.pdf",
+ "pdf_id": "PDF034",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h54m45",
+ "segundos": 47,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 13397,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 3659,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLON",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "informe de resultados de pruebas de laboratorio",
+   "fecha_informe": "2016-11-23",
+   "fecha_firma": "2016-11-23",
+   "fecha_impresion": "2016-11-23"
+  },
+  "mediciones": [
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA (SANGRE)",
+    "valor": "100",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "30",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA (SANGRE)",
+    "valor": "0.67",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOMERULAR ESTIMADO MDRD-4",
+    "valor": "84.41",
+    "unidad": "ml/min/s"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "139",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "4.86",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "CLORURO",
+    "valor": "106",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "PROTEÍNAS TOTALES",
+    "valor": "6.38",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "ALBÚMINA",
+    "valor": "3.83",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "BILIRRUBINA TOTAL",
+    "valor": "0.46",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "URATO",
+    "valor": "3.9",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL TOTAL",
+    "valor": "207",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL HDL",
+    "valor": "59",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL LDL CALCULADO",
+    "valor": "127",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "TRIGLICERIDOS (SANGRE)",
+    "valor": "105",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "ALANINA-AMINOTRANSFERASA (GPT)",
+    "valor": "23",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "GAMMA-GLUTAMIL-TRANSPEPTIDASA (gGT)",
+    "valor": "102",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "FOSFATASA ALCALINA",
+    "valor": "156",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "CREATINCINASA (CK)",
+    "valor": "37",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "LACTATO-DESHIDROGENASA (LDH)",
+    "valor": "346",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "HIERRO",
+    "valor": "91",
+    "unidad": "µg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "CAPACIDAD FIJACIÓN HIERRO LIBRE",
+    "valor": "197",
+    "unidad": "µg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "CAPACIDAD TOTAL DE FIJACION DEL HIERRO",
+    "valor": "288",
+    "unidad": "µg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "TRANSFERRINA: ÍNDICE DE SATURACIÓN (EN SANGRE)",
+    "valor": "32",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "FERRITINA",
+    "valor": "211",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "TSH (TIROTROPINA)",
+    "valor": "0.424",
+    "unidad": "mUI/L"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "TIROXINA LIBRE (T4 LIBRE)",
+    "valor": "1.2",
+    "unidad": "ng/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "ACIDO FOLICO (FOLATO)",
+    "valor": "8.75",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "VITAMINA B12 (CIANOCOBALAMINA)",
+    "valor": "379",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "DIMERO D DE LA FIBRINA",
+    "valor": "465",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "TIEMPO DE PROTROMBINA",
+    "valor": "15.2",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "TIEMPO DE TROMBOPLASTINA PARCIAL ACTIVADO (TTPA)",
+    "valor": "36.6",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "FIBRINÓGENO, ACTIVIDAD",
+    "valor": "406",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "ÍNDICE DE QUICK (EN SANGRE)",
+    "valor": "57",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "TIEMPO DE PROTROMBINA EN RATIO (INR) (EN SANGRE)",
+    "valor": "1.51",
+    "unidad": ""
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "TIEMPO DE TROMBOPLASTINA PARCIAL ACTIVADO (TTPA) EN RATIO (EN SANGRE)",
+    "valor": "1.14",
+    "unidad": ""
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "HEMATÍES (EN SANGRE)",
+    "valor": "4.26",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA (EN SANGRE)",
+    "valor": "12.9",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO (EN SANGRE)",
+    "valor": "40.5",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO (EN SANGRE)",
+    "valor": "95.3",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA CORPUSCULAR MEDIA (EN SANGRE)",
+    "valor": "30.3",
+    "unidad": "pg"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "CONCENTRACIÓN HEMOGLOBINA CORPUSCULAR MEDIA (EN SANGRE)",
+    "valor": "31.9",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "ÍNDICE DISTRIBUCIÓN HEMATÍES (CV) (EN SANGRE)",
+    "valor": "12.8",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS (EN SANGRE)",
+    "valor": "8.39",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "NEUTRÓFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "4.7",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS ABSOLUTOS (EN SANGRE)",
+    "valor": "2.54",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS ABSOLUTOS (EN SANGRE)",
+    "valor": "0.57",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "EOSINÓFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "0.27",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "0.05",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "NEUTRÓFILOS (EN SANGRE)",
+    "valor": "56",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS (EN SANGRE)",
+    "valor": "30.2",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS (EN SANGRE)",
+    "valor": "6.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "EOSINÓFILOS (EN SANGRE)",
+    "valor": "3.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "BASÓFILOS (EN SANGRE)",
+    "valor": "0.6",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS (EN SANGRE)",
+    "valor": "361",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN PLAQUETAR MEDIO (EN SANGRE)",
+    "valor": "7.3",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2016-11-23",
+    "grupo": "laboratorio",
+    "parametro": "VELOCIDAD DE SEDIMENTACIÓN GLOBULAR",
+    "valor": "34",
+    "unidad": "mm/h"
+   }
+  ],
+  "medicamentos": [],
+  "eventos": [],
+  "dudas": [
+   "El número de solicitud figura en el encabezado como campo pero su valor no está impreso en el documento.",
+   "El número de historia clínica figura como campo pero su valor no está impreso en el documento.",
+   "El SIP (CIP de la CA) figura como campo pero su valor no está impreso en el documento.",
+   "El nombre del paciente no está impreso (documento anonimizado).",
+   "El firmante aparece como 'Facultativ' sin nombre ni apellidos impresos.",
+   "La fecha de petición es 2016-11-21 y la fecha de toma de muestra y firma es 2016-11-23; no queda claro cuál es la fecha del informe: se ha usado 2016-11-23 (fecha de firma) como fecha_informe.",
+   "Las unidades de HEMATÍES, LEUCOCITOS, NEUTRÓFILOS ABSOLUTOS, LINFOCITOS ABSOLUTOS, MONOCITOS ABSOLUTOS, EOSINÓFILOS ABSOLUTOS, BASOFILOS ABSOLUTOS y PLAQUETAS aparecen como 'x' en el documento original, sin especificar el multiplicador (probablemente 10^6/µL o 10^3/µL según el parámetro), pero se ha copiado tal como está impreso.",
+   "El INR y el ratio TTPA no tienen unidad impresa en el documento.",
+   "El servicio médico solicitante no está impreso en el documento."
+  ]
+ }
+}

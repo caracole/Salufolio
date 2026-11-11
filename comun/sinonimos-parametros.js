@@ -1,7 +1,7 @@
 /* LOS SINÓNIMOS DE LOS PARÁMETROS — /Salufolio/comun/sinonimos-parametros.js
-   Versión 2026.11.04-16:57:50 — una tabla, ningún código. Se lee en _leeme. Cada clave lleva su número fijo « n ». */
+   Versión 2026.11.11-11:39:07 — una tabla, ningún código. Se lee en _leeme. Cada clave lleva su número fijo « n ». */
 var SF_SINONIMOS_PARAMETROS = window.SF_SINONIMOS_PARAMETROS = {
- "version": "2026.11.04-16:57:50",
+ "version": "2026.11.11-11:39:07",
  "_leeme": [
   "LOS SINÓNIMOS DE LOS PARÁMETROS — /Salufolio/comun/sinonimos-parametros.js",
   "« Le .sf garde une seule clé par paramètre ; les synonymes vivent dans une table extérieure » (P-H, 28/10/2026). « Il ne faut pas toucher, sauf erreur, à la structure du sf, mais plutôt au niveau des modules » (P-H, 04/11/2026).",
@@ -1991,8 +1991,17 @@ var SF_SINONIMOS_PARAMETROS = window.SF_SINONIMOS_PARAMETROS = {
     "en": "Barthel"
    },
    "impresos": [
-    "BARTHEL"
-   ]
+    "BARTHEL",
+    "Índice de Barthel",
+    "ÍNDICE DE BARTHEL"
+   ],
+   "buscar": [
+    "Resultado",
+    "Puntuación",
+    "Puntuacion"
+   ],
+   "_buscar_escalas": "Los cuestionarios escriben el total aparte : « Resultado 9 Deterioro… ». El rotulador busca esas palabras SOLO al abrir un punto de esta escala (P-H, 10/11/2026).",
+   "_nota_10_11": "« Índice de Barthel » : el nombre de los documentos de valoración escaneados (P-H, 10/11/2026)."
   },
   "braden": {
    "n": 113,
@@ -2053,6 +2062,53 @@ var SF_SINONIMOS_PARAMETROS = window.SF_SINONIMOS_PARAMETROS = {
    "impresos": [
     "MMSE"
    ]
+  },
+  "pfeiffer": {
+   "n": 132,
+   "grupo": "ESCALAS",
+   "unidad": "/10",
+   "curva": true,
+   "etiqueta": {
+    "es": "Pfeiffer (errores)",
+    "fr": "Pfeiffer (erreurs)",
+    "ca": "Pfeiffer (errors)",
+    "en": "Pfeiffer (errors)"
+   },
+   "impresos": [
+    "Test de Pfeiffer",
+    "TEST DE PFEIFFER",
+    "SPMSQ"
+   ],
+   "buscar": [
+    "Resultado",
+    "Puntuación",
+    "Puntuacion"
+   ],
+   "_nota": "Cuenta ERRORES (0 a 10) : cuanto más alto, peor — al revés que el Barthel (P-H, 10/11/2026)."
+  },
+  "lawton": {
+   "n": 133,
+   "grupo": "ESCALAS",
+   "unidad": "/8",
+   "curva": true,
+   "etiqueta": {
+    "es": "Lawton y Brody",
+    "fr": "Lawton et Brody",
+    "ca": "Lawton i Brody",
+    "en": "Lawton and Brody"
+   },
+   "impresos": [
+    "Índice de Lawton",
+    "ÍNDICE DE LAWTON",
+    "Escala de Lawton y Brody",
+    "LAWTON"
+   ],
+   "buscar": [
+    "Resultado",
+    "Puntuación",
+    "Puntuacion"
+   ],
+   "_nota": "Actividades instrumentales de la vida diaria (0 a 8). Si el documento imprime otro nombre, se añade aquí (P-H, 10/11/2026)."
   },
   "orina_bilirrubina": {
    "n": 117,

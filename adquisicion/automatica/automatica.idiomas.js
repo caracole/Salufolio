@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.11.04-11:09:00
+   Versión 2026.11.04-11:13:37
    LOS TEXTOS de la adquisición automática
 
    Nada en duro: cada texto lleva su clave. P-H la llama « la tabla de

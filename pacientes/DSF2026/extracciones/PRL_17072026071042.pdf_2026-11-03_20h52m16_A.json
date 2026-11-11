@@ -1,0 +1,509 @@
+{
+ "fichero": "PRL_17072026071042.pdf",
+ "pdf_id": "PDF031",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h52m16",
+ "segundos": 59,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 15573,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 4852,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "nhc": "11118986",
+   "n_solicitud": "1655722017003007362"
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLO / CENTRO DE SALUD DE ATZENETA DEL MAESTRAT",
+   "firmante": {
+    "nombre": "HECTOR L. SALES SAFONT",
+    "rol": "medico"
+   },
+   "tipo": "Informe de Resultados de Pruebas de laboratorio",
+   "fecha_informe": "2022-07-12",
+   "fecha_firma": "2022-07-12",
+   "fecha_impresion": "2026-07-17"
+  },
+  "mediciones": [
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "0",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "BASÓFILOS (EN SANGRE)",
+    "valor": "0.5",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "CONCENTRACIÓN HEMOGLOBINA CORPUSCULAR MEDIA (EN SANGRE)",
+    "valor": "32.7",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "EOSINÓFILOS (EN SANGRE)",
+    "valor": "1.8",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "EOSINÓFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "0.1",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO (EN SANGRE)",
+    "valor": "43",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "HEMATÍES (EN SANGRE)",
+    "valor": "4.52",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA (EN SANGRE)",
+    "valor": "14.1",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA CORPUSCULAR MEDIA (EN SANGRE)",
+    "valor": "31.1",
+    "unidad": "pg"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS (EN SANGRE)",
+    "valor": "6.9",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS (EN SANGRE)",
+    "valor": "30.5",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS ABSOLUTOS (EN SANGRE)",
+    "valor": "2.1",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS (EN SANGRE)",
+    "valor": "9",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS ABSOLUTOS (EN SANGRE)",
+    "valor": "0.6",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "NEUTRÓFILOS (EN SANGRE)",
+    "valor": "58.2",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "NEUTRÓFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "4",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS (EN SANGRE)",
+    "valor": "239",
+    "unidad": "x"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "VELOCIDAD DE SEDIMENTACIÓN GLOBULAR",
+    "valor": "9",
+    "unidad": "mm/h"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO (EN SANGRE)",
+    "valor": "95.2",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN PLAQUETAR MEDIO (EN SANGRE)",
+    "valor": "8.9",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "ÍNDICE DISTRIBUCIÓN HEMATÍES (CV) (EN SANGRE)",
+    "valor": "13.5",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "FERRITINA",
+    "valor": "66",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "PROTEÍNA C REACTIVA (PCR)",
+    "valor": "0.62",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "TRANSFERRINA: ÍNDICE DE SATURACIÓN (EN SANGRE)",
+    "valor": "47",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "BILIRRUBINA (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "CUERPOS CETÓNICOS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "DENSIDAD (EN ORINA)",
+    "valor": "1.021",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS (EN ORINA)",
+    "valor": "75",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "NITRITOS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "PH (EN ORINA)",
+    "valor": "6",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "PROTEÍNAS (EN ORINA)",
+    "valor": "25",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "UROBILINÓGENO (EN ORINA)",
+    "valor": "Normal",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "ALANINA-AMINOTRANSFERASA (GPT)",
+    "valor": "13",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "ALBÚMINA",
+    "valor": "3.6",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "BILIRRUBINA TOTAL",
+    "valor": "0.66",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "CALCIO",
+    "valor": "9.74",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "CAPACIDAD FIJACIÓN HIERRO LIBRE",
+    "valor": "154.3",
+    "unidad": "µg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "CAPACIDAD TOTAL DE FIJACION DEL HIERRO",
+    "valor": "290",
+    "unidad": "µg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "CLORURO",
+    "valor": "107",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL HDL",
+    "valor": "54.09",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL LDL CALCULADO",
+    "valor": "151",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL TOTAL",
+    "valor": "230.2",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA (SANGRE)",
+    "valor": "0.77",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOMERULAR ESTIMADO CKD - EPI",
+    "valor": "71.27",
+    "unidad": "ml/min/s"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "FOSFATASA ALCALINA",
+    "valor": "83",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "FOSFATO",
+    "valor": "2.38",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "GAMMA-GLUTAMIL-TRANSPEPTIDASA (gGT)",
+    "valor": "56",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA (SANGRE)",
+    "valor": "120.6",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA GLICADA A1c (HbA1c)",
+    "valor": "5.66",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "HIERRO",
+    "valor": "136",
+    "unidad": "µg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "4.22",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "PROTEÍNAS TOTALES",
+    "valor": "6.05",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "142",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "TRIGLICERIDOS (SANGRE)",
+    "valor": "124.8",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "URATO",
+    "valor": "3.98",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "40.48",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "ACIDO FOLICO (FOLATO)",
+    "valor": "10.24",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "CALCIDIOL (25 HIDROXICOLECALCIFEROL)",
+    "valor": "27.1",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "TIROXINA LIBRE (T4 LIBRE)",
+    "valor": "0.94",
+    "unidad": "ng/dL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "TSH (TIROTROPINA)",
+    "valor": "0.6",
+    "unidad": "mUI/L"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "VITAMINA B12 (CIANOCOBALAMINA)",
+    "valor": "152",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2022-07-07",
+    "grupo": "laboratorio",
+    "parametro": "PÉPTIDO NATRIURÉTICO CEREBRAL (BNP)",
+    "valor": "95.3",
+    "unidad": "pg/mL"
+   }
+  ],
+  "medicamentos": [],
+  "eventos": [],
+  "dudas": [
+   "La fecha de impresión figura como 17/07/2026, que parece un error tipográfico (posiblemente 17/07/2022).",
+   "El valor de referencia superior de DENSIDAD (EN ORINA) está truncado en el documento (figura '1.005 -' sin límite superior).",
+   "El valor de referencia superior de UREA está truncado en el documento (figura '10.0 --' sin límite superior).",
+   "El valor de referencia de TSH está truncado (figura '0,380 -' sin límite superior).",
+   "El valor de referencia de CALCIDIOL está truncado (figura '30,00 -' sin límite superior).",
+   "El valor de referencia de VITAMINA B12 está truncado (figura '180,0 -' sin límite superior).",
+   "El SIP del paciente (CIP de la CA) no figura en las páginas 1-5; sólo aparece en la página 6: 11118986 (coincide con NHC).",
+   "El usuario firmante del sistema figura como 'ALDASORO SANCHIS, CONSTANZA DE LOS DESAMPARADOS'; el facultativo firmante es 'HECTOR L. SALES SAFONT'. No queda claro el rol exacto de cada uno.",
+   "Las unidades de LEUCOCITOS EN ORINA y PROTEÍNAS EN ORINA no figuran impresas en el documento.",
+   "No se puede determinar si la fecha de petición (20/06/2022) corresponde a la fecha de ingreso o es simplemente la fecha de solicitud del análisis."
+  ]
+ }
+}

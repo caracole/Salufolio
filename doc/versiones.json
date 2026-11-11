@@ -1,6 +1,6 @@
 {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.09.22-10:06:52",
+ "_ultima_pasada": "2026.11.11-18:36:24",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -38,40 +38,40 @@
    "version": "2026.09.19-19:42:02"
   },
   "adquisicion/asistida/asistida.help.html": {
-   "suma": "c01ea9578b49",
-   "version": "2026.09.19-18:15:47"
+   "suma": "f550b7af596d",
+   "version": "2026.11.04-12:42:25"
   },
   "adquisicion/asistida/asistida.html": {
-   "suma": "9a9e8e608c20",
-   "version": "2026.09.19-18:12:56"
+   "suma": "ca5e5f9d3e9d",
+   "version": "2026.11.05-22:43:03"
   },
   "adquisicion/asistida/asistida.idiomas.js": {
-   "suma": "a0aad06b8494",
-   "version": "2026.09.19-18:15:47"
+   "suma": "3a7dbada57cd",
+   "version": "2026.10.06-13:09:36"
   },
   "adquisicion/asistida/asistida.js": {
    "suma": "d16da7f91d94",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.05-22:43:03"
   },
   "adquisicion/asistida/index.html": {
    "suma": "45386ecebea9",
    "version": "2026.09.19-18:15:47"
   },
   "adquisicion/automatica/automatica.help.html": {
-   "suma": "2f2e3b7fff8e",
-   "version": "2026.09.19-18:15:47"
+   "suma": "262023af29db",
+   "version": "2026.11.04-12:42:25"
   },
   "adquisicion/automatica/automatica.html": {
-   "suma": "5df6c3eeb135",
-   "version": "2026.09.19-18:12:56"
+   "suma": "608dbded6284",
+   "version": "2026.11.05-22:43:03"
   },
   "adquisicion/automatica/automatica.idiomas.js": {
-   "suma": "4aabd570ee39",
-   "version": "2026.09.19-18:15:47"
+   "suma": "54712dd7d6ac",
+   "version": "2026.11.04-11:13:37"
   },
   "adquisicion/automatica/automatica.js": {
-   "suma": "16c5c8360bb5",
-   "version": "2026.09.19-18:12:56"
+   "suma": "1603283e3254",
+   "version": "2026.11.05-22:43:03"
   },
   "adquisicion/automatica/index.html": {
    "suma": "70778b7e6643",
@@ -82,112 +82,116 @@
    "version": "2026.09.19-18:15:47"
   },
   "adquisicion/manual/manual.help.html": {
-   "suma": "7366952a9591",
-   "version": "2026.09.19-18:15:47"
+   "suma": "b5ba1f90ffcf",
+   "version": "2026.11.04-12:42:25"
   },
   "adquisicion/manual/manual.html": {
-   "suma": "cfe7a9eb33cd",
-   "version": "2026.09.19-18:12:56"
+   "suma": "8a58204cf609",
+   "version": "2026.10.06-19:16:32"
   },
   "adquisicion/manual/manual.idiomas.js": {
-   "suma": "c5d84bfb1d95",
-   "version": "2026.09.19-18:15:47"
+   "suma": "dc5a4582aa4d",
+   "version": "2026.10.05-20:20:03"
   },
   "adquisicion/manual/manual.js": {
    "suma": "00c258c7b36a",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.04-12:42:25"
   },
   "adquisicion/prompts/LEEME.txt": {
-   "suma": "f77baf83fa1e",
-   "version": "2026.09.19-18:15:47"
+   "suma": "071651d41a4a",
+   "version": "2026.10.06-19:16:32"
   },
   "adquisicion/prompts/prompt-extraccion-ocr.js": {
-   "suma": "3d1760268fdb",
-   "version": "2026.09.19-18:15:47"
+   "suma": "eb49e702ba4c",
+   "version": "2026.11.04-10:32:58"
   },
   "adquisicion/prompts/prompt-extraccion-ocr.txt": {
    "suma": "54cead42a5e4",
    "version": "2026.09.19-18:15:47"
   },
   "adquisicion/prompts/prompt-extraccion.js": {
-   "suma": "1249872c1771",
-   "version": "2026.09.19-18:15:47"
+   "suma": "c01df5e6fc44",
+   "version": "2026.11.04-10:32:58"
   },
   "adquisicion/prompts/prompt-extraccion.txt": {
    "suma": "ce9c84a8268a",
    "version": "2026.09.19-18:15:47"
   },
   "adquisicion/prompts/prompts.js": {
-   "suma": "d4b78dd2e986",
-   "version": "2026.09.19-18:12:56"
+   "suma": "f97bec763540",
+   "version": "2026.11.04-10:32:58"
   },
   "antecedentes/antecedentes.help.html": {
-   "suma": "e5f23e70b695",
-   "version": "2026.09.19-18:15:47"
+   "suma": "8c8fa090cd26",
+   "version": "2026.11.04-12:42:25"
   },
   "antecedentes/antecedentes.html": {
-   "suma": "2735496f09d4",
-   "version": "2026.09.19-18:12:56"
+   "suma": "b032f3524053",
+   "version": "2026.11.05-15:36:20"
   },
   "antecedentes/antecedentes.idiomas.js": {
-   "suma": "f616033c587d",
-   "version": "2026.09.19-18:15:47"
+   "suma": "2fa417511b6d",
+   "version": "2026.10.06-13:46:00"
   },
   "antecedentes/antecedentes.js": {
    "suma": "46e739c7448e",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.05-15:36:20"
   },
   "antecedentes/index.html": {
    "suma": "8684fccc3dd6",
    "version": "2026.09.19-18:15:47"
   },
   "auditoria/auditoria.html": {
-   "suma": "512a9631123b",
-   "version": "2026.09.19-18:12:56"
+   "suma": "052cac758969",
+   "version": "2026.11.05-15:36:20"
   },
   "auditoria/auditoria.idiomas.js": {
-   "suma": "69093cf6d7f6",
-   "version": "2026.09.19-18:15:47"
+   "suma": "9be24dd9b310",
+   "version": "2026.10.06-13:46:00"
   },
   "auditoria/auditoria.js": {
    "suma": "02db22fb2eb9",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.05-15:36:20"
   },
   "auditoria/index.html": {
    "suma": "bfa7deaebe3c",
    "version": "2026.09.19-18:15:47"
   },
   "bacteriologia/bacteriologia.help.html": {
-   "suma": "d3478505a5ba",
-   "version": "2026.09.19-18:15:47"
+   "suma": "82f6eda7c8c7",
+   "version": "2026.11.04-12:42:25"
   },
   "bacteriologia/bacteriologia.html": {
-   "suma": "579350678c4b",
-   "version": "2026.09.19-18:12:56"
+   "suma": "4c53cd9f241a",
+   "version": "2026.11.05-15:44:58"
   },
   "bacteriologia/bacteriologia.idiomas.js": {
-   "suma": "377a417faa4d",
-   "version": "2026.09.19-18:15:47"
+   "suma": "6d2c2f4c242a",
+   "version": "2026.11.05-15:44:58"
   },
   "bacteriologia/bacteriologia.js": {
    "suma": "42cd67a09bd6",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.05-15:44:58"
   },
   "bacteriologia/index.html": {
    "suma": "50a013d51956",
    "version": "2026.09.19-18:15:47"
   },
   "casa/casa.help.html": {
-   "suma": "c61fa6b4b3ff",
-   "version": "2026.09.19-18:15:47"
+   "suma": "8751aea01c88",
+   "version": "2026.11.04-12:42:25"
   },
   "casa/casa.js": {
-   "suma": "50ddc7bc9b15",
-   "version": "2026.09.19-23:37:32"
+   "suma": "b399e64f2e90",
+   "version": "2026.11.11-11:18:39"
   },
   "casa/index.html": {
-   "suma": "abd859e6da5e",
-   "version": "2026.09.21-20:56:11"
+   "suma": "c2f497b6c439",
+   "version": "2026.11.11-11:18:39"
+  },
+  "casa/novedades.js": {
+   "suma": "67214ce90a41",
+   "version": "2026.11.04-17:22:52"
   },
   "casa/tour-13.js": {
    "suma": "590ab7660c05",
@@ -206,8 +210,1214 @@
    "version": "2026.09.19-22:29:15"
   },
   "casa/tour.js": {
-   "suma": "d832f288e0d5",
-   "version": "2026.09.22-10:06:52"
+   "suma": "7e0915488d14",
+   "version": "2026.10.07-17:11:00"
+  },
+  "casa/voz/CA-abeja.mp3": {
+   "muda": true,
+   "suma": "3b1a33f3f402",
+   "version": "2026.09.23-17:47:53"
+  },
+  "casa/voz/CA-abeja.txt": {
+   "suma": "8e8bc348cb6f",
+   "version": "2026.09.23-17:47:53"
+  },
+  "casa/voz/CA-abrir.mp3": {
+   "muda": true,
+   "suma": "e215da6a038c",
+   "version": "2026.09.23-17:48:19"
+  },
+  "casa/voz/CA-abrir.txt": {
+   "suma": "208406e3068d",
+   "version": "2026.09.23-17:48:19"
+  },
+  "casa/voz/CA-antecedentes.mp3": {
+   "muda": true,
+   "suma": "823242e29095",
+   "version": "2026.09.23-17:49:16"
+  },
+  "casa/voz/CA-antecedentes.txt": {
+   "suma": "ef40e8926a8d",
+   "version": "2026.09.23-17:49:16"
+  },
+  "casa/voz/CA-asistida.mp3": {
+   "muda": true,
+   "suma": "b7656c0b8593",
+   "version": "2026.09.23-17:49:50"
+  },
+  "casa/voz/CA-asistida.txt": {
+   "suma": "9350f5d4a267",
+   "version": "2026.09.23-17:49:50"
+  },
+  "casa/voz/CA-auditoria.mp3": {
+   "muda": true,
+   "suma": "fc6d313a32c3",
+   "version": "2026.09.23-17:49:41"
+  },
+  "casa/voz/CA-auditoria.txt": {
+   "suma": "9d983746b22f",
+   "version": "2026.09.23-17:49:41"
+  },
+  "casa/voz/CA-automatica.mp3": {
+   "muda": true,
+   "suma": "9d29677a246e",
+   "version": "2026.09.23-17:49:54"
+  },
+  "casa/voz/CA-automatica.txt": {
+   "suma": "72c27575ef96",
+   "version": "2026.09.23-17:49:54"
+  },
+  "casa/voz/CA-ayuda.mp3": {
+   "muda": true,
+   "suma": "1fcf1b9e92b0",
+   "version": "2026.09.23-17:48:10"
+  },
+  "casa/voz/CA-ayuda.txt": {
+   "suma": "f974276280bd",
+   "version": "2026.09.23-17:48:10"
+  },
+  "casa/voz/CA-bacteriologia.mp3": {
+   "muda": true,
+   "suma": "3dd15ca4ca1f",
+   "version": "2026.09.23-17:49:34"
+  },
+  "casa/voz/CA-bacteriologia.txt": {
+   "suma": "2ea00d8d77e8",
+   "version": "2026.09.23-17:49:34"
+  },
+  "casa/voz/CA-bienvenida.mp3": {
+   "muda": true,
+   "suma": "56ba3f3afabc",
+   "version": "2026.09.23-17:50:12"
+  },
+  "casa/voz/CA-bienvenida.txt": {
+   "suma": "d872064be73b",
+   "version": "2026.09.23-17:50:12"
+  },
+  "casa/voz/CA-boton_nuevo.mp3": {
+   "muda": true,
+   "suma": "3b5656625b4d",
+   "version": "2026.09.23-17:48:17"
+  },
+  "casa/voz/CA-boton_nuevo.txt": {
+   "suma": "63d834b57048",
+   "version": "2026.09.23-17:48:17"
+  },
+  "casa/voz/CA-casa.mp3": {
+   "muda": true,
+   "suma": "9db0dc4b87bb",
+   "version": "2026.09.23-17:48:12"
+  },
+  "casa/voz/CA-casa.txt": {
+   "suma": "d0817b13b3b3",
+   "version": "2026.09.23-17:48:12"
+  },
+  "casa/voz/CA-correlaciones.mp3": {
+   "muda": true,
+   "suma": "d3a50465dedc",
+   "version": "2026.09.23-17:49:29"
+  },
+  "casa/voz/CA-correlaciones.txt": {
+   "suma": "79a9380d5bcf",
+   "version": "2026.09.23-17:49:29"
+  },
+  "casa/voz/CA-correo.mp3": {
+   "muda": true,
+   "suma": "e71087a6f0f3",
+   "version": "2026.09.23-17:50:08"
+  },
+  "casa/voz/CA-correo.txt": {
+   "suma": "197fd7a314a1",
+   "version": "2026.09.23-17:50:08"
+  },
+  "casa/voz/CA-cronologia.mp3": {
+   "muda": true,
+   "suma": "c54f1766554a",
+   "version": "2026.09.23-17:48:58"
+  },
+  "casa/voz/CA-cronologia.txt": {
+   "suma": "277e78cc7e13",
+   "version": "2026.09.23-17:48:58"
+  },
+  "casa/voz/CA-curvas.mp3": {
+   "muda": true,
+   "suma": "d80cd09a164b",
+   "version": "2026.09.23-17:49:07"
+  },
+  "casa/voz/CA-curvas.txt": {
+   "suma": "396b3ade7309",
+   "version": "2026.09.23-17:49:07"
+  },
+  "casa/voz/CA-doi.mp3": {
+   "muda": true,
+   "suma": "a56bd59cc7a0",
+   "version": "2026.09.23-17:50:06"
+  },
+  "casa/voz/CA-doi.txt": {
+   "suma": "157ad853c97c",
+   "version": "2026.09.23-17:50:06"
+  },
+  "casa/voz/CA-elegir.mp3": {
+   "muda": true,
+   "suma": "01b27621c009",
+   "version": "2026.09.23-17:48:14"
+  },
+  "casa/voz/CA-elegir.txt": {
+   "suma": "2613ce92f037",
+   "version": "2026.09.23-17:48:14"
+  },
+  "casa/voz/CA-escribir_intro.mp3": {
+   "muda": true,
+   "suma": "49e29012a446",
+   "version": "2026.09.23-17:49:44"
+  },
+  "casa/voz/CA-escribir_intro.txt": {
+   "suma": "54b964df1bfc",
+   "version": "2026.09.23-17:49:44"
+  },
+  "casa/voz/CA-expedientes.mp3": {
+   "muda": true,
+   "suma": "9ae84794f3ef",
+   "version": "2026.09.23-17:48:41"
+  },
+  "casa/voz/CA-expedientes.txt": {
+   "suma": "0c96de65202d",
+   "version": "2026.09.23-17:48:41"
+  },
+  "casa/voz/CA-familias.mp3": {
+   "muda": true,
+   "suma": "5bfbc145e767",
+   "version": "2026.09.23-17:48:52"
+  },
+  "casa/voz/CA-familias.txt": {
+   "suma": "5605d0702f8b",
+   "version": "2026.09.23-17:48:52"
+  },
+  "casa/voz/CA-farmacovigilancia.mp3": {
+   "muda": true,
+   "suma": "d53696f68eb6",
+   "version": "2026.09.23-17:49:38"
+  },
+  "casa/voz/CA-farmacovigilancia.txt": {
+   "suma": "4a5c40aac4e4",
+   "version": "2026.09.23-17:49:38"
+  },
+  "casa/voz/CA-glosario.mp3": {
+   "muda": true,
+   "suma": "31ff2a969951",
+   "version": "2026.09.23-17:48:55"
+  },
+  "casa/voz/CA-glosario.txt": {
+   "suma": "43450fb43066",
+   "version": "2026.09.23-17:48:55"
+  },
+  "casa/voz/CA-guardar.mp3": {
+   "muda": true,
+   "suma": "ea5e9f495c53",
+   "version": "2026.09.23-17:48:01"
+  },
+  "casa/voz/CA-guardar.txt": {
+   "suma": "0e02047a2a03",
+   "version": "2026.09.23-17:48:01"
+  },
+  "casa/voz/CA-idioma.mp3": {
+   "muda": true,
+   "suma": "44e72694d131",
+   "version": "2026.09.23-17:48:03"
+  },
+  "casa/voz/CA-idioma.txt": {
+   "suma": "3c603c47cdc6",
+   "version": "2026.09.23-17:48:03"
+  },
+  "casa/voz/CA-informe.mp3": {
+   "muda": true,
+   "suma": "529fe9f95a6b",
+   "version": "2026.09.23-17:49:05"
+  },
+  "casa/voz/CA-informe.txt": {
+   "suma": "ec8b26ff9fb6",
+   "version": "2026.09.23-17:49:05"
+  },
+  "casa/voz/CA-invita-conocidos.mp3": {
+   "muda": true,
+   "suma": "10cf78ba2132",
+   "version": "2026.09.23-17:50:20"
+  },
+  "casa/voz/CA-invita-conocidos.txt": {
+   "suma": "80a42dd8504b",
+   "version": "2026.09.23-17:50:20"
+  },
+  "casa/voz/CA-invita-escribir.mp3": {
+   "muda": true,
+   "suma": "c113f92aad33",
+   "version": "2026.09.23-17:50:45"
+  },
+  "casa/voz/CA-invita-escribir.txt": {
+   "suma": "39576c3297b4",
+   "version": "2026.09.23-17:50:45"
+  },
+  "casa/voz/CA-invita-expedientes.mp3": {
+   "muda": true,
+   "suma": "ccb5405d9e21",
+   "version": "2026.09.23-17:50:29"
+  },
+  "casa/voz/CA-invita-expedientes.txt": {
+   "suma": "360f64f32a26",
+   "version": "2026.09.23-17:50:29"
+  },
+  "casa/voz/CA-invita-medico.mp3": {
+   "muda": true,
+   "suma": "ee4861fbe283",
+   "version": "2026.09.23-17:50:41"
+  },
+  "casa/voz/CA-invita-medico.txt": {
+   "suma": "7c82525dc380",
+   "version": "2026.09.23-17:50:41"
+  },
+  "casa/voz/CA-invita-mirar.mp3": {
+   "muda": true,
+   "suma": "c4b6b2b006a8",
+   "version": "2026.09.23-17:50:37"
+  },
+  "casa/voz/CA-invita-mirar.txt": {
+   "suma": "91b5b22f93d5",
+   "version": "2026.09.23-17:50:37"
+  },
+  "casa/voz/CA-invita-nuevo.mp3": {
+   "muda": true,
+   "suma": "66fd7e0f89a6",
+   "version": "2026.09.23-17:50:25"
+  },
+  "casa/voz/CA-invita-nuevo.txt": {
+   "suma": "68b734ffa682",
+   "version": "2026.09.23-17:50:25"
+  },
+  "casa/voz/CA-invita-perfiles.mp3": {
+   "muda": true,
+   "suma": "ac607de5d731",
+   "version": "2026.09.23-17:50:33"
+  },
+  "casa/voz/CA-invita-perfiles.txt": {
+   "suma": "42c33a635d18",
+   "version": "2026.09.23-17:50:33"
+  },
+  "casa/voz/CA-invita-pie.mp3": {
+   "muda": true,
+   "suma": "9d532ce5f79b",
+   "version": "2026.09.23-17:50:49"
+  },
+  "casa/voz/CA-invita-pie.txt": {
+   "suma": "fdc2d8337b72",
+   "version": "2026.09.23-17:50:49"
+  },
+  "casa/voz/CA-invita-vestibulo.mp3": {
+   "muda": true,
+   "suma": "0156763b63a0",
+   "version": "2026.09.23-17:50:16"
+  },
+  "casa/voz/CA-invita-vestibulo.txt": {
+   "suma": "84edc1e6b83f",
+   "version": "2026.09.23-17:50:16"
+  },
+  "casa/voz/CA-licencia.mp3": {
+   "muda": true,
+   "suma": "51dc68de6eaf",
+   "version": "2026.09.23-17:50:03"
+  },
+  "casa/voz/CA-licencia.txt": {
+   "suma": "0861affcab22",
+   "version": "2026.09.23-17:50:03"
+  },
+  "casa/voz/CA-logo.mp3": {
+   "muda": true,
+   "suma": "fa0f77f8e8f3",
+   "version": "2026.09.23-17:47:56"
+  },
+  "casa/voz/CA-logo.txt": {
+   "suma": "828de6170ed6",
+   "version": "2026.09.23-17:47:56"
+  },
+  "casa/voz/CA-manual.mp3": {
+   "muda": true,
+   "suma": "3b0362a9c402",
+   "version": "2026.09.23-17:49:47"
+  },
+  "casa/voz/CA-manual.txt": {
+   "suma": "8490ffca4c2a",
+   "version": "2026.09.23-17:49:47"
+  },
+  "casa/voz/CA-medico_intro.mp3": {
+   "muda": true,
+   "suma": "8e5fdb71ce5d",
+   "version": "2026.09.23-17:49:21"
+  },
+  "casa/voz/CA-medico_intro.txt": {
+   "suma": "615ee89383db",
+   "version": "2026.09.23-17:49:21"
+  },
+  "casa/voz/CA-n_apellidos.mp3": {
+   "muda": true,
+   "suma": "bbc4d61d4a6b",
+   "version": "2026.09.23-17:48:27"
+  },
+  "casa/voz/CA-n_apellidos.txt": {
+   "suma": "50ff3e4234b7",
+   "version": "2026.09.23-17:48:27"
+  },
+  "casa/voz/CA-n_cancelar.mp3": {
+   "muda": true,
+   "suma": "efc98f5957b0",
+   "version": "2026.09.23-17:48:38"
+  },
+  "casa/voz/CA-n_cancelar.txt": {
+   "suma": "9aca3e2ced83",
+   "version": "2026.09.23-17:48:38"
+  },
+  "casa/voz/CA-n_crear.mp3": {
+   "muda": true,
+   "suma": "1498c0b621d0",
+   "version": "2026.09.23-17:48:35"
+  },
+  "casa/voz/CA-n_crear.txt": {
+   "suma": "03ac088d11b9",
+   "version": "2026.09.23-17:48:35"
+  },
+  "casa/voz/CA-n_mat.mp3": {
+   "muda": true,
+   "suma": "4a2ef42910e4",
+   "version": "2026.09.23-17:48:32"
+  },
+  "casa/voz/CA-n_mat.txt": {
+   "suma": "af1dbfd8d2bc",
+   "version": "2026.09.23-17:48:32"
+  },
+  "casa/voz/CA-n_nombre.mp3": {
+   "muda": true,
+   "suma": "14447b56057b",
+   "version": "2026.09.23-17:48:25"
+  },
+  "casa/voz/CA-n_nombre.txt": {
+   "suma": "0faa6ba979d1",
+   "version": "2026.09.23-17:48:25"
+  },
+  "casa/voz/CA-n_sip.mp3": {
+   "muda": true,
+   "suma": "6ccb77fd6500",
+   "version": "2026.09.23-17:48:30"
+  },
+  "casa/voz/CA-n_sip.txt": {
+   "suma": "60f86332e2aa",
+   "version": "2026.09.23-17:48:30"
+  },
+  "casa/voz/CA-nuevo.mp3": {
+   "muda": true,
+   "suma": "8817263e5104",
+   "version": "2026.09.23-17:48:22"
+  },
+  "casa/voz/CA-nuevo.txt": {
+   "suma": "d7433aaa3c80",
+   "version": "2026.09.23-17:48:22"
+  },
+  "casa/voz/CA-observancia.mp3": {
+   "muda": true,
+   "suma": "b24968d90298",
+   "version": "2026.09.23-17:49:13"
+  },
+  "casa/voz/CA-observancia.txt": {
+   "suma": "a61ee1dda5a1",
+   "version": "2026.09.23-17:49:13"
+  },
+  "casa/voz/CA-paciente.mp3": {
+   "muda": true,
+   "suma": "e27650bce31a",
+   "version": "2026.09.23-17:47:59"
+  },
+  "casa/voz/CA-paciente.txt": {
+   "suma": "6565bb9e6ce0",
+   "version": "2026.09.23-17:47:59"
+  },
+  "casa/voz/CA-paleta.mp3": {
+   "muda": true,
+   "suma": "d1f6d32a663f",
+   "version": "2026.09.23-17:48:07"
+  },
+  "casa/voz/CA-paleta.txt": {
+   "suma": "05bd25c542c2",
+   "version": "2026.09.23-17:48:07"
+  },
+  "casa/voz/CA-perfil_cambia.mp3": {
+   "muda": true,
+   "suma": "9a40046bfd3b",
+   "version": "2026.09.23-17:48:46"
+  },
+  "casa/voz/CA-perfil_cambia.txt": {
+   "suma": "881570b07333",
+   "version": "2026.09.23-17:48:46"
+  },
+  "casa/voz/CA-perfiles.mp3": {
+   "muda": true,
+   "suma": "26fa31cdfbe4",
+   "version": "2026.09.23-17:48:43"
+  },
+  "casa/voz/CA-perfiles.txt": {
+   "suma": "c09a4a85a8bc",
+   "version": "2026.09.23-17:48:43"
+  },
+  "casa/voz/CA-puerta-conocidos.mp3": {
+   "muda": true,
+   "suma": "1270fb63046a",
+   "version": "2026.09.23-17:50:18"
+  },
+  "casa/voz/CA-puerta-conocidos.txt": {
+   "suma": "85da41b2b59a",
+   "version": "2026.09.23-17:50:18"
+  },
+  "casa/voz/CA-puerta-escribir.mp3": {
+   "muda": true,
+   "suma": "dbc484f77d53",
+   "version": "2026.09.23-17:50:43"
+  },
+  "casa/voz/CA-puerta-escribir.txt": {
+   "suma": "7c5cc018de13",
+   "version": "2026.09.23-17:50:43"
+  },
+  "casa/voz/CA-puerta-expedientes.mp3": {
+   "muda": true,
+   "suma": "4693845ce288",
+   "version": "2026.09.23-17:50:27"
+  },
+  "casa/voz/CA-puerta-expedientes.txt": {
+   "suma": "65c758fa7c5b",
+   "version": "2026.09.23-17:50:27"
+  },
+  "casa/voz/CA-puerta-medico.mp3": {
+   "muda": true,
+   "suma": "1fb72c2e0426",
+   "version": "2026.09.23-17:50:39"
+  },
+  "casa/voz/CA-puerta-medico.txt": {
+   "suma": "bbdfc1a75348",
+   "version": "2026.09.23-17:50:39"
+  },
+  "casa/voz/CA-puerta-mirar.mp3": {
+   "muda": true,
+   "suma": "6ef7d762b45b",
+   "version": "2026.09.23-17:50:34"
+  },
+  "casa/voz/CA-puerta-mirar.txt": {
+   "suma": "76a9c4dc5bd8",
+   "version": "2026.09.23-17:50:34"
+  },
+  "casa/voz/CA-puerta-nuevo.mp3": {
+   "muda": true,
+   "suma": "43b09be2edaf",
+   "version": "2026.09.23-17:50:23"
+  },
+  "casa/voz/CA-puerta-nuevo.txt": {
+   "suma": "b62084f468a1",
+   "version": "2026.09.23-17:50:23"
+  },
+  "casa/voz/CA-puerta-perfiles.mp3": {
+   "muda": true,
+   "suma": "835eaf1a2438",
+   "version": "2026.09.23-17:50:30"
+  },
+  "casa/voz/CA-puerta-perfiles.txt": {
+   "suma": "0848a87da8e3",
+   "version": "2026.09.23-17:50:30"
+  },
+  "casa/voz/CA-puerta-pie.mp3": {
+   "muda": true,
+   "suma": "10d75e938188",
+   "version": "2026.09.23-17:50:47"
+  },
+  "casa/voz/CA-puerta-pie.txt": {
+   "suma": "2c18194e37d2",
+   "version": "2026.09.23-17:50:47"
+  },
+  "casa/voz/CA-puerta-vestibulo.mp3": {
+   "muda": true,
+   "suma": "1488b867dcc1",
+   "version": "2026.09.23-17:50:13"
+  },
+  "casa/voz/CA-puerta-vestibulo.txt": {
+   "suma": "7aa2929f27b6",
+   "version": "2026.09.23-17:50:13"
+  },
+  "casa/voz/CA-puerta_ultima.mp3": {
+   "muda": true,
+   "suma": "6fd0535614cc",
+   "version": "2026.09.25-15:46:41"
+  },
+  "casa/voz/CA-puerta_ultima.txt": {
+   "suma": "509248e8a7c8",
+   "version": "2026.09.25-15:46:41"
+  },
+  "casa/voz/CA-radar.mp3": {
+   "muda": true,
+   "suma": "5f98eb36ef4d",
+   "version": "2026.09.23-17:49:26"
+  },
+  "casa/voz/CA-radar.txt": {
+   "suma": "954ebd0ef16a",
+   "version": "2026.09.23-17:49:26"
+  },
+  "casa/voz/CA-resumen.mp3": {
+   "muda": true,
+   "suma": "be28223bb190",
+   "version": "2026.09.23-17:49:01"
+  },
+  "casa/voz/CA-resumen.txt": {
+   "suma": "4411a274785c",
+   "version": "2026.09.23-17:49:01"
+  },
+  "casa/voz/CA-revisar.mp3": {
+   "muda": true,
+   "suma": "e249fdf734fc",
+   "version": "2026.09.23-17:49:57"
+  },
+  "casa/voz/CA-revisar.txt": {
+   "suma": "c14ce5c7fb5f",
+   "version": "2026.09.23-17:49:57"
+  },
+  "casa/voz/CA-tabla.mp3": {
+   "muda": true,
+   "suma": "17d8a80dfc0b",
+   "version": "2026.09.23-17:49:23"
+  },
+  "casa/voz/CA-tabla.txt": {
+   "suma": "7f7968349ede",
+   "version": "2026.09.23-17:49:23"
+  },
+  "casa/voz/CA-tarjetas.mp3": {
+   "muda": true,
+   "suma": "f8560741fea3",
+   "version": "2026.09.23-17:48:49"
+  },
+  "casa/voz/CA-tarjetas.txt": {
+   "suma": "6502523bc515",
+   "version": "2026.09.23-17:48:49"
+  },
+  "casa/voz/CA-tratamientos.mp3": {
+   "muda": true,
+   "suma": "406f07a9d46a",
+   "version": "2026.09.23-17:49:09"
+  },
+  "casa/voz/CA-tratamientos.txt": {
+   "suma": "4ca336478f84",
+   "version": "2026.09.23-17:49:09"
+  },
+  "casa/voz/CA-vascular.mp3": {
+   "muda": true,
+   "suma": "a1fcc1ddd7a5",
+   "version": "2026.09.23-17:49:31"
+  },
+  "casa/voz/CA-vascular.txt": {
+   "suma": "ecc25c1d37e0",
+   "version": "2026.09.23-17:49:31"
+  },
+  "casa/voz/EN-abeja.mp3": {
+   "muda": true,
+   "suma": "ff97f84d2013",
+   "version": "2026.09.23-17:52:46"
+  },
+  "casa/voz/EN-abeja.txt": {
+   "suma": "12fe856561be",
+   "version": "2026.09.23-17:52:46"
+  },
+  "casa/voz/EN-abrir.mp3": {
+   "muda": true,
+   "suma": "f9071b1016cc",
+   "version": "2026.09.23-17:53:12"
+  },
+  "casa/voz/EN-abrir.txt": {
+   "suma": "f7f161c726d9",
+   "version": "2026.09.23-17:53:12"
+  },
+  "casa/voz/EN-antecedentes.mp3": {
+   "muda": true,
+   "suma": "16773d4cfea0",
+   "version": "2026.09.23-17:54:05"
+  },
+  "casa/voz/EN-antecedentes.txt": {
+   "suma": "880ec152d231",
+   "version": "2026.09.23-17:54:05"
+  },
+  "casa/voz/EN-asistida.mp3": {
+   "muda": true,
+   "suma": "8c555591bacd",
+   "version": "2026.09.23-17:54:35"
+  },
+  "casa/voz/EN-asistida.txt": {
+   "suma": "3622d3deebd0",
+   "version": "2026.09.23-17:54:35"
+  },
+  "casa/voz/EN-auditoria.mp3": {
+   "muda": true,
+   "suma": "30816f39fda3",
+   "version": "2026.09.23-17:54:27"
+  },
+  "casa/voz/EN-auditoria.txt": {
+   "suma": "842202351ccb",
+   "version": "2026.09.23-17:54:27"
+  },
+  "casa/voz/EN-automatica.mp3": {
+   "muda": true,
+   "suma": "11e4c618a166",
+   "version": "2026.09.23-17:54:42"
+  },
+  "casa/voz/EN-automatica.txt": {
+   "suma": "78dd86552c06",
+   "version": "2026.09.23-17:54:42"
+  },
+  "casa/voz/EN-ayuda.mp3": {
+   "muda": true,
+   "suma": "85186f4e3359",
+   "version": "2026.09.23-17:53:03"
+  },
+  "casa/voz/EN-ayuda.txt": {
+   "suma": "deb35c040260",
+   "version": "2026.09.23-17:53:03"
+  },
+  "casa/voz/EN-bacteriologia.mp3": {
+   "muda": true,
+   "suma": "d4d7020cfa05",
+   "version": "2026.09.23-17:54:21"
+  },
+  "casa/voz/EN-bacteriologia.txt": {
+   "suma": "29443afb6f00",
+   "version": "2026.09.23-17:54:21"
+  },
+  "casa/voz/EN-bienvenida.mp3": {
+   "muda": true,
+   "suma": "5a61e72d8bb9",
+   "version": "2026.09.23-17:55:03"
+  },
+  "casa/voz/EN-bienvenida.txt": {
+   "suma": "aea44b37b232",
+   "version": "2026.09.23-17:55:03"
+  },
+  "casa/voz/EN-boton_nuevo.mp3": {
+   "muda": true,
+   "suma": "7934f69b0bf1",
+   "version": "2026.09.23-17:53:10"
+  },
+  "casa/voz/EN-boton_nuevo.txt": {
+   "suma": "cbdad6173075",
+   "version": "2026.09.23-17:53:10"
+  },
+  "casa/voz/EN-casa.mp3": {
+   "muda": true,
+   "suma": "e9d948aa34b7",
+   "version": "2026.09.23-17:53:05"
+  },
+  "casa/voz/EN-casa.txt": {
+   "suma": "60b0822be977",
+   "version": "2026.09.23-17:53:05"
+  },
+  "casa/voz/EN-correlaciones.mp3": {
+   "muda": true,
+   "suma": "af1c35a4ad9f",
+   "version": "2026.09.23-17:54:16"
+  },
+  "casa/voz/EN-correlaciones.txt": {
+   "suma": "3dade4d65f9d",
+   "version": "2026.09.23-17:54:16"
+  },
+  "casa/voz/EN-correo.mp3": {
+   "muda": true,
+   "suma": "dce88f6c4513",
+   "version": "2026.09.23-17:55:01"
+  },
+  "casa/voz/EN-correo.txt": {
+   "suma": "277f2f404e7b",
+   "version": "2026.09.23-17:55:01"
+  },
+  "casa/voz/EN-cronologia.mp3": {
+   "muda": true,
+   "suma": "49f791ced3ed",
+   "version": "2026.09.23-17:53:48"
+  },
+  "casa/voz/EN-cronologia.txt": {
+   "suma": "d449f48f4174",
+   "version": "2026.09.23-17:53:48"
+  },
+  "casa/voz/EN-curvas.mp3": {
+   "muda": true,
+   "suma": "859fbcbe84af",
+   "version": "2026.09.23-17:53:57"
+  },
+  "casa/voz/EN-curvas.txt": {
+   "suma": "2014a7263b55",
+   "version": "2026.09.23-17:53:57"
+  },
+  "casa/voz/EN-doi.mp3": {
+   "muda": true,
+   "suma": "040ff4e44e0a",
+   "version": "2026.09.23-17:54:59"
+  },
+  "casa/voz/EN-doi.txt": {
+   "suma": "9a3406afed35",
+   "version": "2026.09.23-17:54:59"
+  },
+  "casa/voz/EN-elegir.mp3": {
+   "muda": true,
+   "suma": "861053c080f7",
+   "version": "2026.09.23-17:53:07"
+  },
+  "casa/voz/EN-elegir.txt": {
+   "suma": "7d9c343c161d",
+   "version": "2026.09.23-17:53:07"
+  },
+  "casa/voz/EN-escribir_intro.mp3": {
+   "muda": true,
+   "suma": "b692572e2db3",
+   "version": "2026.09.23-17:54:30"
+  },
+  "casa/voz/EN-escribir_intro.txt": {
+   "suma": "6abffc3d75bb",
+   "version": "2026.09.23-17:54:30"
+  },
+  "casa/voz/EN-expedientes.mp3": {
+   "muda": true,
+   "suma": "774fcbd4d0ce",
+   "version": "2026.09.23-17:53:32"
+  },
+  "casa/voz/EN-expedientes.txt": {
+   "suma": "5414619af282",
+   "version": "2026.09.23-17:53:32"
+  },
+  "casa/voz/EN-familias.mp3": {
+   "muda": true,
+   "suma": "61b950f7c4d1",
+   "version": "2026.09.23-17:53:42"
+  },
+  "casa/voz/EN-familias.txt": {
+   "suma": "d08260b76496",
+   "version": "2026.09.23-17:53:42"
+  },
+  "casa/voz/EN-farmacovigilancia.mp3": {
+   "muda": true,
+   "suma": "eeb8bef34a35",
+   "version": "2026.09.23-17:54:25"
+  },
+  "casa/voz/EN-farmacovigilancia.txt": {
+   "suma": "f78efc3c396e",
+   "version": "2026.09.23-17:54:25"
+  },
+  "casa/voz/EN-glosario.mp3": {
+   "muda": true,
+   "suma": "f80966f22f34",
+   "version": "2026.09.23-17:53:44"
+  },
+  "casa/voz/EN-glosario.txt": {
+   "suma": "f54561b0dbee",
+   "version": "2026.09.23-17:53:44"
+  },
+  "casa/voz/EN-guardar.mp3": {
+   "muda": true,
+   "suma": "9b07d8ac3352",
+   "version": "2026.09.23-17:52:55"
+  },
+  "casa/voz/EN-guardar.txt": {
+   "suma": "ae3ef50979fd",
+   "version": "2026.09.23-17:52:55"
+  },
+  "casa/voz/EN-idioma.mp3": {
+   "muda": true,
+   "suma": "b3e1bbb3b80f",
+   "version": "2026.09.23-17:52:58"
+  },
+  "casa/voz/EN-idioma.txt": {
+   "suma": "1812ccb5a4c7",
+   "version": "2026.09.23-17:52:58"
+  },
+  "casa/voz/EN-informe.mp3": {
+   "muda": true,
+   "suma": "4be39b970c8a",
+   "version": "2026.09.23-17:53:54"
+  },
+  "casa/voz/EN-informe.txt": {
+   "suma": "73099ca4d0c0",
+   "version": "2026.09.23-17:53:54"
+  },
+  "casa/voz/EN-invita-conocidos.mp3": {
+   "muda": true,
+   "suma": "d60bdc7fd8d3",
+   "version": "2026.09.23-17:55:11"
+  },
+  "casa/voz/EN-invita-conocidos.txt": {
+   "suma": "859e5b8c098f",
+   "version": "2026.09.23-17:55:11"
+  },
+  "casa/voz/EN-invita-escribir.mp3": {
+   "muda": true,
+   "suma": "075f92de1458",
+   "version": "2026.09.23-17:55:34"
+  },
+  "casa/voz/EN-invita-escribir.txt": {
+   "suma": "9523c0e390e9",
+   "version": "2026.09.23-17:55:34"
+  },
+  "casa/voz/EN-invita-expedientes.mp3": {
+   "muda": true,
+   "suma": "afdcbf28fcdc",
+   "version": "2026.09.23-17:55:18"
+  },
+  "casa/voz/EN-invita-expedientes.txt": {
+   "suma": "3de07acb539d",
+   "version": "2026.09.23-17:55:18"
+  },
+  "casa/voz/EN-invita-medico.mp3": {
+   "muda": true,
+   "suma": "bde5d7340580",
+   "version": "2026.09.23-17:55:30"
+  },
+  "casa/voz/EN-invita-medico.txt": {
+   "suma": "47d3481e1b7f",
+   "version": "2026.09.23-17:55:30"
+  },
+  "casa/voz/EN-invita-mirar.mp3": {
+   "muda": true,
+   "suma": "40dd84d1489e",
+   "version": "2026.09.23-17:55:27"
+  },
+  "casa/voz/EN-invita-mirar.txt": {
+   "suma": "f91920e042ba",
+   "version": "2026.09.23-17:55:27"
+  },
+  "casa/voz/EN-invita-nuevo.mp3": {
+   "muda": true,
+   "suma": "4fd5de647a5f",
+   "version": "2026.09.23-17:55:15"
+  },
+  "casa/voz/EN-invita-nuevo.txt": {
+   "suma": "48425e009e93",
+   "version": "2026.09.23-17:55:15"
+  },
+  "casa/voz/EN-invita-perfiles.mp3": {
+   "muda": true,
+   "suma": "81350abbb6ac",
+   "version": "2026.09.23-17:55:23"
+  },
+  "casa/voz/EN-invita-perfiles.txt": {
+   "suma": "ea16762b29f1",
+   "version": "2026.09.23-17:55:23"
+  },
+  "casa/voz/EN-invita-pie.mp3": {
+   "muda": true,
+   "suma": "d40a7cc092dd",
+   "version": "2026.09.23-17:55:38"
+  },
+  "casa/voz/EN-invita-pie.txt": {
+   "suma": "dcf378c27322",
+   "version": "2026.09.23-17:55:38"
+  },
+  "casa/voz/EN-invita-vestibulo.mp3": {
+   "muda": true,
+   "suma": "07b4d47befcd",
+   "version": "2026.09.23-17:55:07"
+  },
+  "casa/voz/EN-invita-vestibulo.txt": {
+   "suma": "f0c2132d11ab",
+   "version": "2026.09.23-17:55:07"
+  },
+  "casa/voz/EN-licencia.mp3": {
+   "muda": true,
+   "suma": "eca223498fb9",
+   "version": "2026.09.23-17:54:54"
+  },
+  "casa/voz/EN-licencia.txt": {
+   "suma": "17a6cae86a8a",
+   "version": "2026.09.23-17:54:54"
+  },
+  "casa/voz/EN-logo.mp3": {
+   "muda": true,
+   "suma": "93b965073943",
+   "version": "2026.09.23-17:52:49"
+  },
+  "casa/voz/EN-logo.txt": {
+   "suma": "18e167ef420f",
+   "version": "2026.09.23-17:52:49"
+  },
+  "casa/voz/EN-manual.mp3": {
+   "muda": true,
+   "suma": "ad8a45a7bb21",
+   "version": "2026.09.23-17:54:33"
+  },
+  "casa/voz/EN-manual.txt": {
+   "suma": "13a346a1608d",
+   "version": "2026.09.23-17:54:33"
+  },
+  "casa/voz/EN-medico_intro.mp3": {
+   "muda": true,
+   "suma": "0d0bd91299fb",
+   "version": "2026.09.23-17:54:07"
+  },
+  "casa/voz/EN-medico_intro.txt": {
+   "suma": "2928d1e775fa",
+   "version": "2026.09.23-17:54:07"
+  },
+  "casa/voz/EN-n_apellidos.mp3": {
+   "muda": true,
+   "suma": "79a57810c98f",
+   "version": "2026.09.23-17:53:20"
+  },
+  "casa/voz/EN-n_apellidos.txt": {
+   "suma": "ed5f2ba8267f",
+   "version": "2026.09.23-17:53:20"
+  },
+  "casa/voz/EN-n_cancelar.mp3": {
+   "muda": true,
+   "suma": "07c658c6cf5a",
+   "version": "2026.09.23-17:53:30"
+  },
+  "casa/voz/EN-n_cancelar.txt": {
+   "suma": "b4d0d7605c47",
+   "version": "2026.09.23-17:53:30"
+  },
+  "casa/voz/EN-n_crear.mp3": {
+   "muda": true,
+   "suma": "0d5fe583199f",
+   "version": "2026.09.23-17:53:27"
+  },
+  "casa/voz/EN-n_crear.txt": {
+   "suma": "fabfc0f14349",
+   "version": "2026.09.23-17:53:27"
+  },
+  "casa/voz/EN-n_mat.mp3": {
+   "muda": true,
+   "suma": "c40553265d5c",
+   "version": "2026.09.23-17:53:25"
+  },
+  "casa/voz/EN-n_mat.txt": {
+   "suma": "bd132ca1107a",
+   "version": "2026.09.23-17:53:25"
+  },
+  "casa/voz/EN-n_nombre.mp3": {
+   "muda": true,
+   "suma": "e3c049bf527a",
+   "version": "2026.09.23-17:53:18"
+  },
+  "casa/voz/EN-n_nombre.txt": {
+   "suma": "96bf96af21ab",
+   "version": "2026.09.23-17:53:18"
+  },
+  "casa/voz/EN-n_sip.mp3": {
+   "muda": true,
+   "suma": "bb58579f3090",
+   "version": "2026.09.23-17:53:23"
+  },
+  "casa/voz/EN-n_sip.txt": {
+   "suma": "5080a7dd8cd1",
+   "version": "2026.09.23-17:53:23"
+  },
+  "casa/voz/EN-nuevo.mp3": {
+   "muda": true,
+   "suma": "a5e4ab50f48c",
+   "version": "2026.09.23-17:53:15"
+  },
+  "casa/voz/EN-nuevo.txt": {
+   "suma": "5bc51b3cb124",
+   "version": "2026.09.23-17:53:15"
+  },
+  "casa/voz/EN-observancia.mp3": {
+   "muda": true,
+   "suma": "7508eb2e2015",
+   "version": "2026.09.23-17:54:03"
+  },
+  "casa/voz/EN-observancia.txt": {
+   "suma": "4198842382e1",
+   "version": "2026.09.23-17:54:03"
+  },
+  "casa/voz/EN-paciente.mp3": {
+   "muda": true,
+   "suma": "a120d3319c2d",
+   "version": "2026.09.23-17:52:53"
+  },
+  "casa/voz/EN-paciente.txt": {
+   "suma": "9018f254b335",
+   "version": "2026.09.23-17:52:53"
+  },
+  "casa/voz/EN-paleta.mp3": {
+   "muda": true,
+   "suma": "42cbbabb1fa0",
+   "version": "2026.09.23-17:53:01"
+  },
+  "casa/voz/EN-paleta.txt": {
+   "suma": "d07ab40ad013",
+   "version": "2026.09.23-17:53:01"
+  },
+  "casa/voz/EN-perfil_cambia.mp3": {
+   "muda": true,
+   "suma": "6536735ab0c4",
+   "version": "2026.09.23-17:53:37"
+  },
+  "casa/voz/EN-perfil_cambia.txt": {
+   "suma": "4553aa7983ac",
+   "version": "2026.09.23-17:53:37"
+  },
+  "casa/voz/EN-perfiles.mp3": {
+   "muda": true,
+   "suma": "519f9e5607b9",
+   "version": "2026.09.23-17:53:35"
+  },
+  "casa/voz/EN-perfiles.txt": {
+   "suma": "83fbce73c3c7",
+   "version": "2026.09.23-17:53:35"
+  },
+  "casa/voz/EN-puerta-conocidos.mp3": {
+   "muda": true,
+   "suma": "09e1c0bdb441",
+   "version": "2026.09.23-17:55:08"
+  },
+  "casa/voz/EN-puerta-conocidos.txt": {
+   "suma": "d29ff5bc79d4",
+   "version": "2026.09.23-17:55:08"
+  },
+  "casa/voz/EN-puerta-escribir.mp3": {
+   "muda": true,
+   "suma": "a8eb4ec91fd9",
+   "version": "2026.09.23-17:55:32"
+  },
+  "casa/voz/EN-puerta-escribir.txt": {
+   "suma": "af14776ae533",
+   "version": "2026.09.23-17:55:32"
+  },
+  "casa/voz/EN-puerta-expedientes.mp3": {
+   "muda": true,
+   "suma": "8be648cab6a5",
+   "version": "2026.09.23-17:55:16"
+  },
+  "casa/voz/EN-puerta-expedientes.txt": {
+   "suma": "103e1c10c1d7",
+   "version": "2026.09.23-17:55:16"
+  },
+  "casa/voz/EN-puerta-medico.mp3": {
+   "muda": true,
+   "suma": "ba4b6ecd915c",
+   "version": "2026.09.23-17:55:28"
+  },
+  "casa/voz/EN-puerta-medico.txt": {
+   "suma": "2bcbdb2c29c9",
+   "version": "2026.09.23-17:55:28"
+  },
+  "casa/voz/EN-puerta-mirar.mp3": {
+   "muda": true,
+   "suma": "c5ef83d24bd1",
+   "version": "2026.09.23-17:55:24"
+  },
+  "casa/voz/EN-puerta-mirar.txt": {
+   "suma": "aa81ee3956ae",
+   "version": "2026.09.23-17:55:24"
+  },
+  "casa/voz/EN-puerta-nuevo.mp3": {
+   "muda": true,
+   "suma": "cac676348949",
+   "version": "2026.09.23-17:55:12"
+  },
+  "casa/voz/EN-puerta-nuevo.txt": {
+   "suma": "7c177b4e86db",
+   "version": "2026.09.23-17:55:12"
+  },
+  "casa/voz/EN-puerta-perfiles.mp3": {
+   "muda": true,
+   "suma": "ccc6c0b594d4",
+   "version": "2026.09.23-17:55:20"
+  },
+  "casa/voz/EN-puerta-perfiles.txt": {
+   "suma": "32313c67ba63",
+   "version": "2026.09.23-17:55:20"
+  },
+  "casa/voz/EN-puerta-pie.mp3": {
+   "muda": true,
+   "suma": "ec59e31360a5",
+   "version": "2026.09.23-17:55:36"
+  },
+  "casa/voz/EN-puerta-pie.txt": {
+   "suma": "5229d6b953e1",
+   "version": "2026.09.23-17:55:36"
+  },
+  "casa/voz/EN-puerta-vestibulo.mp3": {
+   "muda": true,
+   "suma": "7dc70e520a7a",
+   "version": "2026.09.23-17:55:05"
+  },
+  "casa/voz/EN-puerta-vestibulo.txt": {
+   "suma": "aaa3cc532d1f",
+   "version": "2026.09.23-17:55:05"
+  },
+  "casa/voz/EN-puerta_ultima.mp3": {
+   "muda": true,
+   "suma": "cd9865079a23",
+   "version": "2026.09.25-15:46:44"
+  },
+  "casa/voz/EN-puerta_ultima.txt": {
+   "suma": "01df65559fb2",
+   "version": "2026.09.25-15:46:44"
+  },
+  "casa/voz/EN-radar.mp3": {
+   "muda": true,
+   "suma": "bc8a8cd23ade",
+   "version": "2026.09.23-17:54:13"
+  },
+  "casa/voz/EN-radar.txt": {
+   "suma": "95e48ad3d943",
+   "version": "2026.09.23-17:54:13"
+  },
+  "casa/voz/EN-resumen.mp3": {
+   "muda": true,
+   "suma": "6685ebcf6cc9",
+   "version": "2026.09.23-17:53:51"
+  },
+  "casa/voz/EN-resumen.txt": {
+   "suma": "862a39e432f1",
+   "version": "2026.09.23-17:53:51"
+  },
+  "casa/voz/EN-revisar.mp3": {
+   "muda": true,
+   "suma": "09268a79fbc5",
+   "version": "2026.09.23-17:54:45"
+  },
+  "casa/voz/EN-revisar.txt": {
+   "suma": "7c94a2f7421c",
+   "version": "2026.09.23-17:54:45"
+  },
+  "casa/voz/EN-tabla.mp3": {
+   "muda": true,
+   "suma": "60fbfbb4b24c",
+   "version": "2026.09.23-17:54:10"
+  },
+  "casa/voz/EN-tabla.txt": {
+   "suma": "df28452f3934",
+   "version": "2026.09.23-17:54:10"
+  },
+  "casa/voz/EN-tarjetas.mp3": {
+   "muda": true,
+   "suma": "ae0ebf749030",
+   "version": "2026.09.23-17:53:39"
+  },
+  "casa/voz/EN-tarjetas.txt": {
+   "suma": "dc1d029b6bcb",
+   "version": "2026.09.23-17:53:39"
+  },
+  "casa/voz/EN-tratamientos.mp3": {
+   "muda": true,
+   "suma": "32614650ceca",
+   "version": "2026.09.23-17:53:59"
+  },
+  "casa/voz/EN-tratamientos.txt": {
+   "suma": "fb17c3894802",
+   "version": "2026.09.23-17:53:59"
+  },
+  "casa/voz/EN-vascular.mp3": {
+   "muda": true,
+   "suma": "d2d8155764d9",
+   "version": "2026.09.23-17:54:19"
+  },
+  "casa/voz/EN-vascular.txt": {
+   "suma": "1f5bd357a3d6",
+   "version": "2026.09.23-17:54:19"
   },
   "casa/voz/ES-abeja.mp3": {
    "muda": true,
@@ -280,6 +1490,15 @@
   "casa/voz/ES-bacteriologia.txt": {
    "suma": "693aa07dae4b",
    "version": "2026.09.21-22:31:07"
+  },
+  "casa/voz/ES-bienvenida.mp3": {
+   "muda": true,
+   "suma": "6c8819262642",
+   "version": "2026.09.23-17:25:47"
+  },
+  "casa/voz/ES-bienvenida.txt": {
+   "suma": "37a1fb80154c",
+   "version": "2026.09.23-17:25:47"
   },
   "casa/voz/ES-boton_nuevo.mp3": {
    "muda": true,
@@ -430,14 +1649,95 @@
    "suma": "ac20606e1690",
    "version": "2026.09.21-22:31:07"
   },
+  "casa/voz/ES-invita-conocidos.mp3": {
+   "muda": true,
+   "suma": "2adb5b4ac09d",
+   "version": "2026.09.23-11:00:12"
+  },
+  "casa/voz/ES-invita-conocidos.txt": {
+   "suma": "4e5c94dd38f6",
+   "version": "2026.09.23-11:00:12"
+  },
+  "casa/voz/ES-invita-escribir.mp3": {
+   "muda": true,
+   "suma": "3a6b71370892",
+   "version": "2026.09.23-11:00:24"
+  },
+  "casa/voz/ES-invita-escribir.txt": {
+   "suma": "719e0ce50a00",
+   "version": "2026.09.23-11:00:24"
+  },
+  "casa/voz/ES-invita-expedientes.mp3": {
+   "muda": true,
+   "suma": "ef3365ae7dc6",
+   "version": "2026.09.23-11:00:16"
+  },
+  "casa/voz/ES-invita-expedientes.txt": {
+   "suma": "65adb0b64c44",
+   "version": "2026.09.23-11:00:16"
+  },
+  "casa/voz/ES-invita-medico.mp3": {
+   "muda": true,
+   "suma": "32fb6ab3381f",
+   "version": "2026.09.23-11:00:22"
+  },
+  "casa/voz/ES-invita-medico.txt": {
+   "suma": "f6f532db03bf",
+   "version": "2026.09.23-11:00:22"
+  },
+  "casa/voz/ES-invita-mirar.mp3": {
+   "muda": true,
+   "suma": "3b85c3d405bf",
+   "version": "2026.09.23-11:00:20"
+  },
+  "casa/voz/ES-invita-mirar.txt": {
+   "suma": "6fa6db315822",
+   "version": "2026.09.23-11:00:20"
+  },
+  "casa/voz/ES-invita-nuevo.mp3": {
+   "muda": true,
+   "suma": "9df19894396f",
+   "version": "2026.09.23-11:00:14"
+  },
+  "casa/voz/ES-invita-nuevo.txt": {
+   "suma": "3e839bf21687",
+   "version": "2026.09.23-11:00:14"
+  },
+  "casa/voz/ES-invita-perfiles.mp3": {
+   "muda": true,
+   "suma": "df1aabd1b9f4",
+   "version": "2026.09.23-11:00:19"
+  },
+  "casa/voz/ES-invita-perfiles.txt": {
+   "suma": "9c9786a35860",
+   "version": "2026.09.23-11:00:19"
+  },
+  "casa/voz/ES-invita-pie.mp3": {
+   "muda": true,
+   "suma": "9e0c97d69992",
+   "version": "2026.09.23-11:00:27"
+  },
+  "casa/voz/ES-invita-pie.txt": {
+   "suma": "2ec7ef8db4ac",
+   "version": "2026.09.23-11:00:27"
+  },
+  "casa/voz/ES-invita-vestibulo.mp3": {
+   "muda": true,
+   "suma": "69bc9ae477c8",
+   "version": "2026.09.23-11:00:11"
+  },
+  "casa/voz/ES-invita-vestibulo.txt": {
+   "suma": "23ab000dcbd3",
+   "version": "2026.09.23-11:00:11"
+  },
   "casa/voz/ES-licencia.mp3": {
    "muda": true,
-   "suma": "18a74603becc",
-   "version": "2026.09.21-22:31:07"
+   "suma": "dfe2e8b7caed",
+   "version": "2026.09.22-11:29:50"
   },
   "casa/voz/ES-licencia.txt": {
-   "suma": "8a04026bdd58",
-   "version": "2026.09.21-22:31:07"
+   "suma": "5d64417784a1",
+   "version": "2026.09.22-11:29:50"
   },
   "casa/voz/ES-logo.mp3": {
    "muda": true,
@@ -574,6 +1874,96 @@
    "suma": "f4ba504f1429",
    "version": "2026.09.21-22:31:07"
   },
+  "casa/voz/ES-puerta-conocidos.mp3": {
+   "muda": true,
+   "suma": "35d99ba489a3",
+   "version": "2026.09.23-10:45:25"
+  },
+  "casa/voz/ES-puerta-conocidos.txt": {
+   "suma": "c3e1628e81bd",
+   "version": "2026.09.23-10:45:25"
+  },
+  "casa/voz/ES-puerta-escribir.mp3": {
+   "muda": true,
+   "suma": "cf1a8e1dc25b",
+   "version": "2026.09.23-10:45:38"
+  },
+  "casa/voz/ES-puerta-escribir.txt": {
+   "suma": "db5b83e72b80",
+   "version": "2026.09.23-10:45:38"
+  },
+  "casa/voz/ES-puerta-expedientes.mp3": {
+   "muda": true,
+   "suma": "ff361efb3b68",
+   "version": "2026.09.23-10:45:30"
+  },
+  "casa/voz/ES-puerta-expedientes.txt": {
+   "suma": "b574b62904f3",
+   "version": "2026.09.23-10:45:30"
+  },
+  "casa/voz/ES-puerta-medico.mp3": {
+   "muda": true,
+   "suma": "c0935513aaac",
+   "version": "2026.09.23-10:45:36"
+  },
+  "casa/voz/ES-puerta-medico.txt": {
+   "suma": "cf4273d08a12",
+   "version": "2026.09.23-10:45:36"
+  },
+  "casa/voz/ES-puerta-mirar.mp3": {
+   "muda": true,
+   "suma": "9b6b747eb327",
+   "version": "2026.09.23-10:45:34"
+  },
+  "casa/voz/ES-puerta-mirar.txt": {
+   "suma": "40d0cbe67219",
+   "version": "2026.09.23-10:45:34"
+  },
+  "casa/voz/ES-puerta-nuevo.mp3": {
+   "muda": true,
+   "suma": "88be33df34dc",
+   "version": "2026.09.23-10:45:27"
+  },
+  "casa/voz/ES-puerta-nuevo.txt": {
+   "suma": "720b03ad733f",
+   "version": "2026.09.23-10:45:27"
+  },
+  "casa/voz/ES-puerta-perfiles.mp3": {
+   "muda": true,
+   "suma": "d0e464a93878",
+   "version": "2026.09.23-10:45:32"
+  },
+  "casa/voz/ES-puerta-perfiles.txt": {
+   "suma": "af9d47a1ebe5",
+   "version": "2026.09.23-10:45:32"
+  },
+  "casa/voz/ES-puerta-pie.mp3": {
+   "muda": true,
+   "suma": "303dc55fe0f5",
+   "version": "2026.09.23-10:45:40"
+  },
+  "casa/voz/ES-puerta-pie.txt": {
+   "suma": "01f82f710b90",
+   "version": "2026.09.23-10:45:40"
+  },
+  "casa/voz/ES-puerta-vestibulo.mp3": {
+   "muda": true,
+   "suma": "df0565b0a58e",
+   "version": "2026.09.23-10:45:22"
+  },
+  "casa/voz/ES-puerta-vestibulo.txt": {
+   "suma": "8bfd4adc2fbe",
+   "version": "2026.09.23-10:45:22"
+  },
+  "casa/voz/ES-puerta_ultima.mp3": {
+   "muda": true,
+   "suma": "b9754d1f29f7",
+   "version": "2026.09.25-15:46:36"
+  },
+  "casa/voz/ES-puerta_ultima.txt": {
+   "suma": "967996aa2c0f",
+   "version": "2026.09.25-15:46:36"
+  },
   "casa/voz/ES-radar.mp3": {
    "muda": true,
    "suma": "7fce4a44949f",
@@ -708,6 +2098,15 @@
   "casa/voz/FR-bacteriologia.txt": {
    "suma": "17377e223144",
    "version": "2026.09.21-22:31:07"
+  },
+  "casa/voz/FR-bienvenida.mp3": {
+   "muda": true,
+   "suma": "c46c0e1cfb8c",
+   "version": "2026.09.23-17:25:49"
+  },
+  "casa/voz/FR-bienvenida.txt": {
+   "suma": "7166034136d6",
+   "version": "2026.09.23-17:25:49"
   },
   "casa/voz/FR-boton_nuevo.mp3": {
    "muda": true,
@@ -858,14 +2257,95 @@
    "suma": "6c931a6ec889",
    "version": "2026.09.21-22:31:07"
   },
+  "casa/voz/FR-invita-conocidos.mp3": {
+   "muda": true,
+   "suma": "760223c85bab",
+   "version": "2026.09.23-11:00:30"
+  },
+  "casa/voz/FR-invita-conocidos.txt": {
+   "suma": "3488c77127e0",
+   "version": "2026.09.23-11:00:30"
+  },
+  "casa/voz/FR-invita-escribir.mp3": {
+   "muda": true,
+   "suma": "3345e064c109",
+   "version": "2026.09.23-11:00:43"
+  },
+  "casa/voz/FR-invita-escribir.txt": {
+   "suma": "ea2c26d2f324",
+   "version": "2026.09.23-11:00:43"
+  },
+  "casa/voz/FR-invita-expedientes.mp3": {
+   "muda": true,
+   "suma": "1e455f8b7c33",
+   "version": "2026.09.23-11:00:34"
+  },
+  "casa/voz/FR-invita-expedientes.txt": {
+   "suma": "752c3b483247",
+   "version": "2026.09.23-11:00:34"
+  },
+  "casa/voz/FR-invita-medico.mp3": {
+   "muda": true,
+   "suma": "b62a8df1cd25",
+   "version": "2026.09.23-11:00:41"
+  },
+  "casa/voz/FR-invita-medico.txt": {
+   "suma": "aeeeeee4de4b",
+   "version": "2026.09.23-11:00:41"
+  },
+  "casa/voz/FR-invita-mirar.mp3": {
+   "muda": true,
+   "suma": "ebe762be6366",
+   "version": "2026.09.23-11:00:38"
+  },
+  "casa/voz/FR-invita-mirar.txt": {
+   "suma": "b40a21f4880f",
+   "version": "2026.09.23-11:00:38"
+  },
+  "casa/voz/FR-invita-nuevo.mp3": {
+   "muda": true,
+   "suma": "1d60ee229565",
+   "version": "2026.09.23-11:00:32"
+  },
+  "casa/voz/FR-invita-nuevo.txt": {
+   "suma": "60cfd8a88281",
+   "version": "2026.09.23-11:00:32"
+  },
+  "casa/voz/FR-invita-perfiles.mp3": {
+   "muda": true,
+   "suma": "02a0fc20f710",
+   "version": "2026.09.23-11:00:36"
+  },
+  "casa/voz/FR-invita-perfiles.txt": {
+   "suma": "98f82ad584d1",
+   "version": "2026.09.23-11:00:36"
+  },
+  "casa/voz/FR-invita-pie.mp3": {
+   "muda": true,
+   "suma": "455aa39e49c5",
+   "version": "2026.09.23-11:00:45"
+  },
+  "casa/voz/FR-invita-pie.txt": {
+   "suma": "16f9ebf3dffb",
+   "version": "2026.09.23-11:00:45"
+  },
+  "casa/voz/FR-invita-vestibulo.mp3": {
+   "muda": true,
+   "suma": "21a7a744e858",
+   "version": "2026.09.23-11:00:29"
+  },
+  "casa/voz/FR-invita-vestibulo.txt": {
+   "suma": "509e38c887f3",
+   "version": "2026.09.23-11:00:29"
+  },
   "casa/voz/FR-licencia.mp3": {
    "muda": true,
-   "suma": "31a49b5e6d56",
-   "version": "2026.09.21-22:31:07"
+   "suma": "49e26faa09dd",
+   "version": "2026.09.22-11:29:55"
   },
   "casa/voz/FR-licencia.txt": {
-   "suma": "dfaadea91ee1",
-   "version": "2026.09.21-22:31:07"
+   "suma": "eaf73bff243f",
+   "version": "2026.09.22-11:29:55"
   },
   "casa/voz/FR-logo.mp3": {
    "muda": true,
@@ -1002,6 +2482,96 @@
    "suma": "a1239f192d31",
    "version": "2026.09.21-22:31:07"
   },
+  "casa/voz/FR-puerta-conocidos.mp3": {
+   "muda": true,
+   "suma": "2df2972a9be7",
+   "version": "2026.09.23-10:45:47"
+  },
+  "casa/voz/FR-puerta-conocidos.txt": {
+   "suma": "d608ea39e246",
+   "version": "2026.09.23-10:45:47"
+  },
+  "casa/voz/FR-puerta-escribir.mp3": {
+   "muda": true,
+   "suma": "306aec04fde3",
+   "version": "2026.09.23-10:45:58"
+  },
+  "casa/voz/FR-puerta-escribir.txt": {
+   "suma": "699c42e3dc20",
+   "version": "2026.09.23-10:45:58"
+  },
+  "casa/voz/FR-puerta-expedientes.mp3": {
+   "muda": true,
+   "suma": "0ba690fa1017",
+   "version": "2026.09.23-10:45:50"
+  },
+  "casa/voz/FR-puerta-expedientes.txt": {
+   "suma": "78d57102a5de",
+   "version": "2026.09.23-10:45:50"
+  },
+  "casa/voz/FR-puerta-medico.mp3": {
+   "muda": true,
+   "suma": "b3b2a1ee3232",
+   "version": "2026.09.23-10:45:56"
+  },
+  "casa/voz/FR-puerta-medico.txt": {
+   "suma": "5661017056c4",
+   "version": "2026.09.23-10:45:56"
+  },
+  "casa/voz/FR-puerta-mirar.mp3": {
+   "muda": true,
+   "suma": "d587a0b64c2d",
+   "version": "2026.09.23-10:45:54"
+  },
+  "casa/voz/FR-puerta-mirar.txt": {
+   "suma": "ed48b4ceee90",
+   "version": "2026.09.23-10:45:54"
+  },
+  "casa/voz/FR-puerta-nuevo.mp3": {
+   "muda": true,
+   "suma": "17f85c676d0b",
+   "version": "2026.09.23-10:45:49"
+  },
+  "casa/voz/FR-puerta-nuevo.txt": {
+   "suma": "d32eca910bdc",
+   "version": "2026.09.23-10:45:49"
+  },
+  "casa/voz/FR-puerta-perfiles.mp3": {
+   "muda": true,
+   "suma": "bc25434b321c",
+   "version": "2026.09.23-10:45:53"
+  },
+  "casa/voz/FR-puerta-perfiles.txt": {
+   "suma": "438bd3052266",
+   "version": "2026.09.23-10:45:53"
+  },
+  "casa/voz/FR-puerta-pie.mp3": {
+   "muda": true,
+   "suma": "849094c30d6e",
+   "version": "2026.09.23-10:46:02"
+  },
+  "casa/voz/FR-puerta-pie.txt": {
+   "suma": "26a33070f4c5",
+   "version": "2026.09.23-10:46:02"
+  },
+  "casa/voz/FR-puerta-vestibulo.mp3": {
+   "muda": true,
+   "suma": "f8dfb74f9dad",
+   "version": "2026.09.23-10:45:45"
+  },
+  "casa/voz/FR-puerta-vestibulo.txt": {
+   "suma": "47cc1b5fde64",
+   "version": "2026.09.23-10:45:45"
+  },
+  "casa/voz/FR-puerta_ultima.mp3": {
+   "muda": true,
+   "suma": "dcbc8221107a",
+   "version": "2026.09.25-15:46:38"
+  },
+  "casa/voz/FR-puerta_ultima.txt": {
+   "suma": "33ec59a25190",
+   "version": "2026.09.25-15:46:38"
+  },
   "casa/voz/FR-radar.mp3": {
    "muda": true,
    "suma": "3e203b40402a",
@@ -1070,8 +2640,8 @@
    "version": "2026.09.19-19:42:02"
   },
   "casa/voz/grabados.js": {
-   "suma": "2cfb4969debb",
-   "version": "2026.09.22-10:06:52"
+   "suma": "83697f344e15",
+   "version": "2026.09.25-15:46:44"
   },
   "casa/voz/t01_es.mp3": {
    "muda": true,
@@ -1163,138 +2733,211 @@
    "suma": "77a3951e2aa8",
    "version": "2026.09.19-19:42:02"
   },
+  "comun/alias-campos.js": {
+   "suma": "76eb19943f3e",
+   "version": "2026.11.04-11:00:08"
+  },
+  "comun/ayuda.js": {
+   "suma": "fafe64184584",
+   "version": "2026.10.06-10:32:56"
+  },
   "comun/chart.umd.min.js": {
    "suma": "f2cea52ad0c5",
    "version": "2026.09.19-18:15:47"
+  },
+  "comun/comentario-ia.js": {
+   "suma": "1b1c648d8595",
+   "version": "2026.11.05-16:24:58"
   },
   "comun/demo.pdf": {
    "muda": true,
    "suma": "ac6397557a5b",
    "version": "2026.09.19-19:42:02"
   },
+  "comun/equivalencias.js": {
+   "suma": "adbfdfe4df64",
+   "version": "2026.11.04-13:06:38"
+  },
+  "comun/especialidades.js": {
+   "suma": "9388759ac031",
+   "version": "2026.11.10-15:56:30"
+  },
   "comun/formulario.js": {
-   "suma": "06b1ce05d0c0",
-   "version": "2026.09.19-18:15:47"
+   "suma": "ade9410ddd3d",
+   "version": "2026.10.06-17:38:52"
   },
   "comun/formularios/adquisicion.js": {
-   "suma": "4d7044807381",
-   "version": "2026.09.19-18:15:47"
+   "suma": "206f90934877",
+   "version": "2026.10.01-09:53:26"
   },
   "comun/formularios/mediciones.js": {
    "suma": "423ae95d9c9f",
    "version": "2026.09.19-18:15:47"
+  },
+  "comun/formularios/paciente.js": {
+   "suma": "4d043a0458f9",
+   "version": "2026.10.06-18:44:03"
   },
   "comun/glosario-datos.js": {
    "suma": "c5e87c2b340a",
    "version": "2026.09.19-18:15:47"
   },
   "comun/guarda-paciente.js": {
-   "suma": "92eaa6f2657b",
-   "version": "2026.09.19-18:15:47"
+   "suma": "dddff99da17e",
+   "version": "2026.09.23-18:05:54"
   },
   "comun/mf.js": {
-   "suma": "334e6d0f524a",
-   "version": "2026.09.19-18:15:47"
+   "suma": "c7380884b889",
+   "version": "2026.11.11-11:39:07"
   },
   "comun/mf_save.js": {
-   "suma": "823bf02e67d8",
-   "version": "2026.09.19-18:15:47"
+   "suma": "b4d6ecaa1510",
+   "version": "2026.10.01-09:55:55"
+  },
+  "comun/modelos-ia.js": {
+   "suma": "71cff03b2e03",
+   "version": "2026.11.05-12:57:31"
+  },
+  "comun/oye-casa.js": {
+   "suma": "a3c74674653b",
+   "version": "2026.11.05-16:09:14"
+  },
+  "comun/paleta-colores.js": {
+   "suma": "574badc43138",
+   "version": "2026.11.04-21:25:20"
   },
   "comun/patron-comentado.txt": {
-   "suma": "42dcc760db88",
-   "version": "2026.09.19-18:15:47"
+   "suma": "fc4d4fed3deb",
+   "version": "2026.10.07-16:50:34"
+  },
+  "comun/pdf-ausente.pdf": {
+   "muda": true,
+   "suma": "3cb495162271",
+   "version": "2026.11.05-22:03:57"
   },
   "comun/plantilla-mf.js": {
-   "suma": "7c8b2661b49c",
-   "version": "2026.09.19-18:12:56"
+   "suma": "fc9d018cc9a3",
+   "version": "2026.11.03-17:42:20"
+  },
+  "comun/prompt-comentario-anio.js": {
+   "suma": "1dfc0ee04831",
+   "version": "2026.11.05-12:30:12"
+  },
+  "comun/prompt-comentario-curva.js": {
+   "suma": "b48883342c33",
+   "version": "2026.11.04-15:28:03"
+  },
+  "comun/prompt-comentario-especialidad.js": {
+   "suma": "4fbb5a9db17a",
+   "version": "2026.11.05-18:02:52"
   },
   "comun/salufolio.css": {
-   "suma": "1b24ba703ca8",
-   "version": "2026.09.19-18:15:47"
+   "suma": "5afe433cd286",
+   "version": "2026.11.06-09:20:17"
+  },
+  "comun/sinonimos-parametros.js": {
+   "suma": "2d602f8b5796",
+   "version": "2026.11.11-11:39:07"
   },
   "comun/tour-motor.js": {
-   "suma": "cdad7a35dee3",
-   "version": "2026.09.21-23:21:34"
+   "suma": "919ab8f270cb",
+   "version": "2026.10.16-09:22:11"
   },
   "comun/tour.css": {
-   "suma": "5e46a9eadd56",
-   "version": "2026.09.21-23:21:34"
+   "suma": "3d417ddd8781",
+   "version": "2026.09.29-12:13:25"
+  },
+  "comun/visitas-datos.js": {
+   "suma": "1be66b91d5d0",
+   "version": "2026.10.25-18:35:54"
+  },
+  "comun/visitas.js": {
+   "suma": "72be6cc56ada",
+   "version": "2026.10.25-18:35:54"
+  },
+  "comun/visor-pdf.idiomas.js": {
+   "suma": "91cfb3c5851e",
+   "version": "2026.11.06-09:20:17"
+  },
+  "comun/visor-pdf.js": {
+   "suma": "c13505517076",
+   "version": "2026.11.06-09:20:17"
   },
   "correlaciones/correlaciones.help.html": {
-   "suma": "c25d1a0623c2",
-   "version": "2026.09.19-18:15:47"
+   "suma": "cf29f715c906",
+   "version": "2026.11.04-12:42:25"
   },
   "correlaciones/correlaciones.html": {
-   "suma": "df47d510eecd",
-   "version": "2026.09.19-18:12:56"
+   "suma": "babdc78f5ddb",
+   "version": "2026.11.05-15:36:20"
   },
   "correlaciones/correlaciones.idiomas.js": {
-   "suma": "4dcaca7d1b04",
-   "version": "2026.09.19-18:15:47"
+   "suma": "9a2c507e48e8",
+   "version": "2026.11.05-15:36:20"
   },
   "correlaciones/correlaciones.js": {
-   "suma": "f41039d137f4",
-   "version": "2026.09.19-18:12:56"
+   "suma": "ebaa491cc50e",
+   "version": "2026.11.05-15:36:20"
   },
   "correlaciones/index.html": {
    "suma": "72f321289dad",
    "version": "2026.09.19-18:15:47"
   },
   "cronologia/cronologia.help.html": {
-   "suma": "5e90a455b34a",
-   "version": "2026.09.19-18:15:47"
+   "suma": "50b887568d01",
+   "version": "2026.11.05-15:44:58"
   },
   "cronologia/cronologia.html": {
-   "suma": "751350e33902",
-   "version": "2026.09.19-18:12:56"
+   "suma": "12ba97f96fea",
+   "version": "2026.11.06-09:20:17"
   },
   "cronologia/cronologia.idiomas.js": {
-   "suma": "0546750e7fc5",
-   "version": "2026.09.19-18:15:47"
+   "suma": "9f1ea4dc0bba",
+   "version": "2026.11.05-15:44:58"
   },
   "cronologia/cronologia.js": {
-   "suma": "e5b43c46c7cb",
-   "version": "2026.09.19-18:12:56"
+   "suma": "1d598a833de6",
+   "version": "2026.11.06-09:20:17"
   },
   "cronologia/index.html": {
    "suma": "2cad4db93925",
    "version": "2026.09.19-18:15:47"
   },
   "curvas/curvas.help.html": {
-   "suma": "45caed93f566",
-   "version": "2026.09.19-18:15:47"
+   "suma": "ad9b2fd302d1",
+   "version": "2026.11.06-00:25:52"
   },
   "curvas/curvas.html": {
-   "suma": "086d27e21659",
-   "version": "2026.09.19-18:12:56"
+   "suma": "91ffaad8b4ec",
+   "version": "2026.11.11-11:39:07"
   },
   "curvas/curvas.idiomas.js": {
-   "suma": "c61f8638d2db",
-   "version": "2026.09.19-18:15:47"
+   "suma": "663cb965b490",
+   "version": "2026.11.06-00:25:52"
   },
   "curvas/curvas.js": {
-   "suma": "f45d5d583cc8",
-   "version": "2026.09.19-18:12:56"
+   "suma": "50a96d98a440",
+   "version": "2026.11.11-11:39:07"
   },
   "curvas/index.html": {
    "suma": "02d1b107ab70",
    "version": "2026.09.19-18:15:47"
   },
   "datos/datos.help.html": {
-   "suma": "3d6df45641eb",
-   "version": "2026.09.19-18:15:47"
+   "suma": "5dcd1eb86234",
+   "version": "2026.11.04-12:42:25"
   },
   "datos/datos.html": {
-   "suma": "59d2aeaf9532",
-   "version": "2026.09.19-18:12:56"
+   "suma": "85f36a27c5af",
+   "version": "2026.10.07-09:09:13"
   },
   "datos/datos.idiomas.js": {
-   "suma": "6c33e1933cd3",
-   "version": "2026.09.19-18:15:47"
+   "suma": "0d6e8bc77944",
+   "version": "2026.10.06-13:46:00"
   },
   "datos/datos.js": {
    "suma": "adab0413671d",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.04-12:42:25"
   },
   "doc/Protocolo/ES/Academico/Pdf/ES_Documento_academico_v0.9_v2026-08-04_13h48.pdf": {
    "muda": true,
@@ -1711,33 +3354,65 @@
    "suma": "2dcf6bbc81a5",
    "version": "2026.09.22-10:06:52"
   },
+  "especialidad/cardiologia.js": {
+   "suma": "16392a2d8282",
+   "version": "2026.11.11-16:35:30"
+  },
+  "especialidad/especialidad.help.html": {
+   "suma": "9060065072a1",
+   "version": "2026.11.05-20:12:21"
+  },
+  "especialidad/especialidad.html": {
+   "suma": "faff0c6007b8",
+   "version": "2026.11.11-16:35:30"
+  },
+  "especialidad/especialidad.idiomas.js": {
+   "suma": "c5b329f28edc",
+   "version": "2026.11.11-16:35:30"
+  },
+  "especialidad/especialidad.js": {
+   "suma": "29f8ef103462",
+   "version": "2026.11.11-16:35:30"
+  },
+  "especialidad/index.html": {
+   "suma": "105f870e0613",
+   "version": "2026.11.05-20:12:21"
+  },
+  "especialidad/neumologia.js": {
+   "suma": "b716f2fc46e8",
+   "version": "2026.11.11-16:35:30"
+  },
+  "especialidad/neurologia.js": {
+   "suma": "e2c93db6b04f",
+   "version": "2026.11.11-16:35:30"
+  },
   "farmacovigilancia/farmacovigilancia.html": {
-   "suma": "f6e03a0519fc",
-   "version": "2026.09.19-18:12:56"
+   "suma": "b9640c688345",
+   "version": "2026.11.05-15:36:20"
   },
   "farmacovigilancia/farmacovigilancia.idiomas.js": {
-   "suma": "4d8182df19d9",
-   "version": "2026.09.19-18:15:47"
+   "suma": "218ca29ebfb9",
+   "version": "2026.10.06-13:46:00"
   },
   "farmacovigilancia/farmacovigilancia.js": {
    "suma": "2be09900507b",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.05-15:36:20"
   },
   "farmacovigilancia/index.html": {
    "suma": "a3637c517b5f",
    "version": "2026.09.19-18:15:47"
   },
   "glosario/glosario.help.html": {
-   "suma": "994ae2b9b48c",
-   "version": "2026.09.19-18:15:47"
+   "suma": "dd7008ba17a1",
+   "version": "2026.11.04-12:42:25"
   },
   "glosario/glosario.html": {
-   "suma": "38d2eecbadba",
-   "version": "2026.09.19-18:12:56"
+   "suma": "9ae679310032",
+   "version": "2026.10.07-09:09:13"
   },
   "glosario/glosario.js": {
    "suma": "77dcbb139aa0",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.04-12:42:25"
   },
   "glosario/index.html": {
    "suma": "c9dde5f8b468",
@@ -1747,13 +3422,33 @@
    "suma": "2767c6076d45",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/Install banco/banco.html": {
+   "suma": "419ec011bf30",
+   "version": "2026.08.17-14:05:07"
+  },
+  "herramientas/Install banco/terminaux.js": {
+   "suma": "701b8e1fb5bb",
+   "version": "2026.08.17-14:15:23"
+  },
   "herramientas/Maqueta.html": {
    "suma": "4b5dca33710f",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/Salufolio_Maqueta_Correlaciones_v2026-10-28_13h34/maqueta_correlaciones-demo.js": {
+   "suma": "e263e6d85c5b",
+   "version": "2026.10.28-13:37:04"
+  },
+  "herramientas/Salufolio_Maqueta_Correlaciones_v2026-10-28_13h34/maqueta_correlaciones-pares.js": {
+   "suma": "41a0b45c7b98",
+   "version": "2026.10.28-13:37:04"
+  },
+  "herramientas/Salufolio_Maqueta_Correlaciones_v2026-10-28_13h34/maqueta_correlaciones.html": {
+   "suma": "9711564aa30c",
+   "version": "2026.10.28-13:37:04"
+  },
   "herramientas/anonimiza.py": {
-   "suma": "77d189250587",
-   "version": "2026.09.19-18:15:47"
+   "suma": "1b3159e8e635",
+   "version": "2026.10.07-16:50:34"
   },
   "herramientas/anonimizador.html": {
    "suma": "6092ce987a2b",
@@ -1763,6 +3458,14 @@
    "suma": "45241ea630aa",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/bancos/banco-equivalencias.js": {
+   "suma": "6a39e406f3f5",
+   "version": "2026.09.29-15:33:29"
+  },
+  "herramientas/bancos/banco-informe-medicacion.js": {
+   "suma": "e17065992b75",
+   "version": "2026.09.29-16:08:54"
+  },
   "herramientas/buscar_correcto_pdf.py": {
    "suma": "934ddbe9bb56",
    "version": "2026.09.19-18:15:47"
@@ -1770,6 +3473,18 @@
   "herramientas/carnet_2026-08-18_09h52.txt": {
    "suma": "a8b84994d53e",
    "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/comparador/comparador.html": {
+   "suma": "f915667d24eb",
+   "version": "2026.11.05-22:43:03"
+  },
+  "herramientas/comparador/comparador.idiomas.js": {
+   "suma": "b3b5e8c9c0ed",
+   "version": "2026.11.05-22:04:46"
+  },
+  "herramientas/comparador/comparador.js": {
+   "suma": "606ad6505be9",
+   "version": "2026.11.05-22:43:03"
   },
   "herramientas/cotejo/Cotejo.html": {
    "suma": "0c858151bbb8",
@@ -1823,6 +3538,14 @@
    "suma": "867688b1e556",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/diagnostico_sf/diagnostico_sf.py": {
+   "suma": "c22a94c4c8ab",
+   "version": "2026.10.30-16:30:21"
+  },
+  "herramientas/duplicados_pdf.py": {
+   "suma": "f21bb5111a49",
+   "version": "2026.09.30-11:00:36"
+  },
   "herramientas/editor/index.html": {
    "suma": "d9b9552c54f2",
    "version": "2026.09.19-18:15:47"
@@ -1831,13 +3554,97 @@
    "suma": "040cbfde5ad4",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/grafo-notas/LEEME.txt": {
+   "suma": "f49c1540c139",
+   "version": "2026.10.21-21:15:08"
+  },
+  "herramientas/grafo-notas/grafo-notas-v0.html": {
+   "suma": "c5ddae0b69db",
+   "version": "2026.10.16-20:41:46"
+  },
+  "herramientas/grafo-notas/grafo-notas.html": {
+   "suma": "cc6b9b690cf5",
+   "version": "2026.10.21-21:13:15"
+  },
+  "herramientas/grafo-notas/index-GRK.html": {
+   "suma": "0ace9b5790f0",
+   "version": "2026.10.16-20:48:18"
+  },
+  "herramientas/grafo-notas/notas-grafo.js": {
+   "suma": "790b32679148",
+   "version": "2026.10.21-21:15:08"
+  },
   "herramientas/hacer-demo-pdf.py": {
    "suma": "5283432ef5ae",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/hcr_lector.py": {
+   "suma": "a80465f6f9a4",
+   "version": "2026.09.30-16:31:35"
+  },
   "herramientas/inspector_originales.py": {
    "suma": "038b7a4e243d",
    "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/inventario_cartouches/anonimizar_pdf.py": {
+   "suma": "453c710048f6",
+   "version": "2026.10.30-01:12:58"
+  },
+  "herramientas/inventario_cartouches/emparejar_pdfs.plantilla.html": {
+   "suma": "62a7dc207ff4",
+   "version": "2026.10.30-15:33:47"
+  },
+  "herramientas/inventario_cartouches/emparejar_pdfs.py": {
+   "suma": "2cc646176334",
+   "version": "2026.10.30-15:33:47"
+  },
+  "herramientas/inventario_cartouches/fusionar_anclas.py": {
+   "suma": "a5bb4387d2dc",
+   "version": "2026.10.29-23:00:02"
+  },
+  "herramientas/inventario_cartouches/fusionar_correspondencia.py": {
+   "suma": "6e455a5c04f5",
+   "version": "2026.10.29-23:07:30"
+  },
+  "herramientas/inventario_cartouches/fusionar_unica.py": {
+   "suma": "66e955eb0aec",
+   "version": "2026.10.30-01:12:58"
+  },
+  "herramientas/inventario_cartouches/inventario_cartouches.py": {
+   "suma": "6f0c890550de",
+   "version": "2026.10.29-16:30:57"
+  },
+  "herramientas/inventario_cartouches/pasar_a_sources.py": {
+   "suma": "b111a265a2d5",
+   "version": "2026.10.29-23:07:30"
+  },
+  "herramientas/inventario_cartouches/zonas_cartouches.html": {
+   "suma": "e754381c8d67",
+   "version": "2026.10.29-23:53:42"
+  },
+  "herramientas/inventario_cartouches/zonas_cartouches.py": {
+   "suma": "1cd36ece7db5",
+   "version": "2026.10.29-23:53:42"
+  },
+  "herramientas/journal/journal-lista.js": {
+   "suma": "8753446619d9",
+   "version": "2026.11.04-12:54:15"
+  },
+  "herramientas/journal/journal.html": {
+   "suma": "860c8ce1428b",
+   "version": "2026.11.04-12:42:25"
+  },
+  "herramientas/journal/journal.js": {
+   "suma": "0396150aa425",
+   "version": "2026.11.04-12:54:15"
+  },
+  "herramientas/journal/journal_lista.py": {
+   "suma": "272a004f7882",
+   "version": "2026.11.04-11:57:56"
+  },
+  "herramientas/journal/novedades.py": {
+   "suma": "33afd0bb6135",
+   "version": "2026.11.04-12:18:05"
   },
   "herramientas/limpiar_extracciones.py": {
    "suma": "75295438e3fc",
@@ -1876,9 +3683,45 @@
    "suma": "f1d3d3f79181",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/ordenar_expedientes.py": {
+   "suma": "c136248c7b76",
+   "version": "2026.10.07-16:50:34"
+  },
+  "herramientas/pdf_anonymizer/README.md": {
+   "suma": "061139bef9ea",
+   "version": "2026.11.02-00:37:43"
+  },
+  "herramientas/pdf_anonymizer/app.py": {
+   "suma": "4dcce303ec32",
+   "version": "2026.11.03-11:33:06"
+  },
+  "herramientas/pdf_anonymizer/moteur_designer.py": {
+   "suma": "6fb33fa5caa1",
+   "version": "2026.11.02-00:37:43"
+  },
+  "herramientas/pdf_anonymizer/nettoyer_sources.py": {
+   "suma": "b624fc1e6907",
+   "version": "2026.11.03-11:33:06"
+  },
+  "herramientas/pdf_anonymizer/requirements.txt": {
+   "suma": "f37beac49f6a",
+   "version": "2026.11.02-00:37:43"
+  },
+  "herramientas/pdf_anonymizer/static/js/app.js": {
+   "suma": "0cc99ed0c604",
+   "version": "2026.11.03-11:33:06"
+  },
+  "herramientas/pdf_anonymizer/templates/index.html": {
+   "suma": "1c6686367ec9",
+   "version": "2026.11.03-11:33:06"
+  },
+  "herramientas/pdfnnn_a_anonimizado/pdfnnn_a_anonimizado.py": {
+   "suma": "1f504292834a",
+   "version": "2026.10.30-18:07:07"
+  },
   "herramientas/poner-version.py": {
-   "suma": "72550d47e76b",
-   "version": "2026.09.19-19:42:02"
+   "suma": "d67fe161c5f6",
+   "version": "2026.11.11-11:02:33"
   },
   "herramientas/poner_identidad.py": {
    "suma": "4e2356a98972",
@@ -1908,6 +3751,10 @@
    "suma": "247d6b7478c4",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/rpe_lector.py": {
+   "suma": "05aebc8a57a6",
+   "version": "2026.09.30-16:31:35"
+  },
   "herramientas/separar_orina.py": {
    "suma": "b5481642e737",
    "version": "2026.09.19-18:15:47"
@@ -1924,21 +3771,25 @@
    "suma": "e249e88111e5",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/verificador-estilos/verificador-estilos.html": {
+   "suma": "8ad301d3cec8",
+   "version": "2026.10.06-11:41:53"
+  },
   "herramientas/versiones.html": {
-   "suma": "ebd4ae6aeb0c",
-   "version": "2026.09.19-19:44:13"
+   "suma": "92bb0e7e13e7",
+   "version": "2026.11.11-11:02:33"
   },
   "herramientas/versiones.py": {
-   "suma": "8008429fc8ea",
-   "version": "2026.09.19-19:44:13"
+   "suma": "19164a093533",
+   "version": "2026.11.11-11:02:33"
   },
   "herramientas/visita_maqueta.html": {
    "suma": "95f02b2a6504",
    "version": "2026.09.19-18:15:47"
   },
   "herramientas/voces-graba.py": {
-   "suma": "63ccd53076d6",
-   "version": "2026.09.21-22:36:53"
+   "suma": "a42b258835fb",
+   "version": "2026.09.25-15:46:15"
   },
   "herramientas/voces-registra.py": {
    "suma": "a8b1da9d6d35",
@@ -1957,28 +3808,28 @@
    "version": "2026.09.19-18:15:47"
   },
   "informe/informe.help.html": {
-   "suma": "3ac95acd8d66",
-   "version": "2026.09.19-18:15:47"
+   "suma": "64170ce17f10",
+   "version": "2026.11.04-12:42:25"
   },
   "informe/informe.html": {
-   "suma": "0aae45e8d1de",
-   "version": "2026.09.19-18:12:56"
+   "suma": "4af327e216a3",
+   "version": "2026.11.04-15:12:48"
   },
   "informe/informe.idiomas.js": {
-   "suma": "b47c267249a2",
-   "version": "2026.09.19-18:15:47"
+   "suma": "05e775d4ca1b",
+   "version": "2026.09.29-16:08:54"
   },
   "informe/informe.js": {
-   "suma": "e4ce9c1db24e",
-   "version": "2026.09.19-18:12:56"
+   "suma": "6027f8737ea1",
+   "version": "2026.11.05-11:13:28"
   },
   "informe/prompt-informe-v0.js": {
    "suma": "edc43a99165a",
    "version": "2026.09.19-18:15:47"
   },
   "informe/prompt-informe.js": {
-   "suma": "edc43a99165a",
-   "version": "2026.09.19-18:15:47"
+   "suma": "c5a4103f4631",
+   "version": "2026.11.05-11:13:28"
   },
   "maqueta/index.html": {
    "suma": "55caf1bbc8b0",
@@ -1993,40 +3844,56 @@
    "version": "2026.09.19-18:15:47"
   },
   "medicamentos/principios.js": {
-   "suma": "7e4e6e2a4bca",
-   "version": "2026.09.19-18:12:56"
+   "suma": "e5862cb6c92a",
+   "version": "2026.11.04-11:00:08"
   },
   "modular_server.py": {
    "suma": "4172b8efef62",
    "version": "2026.09.19-18:15:47"
+  },
+  "nueva conversation mercredi 28 octobre 19:45.txt": {
+   "suma": "c63d7ea1d8ee",
+   "version": "2026.10.28-20:59:42"
   },
   "observancia/index.html": {
    "suma": "e16a97b214c3",
    "version": "2026.09.19-18:15:47"
   },
   "observancia/observancia.help.html": {
-   "suma": "dc0f482f258a",
-   "version": "2026.09.19-18:15:47"
+   "suma": "9aa61f8aa9c5",
+   "version": "2026.11.04-12:42:25"
   },
   "observancia/observancia.html": {
-   "suma": "492f1b7e4188",
-   "version": "2026.09.19-18:12:56"
+   "suma": "f880c69633cd",
+   "version": "2026.10.07-16:50:34"
   },
   "observancia/observancia.idiomas.js": {
-   "suma": "425e758c15a9",
-   "version": "2026.09.19-18:15:47"
+   "suma": "0d0979205564",
+   "version": "2026.10.06-13:46:00"
   },
   "observancia/observancia.js": {
    "suma": "9776d5169139",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.04-12:42:25"
   },
   "paciente/index.html": {
-   "suma": "ebb64ffb8331",
-   "version": "2026.09.19-18:12:56"
+   "suma": "cc4302673a70",
+   "version": "2026.10.07-16:50:34"
+  },
+  "paciente/paciente.help.html": {
+   "suma": "920b7cb4ba00",
+   "version": "2026.11.04-12:42:25"
+  },
+  "paciente/paciente.html": {
+   "suma": "5f34f721d04a",
+   "version": "2026.10.06-18:44:03"
+  },
+  "paciente/paciente.idiomas.js": {
+   "suma": "b7009f983d61",
+   "version": "2026.10.06-18:44:03"
   },
   "paciente/paciente.js": {
-   "suma": "303ff0c58ae1",
-   "version": "2026.09.19-18:12:56"
+   "suma": "b6b2af19f05b",
+   "version": "2026.10.06-18:44:03"
   },
   "panal/iconos/LEEME.txt": {
    "suma": "a4ef1c57684a",
@@ -2071,16 +3938,16 @@
    "version": "2026.09.19-19:42:02"
   },
   "protocolo/index.html": {
-   "suma": "222ed4c77079",
-   "version": "2026.09.19-18:15:47"
+   "suma": "dc8e360c0dbd",
+   "version": "2026.10.14-21:21:39"
   },
   "protocolo/protocolo.html": {
-   "suma": "d02c3f63bc45",
-   "version": "2026.09.19-18:15:47"
+   "suma": "5c9b6aa4b59b",
+   "version": "2026.10.21-22:54:30"
   },
   "protocolo/sw.js": {
-   "suma": "e76c73a2169c",
-   "version": "2026.09.19-18:15:47"
+   "suma": "7d6aa910be02",
+   "version": "2026.10.21-22:54:30"
   },
   "prueba-form/index.html": {
    "suma": "96f85c9a7866",
@@ -2092,123 +3959,127 @@
   },
   "prueba/prueba.js": {
    "suma": "850d27b50b2a",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.09.19-18:15:47"
   },
   "radar/index.html": {
    "suma": "afcc7ce5c5a4",
    "version": "2026.09.19-18:15:47"
   },
   "radar/radar.help.html": {
-   "suma": "692ea0fc4031",
-   "version": "2026.09.19-18:15:47"
+   "suma": "f54b1acc9fd9",
+   "version": "2026.11.04-12:42:25"
   },
   "radar/radar.html": {
-   "suma": "baff59a17d3f",
-   "version": "2026.09.19-18:12:56"
+   "suma": "db199253d82b",
+   "version": "2026.11.05-15:36:21"
   },
   "radar/radar.idiomas.js": {
-   "suma": "024652aa23d7",
-   "version": "2026.09.19-18:15:47"
+   "suma": "9a8b7b1067d0",
+   "version": "2026.11.04-17:05:42"
   },
   "radar/radar.js": {
    "suma": "4ca2417b039f",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.05-15:36:21"
+  },
+  "radar/radar_v2026-10-28_16h56.html": {
+   "suma": "04e27b8eedab",
+   "version": "2026.10.28-16:58:34"
   },
   "resumen/index.html": {
    "suma": "97dafde504a7",
    "version": "2026.09.19-18:15:47"
   },
   "resumen/resumen.help.html": {
-   "suma": "f308bdd5b780",
-   "version": "2026.09.19-18:15:47"
+   "suma": "b10ff6dfa989",
+   "version": "2026.11.04-12:42:25"
   },
   "resumen/resumen.html": {
-   "suma": "1fd5904096c1",
-   "version": "2026.09.19-18:12:56"
+   "suma": "5f53ed964c0f",
+   "version": "2026.11.05-13:21:32"
   },
   "resumen/resumen.idiomas.js": {
-   "suma": "398c7752c8fc",
-   "version": "2026.09.19-18:15:47"
+   "suma": "d4acccb978d5",
+   "version": "2026.11.04-21:25:20"
   },
   "resumen/resumen.js": {
-   "suma": "4447743a5235",
-   "version": "2026.09.19-18:12:56"
+   "suma": "098e00db5000",
+   "version": "2026.11.05-13:21:32"
   },
   "revisar/index.html": {
    "suma": "3c6649ebd88a",
    "version": "2026.09.19-18:15:47"
   },
   "revisar/revisar.html": {
-   "suma": "952a2f86eb28",
-   "version": "2026.09.19-18:12:56"
+   "suma": "4263a5919264",
+   "version": "2026.11.05-15:36:20"
   },
   "revisar/revisar.idiomas.js": {
-   "suma": "c780e7d629c4",
-   "version": "2026.09.19-18:15:47"
+   "suma": "4ceae5dc43a9",
+   "version": "2026.10.06-13:46:00"
   },
   "revisar/revisar.js": {
    "suma": "79f74f1ca218",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.05-15:36:20"
   },
   "tabla/index.html": {
    "suma": "b37218f6e137",
    "version": "2026.09.19-18:15:47"
   },
   "tabla/tabla.help.html": {
-   "suma": "417be82ac4e4",
-   "version": "2026.09.19-18:15:47"
+   "suma": "28dce856c037",
+   "version": "2026.11.04-12:42:25"
   },
   "tabla/tabla.html": {
-   "suma": "97c49cd0f418",
-   "version": "2026.09.19-18:12:56"
+   "suma": "212128c0a315",
+   "version": "2026.11.06-09:20:17"
   },
   "tabla/tabla.idiomas.js": {
-   "suma": "c8ea9a04ca59",
-   "version": "2026.09.19-18:15:47"
+   "suma": "cc4fa8f63cf6",
+   "version": "2026.11.06-09:20:17"
   },
   "tabla/tabla.js": {
-   "suma": "75080bf6bb3f",
-   "version": "2026.09.19-18:12:56"
+   "suma": "3bf1a4f7d2d2",
+   "version": "2026.11.06-09:20:17"
   },
   "tratamientos/index.html": {
    "suma": "1825782dc917",
    "version": "2026.09.19-18:15:47"
   },
   "tratamientos/tratamientos.help.html": {
-   "suma": "dc9cbd1260d9",
-   "version": "2026.09.19-18:15:47"
+   "suma": "2d6be8ac9092",
+   "version": "2026.11.04-12:42:25"
   },
   "tratamientos/tratamientos.html": {
-   "suma": "1adfc1addebc",
-   "version": "2026.09.19-18:12:56"
+   "suma": "7eb933dcb1d6",
+   "version": "2026.11.04-11:28:35"
   },
   "tratamientos/tratamientos.idiomas.js": {
-   "suma": "d478bcb41cc4",
-   "version": "2026.09.19-18:15:47"
+   "suma": "12216c8c29a1",
+   "version": "2026.11.04-11:22:36"
   },
   "tratamientos/tratamientos.js": {
    "suma": "881bfebccf47",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.04-12:42:25"
   },
   "vascular/index.html": {
    "suma": "1fd75d6a2852",
    "version": "2026.09.19-18:15:47"
   },
   "vascular/vascular.help.html": {
-   "suma": "2c12e7bd84c2",
-   "version": "2026.09.19-18:15:47"
+   "suma": "cb944e2b02b8",
+   "version": "2026.11.04-12:42:25"
   },
   "vascular/vascular.html": {
-   "suma": "6b5f7e4010d1",
-   "version": "2026.09.19-18:12:56"
+   "suma": "877535383b80",
+   "version": "2026.10.07-16:50:34"
   },
   "vascular/vascular.idiomas.js": {
-   "suma": "954699ba96c4",
-   "version": "2026.09.19-18:15:47"
+   "suma": "f24374ff99a7",
+   "version": "2026.10.06-13:46:00"
   },
   "vascular/vascular.js": {
    "suma": "0412ffeea1ef",
-   "version": "2026.09.19-18:12:56"
+   "version": "2026.11.04-12:42:25"
   }
  }
 }

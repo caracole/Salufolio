@@ -1,7 +1,7 @@
 /* VASCULAR — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "vascular",
-  "version": "2026.09.19-18:12:56",
+  "version": "2026.11.04-12:42:25",
   "programa": "vascular.html",
   "lanzador": "../casa/casa.js",
   "icono": "🫀",

@@ -1,0 +1,583 @@
+{
+ "fichero": "HCR_17072026065532.pdf",
+ "pdf_id": "PDF001",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h29m07",
+ "segundos": 108,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 23783,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 7665,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "sip": "",
+   "nhc": "",
+   "n_episodio": "",
+   "n_informe": "",
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "CENTRO DE SALUD DE ATZENETA DEL MAESTRAT",
+   "servicio": "",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "Historia Clínica Resumida",
+   "fecha_ingreso": "",
+   "fecha_alta": "",
+   "fecha_informe": "",
+   "fecha_firma": "2026-07-17",
+   "fecha_impresion": "2026-07-16"
+  },
+  "mediciones": [],
+  "medicamentos": [
+   {
+    "nombre": "DONEPEZILO (LIXBEN 10MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA EFG)",
+    "dosis": "10MG",
+    "pauta": "1 COMPRIMIDO cada día CRÓNICO. Administrar por la noche inmediatamente antes de acostarse.",
+    "via": "oral",
+    "desde": "2026-03-25",
+    "hasta": "2026-09-20"
+   },
+   {
+    "nombre": "RIVAROXABAN (XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA)",
+    "dosis": "20MG",
+    "pauta": "1 COMPRIMIDO cada día durante 150 días. Debe administrarse con alimentos.",
+    "via": "oral",
+    "desde": "2026-05-21",
+    "hasta": "2026-10-17"
+   },
+   {
+    "nombre": "ABSORBENTE INC ORINA DIA PANTS (INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT)",
+    "dosis": "",
+    "pauta": "2 PAÑAL DIA cada día CRÓNICO",
+    "via": "",
+    "desde": "2024-05-16",
+    "hasta": "2026-08-31"
+   },
+   {
+    "nombre": "ABSORBENTE INC ORINA SUPER NOCHE PANTS (INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT)",
+    "dosis": "",
+    "pauta": "1 Envase cada 60 días CRÓNICO",
+    "via": "",
+    "desde": "2025-12-12",
+    "hasta": "2027-01-21"
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2026-07-16",
+    "titulo": "HISTORIA PERSONAL DE INFECCIONES DEL TRACTO URINARIO",
+    "detalle": "Z87.440 CIE-10-ES. Problema activo desde 16/07/2026."
+   },
+   {
+    "fecha": "2026-07-13",
+    "titulo": "DOLOR EN RODILLA DERECHA",
+    "detalle": "M25.561 CIE-10-ES. Problema activo desde 13/07/2026."
+   },
+   {
+    "fecha": "2026-07-08",
+    "titulo": "GLUCEMIA BASAL ALTERADA",
+    "detalle": "R73.01 CIE-10-ES. Problema activo desde 08/07/2026."
+   },
+   {
+    "fecha": "2026-04-20",
+    "titulo": "ACCIDENTE ISQUEMICO CEREBRAL TRANSITORIO, NO ESPECIFICADO",
+    "detalle": "G45.9 CIE-10-ES. Problema activo desde 20/04/2026."
+   },
+   {
+    "fecha": "2026-02-12",
+    "titulo": "TRASTORNO MENTAL NO ESPECIFICADO DEBIDO A AFECCION FISIOLOGICA CONOCIDA",
+    "detalle": "F09 CIE-10-ES. Problema activo desde 12/02/2026."
+   },
+   {
+    "fecha": "2026-02-12",
+    "titulo": "INSUFICIENCIA RESPIRATORIA NO ESPECIFICADA, SIN ESPECIFICAR SI CON HIPOXIA O CON HIPERCAPNIA",
+    "detalle": "J96.90 CIE-10-ES. Problema activo desde 12/02/2026."
+   },
+   {
+    "fecha": "2026-01-27",
+    "titulo": "ALTERACIONES DE LA MARCHA Y DE LA MOVILIDAD NO ESPECIFICADAS",
+    "detalle": "R26.9 CIE-10-ES. Problema activo desde 27/01/2026."
+   },
+   {
+    "fecha": "2026-01-24",
+    "titulo": "DOLOR EN CADERA DERECHA",
+    "detalle": "M25.551 CIE-10-ES. Problema activo desde 24/01/2026."
+   },
+   {
+    "fecha": "2026-01-24",
+    "titulo": "CAIDA NO ESPECIFICADA, CONTACTO SUCESIVO",
+    "detalle": "W19.XXXD CIE-10-ES. Problema activo desde 24/01/2026."
+   },
+   {
+    "fecha": "2026-01-17",
+    "titulo": "CAIDA POR EL SUELO, CONTACTO SUCESIVO",
+    "detalle": "W13.3XXD CIE-10-ES. Problema activo desde 17/01/2026."
+   },
+   {
+    "fecha": "2026-01-15",
+    "titulo": "DIFICULTAD PARA CAMINAR, NO CLASIFICADA BAJO OTRO CONCEPTO",
+    "detalle": "R26.2 CIE-10-ES. Problema activo desde 15/01/2026."
+   },
+   {
+    "fecha": "2026-01-13",
+    "titulo": "INSUFICIENCIA RESPIRATORIA NO ESPECIFICADA, CON HIPERCAPNIA",
+    "detalle": "J96.92 CIE-10-ES. Problema activo desde 13/01/2026."
+   },
+   {
+    "fecha": "2025-12-29",
+    "titulo": "CONTUSION DE PARED ANTERIOR NO ESPECIFICADA DEL TORAX, CONTACTO SUCESIVO",
+    "detalle": "S20.219D CIE-10-ES. Problema activo desde 29/12/2025."
+   },
+   {
+    "fecha": "2025-12-10",
+    "titulo": "DISFAGIA, NO ESPECIFICADA",
+    "detalle": "R13.10 CIE-10-ES. Problema activo desde 10/12/2025."
+   },
+   {
+    "fecha": "2025-11-21",
+    "titulo": "OTROS TRASTORNOS PSICOTICOS NO DEBIDOS A SUSTANCIA NI AFECCION FISIOLOGICA CONOCIDAS",
+    "detalle": "F28 CIE-10-ES. Problema activo desde 21/11/2025."
+   },
+   {
+    "fecha": "2025-11-21",
+    "titulo": "HIPERTENSION ESENCIAL (PRIMARIA)",
+    "detalle": "I10 CIE-10-ES. Problema activo desde 21/11/2025."
+   },
+   {
+    "fecha": "2025-10-10",
+    "titulo": "DEMENCIA VASCULAR, GRAVEDAD NO ESPECIFICADA, SIN ALTERACIÓN DEL COMPORTAMIENTO, ALTERACIÓN PSICÓTICA, ALTERACIÓN DEL ESTADO DE ÁNIMO NI ANSIEDAD",
+    "detalle": "F01.50 CIE-10-ES. Problema activo desde 10/10/2025."
+   },
+   {
+    "fecha": "2025-09-01",
+    "titulo": "TEP CRONICO",
+    "detalle": "I27.82 CIE-10-ES. Problema activo desde 01/09/2025."
+   },
+   {
+    "fecha": "2025-07-06",
+    "titulo": "CAIDA (EN) (DE) OTRAS ESCALERAS Y ESCALONES, CONTACTO INICIAL",
+    "detalle": "W10.8XXA CIE-10-ES. Problema activo desde 06/07/2025."
+   },
+   {
+    "fecha": "2025-06-10",
+    "titulo": "POLIPO DEL CUERPO UTERINO",
+    "detalle": "N84.0 CIE-10-ES. Problema activo desde 10/06/2025."
+   },
+   {
+    "fecha": "2025-06-05",
+    "titulo": "CISTITIS AGUDA SIN HEMATURIA",
+    "detalle": "N30.00 CIE-10-ES. Problema activo desde 05/06/2025."
+   },
+   {
+    "fecha": "2025-02-28",
+    "titulo": "TRASTORNO DE CONDUCTA, TIPO DE INICIO EN LA NIÑEZ",
+    "detalle": "F91.1 CIE-10-ES. Problema activo desde 28/02/2025."
+   },
+   {
+    "fecha": "2025-02-17",
+    "titulo": "CANDIDIASIS, NO ESPECIFICADA",
+    "detalle": "B37.9 CIE-10-ES. Problema activo desde 17/02/2025."
+   },
+   {
+    "fecha": "2024-11-13",
+    "titulo": "TOS",
+    "detalle": "R05 CIE-10-ES. Problema activo desde 13/11/2024."
+   },
+   {
+    "fecha": "2024-09-06",
+    "titulo": "CANDIDIASIS DE LA PIEL Y LAS UÑAS",
+    "detalle": "B37.2 CIE-10-ES. Problema activo desde 06/09/2024."
+   },
+   {
+    "fecha": "2024-08-13",
+    "titulo": "DOLOR EN LA PARTE INFERIOR DE LA ESPALDA",
+    "detalle": "M54.5 CIE-10-ES. Problema activo desde 13/08/2024."
+   },
+   {
+    "fecha": "2024-02-15",
+    "titulo": "INQUIETUD Y AGITACION",
+    "detalle": "R45.1 CIE-10-ES. Problema activo desde 15/02/2024."
+   },
+   {
+    "fecha": "2024-01-22",
+    "titulo": "ABSCESO PERIAPICAL SIN SINUS",
+    "detalle": "K04.7 CIE-10-ES. Problema activo desde 22/01/2024."
+   },
+   {
+    "fecha": "2023-12-15",
+    "titulo": "ESGUINCE DE LIGAMENTO NO ESPECIFICADO DE TOBILLO IZQUIERDO, CONTACTO SUCESIVO",
+    "detalle": "S93.402D CIE-10-ES. Problema activo desde 15/12/2023."
+   },
+   {
+    "fecha": "2023-11-06",
+    "titulo": "CONTUSION DE DEDO ANULAR IZQUIERDO, SIN DAÑOS EN LA UÑA, CONTACTO SUCESIVO",
+    "detalle": "S60.042D CIE-10-ES. Problema activo desde 06/11/2023."
+   },
+   {
+    "fecha": "2023-06-28",
+    "titulo": "DEMENCIA NO ESPECIFICADA CON ALTERACION DE LA CONDUCTA",
+    "detalle": "F03.91 CIE-10-ES. Problema activo desde 28/06/2023."
+   },
+   {
+    "fecha": "2023-06-05",
+    "titulo": "BLOQUEO DE RAMA DERECHA NO ESPECIFICADO",
+    "detalle": "I45.10 CIE-10-ES. Problema activo desde 05/06/2023."
+   },
+   {
+    "fecha": "2023-06-05",
+    "titulo": "ENFERMEDAD HEPATICA, NO ESPECIFICADA",
+    "detalle": "K76.9 CIE-10-ES. Problema activo desde 05/06/2023."
+   },
+   {
+    "fecha": "2023-03-15",
+    "titulo": "CARENCIA DE VITAMINA D, NO ESPECIFICADA",
+    "detalle": "E55.9 CIE-10-ES. Problema activo desde 15/03/2023."
+   },
+   {
+    "fecha": "2023-03-15",
+    "titulo": "MAREO Y DESVANECIMIENTO",
+    "detalle": "R42 CIE-10-ES. Problema activo desde 15/03/2023."
+   },
+   {
+    "fecha": "2023-02-28",
+    "titulo": "NODULO TIROIDEO UNICO NO TOXICO",
+    "detalle": "E04.1 CIE-10-ES. Problema activo desde 28/02/2023."
+   },
+   {
+    "fecha": "2022-12-22",
+    "titulo": "DEMENCIA NO ESPECIFICADA SIN ALTERACION DE LA CONDUCTA",
+    "detalle": "F03.90 CIE-10-ES. Problema activo desde 22/12/2022."
+   },
+   {
+    "fecha": "2022-12-22",
+    "titulo": "VENAS VARICOSAS DE EXTREMIDAD INFERIOR IZQUIERDA CON ULCERA E INFLAMACION DE LOCALIZACION NO ESPECIFICADA",
+    "detalle": "I83.229 CIE-10-ES. Problema activo desde 22/12/2022."
+   },
+   {
+    "fecha": "2022-12-18",
+    "titulo": "CONTUSION DE PIERNA IZQUIERDA, CONTACTO SUCESIVO",
+    "detalle": "S80.12XD CIE-10-ES. Problema activo desde 18/12/2022."
+   },
+   {
+    "fecha": "2022-12-04",
+    "titulo": "TRAUMATISMO SUPERFICIAL NO ESPECIFICADO DE PIERNA IZQUIERDA, CONTACTO SUCESIVO",
+    "detalle": "S80.922D CIE-10-ES. Problema activo desde 04/12/2022."
+   },
+   {
+    "fecha": "2022-10-27",
+    "titulo": "BRONQUITIS, NO ESPECIFICADA COMO AGUDA O CRONICA",
+    "detalle": "J40 CIE-10-ES. Problema activo desde 27/10/2022."
+   },
+   {
+    "fecha": "2022-10-21",
+    "titulo": "BRADICARDIA, NO ESPECIFICADA",
+    "detalle": "R00.1 CIE-10-ES. Problema activo desde 21/10/2022."
+   },
+   {
+    "fecha": "2022-07-26",
+    "titulo": "TRASTORNO DEPRESIVO MAYOR, EPISODIO ÚNICO, NO ESPECIFICADO",
+    "detalle": "F32.9 CIE-10-ES. Problema activo desde 26/07/2022."
+   },
+   {
+    "fecha": "2022-07-26",
+    "titulo": "ENFERMEDAD ALZHEIMER",
+    "detalle": "G30.9 CIE-10-ES. Problema activo desde 26/07/2022."
+   },
+   {
+    "fecha": "2022-07-26",
+    "titulo": "CISTITIS, NO ESPECIFICADA, SIN HEMATURIA",
+    "detalle": "N30.90 CIE-10-ES. Problema activo desde 26/07/2022."
+   },
+   {
+    "fecha": "2022-07-23",
+    "titulo": "DOLOR EN RODILLA NO ESPECIFICADA",
+    "detalle": "M25.569 CIE-10-ES. Problema activo desde 23/07/2022."
+   },
+   {
+    "fecha": "2022-07-12",
+    "titulo": "CARENCIA DE VITAMINA, NO ESPECIFICADA",
+    "detalle": "E56.9 CIE-10-ES. Problema activo desde 12/07/2022."
+   },
+   {
+    "fecha": "2022-07-12",
+    "titulo": "INCONTINENCIA URINARIA NO ESPECIFICADA",
+    "detalle": "R32 CIE-10-ES. Problema activo desde 12/07/2022."
+   },
+   {
+    "fecha": "2022-07-12",
+    "titulo": "BACTERIURIA",
+    "detalle": "R82.71 CIE-10-ES. Problema activo desde 12/07/2022."
+   },
+   {
+    "fecha": "2022-06-09",
+    "titulo": "TRAUMATISMO SUPERFICIAL NO ESPECIFICADO DE CUERO CABELLUDO, CONTACTO SUCESIVO",
+    "detalle": "S00.00XD CIE-10-ES. Problema activo desde 09/06/2022."
+   },
+   {
+    "fecha": "2022-05-31",
+    "titulo": "CONTUSIÓN DE CADERA NO ESPECIFICADA, CONTACTO SUCESIVO",
+    "detalle": "S70.00XD CIE-10-ES. Problema activo desde 31/05/2022."
+   },
+   {
+    "fecha": "2022-05-19",
+    "titulo": "HERIDA ABIERTA NO ESPECIFICADA DE PIERNA IZQUIERDA, CONTACTO SUCESIVO",
+    "detalle": "S81.802D CIE-10-ES. Problema activo desde 19/05/2022."
+   },
+   {
+    "fecha": "2022-05-17",
+    "titulo": "CONTUSIÓN DE PARTE INFERIOR DE ESPALDA Y PELVIS, CONTACTO SUCESIVO",
+    "detalle": "S30.0XXD CIE-10-ES. Problema activo desde 17/05/2022."
+   },
+   {
+    "fecha": "2022-04-10",
+    "titulo": "HERIDA ABIERTA NO ESPECIFICADA DE DEDO DE MANO NO ESPECIFICADO, SIN DAÑOS EN LA UÑA, CONTACTO SUCESIVO",
+    "detalle": "S61.209D CIE-10-ES. Problema activo desde 10/04/2022."
+   },
+   {
+    "fecha": "2022-03-10",
+    "titulo": "HERIDA CUERO CABELLUDO",
+    "detalle": "S01.00XD CIE-10-ES. Problema activo desde 10/03/2022."
+   },
+   {
+    "fecha": "2022-03-10",
+    "titulo": "TCE",
+    "detalle": "S06.9X0D CIE-10-ES. Problema activo desde 10/03/2022."
+   },
+   {
+    "fecha": "2022-01-16",
+    "titulo": "ANTICOAGULACION",
+    "detalle": "Z79.01 CIE-10-ES. Problema activo desde 16/01/2022."
+   },
+   {
+    "fecha": "2022-01-07",
+    "titulo": "TEP / TROMBOEMBOLISMO PULMONAR",
+    "detalle": "I26.99 CIE-10-ES. Problema activo desde 07/01/2022."
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "DISNEA",
+    "detalle": "R06.00 CIE-10-ES. Problema activo desde 06/01/2022."
+   },
+   {
+    "fecha": "2022-01-05",
+    "titulo": "DETERIORO COGNITIVO MODERADO",
+    "detalle": "G31.84 CIE-10-ES. Problema activo desde 05/01/2022."
+   },
+   {
+    "fecha": "2021-10-27",
+    "titulo": "BOCIO ENDOTORACICO",
+    "detalle": "E04.9 CIE-10-ES. Problema activo desde 27/10/2021."
+   },
+   {
+    "fecha": "2021-10-27",
+    "titulo": "DISPEPSIA FUNCIONAL",
+    "detalle": "K30 CIE-10-ES. Problema activo desde 27/10/2021."
+   },
+   {
+    "fecha": "2021-09-29",
+    "titulo": "INFARTO VERTEBROBASILAR",
+    "detalle": "I63.219 CIE-10-ES. Problema activo desde 29/09/2021."
+   },
+   {
+    "fecha": "2021-09-29",
+    "titulo": "ICTUS",
+    "detalle": "I63.9 CIE-10-ES. Problema activo desde 29/09/2021."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "ENOLISMO",
+    "detalle": "F10.20 CIE-10-ES. Problema activo desde 01/09/2021."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "DOLOR MANO",
+    "detalle": "M79.643 CIE-10-ES. Problema activo desde 01/09/2021."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "TRASTORNO NEUROLOGICO DEGLUCION",
+    "detalle": "R29.818 CIE-10-ES. Problema activo desde 01/09/2021."
+   },
+   {
+    "fecha": "2021-07-14",
+    "titulo": "DERMATOSIS",
+    "detalle": "L98.9 CIE-10-ES. Problema activo desde 14/07/2021."
+   },
+   {
+    "fecha": "2021-06-18",
+    "titulo": "DOLOR OCULAR, OJO IZQUIERDO",
+    "detalle": "H57.12 CIE-10-ES. Problema activo desde 18/06/2021."
+   },
+   {
+    "fecha": "2020-09-20",
+    "titulo": "BRONQUITIS AGUDA O SUBAGUDA",
+    "detalle": "J20.9 CIE-10-ES. Problema activo desde 20/09/2020."
+   },
+   {
+    "fecha": "2020-04-08",
+    "titulo": "DOLOR DENTAL Y PERIODONTAL",
+    "detalle": "K08.9 CIE-10-ES. Problema activo desde 08/04/2020."
+   },
+   {
+    "fecha": "2019-12-09",
+    "titulo": "PROCEDIMIENTO Y TRATAMIENTO NO REALIZADOS DEBIDO A DECISIÓN DEL PACIENTE POR OTRAS RAZONES",
+    "detalle": "Z53.29 CIE-10-ES. Problema activo desde 09/12/2019."
+   },
+   {
+    "fecha": "2019-11-05",
+    "titulo": "QUEMADURA DE GRADO NO ESPECIFICADO DE MUÑECA NO ESPECIFICADA, SECUELA",
+    "detalle": "T23.079S CIE-10-ES. Problema activo desde 05/11/2019."
+   },
+   {
+    "fecha": "2019-04-15",
+    "titulo": "DOLOR EN HOMBRO NO ESPECIFICADO",
+    "detalle": "M25.519 CIE-10-ES. Problema activo desde 15/04/2019."
+   },
+   {
+    "fecha": "2018-09-21",
+    "titulo": "ALUCINACIONES, NO ESPECIFICADAS",
+    "detalle": "R44.3 CIE-10-ES. Problema activo desde 21/09/2018."
+   },
+   {
+    "fecha": "2017-11-13",
+    "titulo": "HIPERCOLESTEROLEMIA PURA, NO ESPECIFICADA",
+    "detalle": "E78.00 CIE-10-ES. Problema activo desde 13/11/2017."
+   },
+   {
+    "fecha": "2016-11-17",
+    "titulo": "EMBOLIA Y TROMBOSIS AGUDAS DE VENAS PROFUNDAS NO ESPECIFICADAS DE EXTREMIDAD INFERIOR NO ESPECIFICADA",
+    "detalle": "I82.409 CIE-10-ES. Problema activo desde 17/11/2016."
+   },
+   {
+    "fecha": "2016-11-17",
+    "titulo": "ENFERMEDAD PULMONAR OBSTRUCTIVA CRÓNICA, NO ESPECIFICADA",
+    "detalle": "J44.9 CIE-10-ES. Problema activo desde 17/11/2016."
+   },
+   {
+    "fecha": "2016-07-03",
+    "titulo": "MEDIDA DE PRESIÓN ARTERIAL ELEVADA, SIN DIAGNÓSTICO DE HIPERTENSIÓN",
+    "detalle": "R03.0 CIE-10-ES. Problema activo desde 03/07/2016."
+   },
+   {
+    "fecha": "2016-04-06",
+    "titulo": "TRASTORNO DE ANSIEDAD, NO ESPECIFICADO",
+    "detalle": "F41.9 CIE-10-ES. Problema activo desde 06/04/2016."
+   },
+   {
+    "fecha": "2016-04-06",
+    "titulo": "TRASTORNOS DEL DIAFRAGMA",
+    "detalle": "J98.6 CIE-10-ES. Problema activo desde 06/04/2016."
+   },
+   {
+    "fecha": "2021-07-18",
+    "titulo": "EPOC AGUDIZADO (inactivo)",
+    "detalle": "J44.1 CIE-10-ES. Inicio: 18/07/2021. Inactivado: 07/03/2026."
+   },
+   {
+    "fecha": "2024-11-13",
+    "titulo": "NASOFARINGITIS AGUDA [RESFRIADO COMUN] (inactivo)",
+    "detalle": "J00 CIE-10-ES. Inicio: 13/11/2024. Inactivado: 07/02/2025."
+   },
+   {
+    "fecha": "2023-11-12",
+    "titulo": "INQUIETUD Y AGITACION (inactivo)",
+    "detalle": "R45.1 CIE-10-ES. Inicio: 11/12/2023. Inactivado: 15/02/2024."
+   },
+   {
+    "fecha": "2017-02-14",
+    "titulo": "OTRA EMBOLIA PULMONAR SIN COR PULMONALE AGUDO (inactivo)",
+    "detalle": "I26.99 CIE-10-ES. Inicio: 14/02/2017. Inactivado: 07/01/2022."
+   },
+   {
+    "fecha": "2022-01-02",
+    "titulo": "DISNEA (inactivo)",
+    "detalle": "R06.00 CIE-10-ES. Inicio: 02/01/2022. Inactivado: 06/01/2022."
+   },
+   {
+    "fecha": "2021-06-18",
+    "titulo": "DISNEA (inactivo)",
+    "detalle": "R06.00 CIE-10-ES. Inicio: 18/06/2021. Inactivado: 03/01/2022."
+   },
+   {
+    "fecha": "2016-02-24",
+    "titulo": "BRONQUITIS (inactivo)",
+    "detalle": "490 CIE-9-ES. Inicio: 24/02/2016. Inactivado: 23/11/2018."
+   },
+   {
+    "fecha": "2016-04-06",
+    "titulo": "VERTIGO (inactivo)",
+    "detalle": "780.4 CIE-9-ES. Inicio: 06/04/2016. Inactivado: 23/11/2018."
+   },
+   {
+    "fecha": "2016-07-03",
+    "titulo": "ODINOFAGIA (inactivo)",
+    "detalle": "787.2 CIE-9-ES. Inicio: 03/07/2016. Inactivado: 23/11/2018."
+   },
+   {
+    "fecha": "2016-11-18",
+    "titulo": "DIARREA (inactivo)",
+    "detalle": "787.91 CIE-9-ES. Inicio: 18/11/2016. Inactivado: 23/11/2018."
+   },
+   {
+    "fecha": "2016-11-17",
+    "titulo": "ANTICOAGULACION ORAL (inactivo)",
+    "detalle": "V58.61 CIE-9-ES. Inicio: 17/11/2016. Inactivado: 23/11/2018."
+   },
+   {
+    "fecha": "2014-10-30",
+    "titulo": "Vacuna contra la gripe",
+    "detalle": "Código 46233009. Administrada el 30/10/2014."
+   },
+   {
+    "fecha": "2016-12-02",
+    "titulo": "Vacuna contra la gripe",
+    "detalle": "Código 46233009. Administrada el 02/12/2016."
+   },
+   {
+    "fecha": "2017-11-13",
+    "titulo": "Vacuna contra la gripe",
+    "detalle": "Código 46233009. Administrada el 13/11/2017."
+   },
+   {
+    "fecha": "2018-12-03",
+    "titulo": "Vacuna contra la gripe",
+    "detalle": "Código 46233009. Administrada el 03/12/2018."
+   },
+   {
+    "fecha": "2019-12-10",
+    "titulo": "Vacuna contra la gripe",
+    "detalle": "Código 46233009. Administrada el 10/12/2019."
+   }
+  ],
+  "dudas": [
+   "El documento es una Historia Clínica Resumida impresa el 16/07/2026 y firmada el 17/07/2026 18:55:27. No hay una 'fecha_informe' diferenciada de la fecha de impresión o firma.",
+   "Los campos SIP, NHC, NIF, CIP, NASS y otros identificadores numéricos no son legibles en el documento porque aparecen en blanco o están anonimizados.",
+   "El firmante del documento no está identificado por nombre en el texto visible (campo FACULTATIU en blanco).",
+   "El documento indica 'con validez hasta: 21/06/2026', fecha anterior a la de firma (17/07/2026), lo que puede indicar un error o una vigencia administrativa distinta.",
+   "El sexo figura como 'M' pero el historial incluye 'POLIPO DEL CUERPO UTERINO' (N84.0), lo que puede ser una incongruencia o un error de codificación de sexo en el sistema.",
+   "El campo 'servicio' no figura explícitamente en el documento al tratarse de un documento de Atención Primaria (centro de salud), no de un servicio hospitalario específico.",
+   "La fecha de inicio del problema inactivo R45.1 (INQUIETUD Y AGITACION) figura como '11/12/2023' pero la fecha de inicio del problema activo homónimo es '15/02/2024': puede haber solapamiento o es un reingreso del mismo código."
+  ]
+ }
+}

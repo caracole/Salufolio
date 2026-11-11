@@ -1,5 +1,5 @@
 /* EL PROMPT DEL COMENTARIO DE UN AÑO — /Salufolio/comun/prompt-comentario-anio.js
-   Versión 2026.11.05-12:18:34
+   Versión 2026.11.05-12:30:12
    « Ne jamais mélanger le code JavaScript avec le prompt » (P-H, 11/08/2026) : el código
    (comun/comentario-ia.js) solo lo carga. Se cambia aquí, sin tocar el código.
    Los huecos {…} los rellena el código : {anio} {prev} {lengua} {marcador} {lineas} {contexto} {series}.

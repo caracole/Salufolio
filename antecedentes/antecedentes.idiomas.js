@@ -1,5 +1,5 @@
 /* Los textos de antecedentes
-   Versión 2026.09.19-18:15:47 */
+   Versión 2026.10.06-13:46:00 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de este programa, en su propia carpeta.",
   "textos": {

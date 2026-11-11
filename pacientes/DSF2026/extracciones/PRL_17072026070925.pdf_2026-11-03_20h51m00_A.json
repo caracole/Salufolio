@@ -1,0 +1,101 @@
+{
+ "fichero": "PRL_17072026070925.pdf",
+ "pdf_id": "PDF029",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h51m00",
+ "segundos": 19,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4325,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 882,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLO / CENTRO DE SALUD DE ATZENETA DEL MAESTRAT",
+   "firmante": {},
+   "tipo": "Informe de Resultados de Pruebas de Laboratorio",
+   "fecha_firma": "2023-03-15",
+   "fecha_impresion": ""
+  },
+  "mediciones": [
+   {
+    "fecha": "2023-03-09",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA (SANGRE)",
+    "valor": "101.4",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2023-03-09",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA GLICADA A1c (HbA1c)",
+    "valor": "6.17",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2023-03-09",
+    "grupo": "laboratorio",
+    "parametro": "CALCIDIOL (25 HIDROXICOLECALCIFEROL)",
+    "valor": "15.11",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2023-03-09",
+    "grupo": "laboratorio",
+    "parametro": "TIROXINA LIBRE (T4 LIBRE)",
+    "valor": "0.99",
+    "unidad": "ng/dL"
+   },
+   {
+    "fecha": "2023-03-09",
+    "grupo": "laboratorio",
+    "parametro": "TSH (TIROTROPINA)",
+    "valor": "1.25",
+    "unidad": "mUI/L"
+   },
+   {
+    "fecha": "2023-03-09",
+    "grupo": "laboratorio",
+    "parametro": "VITAMINA B12 (CIANOCOBALAMINA)",
+    "valor": "520",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2023-03-09",
+    "grupo": "laboratorio",
+    "parametro": "DIMERO D DE LA FIBRINA",
+    "valor": "335",
+    "unidad": "ng/mL"
+   }
+  ],
+  "medicamentos": [],
+  "eventos": [],
+  "dudas": [
+   "El número de solicitud figura en el documento pero no es legible en el texto extraído.",
+   "El nombre del firmante no figura impreso o está anonimizado; el campo 'firmante' se deja vacío.",
+   "La fecha de impresión no figura explícitamente como tal; la fecha indicada como F. Impresión aparece en blanco en el texto extraído.",
+   "F. Petición es 2023-02-28; no queda claro si coincide con la fecha del informe o es solo la fecha de solicitud. Se ha omitido como fecha_informe por no poder confirmarlo.",
+   "El número de solicitud (Nº Solicitud) aparece en el documento pero su valor no es legible en el texto extraído.",
+   "Los valores de referencia de TSH y VITAMINA B12 tienen el límite superior cortado en el documento; se conserva solo el límite inferior visible."
+  ]
+ }
+}

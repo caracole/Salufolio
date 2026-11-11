@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════
-   Versión 2026.10.06-18:37:37
+   Versión 2026.10.06-18:44:03
    PACIENTE — configuración del programa
    (« programa » = nombre del fichero que abre la Casa : se deja vacío,
    por defecto es paciente.html)
    ═══════════════════════════════════════════════ */
 var SF_CONFIG = {
   id: 'paciente',
-  version: '2026.10.06-18:37:37',
+  version: '2026.10.06-18:44:03',
   familia: 'trabajar',
   icono: '🧑‍⚕️',
   nombre: { es:'Paciente', fr:'Patient', ca:'Pacient', en:'Patient' },

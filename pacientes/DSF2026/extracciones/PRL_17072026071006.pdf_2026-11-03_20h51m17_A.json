@@ -1,0 +1,129 @@
+{
+ "fichero": "PRL_17072026071006.pdf",
+ "pdf_id": "PDF030",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h51m17",
+ "segundos": 17,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4288,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1071,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLÓ / CENTRO DE SALUD DE ATZENETA DEL MAESTRAT",
+   "servicio": "",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "laboratorio",
+   "fecha_informe": "",
+   "fecha_firma": "2022-08-19",
+   "fecha_impresion": "2022-08-19"
+  },
+  "mediciones": [
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "BILIRRUBINA (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "CUERPOS CETÓNICOS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "DENSIDAD (EN ORINA)",
+    "valor": "1.015",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA (EN ORINA)",
+    "valor": "0.06",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "NITRITOS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "PH (EN ORINA)",
+    "valor": "7",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "PROTEÍNAS (EN ORINA)",
+    "valor": "25",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-08-19",
+    "grupo": "laboratorio",
+    "parametro": "UROBILINÓGENO (EN ORINA)",
+    "valor": "Normal",
+    "unidad": ""
+   }
+  ],
+  "medicamentos": [],
+  "eventos": [],
+  "dudas": [
+   "El número de solicitud figura en el documento pero no es legible en el PDF tal como está presentado.",
+   "El nombre del firmante aparece como 'Facultativ' truncado y no es legible; se omite.",
+   "La fecha de impresión y la fecha de firma coinciden (2022-08-19); no hay una fecha de informe distinta impresa.",
+   "La fecha de petición (2022-07-26) podría corresponder a la fecha de solicitud original, pero no se ha etiquetado como fecha del informe.",
+   "Las unidades de HEMOGLOBINA (EN ORINA) y PROTEÍNAS (EN ORINA) no están impresas en el documento.",
+   "El valor de referencia de DENSIDAD aparece truncado como '( 1.005 -' sin límite superior impreso.",
+   "El nombre del paciente, SIP, NHC, CIP Europeo y Código SNS están en el documento pero anonimizados/no legibles."
+  ]
+ }
+}

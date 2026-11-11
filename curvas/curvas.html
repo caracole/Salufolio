@@ -82,7 +82,8 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    CURVAS — programa autónomo de Salufolio V2
-   Versión 2026.11.05-15:36:21
+   Versión 2026.11.11-11:39:07
+   (10/11/2026 : la burbuja de cada punto dice de dónde viene el valor — MF.procedenciaMedida.)
 
    Extraído de la V1: core-charts-js.js (el motor, con la superposición de
    curvas), core-panels-html.html (el panel), y sus dependencias tomadas en
@@ -243,7 +244,7 @@ function getSeriesForParam(data, key) {
   /* v2026.7.21.10 — chaque point porte sa ROCHE-MÈRE : pdf_id + pdf voyagent
      avec la valeur (Lavoisier appliqué aux graphiques). */
   return data.filter(m => m.vals && (m.vals||{})[key] !== undefined)
-             .map(m => ({ x: m.date, y: (m.vals||{})[key], src: m.src, pdf_id: m.pdf_id, pdf: m.pdf, imp: (m.impresos||{})[key] }))
+             .map(m => ({ x: m.date, y: (m.vals||{})[key], src: m.src, pdf_id: m.pdf_id, pdf: m.pdf, imp: (m.impresos||{})[key], prov: (MF.procedenciaMedida ? MF.procedenciaMedida(m) : '') }))
              .sort((a,b) => a.x.localeCompare(b.x));
 }
 
@@ -692,6 +693,7 @@ function makeChart(canvasId, key, data, opts) {
           const fuera = getStatus(key, c.raw) === 'bad';
           const l = [fuera ? '⚠ ' + trad('est_fuera') : '✓ ' + trad('est_normal')];
           const doc = (typeof pdfNombre === 'function' && (s.pdf_id || s.pdf)) ? pdfNombre(s.pdf_id || s.pdf) : (s.src || '');
+          if (s.prov) l.push('🏥 ' + s.prov);   /* de dónde viene el valor (P-H, 10/11/2026) */
           if (doc) l.push('📄 ' + doc);
           if (s.imp && s.imp !== key) l.push('🏷 ' + s.imp);   /* el nombre impreso : MDRD-4 o CKD-EPI… (P-H, 04/11/2026) */
           if (s.pdf_id || s.pdf) l.push('(' + trad('clic_informe') + ')');

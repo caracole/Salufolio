@@ -1,0 +1,462 @@
+{
+ "fichero": "PRL_17072026070848.pdf",
+ "pdf_id": "PDF008",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h50m41",
+ "segundos": 48,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 13348,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 3693,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLON / CENTRO DE SALUD DE ATZENETA DEL MAESTRAT",
+   "servicio": "",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "Informe de Resultados de Pruebas de Laboratorio",
+   "fecha_ingreso": "",
+   "fecha_alta": "",
+   "fecha_informe": "",
+   "fecha_firma": "2024-05-06",
+   "fecha_impresion": ""
+  },
+  "mediciones": [
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "0.1",
+    "unidad": "x10⁹/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "BASÓFILOS (EN SANGRE)",
+    "valor": "0.8",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "CONCENTRACIÓN HEMOGLOBINA CORPUSCULAR MEDIA (EN SANGRE)",
+    "valor": "33",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "EOSINÓFILOS (EN SANGRE)",
+    "valor": "2.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "EOSINÓFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "0.2",
+    "unidad": "x10⁹/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO (EN SANGRE)",
+    "valor": "41.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "HEMATÍES (EN SANGRE)",
+    "valor": "4.53",
+    "unidad": "x10¹²/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA (EN SANGRE)",
+    "valor": "13.8",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA CORPUSCULAR MEDIA (EN SANGRE)",
+    "valor": "30.4",
+    "unidad": "pg"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS (EN SANGRE)",
+    "valor": "8.4",
+    "unidad": "x10⁹/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS (EN SANGRE)",
+    "valor": "41",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS ABSOLUTOS (EN SANGRE)",
+    "valor": "3.4",
+    "unidad": "x10⁹/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS (EN SANGRE)",
+    "valor": "11.5",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS ABSOLUTOS (EN SANGRE)",
+    "valor": "1",
+    "unidad": "x10⁹/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "NEUTRÓFILOS (EN SANGRE)",
+    "valor": "44",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "NEUTRÓFILOS ABSOLUTOS (EN SANGRE)",
+    "valor": "3.7",
+    "unidad": "x10⁹/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS (EN SANGRE)",
+    "valor": "236",
+    "unidad": "x10⁹/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "VELOCIDAD DE SEDIMENTACIÓN GLOBULAR",
+    "valor": "20",
+    "unidad": "mm/h"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO (EN SANGRE)",
+    "valor": "92.1",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN PLAQUETAR MEDIO (EN SANGRE)",
+    "valor": "9",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "ÍNDICE DISTRIBUCIÓN HEMATÍES (CV) (EN SANGRE)",
+    "valor": "13.5",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "FERRITINA",
+    "valor": "77",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "PROTEÍNA C REACTIVA (PCR)",
+    "valor": "4.16",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "ALANINA-AMINOTRANSFERASA (GPT)",
+    "valor": "11",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "ALBÚMINA",
+    "valor": "3.7",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "CLORURO",
+    "valor": "104",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL HDL",
+    "valor": "54.93",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL LDL CALCULADO",
+    "valor": "202",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "COLESTEROL TOTAL",
+    "valor": "281.7",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA (SANGRE)",
+    "valor": "0.85",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOMERULAR ESTIMADO CKD - EPI",
+    "valor": "62.45",
+    "unidad": "ml/min/s"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "FOSFATASA ALCALINA",
+    "valor": "89",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "GAMMA-GLUTAMIL-TRANSPEPTIDASA (gGT)",
+    "valor": "46",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA (SANGRE)",
+    "valor": "102.2",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA GLICADA A1c (HbA1c)",
+    "valor": "6.01",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "HIERRO",
+    "valor": "105",
+    "unidad": "µg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "4.26",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "PROTEÍNAS TOTALES",
+    "valor": "6.12",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "139",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "TRIGLICERIDOS (SANGRE)",
+    "valor": "126.2",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "URATO",
+    "valor": "4.82",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "45.3",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "ACIDO FOLICO (FOLATO)",
+    "valor": "9.55",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "CALCIDIOL (25 HIDROXICOLECALCIFEROL)",
+    "valor": "15.96",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "TSH (TIROTROPINA)",
+    "valor": "1.16",
+    "unidad": "mUI/L"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "VITAMINA B12 (CIANOCOBALAMINA)",
+    "valor": "234",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "PÉPTIDO NATRIURÉTICO CEREBRAL (BNP)",
+    "valor": "73.6",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "BILIRRUBINA (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "CUERPOS CETÓNICOS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "DENSIDAD (EN ORINA)",
+    "valor": "1.018",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "NITRITOS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "PH (EN ORINA)",
+    "valor": "5.5",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "PROTEÍNAS (EN ORINA)",
+    "valor": "Negativo",
+    "unidad": ""
+   },
+   {
+    "fecha": "2024-04-25",
+    "grupo": "laboratorio",
+    "parametro": "UROBILINÓGENO (EN ORINA)",
+    "valor": "normal",
+    "unidad": ""
+   }
+  ],
+  "medicamentos": [],
+  "eventos": [],
+  "dudas": [
+   "El número de solicitud no es legible en el documento (campo en blanco).",
+   "El nombre del paciente y el CIP están anonimizados o en blanco; no se han copiado.",
+   "El nombre del firmante aparece como 'Facultativ' sin nombre completo visible; se ha dejado vacío.",
+   "La fecha de impresión figura como '17/07/2026' en algunas páginas, lo que parece un error tipográfico (año futuro); en la página 1 no figura fecha de impresión. No se ha incluido por inconsistencia.",
+   "El valor de referencia de COLESTEROL LDL CALCULADO aparece truncado ('menor que') sin el valor numérico completo.",
+   "El valor de referencia de UREA aparece truncado ('10.0 --') sin el límite superior.",
+   "Los valores de referencia de CALCIDIOL, TSH y VITAMINA B12 aparecen truncados (solo límite inferior visible).",
+   "No se distingue el nombre del centro emisor principal del hospital (el nombre aparece cortado en el encabezado: 'HOSPITAL GENERAL UNIVERSITARIO DE').",
+   "La unidad de las células sanguíneas en el hemograma figura como 'x' sin especificar el factor (presumiblemente x10⁹/L o x10¹²/L según el parámetro); se ha indicado la unidad probable pero no estaba impresa literalmente."
+  ]
+ }
+}

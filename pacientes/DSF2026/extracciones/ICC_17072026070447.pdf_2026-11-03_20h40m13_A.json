@@ -1,0 +1,107 @@
+{
+ "fichero": "ICC_17072026070447.pdf",
+ "pdf_id": "PDF003",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h40m13",
+ "segundos": 26,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 6747,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1421,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_episodio": "5569739"
+  },
+  "documento": {
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "NEUMOLOGIA",
+   "unidad": "6B -NEM",
+   "firmante": {
+    "nombre": "",
+    "rol": "enfermeria"
+   },
+   "tipo": "Informe de Continuidad de Cuidados",
+   "fecha_ingreso": "2026-01-02",
+   "fecha_alta": "2026-01-13",
+   "fecha_informe": "2026-01-13"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2026-01-02",
+    "titulo": "Ingreso",
+    "detalle": "Mujer de 87 años con antecedentes de demencia, AOS (llevó VMNI pero lleva 1 año sin usarla, portadora de OCD), sospecha de EPOC y elevación diafragmática crónica. Ingresa por acidosis respiratoria, resuelta en Urgencias, secundaria a bronquitis aguda."
+   },
+   {
+    "fecha": "2026-01-02",
+    "titulo": "Pauta terapéutica al ingreso",
+    "detalle": "Se pauta VNI, oxigenoterapia con OAF y tratamiento médico."
+   },
+   {
+    "fecha": "2026-01-02",
+    "titulo": "Escalas de valoración",
+    "detalle": "BARTHEL 5/100 (Dependencia total); BRADEN-BERGSTROM 14/23 (Riesgo moderado); J.H. DOWNTON HGC 7/12 (Riesgo alto). Hora: 21:27-21:28."
+   },
+   {
+    "fecha": "2026-01-02",
+    "titulo": "Acceso venoso periférico",
+    "detalle": "Catéter endovenoso periférico calibre 22, Miembro superior Derecho, infusión por gravedad. Inserción 02/01/2026, retirada 03/01/2026."
+   },
+   {
+    "fecha": "2026-01-03",
+    "titulo": "Acceso venoso periférico",
+    "detalle": "Catéter endovenoso periférico calibre 22, Miembro superior Izquierdo, infusión por gravedad. Inserción 03/01/2026, retirada 03/01/2026."
+   },
+   {
+    "fecha": "2026-01-03",
+    "titulo": "Acceso venoso periférico",
+    "detalle": "Catéter endovenoso periférico calibre 22, Miembro superior Derecho, infusión por gravedad. Inserción 03/01/2026, retirada 05/01/2026."
+   },
+   {
+    "fecha": "2026-01-03",
+    "titulo": "Sonda Vesical permanente",
+    "detalle": "Sonda Vesical permanente calibre 16. Inserción 03/01/2026, retirada 08/01/2026."
+   },
+   {
+    "fecha": "2026-01-05",
+    "titulo": "Acceso venoso periférico",
+    "detalle": "Catéter endovenoso periférico calibre 22, Miembro superior Izquierdo, vía salinizada. Inserción 05/01/2026, retirada 09/01/2026."
+   },
+   {
+    "fecha": "2026-01-09",
+    "titulo": "Acceso venoso periférico",
+    "detalle": "Catéter endovenoso periférico calibre 22, Miembro superior Izquierdo, infusión por gravedad. Inserción 09/01/2026, retirada 13/01/2026. Motivo de retirada anterior: extravasación."
+   },
+   {
+    "fecha": "2026-01-13",
+    "titulo": "Alta y traslado",
+    "detalle": "Dada la mejoría que permitió retirar OAF y VNI, y dadas las características de la paciente (demencia avanzada) y previsión de larga convalecencia, se solicita traslado a HACLE."
+   }
+  ],
+  "dudas": [
+   "El firmante del documento no aparece identificado por nombre; solo consta firma digital/signatura digital sin texto legible.",
+   "No se especifica fecha_firma separada de fecha_informe; ambas podrían ser 2026-01-13 pero no se puede confirmar que sean distintas.",
+   "No consta número de SIP ni número de historia clínica en el texto extraído.",
+   "La sección 'Independiente en' lista: Movilización, Descanso/sueño, Vestirse, Termorregulación, Higiene/piel, Seguridad, Comunicación, Valores/creencias, Trabajar/realizarse, Actividades Lúdicas, Aprender — su interpretación clínica es incierta dado que el Barthel es 5/100 (dependencia total).",
+   "No se detallan medicamentos concretos en el documento.",
+   "La sección 'Diagnósticos de Enfermería y Recomendaciones' aparece vacía salvo las escalas."
+  ]
+ }
+}

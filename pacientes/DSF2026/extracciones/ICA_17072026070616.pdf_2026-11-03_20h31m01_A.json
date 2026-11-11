@@ -1,0 +1,1021 @@
+{
+ "fichero": "ICA_17072026070616.pdf",
+ "pdf_id": "PDF002",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h31m01",
+ "segundos": 114,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 12081,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 9583,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_episodio": "5569739"
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "NEUMOLOGIA",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": "medico"
+   },
+   "tipo": "Informe de Alta de Hospitalización",
+   "fecha_ingreso": "2026-01-02",
+   "fecha_alta": "2026-01-13",
+   "fecha_informe": "2026-01-13",
+   "fecha_firma": "2026-07-17",
+   "fecha_impresion": ""
+  },
+  "mediciones": [
+   {
+    "fecha": "2026-01-02",
+    "hora": "11:43",
+    "grupo": "constantes",
+    "parametro": "TA",
+    "valor": "172/81",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "11:43",
+    "grupo": "constantes",
+    "parametro": "Tª (Timpánica)",
+    "valor": "36.4",
+    "unidad": "ºC"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "11:43",
+    "grupo": "constantes",
+    "parametro": "FC",
+    "valor": "91",
+    "unidad": "lat/min"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "11:43",
+    "grupo": "constantes",
+    "parametro": "Sat. O2",
+    "condicion": "Con Oxígeno",
+    "valor": "86",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "11:43",
+    "grupo": "constantes",
+    "parametro": "Vol. O2",
+    "valor": "8",
+    "unidad": "L/m"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "gasometria",
+    "condicion": "FiO2 40%",
+    "parametro": "PH",
+    "valor": "7.29",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "gasometria",
+    "condicion": "FiO2 40%",
+    "parametro": "pCO2",
+    "valor": "65",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "gasometria",
+    "condicion": "FiO2 40%",
+    "parametro": "pO2",
+    "valor": "76",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "gasometria",
+    "condicion": "FiO2 40%",
+    "parametro": "HCO3",
+    "valor": "26.8",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "gasometria",
+    "condicion": "FiO2 40%",
+    "parametro": "EBA",
+    "valor": "+4.7",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "gasometria",
+    "condicion": "FiO2 40%",
+    "parametro": "Láctico",
+    "valor": "1.8",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "pH",
+    "valor": "7.43",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "pO2",
+    "valor": "62",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "satO2",
+    "valor": "94.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "CO2",
+    "valor": "46",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "HCO3",
+    "valor": "30.5",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "AG",
+    "valor": "6",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "Hb",
+    "valor": "14.7",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "Glu",
+    "valor": "182",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "Lactato",
+    "valor": "1.1",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "K",
+    "valor": "5.3",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "Na",
+    "valor": "133",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "hora": "16:00",
+    "grupo": "gasometria",
+    "condicion": "",
+    "parametro": "Ca",
+    "valor": "5.46",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "HEMATIES",
+    "valor": "4.85",
+    "unidad": "x10^6/µL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA",
+    "valor": "14.6",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO",
+    "valor": "44.9",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO",
+    "valor": "92.5",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "HBG CORPUSCULAR MEDIA",
+    "valor": "30.1",
+    "unidad": "pg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "CONC. HBG CORPUSCULAR MEDIA",
+    "valor": "32.5",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "RDW-CV",
+    "valor": "13.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS",
+    "valor": "12.80",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS",
+    "valor": "10.70",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS",
+    "valor": "0.80",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS",
+    "valor": "1.20",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS",
+    "valor": "0.00",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS",
+    "valor": "0.00",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS %",
+    "valor": "83.8",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS %",
+    "valor": "6.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS %",
+    "valor": "9.4",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS %",
+    "valor": "0.2",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS %",
+    "valor": "0.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS",
+    "valor": "239",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "T. PROTROMBINA",
+    "valor": "18.9",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "INDICE DE QUICK",
+    "valor": "47.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "INR",
+    "valor": "1.66",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "TP RATIO",
+    "valor": "1.64",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "TTPA RATIO",
+    "valor": "1.16",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "T.TROMBOPLASTINA PARCIAL ACTIV",
+    "valor": "36.4",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "FIBRINOGENO",
+    "valor": "565.00",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "T.TROMBINA",
+    "valor": "19.40",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "Tiempo de trombina Ratio",
+    "valor": "0.69",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA",
+    "valor": "219",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "31",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA",
+    "valor": "0.71",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOM.ESTIMADO CKD-EPI",
+    "valor": "76.71",
+    "unidad": "ml/min/sup"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "136",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "4.95",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "CLORO",
+    "valor": "100",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "BILIRRUBINA TOTAL",
+    "valor": "0.36",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "GPT",
+    "valor": "18",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "GOT",
+    "valor": "26",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "GGT",
+    "valor": "85",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "FOSFATASA ALCALINA",
+    "valor": "115",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "CPK",
+    "valor": "56",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "LDH",
+    "valor": "218",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "PROTEINA C REACTIVA",
+    "valor": "45.20",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "FERRITINA",
+    "valor": "125",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "NT- PROBNP",
+    "valor": "220",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "PROCALCITONINA",
+    "valor": "0.03",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "TROPONINA ULTRASENSIBLE",
+    "valor": "9.74",
+    "unidad": "ng/L"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "MIOGLOBINA",
+    "valor": "48",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "PCR Virus Influenza A",
+    "valor": "NEGATIVO",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "PCR Virus Influenza A/B",
+    "valor": "NEGATIVO",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "PCR Virus Influenza B",
+    "valor": "NEGATIVO",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-02",
+    "grupo": "laboratorio",
+    "parametro": "PCR Nuevo Coronavirus 2019-nCoV",
+    "valor": "NEGATIVO",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Ph sanguíneo",
+    "valor": "7.440",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Ph corregido",
+    "valor": "7.450",
+    "unidad": ""
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "PCO2 sanguíneo",
+    "valor": "46.0",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "PCO2 sanguíneo corregido",
+    "valor": "44.0",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "PO2 sanguíneo",
+    "valor": "69.0",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "PO2 sanguíneo corregido",
+    "valor": "65.0",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Saturación oxígeno",
+    "valor": "95.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Oxihemoglobina",
+    "valor": "93.80",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Carboxihemoglobina",
+    "valor": "1.30",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Metahemoglobina",
+    "valor": "0.60",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Hemoglobina reducida",
+    "valor": "4.20",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Bicarbonato standard",
+    "valor": "29.4",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Bicarbonato calculado",
+    "valor": "31.2",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "gasometria",
+    "condicion": "FiO2 32%",
+    "parametro": "Exceso de base en sangre",
+    "valor": "5.9",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA",
+    "valor": "140",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "76",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA",
+    "valor": "0.70",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOM.ESTIMADO CKD-EPI",
+    "valor": "77.76",
+    "unidad": "ml/min/sup"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "141",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "4.15",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "CLORO",
+    "valor": "99",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "GPT",
+    "valor": "250",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "PROTEINA C REACTIVA",
+    "valor": "1.42",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "NT- PROBNP",
+    "valor": "177",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "HEMATIES",
+    "valor": "5.06",
+    "unidad": "x10^6/µL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA",
+    "valor": "15.5",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO",
+    "valor": "45.2",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO",
+    "valor": "89.5",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "HBG CORPUSCULAR MEDIA",
+    "valor": "30.6",
+    "unidad": "pg"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "CONC. HBG CORPUSCULAR MEDIA",
+    "valor": "34.2",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "RDW-CV",
+    "valor": "13.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS",
+    "valor": "14.30",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS",
+    "valor": "11.60",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS",
+    "valor": "1.40",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS",
+    "valor": "1.30",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS",
+    "valor": "0.00",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS",
+    "valor": "0.00",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS %",
+    "valor": "80.9",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS %",
+    "valor": "9.8",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS %",
+    "valor": "9.1",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS %",
+    "valor": "0.1",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS %",
+    "valor": "0.1",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2026-01-13",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS",
+    "valor": "245",
+    "unidad": "x10^3/µL"
+   }
+  ],
+  "medicamentos": [
+   {
+    "nombre": "Hidroferol (Vit D)",
+    "dosis": "0.266mg, sol oral 1.5ml",
+    "pauta": "1 sol oral cada 30 días",
+    "via": "oral"
+   },
+   {
+    "nombre": "Rivaroxaban",
+    "dosis": "20mg",
+    "pauta": "1 comp/24h",
+    "via": "oral"
+   },
+   {
+    "nombre": "Haloperidol",
+    "dosis": "10 gotas",
+    "pauta": "orales/24h",
+    "via": "oral"
+   },
+   {
+    "nombre": "Voltadol",
+    "dosis": "11.6g gel, 60g",
+    "pauta": "1 envase/7 días",
+    "via": "tópica"
+   },
+   {
+    "nombre": "Oxígeno en gafas nasales",
+    "dosis": "0.5 lpm",
+    "pauta": "las 24h",
+    "via": "inhalatoria"
+   },
+   {
+    "nombre": "Prednisona",
+    "dosis": "30mg, 1/2 comprimido",
+    "pauta": "al día durante 3 días más y suspender",
+    "via": "oral"
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2016-01-01",
+    "titulo": "TVP + TEP bilateral",
+    "detalle": "Tras viaje prolongado en coche a Alemania, TVP + TEP bilateral en Francia en 2016. En tratamiento con Rivaroxaban."
+   },
+   {
+    "fecha": "2022-01-01",
+    "titulo": "TEP 2022",
+    "detalle": "TEP en 2022 con ingreso en Neumología. En tratamiento con Rivaroxaban."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Ictus vertebrobasilar",
+    "detalle": "Ictus vertebrobasilar en septiembre 2021. Deterioro cognitivo desde entonces en estudio por Neurología."
+   },
+   {
+    "fecha": "2023-01-01",
+    "titulo": "ETT 2023",
+    "detalle": "Ventrículo izquierdo de tamaño normal, FEVI 73%, sin alteraciones de contractilidad segmentaria. VD de tamaño normal con buena función sistólica (TAPSE 17mm, S' TDI 15.3cm/s). Insuficiencia tricuspídea ligera, PsAP 35 mmHg. Tiempo aceleración VP 95ms. VCI no dilatada con buen colapso inspiratorio. Sin derrame pericárdico."
+   },
+   {
+    "fecha": "2025-07-01",
+    "titulo": "AngioTC julio 2025",
+    "detalle": "Hallazgo de TEP. Probable TEP crónico. Pendiente de ETT."
+   },
+   {
+    "fecha": "2026-01-02",
+    "titulo": "ECG al ingreso",
+    "detalle": "RS a 84 lpm, eje +60º, PR 0.16 seg, QRS estrecho sin alteraciones de la repolarización."
+   },
+   {
+    "fecha": "2026-01-02",
+    "titulo": "Rx Tórax al ingreso",
+    "detalle": "No condensaciones pulmonares. Mínimo pinzamiento de seno costofrénico izquierdo."
+   },
+   {
+    "fecha": "2026-01-02",
+    "titulo": "Inicio tratamiento",
+    "detalle": "Al ingreso se pauta VNI, oxigenoterapia con OAF y tratamiento médico."
+   },
+   {
+    "fecha": "2026-01-13",
+    "titulo": "Alta hospitalaria",
+    "detalle": "Mejoría que permite retirar OAF y VNI. Dadas las características de la paciente (demencia avanzada) y previsión de larga convalecencia, se solicita traslado a HACLE."
+   }
+  ],
+  "dudas": [
+   "El firmante del documento aparece con rol ADJUNTO de NEUMOLOGIA pero su nombre no está impreso (documento anonimizado), por lo que 'firmante.nombre' se deja vacío.",
+   "La fecha de la gasometría de las 16:00h del 02-01-2026 no indica explícitamente la FiO2/condición de medida; el campo 'condicion' se deja vacío.",
+   "Las fechas de los antecedentes (TBC en la infancia, diagnóstico EPOC, SAOS/BiPAP) no tienen año preciso; no se han incluido como eventos por falta de fecha.",
+   "La elevación de GPT al alta (250 UI/L) es llamativa respecto al ingreso (18 UI/L); se copia tal cual sin interpretar.",
+   "La fecha de nacimiento no figura en el documento (campo en blanco), por lo que no se incluye.",
+   "Los campos SIP, NHC, n_informe y n_solicitud no figuran impresos en el documento.",
+   "La fecha del evento 'ETT 2023' y 'angioTC julio 2025' solo constan con año/mes aproximado; se ha usado el primer día del mes/año como aproximación y se advierte aquí.",
+   "La fecha de ictus vertebrobasilar consta como 'septiembre 2021'; se usa 2021-09-01 por convención, sin día exacto impreso."
+  ]
+ }
+}

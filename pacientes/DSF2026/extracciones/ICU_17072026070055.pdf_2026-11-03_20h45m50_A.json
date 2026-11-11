@@ -1,0 +1,325 @@
+{
+ "fichero": "ICU_17072026070055.pdf",
+ "pdf_id": "PDF016",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h45m50",
+ "segundos": 45,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 7503,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 3098,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_episodio": ""
+  },
+  "documento": {
+   "emisor": "GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "Servicio de Urgencia Hospitalaria",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "Informe de Urgencias",
+   "fecha_ingreso": "2021-09-01",
+   "fecha_alta": "2021-09-01",
+   "fecha_informe": "2021-09-01",
+   "fecha_firma": "",
+   "fecha_impresion": ""
+  },
+  "mediciones": [
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "glucemia",
+    "valor": "108",
+    "unidad": "mg/dl"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "TA",
+    "valor": "142/57",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "Tª",
+    "valor": "36.9",
+    "unidad": "ºC"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "FC",
+    "valor": "50",
+    "unidad": "lat/min"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "constantes",
+    "parametro": "Sat. O2",
+    "valor": "100",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA",
+    "valor": "117",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "30",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA",
+    "valor": "0.66",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOM.ESTIMADO CKD-EPI",
+    "valor": "81.99",
+    "unidad": "ml/min/sup"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "138",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "3.98",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "CLORO",
+    "valor": "105",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "PROTEINA C REACTIVA",
+    "valor": "6.97",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T. PROTROMBINA",
+    "valor": "10.4",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "INDICE DE QUICK",
+    "valor": "120.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "INR",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TP RATIO",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "TTPA RATIO",
+    "valor": "0.90",
+    "unidad": ""
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "T.TROMBOPLASTINA PARCIAL ACTIV",
+    "valor": "28.3",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "FIBRINOGENO",
+    "valor": "306.00",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMATIES",
+    "valor": "4.31",
+    "unidad": "x 10^6/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA",
+    "valor": "13.8",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO",
+    "valor": "40.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO",
+    "valor": "93.6",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS",
+    "valor": "9.70",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS",
+    "valor": "5.20",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS",
+    "valor": "3.00",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS",
+    "valor": "1.30",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS",
+    "valor": "0.20",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS",
+    "valor": "0.10",
+    "unidad": "x 10^3/µL"
+   },
+   {
+    "fecha": "2021-09-01",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS",
+    "valor": "211",
+    "unidad": "x 10^3/µL"
+   }
+  ],
+  "medicamentos": [
+   {
+    "nombre": "seguril",
+    "dosis": "",
+    "pauta": "ocasional",
+    "via": "",
+    "desde": "",
+    "hasta": ""
+   },
+   {
+    "nombre": "inhaladores",
+    "dosis": "",
+    "pauta": "",
+    "via": "inhalada",
+    "desde": "",
+    "hasta": ""
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Consulta urgencias",
+    "detalle": "Mujer de 82 años remitida por médico de atención continuada a las 00:55h. Marido avisa porque nota que no habla bien y le cuesta moverla. La paciente refiere torpeza en hemicuerpo izquierdo. Ha consumido dos copas de vino blanco. Hematoma en dorso mano derecha y brazo izquierdo, al parecer ha caído. Marido refiere que la última vez que la vio bien fue después de la cena, sobre las 21h."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "ECG",
+    "detalle": "Bradicardia sinusal 53 lpm, eje QRS 60º, PR de 200 ms, QRS estrecho con morfología de BIRDHH, onda T invertida en V1-V2, adecuada progresión RS en precordiales, QTc normal."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "RX Tórax",
+    "detalle": "Elevación hemidiafragma derecho."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "TC Cráneo y Angio-TC",
+    "detalle": "Sin sangrado ni lesión isquémica aguda. Oclusión ACI I."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Decisión terapéutica",
+    "detalle": "No se realiza tratamiento fibrinolítico por tiempo >4,5h y perfusión no significativa. CI activado intrahospitalario."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Alta a hospitalización",
+    "detalle": "Paso a hospitalización en Neurología. Se solicita RM cerebral y sistemático. Diagnóstico principal: ICTUS ISQUEMICO. SD LACUNAR MOTOR PURO. Diagnóstico secundario: OCLUSIÓN ACI I."
+   }
+  ],
+  "dudas": [
+   "El número de episodio, NHC, SIP/CIP y número de informe están impresos en el documento original pero han sido anonimizados y no son legibles en el PDF proporcionado.",
+   "El firmante del documento aparece como ADJUNTO sin nombre legible; el campo se deja vacío.",
+   "La fecha del informe coincide con la fecha de ingreso y alta (2021-09-01); no hay fecha de impresión separada ni fecha de firma explícita.",
+   "La hora de atención (00:55h) se menciona en el texto clínico pero no está impresa como campo formal de hora de ingreso; no se ha incluido en 'fecha_ingreso'.",
+   "El motivo de atención figura como 'CODICT HZXDXTU', que parece un código o texto cifrado/anonimizado; se copia tal cual.",
+   "El NIHSS de 5 puntos se menciona en la exploración neurológica; no se ha incluido en mediciones por no estar en la sección de constantes ni laboratorio, pero podría considerarse una medición clínica."
+  ]
+ }
+}

@@ -1,5 +1,5 @@
 /* Los textos de Medicamentos
-   Versión 2026.11.04-11:19:30 */
+   Versión 2026.11.04-11:22:36 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Medicamentos, en su propia carpeta.",
   "textos": {

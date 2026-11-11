@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.11.04-10:30:56
+   Versión 2026.11.04-10:32:58
    (04/11/2026 : cada medicamento con su principio activo, su ATC y su
     categoría — medicamento, parafarmacia o material.)
    Antes : 2026.11.03-18:27:23

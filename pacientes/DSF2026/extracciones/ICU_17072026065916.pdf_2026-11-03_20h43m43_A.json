@@ -1,0 +1,464 @@
+{
+ "fichero": "ICU_17072026065916.pdf",
+ "pdf_id": "PDF014",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h43m43",
+ "segundos": 59,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 10015,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 4349,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "sip": "",
+   "nhc": "",
+   "n_episodio": "",
+   "n_informe": "",
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "Servicio de Urgencia Hospitalaria",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "Informe de Urgencias",
+   "fecha_ingreso": "2022-10-28",
+   "fecha_alta": "2022-10-28",
+   "fecha_informe": "2022-10-28",
+   "fecha_firma": "",
+   "fecha_impresion": ""
+  },
+  "mediciones": [
+   {
+    "fecha": "2022-10-28",
+    "grupo": "constantes",
+    "parametro": "TA sistólica",
+    "valor": "119",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "constantes",
+    "parametro": "TA diastólica",
+    "valor": "57",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "constantes",
+    "parametro": "FC",
+    "valor": "55",
+    "unidad": "lpm"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "constantes",
+    "parametro": "SaO2",
+    "valor": "92",
+    "unidad": "%",
+    "condicion": "GN a 1 lpm"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "gasometria",
+    "condicion": "aire ambiente",
+    "parametro": "POC SATURACION OXIGENO",
+    "valor": "97.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "gasometria",
+    "condicion": "aire ambiente",
+    "parametro": "POC PH SANGUINEO",
+    "valor": "7.360",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "gasometria",
+    "condicion": "aire ambiente",
+    "parametro": "POC PCO2 SANGUINEO",
+    "valor": "43.0",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "gasometria",
+    "condicion": "aire ambiente",
+    "parametro": "POC PO2 SANGUINEO",
+    "valor": "94.0",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "gasometria",
+    "condicion": "aire ambiente",
+    "parametro": "POC EXCESO BASE ACTUAL",
+    "valor": "-1.3",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "gasometria",
+    "condicion": "aire ambiente",
+    "parametro": "POC BICARBONATO STD",
+    "valor": "23.9",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "gasometria",
+    "condicion": "aire ambiente",
+    "parametro": "POC HEMATOCRITO",
+    "valor": "45.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA",
+    "valor": "156",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "48",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA",
+    "valor": "0.81",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOM.ESTIMADO CKD-EPI",
+    "valor": "66.89",
+    "unidad": "ml/min/sup"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "137",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "4.77",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "CLORO",
+    "valor": "101",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "GPT",
+    "valor": "13",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "PROTEINA C REACTIVA",
+    "valor": "22.90",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "NT- PROBNP",
+    "valor": "101",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "T. PROTROMBINA",
+    "valor": "14.3",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "INDICE DE QUICK",
+    "valor": "74.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "INR",
+    "valor": "1.24",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "TP RATIO",
+    "valor": "1.24",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "TTPA RATIO",
+    "valor": "0.98",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "T.TROMBOPLASTINA PARCIAL ACTIV",
+    "valor": "31.0",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "FIBRINOGENO",
+    "valor": "701.00",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "HEMATIES",
+    "valor": "4.57",
+    "unidad": "x10^6/µL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA",
+    "valor": "13.9",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO",
+    "valor": "42.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO",
+    "valor": "92.6",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "HBG CORPUSCULAR MEDIA",
+    "valor": "30.5",
+    "unidad": "pg"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "CONC. HBG CORPUSCULAR MEDIA",
+    "valor": "32.9",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "RDW-CV",
+    "valor": "13.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS",
+    "valor": "6.20",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS",
+    "valor": "4.70",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS",
+    "valor": "1.10",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS",
+    "valor": "0.40",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS",
+    "valor": "0.00",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS",
+    "valor": "0.00",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-10-28",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS",
+    "valor": "214",
+    "unidad": "x10^3/µL"
+   }
+  ],
+  "medicamentos": [
+   {
+    "nombre": "MEPIRAMINA FRASCOS SOL ORAL",
+    "dosis": "25 MG/5 ML",
+    "pauta": "",
+    "via": "oral"
+   },
+   {
+    "nombre": "PROTALON",
+    "dosis": "10 MG",
+    "pauta": "",
+    "via": ""
+   },
+   {
+    "nombre": "BROMURO DE TIOTROPIO CAPSULAS + DISPOSITIVO",
+    "dosis": "18 MCG",
+    "pauta": "",
+    "via": "inhalada"
+   },
+   {
+    "nombre": "PREDNISONA COMPRIMIDOS",
+    "dosis": "30 MG",
+    "pauta": "",
+    "via": "oral"
+   },
+   {
+    "nombre": "AUGMENTINE",
+    "dosis": "500/125 MG",
+    "pauta": "",
+    "via": "oral",
+    "desde": "2022-10-27"
+   },
+   {
+    "nombre": "RIVAROXABAN",
+    "dosis": "20 MG",
+    "pauta": "",
+    "via": "oral"
+   },
+   {
+    "nombre": "SALBUTAMOL",
+    "dosis": "2 puffs",
+    "pauta": "en tandas durante 1 hora",
+    "via": "inhalada"
+   },
+   {
+    "nombre": "ATROVENT",
+    "dosis": "2 puffs",
+    "pauta": "en tandas durante 1 hora",
+    "via": "inhalada"
+   },
+   {
+    "nombre": "ACTOCORTINA",
+    "dosis": "200 mg",
+    "pauta": "",
+    "via": "IV"
+   },
+   {
+    "nombre": "Symbicort",
+    "dosis": "1 inhalación",
+    "pauta": "cada 12 horas",
+    "via": "inhalada"
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2016",
+    "titulo": "TVP + TEP bilateral",
+    "detalle": "Tras viaje prolongado en coche a Alemania, TVP + TEP bilateral en Francia en 2016. En tratamiento actualmente con Rivaroxaban."
+   },
+   {
+    "fecha": "2022",
+    "titulo": "TVP + TEP bilateral",
+    "detalle": "Segundo episodio de TVP + TEP bilateral en Francia en 2022. En tratamiento actualmente con Rivaroxaban."
+   },
+   {
+    "fecha": "2021-09",
+    "titulo": "Ictus vertebrobasilar",
+    "detalle": "Ictus vertebrobasilar en septiembre 2021. Deterioro cognitivo desde ingreso por ictus vertebrobasilar en estudio por Neurología."
+   },
+   {
+    "fecha": "2022-10-28",
+    "titulo": "Atención en urgencias - Bronquitis aguda",
+    "detalle": "Mujer de 83 años que acude a SUH por clínica de disnea y aumento de tos habitual de 4-5 días de duración. Problema con OCD. Accesos de tos nocturnos con dificultad para la expectoración. Autoescucha de ruidos respiratorios. Sensación distérmica sin termometrar fiebre. Diagnóstico principal: BRONQUITIS AGUDA. Alta con seguimiento por Médico de Familia."
+   },
+   {
+    "fecha": "2023-02-08",
+    "titulo": "Cita: ACOS (NUEVOS ANTICOAGULANTES)",
+    "detalle": "Planta 1 Bloque B Puerta 62 de HOSPITAL GENERAL DE CASTELLO a las 12:50"
+   },
+   {
+    "fecha": "2023-03-31",
+    "titulo": "Cita: ECR-(LX-MARAVALL/V-FRANCH)",
+    "detalle": "CE Jaume I Planta 4 Puerta 48 de C.EE. JAIME I - CASTELLO a las 13:00"
+   },
+   {
+    "fecha": "2023-05-12",
+    "titulo": "Cita: DRA.CAMPILLO",
+    "detalle": "Planta 1 Bloque A Puerta 07 de HOSPITAL GENERAL DE CASTELLO a las 13:10"
+   }
+  ],
+  "dudas": [
+   "El número de episodio, NHC y SIP aparecen en la plantilla del documento pero sus valores no son legibles en el PDF proporcionado.",
+   "El firmante del informe no figura con nombre legible en el documento.",
+   "La fecha de alta figura como 28/10/2022 pero no consta la hora exacta de alta impresa de forma clara.",
+   "El año exacto del segundo episodio de TVP+TEP (2022) aparece mencionado en antecedentes sin fecha concreta de mes/día.",
+   "PROTALON 10MG: no se especifica la pauta ni la vía en el documento.",
+   "La fecha del informe coincide con la de creación (28/10/2022); no hay otra fecha de informe diferenciada — podría ser también fecha de impresión."
+  ]
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "fichero": "PRI_17072026071636.pdf",
+ "pdf_id": "PDF007",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h47m53",
+ "segundos": 13,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 6134,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 571,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "nhc": "",
+   "sip": "",
+   "n_episodio": "16163798",
+   "n_informe": ""
+  },
+  "documento": {
+   "emisor": "AGÈNCIA VALENCIANA DE SALUT",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "NEUMOLOGIA",
+   "unidad": "06252",
+   "firmante": {
+    "nombre": "BELTRAN ORENGA, JAVIER",
+    "rol": "medico"
+   },
+   "tipo": "Informe de prueba diagnóstica",
+   "fecha_informe": "2026-01-06",
+   "fecha_firma": "2026-01-06",
+   "fecha_impresion": "2026-07-17"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2026-01-06",
+    "titulo": "TC craneal sin contraste intravenoso",
+    "detalle": "No se observan imágenes sugestivas de hemorragia intracraneal o isquemia aguda. Talla ventricular y profundidad de los surcos adecuada para la edad del paciente. Línea media centrada. Leucoaraiosis periventricular. Cisternas basales libres. Marco óseo incluido en el estudio sin hallazgos a reseñar. Se compara con TC previo."
+   }
+  ],
+  "dudas": [
+   "El NHC y el SIP aparecen en la plantilla del documento pero sus valores no son legibles en el texto extraído.",
+   "El número de informe aparece en la plantilla pero su valor no es legible en el texto extraído.",
+   "La hora 16:59 corresponde a la captura de la exploración por enfermería, no queda claro si es la hora de realización del TC o la de registro.",
+   "El diagnóstico impreso en la cabecera es únicamente 'somnolencia', sin código ni descripción adicional.",
+   "La fecha de ingreso no figura en el documento.",
+   "El TC previo con el que se compara no está fechado en el documento."
+  ]
+ }
+}

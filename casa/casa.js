@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.11.10-10:14:00",
+  "version": "2026.11.11-11:18:39",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -815,6 +815,8 @@ var SF_LANZADOR = {
     "_versiones": "LAS VERSIONES DE LOS MODULOS (P-H, 06/11/2026) : la palabra « Salufolio » del copyright es un enlace ; abre la lista de todos los programas con su version y su fecha, la mas reciente arriba. La lista se CALCULA : la casa ya ha leido el SF_CONFIG de cada programa al arrancar ; aqui solo los textos. « palabra » = la palabra del copyright que se vuelve enlace.",
     "versiones": {
       "palabra": "Salufolio",
+      "_ancho": "la anchura máxima de la ventana, en px : las horas deben verse sin ascensor horizontal (P-H, 11/11/2026)",
+      "ancho": 760,
       "burbuja": {
         "es": "Versiones de los módulos",
         "fr": "Versions des modules",

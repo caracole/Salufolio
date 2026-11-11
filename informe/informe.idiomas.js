@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    LOS TEXTOS DEL INFORME — /Salufolio/informe/informe.idiomas.js
-   Versión 2026.09.29-15:55:00
+   Versión 2026.09.29-16:08:54
 
    Nada escrito en el código.
 

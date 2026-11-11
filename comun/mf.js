@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Versión 2026.11.05-22:50:45
+   Versión 2026.11.11-11:39:07
+   (10/11/2026 : MF.procedenciaMedida — de dónde viene un valor, en una línea corta : servicio — centro.)
    (05/11/2026 : MF.esCronico y MF.medNuevo, por fin en mf.js — la instalación « Crónica » no los había puesto.)
    (05/11/2026 : EL NÚMERO DE UN PDF — MF.pdfAlta (hueco primero, si no contador + 1) · pdfBaja (solo sin citas) · pdfCitas · pdfNumero.)
    (05/11/2026 : la burbuja se esconde al cerrar una ventana ; MF.ptips().)
@@ -362,6 +363,18 @@ var MF = (function(){
     /* « fuente » puede ser una letra A·X·P·S: eso no es una procedencia */
     if(/^[AXPS]$/.test(t)) t = '';
     return partes ? Object.assign({}, vacio, {texto:t}) : t;
+  }
+
+  /* DE DÓNDE VIENE UN VALOR, en una línea corta (P-H, 10/11/2026 : la burbuja de cada punto de curva) :
+     « servicio — centro » de su procedencia ; si no, la fuente del expediente (fuentes[src_id]) ; si no, su « source ». */
+  function procedenciaMedida(m){
+    if(!m) return '';
+    var p = procedencia(m, true);
+    var t = [p.servicio, p.centro].filter(Boolean).join(' — ');
+    if(t) return t;
+    var F = (datos && datos.fuentes) || {}, f = m.src_id && F[m.src_id];
+    if(f) return typeof f === 'string' ? f : (f.nombre || f.etiqueta || '');
+    return p.texto || '';
   }
 
   /* un profesional por su código (PRO003) → su nombre en claro */
@@ -2892,7 +2905,7 @@ async function _archivaViejas(hist){
            pdfAlta:pdfAlta, pdfBaja:pdfBaja, pdfCitas:pdfCitas, pdfNumero:pdfNumero, pdfContador:function(p){ return pdfContador(p || _pdfTabla(datos)); }, matricula:function(){return matricula;},
            paciente:paciente, ponPaciente:ponPaciente, mesures:mesures, claves:claves,
            mesuresCanon:mesuresCanon, parametro:parametro, parametros:parametros,
-           procedencia:procedencia, profesional:profesional, aliasMeds:aliasMeds, esCronico:esCronico, medNuevo:medNuevo,
+           procedencia:procedencia, procedenciaMedida:procedenciaMedida, profesional:profesional, aliasMeds:aliasMeds, esCronico:esCronico, medNuevo:medNuevo,
            eventos:eventos, medicamentos:medicamentos,
            medicamentosUnicos:medicamentosUnicos, normMed:normMed,
            principioDe:principioDe, principiosDesconocidos:principiosDesconocidos,

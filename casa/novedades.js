@@ -17,7 +17,7 @@ var SF_NOVEDADES = window.SF_NOVEDADES = {
    "ca": "Les correlacions parlen les quatre llengües, porten el seu número i el de cada corba, i es poden veure en escala logarítmica.",
    "en": "Correlations speak all four languages, carry their number and each chart's, and can be shown on a logarithmic scale.",
    "fecha": "2026-11-04",
-   "version": "2026.11.04-17:21:29"
+   "version": "2026.11.04-17:22:52"
   },
   {
    "clase": "nuevo",

@@ -1,0 +1,624 @@
+{
+ "fichero": "ICU_17072026065955.pdf",
+ "pdf_id": "PDF015",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h45m04",
+ "segundos": 82,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 12137,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 5937,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "sip": "",
+   "nhc": "",
+   "n_episodio": "",
+   "n_informe": "",
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "Servicio de Urgencia Hospitalaria",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "Informe de Urgencias",
+   "fecha_ingreso": "2022-01-06",
+   "fecha_alta": "2022-01-06",
+   "fecha_informe": "2022-01-06",
+   "fecha_firma": "",
+   "fecha_impresion": ""
+  },
+  "mediciones": [
+   {
+    "fecha": "2022-01-06",
+    "hora": "11:26",
+    "grupo": "constantes",
+    "parametro": "Tª",
+    "valor": "35.6",
+    "unidad": "ºC"
+   },
+   {
+    "fecha": "2022-01-06",
+    "hora": "11:26",
+    "grupo": "constantes",
+    "parametro": "FC",
+    "valor": "97",
+    "unidad": "lat/min"
+   },
+   {
+    "fecha": "2022-01-06",
+    "hora": "11:26",
+    "grupo": "constantes",
+    "condicion": "Sin Oxígeno",
+    "parametro": "Sat. O2",
+    "valor": "70",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "gasometria",
+    "condicion": "Sin Oxígeno",
+    "parametro": "pH",
+    "valor": "7.46",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "gasometria",
+    "condicion": "Sin Oxígeno",
+    "parametro": "pO2",
+    "valor": "45",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "gasometria",
+    "condicion": "Sin Oxígeno",
+    "parametro": "satO2",
+    "valor": "74.1",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "gasometria",
+    "condicion": "Sin Oxígeno",
+    "parametro": "CO2",
+    "valor": "24",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "gasometria",
+    "condicion": "Sin Oxígeno",
+    "parametro": "HCO3",
+    "valor": "20.4",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "gasometria",
+    "condicion": "Sin Oxígeno",
+    "parametro": "AG",
+    "valor": "15",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "T. PROTROMBINA",
+    "valor": "11.7",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "INDICE DE QUICK",
+    "valor": "97.0",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "INR",
+    "valor": "1.02",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "TP RATIO",
+    "valor": "1.02",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "TTPA RATIO",
+    "valor": "1.01",
+    "unidad": ""
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "T.TROMBOPLASTINA PARCIAL ACTIV",
+    "valor": "31.7",
+    "unidad": "seg"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "FIBRINOGENO",
+    "valor": "777.00",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "DIMEROS D",
+    "valor": "3831.00",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "HEMATIES",
+    "valor": "5.09",
+    "unidad": "x10^6/µL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "HEMOGLOBINA",
+    "valor": "15.2",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "HEMATOCRITO",
+    "valor": "47.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "VOLUMEN CORPUSCULAR MEDIO",
+    "valor": "92.9",
+    "unidad": "fL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "HBG CORPUSCULAR MEDIA",
+    "valor": "29.8",
+    "unidad": "pg"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "CONC. HBG CORPUSCULAR MEDIA",
+    "valor": "32.0",
+    "unidad": "g/dL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "RDW-CV",
+    "valor": "13.6",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "LEUCOCITOS",
+    "valor": "14.30",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS",
+    "valor": "8.90",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS",
+    "valor": "3.40",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS",
+    "valor": "1.80",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS",
+    "valor": "0.10",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS",
+    "valor": "0.10",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "NEUTROFILOS %",
+    "valor": "62.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "LINFOCITOS %",
+    "valor": "23.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "MONOCITOS %",
+    "valor": "12.3",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "EOSINOFILOS %",
+    "valor": "0.6",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "BASOFILOS %",
+    "valor": "0.7",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "PLAQUETAS",
+    "valor": "305",
+    "unidad": "x10^3/µL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "PROCALCITONINA",
+    "valor": "0.05",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "TROPONINA ULTRASENSIBLE",
+    "valor": "76.68",
+    "unidad": "ng/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "MIOGLOBINA",
+    "valor": "46",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "GLUCOSA",
+    "valor": "264",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "UREA",
+    "valor": "51",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "CREATININA",
+    "valor": "1.01",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "FILTRADO GLOM.ESTIMADO CKD-EPI",
+    "valor": "51.52",
+    "unidad": "ml/min/sup"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "SODIO",
+    "valor": "137",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "POTASIO",
+    "valor": "4.37",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "CLORO",
+    "valor": "102",
+    "unidad": "mmol/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "BILIRRUBINA TOTAL",
+    "valor": "0.62",
+    "unidad": "mg/dL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "GPT",
+    "valor": "47",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "GOT",
+    "valor": "55",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "GGT",
+    "valor": "219",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "FOSFATASA ALCALINA",
+    "valor": "175",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "CPK",
+    "valor": "48",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "LDH",
+    "valor": "274",
+    "unidad": "UI/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "PROTEINA C REACTIVA",
+    "valor": "66.44",
+    "unidad": "mg/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "FERRITINA",
+    "valor": "222",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "NT- PROBNP",
+    "valor": "11924",
+    "unidad": "pg/mL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "laboratorio",
+    "parametro": "TROPONINA ULTRASENSIBLE (2ª)",
+    "valor": "65.34",
+    "unidad": "ng/L"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "constantes",
+    "condicion": "filtamask a 6lpm",
+    "parametro": "SatO2",
+    "valor": "95",
+    "unidad": "%"
+   },
+   {
+    "fecha": "2022-01-06",
+    "grupo": "constantes",
+    "condicion": "FMK a 6lx'",
+    "parametro": "SatO2",
+    "valor": "94",
+    "unidad": "%"
+   }
+  ],
+  "medicamentos": [
+   {
+    "nombre": "ADIRO",
+    "dosis": "100 MG",
+    "pauta": "habitual",
+    "via": ""
+   },
+   {
+    "nombre": "MELITRACENO CLORHIDRATO / FLUPENTIXOL DICLORHIDRATO GRAGEAS",
+    "dosis": "10 MG / 0,5 MG",
+    "pauta": "habitual",
+    "via": ""
+   },
+   {
+    "nombre": "DONEPEZILO COMPRIMIDOS",
+    "dosis": "5 MG",
+    "pauta": "habitual",
+    "via": ""
+   },
+   {
+    "nombre": "BROMURO DE TIOTROPIO CAPSULAS + DISPOSITIVO",
+    "dosis": "18 MCG",
+    "pauta": "habitual",
+    "via": "inhalada"
+   },
+   {
+    "nombre": "URIDINA TRIFOSFATO CAPSULAS",
+    "dosis": "1,33 MG",
+    "pauta": "habitual",
+    "via": ""
+   },
+   {
+    "nombre": "PANTOPRAZOL",
+    "dosis": "20 MG",
+    "pauta": "habitual",
+    "via": ""
+   },
+   {
+    "nombre": "THICK AND EASY SABOR NEUTRO",
+    "dosis": "",
+    "pauta": "habitual",
+    "via": ""
+   },
+   {
+    "nombre": "XARELTO",
+    "dosis": "",
+    "pauta": "una temporada",
+    "via": ""
+   },
+   {
+    "nombre": "SOLU-MODERIN",
+    "dosis": "125 mg",
+    "pauta": "",
+    "via": ""
+   },
+   {
+    "nombre": "URBASON",
+    "dosis": "60 mg",
+    "pauta": "",
+    "via": "",
+    "prescriptor": "médico de centro de salud"
+   },
+   {
+    "nombre": "ATROVENT",
+    "dosis": "",
+    "pauta": "3 inhalaciones",
+    "via": "inhalada"
+   },
+   {
+    "nombre": "BUDESONIDA",
+    "dosis": "",
+    "pauta": "1 inhalación",
+    "via": "inhalada"
+   },
+   {
+    "nombre": "FUROSEMIDA",
+    "dosis": "1 ampolla",
+    "pauta": "",
+    "via": ""
+   },
+   {
+    "nombre": "filtamask (oxígeno)",
+    "dosis": "6 lpm",
+    "pauta": "",
+    "via": "inhalada"
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2016-01-01",
+    "titulo": "TVP + TEP bilateral",
+    "detalle": "Tras viaje prolongado en coche a Alemania, TVP + TEP bilateral en Francia en 2016, en tratamiento una temporada con Xarelto."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Ictus vertebrobasilar",
+    "detalle": "Ictus vertebrobasilar en sept 2021. Deterioro cognitivo desde ingreso por ictus vertebrobasilar en estudio por Neurología."
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "ECG",
+    "detalle": "Ritmo sinusal, eje +60º, PR 0.12s, QRS estrecho, BRD."
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "RX TÓRAX",
+    "detalle": "Estudio portátil, poco inspirado. Elevación diafragmática derecha. Elongación de troncos supraaórticos. No hay evidencia de consolidaciones del espacio aéreo."
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "TAC VASCULAR ARTERIAS PULMONARES",
+    "detalle": "Defectos de repleción bilaterales compatibles con TEP agudo en arterias: apical y segmentaria anterior del LSD, lobar media y lobar inferior derecha; segmentaria anterior del LSI, basal anteromedial, basal lateral y basal posterior del LII. No se observan defectos de repleción en las arterias pulmonares principales ni en el cono de la pulmonar. Áreas parcheadas en vidrio deslustrado, predominantemente de distribución peribroncovascular. Aplamiento y rectificación del tabique interventricular, así como reflujo de contraste a vena cava inferior como signos de sobrecarga de cavidades cardíacas derechas. Atelectasia-líquido en cisura menor derecha. No derrame pleural. Bocio endotorácico izquierdo. Elevación de hemidiafragma derecho. Atrofia renal derecha."
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "PCR Nuevo Coronavirus 2019-nCoV",
+    "detalle": "NEGATIVO"
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "Detección antígeno SARS-CoV-2",
+    "detalle": "NEGATIVO"
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "Diagnóstico principal",
+    "detalle": "TEP AGUDO BILATERAL"
+   },
+   {
+    "fecha": "2022-01-06",
+    "titulo": "Alta de Urgencias",
+    "detalle": "Paso a hospitalización - Neumología. IC para solicitar Ecocardiografía. IC para solicitar Eco-Doppler de MMII."
+   }
+  ],
+  "dudas": [
+   "El número de episodio, NHC, SIP, CIP CA, Código SNS y CIP Europeo aparecen en las cabeceras del documento pero sus valores no son legibles en el texto proporcionado.",
+   "El firmante del informe no consta con nombre legible; solo se menciona a Dra. Acosta/Dra. Saravia como guardia de Neumología en el texto, no como firmantes del documento.",
+   "La fecha de TBC en la infancia no tiene año concreto; solo se menciona TAC del 2017 con hallazgos compatibles con cambios post TBC.",
+   "El año del episodio de TVP+TEP en Francia se indica como 2016, pero no hay día ni mes exactos.",
+   "La fecha del ictus vertebrobasilar se indica como 'sept 2021' sin día exacto.",
+   "La condición exacta de la gasometría arterial no se especifica explícitamente como 'aire ambiente'; se deduce de 'Sin Oxígeno' mencionado en las constantes simultáneas, pero no se indica expresamente en la gasometría.",
+   "No queda claro si las dos troponinas ultrasensibles corresponden a dos extracciones distintas del mismo día o a momentos diferentes; se han registrado como primera y segunda bioquímica según el documento.",
+   "La fecha exacta en que se pusieron las 2 vacunas SARS-2 no consta.",
+   "No figura fecha de impresión del documento de forma separada a la fecha de creación (06/01/2022)."
+  ]
+ }
+}

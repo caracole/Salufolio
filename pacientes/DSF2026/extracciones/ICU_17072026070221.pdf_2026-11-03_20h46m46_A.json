@@ -1,0 +1,62 @@
+{
+ "fichero": "ICU_17072026070221.pdf",
+ "pdf_id": "PDF018",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h46m46",
+ "segundos": 11,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4344,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 496,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {},
+  "documento": {
+   "emisor": "GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "Servicio de Urgencia Hospitalaria",
+   "firmante": {
+    "nombre": "MARIA VENTURA PEREZ",
+    "rol": "medico"
+   },
+   "tipo": "informe de urgencias",
+   "fecha_ingreso": "2018-09-21",
+   "fecha_alta": "2018-09-21",
+   "fecha_informe": "2018-09-21"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2018-09-21",
+    "titulo": "Llegada a urgencias",
+    "detalle": "Paciente remitida desde Atención Primaria para valoración por cuadro agudo de alucinaciones."
+   },
+   {
+    "fecha": "2018-09-21",
+    "titulo": "Fuga del paciente",
+    "detalle": "Se llama por megafonía y se busca por celadores; no aparece. Se vuelve a llamar por megafonía y se busca por celadores y no aparece. Fugada. Diagnóstico principal: FUGADO. Circunstancias al alta: PACIENTE FUGADO."
+   }
+  ],
+  "dudas": [
+   "El número de episodio, NHC, SIP, CIP y código SNS están en el documento pero sus valores no son legibles en el texto extraído.",
+   "La fecha de alta figura como 21/09/2018 pero no se imprime la hora; se omite la hora.",
+   "No se puede distinguir si la fecha impresa corresponde a la del informe o a la de impresión; solo hay una fecha (21/09/2018) referenciada en todos los campos."
+  ]
+ }
+}

@@ -1,0 +1,171 @@
+{
+ "fichero": "ICU_17072026065838.pdf",
+ "pdf_id": "PDF013",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h42m43",
+ "segundos": 31,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 7054,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1766,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "sip": "",
+   "nhc": "",
+   "n_episodio": "",
+   "n_informe": "",
+   "n_solicitud": ""
+  },
+  "documento": {
+   "emisor": "GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "Servicio de Urgencia Hospitalaria",
+   "unidad": "",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "Informe de Urgencias",
+   "fecha_ingreso": "2024-01-23",
+   "fecha_alta": "2024-01-23",
+   "fecha_informe": "2024-01-23",
+   "fecha_firma": "",
+   "fecha_impresion": ""
+  },
+  "mediciones": [
+   {
+    "fecha": "2024-01-23",
+    "hora": "10:57",
+    "grupo": "constantes",
+    "parametro": "TA",
+    "valor": "150/62",
+    "unidad": "mmHg"
+   },
+   {
+    "fecha": "2024-01-23",
+    "hora": "10:57",
+    "grupo": "constantes",
+    "parametro": "Tª",
+    "valor": "36.5",
+    "unidad": "ºC"
+   },
+   {
+    "fecha": "2024-01-23",
+    "hora": "10:57",
+    "grupo": "constantes",
+    "parametro": "FC",
+    "valor": "71",
+    "unidad": "lat/min"
+   },
+   {
+    "fecha": "2024-01-23",
+    "hora": "10:57",
+    "grupo": "constantes",
+    "parametro": "Sat. O2",
+    "valor": "95",
+    "unidad": "%"
+   }
+  ],
+  "medicamentos": [
+   {
+    "nombre": "AMOXICILINA + CLAVULANICO",
+    "dosis": "500/125 MG",
+    "pauta": "No especificada",
+    "via": "oral",
+    "desde": "2024-01-23",
+    "hasta": "2024-01-29"
+   },
+   {
+    "nombre": "RIVAROXABAN",
+    "dosis": "20 MG",
+    "pauta": "No especificada",
+    "via": "oral",
+    "desde": "2022-02-25",
+    "hasta": "2024-07-12"
+   },
+   {
+    "nombre": "XUMADOL",
+    "dosis": "1G",
+    "pauta": "1 sobre cada 8 horas durante 10 días",
+    "via": "oral"
+   },
+   {
+    "nombre": "PREDNISONA",
+    "dosis": "30 MG",
+    "pauta": "1 comprimido cada día durante 3 días, a continuación medio comprimido cada día durante 3 días, a continuación un cuarto comprimido cada día durante 3 días",
+    "via": "oral"
+   },
+   {
+    "nombre": "AMOXICILINA + CLAVULANICO",
+    "dosis": "875/125 MG",
+    "pauta": "1 comprimido cada 8 horas durante 10 días",
+    "via": "oral"
+   },
+   {
+    "nombre": "NOLOTIL",
+    "dosis": "575 MG",
+    "pauta": "1 cápsula cada 8 horas durante 10 días",
+    "via": "oral"
+   },
+   {
+    "nombre": "AUGMENTINE",
+    "dosis": "875/125 MG",
+    "pauta": "1 sobre cada 8 horas durante 10 días",
+    "via": "oral"
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "",
+    "titulo": "TVP + TEP bilateral",
+    "detalle": "Tras viaje prolongado en coche a Alemania, TVP + TEP bilateral en Francia en 2016 y en 2022. En tratamiento actualmente con Rivaroxaban."
+   },
+   {
+    "fecha": "",
+    "titulo": "TBC en la infancia",
+    "detalle": "TAC del 2017 con hallazgos compatibles con cambios post TBC."
+   },
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Ictus vertebrobasilar",
+    "detalle": "Ictus vertebrobasilar en septiembre 2021. Deterioro cognitivo desde ingreso por ictus vertebrobasilar en estudio por Neurología."
+   },
+   {
+    "fecha": "2024-01-23",
+    "titulo": "Consulta urgencias por flemón dentario",
+    "detalle": "Mujer de 85 años con flemón en el 3er cuadrante. Radiografía con área radiolúcida en apical del 36 bien delimitada. Comentado con Maxilofacial (Dr. Soler): indica tratamiento farmacológico y que se le llamará según lista de espera."
+   },
+   {
+    "fecha": "2024-05-03",
+    "titulo": "Cita programada NEUMO VASCULAR",
+    "detalle": "El Viernes 03 de Mayo de 2024 a las 12:30: NEUMO VASCULAR; ubicada en Planta 6 Bloque A Puerta 00 de HOSPITAL GENERAL DE CASTELLO."
+   }
+  ],
+  "dudas": [
+   "El número de episodio, el NHC y el SIP del paciente están en blanco o no son legibles en el documento anonimizado.",
+   "El nombre del firmante aparece como ADJUNTO sin nombre personal impreso; rol no determinable con certeza.",
+   "La fecha exacta de los eventos de TVP+TEP en 2016 y 2022 no incluye mes ni día.",
+   "La fecha del ictus vertebrobasilar solo indica 'septiembre 2021', sin día exacto.",
+   "No queda claro si AUGMENTINE 875/125MG sobres es una alternativa o un medicamento adicional a AMOXICILINA+CLAVULANICO 875/125MG comprimidos prescritos simultáneamente.",
+   "La pauta de RIVAROXABAN 20 MG no está especificada en el documento.",
+   "La pauta de AMOXICILINA + CLAVULANICO 500/125 MG (prescripción previa al alta) no está especificada.",
+   "Solo hay una fecha (23/01/2024) para el informe; no hay fecha de impresión separada ni fecha de firma explícita."
+  ]
+ }
+}

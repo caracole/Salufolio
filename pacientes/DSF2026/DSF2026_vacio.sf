@@ -1,0 +1,77 @@
+{
+ "_leeme": {
+  "que_es": "Expediente de Salufolio. Todo en claro, a propósito: dentro de diez años se seguirá leyendo sin programa.",
+  "fuentes": {
+   "A": "API — un documento leído por máquina",
+   "X": "Extractor — el PDF despojado, lleva su pdf_id",
+   "P": "Protocolo — observado a la cabecera y releído por un humano",
+   "S": "Salufolio — escrito a mano por quien cuida"
+  },
+  "historial": "modificacion = se había escrito falso · actualizacion = se enriquece con algo nuevo",
+  "fechas": "AAAA-MM-DD-HH:MM:SS, hora de donde se trabaja",
+  "el_patron": "comun/patron-comentado.txt — cada campo explicado"
+ },
+ "formato": "SF1",
+ "version": "Salufolio-2026",
+ "data_type": "real",
+ "original_data_type": null,
+ "date_anonymized": null,
+ "exported": "2026-11-03T12:11:36.445Z",
+ "paciente": {
+  "nombre": "DEMO",
+  "apellidos": "SALU FOLIO",
+  "matricula": "DSF2026",
+  "nacimiento": "1938",
+  "sexo": "mujer",
+  "sip": "0002026",
+  "nhc": "",
+  "cip_sns": ""
+ },
+ "patient_name": "DEMO SALU FOLIO",
+ "patient_label": "DSF2026",
+ "sip": "0002026",
+ "nhc": "",
+ "cip_sns": "",
+ "nacimiento": "1938",
+ "sexo": "mujer",
+ "historial": {
+  "creacion": "2026-11-03-12:55:03",
+  "creacion_nota": "historial iniciado aquí — no cubre lo anterior",
+  "modificacion": [
+   {
+    "src": "S",
+    "fecha": "2026-11-03-13:11:33"
+   }
+  ],
+  "actualizacion": []
+ },
+ "mesures": [],
+ "events": [],
+ "medicaments": [],
+ "antecedentes": [],
+ "diagnosticos": [],
+ "escalas": [],
+ "citas": [],
+ "prescripciones": [],
+ "bacteriologia": [],
+ "vacunas": [],
+ "vacunaciones": [],
+ "enfermeria_dx": [],
+ "enfermeria_int": [],
+ "enfermeria_dx_registro": [],
+ "enfermeria_int_registro": [],
+ "servicios": [],
+ "centros": [],
+ "prescriptores": [],
+ "custom_params": [],
+ "correcciones": [],
+ "auditoria_conformes": [],
+ "comentarios_curvas": {},
+ "listas": {},
+ "dudas": [],
+ "identificadores_dudosos": [],
+ "pdfs": {
+  "directorio": "",
+  "archivos": {}
+ }
+}

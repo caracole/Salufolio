@@ -15,7 +15,7 @@ var SF_CONFIG = window.SF_CONFIG = {
   "pdf_ausente": "PDF ABSENT.pdf",
   "_pdf_ausente": "El nombre que, en la tabla pdfs, marca un documento ausente (P-H, 05/11/2026). Un clic en un punto que lo cita abre la ficha de lo que se sabe de él.",
   "id": "curvas",
-  "version": "2026.11.06-09:20:17",
+  "version": "2026.11.11-11:39:07",
   "programa": "curvas.html",
   "lanzador": "../casa/casa.js",
   "icono": "📈",

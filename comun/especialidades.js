@@ -1,5 +1,7 @@
 /* LAS ESPECIALIDADES — /Salufolio/comun/especialidades.js
-   Versión 2026.11.05-18:02:52
+   Versión 2026.11.10-15:56:30
+   (10/11/2026 : Cardiología — los parados por interacción se enseñan — P-H.)
+   (10/11/2026 : Pfeiffer y Lawton en la ficha de Neurología — P-H.)
    (05/11/2026 : « ficha » de Neurología.)
    (05/11/2026 : « ficha » de Neumología y Cardiología — las tarjetas de especialidad, P-H.)
    (05/11/2026 : Enfermería y Vacunas, y los registros del .sf — P-H.)
@@ -8,7 +10,7 @@
    servicios : expresión buscada en el TIPO del acontecimiento y en el SERVICIO de su procedencia, por « orden » (urgencias 1, ingresos 2) ;
    palabras : en el título y el texto, solo si nada respondió ; por_defecto : la línea de lo demás. Una especialidad nueva : una entrada más. */
 var SF_ESPECIALIDADES = window.SF_ESPECIALIDADES = {
- "version": "2026.11.05-18:02:52",
+ "version": "2026.11.10-15:56:30",
  "especialidades": [
   {
    "id": "vacunas",
@@ -177,6 +179,8 @@ var SF_ESPECIALIDADES = window.SF_ESPECIALIDADES = {
      }
     ],
     "medicamentos": "rivaroxab|apixab|edoxab|dabigatr|acenocumarol|sintrom|warfarin|heparina|enoxaparina|bemiparina|clopidogrel|prasugrel|ticagrelor|ac[ií]do acetilsalic|adiro|aspirina|bisoprolol|atenolol|carvedilol|metoprolol|nebivolol|propranolol|amlodipino|nifedipino|lercanidipino|diltiazem|verapamilo|enalapril|ramipril|lisinopril|perindopril|captopril|losart|valsart|candesart|olmesart|irbesart|telmisart|sacubitril|furosemida|torasemida|hidroclorotiazida|clortalidona|indapamida|espironolactona|eplerenona|digoxina|amiodarona|dronedarona|flecainida|nitroglicerina|mononitrato|ivabradina|ranolazina|atorvastatina|rosuvastatina|simvastatina|pravastatina|pitavastatina|ezetimiba|dapagliflozina|empagliflozina",
+    "parados_mostrar_si": "interacc|interact",
+    "_parados_mostrar_si": "P-H, 10/11/2026 : un medicamento suspendido o abandonado no cuenta, « sauf pour un cardiologue si la raison est une interaction avec une médication cardiologique ». Expresión buscada en la RAZÓN del paro ; la tarjeta los enseña en « Parados por una razón a tener en cuenta ». Otra especialidad : la misma línea en su ficha.",
     "_normal": "Normales de partida (05/11/2026), a revisar por P-H : las de los PARAMS de los módulos para TA, FC, troponina, potasio, sodio, creatinina, filtrado, hemoglobina, LDL, INR, dímero D ; NT-proBNP ≤ 450 (umbral habitual a partir de 75 años) ; BNP ≤ 100."
    }
   },
@@ -400,6 +404,14 @@ var SF_ESPECIALIDADES = window.SF_ESPECIALIDADES = {
       "normal": null
      },
      {
+      "k": "pfeiffer",
+      "normal": null
+     },
+     {
+      "k": "lawton",
+      "normal": null
+     },
+     {
       "k": "downton",
       "normal": null
      },
@@ -565,5 +577,5 @@ var SF_ESPECIALIDADES = window.SF_ESPECIALIDADES = {
  ],
  "_registros": "Las tablas datadas del .sf que dan pavés al gantt y al resumen (P-H, 05/11/2026) : cada fila {fecha, codigo, pdf_id} se vuelve un acontecimiento de la línea « especialidad », con el nombre de su « catalogo » del expediente. Las dos líneas nuevas van delante : sus palabras se miran antes que las de las demás. solo_titulo : sus palabras se buscan solo en el título (el texto de una historia clínica habla de vacunas sin serlo). uno_por_dia : dos documentos que citan la misma vacuna el mismo día cuentan una vez.",
  "_siempre": "siempre : la línea se enseña aunque el expediente no tenga nada, abajo, con su título en gris (P-H, 05/11/2026 : « ça évitera des questions »).",
- "_ficha": "« ficha » (P-H, 05/11/2026) : lo que muestra la tarjeta de la especialidad (programa especialidad/) — icono ; parametros : clave única (comun/sinonimos-parametros.js) y su normal [bajo, alto] (null = sin límite) ; medicamentos : expresión buscada en el nombre y el principio activo."
+ "_ficha": "« ficha » (P-H, 05/11/2026 ; « parados_mostrar_si » 10/11/2026) : lo que muestra la tarjeta de la especialidad (programa especialidad/) — icono ; parametros : clave única (comun/sinonimos-parametros.js) y su normal [bajo, alto] (null = sin límite) ; medicamentos : expresión buscada en el nombre y el principio activo."
 };

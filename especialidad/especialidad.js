@@ -10,7 +10,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "especialidad",
-  "version": "2026.11.06-09:20:17",
+  "version": "2026.11.11-16:35:30",
   "programa": "especialidad.html",
   "lanzador": "../casa/casa.js",
   "icono": "🩺",
@@ -25,6 +25,12 @@ var SF_CONFIG = window.SF_CONFIG = {
     "meses_tratamiento": 12,
     "_meses_tratamiento": "La misma regla que el Resumen (P-H, 04/11/2026) : un tratamiento está en curso si su prescripción tiene menos de N meses y su fin es posterior a hoy — o es crónico.",
     "estados_fin": ["abandonne", "abandonado", "abandoned", "suspendu", "suspendido", "suspended", "termine", "terminado", "stopped"],
+    "estados_no_curso": ["abandonne", "abandonado", "abandoned", "suspendu", "suspendido", "suspended", "termine", "terminado", "stopped", "no administrado", "non administre", "not administered", "rechazado", "obsoleto", "obsolete"],
+    "_estados_no_curso": "P-H, 10/11/2026 : « en cours seulement les médicaments PRIS ». Un estado de esta lista nunca está en curso, sea cual sea su fecha. Se comparan sin mayúsculas, sin acentos, « _ » y « - » como espacio. « No administrado » : una receta que no se ha seguido, por decisión propia.",
+    "estados_curso": ["en curso", "activo", "en cours", "ongoing"],
+    "_estados_curso": "Un estado escrito « en curso » : se toma, sea cual sea la fecha de la receta.",
+    "estados_si_necesario": ["si necesario", "si es necesario", "a demanda", "si besoin", "au besoin", "as needed", "prn"],
+    "_estados_si_necesario": "Aspirina, paracetamol, jarabe… casi sin receta (P-H, 10/11/2026) : ni en curso ni terminados ; se ven aparte, en un pliegue cerrado.",
     "estados_abandono": ["abandonne", "abandonado", "abandoned", "suspendu", "suspendido", "suspended"],
     "_estados_abandono": "Los que la HOJA imprime en « abandonados o suspendidos del año », con su razón (motif_suspension). Los terminados no se imprimen nunca (P-H, 05/11/2026).",
     "max_anteriores": 8,

@@ -1,0 +1,76 @@
+{
+ "fichero": "ITV_1784310666318.pdf",
+ "pdf_id": "PDF006",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h47m15",
+ "segundos": 17,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4472,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 764,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "sip": ""
+  },
+  "documento": {
+   "emisor": "GVA+SALUT",
+   "tipo": "Informe Tratamientos Vigentes"
+  },
+  "medicamentos": [
+   {
+    "nombre": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT",
+    "dosis": "",
+    "pauta": "2 PAÑAL DIA cada día CRÓNICO",
+    "via": "",
+    "hasta": "2026-08-31"
+   },
+   {
+    "nombre": "LIXBEN 10MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA EFG [DONEPEZILO]",
+    "dosis": "10MG",
+    "pauta": "1 COMPRIMIDO cada día CRÓNICO. Administrar por la noche inmediatamente antes de acostarse.",
+    "via": "oral",
+    "hasta": "2026-09-20"
+   },
+   {
+    "nombre": "XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA (BAYER) [RIVAROXABAN]",
+    "dosis": "20MG",
+    "pauta": "1 COMPRIMIDO cada día durante 150 días. Debe administrarse con alimentos.",
+    "via": "oral",
+    "hasta": "2026-10-17"
+   },
+   {
+    "nombre": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT",
+    "dosis": "",
+    "pauta": "1 Envase cada 60 día/s CRÓNICO",
+    "via": "",
+    "hasta": "2027-01-21"
+   }
+  ],
+  "eventos": [],
+  "dudas": [
+   "El SIP del paciente aparece en el encabezado pero su valor está en blanco en el documento (campo vacío tras 'SIP:').",
+   "La fecha de impresión figura en el encabezado pero su valor no está legible/impreso en el texto extraído del PDF.",
+   "No se distingue fecha_informe de fecha_impresion: el documento solo indica 'Fecha de impresión' sin otro identificador de fecha del informe.",
+   "La edad del paciente es 87 años pero no se indica fecha de nacimiento.",
+   "El número de visado/justificación del último medicamento (INCOPACK SUP-NOC) aparece como 'null' en el documento.",
+   "No consta firmante ni servicio emisor concreto más allá de GVA+SALUT.",
+   "La vía de administración de los medicamentos orales (LIXBEN, XARELTO) se infiere por la forma farmacéutica (comprimidos), no está explícitamente indicada como 'oral' en el documento."
+  ]
+ }
+}

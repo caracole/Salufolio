@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    LAS EQUIVALENCIAS — /Salufolio/comun/equivalencias.js
-   Versión 2026.11.04-13:03:28  (04/11/2026 : modo « entera », para los parámetros)
+   Versión 2026.11.04-13:06:38  (04/11/2026 : modo « entera », para los parámetros)
 
    « Tu devrais avoir une fonction générique qui, si tu lui donnes A ou B
      et que dans la table il y a A = B = C, te dise OK. »  (P-H, 29/09/2026)

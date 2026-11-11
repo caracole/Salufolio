@@ -1,0 +1,117 @@
+{
+ "fichero": "ITV_1784310784072.pdf",
+ "pdf_id": "PDF020",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h47m39",
+ "segundos": 25,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4508,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1500,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "sip": ""
+  },
+  "documento": {
+   "emisor": "GVA+SALUT",
+   "centro": "Farmacia 12/1 MAESTRAT (DEL)",
+   "tipo": "Informe de disponibilidad de recetas",
+   "fecha_impresion": ""
+  },
+  "medicamentos": [
+   {
+    "nombre": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT",
+    "dosis": "",
+    "pauta": "Duración del envase 60 días",
+    "via": "",
+    "desde": "2026-06-13",
+    "hasta": "2026-08-12"
+   },
+   {
+    "nombre": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT",
+    "dosis": "",
+    "pauta": "Duración del envase 40 días",
+    "via": "",
+    "desde": "2026-06-10",
+    "hasta": "2026-08-29"
+   },
+   {
+    "nombre": "LIXBEN 10MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA EFG",
+    "dosis": "10 mg",
+    "pauta": "Duración del envase 28 días",
+    "via": "oral",
+    "desde": "2026-06-09",
+    "hasta": "2026-08-04"
+   },
+   {
+    "nombre": "XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA (BAYER)",
+    "dosis": "20 mg",
+    "pauta": "Duración del envase 28 días",
+    "via": "oral",
+    "desde": "2026-06-09",
+    "hasta": "2026-08-06"
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2026-06-10",
+    "titulo": "Dispensación INCOPACK PANTS SUP-NOC",
+    "detalle": "1 unidad dispensada en Farmacia 12/1 MAESTRAT (DEL) a las 18:47. Cubre del 13/06/2026 al 12/08/2026."
+   },
+   {
+    "fecha": "2026-06-10",
+    "titulo": "Dispensación INCOPACK PANTS DIA (1ª)",
+    "detalle": "1 unidad dispensada en Farmacia 12/1 MAESTRAT (DEL) a las 18:47. Cubre del 10/06/2026 al 20/07/2026."
+   },
+   {
+    "fecha": "2026-07-10",
+    "titulo": "Dispensación INCOPACK PANTS DIA (2ª)",
+    "detalle": "1 unidad dispensada en Farmacia 12/1 MAESTRAT (DEL) a las 19:15. Cubre del 20/07/2026 al 29/08/2026. Fecha fin prescripción: 31/08/2026."
+   },
+   {
+    "fecha": "2026-06-09",
+    "titulo": "Dispensación LIXBEN 10MG (1ª)",
+    "detalle": "1 unidad dispensada en Farmacia 12/1 MAESTRAT (DEL) a las 18:43. Cubre del 09/06/2026 al 07/07/2026."
+   },
+   {
+    "fecha": "2026-06-26",
+    "titulo": "Dispensación LIXBEN 10MG (2ª)",
+    "detalle": "1 unidad dispensada en Farmacia 12/1 MAESTRAT (DEL) a las 12:57. Cubre del 07/07/2026 al 04/08/2026."
+   },
+   {
+    "fecha": "2026-06-09",
+    "titulo": "Dispensación XARELTO 20MG (1ª)",
+    "detalle": "1 unidad dispensada en Farmacia 12/1 MAESTRAT (DEL) a las 18:43. Cubre del 09/06/2026 al 07/07/2026."
+   },
+   {
+    "fecha": "2026-07-09",
+    "titulo": "Dispensación XARELTO 20MG (2ª)",
+    "detalle": "1 unidad dispensada en Farmacia 12/1 MAESTRAT (DEL) a las 19:29. Cubre del 09/07/2026 al 06/08/2026."
+   }
+  ],
+  "dudas": [
+   "La fecha de impresión figura en el encabezado del documento pero no está rellena en el texto extraído; no se puede determinar.",
+   "El SIP del paciente aparece en el encabezado pero está en blanco en el documento (campo anonimizado).",
+   "El nombre del paciente está en blanco (documento anonimizado); 'firmante' omitido por la misma razón.",
+   "No se indica servicio médico prescriptor ni médico firmante; el documento es un informe de dispensación de farmacia.",
+   "La vía de administración de LIXBEN y XARELTO se deduce del formato 'comprimidos'; no está impresa explícitamente — se ha incluido con cautela.",
+   "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT: solo hay una dispensación registrada que cubre desde el 13/06/2026, aunque la dispensación se realizó el 10/06/2026; el periodo de inicio difiere de la fecha de dispensación."
+  ]
+ }
+}

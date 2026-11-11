@@ -1,4 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
+   Versión 2026.10.25-18:35:54
    VISITAS — EL CONTADOR DE LA CASA  (P-H, 25/10/2026)   versión 2026.10.25-18:35:54
 
    Cuenta, de forma anónima y sin cookies, las visitas a la Casa y los

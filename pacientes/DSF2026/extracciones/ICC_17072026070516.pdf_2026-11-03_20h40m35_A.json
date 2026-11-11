@@ -1,0 +1,165 @@
+{
+ "fichero": "ICC_17072026070516.pdf",
+ "pdf_id": "PDF012",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h40m35",
+ "segundos": 21,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 6496,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1372,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_episodio": "3991116"
+  },
+  "documento": {
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "NEUROLOGIA",
+   "unidad": "4C -NER",
+   "firmante": {
+    "nombre": "",
+    "rol": "enfermeria"
+   },
+   "tipo": "Informe de Continuidad de Cuidados",
+   "fecha_ingreso": "2021-09-01",
+   "fecha_alta": "2021-09-14",
+   "fecha_informe": "2021-09-14"
+  },
+  "mediciones": [
+   {
+    "fecha": "2021-09-01",
+    "hora": "05:01",
+    "grupo": "escalas",
+    "parametro": "ESCALA NEUROLÓGICA CANADIENSE",
+    "valor": "6.5",
+    "unidad": "/10"
+   },
+   {
+    "fecha": "2021-09-01",
+    "hora": "05:02",
+    "grupo": "escalas",
+    "parametro": "BARTHEL",
+    "valor": "15",
+    "unidad": "/100"
+   },
+   {
+    "fecha": "2021-09-01",
+    "hora": "05:02",
+    "grupo": "escalas",
+    "parametro": "BRADEN - BERGSTROM",
+    "valor": "15",
+    "unidad": "/23"
+   },
+   {
+    "fecha": "2021-09-01",
+    "hora": "05:03",
+    "grupo": "escalas",
+    "parametro": "J.H. DOWNTON HGC",
+    "valor": "5",
+    "unidad": "/12"
+   },
+   {
+    "fecha": "2021-09-01",
+    "hora": "13:14",
+    "grupo": "escalas",
+    "parametro": "ESCALA NEUROLÓGICA CANADIENSE",
+    "valor": "5.5",
+    "unidad": "/10"
+   },
+   {
+    "fecha": "2021-09-01",
+    "hora": "20:42",
+    "grupo": "escalas",
+    "parametro": "ESCALA NEUROLÓGICA CANADIENSE",
+    "valor": "7.5",
+    "unidad": "/10"
+   },
+   {
+    "fecha": "2021-09-02",
+    "hora": "07:23",
+    "grupo": "escalas",
+    "parametro": "ESCALA NEUROLÓGICA CANADIENSE",
+    "valor": "6",
+    "unidad": "/10"
+   },
+   {
+    "fecha": "2021-09-02",
+    "hora": "11:29",
+    "grupo": "escalas",
+    "parametro": "ESCALA NEUROLÓGICA CANADIENSE",
+    "valor": "6.5",
+    "unidad": "/10"
+   },
+   {
+    "fecha": "2021-09-03",
+    "hora": "00:32",
+    "grupo": "escalas",
+    "parametro": "ESCALA NEUROLÓGICA CANADIENSE",
+    "valor": "7.5",
+    "unidad": "/10"
+   },
+   {
+    "fecha": "2021-09-03",
+    "hora": "09:43",
+    "grupo": "escalas",
+    "parametro": "ESCALA NEUROLÓGICA CANADIENSE",
+    "valor": "3.5",
+    "unidad": "/10"
+   }
+  ],
+  "medicamentos": [
+   {
+    "nombre": "seguril",
+    "pauta": "ocasional"
+   },
+   {
+    "nombre": "inhaladores"
+   },
+   {
+    "nombre": "BIPAP"
+   },
+   {
+    "nombre": "Pañal"
+   },
+   {
+    "nombre": "Oxigenoterapia"
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2021-09-01",
+    "titulo": "Ingreso",
+    "detalle": "Paciente ingresa a cargo de NRL con diagnóstico de ICTUS ISQUEMICO. SD LACUNAR MOTOR PURO."
+   },
+   {
+    "fecha": "2021-09-14",
+    "titulo": "Alta",
+    "detalle": "Dada de alta tras la realización de las exploraciones pertinentes."
+   }
+  ],
+  "dudas": [
+   "El campo 'firmante nombre' está en blanco: el documento indica rol ENFERMERA pero no imprime nombre legible.",
+   "SIP y NHC están presentes en la plantilla del documento pero los valores han sido anonimizados (en blanco).",
+   "No se distingue si 'fecha_informe' y 'fecha_firma' son la misma fecha (14/09/2021); solo figura una fecha al pie.",
+   "Los antecedentes personales (elevación hemidiafragma derecho, BIPAP) corresponden a historia previa, no a mediciones del episodio.",
+   "La dieta 'FM BLANDA S/SAL' podría ser una prescripción dietética; no se ha incluido en medicamentos por no ser un fármaco ni material identificable como tal.",
+   "No constan escalas más allá del 03-09-2021 hasta el alta el 14-09-2021."
+  ]
+ }
+}

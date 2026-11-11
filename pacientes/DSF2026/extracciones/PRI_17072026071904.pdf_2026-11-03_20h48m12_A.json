@@ -1,0 +1,94 @@
+{
+ "fichero": "PRI_17072026071904.pdf",
+ "pdf_id": "PDF021",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h48m12",
+ "segundos": 20,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 6293,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 953,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "nhc": "",
+   "sip": "",
+   "n_episodio": "15352872",
+   "n_informe": ""
+  },
+  "documento": {
+   "emisor": "AGÈNCIA VALENCIANA DE SALUT",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "URGENCIAS GENERALES",
+   "unidad": "",
+   "firmante": {
+    "nombre": "QUEROL RIPOLL, ROSER",
+    "rol": "medico"
+   },
+   "tipo": "Informe de prueba diagnóstica",
+   "fecha_ingreso": "",
+   "fecha_alta": "",
+   "fecha_informe": "2025-07-20",
+   "fecha_firma": "2025-07-20",
+   "fecha_impresion": "2026-07-17"
+  },
+  "mediciones": [
+   {
+    "fecha": "2025-07-19",
+    "grupo": "laboratorio",
+    "parametro": "FG",
+    "valor": "53.85",
+    "unidad": "ml/min/sup"
+   },
+   {
+    "fecha": "2025-07-19",
+    "grupo": "laboratorio",
+    "parametro": "dimero-D",
+    "valor": "2583.00",
+    "unidad": "ng/mL"
+   },
+   {
+    "fecha": "2025-07-19",
+    "grupo": "constantes",
+    "parametro": "SpO2",
+    "valor": "82",
+    "unidad": "%"
+   }
+  ],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2025-07-19",
+    "titulo": "Realización Angio-TC de arterias pulmonares",
+    "detalle": "TC VASCULAR ARTERIAS PULMONARES realizada el 19/07/2025 a las 23:54. Capturado por enfermera."
+   },
+   {
+    "fecha": "2025-07-20",
+    "titulo": "Hallazgos Angio-TC: Tromboembolismo pulmonar confirmado",
+    "detalle": "Se identifican defectos de repleción en arteria lobar de lóbulo inferior derecho así como en ramas segmentarias de lóbulo superior e inferior izquierdo compatibles con tromboembolismo pulmonar. Atelectasias laminares en ambos campos pulmonares. No se identifica reflujo de contraste a vena cava superior como signo de sobrecarga derecha. Cono de la arteria pulmonar de 25 mm. No derrame pleural. Elevación del hemidiafragma derecho ya conocido. Bocio endotorácico izquierdo. Atrofia renal derecha."
+   }
+  ],
+  "dudas": [
+   "El NHC y el SIP no están impresos en el documento con sus valores legibles.",
+   "El número de informe no figura con valor impreso legible.",
+   "La fecha asignada a las mediciones de laboratorio (FG y dímero-D) y SpO2 se infiere como 2025-07-19 por el contexto clínico del episodio, pero no está explícitamente fechada en el documento.",
+   "La fecha del informe se ha tomado como la fecha de firma (20/07/2025); no se puede distinguir con certeza si existe una fecha de informe diferente a la de firma.",
+   "El cono de la arteria pulmonar de 25 mm podría considerarse una medición, pero se ha incluido como evento al no tener fecha de toma separada ni grupo claro asignado en el documento."
+  ]
+ }
+}

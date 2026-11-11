@@ -1,0 +1,113 @@
+{
+ "fichero": "ICU_17072026065720.pdf",
+ "pdf_id": "PDF004",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h40m57",
+ "segundos": 22,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 6502,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1104,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "nhc": "",
+   "n_episodio": ""
+  },
+  "documento": {
+   "emisor": "GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "TRAUMATOLOGIA",
+   "unidad": "Servicio de Urgencia Hospitalaria",
+   "firmante": {
+    "nombre": "",
+    "rol": "medico"
+   },
+   "tipo": "informe de urgencias",
+   "fecha_ingreso": "2026-01-24",
+   "fecha_alta": "2026-01-24",
+   "fecha_informe": "2026-01-24"
+  },
+  "mediciones": [],
+  "medicamentos": [
+   {
+    "nombre": "Hidroferol (Vit D)",
+    "dosis": "0.266 mg",
+    "pauta": "1 sol oral/30 días",
+    "via": "oral",
+    "prescriptor": ""
+   },
+   {
+    "nombre": "Rivaroxaban",
+    "dosis": "20 mg",
+    "pauta": "1 comp/24h",
+    "via": "oral"
+   },
+   {
+    "nombre": "Haloperidol",
+    "dosis": "10 gotas",
+    "pauta": "orales/24h",
+    "via": "oral"
+   },
+   {
+    "nombre": "Acetilcisteina",
+    "dosis": "600 mg",
+    "pauta": "1 comp/24h",
+    "via": "oral"
+   },
+   {
+    "nombre": "Cefuroxima",
+    "dosis": "500 mg",
+    "pauta": "1 comp/12h",
+    "via": "oral"
+   },
+   {
+    "nombre": "Metamizol",
+    "dosis": "575 mg",
+    "pauta": "1 comprimido cada 8 horas",
+    "via": "oral"
+   },
+   {
+    "nombre": "Paracetamol",
+    "dosis": "1 g",
+    "pauta": "1 comprimido cada 8 horas (4 horas tras Metamizol), si más dolor",
+    "via": "oral"
+   }
+  ],
+  "eventos": [
+   {
+    "fecha": "2021-09",
+    "titulo": "Ictus vertebrobasilar",
+    "detalle": "Ictus vertebrobasilar en septiembre 2021. Deterioro cognitivo desde entonces en estudio por Neurología."
+   },
+   {
+    "fecha": "2026-01-24",
+    "titulo": "Consulta a urgencias por posible fractura de cadera derecha",
+    "detalle": "Paciente mujer de 87 años remitida desde AP por posible fractura de cadera derecha tras caída en domicilio. Exploración: MID en actitud normal, no dolor a la palpación de trocánter mayor ni ingle, no dolor a las rotaciones, BA limitado por dolor pero flexoextensión de cadera posible, ENV distal correcto. Rx cadera derecha y pelvis: sin trazos de fractura aguda aparentes. Diagnóstico: COXALGIA DERECHA POSTRAUMATICA."
+   }
+  ],
+  "dudas": [
+   "El número de episodio y el NHC aparecen en el documento pero están en blanco (sin valor impreso).",
+   "El firmante figura como RESIDENTE sin nombre explícito; el campo nombre se deja vacío por anonimización o ausencia.",
+   "La fecha de alta figura como 2026-01-24 pero no se indica hora; solo se sabe que es el mismo día del ingreso.",
+   "La fecha de creación del informe (2026-01-24) coincide con ingreso y alta; no hay fecha de firma separada.",
+   "Hidroferol: la pauta indica '1 sol oral de 1,5 ml 1 sol oral/30 días'; la dosis en el documento es 0,266 mg en solución oral de 1,5 ml — se conserva tal cual.",
+   "El SIP (CIP de la CA) y el Código SNS aparecen en la plantilla pero sin valor impreso visible."
+  ]
+ }
+}

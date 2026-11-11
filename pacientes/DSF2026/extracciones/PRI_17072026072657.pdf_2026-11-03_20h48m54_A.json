@@ -1,0 +1,64 @@
+{
+ "fichero": "PRI_17072026072657.pdf",
+ "pdf_id": "PDF024",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h48m54",
+ "segundos": 13,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4193,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 590,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {},
+  "documento": {
+   "emisor": "AGÈNCIA VALENCIANA DE SALUT",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "RADIOLOGIA",
+   "firmante": {
+    "nombre": "BORDON FERRE, MARIA FERNANDA",
+    "rol": "medico"
+   },
+   "tipo": "informe de prueba diagnóstica",
+   "fecha_informe": "2023-01-16",
+   "fecha_firma": "2023-01-16"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2023-01-16",
+    "titulo": "ECOGRAFÍA TIROIDEA",
+    "detalle": "Ecografía cuello (tiroides, parótidas, submaxilares, etc.). Se compara con estudio previo de 22 de septiembre de 2021, no evidenciando cambios valorables. No se evidencian adenopatías laterocervicales significativas."
+   },
+   {
+    "fecha": "2021-09-22",
+    "titulo": "Estudio previo de ecografía tiroidea",
+    "detalle": "Estudio previo utilizado como referencia de comparación para la ecografía de 16/01/2023."
+   }
+  ],
+  "dudas": [
+   "SIP y NHC presentes en el formulario pero sin valor impreso legible en el documento.",
+   "Número de informe presente en el formulario pero sin valor impreso legible.",
+   "Nombre del paciente presente en el formulario pero sin valor impreso legible (documento posiblemente anonimizado).",
+   "No queda claro si la fecha 16/01/2023 es simultáneamente fecha del informe y fecha de firma, o si existe una fecha de impresión distinta no indicada explícitamente.",
+   "La sección peticionaria indica 'JAIME I CENTRO ESPECIALIDADES (RXD)' como centro peticionario, distinto del centro emisor; no se puede determinar si es un servicio o una sección externa.",
+   "Hora 10:31 corresponde a la exploración registrada, no necesariamente a la toma de ninguna medición clínica."
+  ]
+ }
+}

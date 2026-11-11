@@ -2,7 +2,7 @@
    Lo que la página muestra vive en comun/especialidades.js (« ficha » de « neumologia »). */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "neumologia",
-  "version": "2026.11.05-20:12:21",
+  "version": "2026.11.11-16:35:30",
   "programa": "especialidad.html",
   "parametros": "esp=neumologia",
   "lanzador": "../casa/casa.js",

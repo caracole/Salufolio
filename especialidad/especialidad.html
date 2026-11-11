@@ -36,6 +36,16 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,syst
 .es-c{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .es-der{flex:0 0 auto;text-align:right;font-family:var(--mono);font-size:var(--tam-min,11px);color:var(--muted)}
 .es-pastilla{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}
+.es-otra{cursor:pointer;white-space:nowrap;border-bottom:1px dotted var(--muted)}
+.es-otra:hover{color:var(--accent)}
+.es-medico{color:var(--muted);font-size:11.5px}
+.es-seguido{color:var(--text)}
+.es-desac{float:right;padding:0 6px;line-height:18px}
+.es-suelta > .es-cuerpo{display:none}
+.es-suelta > h3::after{content:' ⧉';color:var(--muted)}
+.es-fondo-libre{background:transparent !important;pointer-events:none}
+.es-prep-ven{pointer-events:auto;position:fixed !important;margin:0 !important}
+.es-prep-ven .sf-ventana-cuerpo{max-height:70vh;overflow:auto}
 .es-doc{flex:0 0 auto;cursor:pointer;background:transparent;border:1px solid var(--border);border-radius:var(--radio-s,6px);padding:0 5px;font-size:12px;color:var(--text)}
 .es-doc:hover{border-color:var(--accent)}
 .es-v{display:grid;grid-template-columns:16px 1fr auto 18px 84px 74px;gap:8px;align-items:center;padding:3px 0;border-bottom:1px dashed var(--border);font-size:calc(var(--tam-nor,13px) - .5px);cursor:pointer}
@@ -47,6 +57,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,syst
 .es-fl{text-align:center;font-weight:700}
 .es-sube{color:var(--warn)} .es-baja{color:var(--accent)} .es-igual{color:var(--muted)}
 .es-svg polyline{fill:none;stroke:var(--accent);stroke-width:1.5}
+.es-svg circle{fill:var(--accent)}
+.es-est{font-size:10.5px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:0 4px}
+.es-curva-nota{font-size:11px;color:var(--muted);font-weight:normal}
 .es-nada{color:var(--muted);font-size:12px;font-style:italic}
 .es-sin{color:var(--muted);font-size:var(--tam-min,11px);margin-top:6px}
 .es-cron{font-size:calc(var(--tam-min,11px) - 1px);color:var(--muted);border:1px solid var(--border);border-radius:var(--radio-s,6px);padding:0 4px;margin-left:4px}
@@ -121,7 +134,15 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,syst
 <script>
 /* ═════════════════════════════════════════════════════════════════════
    ESPECIALIDAD — programa autónomo de Salufolio V2
-   Versión 2026.11.05-20:12:21
+   Versión 2026.11.11-16:35:30
+   (10/11/2026 : P-H — « Seguimiento en … desde … » con los médicos ; cada especialidad de « Otras consultas » se abre con un clic ;
+    la burbuja de las pastillas dice que el color es el de la especialidad ; « Preparar la consulta » se suelta en una ventana
+    y vuelve a su sitio al cerrarla ; el médico en cada consulta ; « desde » ya no se repite ; la nota de la IA sin « preparado… preparar ».)
+   (10/11/2026 : la burbuja de cada punto dice su valor, su fecha y de dónde viene — MF.procedenciaMedida, como en Curvas.)
+   (10/11/2026 : « cliquer sur un point » à côté du titre de la courbe, pas en bas — P-H.)
+   (10/11/2026 : P-H, consulta de neurología — « en curso » = SOLO los medicamentos que se toman, todos salvo la parafarmacia ;
+    terminados y parados detrás de un botón cerrado ; los « si necesario » aparte ; parados por interacción según la tabla ;
+    nada de « nuevos » ni « terminados » desde la última consulta ; un clic en un punto de la curva abre su documento.)
    (05/11/2026, 19:03 : P-H — tratamientos plegables ; una sola carta « Preparar la consulta » ; la hoja : en curso, abandonados del año con su razón, el año en curso, próximas citas, valores marcados ☑ ; sin página en blanco.)
    (05/11/2026 : étape 2 — el comentario de la IA « desde la última consulta », las preguntas para el médico ; Neurología.)
    (05/11/2026 : creado — P-H : « avoir des cartes par spécialités, à cause des RV Neumólogo et Cardiólogo ».)
@@ -189,7 +210,7 @@ function _esEventos(d, T){
 function _esSeries(d){
   const S = {};
   (MF.mesuresCanon ? MF.mesuresCanon(d) : []).forEach(t => Object.keys(t.vals || {}).forEach(k => {
-    const v = parseFloat(t.vals[k]); if (isNaN(v)) return; (S[k] = S[k] || []).push([t.date, v, t.pdf_id || '']); }));
+    const v = parseFloat(t.vals[k]); if (isNaN(v)) return; (S[k] = S[k] || []).push([t.date, v, t.pdf_id || '', (MF.procedenciaMedida ? MF.procedenciaMedida(t) : '')]); }));
   Object.keys(S).forEach(k => S[k].sort((a, b) => a[0] < b[0] ? -1 : 1));
   return S;
 }
@@ -199,28 +220,49 @@ function _esRango(n){ if (!n) return ''; return n[0] != null && n[1] != null ? n
 function _esCurvita(s, color){
   const w = 84, h = 20, ys = s.map(x => x[1]), mn = Math.min.apply(null, ys), r = (Math.max.apply(null, ys) - mn) || 1;
   const pts = s.map((x, i) => ((s.length > 1 ? i * (w - 4) / (s.length - 1) + 2 : w / 2).toFixed(1) + ',' + (h - 3 - (x[1] - mn) / r * (h - 6)).toFixed(1))).join(' ');
+  if (s.length === 1) { const c = pts.split(','); return '<svg class="es-svg" width="' + w + '" height="' + h + '"><circle cx="' + c[0] + '" cy="' + c[1] + '" r="2.5"/></svg>'; }   /* un solo valor : un punto (P-H, 10/11/2026) */
   return '<svg class="es-svg" width="' + w + '" height="' + h + '"><polyline points="' + pts + '"' + (color ? ' style="stroke:' + color + '"' : '') + '/></svg>';
 }
 
 /* ── los tratamientos — la regla del Resumen (P-H, 04/11/2026) ── */
 function _esMedFecha(m, a, b, c){ return m[a] || m[b] || m[c] || ''; }
-function _esTratamientos(d, rx){
-  const C = _esCfg(), hoy = _esHoy(), lim = _esMenosMeses(hoy, C.meses_tratamiento), fin = (C.estados_fin || []).map(x => String(x).toLowerCase());
-  const raw = (d.medicaments || []).filter(m => m && rx.test(String(m.nombre || m.nom || '') + ' ' + String((MF.principioDe && MF.principioDe(m.nombre || m.nom || '')) || '')));
+/* un estado, escrito como sea (« No administrado », « no_administrado », « Si necesario »…), en una sola forma */
+function _esNormEst(s){ return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[_\-]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+function _esMotivo(m){ return String(m.motif_suspension || m.motivo_suspension || m.motivo || m.motif || m.razon || ''); }
+/* LOS TRATAMIENTOS (P-H, 10/11/2026) — EL ESTADO PRIMERO :
+   · en curso   : SOLO lo que se toma ; un estado de « estados_no_curso » nunca lo es ; sin estado, la regla de fechas del Resumen ;
+   · si necesario : aparte (aspirina, paracetamol… casi sin receta) ;
+   · terminados o parados : todo lo demás ;
+   · todos los medicamentos del expediente, de cualquier especialidad, SALVO la parafarmacia y el material (MF.categoriaDe) ;
+   · « reactivar » no existe aquí : sin nueva receta no hay reactivación — una receta nueva es una línea nueva. */
+function _esTratamientos(d){
+  const C = _esCfg(), hoy = _esHoy(), lim = _esMenosMeses(hoy, C.meses_tratamiento);
+  const noCurso = (C.estados_no_curso || C.estados_fin || []).map(_esNormEst), siNec = (C.estados_si_necesario || []).map(_esNormEst), enCurso = (C.estados_curso || []).map(_esNormEst);
+  const raw = (d.medicaments || []).filter(m => m && (m.nombre || m.nom));
   const cron = {};
   raw.forEach(m => { if (MF.esCronico && MF.esCronico(m)) { const u = MF.medicamentosUnicos([m])[0]; if (u) cron[u._clave] = 1; } });
-  const curso = [], ant = [];
+  const curso = [], ant = [], sinec = [];
   (MF.medicamentosUnicos ? MF.medicamentosUnicos(raw) : raw).forEach(m => {
-    const est = String(m.estado || m.statut || '').toLowerCase(), desde = _esMedFecha(m, 'desde', 'date_debut', 'date'), hasta = _esMedFecha(m, 'hasta', 'date_fin', 'fin');
-    const esCron = (MF.esCronico && MF.esCronico(m)) || !!cron[m._clave], x = { m: m, desde: desde, hasta: hasta, cron: esCron };
-    const parado = est && fin.indexOf(est) >= 0;
-    if (!parado && desde && desde >= lim && hasta && hasta > hoy) curso.push(x);
-    else if (!parado && esCron && !hasta) curso.push(x);
-    else if (!parado && esCron && hasta) { x.caducado = hasta; curso.push(x); }
+    if (m._categoria && m._categoria !== 'medicamento') return;           /* la parafarmacia y el material : fuera de las tarjetas */
+    const est = _esNormEst(m.estado || m.statut), desde = _esMedFecha(m, 'desde', 'date_debut', 'date'), hasta = _esMedFecha(m, 'hasta', 'date_fin', 'fin');
+    const esCron = (MF.esCronico && MF.esCronico(m)) || !!cron[m._clave], x = { m: m, desde: desde, hasta: hasta, cron: esCron, est: est };
+    if (est && siNec.indexOf(est) >= 0) { sinec.push(x); return; }
+    if (est && noCurso.indexOf(est) >= 0) { ant.push(x); return; }
+    if (est && enCurso.indexOf(est) >= 0) { curso.push(x); return; }      /* « en curso » escrito : se toma */
+    if (desde && desde >= lim && hasta && hasta > hoy) curso.push(x);
+    else if (esCron && !hasta) curso.push(x);
+    else if (esCron && hasta) { x.caducado = hasta; curso.push(x); }
     else ant.push(x);
   });
-  ant.sort((a, b) => (b.hasta || b.desde) < (a.hasta || a.desde) ? -1 : 1);
-  return { curso: curso, ant: ant };
+  const reciente = (a, b) => (b.hasta || b.desde || '') < (a.hasta || a.desde || '') ? -1 : 1;
+  ant.sort(reciente); sinec.sort(reciente);
+  return { curso: curso, ant: ant, sinec: sinec };
+}
+/* los parados cuya RAZÓN dice algo que esta especialidad debe ver (« parados_mostrar_si » de su ficha) —
+   P-H, 10/11/2026 : « sauf pour un cardiologue si la raison est une interaction avec une médication cardiologique » */
+function _esParadosAviso(TR, F){
+  let rx = null; try { rx = F.parados_mostrar_si ? new RegExp(F.parados_mostrar_si, 'i') : null; } catch (e) { rx = null; }
+  return rx ? TR.ant.filter(x => rx.test(_esMotivo(x.m))) : [];
 }
 
 /* ── LA VISTA ── */
@@ -243,9 +285,21 @@ function buildEspecialidad(){
   if (sxk) b.push('<b>' + _esEsc(txe(sxk)) + '</b>');
   if (nac > 1900) b.push('<b>' + _esEsc(txe('es_anos', { n: new Date().getFullYear() - nac })) + '</b>');
   if (mias.length) {
-    const pr = MF.procedencia ? MF.procedencia(mias[0].ev) : '';
-    b.push('<span>' + _esEsc(txe('es_consultas', { n: mias.length })) + ' · ' + _esEsc(txe('es_periodo', { a: mias[mias.length - 1].ev.date.slice(0, 4), b: ult.slice(0, 4) })) + '</span>');
-    b.push('<span' + (pr ? ' data-ptip="' + _esEsc(pr) + '"' : '') + '>' + _esEsc(txe('es_ultima', { f: _esF(ult) })) + '</span>');
+    /* EL SEGUIMIENTO (P-H, 10/11/2026 : « le médecin verra : on consulte en cardio depuis 3 ans » ; « mentionner le docteur ») */
+    const pr = MF.procedencia ? MF.procedencia(mias[0].ev) : '', pri = mias[mias.length - 1].ev.date;
+    /* P-H, 11/11/2026 : una sola consulta no es un « seguimiento » ; y la duración va de la primera a la ÚLTIMA consulta, no hasta hoy */
+    const med = _esMedicos(mias), tipU = pr ? ' data-ptip="' + _esEsc(pr) + '"' : '';
+    if (mias.length === 1) {
+      b.push('<span class="es-seguido"' + tipU + '><b>' + _esEsc(txe('es_una_consulta', { e: _esNom(esp), f: _esF(ult) })) + '</b></span>');
+      if (med.length) b.push('<span>' + _esEsc(med.join(', ')) + '</span>');
+    } else {
+      const mismoMes = pri.slice(0, 7) === ult.slice(0, 7);
+      b.push('<span class="es-seguido"><b>' + _esEsc(mismoMes ? txe('es_seguido_mes', { e: _esNom(esp), m: _esMes(pri) })
+        : txe('es_seguido', { e: _esNom(esp), m1: _esMes(pri), m2: _esMes(ult), d: _esDuracion(pri, ult) })) + '</b></span>');
+      b.push('<span>' + _esEsc(txe('es_consultas', { n: mias.length })) + '</span>');
+      if (med.length) b.push('<span>' + _esEsc(med.join(', ')) + '</span>');
+      b.push('<span' + tipU + '>' + _esEsc(txe('es_ultima', { f: _esF(ult) })) + '</span>');
+    }
   } else b.push('<span>' + _esEsc(txe('es_ninguna')) + '</span>');
   b.push('<button class="es-imp" data-ptip="' + _esEsc(txe('es_tip_imprimir')) + '" onclick="esImprime()">' + _esEsc(txe('es_imprimir')) + '</button>');
   document.getElementById('es-banda').innerHTML = b.join('');
@@ -256,20 +310,16 @@ function buildEspecialidad(){
   const desp = E.filter(x => x.ev.date > desde && x.esp.id !== esp.id);
   const urg = desp.filter(x => x.esp.orden), otras = {};
   desp.filter(x => !x.esp.orden).forEach(x => { otras[x.esp.id] = otras[x.esp.id] || { e: x.esp, n: 0 }; otras[x.esp.id].n++; });
-  const todos = (d.medicaments || []), U = MF.medicamentosUnicos ? MF.medicamentosUnicos(todos) : todos;
-  const nuevos = U.filter(m => { const f = _esMedFecha(m, 'desde', 'date_debut', 'date'); return f && f > desde; });
-  const fins = (C.estados_fin || []).map(x => String(x).toLowerCase());
-  const parados = U.filter(m => { const h = _esMedFecha(m, 'hasta', 'date_fin', 'fin'), est = String(m.estado || m.statut || '').toLowerCase(); return h && h > desde && h <= hoy && fins.indexOf(est) >= 0; });
+  /* P-H, 10/11/2026 : ni « nuevos » ni « terminados » aquí — la lista estaba llena de recetas sin actualizar ; lo que se toma está en « Tratamientos » */
+  const nuevos = [], parados = [];
   const fuera = [];
   (F.parametros || []).forEach(p => { const s = S[p.k]; if (!s) return; s.filter(x => x[0] > desde && _esFuera(x[1], p.normal)).slice(-1).forEach(x => fuera.push({ k: p.k, v: x[1], f: x[0], n: p.normal })); });
   let h = '';
   const sub = t => '<div class="es-sub">' + _esEsc(t) + '</div>';
   R.desp = desp; R.desde_urg = urg; R.desde_otras = otras; R.nuevos = nuevos; R.parados = parados; R.fuera = fuera;
   if (urg.length) h += sub(txe('es_desde_urg')) + urg.map(x => _esFilaEv(x)).join('');
-  if (Object.keys(otras).length) h += sub(txe('es_desde_otras')) + '<div class="es-fila"><span class="es-c" style="white-space:normal">' + Object.values(otras).sort((a, c) => c.n - a.n).map(o => '<span class="es-pastilla" style="background:' + _esEsc(o.e.color || 'var(--muted)') + '"></span>' + _esEsc(_esNom(o.e)) + ' ' + o.n).join(' · ') + '</span></div>';
+  if (Object.keys(otras).length) h += sub(txe('es_desde_otras')) + '<div class="es-fila"><span class="es-c" style="white-space:normal">' + Object.values(otras).sort((a, c) => c.n - a.n).map(o => '<span class="es-otra" onclick="esOtras(\'' + _esEsc(o.e.id) + '\')" data-ptip="' + _esEsc(txe('es_tip_otras')) + '"><span class="es-pastilla" style="background:' + _esEsc(o.e.color || 'var(--muted)') + '" data-ptip="' + _esEsc(txe('es_tip_pastilla')) + '"></span>' + _esEsc(_esNom(o.e)) + ' ' + o.n + '</span>').join(' · ') + '</span></div>';
   if (fuera.length) h += sub(txe('es_desde_fuera')) + fuera.map(x => { const L = _esEtiq(x.k); return '<div class="es-fila es-clic" onclick="esCurva(\'' + _esEsc(x.k) + '\')" data-ptip="' + _esEsc(txe('es_tip_normal', { r: _esRango(x.n) })) + '"><span class="es-f">' + _esF(x.f) + '</span><span class="es-c">' + _esEsc(L[0]) + '</span><span class="es-der es-num es-fuera">' + _esEsc(x.v) + '<span class="es-u">' + _esEsc(L[1]) + '</span></span></div>'; }).join('');
-  if (nuevos.length) h += sub(txe('es_desde_nuevos')) + nuevos.map(m => '<div class="es-fila"><span class="es-f">' + _esF(_esMedFecha(m, 'desde', 'date_debut', 'date')) + '</span><span class="es-c">💊 <b>' + _esEsc(m._principio || m.nombre || '') + '</b> ' + _esEsc(m.dosis || '') + '</span></div>').join('');
-  if (parados.length) h += sub(txe('es_desde_parados')) + parados.map(m => '<div class="es-fila es-ant"><span class="es-f">' + _esF(_esMedFecha(m, 'hasta', 'date_fin', 'fin')) + '</span><span class="es-c">💊 ' + _esEsc(m._principio || m.nombre || '') + '</span></div>').join('');
   document.getElementById('es-desde').innerHTML = h || '<div class="es-nada">' + _esEsc(txe('es_desde_nada')) + '</div>';
 
   /* 2 · SUS CONSULTAS */
@@ -296,15 +346,17 @@ function buildEspecialidad(){
 
   /* 4 · SUS TRATAMIENTOS : en curso, luego los anteriores */
   document.getElementById('es-h-trat').textContent = txe('es_trat_tit');
-  let rx = null; try { rx = F.medicamentos ? new RegExp(F.medicamentos, 'i') : null; } catch (e) { rx = null; }
-  const TR = rx ? _esTratamientos(d, rx) : { curso: [], ant: [] };
-  const anio = _esHoy().slice(0, 4), y0 = anio + '-01-01', antA = TR.ant.filter(x => (x.hasta || x.desde || '') >= y0);   /* pantalla : los anteriores del año (P-H, 05/11/2026) */
+  const TR = _esTratamientos(d), avisos = _esParadosAviso(TR, F);
   let t = '';
   t += _esPliegue('curso', txe('es_trat_curso') + ' · ' + TR.curso.length, TR.curso.length ? TR.curso.map(x => '<div class="es-fila' + (x.caducado ? ' es-caduca' : '') + '"><span class="es-c">💊 <b>' + _esEsc(x.m._principio || x.m.nombre || '') + '</b> ' + _esEsc(x.m.dosis || '')
       + (x.cron ? ' <span class="es-cron" data-ptip="' + _esEsc(txe('es_tip_cronico')) + '">' + _esEsc(txe('es_trat_cronico')) + '</span>' : '') + '</span>'
       + '<span class="es-der">' + _esEsc(x.caducado ? txe('es_trat_caducado', { f: _esF(x.caducado) }) : (x.hasta ? txe('es_trat_hasta', { f: _esF(x.hasta) }) : '')) + '</span></div>').join('') : nada);
-  t += _esPliegue('ant', txe('es_trat_ant_anio', { a: anio }) + ' · ' + antA.length, antA.length ? antA.map(x => '<div class="es-fila es-ant"><span class="es-c">💊 ' + _esEsc(x.m._principio || x.m.nombre || '') + ' ' + _esEsc(x.m.dosis || '') + '</span>'
-      + '<span class="es-der">' + _esEsc(x.hasta ? txe('es_trat_fin', { f: _esF(x.hasta) }) : _esF(x.desde)) + '</span></div>').join('') : nada);
+  const filaAnt = x => '<div class="es-fila es-ant"><span class="es-c">💊 ' + _esEsc(x.m._principio || x.m.nombre || '') + ' ' + _esEsc(x.m.dosis || '')
+      + (x.m.estado || x.m.statut ? ' <span class="es-est">' + _esEsc(x.m.estado || x.m.statut) + '</span>' : '') + (_esMotivo(x.m) ? ' — <i>' + _esEsc(_esMotivo(x.m)) + '</i>' : '') + '</span>'
+      + '<span class="es-der">' + _esEsc(x.hasta ? txe('es_trat_fin', { f: _esF(x.hasta) }) : _esF(x.desde)) + '</span></div>';
+  if (avisos.length) t += _esPliegue('aviso', '⚠ ' + txe('es_trat_aviso') + ' · ' + avisos.length, avisos.map(filaAnt).join(''));
+  if (TR.sinec.length) t += _esPliegue('sinec', txe('es_trat_sinec') + ' · ' + TR.sinec.length, TR.sinec.map(filaAnt).join(''));
+  t += _esPliegue('ant', txe('es_trat_term') + ' · ' + TR.ant.length, TR.ant.length ? TR.ant.map(filaAnt).join('') : nada);
   document.getElementById('es-trat').innerHTML = t;
   document.querySelectorAll('#es-trat .es-pleg-cab').forEach(c => { if (MF.plegableTip) MF.plegableTip(c, !c.parentNode.classList.contains('cerrado')); });
   /* los próximos rendez-vous */
@@ -317,11 +369,52 @@ function buildEspecialidad(){
   _esPrep();
   _esAltura();
 }
-/* una fila de acontecimiento : fecha · servicio · título · 📄 */
+/* el médico de un acontecimiento, si la procedencia lo dice */
+function _esMedico(ev){ try { return (MF.procedencia ? MF.procedencia(ev, true).profesional : '') || ''; } catch (e) { return ''; } }
+/* los médicos del seguimiento, del que más consultas tiene al que menos — tres como mucho */
+function _esMedicos(L){
+  const n = {}; L.forEach(x => { const m = _esMedico(x.ev); if (m) n[m] = (n[m] || 0) + 1; });
+  return Object.keys(n).sort((a, b) => n[b] - n[a]).slice(0, 3).map(m => Object.keys(n).length > 1 ? m + ' (' + n[m] + ')' : m);
+}
+/* « marzo de 2023 », en la lengua de la casa */
+function _esMes(iso){ try { return new Date(iso + 'T12:00:00').toLocaleDateString({ es: 'es-ES', fr: 'fr-FR', ca: 'ca-ES', en: 'en-GB' }[_esLg()] || 'es-ES', { month: 'long', year: 'numeric' }); } catch (e) { return iso.slice(0, 7); } }
+/* « 3 años 8 meses » */
+function _esDuracion(a, b){
+  const d1 = new Date(a + 'T12:00:00'), d2 = new Date(b + 'T12:00:00');
+  let m = (d2.getFullYear() - d1.getFullYear()) * 12 + d2.getMonth() - d1.getMonth(); if (d2.getDate() < d1.getDate()) m--; if (m < 0) m = 0;
+  const an = Math.floor(m / 12), me = m % 12, p = [];
+  if (an) p.push(txe(an === 1 ? 'es_dur_a1' : 'es_dur_a', { n: an })); if (me || !an) p.push(txe(me === 1 ? 'es_dur_m1' : 'es_dur_m', { n: me }));
+  return p.join(' ');
+}
+/* la lista de las consultas de una especialidad, desde la última consulta (P-H, 10/11/2026 : « pas de perte de temps, le doigt sur une spécialité ») */
+function esOtras(id){
+  if (!_ES) return; const L = (_ES.desp || []).filter(x => !x.esp.orden && x.esp.id === id); if (!L.length) return;
+  MF.ventana('<span class="es-pastilla" style="background:' + _esEsc(L[0].esp.color || 'var(--muted)') + '"></span>' + _esEsc(txe('es_otras_tit', { e: _esNom(L[0].esp), n: L.length, f: _esF(_ES.desde) })),
+    '<div class="es-cuerpo">' + L.map(x => _esFilaEv(x)).join('') + '</div>', { ancho: '640px' });
+}
+/* « Preparar la consulta » en una ventana : se pone donde está la carta, la página sigue usable debajo ;
+   al cerrarla, vuelve a su sitio (P-H, 10/11/2026) */
+let _esPrepSuelta = null;
+function esPrepVentana(){
+  if (_esPrepSuelta) return;
+  const cu = document.getElementById('es-prep'), carta = cu && cu.parentNode; if (!carta) return;
+  const r = carta.getBoundingClientRect();
+  const v = MF.ventana('🧠 ' + _esEsc(txe('es_prep_tit')), '', { ancho: Math.max(360, Math.round(r.width)) + 'px', alCerrar: () => {
+    carta.appendChild(cu); carta.classList.remove('es-suelta'); cu.style.maxHeight = ''; _esPrepSuelta = null; _esAltura(); } });
+  const fondo = v.caja.parentNode;
+  fondo.classList.add('es-fondo-libre'); v.caja.classList.add('es-prep-ven');
+  v.caja.style.left = Math.max(6, Math.min(r.left, window.innerWidth - Math.max(360, r.width) - 6)) + 'px';
+  v.caja.style.top = Math.max(6, Math.min(r.top, window.innerHeight - 200)) + 'px';
+  v.caja.querySelector('.sf-ventana-cuerpo').appendChild(cu); cu.style.maxHeight = '';
+  carta.classList.add('es-suelta'); _esPrepSuelta = v;
+}
+
+/* una fila de acontecimiento : fecha · servicio · título · médico · 📄 */
 function _esFilaEv(x){
   const e = x.ev, i = _esIdx(e), pr = MF.procedencia ? MF.procedencia(e) : '';
   return '<div class="es-fila es-clic" onclick="esTexto(' + i + ')" data-ptip="' + _esEsc(txe('es_tip_fila') + (pr ? '\n' + pr : '')) + '"><span class="es-f">' + _esF(e.date) + '</span>'
-    + '<span class="es-c"><span class="es-pastilla" style="background:' + _esEsc(x.esp.color || 'var(--muted)') + '"></span>' + _esEsc(e.title || e.titre || e.type || '') + '</span>'
+    + '<span class="es-c"><span class="es-pastilla" style="background:' + _esEsc(x.esp.color || 'var(--muted)') + '"></span>' + _esEsc(e.title || e.titre || e.type || '')
+    + (_esMedico(e) ? ' <span class="es-medico">· ' + _esEsc(_esMedico(e)) + '</span>' : '') + '</span>'
     + (e.pdf_id ? '<button class="es-doc" data-ptip="' + _esEsc(txe('es_tip_doc')) + '" onclick="event.stopPropagation();esDoc(\'' + _esEsc(e.pdf_id) + '\')">📄</button>' : '') + '</div>';
 }
 /* los acontecimientos se nombran por su sitio en una lista de la página (no se escribe nada en el dato) */
@@ -356,13 +449,23 @@ function esCurva(k){
   const s = (_ES && _ES.S && _ES.S[k]) || []; if (!s.length || typeof Chart === 'undefined') return;
   const F = (_ES.esp.ficha || {}), p = (F.parametros || []).find(x => x.k === k) || {}, L = _esEtiq(k), n = p.normal;
   const cs = getComputedStyle(document.documentElement), col = v => (cs.getPropertyValue(v) || '').trim();
-  const v = MF.ventana(_esEsc(L[0] + (L[1] ? ' (' + L[1] + ')' : '')) + (n ? ' <small style="color:var(--muted)">· ' + _esEsc(txe('es_normal')) + ' ' + _esEsc(_esRango(n)) + '</small>' : ''), '<div class="es-curva"><canvas id="es-graf"></canvas></div>', { ancho: '720px' });
+  const v = MF.ventana(_esEsc(L[0] + (L[1] ? ' (' + L[1] + ')' : '')) + (n ? ' <small style="color:var(--muted)">· ' + _esEsc(txe('es_normal')) + ' ' + _esEsc(_esRango(n)) + '</small>' : '')
+      + ' <small class="es-curva-nota">· 👆 ' + _esEsc(txe('es_tip_punto')) + '</small>',   /* à côté du titre, pas en bas (P-H, 10/11/2026) */ '<div class="es-curva"><canvas id="es-graf"></canvas></div>', { ancho: '720px' });
   if (_esGraf) { try { _esGraf.destroy(); } catch (e) {} }
   const ds = [{ data: s.map(x => ({ x: x[0], y: x[1] })), borderColor: col('--accent'), backgroundColor: col('--accent'), tension: .2, pointRadius: 3,
                 pointBackgroundColor: s.map(x => _esFuera(x[1], n) ? col('--danger') : col('--accent')) }];
   if (n) [0, 1].forEach(i => { if (n[i] != null) ds.push({ data: [{ x: s[0][0], y: n[i] }, { x: s[s.length - 1][0], y: n[i] }], borderColor: col('--ok') || col('--muted'), borderDash: [4, 4], pointRadius: 0, borderWidth: 1 }); });
   _esGraf = new Chart(document.getElementById('es-graf'), { type: 'line', data: { datasets: ds },
-    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false },
+      /* la burbuja de un punto : su valor, su fecha, y de dónde viene (P-H, 10/11/2026) */
+      tooltip: { callbacks: {
+        title: it => it.length && s[it[0].dataIndex] ? _esF(s[it[0].dataIndex][0]) : '',
+        label: c => c.datasetIndex === 0 ? ' ' + c.formattedValue + ' ' + (L[1] || '') : '',
+        afterLabel: c => { if (c.datasetIndex !== 0) return ''; const x = s[c.dataIndex] || []; return x[3] ? '🏥 ' + x[3] : ''; } } } },
+      /* P-H, 10/11/2026 : « pour les PDF des courbes comme tout le monde, rien à inventer » — el mismo visor común que Curvas */
+      onClick: (ev, el) => { const it = (el || []).find(x => x.datasetIndex === 0); if (!it || !window.SF_VISOR) return; const x = s[it.index]; if (!x || !x[2]) return;
+        SF_VISOR.abre({ pdf_id: x[2], clave: k, valor: x[1], fecha: x[0], etiqueta: L[0], unidad: L[1], color: col('--accent') }); },
+      onHover: (ev, el) => { const c = ev && ev.native && ev.native.target; if (c) c.style.cursor = (el || []).some(x => x.datasetIndex === 0 && s[x.index] && s[x.index][2]) ? 'pointer' : 'default'; },
       scales: { x: { type: 'category', labels: s.map(x => x[0]), ticks: { color: col('--muted'), callback: function(val){ const l = this.getLabelForValue(val); return _esF(l); } }, grid: { color: col('--border') } },
                 y: { ticks: { color: col('--muted') }, grid: { color: col('--border') } } } } });
   if (v && v.caja) v.caja.querySelectorAll('.sf-ventana-x').forEach(x => x.addEventListener('click', () => { try { _esGraf.destroy(); } catch (e) {} _esGraf = null; }));
@@ -415,7 +518,7 @@ function esImprime(){
   (R.desp || []).filter(x => !x.esp.orden && enAnio(x)).forEach(x => { otras[x.esp.id] = otras[x.esp.id] || { e: x.esp, n: 0 }; otras[x.esp.id].n++; });
   const noImp = _esNoImprimir();
   const fuera = R.fuera.filter(x => noImp.indexOf(x.k) < 0).sort((a, b) => a.f < b.f ? 1 : -1);
-  const nuevos = R.nuevos.filter(m => !terminado(m));
+  const nuevos = [];   /* P-H, 10/11/2026 : ya no */
   let dd = '';
   if (urg.length) dd += '<tr><th colspan="3">' + e(txe('es_desde_urg')) + '</th></tr>' + urg.map(x => fila(_esF(x.ev.date), e(_esNom(x.esp) + ' · ' + (x.ev.title || x.ev.titre || '')), '')).join('');
   if (Object.keys(otras).length) dd += '<tr><th colspan="3">' + e(txe('es_desde_otras')) + '</th></tr><tr><td colspan="3">' + Object.values(otras).sort((a, c) => c.n - a.n).map(o => e(_esNom(o.e) + ' ' + o.n)).join(' · ') + '</td></tr>';
@@ -431,15 +534,16 @@ function esImprime(){
   }
   /* los tratamientos : en curso ; abandonados del año con su razón ; nunca los terminados */
   let rx = null; try { rx = F.medicamentos ? new RegExp(F.medicamentos, 'i') : null; } catch (x) {}
-  const ab = _esAbandonos(d, rx, y0);
+  const ab = _esAbandonos(d, rx, y0), avis = _esParadosAviso(R.TR, F);
   let tt = '';
   if (R.TR.curso.length) tt += '<tr><th colspan="3">' + e(txe('es_trat_curso')) + '</th></tr>' + R.TR.curso.map(x => fila('', '<b>' + e(x.m._principio || x.m.nombre || '') + '</b> ' + e(x.m.dosis || '') + (x.cron ? ' · ' + e(txe('es_trat_cronico')) : ''), e(x.caducado ? txe('es_trat_caducado', { f: _esF(x.caducado) }) : (x.hasta ? txe('es_trat_hasta', { f: _esF(x.hasta) }) : '')))).join('');
+  if (avis.length) tt += '<tr><th colspan="3">⚠ ' + e(txe('es_trat_aviso')) + '</th></tr>' + avis.map(x => fila(_esF(x.hasta || x.desde), '<b>' + e(x.m._principio || x.m.nombre || '') + '</b>', e(_esMotivo(x.m)))).join('');
   if (ab.length) tt += '<tr><th colspan="3">' + e(txe('es_abandonos', { a: anio })) + '</th></tr>' + ab.map(x => fila(_esF(x.fecha), '<b>' + e(x.nombre) + '</b>', e(x.motivo))).join('');
   if (tt) h += sub(txe('es_trat_tit')) + '<table>' + tt + '</table>';
   /* las preguntas ; lo que la IA ha notado (sin sus preguntas : las retenidas están en la lista) */
   const memo = _esMemo(), pq = _esPregLee();
   if (pq && pq.texto && pq.texto.trim()) h += sub(txe('es_preg_tit')) + '<div class="preg">' + e(pq.texto).replace(/\n/g, '<br>') + '</div>';
-  if (memo && memo.texto) h += sub('🧠 ' + txe('es_ia_ve')) + SF_COMENTARIO_IA.formatea(_esSinPreguntas(memo.texto)) + '<p class="n">' + e(txe('es_ia_nota', { f: memo.fecha || '' })) + (memo.enviado ? ' · ' + e(SF_COMENTARIO_IA.tx('envia')) + ' ' + e(memo.enviado) : '') + '</p>';
+  if (memo && memo.texto) h += sub('🧠 ' + txe('es_ia_ve')) + SF_COMENTARIO_IA.formatea(_esSinPreguntas(memo.texto)) + '<p class="n">' + e(txe('es_ia_nota', { f: _esSinSeg(memo.fecha) })) + (memo.enviado ? ' · ' + e(SF_COMENTARIO_IA.tx('envia')) + ' ' + e(memo.enviado) : '') + '</p>';
   /* las consultas del año, sin las citas */
   const mias = R.mias.filter(enAnio);
   if (mias.length) h += sub(txe('es_consultas_anio', { a: anio }) + ' (' + mias.length + ')') + '<table>' + mias.map(x => fila(_esF(x.ev.date), e(x.ev.title || x.ev.titre || ''), e(MF.procedencia ? MF.procedencia(x.ev) : ''))).join('') + '</table>';
@@ -484,6 +588,7 @@ if (MF.ptips) MF.ptips();   /* las burbujas data-ptip de la página : la de la c
    consulta, los nombres de los medicamentos, las series de la ficha. Nunca un nombre, un SIP,
    una historia, una procedencia ni un texto de informe. El prompt vive en su fichero :
    comun/prompt-comentario-especialidad.js. El comentario se guarda en este navegador. */
+function _esSinSeg(f){ return String(f || '').replace(/(\d{1,2}:\d{2}):\d{2}/, '$1'); }   /* « 16:16 », no « 16:16:37 » (P-H, 10/11/2026) */
 function _esMat(){ try { return (MF.matricula && MF.matricula()) || (MF.paciente() || {}).matricula || ''; } catch (e) { return ''; } }
 function _esClaveMemo(){ return 'esp:' + _ESP_ID; }
 function _esMemo(){ return (window.SF_COMENTARIO_IA && SF_COMENTARIO_IA.lee(_esMat(), _esClaveMemo())) || null; }
@@ -493,8 +598,7 @@ function _esEntrada(R){
   const ev = R.desde_urg.map(x => x.ev.date + ' · ' + _esNomEs(x.esp) + ' · ' + String(x.ev.title || x.ev.titre || '').slice(0, 140))
     .concat(Object.values(R.desde_otras).map(o => (E.otras || 'otras consultas') + ' · ' + _esNomEs(o.e) + ' : ' + o.n));
   const med = R.TR.curso.map(x => (E.en_curso || 'en curso') + ' : ' + (x.m._principio || x.m.nombre || '') + (x.cron ? ' (' + (E.cronico || 'crónico') + ')' : ''))
-    .concat(R.nuevos.map(m => (E.nuevo || 'nuevo') + ' ' + _esMedFecha(m, 'desde', 'date_debut', 'date') + ' : ' + (m._principio || m.nombre || '')))
-    .concat(R.parados.map(m => (E.parado || 'terminado') + ' ' + _esMedFecha(m, 'hasta', 'date_fin', 'fin') + ' : ' + (m._principio || m.nombre || '')));
+    .concat(_esParadosAviso(R.TR, R.esp.ficha || {}).map(x => (E.parado || 'terminado') + ' ' + (x.hasta || x.desde || '') + ' : ' + (x.m._principio || x.m.nombre || '') + (_esMotivo(x.m) ? ' (' + _esMotivo(x.m) + ')' : '')));
   const F = R.esp.ficha || {}, max = P.puntos_max || 10;
   const series = (F.parametros || []).filter(p => R.S[p.k]).map(p => { const L = _esEtiqEs(p.k);
     return { etiqueta: L[0], unidad: L[1], ref: p.normal || null, desc: '', puntos: R.S[p.k].slice(-max).map(x => ({ x: x[0], y: x[1] })) }; });
@@ -533,7 +637,7 @@ function _esSugeridas(texto){
 function _esSinPreguntas(texto){ const M = SF_COMENTARIO_IA.tx('marcador'), i = String(texto || '').indexOf(M); return (i < 0 ? String(texto || '') : texto.slice(0, i)).replace(/\**\s*$/, '').trim(); }
 function _esPrep(){
   const z = document.getElementById('es-prep'); if (!z) return;
-  document.getElementById('es-h-prep').textContent = '🧠 ' + txe('es_prep_tit');
+  document.getElementById('es-h-prep').innerHTML = _esEsc('🧠 ' + txe('es_prep_tit')) + ' <button class="es-btn es-mini es-desac" onclick="esPrepVentana()" data-ptip="' + _esEsc(txe('es_tip_ventana')) + '">⧉</button>';
   z.innerHTML = '<div id="es-prep-ia"></div><div id="es-prep-preg"></div>';
   _esIA(); _esPreguntas();
 }
@@ -542,7 +646,7 @@ function _esIA(){
   const memo = _esMemo(), clave = MF.claveIA ? MF.claveIA() : '', cambio = memo && memo.huella && memo.huella !== _ES.huella;
   let h = '<div class="es-sub">' + _esEsc(txe('es_ia_ve')) + '</div>';
   if (memo && memo.texto) {
-    h += '<div class="es-ia-txt">' + SF_COMENTARIO_IA.formatea(_esSinPreguntas(memo.texto)) + '</div><div class="es-ia-pie"><span>' + _esEsc(txe('es_ia_nota', { f: memo.fecha || '' })) + '</span></div>';
+    h += '<div class="es-ia-txt">' + SF_COMENTARIO_IA.formatea(_esSinPreguntas(memo.texto)) + '</div><div class="es-ia-pie"><span>' + _esEsc(txe('es_ia_nota', { f: _esSinSeg(memo.fecha) })) + '</span></div>';
     if (cambio) h += '<div class="es-ia-aviso">⚠ ' + _esEsc(txe('es_ia_aviso')) + '</div>';
   }
   if (!clave) h += '<div class="es-ia-ctx">💡 ' + _esEsc(MF.textoClave ? MF.textoClave('invita') : '') + ' <a href="#" onclick="MF.pideClave(function(){ _esIA(); });return false;" style="color:var(--accent)">🔑 ' + _esEsc(MF.textoClave ? MF.textoClave('poner') : '') + '</a></div>';
@@ -588,7 +692,7 @@ function esPregGuarda(ya){
   if (ya === true) hazlo(); else _esPregT = setTimeout(function(){ hazlo(); _esSug(); }, 600);
 }
 /* ── los pliegues de los tratamientos : en curso abierto, anteriores cerrado (P-H, 05/11/2026) ── */
-const _esPl = { curso: true, ant: false };
+const _esPl = { curso: true, aviso: true, sinec: false, ant: false };   /* P-H, 10/11/2026 : terminados y « si necesario » cerrados — se abren si se piden */
 function _esPliegue(id, titulo, cuerpo){
   const ab = !!_esPl[id];
   return '<div class="es-pleg' + (ab ? '' : ' cerrado') + '" data-pl="' + id + '"><div class="es-pleg-cab" onclick="esPlegar(this)"><span class="flecha">' + (ab ? '▾' : '▸') + '</span>' + _esEsc(titulo) + '</div><div class="es-pleg-cuerpo">' + cuerpo + '</div></div>';

@@ -1,0 +1,58 @@
+{
+ "fichero": "PRI_17072026072502.pdf",
+ "pdf_id": "PDF023",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h48m40",
+ "segundos": 12,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 6027,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 529,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_episodio": "10962192"
+  },
+  "documento": {
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "RADIOLOGIA",
+   "firmante": {
+    "nombre": "AMBIT CAPDEVILA, SILVIA",
+    "rol": "medico"
+   },
+   "tipo": "Informe de prueba diagnóstica",
+   "fecha_informe": "2023-02-09",
+   "fecha_firma": "2023-02-09",
+   "fecha_impresion": "2026-07-17"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2023-02-09",
+    "titulo": "TC Cuello y Tórax sin contraste — bocio endotorácico",
+    "detalle": "Dependiente del lóbulo tiroideo izquierdo se visualiza gran imagen nodular, sólida, mayoritariamente homogénea, con calcio en su interior (grosero), mide aproximadamente 4.2 x 4.3 x 6.25 cm, extensión endotorácica, desplazamiento de la tráquea hacia el lado derecho, discreta reducción del calibre traqueal previo a la compresión 1.5 cm, en la zona de máxima compresión 1.15 cm. Lóbulo tiroideo derecho de tamaño y morfología dentro de la normalidad sin focalidad. Discretos signos de carácter degenerativo multinivel."
+   }
+  ],
+  "dudas": [
+   "El documento no incluye SIP, NHC ni número de informe impresos de forma legible en el cuerpo del texto.",
+   "La fecha de impresión (17/07/2026) es posterior a la fecha del informe (09/02/2023); se conservan ambas tal como figuran.",
+   "No se indica servicio peticionario ni médico peticionario en el texto visible del documento."
+  ]
+ }
+}

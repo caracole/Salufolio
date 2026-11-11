@@ -1,4 +1,5 @@
 /* Los textos de la adquisición asistida
+   Versión 2026.10.06-13:09:36
    Versión 2026.10.06 (la cabecera estaba mal cerrada : el « Versión … » quedaba fuera del comentario,
    el fichero no se leía y todo salía en español ; 06/10/2026) */
 var SF_TEXTOS = window.SF_TEXTOS = {

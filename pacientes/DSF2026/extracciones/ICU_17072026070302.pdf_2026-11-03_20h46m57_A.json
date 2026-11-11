@@ -1,0 +1,63 @@
+{
+ "fichero": "ICU_17072026070302.pdf",
+ "pdf_id": "PDF019",
+ "modo": "A",
+ "modelo": "claude-sonnet-4-6",
+ "prompt": "extraccion",
+ "prompt_version": "2026.11.03-18:27:23",
+ "programa": "automatica 2026.11.03-18:27:23",
+ "fecha": "2026-11-03_20h46m57",
+ "segundos": 12,
+ "stop_reason": "end_turn",
+ "uso": {
+  "input_tokens": 4267,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 496,
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "json_valido": true,
+ "reemplaza": null,
+ "respuesta": {
+  "identificacion": {
+   "n_episodio": ""
+  },
+  "documento": {
+   "emisor": "Conselleria de Sanitat - GVA",
+   "centro": "HOSPITAL GENERAL DE CASTELLON",
+   "servicio": "Servicio de Urgencia Hospitalaria",
+   "unidad": "URGENCIAS",
+   "firmante": {
+    "nombre": "",
+    "rol": ""
+   },
+   "tipo": "informe de urgencias",
+   "fecha_ingreso": "2016-07-04",
+   "fecha_alta": "2016-07-05",
+   "fecha_informe": "2016-07-05",
+   "fecha_impresion": "2016-07-05"
+  },
+  "mediciones": [],
+  "medicamentos": [],
+  "eventos": [
+   {
+    "fecha": "2016-07-05",
+    "titulo": "Paciente fugado",
+    "detalle": "Paciente acudió desde Atención Primaria por sensación de cuerpo extraño en la garganta desde el día anterior. Diagnóstico principal registrado: FUGADO. Alta por fuga del paciente."
+   }
+  ],
+  "dudas": [
+   "El número de episodio figura en el documento pero no es legible en el texto extraído.",
+   "El firmante no aparece identificado en el documento.",
+   "La fecha de alta figura como 05/07/2016 pero no incluye hora, aunque el campo del documento indica 'FECHA Y HORA DE ALTA'.",
+   "No se puede distinguir si 'fecha_informe' y 'fecha_impresion' son la misma o distintas; ambas apuntan a 05/07/2016 según 'Fecha creación'.",
+   "NHC, SIP, CIP y otros identificadores del paciente no son legibles en el texto extraído (campos en blanco o anonimizados)."
+  ]
+ }
+}
