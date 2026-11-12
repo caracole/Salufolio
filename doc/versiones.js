@@ -1,11 +1,11 @@
 /* LAS VERSIONES DE SALUFOLIO
-   escrito por herramientas/versiones.py el 2026.11.11-21:16:28
+   escrito por herramientas/versiones.py el 2026.11.12-09:23:51
 
    Un .js y no un .json: asi la pagina funciona sin servidor.
    No se toca a mano — se rehace en cada pasada. */
 var SF_VERSIONES = window.SF_VERSIONES = {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.11.11-21:16:28",
+ "_ultima_pasada": "2026.11.12-09:23:51",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -197,22 +197,6 @@ var SF_VERSIONES = window.SF_VERSIONES = {
   "casa/novedades.js": {
    "suma": "67214ce90a41",
    "version": "2026.11.04-17:22:52"
-  },
-  "casa/tour-13.js": {
-   "suma": "590ab7660c05",
-   "version": "2026.09.19-18:12:56"
-  },
-  "casa/tour-antes-salas.js": {
-   "suma": "79da6164c1ef",
-   "version": "2026.09.21-16:46:13"
-  },
-  "casa/tour-antes-tarjetas.js": {
-   "suma": "d8d8c77ec4b1",
-   "version": "2026.09.21-17:08:16"
-  },
-  "casa/tour-viejo.js": {
-   "suma": "cd1a9f73c305",
-   "version": "2026.09.19-22:29:15"
   },
   "casa/tour.js": {
    "suma": "7e0915488d14",
@@ -2648,96 +2632,6 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "suma": "83697f344e15",
    "version": "2026.09.25-15:46:44"
   },
-  "casa/voz/t01_es.mp3": {
-   "muda": true,
-   "suma": "15e66009608d",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t01_fr.mp3": {
-   "muda": true,
-   "suma": "2dec12967bfc",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t02_es.mp3": {
-   "muda": true,
-   "suma": "a547d24491b2",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t02_fr.mp3": {
-   "muda": true,
-   "suma": "9db7421c4c82",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t03_es.mp3": {
-   "muda": true,
-   "suma": "e983ec7ff1dd",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t03_fr.mp3": {
-   "muda": true,
-   "suma": "c31cf93e6160",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t04_es.mp3": {
-   "muda": true,
-   "suma": "5a2bcbaf07f3",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t04_fr.mp3": {
-   "muda": true,
-   "suma": "59bbfd29e182",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t05_es.mp3": {
-   "muda": true,
-   "suma": "b8babdabdd7a",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t05_fr.mp3": {
-   "muda": true,
-   "suma": "4b47d57e557b",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t06_es.mp3": {
-   "muda": true,
-   "suma": "879a52a80f6e",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t06_fr.mp3": {
-   "muda": true,
-   "suma": "247ea88d4623",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t07_es.mp3": {
-   "muda": true,
-   "suma": "9e9a3b5f0c87",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t07_fr.mp3": {
-   "muda": true,
-   "suma": "227589d137fd",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t08_es.mp3": {
-   "muda": true,
-   "suma": "fa3d446c7a6b",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t08_fr.mp3": {
-   "muda": true,
-   "suma": "91876b2e0560",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t09_es.mp3": {
-   "muda": true,
-   "suma": "c6e995cb6c13",
-   "version": "2026.09.19-19:42:02"
-  },
-  "casa/voz/t09_fr.mp3": {
-   "muda": true,
-   "suma": "77a3951e2aa8",
-   "version": "2026.09.19-19:42:02"
-  },
   "comun/alias-campos.js": {
    "suma": "76eb19943f3e",
    "version": "2026.11.04-11:00:08"
@@ -3360,14 +3254,6 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "suma": "4b4fc399f46c",
    "version": "2026.09.19-18:15:47"
   },
-  "doc/respuesta_Luis_v2026-09-15_10h42.md": {
-   "suma": "247786de1520",
-   "version": "2026.09.19-18:15:47"
-  },
-  "doc/respuesta_Luis_v2026-09-15_12h13.md": {
-   "suma": "4a73530175b9",
-   "version": "2026.09.19-18:15:47"
-  },
   "doc/versiones.js": {
    "suma": "2dcf6bbc81a5",
    "version": "2026.09.22-10:06:52"
@@ -3798,8 +3684,8 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "version": "2026.11.11-11:02:33"
   },
   "herramientas/versiones.py": {
-   "suma": "19164a093533",
-   "version": "2026.11.11-11:02:33"
+   "suma": "179d2e840306",
+   "version": "2026.11.12-09:23:22"
   },
   "herramientas/visita_maqueta.html": {
    "suma": "95f02b2a6504",
@@ -3950,11 +3836,6 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "suma": "ac60e65a84c3",
    "version": "2026.09.19-18:15:47"
   },
-  "protocolo/doc.pdf": {
-   "muda": true,
-   "suma": "ef52b269043a",
-   "version": "2026.09.19-19:42:02"
-  },
   "protocolo/index.html": {
    "suma": "dc8e360c0dbd",
    "version": "2026.10.14-21:21:39"
@@ -3998,10 +3879,6 @@ var SF_VERSIONES = window.SF_VERSIONES = {
   "radar/radar.js": {
    "suma": "4ca2417b039f",
    "version": "2026.11.11-21:14:05"
-  },
-  "radar/radar_v2026-10-28_16h56.html": {
-   "suma": "04e27b8eedab",
-   "version": "2026.10.28-16:58:34"
   },
   "resumen/index.html": {
    "suma": "97dafde504a7",
