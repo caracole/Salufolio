@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Versión 2026.11.11-11:39:07
+   Versión 2026.11.12-10:43:30
+   (12/11/2026 : OBSOLETO — un medicamento marcado « obsoleto » no lo ve ningún módulo de solo lectura ; MF.esObsoleto.)
    (10/11/2026 : MF.procedenciaMedida — de dónde viene un valor, en una línea corta : servicio — centro.)
    (05/11/2026 : MF.esCronico y MF.medNuevo, por fin en mf.js — la instalación « Crónica » no los había puesto.)
    (05/11/2026 : EL NÚMERO DE UN PDF — MF.pdfAlta (hueco primero, si no contador + 1) · pdfBaja (solo sin citas) · pdfCitas · pdfNumero.)
@@ -2554,7 +2555,33 @@ async function _archivaViejas(hist){
     return p;
   }
 
+  /* ══ OBSOLETO (P-H, 10/11/2026 : « on marque obsolète dans le médicament, pas de poubelle et pas
+     d'affichage » ; 12/11/2026 : una sola regla, aquí) ══
+     La línea sigue en el .sf, pero los módulos que solo LEEN (« escribe »: false en su .js) reciben
+     el expediente sin ella : ninguno tiene que saberlo. Los que ESCRIBEN lo reciben entero — si
+     no, al guardar, las líneas obsoletas desaparecerían del .sf. */
+  function esObsoleto(m){
+    var s = String((m && (m.statut || m.estado)) || '').toLowerCase();
+    return s === 'obsoleto' || s === 'obsolete' || s === 'obsolète';
+  }
+  function soloLee(){ try{ return typeof SF_CONFIG !== 'undefined' && !!SF_CONFIG && SF_CONFIG.escribe === false; }catch(e){ return false; } }
+  var _VISTA = { de:null, n:-1, v:null };
+  function vista(d){
+    if(!d || !soloLee() || !Array.isArray(d.medicaments) || !d.medicaments.some(esObsoleto)) return d;
+    if(_VISTA.de === d && _VISTA.n === d.medicaments.length) return _VISTA.v;
+    var v = Object.assign({}, d);
+    v.medicaments = d.medicaments.filter(function(m){ return !esObsoleto(m); });
+    _VISTA = { de:d, n:d.medicaments.length, v:v };
+    return v;
+  }
+
   function arranca(opciones){
+    /* el expediente que recibe el módulo : sin los obsoletos si solo lee */
+    if(opciones && typeof opciones.alCargar === 'function' && !opciones._vista){
+      var _alc = opciones.alCargar;
+      opciones.alCargar = function(d, p){ return _alc(vista(d), p); };
+      opciones._vista = true;
+    }
     var p=params();
     avisaNavegador();
     /* la forme courte : ?paciente=APA0000_….mf — le dossier se déduit */
@@ -2901,7 +2928,7 @@ async function _archivaViejas(hist){
            registro:registro, declara:declara, retira:retira, avisoDe:avisoDe,
            ponFuente:ponFuente,
            aplicaIdioma:aplicaIdioma, idioma:idioma,
-           datos:function(){return datos;},
+           datos:function(){return vista(datos);}, esObsoleto:esObsoleto,
            pdfAlta:pdfAlta, pdfBaja:pdfBaja, pdfCitas:pdfCitas, pdfNumero:pdfNumero, pdfContador:function(p){ return pdfContador(p || _pdfTabla(datos)); }, matricula:function(){return matricula;},
            paciente:paciente, ponPaciente:ponPaciente, mesures:mesures, claves:claves,
            mesuresCanon:mesuresCanon, parametro:parametro, parametros:parametros,

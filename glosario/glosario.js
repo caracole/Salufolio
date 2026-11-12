@@ -1,7 +1,7 @@
 /* GLOSARIO — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "glosario",
-  "version": "2026.11.04-12:42:25",
+  "version": "2026.11.12-10:35:22",
   "programa": "glosario.html",
   "lanzador": "../casa/casa.js",
   "icono": "📖",

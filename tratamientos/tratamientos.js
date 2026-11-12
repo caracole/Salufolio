@@ -1,7 +1,7 @@
 /* MEDICAMENTOS — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "tratamientos",
-  "version": "2026.11.04-12:42:25",
+  "version": "2026.11.12-12:14:28",
   "programa": "tratamientos.html",
   "lanzador": "../casa/casa.js",
   "icono": "💊",

@@ -1,6 +1,6 @@
 {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.11.12-09:23:51",
+ "_ultima_pasada": "2026.11.12-12:15:28",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -183,11 +183,11 @@
   },
   "casa/casa.js": {
    "suma": "b399e64f2e90",
-   "version": "2026.11.11-21:07:03"
+   "version": "2026.11.12-11:45:03"
   },
   "casa/index.html": {
-   "suma": "c9b8188c51fb",
-   "version": "2026.11.11-21:07:03"
+   "suma": "21d842509aef",
+   "version": "2026.11.12-11:45:03"
   },
   "casa/novedades.js": {
    "suma": "67214ce90a41",
@@ -2686,16 +2686,16 @@
    "version": "2026.10.06-18:44:03"
   },
   "comun/glosario-datos.js": {
-   "suma": "c5e87c2b340a",
-   "version": "2026.09.19-18:15:47"
+   "suma": "e0d4659cd86b",
+   "version": "2026.11.12-10:35:22"
   },
   "comun/guarda-paciente.js": {
    "suma": "dddff99da17e",
    "version": "2026.09.23-18:05:54"
   },
   "comun/mf.js": {
-   "suma": "c7380884b889",
-   "version": "2026.11.11-11:39:07"
+   "suma": "2bc1431f03a4",
+   "version": "2026.11.12-10:43:30"
   },
   "comun/mf_save.js": {
    "suma": "b4d6ecaa1510",
@@ -3306,12 +3306,12 @@
    "version": "2026.11.04-12:42:25"
   },
   "glosario/glosario.html": {
-   "suma": "9ae679310032",
-   "version": "2026.10.07-09:09:13"
+   "suma": "ab06b6a23850",
+   "version": "2026.11.12-10:35:22"
   },
   "glosario/glosario.js": {
    "suma": "77dcbb139aa0",
-   "version": "2026.11.04-12:42:25"
+   "version": "2026.11.12-10:35:22"
   },
   "glosario/index.html": {
    "suma": "c9dde5f8b468",
@@ -3364,6 +3364,10 @@
   "herramientas/bancos/banco-informe-medicacion.js": {
    "suma": "e17065992b75",
    "version": "2026.09.29-16:08:54"
+  },
+  "herramientas/buscar.py": {
+   "suma": "7481cfc5b952",
+   "version": "2026.11.12-10:17:36"
   },
   "herramientas/buscar_correcto_pdf.py": {
    "suma": "934ddbe9bb56",
@@ -3940,16 +3944,16 @@
    "version": "2026.11.04-12:42:25"
   },
   "tratamientos/tratamientos.html": {
-   "suma": "7eb933dcb1d6",
-   "version": "2026.11.04-11:28:35"
+   "suma": "bd1889cf437e",
+   "version": "2026.11.12-12:14:28"
   },
   "tratamientos/tratamientos.idiomas.js": {
-   "suma": "12216c8c29a1",
-   "version": "2026.11.04-11:22:36"
+   "suma": "d013e4a03c7b",
+   "version": "2026.11.12-12:08:12"
   },
   "tratamientos/tratamientos.js": {
    "suma": "881bfebccf47",
-   "version": "2026.11.04-12:42:25"
+   "version": "2026.11.12-12:14:28"
   },
   "vascular/index.html": {
    "suma": "1fd75d6a2852",

@@ -1,5 +1,5 @@
 /* Los textos de Medicamentos
-   Versión 2026.11.04-11:22:36 */
+   Versión 2026.11.12-12:08:12 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Medicamentos, en su propia carpeta.",
   "textos": {
@@ -22,7 +22,19 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "documento_del": "Documento del",
       "doc_alta": "alta",
       "doc_informe": "informe",
-      "fecha_no_indicada": "fecha no indicada"
+      "fecha_no_indicada": "fecha no indicada",
+      "ded_titulo": "Prescriptores deducidos:",
+      "ded_marcada": "Cada deducción queda MARCADA — abre la ficha y pulsa Actualizar para confirmarla (o corrígela).",
+      "ded_ninguna": "Ninguna deducción posible : ningún profesional figura en los documentos de estos medicamentos.",
+      "ded_demo": "Expediente de demostración : los profesionales aparecen con sus iniciales.",
+      "ded_via_linea": "indicado en la línea",
+      "ded_via_doc": "documento",
+      "ded_via_fecha": "documento del",
+      "cerrar_btn": "Cerrar",
+      "ded_todos": "Todos los medicamentos tienen ya su prescriptor : no queda nada que deducir.",
+      "ded_pendientes": "{n} deducciones esperan todavía su confirmación (fichas en cursiva naranja).",
+      "represcrito": "Represcrito",
+      "represcrito_desde": "desde el"
     },
     "fr": {
       "activos": "Actifs",
@@ -43,7 +55,19 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "documento_del": "Document du",
       "doc_alta": "sortie",
       "doc_informe": "rapport",
-      "fecha_no_indicada": "date non indiquée"
+      "fecha_no_indicada": "date non indiquée",
+      "ded_titulo": "Prescripteurs déduits :",
+      "ded_marcada": "Chaque déduction reste MARQUÉE — ouvre la fiche et clique Actualizar pour la confirmer (ou la corriger).",
+      "ded_ninguna": "Aucune déduction possible : aucun professionnel n'est indiqué dans les documents de ces médicaments.",
+      "ded_demo": "Dossier de démonstration : les professionnels apparaissent sous leurs initiales.",
+      "ded_via_linea": "indiqué sur la ligne",
+      "ded_via_doc": "document",
+      "ded_via_fecha": "document du",
+      "cerrar_btn": "Fermer",
+      "ded_todos": "Tous les médicaments ont déjà leur prescripteur : il ne reste rien à déduire.",
+      "ded_pendientes": "{n} déductions attendent encore leur confirmation (fiches en italique orangé).",
+      "represcrito": "Represcrit",
+      "represcrito_desde": "depuis le"
     },
     "ca": {
       "activos": "Actius",
@@ -64,7 +88,19 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "documento_del": "Document del",
       "doc_alta": "alta",
       "doc_informe": "informe",
-      "fecha_no_indicada": "data no indicada"
+      "fecha_no_indicada": "data no indicada",
+      "ded_titulo": "Prescriptors deduïts:",
+      "ded_marcada": "Cada deducció queda MARCADA — obri la fitxa i prem Actualitzar per a confirmar-la (o corregir-la).",
+      "ded_ninguna": "Cap deducció possible: cap professional figura en els documents d'estos medicaments.",
+      "ded_demo": "Expedient de demostració: els professionals apareixen amb les seues inicials.",
+      "ded_via_linea": "indicat en la línia",
+      "ded_via_doc": "document",
+      "ded_via_fecha": "document del",
+      "cerrar_btn": "Tancar",
+      "ded_todos": "Tots els medicaments tenen ja el seu prescriptor: no queda res per deduir.",
+      "ded_pendientes": "{n} deduccions esperen encara la seua confirmació (fitxes en cursiva taronja).",
+      "represcrito": "Represcrit",
+      "represcrito_desde": "des del"
     },
     "en": {
       "activos": "Active",
@@ -85,7 +121,19 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "documento_del": "Document of",
       "doc_alta": "discharge",
       "doc_informe": "report",
-      "fecha_no_indicada": "date not given"
+      "fecha_no_indicada": "date not given",
+      "ded_titulo": "Prescribers deduced:",
+      "ded_marcada": "Each deduction stays MARKED — open the card and press Actualizar to confirm it (or correct it).",
+      "ded_ninguna": "No deduction possible: no professional is named in the documents of these medications.",
+      "ded_demo": "Demonstration record: professionals appear with their initials.",
+      "ded_via_linea": "given on the line",
+      "ded_via_doc": "document",
+      "ded_via_fecha": "document of",
+      "cerrar_btn": "Close",
+      "ded_todos": "All medications already have a prescriber: nothing left to deduce.",
+      "ded_pendientes": "{n} deductions are still awaiting confirmation (cards in orange italics).",
+      "represcrito": "Re-prescribed",
+      "represcrito_desde": "since"
     }
   }
 };

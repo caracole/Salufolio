@@ -70,7 +70,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    GLOSARIO — programa autónomo de Salufolio V2
-   Versión 2026.10.07-09:09:13
+   Versión 2026.11.12-10:35:22
 
    Las definiciones NO están aquí: viven en ../comun/glosario-datos.js,
    porque sirven a varios programas — Resumen, Curvas, Tabla las piden con
@@ -1263,10 +1263,13 @@ function renderGlosario() {
      diacritiques avant de comparer. */
   const sansAccents = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const q = buscarEl ? sansAccents(buscarEl.value.trim().toLowerCase()) : '';
+  /* P-H, 12/11/2026 : « acidosis respiratoria — pas trouvé » — la búsqueda mira también
+     la definición y el alto/bajo ; los que lo llevan en el NOMBRE o la SIGLA salen primero. */
   if (q) {
-    todos = todos.filter(x =>
-      sansAccents(x.p.nombre.toLowerCase()).includes(q) ||
-      sansAccents((x.p.sigla || '').toLowerCase()).includes(q));
+    const enNombre = x => sansAccents(x.p.nombre.toLowerCase()).includes(q) || sansAccents((x.p.sigla || '').toLowerCase()).includes(q);
+    const enTexto  = x => [x.p.que, x.p.bajo, x.p.alto].some(t => sansAccents((t || '').toLowerCase()).includes(q));
+    todos = todos.filter(x => enNombre(x) || enTexto(x))
+                 .sort((a, b) => (enNombre(b) ? 1 : 0) - (enNombre(a) ? 1 : 0));
   }
 
   if (!todos.length) {
@@ -1294,19 +1297,20 @@ function renderGlosario() {
     card.className = 'glos-card';
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:4px;margin-bottom:2px">
-        <div style="font-size:14px;font-weight:600;color:var(--text)">${p.nombre} <span style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-left:6px">${p.sigla}</span></div>
-        <div style="font-family:var(--mono);font-size:10px;color:var(--accent2)">Ref: ${p.ref} ${p.unidad}</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text)">${p.nombre} <span style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-left:6px">${p.sigla || ''}</span></div>
+        ${p.ref ? `<div style="font-family:var(--mono);font-size:10px;color:var(--accent2)">Ref: ${p.ref} ${p.unidad || ''}</div>` : ''}
       </div>
       <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:6px;opacity:0.7">${x.categoria}</div>
       <div style="font-size:13px;color:var(--muted);margin-bottom:8px">${p.que}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      ${(p.bajo || p.alto) ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
         <div style="background:var(--glos-bajo-bg);border-radius:4px;padding:var(--glos-pad);font-size:11px">
           <span style="color:var(--glos-bajo);font-weight:600">↓ Bajo:</span> <span style="color:var(--text)">${p.bajo}</span>
         </div>
         <div style="background:var(--glos-alto-bg);border-radius:4px;padding:var(--glos-pad);font-size:11px">
           <span style="color:var(--glos-alto);font-weight:600">↑ Alto:</span> <span style="color:var(--text)">${p.alto}</span>
         </div>
-      </div>`;
+      </div>` : ''}`;
+    /* un término sin valor (acidosis respiratoria…) : ni « Ref », ni casillas alto/bajo (P-H, 12/11/2026) */
     if (detalle) {
       const masInfo = document.createElement('div');
       masInfo.style.cssText = 'margin-top:8px';

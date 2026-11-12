@@ -17,7 +17,7 @@
  "data_type": "demo",
  "original_data_type": null,
  "date_anonymized": null,
- "exported": "2026-11-10T13:27:24.622Z",
+ "exported": "2026-11-12T11:07:23.367Z",
  "paciente": {
   "nombre": "DEMO",
   "apellidos": "SALU FOLIO",
@@ -97,6 +97,18 @@
    {
     "src": "S",
     "fecha": "2026-11-10-14:27:24"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-11-12-10:49:11"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-11-12-11:27:49"
+   },
+   {
+    "src": "S",
+    "fecha": "2026-11-12-12:07:23"
    }
   ],
   "actualizacion": [
@@ -6491,12 +6503,13 @@
    "cronico": false,
    "via": "oral",
    "desde": "",
-   "hasta": "2026-11-04",
+   "hasta": "2026-08-05",
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
    "estado": "abandonne",
-   "motif_suspension": "Decisión médica",
-   "estado_fecha": "2026-11-05"
+   "motif_suspension": "Efectos adversos cognitivos",
+   "estado_fecha": "2026-11-12",
+   "hasta_receta": "2026-11-04"
   },
   {
    "nombre": "RIVAROXABAN",
@@ -6509,7 +6522,9 @@
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
    "estado": "en_cours",
-   "estado_fecha": "2026-11-05"
+   "estado_fecha": "2026-11-05",
+   "prescriptor": "PR2",
+   "prescriptor_origen": "deducido"
   },
   {
    "nombre": "ATROVENT 20MCG/DOS 200 DOSIS 10ML SOLUCION INHALACION ENV A PRESION",
@@ -6521,7 +6536,9 @@
    "hasta": "2026-11-04",
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
-   "estado": "terminado"
+   "estado": "terminado",
+   "prescriptor": "PR2",
+   "prescriptor_origen": "deducido"
   },
   {
    "nombre": "FUROSEMIDA",
@@ -6533,7 +6550,9 @@
    "hasta": "2026-11-04",
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
-   "estado": "terminado"
+   "estado": "terminado",
+   "prescriptor": "PR2",
+   "prescriptor_origen": "deducido"
   },
   {
    "nombre": "OCD (Oxigenoterapia crónica domiciliaria)",
@@ -6738,8 +6757,8 @@
    "hasta": "2022-01-16",
    "pdf_id": "PDF010",
    "prc_id": "PRC002",
-   "estado": "suspendu",
-   "estado_fecha": "2026-11-05",
+   "estado": "abandonne",
+   "estado_fecha": "2026-11-12",
    "hasta_receta": "2026-11-04",
    "motif_suspension": "Hemorragia / sangrado"
   },
@@ -6857,9 +6876,12 @@
    "cronico": false,
    "via": "",
    "desde": "",
-   "hasta": "",
+   "hasta": "2021-10-12",
    "pdf_id": "PDF011",
-   "prc_id": "PRC010"
+   "prc_id": "PRC010",
+   "estado": "suspendu",
+   "estado_fecha": "2026-11-12",
+   "motif_suspension": "Mejoría clínica"
   },
   {
    "nombre": "seguril",
@@ -6892,9 +6914,12 @@
    "cronico": false,
    "via": "",
    "desde": "",
-   "hasta": "",
+   "hasta": "2021-10-12",
    "pdf_id": "PDF012",
-   "prc_id": "PRC010"
+   "prc_id": "PRC010",
+   "estado": "suspendu",
+   "estado_fecha": "2026-11-12",
+   "motif_suspension": "Mejoría clínica"
   },
   {
    "nombre": "Pañal",
@@ -6949,12 +6974,13 @@
    "cronico": false,
    "via": "oral (sol gotas)",
    "desde": "",
-   "hasta": "2026-11-04",
+   "hasta": "2026-08-05",
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
    "estado": "abandonne",
-   "motif_suspension": "Decisión médica",
-   "estado_fecha": "2026-11-05"
+   "motif_suspension": "Efectos adversos cognitivos",
+   "estado_fecha": "2026-11-12",
+   "hasta_receta": "2026-11-04"
   },
   {
    "nombre": "RIVAROXABAN",
@@ -6979,7 +7005,9 @@
    "hasta": "2026-11-04",
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
-   "estado": "terminado"
+   "estado": "terminado",
+   "prescriptor": "PR2",
+   "prescriptor_origen": "deducido"
   },
   {
    "nombre": "FUROSEMIDA",
@@ -6991,7 +7019,9 @@
    "hasta": "2026-11-04",
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
-   "estado": "terminado"
+   "estado": "terminado",
+   "prescriptor": "PR2",
+   "prescriptor_origen": "deducido"
   },
   {
    "nombre": "hidrocortisona combiprasal",
@@ -7685,15 +7715,16 @@
    "cronico": false,
    "via": "oral",
    "desde": "",
-   "hasta": "2026-11-05",
+   "hasta": "2026-08-05",
    "pdf_id": "PDF004",
    "prc_id": "PRC004",
    "principio_activo": "HALOPERIDOL",
    "atc": "N05AD01",
    "categoria": "medicamento",
    "estado": "abandonne",
-   "estado_fecha": "2026-11-05",
-   "motif_suspension": "Decisión médica"
+   "estado_fecha": "2026-11-12",
+   "motif_suspension": "Efectos adversos cognitivos",
+   "hasta_receta": "2026-11-05"
   },
   {
    "nombre": "Acetilcisteina 600mg",
@@ -7702,15 +7733,16 @@
    "cronico": false,
    "via": "oral",
    "desde": "",
-   "hasta": "2026-11-05",
+   "hasta": "2026-01-26",
    "pdf_id": "PDF004",
    "prc_id": "PRC004",
    "principio_activo": "ACETILCISTEINA",
    "atc": "R05CB01",
    "categoria": "medicamento",
-   "estado": "abandonne",
-   "estado_fecha": "2026-11-05",
-   "motif_suspension": "Decisión del paciente"
+   "estado": "terminado",
+   "estado_fecha": "2026-11-12",
+   "motif_suspension": "Decisión del paciente",
+   "hasta_receta": "2026-11-05"
   },
   {
    "nombre": "Cefuroxima 500mg",
@@ -7800,15 +7832,16 @@
    "cronico": false,
    "via": "oral",
    "desde": "",
-   "hasta": "2026-11-05",
+   "hasta": "2026-08-05",
    "pdf_id": "PDF002",
    "prc_id": "PRC002",
    "principio_activo": "HALOPERIDOL",
    "atc": "N05AD01",
    "categoria": "medicamento",
    "estado": "abandonne",
-   "estado_fecha": "2026-11-05",
-   "motif_suspension": "Decisión médica"
+   "estado_fecha": "2026-11-12",
+   "motif_suspension": "Efectos adversos cognitivos",
+   "hasta_receta": "2026-11-05"
   },
   {
    "nombre": "Voltadol 11,/g gel 60g",
@@ -7921,7 +7954,9 @@
    "prc_id": "PRC025",
    "principio_activo": "DONEPEZILO",
    "atc": "N06DA02",
-   "categoria": "medicamento"
+   "categoria": "medicamento",
+   "prescriptor": "PR3",
+   "prescriptor_origen": "deducido"
   },
   {
    "nombre": "XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA (BAYER)",
@@ -7934,7 +7969,9 @@
    "prc_id": "PRC025",
    "principio_activo": "RIVAROXABAN",
    "atc": "B01AF01",
-   "categoria": "medicamento"
+   "categoria": "medicamento",
+   "prescriptor": "PR3",
+   "prescriptor_origen": "deducido"
   },
   {
    "nombre": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT",
@@ -7945,7 +7982,9 @@
    "hasta": "2027-01-21",
    "pdf_id": "PDF035",
    "prc_id": "PRC025",
-   "categoria": "parafarmacia"
+   "categoria": "parafarmacia",
+   "prescriptor": "PR3",
+   "prescriptor_origen": "deducido"
   },
   {
    "nombre": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT",
@@ -7956,7 +7995,9 @@
    "hasta": "2027-08-11",
    "pdf_id": "PDF035",
    "prc_id": "PRC025",
-   "categoria": "parafarmacia"
+   "categoria": "parafarmacia",
+   "prescriptor": "PR3",
+   "prescriptor_origen": "deducido"
   }
  ],
  "antecedentes": [],
@@ -7974,7 +8015,9 @@
  "servicios": [],
  "centros": [],
  "prescriptores": {
-  "PR1": "médico de centro de salud"
+  "PR1": "médico de centro de salud",
+  "PR2": "R. Q. R.",
+  "PR3": "H. L. S. S."
  },
  "referencias": {
   "centros": {

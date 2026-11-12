@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.09.19-18:15:47
+   Versión 2026.11.12-10:35:22
    EL GLOSARIO — las definiciones, comunes a todos los programas.
 
    Extraido de la V1 (modules/glosario-js.js). Vive en comun/ porque
@@ -7,6 +7,10 @@
    MF.glosario('hemoglobina', fn) sin cargar las trescientas entradas.
 
    Un .js, no un .json: asi funciona tambien sin servidor.
+
+   12/11/2026 (P-H) : dos categorías nuevas — gases en sangre (pH, pCO₂, pO₂,
+   saturación ; el bicarbonato ya estaba en Electrolitos) y términos respiratorios
+   (acidosis respiratoria…), sin referencia ni alto/bajo : el glosario los enseña sin esas casillas.
    ══════════════════════════════════════════════════════════════════════ */
 var SF_GLOSARIO = window.SF_GLOSARIO = {
  "es": {
@@ -605,6 +609,127 @@ var SF_GLOSARIO = window.SF_GLOSARIO = {
       "alto": "Sugiere diabetes mal controlada — la glucosa en sangre supera la capacidad de reabsorción renal.",
       "unidad": "",
       "ref": "Negativo"
+     }
+    ]
+   },
+   {
+    "nombre": "🫁 Gases en sangre",
+    "params": [
+     {
+      "nombre": "pH sanguíneo",
+      "sigla": "pH",
+      "que": "Mide si la sangre está ácida o alcalina. El cuerpo lo mantiene en un margen muy estrecho.",
+      "bajo": "Acidosis: la sangre está demasiado ácida (respiratoria si sube el CO₂, metabólica si baja el bicarbonato).",
+      "alto": "Alcalosis: la sangre está demasiado alcalina, por ejemplo al respirar demasiado deprisa o tras vómitos.",
+      "unidad": "",
+      "ref": "7,35–7,45"
+     },
+     {
+      "nombre": "Presión de CO₂",
+      "sigla": "pCO₂",
+      "que": "El dióxido de carbono disuelto en la sangre: el gas que los pulmones deben expulsar.",
+      "bajo": "Hipocapnia: se respira demasiado (ansiedad, dolor, fiebre); puede dar alcalosis respiratoria.",
+      "alto": "Hipercapnia: los pulmones no eliminan bastante CO₂ (agotamiento, EPOC, sedación); da acidosis respiratoria.",
+      "unidad": "mmHg",
+      "ref": "35–45"
+     },
+     {
+      "nombre": "Presión de O₂",
+      "sigla": "pO₂",
+      "que": "El oxígeno disuelto en la sangre arterial: lo que los pulmones han conseguido captar.",
+      "bajo": "Hipoxemia: falta oxígeno en la sangre (neumonía, EPOC, embolia pulmonar, insuficiencia cardíaca).",
+      "alto": "Suele deberse a oxígeno administrado; no tiene interés por sí mismo.",
+      "unidad": "mmHg",
+      "ref": "80–100 (arterial)"
+     },
+     {
+      "nombre": "Saturación de oxígeno",
+      "sigla": "SatO₂ / SpO₂",
+      "que": "El porcentaje de hemoglobina cargada de oxígeno. SpO₂ es la del pulsioxímetro del dedo; SatO₂ la medida en la gasometría.",
+      "bajo": "Por debajo de 92 %: falta de oxígeno; por debajo de 90 % hay que consultar.",
+      "alto": "No hay valor alto preocupante.",
+      "unidad": "%",
+      "ref": "95–100"
+     }
+    ]
+   },
+   {
+    "nombre": "🫁 Términos respiratorios",
+    "params": [
+     {
+      "nombre": "Gasometría arterial",
+      "sigla": "GSA",
+      "que": "Análisis de una gota de sangre de una arteria (normalmente la muñeca) que mide el pH, el oxígeno, el CO₂ y el bicarbonato. Se hace en el momento, sin pasar por el laboratorio; el resultado depende del oxígeno que se respira en ese momento (FiO₂)."
+     },
+     {
+      "nombre": "Acidosis respiratoria",
+      "sigla": "",
+      "que": "La sangre se vuelve demasiado ácida (pH por debajo de 7,35) porque los pulmones no eliminan bastante CO₂, que se acumula (pCO₂ por encima de 45 mmHg). Aguda: se instala en horas o días, por ejemplo en una bronquitis con agotamiento. Crónica: los riñones la compensan subiendo el bicarbonato."
+     },
+     {
+      "nombre": "Alcalosis respiratoria",
+      "sigla": "",
+      "que": "La sangre se vuelve demasiado alcalina (pH por encima de 7,45) porque se respira demasiado deprisa y se expulsa demasiado CO₂ (pCO₂ por debajo de 35 mmHg): ansiedad, dolor, fiebre, falta de oxígeno."
+     },
+     {
+      "nombre": "Acidosis metabólica",
+      "sigla": "",
+      "que": "La sangre se vuelve demasiado ácida por un exceso de ácidos o una pérdida de bicarbonato (bicarbonato bajo): enfermedad renal, diabetes descompensada, diarrea intensa, infección grave."
+     },
+     {
+      "nombre": "Alcalosis metabólica",
+      "sigla": "",
+      "que": "La sangre se vuelve demasiado alcalina por un exceso de bicarbonato o una pérdida de ácido: vómitos repetidos, algunos diuréticos."
+     },
+     {
+      "nombre": "Hipercapnia",
+      "sigla": "",
+      "que": "Exceso de CO₂ en la sangre (pCO₂ por encima de 45 mmHg): los pulmones no ventilan lo suficiente. Puede dar somnolencia, dolor de cabeza y confusión."
+     },
+     {
+      "nombre": "Hipoxemia",
+      "sigla": "",
+      "que": "Falta de oxígeno en la sangre (pO₂ por debajo de 80 mmHg o saturación por debajo de 92-95 %). Da cansancio, ahogo y, si es intensa, confusión o labios morados."
+     },
+     {
+      "nombre": "Insuficiencia respiratoria",
+      "sigla": "IR",
+      "que": "Los pulmones no consiguen oxigenar la sangre (pO₂ por debajo de 60 mmHg) o eliminar el CO₂ (pCO₂ por encima de 45-50). Aguda: aparece en horas o días y suele requerir hospital. Crónica: se instala con los años, por ejemplo en la EPOC, y a veces necesita oxígeno en casa."
+     },
+     {
+      "nombre": "Disnea",
+      "sigla": "",
+      "que": "Sensación de falta de aire o de respirar con esfuerzo."
+     },
+     {
+      "nombre": "Taquipnea",
+      "sigla": "",
+      "que": "Respiración demasiado rápida: más de 20 respiraciones por minuto en reposo en el adulto."
+     },
+     {
+      "nombre": "Broncoespasmo",
+      "sigla": "",
+      "que": "Estrechamiento brusco de los bronquios que dificulta la salida del aire; produce pitos (sibilancias) y ahogo. Se trata con broncodilatadores."
+     },
+     {
+      "nombre": "Bronquitis aguda",
+      "sigla": "",
+      "que": "Inflamación de los bronquios, casi siempre por una infección, con tos y a veces flemas y ahogo. En una persona mayor o con los pulmones frágiles puede descompensar la respiración."
+     },
+     {
+      "nombre": "EPOC",
+      "sigla": "EPOC",
+      "que": "Enfermedad pulmonar obstructiva crónica: los bronquios y los pulmones se dañan con los años y el aire sale con dificultad. Se mide con la espirometría (FEV1)."
+     },
+     {
+      "nombre": "Neumonía",
+      "sigla": "",
+      "que": "Infección del pulmón mismo (no solo de los bronquios), con fiebre, tos, ahogo y a veces dolor al respirar. Se confirma con una radiografía."
+     },
+     {
+      "nombre": "Tromboembolismo pulmonar",
+      "sigla": "TEP",
+      "que": "Un coágulo, casi siempre venido de las venas de las piernas, tapa una arteria del pulmón. Da ahogo brusco y a veces dolor en el pecho. Se trata con anticoagulantes; el dímero D sirve para sospecharlo."
      }
     ]
    }
@@ -1208,6 +1333,127 @@ var SF_GLOSARIO = window.SF_GLOSARIO = {
       "ref": "Négatif"
      }
     ]
+   },
+   {
+    "nombre": "🫁 Gaz du sang",
+    "params": [
+     {
+      "nombre": "pH sanguin",
+      "sigla": "pH",
+      "que": "Indique si le sang est acide ou alcalin. Le corps le maintient dans une marge très étroite.",
+      "bajo": "Acidose : le sang est trop acide (respiratoire si le CO₂ monte, métabolique si le bicarbonate baisse).",
+      "alto": "Alcalose : le sang est trop alcalin, par exemple quand on respire trop vite ou après des vomissements.",
+      "unidad": "",
+      "ref": "7,35–7,45"
+     },
+     {
+      "nombre": "Pression de CO₂",
+      "sigla": "pCO₂",
+      "que": "Le dioxyde de carbone dissous dans le sang : le gaz que les poumons doivent rejeter.",
+      "bajo": "Hypocapnie : on respire trop (anxiété, douleur, fièvre) ; peut donner une alcalose respiratoire.",
+      "alto": "Hypercapnie : les poumons n'éliminent pas assez de CO₂ (épuisement, BPCO, sédation) ; donne une acidose respiratoire.",
+      "unidad": "mmHg",
+      "ref": "35–45"
+     },
+     {
+      "nombre": "Pression d'O₂",
+      "sigla": "pO₂",
+      "que": "L'oxygène dissous dans le sang artériel : ce que les poumons ont réussi à capter.",
+      "bajo": "Hypoxémie : le sang manque d'oxygène (pneumonie, BPCO, embolie pulmonaire, insuffisance cardiaque).",
+      "alto": "Dû en général à l'oxygène administré ; sans intérêt en soi.",
+      "unidad": "mmHg",
+      "ref": "80–100 (artériel)"
+     },
+     {
+      "nombre": "Saturation en oxygène",
+      "sigla": "SatO₂ / SpO₂",
+      "que": "Le pourcentage d'hémoglobine chargée d'oxygène. SpO₂ est celle de l'oxymètre au doigt ; SatO₂ celle mesurée sur la gazométrie.",
+      "bajo": "Sous 92 % : manque d'oxygène ; sous 90 %, il faut consulter.",
+      "alto": "Pas de valeur haute inquiétante.",
+      "unidad": "%",
+      "ref": "95–100"
+     }
+    ]
+   },
+   {
+    "nombre": "🫁 Termes respiratoires",
+    "params": [
+     {
+      "nombre": "Gazométrie artérielle",
+      "sigla": "GDS",
+      "que": "Analyse d'une goutte de sang d'une artère (en général au poignet) qui mesure le pH, l'oxygène, le CO₂ et le bicarbonate. Elle se fait sur place, sans passer par le laboratoire ; le résultat dépend de l'oxygène respiré à ce moment-là (FiO₂)."
+     },
+     {
+      "nombre": "Acidose respiratoire",
+      "sigla": "",
+      "que": "Le sang devient trop acide (pH sous 7,35) parce que les poumons n'évacuent pas assez de CO₂, qui s'accumule (pCO₂ au-dessus de 45 mmHg). Aiguë : elle s'installe en quelques heures ou jours, par exemple lors d'une bronchite avec épuisement. Chronique : les reins la compensent en augmentant le bicarbonate."
+     },
+     {
+      "nombre": "Alcalose respiratoire",
+      "sigla": "",
+      "que": "Le sang devient trop alcalin (pH au-dessus de 7,45) parce qu'on respire trop vite et qu'on rejette trop de CO₂ (pCO₂ sous 35 mmHg) : anxiété, douleur, fièvre, manque d'oxygène."
+     },
+     {
+      "nombre": "Acidose métabolique",
+      "sigla": "",
+      "que": "Le sang devient trop acide par excès d'acides ou perte de bicarbonate (bicarbonate bas) : maladie rénale, diabète déséquilibré, diarrhée importante, infection grave."
+     },
+     {
+      "nombre": "Alcalose métabolique",
+      "sigla": "",
+      "que": "Le sang devient trop alcalin par excès de bicarbonate ou perte d'acide : vomissements répétés, certains diurétiques."
+     },
+     {
+      "nombre": "Hypercapnie",
+      "sigla": "",
+      "que": "Excès de CO₂ dans le sang (pCO₂ au-dessus de 45 mmHg) : les poumons ne ventilent pas assez. Peut donner somnolence, maux de tête et confusion."
+     },
+     {
+      "nombre": "Hypoxémie",
+      "sigla": "",
+      "que": "Manque d'oxygène dans le sang (pO₂ sous 80 mmHg ou saturation sous 92-95 %). Donne fatigue, essoufflement et, si elle est forte, confusion ou lèvres bleues."
+     },
+     {
+      "nombre": "Insuffisance respiratoire",
+      "sigla": "IR",
+      "que": "Les poumons n'arrivent plus à oxygéner le sang (pO₂ sous 60 mmHg) ou à éliminer le CO₂ (pCO₂ au-dessus de 45-50). Aiguë : elle apparaît en heures ou jours et demande souvent l'hôpital. Chronique : elle s'installe avec les années, par exemple dans la BPCO, et demande parfois de l'oxygène à domicile."
+     },
+     {
+      "nombre": "Dyspnée",
+      "sigla": "",
+      "que": "Sensation de manquer d'air ou de respirer avec effort."
+     },
+     {
+      "nombre": "Tachypnée",
+      "sigla": "",
+      "que": "Respiration trop rapide : plus de 20 respirations par minute au repos chez l'adulte."
+     },
+     {
+      "nombre": "Bronchospasme",
+      "sigla": "",
+      "que": "Rétrécissement brusque des bronches qui gêne la sortie de l'air ; il donne des sifflements et un essoufflement. Il se traite par des bronchodilatateurs."
+     },
+     {
+      "nombre": "Bronchite aiguë",
+      "sigla": "",
+      "que": "Inflammation des bronches, presque toujours due à une infection, avec toux, parfois crachats et essoufflement. Chez une personne âgée ou aux poumons fragiles, elle peut déséquilibrer la respiration."
+     },
+     {
+      "nombre": "BPCO",
+      "sigla": "EPOC",
+      "que": "Bronchopneumopathie chronique obstructive : bronches et poumons s'abîment avec les années et l'air sort difficilement. Elle se mesure par la spirométrie (VEMS / FEV1)."
+     },
+     {
+      "nombre": "Pneumonie",
+      "sigla": "",
+      "que": "Infection du poumon lui-même (pas seulement des bronches), avec fièvre, toux, essoufflement et parfois douleur en respirant. Elle se confirme par une radiographie."
+     },
+     {
+      "nombre": "Embolie pulmonaire",
+      "sigla": "TEP",
+      "que": "Un caillot, venu presque toujours des veines des jambes, bouche une artère du poumon. Il donne un essoufflement brutal et parfois une douleur thoracique. Il se traite par anticoagulants ; les D-dimères servent à la soupçonner."
+     }
+    ]
    }
   ]
  },
@@ -1807,6 +2053,127 @@ var SF_GLOSARIO = window.SF_GLOSARIO = {
       "alto": "Suggests poorly controlled diabetes — blood glucose exceeds kidney reabsorption capacity.",
       "unidad": "",
       "ref": "Negative"
+     }
+    ]
+   },
+   {
+    "nombre": "🫁 Blood gases",
+    "params": [
+     {
+      "nombre": "Blood pH",
+      "sigla": "pH",
+      "que": "Shows whether the blood is acidic or alkaline. The body keeps it within a very narrow range.",
+      "bajo": "Acidosis: the blood is too acidic (respiratory if CO₂ rises, metabolic if bicarbonate falls).",
+      "alto": "Alkalosis: the blood is too alkaline, for example when breathing too fast or after vomiting.",
+      "unidad": "",
+      "ref": "7.35–7.45"
+     },
+     {
+      "nombre": "CO₂ pressure",
+      "sigla": "pCO₂",
+      "que": "Carbon dioxide dissolved in the blood: the gas the lungs must breathe out.",
+      "bajo": "Hypocapnia: breathing too much (anxiety, pain, fever); may cause respiratory alkalosis.",
+      "alto": "Hypercapnia: the lungs do not remove enough CO₂ (exhaustion, COPD, sedation); causes respiratory acidosis.",
+      "unidad": "mmHg",
+      "ref": "35–45"
+     },
+     {
+      "nombre": "O₂ pressure",
+      "sigla": "pO₂",
+      "que": "Oxygen dissolved in arterial blood: what the lungs have managed to take in.",
+      "bajo": "Hypoxaemia: the blood lacks oxygen (pneumonia, COPD, pulmonary embolism, heart failure).",
+      "alto": "Usually due to oxygen therapy; of no interest in itself.",
+      "unidad": "mmHg",
+      "ref": "80–100 (arterial)"
+     },
+     {
+      "nombre": "Oxygen saturation",
+      "sigla": "SatO₂ / SpO₂",
+      "que": "The percentage of haemoglobin carrying oxygen. SpO₂ comes from the finger pulse oximeter; SatO₂ from the blood gas test.",
+      "bajo": "Below 92 %: lack of oxygen; below 90 %, seek medical advice.",
+      "alto": "No worrying high value.",
+      "unidad": "%",
+      "ref": "95–100"
+     }
+    ]
+   },
+   {
+    "nombre": "🫁 Respiratory terms",
+    "params": [
+     {
+      "nombre": "Arterial blood gas",
+      "sigla": "ABG",
+      "que": "Test on a drop of blood from an artery (usually at the wrist) measuring pH, oxygen, CO₂ and bicarbonate. It is done on the spot, not in the laboratory; the result depends on the oxygen being breathed at the time (FiO₂)."
+     },
+     {
+      "nombre": "Respiratory acidosis",
+      "sigla": "",
+      "que": "The blood becomes too acidic (pH below 7.35) because the lungs do not remove enough CO₂, which builds up (pCO₂ above 45 mmHg). Acute: it develops over hours or days, for example in bronchitis with exhaustion. Chronic: the kidneys compensate by raising bicarbonate."
+     },
+     {
+      "nombre": "Respiratory alkalosis",
+      "sigla": "",
+      "que": "The blood becomes too alkaline (pH above 7.45) because breathing is too fast and too much CO₂ is breathed out (pCO₂ below 35 mmHg): anxiety, pain, fever, lack of oxygen."
+     },
+     {
+      "nombre": "Metabolic acidosis",
+      "sigla": "",
+      "que": "The blood becomes too acidic from excess acids or loss of bicarbonate (low bicarbonate): kidney disease, uncontrolled diabetes, severe diarrhoea, serious infection."
+     },
+     {
+      "nombre": "Metabolic alkalosis",
+      "sigla": "",
+      "que": "The blood becomes too alkaline from excess bicarbonate or loss of acid: repeated vomiting, some diuretics."
+     },
+     {
+      "nombre": "Hypercapnia",
+      "sigla": "",
+      "que": "Too much CO₂ in the blood (pCO₂ above 45 mmHg): the lungs are not ventilating enough. It may cause drowsiness, headache and confusion."
+     },
+     {
+      "nombre": "Hypoxaemia",
+      "sigla": "",
+      "que": "Lack of oxygen in the blood (pO₂ below 80 mmHg or saturation below 92-95 %). It causes tiredness, breathlessness and, if severe, confusion or blue lips."
+     },
+     {
+      "nombre": "Respiratory failure",
+      "sigla": "RF",
+      "que": "The lungs can no longer oxygenate the blood (pO₂ below 60 mmHg) or remove CO₂ (pCO₂ above 45-50). Acute: it appears over hours or days and often needs hospital care. Chronic: it develops over years, for example in COPD, and sometimes requires home oxygen."
+     },
+     {
+      "nombre": "Dyspnoea",
+      "sigla": "",
+      "que": "Feeling of shortness of breath or of breathing with effort."
+     },
+     {
+      "nombre": "Tachypnoea",
+      "sigla": "",
+      "que": "Breathing too fast: more than 20 breaths per minute at rest in an adult."
+     },
+     {
+      "nombre": "Bronchospasm",
+      "sigla": "",
+      "que": "Sudden narrowing of the airways that makes breathing out difficult; it causes wheezing and breathlessness. It is treated with bronchodilators."
+     },
+     {
+      "nombre": "Acute bronchitis",
+      "sigla": "",
+      "que": "Inflammation of the airways, almost always from an infection, with cough, sometimes phlegm and breathlessness. In an elderly person or with fragile lungs it can upset breathing."
+     },
+     {
+      "nombre": "COPD",
+      "sigla": "EPOC",
+      "que": "Chronic obstructive pulmonary disease: the airways and lungs are damaged over the years and air comes out with difficulty. It is measured by spirometry (FEV1)."
+     },
+     {
+      "nombre": "Pneumonia",
+      "sigla": "",
+      "que": "Infection of the lung itself (not just the airways), with fever, cough, breathlessness and sometimes pain when breathing. It is confirmed by an X-ray."
+     },
+     {
+      "nombre": "Pulmonary embolism",
+      "sigla": "PE",
+      "que": "A clot, almost always from the leg veins, blocks an artery in the lung. It causes sudden breathlessness and sometimes chest pain. It is treated with anticoagulants; D-dimer helps to suspect it."
      }
     ]
    }

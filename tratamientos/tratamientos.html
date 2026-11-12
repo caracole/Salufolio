@@ -53,7 +53,10 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
       <option value="a_demanda">💊 Si necesario</option>
       <option value="suspendu">⏸️ Suspendido</option>
       <option value="abandonne">🔴 Abandonado</option>
+      <option value="no_administrado">⚪ No administrado</option>
       <option value="terminado">✅ Terminado</option>
+      <option value="obsoleto">📦 Obsoleto</option>
+      <option value="@otros" style="display:none">❔ Otros</option>
     </select>
   </div>
   <div id="meds-periodo"></div>
@@ -73,7 +76,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    MEDICAMENTOS — programa autónomo de Salufolio V2
-   Versión 2026.11.04-11:28:35
+   Versión 2026.11.12-12:14:28
 
    Extraído de la V1: medications-js.js (38 funciones — la lista, la ficha,
    los prescriptores, las recetas), medications-html.html, y sus
@@ -1174,16 +1177,18 @@ function updateMedFilterCounts() {
   var container = document.getElementById('meds-content');
   if (!container) return;
   var cards = container.querySelectorAll('[id^="med-card-"]');
-  var counts = { '': 0, 'en_cours': 0, 'nouveau': 0, 'a_demanda': 0, 'suspendu': 0, 'abandonne': 0, 'terminado': 0 };
+  /* P-H, 12/11/2026 : « Todos (28) mais le total fait 25 » — No administrado manquait ; un estado
+     desconocido cae en « Otros », que solo aparece si hay alguno : el total cuadra siempre. */
+  var counts = { '': 0, 'en_cours': 0, 'nouveau': 0, 'a_demanda': 0, 'suspendu': 0, 'abandonne': 0, 'no_administrado': 0, 'terminado': 0, 'obsoleto': 0, '@otros': 0 };
   cards.forEach(function(card) {
     var s = card.getAttribute('data-statut') || '';
-    counts['']++;
-    if (counts[s] !== undefined) counts[s]++;
+    if (s !== 'obsoleto') counts['']++;          /* « Todos » no cuenta los obsoletos (P-H, 12/11/2026) */
+    if (counts[s] !== undefined && s !== '') counts[s]++; else counts['@otros']++;
   });
   var labels = {
     '': 'Todos', 'en_cours': '🟢 En curso', 'nouveau': '🆕 Nuevo',
     'a_demanda': '💊 Si necesario', 'suspendu': '⏸️ Suspendido',
-    'abandonne': '🔴 Abandonado', 'terminado': '✅ Terminado'
+    'abandonne': '🔴 Abandonado', 'no_administrado': '⚪ No administrado', 'terminado': '✅ Terminado', 'obsoleto': '📦 Obsoleto', '@otros': '❔ Otros'
   };
   ['meds-filter', 'meds-filter-fixed'].forEach(function(id) {
     var sel = document.getElementById(id);
@@ -1192,6 +1197,7 @@ function updateMedFilterCounts() {
       var v = opt.value;
       var n = counts[v] !== undefined ? counts[v] : 0;
       opt.textContent = labels[v] + ' (' + n + ')';
+      if (v === '@otros') opt.style.display = n ? '' : 'none';
     });
   });
 }
@@ -1278,6 +1284,7 @@ function quickMedAction(medName, anchor) {
     { statut:'no_administrado', icon:'⚪', label:'No administrado',     razon:true  },
     { statut:'en_cours',        icon:'🟢', label:'Reactivar (En curso)',razon:false },
     { statut:'nouveau',         icon:'🆕', label:'Marcar como Nuevo',   razon:false },
+    { statut:'obsoleto',        icon:'📦', label:'Obsoleto (ya no se muestra)', razon:false },
   ];
 
   actions.forEach(function(a) {
@@ -1326,6 +1333,7 @@ function quickMedActionForEntry(entry, anchor) {
     { statut:'abandonne',       icon:'🔴', label:'Abandonado (esta fecha)',      razon:true  },
     { statut:'no_administrado', icon:'⚪', label:'No administrado (esta fecha)', razon:true  },
     { statut:'en_cours',        icon:'🟢', label:'Reactivar (esta fecha)',       razon:false },
+    { statut:'obsoleto',        icon:'📦', label:'Obsoleto (esta fecha)',        razon:false },
   ];
   actions.forEach(function(a) {
     var item = document.createElement('div');
@@ -1713,7 +1721,8 @@ function buildMedicamentos() {
     no_administrado:  { bg: 'rgba(120,120,120,0.12)', border: '#9ca3af',       icon: '⚪', label: 'No administrado' },
     suspendu:         { bg: 'rgba(232,164,74,0.12)', border: 'var(--warn)',    icon: '⏸️', label: 'Suspendido' },
     abandonne:        { bg: 'rgba(232,74,74,0.12)',  border: 'var(--danger)',  icon: '🔴', label: 'Abandonado' },
-    terminado:        { bg: 'rgba(150,150,150,0.12)', border: 'var(--muted)',  icon: '✅', label: 'Terminado' }
+    terminado:        { bg: 'rgba(150,150,150,0.12)', border: 'var(--muted)',  icon: '✅', label: 'Terminado' },
+    obsoleto:         { bg: 'rgba(150,150,150,0.06)', border: 'var(--border)', icon: '📦', label: 'Obsoleto' }
   };
 
   keys.forEach(key => {
@@ -1752,6 +1761,19 @@ function buildMedicamentos() {
     const nameDiv = document.createElement('div');
     nameDiv.style.cssText = 'flex:1;text-align:center;font-family:var(--mono);font-weight:700;font-size:17px;color:var(--text);padding:0 10px';
     nameDiv.textContent = name;
+    /* ↻ REPRESCRITO (P-H, 12/11/2026 : « Represcrit me va bien ») : una línea nueva tras una línea
+       obsoleta — el medicamento se había dejado (devuelto a la farmacia…) y se ha vuelto a recetar. */
+    (function(){
+      var iObs = -1;
+      entries.forEach(function(e, i){ if (String(e.statut || e.estado || '').toLowerCase() === 'obsoleto') iObs = i; });
+      var tras = iObs >= 0 ? entries.slice(iObs + 1).filter(function(e){ return String(e.statut || e.estado || '').toLowerCase() !== 'obsoleto'; }) : [];
+      if (!tras.length) return;
+      var f = tras[0].date_debut || tras[0].desde || tras[0].date || '';
+      var b = document.createElement('div');
+      b.style.cssText = 'margin-top:4px;font-size:11px;font-weight:600;color:var(--accent)';
+      b.textContent = '↻ ' + txtMed('represcrito') + (f ? ' · ' + txtMed('represcrito_desde') + ' ' + fmtDate(f) : '');
+      nameDiv.appendChild(b);
+    })();
     statusBand.appendChild(nameDiv);
 
     /* Bouton action rapide ⚡ */
@@ -1877,6 +1899,7 @@ function medNavTop() {
   }
 }
 
+var MED_ESTADOS_CONOCIDOS = ['en_cours', 'nouveau', 'a_demanda', 'suspendu', 'abandonne', 'no_administrado', 'terminado', 'obsoleto'];
 /* Filtrer les cartes par statut */
 function medFilterStatus(statut) {
   var container = document.getElementById('meds-content');
@@ -1890,9 +1913,12 @@ function medFilterStatus(statut) {
   if (filterMain) filterMain.value = statut;
   if (filterFixed) filterFixed.value = statut;
 
+  /* OBSOLETO (P-H, 10-12/11/2026) : fuera de la vista, salvo si se elige « 📦 Obsoleto » en el filtro —
+     el único sitio de toda la casa donde se ven, para poder corregir un error. */
   cards.forEach(function(card) {
-    if (!statut) { card.style.display = ''; return; }
     var cardStatut = card.getAttribute('data-statut') || '';
+    if (!statut) { card.style.display = (cardStatut === 'obsoleto') ? 'none' : ''; return; }
+    if (statut === '@otros') { card.style.display = MED_ESTADOS_CONOCIDOS.indexOf(cardStatut) < 0 ? '' : 'none'; return; }
     card.style.display = (cardStatut === statut) ? '' : 'none';
   });
 
@@ -1971,24 +1997,39 @@ function medDeducirPrescriptores() {
     if (mtRaw) { episodios = (JSON.parse(mtRaw).episodios) || []; }
   } catch (e) {}
 
+  /* V2 (P-H, 12/11/2026 : « 0 prescriptores ») : los médicos viven en las tablas de referencia del .sf
+     (referencias.profesionales, a través de la procedencia de cada línea o de su documento) ;
+     el campo prescriptor/facultativo de los eventos es la forma de la V1, se mira después. */
+  function deRef(x) {
+    if (!x || typeof MF === 'undefined') return '';
+    var p = MF.procedencia ? MF.procedencia(x, true) : null;
+    if (p && p.profesional) return p.profesional;
+    if (x.profesional && MF.profesional) return MF.profesional(x.profesional) || '';
+    return '';
+  }
   function firmante(med) {
+    var n = deRef(med);
+    if (n) return { nombre: n, via: txtMed('ded_via_linea') };
     if (med.pdf_id) {
+      var evR = events.find(function(e) { return e.pdf_id === med.pdf_id && deRef(e); });
+      if (evR) return { nombre: deRef(evR), via: txtMed('ded_via_doc') + ' ' + med.pdf_id };
       var ev = events.find(function(e) { return e.pdf_id === med.pdf_id && (e.prescriptor || e.facultativo); });
-      if (ev) return { nombre: ev.prescriptor || ev.facultativo, via: 'documento ' + med.pdf_id };
+      if (ev) return { nombre: ev.prescriptor || ev.facultativo, via: txtMed('ded_via_doc') + ' ' + med.pdf_id };
     }
     var fecha = med.date || med.date_debut;
     if (fecha) {
-      var ev2 = events.find(function(e) { return e.date === fecha && (e.prescriptor || e.facultativo); });
-      if (ev2) return { nombre: ev2.prescriptor || ev2.facultativo, via: 'episodio del ' + fecha };
+      var ev2 = events.find(function(e) { return e.date === fecha && (deRef(e) || e.prescriptor || e.facultativo); });
+      if (ev2) return { nombre: deRef(ev2) || ev2.prescriptor || ev2.facultativo, via: txtMed('ded_via_fecha') + ' ' + fecha };
       var ep = episodios.find(function(x) { return (x.date === fecha || x.fecha === fecha) && (x.prescriptor || x.facultativo); });
-      if (ep) return { nombre: ep.prescriptor || ep.facultativo, via: 'episodio del ' + fecha };
+      if (ep) return { nombre: ep.prescriptor || ep.facultativo, via: txtMed('ded_via_fecha') + ' ' + fecha };
     }
     return null;
   }
 
-  var deducciones = [];
+  var deducciones = [], sinPrescriptor = 0, pendientes = 0;
   meds.forEach(function(m) {
-    if (m.prescriptor) return;
+    if (m.prescriptor) { if (m.prescriptor_origen === 'deducido') pendientes++; return; }
+    sinPrescriptor++;
     var f = firmante(m);
     if (f) {
       m.prescriptor = prescriptorResolverId(f.nombre);
@@ -2001,14 +2042,26 @@ function medDeducirPrescriptores() {
   var ov = document.createElement('div');
   ov.id = 'med-deduc-resumen';
   ov.style.cssText = 'position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;padding:20px';
+  /* el expediente de demostración lo dice (P-H, 12/11/2026 : « le patient est anonymisé, peut-être le signaler ») */
+  var demo = (typeof _DATOS !== 'undefined' && _DATOS && _DATOS.data_type === 'demo') || (MF.datos && (MF.datos() || {}).data_type === 'demo');
+  var esc = function(t) { return String(t || '').replace(/[&<>]/g, function(c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]; }); };
   var lista = deducciones.length
-    ? deducciones.map(function(d) { return '<div style="padding:4px 0;border-bottom:1px solid var(--border)"><b>' + d.med + '</b> \u2192 ' + d.medico + ' <span style="font-size:10px;color:var(--muted)">(' + d.via + ')</span></div>'; }).join('')
-    : '<div style="color:var(--muted);font-style:italic">Ninguna deducci\u00f3n posible : el expediente no contiene firmantes de documentos rastreables (la extracci\u00f3n nativa no los captura todav\u00eda \u2014 mejora prevista).</div>';
+    /* P-H, 12/11/2026 : « les noms des médicaments sont agressifs » — plus petit, sans gras, une ligne par médicament */
+    ? (function(){
+        var vu = {}, L = [];
+        deducciones.forEach(function(d) { var k = d.med + '|' + d.medico + '|' + d.via; if (vu[k]) vu[k].n++; else { vu[k] = { d: d, n: 1 }; L.push(vu[k]); } });
+        var fd = function(t) { return String(t).replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1'); };
+        return L.map(function(x) { return '<div style="padding:3px 0;border-bottom:1px solid var(--border);font-size:12px;line-height:1.4">' + esc(x.d.med) + (x.n > 1 ? ' <span style="color:var(--muted)">×' + x.n + '</span>' : '') + ' \u2192 <span style="color:var(--accent)">' + esc(x.d.medico) + '</span> <span style="font-size:10.5px;color:var(--muted)">(' + esc(fd(x.d.via)) + ')</span></div>'; }).join('');
+      })()
+    /* P-H, 12/11/2026 : al segundo clic ya no queda nada que deducir — decirlo, no « ningún profesional » */
+    : '<div style="color:var(--muted);font-style:italic">' + esc(sinPrescriptor ? txtMed('ded_ninguna') : txtMed('ded_todos')) + '</div>'
+      + (pendientes ? '<div style="font-size:12px;margin-top:8px">' + esc(txtMed('ded_pendientes').replace('{n}', pendientes)) + '</div>' : '');
   ov.innerHTML = '<div style="background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:20px 24px;max-width:520px;max-height:80vh;overflow-y:auto">' +
-    '<div style="font-size:16px;font-weight:700;margin-bottom:10px">\ud83d\udd17 Prescriptores deducidos: ' + deducciones.length + '</div>' +
-    '<div style="font-size:12px;color:var(--muted);margin-bottom:10px">Cada deducci\u00f3n queda MARCADA \u2014 abre la ficha y pulsa Actualizar para confirmarla (o corr\u00edgela).</div>' +
+    '<div style="font-size:16px;font-weight:700;margin-bottom:10px">\ud83d\udd17 ' + esc(txtMed('ded_titulo')) + ' ' + deducciones.length + '</div>' +
+    (demo ? '<div style="font-size:12px;margin-bottom:10px;padding:6px 8px;border:1px solid var(--border);border-radius:6px">\ud83c\udfac ' + esc(txtMed('ded_demo')) + '</div>' : '') +
+    '<div style="font-size:12px;color:var(--muted);margin-bottom:10px">' + esc(txtMed('ded_marcada')) + '</div>' +
     lista +
-    '<div style="text-align:right;margin-top:14px"><button class="btn primary" onclick="document.getElementById(&quot;med-deduc-resumen&quot;).remove()">Cerrar</button></div></div>';
+    '<div style="text-align:right;margin-top:14px"><button class="btn primary" onclick="document.getElementById(&quot;med-deduc-resumen&quot;).remove()">' + esc(txtMed('cerrar_btn')) + '</button></div></div>';
   document.body.appendChild(ov);
   if (deducciones.length) buildMedicamentos();
 }
@@ -2271,6 +2324,7 @@ function editMedStatut(medName) {
     '<option value="suspendu">Suspendido</option>' +
     '<option value="abandonne">Abandonado</option>' +
     '<option value="terminado">Terminado</option>' +
+    '<option value="obsoleto">📦 Obsoleto (ya no se muestra)</option>' +
     '</select></div>' +
     '<div style="flex:1;min-width:130px"><label style="' + lblStyle + '">Fecha inicio</label>' +
     '<input type="date" id="med-edit-debut" onchange="medDuracionChange()" style="' + inpStyle + '"/></div>' +
