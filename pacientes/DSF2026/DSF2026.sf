@@ -17,7 +17,7 @@
  "data_type": "demo",
  "original_data_type": null,
  "date_anonymized": null,
- "exported": "2026-11-12T11:07:23.367Z",
+ "exported": "2026-11-12T19:57:09.676Z",
  "paciente": {
   "nombre": "DEMO",
   "apellidos": "SALU FOLIO",
@@ -96,19 +96,11 @@
    },
    {
     "src": "S",
-    "fecha": "2026-11-10-14:27:24"
+    "fecha": "2026-11-12-13:28:44"
    },
    {
     "src": "S",
-    "fecha": "2026-11-12-10:49:11"
-   },
-   {
-    "src": "S",
-    "fecha": "2026-11-12-11:27:49"
-   },
-   {
-    "src": "S",
-    "fecha": "2026-11-12-12:07:23"
+    "fecha": "2026-11-12-20:57:09"
    }
   ],
   "actualizacion": [
@@ -1154,6 +1146,63 @@
    "grupo": "constantes",
    "unidades": {
     "MMSE": "/30"
+   }
+  },
+  {
+   "date": "2021-10-18",
+   "vals": {
+    "LEUCOCITOS": 7,
+    "NEUTRÓFILOS": 3.35,
+    "LINFOCITOS": 2.79,
+    "MONOCITOS": 0.61,
+    "EOSINÓFILOS": 0.19,
+    "BASÓFILOS": 0.03,
+    "HEMATÍES": 4.71,
+    "HEMOGLOBINA": 14.2,
+    "HEMATOCRITO": 44.1,
+    "V.C.M.": 94,
+    "H.C.M.": 30.2,
+    "C.H.C.M.": 32.2,
+    "IDE": 13,
+    "PLAQUETAS": 271,
+    "IDP (Ancho de distribución plaquetar)": 16,
+    "VPM (Volumen Plaquetar Medio)": 9.2,
+    "PCT (Plaquetocrito)": 0.249,
+    "DÍMERO 'D'": 1.22,
+    "SODIO": 139,
+    "POTASIO": 5,
+    "CLORO": 105.6,
+    "CREATININA": 1.07,
+    "HORMONA TIROESTIMULANTE (TSH) ULTRASENSIBLE": 0.174
+   },
+   "pdf_id": "PDF035",
+   "prc_id": "PRC025",
+   "grupo": "laboratorio",
+   "n_solicitud": "789093",
+   "unidades": {
+    "LEUCOCITOS": "10^3/µl",
+    "NEUTRÓFILOS": "10^3/µl",
+    "LINFOCITOS": "10^3/µl",
+    "MONOCITOS": "10^3/µl",
+    "EOSINÓFILOS": "10^3/µl",
+    "BASÓFILOS": "10^3/µl",
+    "HEMATÍES": "*10^6/µL",
+    "HEMOGLOBINA": "g/dL",
+    "HEMATOCRITO": "%",
+    "V.C.M.": "fl",
+    "H.C.M.": "pg",
+    "C.H.C.M.": "g/dL",
+    "IDE": "%",
+    "PLAQUETAS": "10^3/µl",
+    "IDP (Ancho de distribución plaquetar)": "%",
+    "VPM (Volumen Plaquetar Medio)": "fl",
+    "PCT (Plaquetocrito)": "%",
+    "DÍMERO 'D'": "mg/L FEU",
+    "SODIO": "mEq/L",
+    "POTASIO": "mEq/L",
+    "CLORO": "mEq/L",
+    "CREATININA": "mg/dL",
+    "HORMONA TIROESTIMULANTE (TSH) ULTRASENSIBLE": "mcU/mL"
    }
   },
   {
@@ -2707,20 +2756,6 @@
     "PLAQUETAS": "x 10^3/µL"
    },
    "src": ""
-  },
-  {
-   "date": "2026-11-09",
-   "vals": {
-    "ÍNDICE DE BARTHEL": 50,
-    "TEST DE PFEIFFER": 9
-   },
-   "pdf_id": "PDF035",
-   "prc_id": "PRC025",
-   "grupo": "constantes",
-   "unidades": {
-    "ÍNDICE DE BARTHEL": "puntos",
-    "TEST DE PFEIFFER": "errores"
-   }
   }
  ],
  "events": [
@@ -4076,6 +4111,15 @@
    "text": "I63.9 CIE-10-ES — Problema activo",
    "pdf_id": "PDF001",
    "prc_id": "PRC001"
+  },
+  {
+   "date": "2021-10-18",
+   "type": "laboratorio",
+   "title": "Frotis sanguíneo",
+   "text": "En la visión microscópica del frotis sanguíneo no se observan alteraciones morfológicas significativas en ninguna de las tres series celulares.",
+   "pdf_id": "PDF035",
+   "prc_id": "PRC025",
+   "fecha_informe": "2021-10-22"
   },
   {
    "date": "2021-10-27",
@@ -6460,15 +6504,6 @@
    "text": "Z87.440 CIE-10-ES — Problema activo",
    "pdf_id": "PDF001",
    "prc_id": "PRC001"
-  },
-  {
-   "date": "2026-11-09",
-   "type": "departament de salut de castello",
-   "title": "DIAGNÓSTICOS ACTIVOS",
-   "text": "Múltiples diagnósticos activos registrados, entre ellos: HERIDA CABEZA, HP INFECCIONES TRACTO URINARIO, GONALGIA DERECHA, GLUCEMIA BASAL ALTERADA, ISQUEMIA CEREBRAL TRANSITORIA, HIPERCOLESTEROLEMIA, DEMENCIA, DERMATITIS ESTASIS, HEMATOMA GLUTEO IZQ, HERIDA PIERNA IZQ, TRAUMATISMO SUPERFICIAL PIERNA IZQUIERDA, CONTUSION DE PIERNA IZQUIERDA, DOLOR MANO, INFARTO VERTEBROBASILAR, ICTUS, TRAUMATISMO SUPERFICIAL CUERO CABELLUDO, TRASTORNO NEUROLOGICO, CONTUSION CADERA, TENSION ARTERIAL ALTA SIN DIAGNOSTICO DE HIPERTENSION, CONTUSION REGION COSTAL, DIFICULTAD PARA CAMINAR, CAIDA POR EL SUELO, LIMITACION DE LA AUTONOMIA EN EL FUNCIONAMIENTO FISICO, TCE, DISFAGIA A SOLIDOS, HERIDA CUERO CABELLUDO, TEP CRONICO, TROMBOSIS VENOSA PROFUNDA NEOM, TRASTORNO COGNITIVO, INSUFICIENCIA RESPIRATORIA, EPOC ESTABLE, ANSIEDAD, DOLOR ARTICULACION HOMBRO, HERIDA DEDO MANO, DERMATOSIS, DOLOR OCULAR OJO IZQUIERDO, LUMBALGIA, DEFICIT VITAMINA D, DOLOR DENTAL Y PERIODONTAL, MAREO/VERTIGO, BRADICARDIA, ALUCINACIONES, BRONQUITIS AGUDA O SUBAGUDA, DEMENCIA INFARTO MULTIPLE, CAIDA CASUAL, DOLOR EN CADERA DERECHA, INSUFICIENCIA RESPIRATORIA GLOBAL, ALTERACIONES DE LA MARCHA Y DE LA MOVILIDAD, CISTITIS AGUDA, POLIPO DE ENDOMETRIO, CAIDA EN ESCALERAS, ESGUINCE DE TOBILLO IZQUIERDO, BOCIO ENDOTORACICO, DISPEPSIA FUNCIONAL, AGITACION PSICOGENA, AGITACION, HTA, PATRON RESPIRATORIO INEFICAZ, ANTICOAGULACION, TEP / TROMBOEMBOLISMO PULMONAR, DETERIORO COGNITIVO MODERADO, DISNEA, BRONQUITIS, RIESGO DE DETERIORO DE LA INTEGRIDAD CUTANEA, ARREBATO AGRESIVO, INCONTINENCIA, CISTITIS, HIPOVITAMINOSIS, BACTERIURIA ASINTOMATICA, GONALGIA, DEPRESION, ENFERMEDAD ALZHEIMER, NODULO LOBULO TIROIDEO IZQ, PARALISIS PARALITICO DIAFRAGMA, CONTUSION DE DEDO ANULAR DE LA MANO IZQUIERDA, CANDIDIASIS, BLOQUEO DE RAMA DERECHA NO ESPECIFICADO, HEPATOPATIA A DESCARTAR, DEMENCIA NO ESPECIFICADA CON ALTERACION DE LA CONDUCTA, PROBLEMA EN ESTUDIO, CANDIDIASIS CUTANEA",
-   "pdf_id": "PDF035",
-   "prc_id": "PRC025",
-   "fecha_informe": "2026-11-09"
   }
  ],
  "medicaments": [
@@ -6503,13 +6538,12 @@
    "cronico": false,
    "via": "oral",
    "desde": "",
-   "hasta": "2026-08-05",
+   "hasta": "2026-11-04",
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
    "estado": "abandonne",
-   "motif_suspension": "Efectos adversos cognitivos",
-   "estado_fecha": "2026-11-12",
-   "hasta_receta": "2026-11-04"
+   "motif_suspension": "Decisión médica",
+   "estado_fecha": "2026-11-05"
   },
   {
    "nombre": "RIVAROXABAN",
@@ -6757,8 +6791,8 @@
    "hasta": "2022-01-16",
    "pdf_id": "PDF010",
    "prc_id": "PRC002",
-   "estado": "abandonne",
-   "estado_fecha": "2026-11-12",
+   "estado": "suspendu",
+   "estado_fecha": "2026-11-05",
    "hasta_receta": "2026-11-04",
    "motif_suspension": "Hemorragia / sangrado"
   },
@@ -6876,12 +6910,9 @@
    "cronico": false,
    "via": "",
    "desde": "",
-   "hasta": "2021-10-12",
+   "hasta": "",
    "pdf_id": "PDF011",
-   "prc_id": "PRC010",
-   "estado": "suspendu",
-   "estado_fecha": "2026-11-12",
-   "motif_suspension": "Mejoría clínica"
+   "prc_id": "PRC010"
   },
   {
    "nombre": "seguril",
@@ -6914,12 +6945,9 @@
    "cronico": false,
    "via": "",
    "desde": "",
-   "hasta": "2021-10-12",
+   "hasta": "",
    "pdf_id": "PDF012",
-   "prc_id": "PRC010",
-   "estado": "suspendu",
-   "estado_fecha": "2026-11-12",
-   "motif_suspension": "Mejoría clínica"
+   "prc_id": "PRC010"
   },
   {
    "nombre": "Pañal",
@@ -6974,13 +7002,12 @@
    "cronico": false,
    "via": "oral (sol gotas)",
    "desde": "",
-   "hasta": "2026-08-05",
+   "hasta": "2026-11-04",
    "pdf_id": "PDF005",
    "prc_id": "PRC005",
    "estado": "abandonne",
-   "motif_suspension": "Efectos adversos cognitivos",
-   "estado_fecha": "2026-11-12",
-   "hasta_receta": "2026-11-04"
+   "motif_suspension": "Decisión médica",
+   "estado_fecha": "2026-11-05"
   },
   {
    "nombre": "RIVAROXABAN",
@@ -7715,16 +7742,15 @@
    "cronico": false,
    "via": "oral",
    "desde": "",
-   "hasta": "2026-08-05",
+   "hasta": "2026-11-05",
    "pdf_id": "PDF004",
    "prc_id": "PRC004",
    "principio_activo": "HALOPERIDOL",
    "atc": "N05AD01",
    "categoria": "medicamento",
    "estado": "abandonne",
-   "estado_fecha": "2026-11-12",
-   "motif_suspension": "Efectos adversos cognitivos",
-   "hasta_receta": "2026-11-05"
+   "estado_fecha": "2026-11-05",
+   "motif_suspension": "Decisión médica"
   },
   {
    "nombre": "Acetilcisteina 600mg",
@@ -7733,16 +7759,15 @@
    "cronico": false,
    "via": "oral",
    "desde": "",
-   "hasta": "2026-01-26",
+   "hasta": "2026-11-05",
    "pdf_id": "PDF004",
    "prc_id": "PRC004",
    "principio_activo": "ACETILCISTEINA",
    "atc": "R05CB01",
    "categoria": "medicamento",
-   "estado": "terminado",
-   "estado_fecha": "2026-11-12",
-   "motif_suspension": "Decisión del paciente",
-   "hasta_receta": "2026-11-05"
+   "estado": "abandonne",
+   "estado_fecha": "2026-11-05",
+   "motif_suspension": "Decisión del paciente"
   },
   {
    "nombre": "Cefuroxima 500mg",
@@ -7832,16 +7857,15 @@
    "cronico": false,
    "via": "oral",
    "desde": "",
-   "hasta": "2026-08-05",
+   "hasta": "2026-11-05",
    "pdf_id": "PDF002",
    "prc_id": "PRC002",
    "principio_activo": "HALOPERIDOL",
    "atc": "N05AD01",
    "categoria": "medicamento",
    "estado": "abandonne",
-   "estado_fecha": "2026-11-12",
-   "motif_suspension": "Efectos adversos cognitivos",
-   "hasta_receta": "2026-11-05"
+   "estado_fecha": "2026-11-05",
+   "motif_suspension": "Decisión médica"
   },
   {
    "nombre": "Voltadol 11,/g gel 60g",
@@ -7942,62 +7966,6 @@
    "pdf_id": "PDF001",
    "prc_id": "PRC001",
    "categoria": "parafarmacia"
-  },
-  {
-   "nombre": "DONEPEZILO 10 MG / 28 COMPRIMIDOS BUCODISPERSABLES",
-   "dosis": "10 MG",
-   "frecuencia": "1 COMPRIMIDO por la noche CRÓNICO",
-   "via": "",
-   "desde": "2026-08-12",
-   "hasta": "2027-08-11",
-   "pdf_id": "PDF035",
-   "prc_id": "PRC025",
-   "principio_activo": "DONEPEZILO",
-   "atc": "N06DA02",
-   "categoria": "medicamento",
-   "prescriptor": "PR3",
-   "prescriptor_origen": "deducido"
-  },
-  {
-   "nombre": "XARELTO 20MG 28 COMPRIMIDOS RECUBIERTOS CON PELICULA (BAYER)",
-   "dosis": "20 MG",
-   "frecuencia": "1 COMPRIMIDO cada día CRÓNICO",
-   "via": "",
-   "desde": "2026-11-02",
-   "hasta": "2027-11-01",
-   "pdf_id": "PDF035",
-   "prc_id": "PRC025",
-   "principio_activo": "RIVAROXABAN",
-   "atc": "B01AF01",
-   "categoria": "medicamento",
-   "prescriptor": "PR3",
-   "prescriptor_origen": "deducido"
-  },
-  {
-   "nombre": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA SUP-NOC ANAT",
-   "dosis": "",
-   "frecuencia": "1 Envase cada 60 día/s CRÓNICO",
-   "via": "",
-   "desde": "2025-12-12",
-   "hasta": "2027-01-21",
-   "pdf_id": "PDF035",
-   "prc_id": "PRC025",
-   "categoria": "parafarmacia",
-   "prescriptor": "PR3",
-   "prescriptor_origen": "deducido"
-  },
-  {
-   "nombre": "INCOPACK PANTS T. MEDIA 80 U ABSORB INC ORINA DIA ANAT",
-   "dosis": "",
-   "frecuencia": "2 PAÑAL DIA cada día CRÓNICO",
-   "via": "",
-   "desde": "2024-05-16",
-   "hasta": "2027-08-11",
-   "pdf_id": "PDF035",
-   "prc_id": "PRC025",
-   "categoria": "parafarmacia",
-   "prescriptor": "PR3",
-   "prescriptor_origen": "deducido"
   }
  ],
  "antecedentes": [],
@@ -8016,8 +7984,7 @@
  "centros": [],
  "prescriptores": {
   "PR1": "médico de centro de salud",
-  "PR2": "R. Q. R.",
-  "PR3": "H. L. S. S."
+  "PR2": "QUEROL RIPOLL, ROSER"
  },
  "referencias": {
   "centros": {
@@ -8029,7 +7996,8 @@
    "CNT006": "Farmacia 12/1 MAESTRAT (DEL)",
    "CNT007": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLO / CENTRO DE SALUD DE ATZENETA DEL MAESTRAT",
    "CNT008": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLON / CENTRO DE SALUD DE VALL D'ALBA",
-   "CNT009": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLON"
+   "CNT009": "HOSPITAL GENERAL UNIVERSITARIO DE CASTELLON",
+   "CNT010": "CALDERÓN CENTRO DIAGNÓSTICO"
   },
   "servicios": {
    "SER001": "NEUMOLOGIA",
@@ -8040,11 +8008,11 @@
    "SER006": "URGENCIAS GENERALES",
    "SER007": "RADIOLOGIA",
    "SER008": "RADIOLOGIA GENERAL",
-   "SER009": "DEPARTAMENT DE SALUT DE CASTELLO"
+   "SER009": "Laboratorio"
   },
   "profesionales": {
    "PRO001": {
-    "nombre": "J. B. O.",
+    "nombre": "BELTRAN ORENGA, JAVIER",
     "rol": "medico"
    },
    "PRO002": {
@@ -8052,43 +8020,43 @@
     "rol": "medico"
    },
    "PRO003": {
-    "nombre": "M. V. P.",
+    "nombre": "MARIA VENTURA PEREZ",
     "rol": "medico"
    },
    "PRO004": {
-    "nombre": "R. Q. R.",
+    "nombre": "QUEROL RIPOLL, ROSER",
     "rol": "medico"
    },
    "PRO005": {
-    "nombre": "A. C. V.",
+    "nombre": "COMPANY VALDEOLIVAS, ARANZAZU",
     "rol": "medico"
    },
    "PRO006": {
-    "nombre": "S. A. C.",
+    "nombre": "AMBIT CAPDEVILA, SILVIA",
     "rol": "medico"
    },
    "PRO007": {
-    "nombre": "M. F. B. F.",
+    "nombre": "BORDON FERRE, MARIA FERNANDA",
     "rol": "medico"
    },
    "PRO008": {
-    "nombre": "D. P. G. V.",
+    "nombre": "GOMEZ VALENCIA, DIANA PATRICIA",
     "rol": "medico"
    },
    "PRO009": {
-    "nombre": "S. L. M.",
+    "nombre": "DE LAZARO Y DE MOLINA, SUSANA",
     "rol": "medico"
    },
    "PRO010": {
-    "nombre": "S. M. D.",
+    "nombre": "MARCO DOMENECH, SANTIAGO",
     "rol": "medico"
    },
    "PRO011": {
-    "nombre": "H. L. S. S.",
+    "nombre": "HECTOR L. SALES SAFONT",
     "rol": "medico"
    },
    "PRO012": {
-    "nombre": "H. L. S. S.",
+    "nombre": "Dr. D. Jesús Calderón",
     "rol": "medico"
    }
   },
@@ -8191,7 +8159,7 @@
     "centro": "CNT009"
    },
    "PRC025": {
-    "centro": "CNT001",
+    "centro": "CNT010",
     "servicio": "SER009",
     "profesional": "PRO012"
    }
@@ -8241,7 +8209,7 @@
    "PDF032": "PRL_17072026071144.pdf",
    "PDF033": "PRL_17072026071230.pdf",
    "PDF034": "PRL_17072026071302.pdf",
-   "PDF035": "IRS_2026109110938.pdf"
+   "PDF035": "Analisis Calderon.pdf"
   },
   "contador": 35
  },

@@ -1,11 +1,11 @@
 /* LAS VERSIONES DE SALUFOLIO
-   escrito por herramientas/versiones.py el 2026.11.12-12:15:28
+   escrito por herramientas/versiones.py el 2026.11.13-12:00:24
 
    Un .js y no un .json: asi la pagina funciona sin servidor.
    No se toca a mano — se rehace en cada pasada. */
 var SF_VERSIONES = window.SF_VERSIONES = {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.11.12-12:15:28",
+ "_ultima_pasada": "2026.11.13-12:00:24",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -187,12 +187,12 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "version": "2026.11.04-12:42:25"
   },
   "casa/casa.js": {
-   "suma": "b399e64f2e90",
-   "version": "2026.11.12-11:45:03"
+   "suma": "d2609d656df7",
+   "version": "2026.11.13-11:57:53"
   },
   "casa/index.html": {
-   "suma": "21d842509aef",
-   "version": "2026.11.12-11:45:03"
+   "suma": "3dddeb36375b",
+   "version": "2026.11.13-11:57:53"
   },
   "casa/novedades.js": {
    "suma": "67214ce90a41",
@@ -3494,6 +3494,18 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "suma": "038b7a4e243d",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/inventario/inventario.aide.html": {
+   "suma": "d1d1a7eb6c52",
+   "version": "2026.11.12-13:24:40"
+  },
+  "herramientas/inventario/inventario.html": {
+   "suma": "7a447e26e30d",
+   "version": "2026.11.12-13:24:17"
+  },
+  "herramientas/inventario/inventario.py": {
+   "suma": "0d5cd81711cc",
+   "version": "2026.11.12-13:26:18"
+  },
   "herramientas/inventario_cartouches/anonimizar_pdf.py": {
    "suma": "453c710048f6",
    "version": "2026.10.30-01:12:58"
@@ -3620,8 +3632,8 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "version": "2026.11.03-11:33:06"
   },
   "herramientas/pdf_anonymizer/templates/index.html": {
-   "suma": "1c6686367ec9",
-   "version": "2026.11.03-11:33:06"
+   "suma": "a5cd259a8454",
+   "version": "2026.11.12-18:26:37"
   },
   "herramientas/pdfnnn_a_anonimizado/pdfnnn_a_anonimizado.py": {
    "suma": "1f504292834a",

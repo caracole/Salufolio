@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Versión 2026.11.12-11:45:03 -->
+<!-- Versión 2026.11.13-11:57:53 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Salufolio</title>
@@ -2537,13 +2537,23 @@ function dialogoSuprime(mat, nombre, cuenta, raiz, dir){
     + 'border:1px solid var(--danger,#e05555);border-radius:12px;padding:18px 20px;font-size:14px;'
     + 'box-shadow:0 10px 40px rgba(0,0,0,.6)';
   var tieneSf = !!dir;
+  /* ══ VACIAR O SUPRIMIR (P-H, 12/11/2026) ══
+     « clic ⇒ supprimer ? effacer les données ou supprimer définitivement ? »
+     Solo para los pacientes de BANCO DE PRUEBAS (casa.js, suprimir.banco) :
+     a los demás ni se les propone. Por defecto : vaciar. */
+  var banco = !!dir && ((T && T.suprimir && T.suprimir.banco) || []).indexOf(mat) >= 0;
   c.innerHTML =
-      '<div style="font-weight:600;font-size:15px;margin-bottom:8px;color:var(--danger,#e05555)">🗑 '
-    + tx('sup_titulo', { nombre:nombre }) + '</div>'
-    + '<div style="margin-bottom:10px;line-height:1.45">'
-    + (dir ? tx('sup_cuerpo', { mat:mat, n:cuenta.n, o:tamanyo(cuenta.o) }) : tx('sup_sin_carpeta', { mat:mat }))
+      '<div id="sf-sup-tit" style="font-weight:600;font-size:15px;margin-bottom:8px;color:var(--danger,#e05555)">🗑 '
+    + tx(banco ? 'modo_titulo' : 'sup_titulo', { nombre:nombre }) + '</div>'
+    + (banco ? '<div style="margin-bottom:10px;display:flex;flex-direction:column;gap:6px">'
+      + '<label style="display:flex;gap:8px;cursor:pointer"><input type="radio" name="sf-sup-modo" value="vaciar" checked><span>' + tx('vac_opcion') + '</span></label>'
+      + '<label style="display:flex;gap:8px;cursor:pointer"><input type="radio" name="sf-sup-modo" value="suprimir"><span>' + tx('sup_opcion') + '</span></label>'
+      + '</div>' : '')
+    + '<div id="sf-sup-cuerpo" style="margin-bottom:10px;line-height:1.45">'
+    + (banco ? tx('vac_cuerpo', { mat:mat, hist:SF_GUARDA.carpeta })
+       : dir ? tx('sup_cuerpo', { mat:mat, n:cuenta.n, o:tamanyo(cuenta.o) }) : tx('sup_sin_carpeta', { mat:mat }))
     + '</div>'
-    + (dir ? '<label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;cursor:pointer">'
+    + (dir ? '<label id="sf-sup-arch-l" style="display:' + (banco ? 'none' : 'flex') + ';gap:8px;align-items:flex-start;margin-bottom:10px;cursor:pointer">'
       + '<input type="checkbox" id="sf-sup-arch" checked style="margin-top:3px"><span>'
       + tx('sup_archivar', { arch:SF_SUPRIME.carpeta_archivo }) + '</span></label>' : '')
     + '<div style="margin-bottom:4px;color:var(--muted,#9aa3b5);font-size:12.5px">' + tx('sup_teclea', { mat:mat }) + '</div>'
@@ -2552,20 +2562,144 @@ function dialogoSuprime(mat, nombre, cuenta, raiz, dir){
     + '<span style="flex:1"></span>'
     + '<button class="bmini" id="sf-sup-no">' + tx('cancelar') + '</button>'
     + '<button class="bmini" id="sf-sup-si" disabled style="opacity:.45;border-color:var(--danger,#e05555);color:var(--danger,#e05555)">'
-    + tx('sup_confirmar') + '</button></div>';
+    + tx(banco ? 'vac_confirmar' : 'sup_confirmar') + '</button></div>';
   v.appendChild(c); document.body.appendChild(v);
   var campo = c.querySelector('#sf-sup-mat'), si = c.querySelector('#sf-sup-si');
+  function modo(){ var x = c.querySelector('input[name="sf-sup-modo"]:checked'); return x ? x.value : 'suprimir'; }
+  c.querySelectorAll('input[name="sf-sup-modo"]').forEach(function(x){
+    x.addEventListener('change', function(){
+      var vac = modo() === 'vaciar';
+      c.querySelector('#sf-sup-cuerpo').innerHTML = vac ? tx('vac_cuerpo', { mat:mat, hist:SF_GUARDA.carpeta })
+        : tx('sup_cuerpo', { mat:mat, n:cuenta.n, o:tamanyo(cuenta.o) });
+      c.querySelector('#sf-sup-arch-l').style.display = vac ? 'none' : 'flex';
+      si.textContent = tx(vac ? 'vac_confirmar' : 'sup_confirmar');
+    });
+  });
   campo.addEventListener('input', function(){
     var ok = campo.value.trim().toUpperCase() === mat.toUpperCase();
     si.disabled = !ok; si.style.opacity = ok ? '1' : '.45';
   });
   c.querySelector('#sf-sup-no').onclick = function(){ v.remove(); };
   si.onclick = function(){
-    var arch = c.querySelector('#sf-sup-arch');
+    var arch = c.querySelector('#sf-sup-arch'), m = modo();
     v.remove();
-    suprimePaciente(mat, raiz, dir, !!(arch && arch.checked));
+    if(banco && m === 'vaciar') vaciaPaciente(mat, dir);
+    else suprimePaciente(mat, raiz, dir, !!(arch && arch.checked));
   };
   campo.focus();
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   VACIAR LOS DATOS DE UN PACIENTE DE BANCO DE PRUEBAS (P-H, 12/11/2026)
+
+   El paciente se queda (su identidad, su matrícula, sus PDF de sources/) ;
+   sus DATOS se vacían, para volver a leer los mismos documentos desde cero.
+   Nada se borra : antes de tocar nada, el expediente, el diario y la
+   carpeta de extracciones —y lo que el navegador guarda para él— se copian (y se comprueban) en
+   historial/<vaciar_carpeta><fecha>/. Solo entonces se quitan el diario y
+   las extracciones — si no, la adquisición diría « ya leído » — y se
+   escribe el expediente vacío. Lo que se conserva y los nombres : casa.js,
+   « suprimir ».
+   ══════════════════════════════════════════════════════════════════════ */
+async function _copiaFichero(fh, destino, nombre){
+  var f = await fh.getFile();
+  var w = await (await destino.getFileHandle(nombre, { create:true })).createWritable();
+  await w.write(await f.arrayBuffer()); await w.close();
+  var chk = await (await destino.getFileHandle(nombre)).getFile();
+  if(chk.size !== f.size) throw new Error(nombre + ' (' + chk.size + ' ≠ ' + f.size + ')');
+}
+async function _copiaCarpeta(origen, destino){
+  var n = 0;
+  for await (var e of origen.values()){
+    if(e.kind === 'file'){ await _copiaFichero(e, destino, e.name); n++; }
+    else n += await _copiaCarpeta(e, await destino.getDirectoryHandle(e.name, { create:true }));
+  }
+  return n;
+}
+function _vaciaDatos(d, conservar){
+  var n = 0;
+  Object.keys(d).forEach(function(k){
+    if(conservar.indexOf(k) >= 0) return;
+    var v = d[k];
+    if(Array.isArray(v)){ n += v.length; d[k] = []; }
+    else if(v && typeof v === 'object'){
+      Object.keys(v).forEach(function(kk){
+        var w = v[kk];
+        if(Array.isArray(w)){ n += w.length; v[kk] = []; }
+        else if(w && typeof w === 'object'){ n += Object.keys(w).length; v[kk] = {}; }
+        else if(typeof w === 'string' && w){ n++; v[kk] = ''; }   /* un texto suelto también (P-H, 13/11 : el comentario de las curvas del informe) */
+      });
+    }
+  });
+  return n;
+}
+async function vaciaPaciente(mat, dir){
+  var S = (T && T.suprimir) || {};
+  var abierto = matriculaActual() === mat;
+  clearTimeout(autoT);                                   /* que nada escriba encima mientras tanto */
+  if(abierto){ SUCIO = false; marcaSucio(false); }
+  try{
+    var nom = mat + SF_GUARDA.extension;
+    var fh = null;
+    try{ fh = await dir.getFileHandle(nom); }catch(e){ if(e.name !== 'NotFoundError') throw e; }
+    if(!fh){ avisoSf(tx('vac_sin_sf', { mat:mat })); return; }
+    var txt = await (await fh.getFile()).text();
+    var d = JSON.parse(txt);
+    /* 1. la copia de todo, comprobada, antes de tocar nada */
+    var hist = await dir.getDirectoryHandle(SF_GUARDA.carpeta, { create:true });
+    var nomCopia = (S.vaciar_carpeta || 'vaciado_') + selloEnNombre(fechaDelEstado('', Date.now()));
+    var copia = await hist.getDirectoryHandle(nomCopia, { create:true });
+    await _copiaFichero(fh, copia, nom);
+    var diario = null, extr = null;
+    if(S.diario){ try{ diario = await dir.getFileHandle(S.diario); }catch(e){ if(e.name !== 'NotFoundError') throw e; } }
+    if(diario) await _copiaFichero(diario, copia, S.diario);
+    if(S.extracciones){ try{ extr = await dir.getDirectoryHandle(S.extracciones); }catch(e){ if(e.name !== 'NotFoundError') throw e; } }
+    if(extr) await _copiaCarpeta(extr, await copia.getDirectoryHandle(S.extracciones, { create:true }));
+    /* 1 bis. lo que el navegador guarda para ESTE paciente (casa.js, suprimir.memoria_navegador) :
+       los comentarios de la IA de las curvas, por ejemplo — copiados en la carpeta de la copia */
+    var memorias = [];
+    (S.memoria_navegador || []).forEach(function(m){
+      try{
+        var M = JSON.parse(localStorage.getItem(m.clave) || '{}');
+        if(M && M[mat]) memorias.push({ m:m, M:M, txt:JSON.stringify(M[mat], null, 1) });
+      }catch(e){}
+    });
+    for(var q = 0; q < memorias.length; q++){
+      var wm = await (await copia.getFileHandle(memorias[q].m.fichero, { create:true })).createWritable();
+      await wm.write(memorias[q].txt); await wm.close();
+      var chm = await (await copia.getFileHandle(memorias[q].m.fichero)).getFile();
+      if(chm.size !== new Blob([memorias[q].txt]).size) throw new Error(memorias[q].m.fichero);
+    }
+    /* 2. lo que haría decir « ya leído » sale de la carpeta */
+    if(diario) await dir.removeEntry(S.diario);
+    if(extr) await dir.removeEntry(S.extracciones, { recursive:true });
+    memorias.forEach(function(x){
+      delete x.M[mat];
+      try{ localStorage.setItem(x.m.clave, JSON.stringify(x.M)); }catch(e){}
+    });
+    /* 3. el expediente vacío : el paciente se queda, los datos no */
+    var n = _vaciaDatos(d, S.vaciar_conservar || ['paciente', 'historial']);
+    if(typeof SF_PLANTILLA !== 'undefined' && SF_PLANTILLA.modifica)
+      SF_PLANTILLA.modifica(d, SF_GUARDA.src, tx('vac_historial', { n:n }));
+    var w = await fh.createWritable();
+    await w.write(JSON.stringify(d, null, 1)); await w.close();
+    /* 4. se vuelve a abrir — vacío — con EL MISMO GESTO que elegirlo en la lista (P-H, 13/11 :
+       « il faut que je recharge Ana ») : el cuadro, las cuentas y las tarjetas se rehacen de cero */
+    var sel = document.getElementById('sel-pac');
+    var elegido = sel && sel.value !== '' ? PACIENTES_TODOS[parseInt(sel.value, 10)] : null;
+    if(elegido && elegido.matricula === mat){
+      SUCIO = false; PAC_PREVIO = null;
+      eligeDeLista();
+    } else if(abierto){
+      DATOS = null; NOMBRE = null;
+      try{ sessionStorage.removeItem('mf_datos'); sessionStorage.removeItem('mf_nombre'); }catch(e){}
+      await leeDeCarpeta(mat, nom, true);
+    }
+    avisoSf(tx('vac_hecho', { mat:mat, n:n, carpeta:SF_GUARDA.carpeta + '/' + nomCopia }));
+  }catch(e){
+    console.error('[Salufolio] vaciar', e);
+    avisoSf(tx('sf_fallo', { msg:((e && e.name) ? e.name + ' — ' : '') + ((e && e.message) || e) }));
+  }
 }
 
 async function suprimePaciente(mat, raiz, dir, archivar){
@@ -2915,6 +3049,9 @@ Object.assign(TX.es, {
   sup_archivado:' · archivo en {arch}/{nombre}',
   sup_sin_exp:' · {mat} no tenía expediente que archivar',
   sup_sin_carpeta:'{mat} no tiene carpeta en pacientes/ : solo se quita de la lista.',
+  modo_titulo:'¿Qué hacer con {nombre}?', vac_opcion:'🧹 Vaciar los datos — el paciente y sus PDF se quedan', sup_opcion:'🗑 Suprimir definitivamente',
+  vac_cuerpo:'Se vacían todos los datos de <b>{mat}</b> : mediciones, eventos, medicamentos… Se quedan el paciente y sus PDF de sources/. Antes, el expediente, el diario y las extracciones se guardan en {hist}/. Así se pueden volver a leer los mismos documentos desde cero.',
+  vac_confirmar:'Vaciar', vac_hecho:'{mat} vaciado · {n} entradas retiradas · copia en {carpeta}/', vac_sin_sf:'{mat} no tiene expediente que vaciar.', vac_historial:'datos vaciados ({n} entradas) — banco de pruebas',
   sf_archivadas:' · {n} copia(s) vieja(s) a {arch}/',
   sf_elegir:'Pulse aquí e indique, una sola vez, la carpeta «pacientes» (la que contiene una carpeta por paciente)',
   sf_sucio:'Hay cambios sin guardar en el expediente abierto. ¿Cambiar de paciente y perderlos?',
@@ -2939,6 +3076,9 @@ Object.assign(TX.fr, {
   sup_archivado:' · archivé dans {arch}/{nombre}',
   sup_sin_exp:' · {mat} n’avait pas d’expediente à archiver',
   sup_sin_carpeta:'{mat} n’a pas de dossier dans pacientes/ : il est seulement retiré de la liste.',
+  modo_titulo:'Que faire de {nombre} ?', vac_opcion:'🧹 Vider les données — le patient et ses PDF restent', sup_opcion:'🗑 Supprimer définitivement',
+  vac_cuerpo:'Toutes les données de <b>{mat}</b> sont vidées : mesures, événements, médicaments… Le patient et ses PDF de sources/ restent. Avant cela, l’expediente, le diario et les extractions sont gardés dans {hist}/. On peut ainsi relire les mêmes documents depuis zéro.',
+  vac_confirmar:'Vider', vac_hecho:'{mat} vidé · {n} entrées retirées · copie dans {carpeta}/', vac_sin_sf:'{mat} n’a pas d’expediente à vider.', vac_historial:'données vidées ({n} entrées) — banc d’essai',
   sf_archivadas:' · {n} copie(s) ancienne(s) vers {arch}/',
   sf_elegir:'Cliquez ici et indiquez, une seule fois, le dossier « pacientes » (celui qui contient un dossier par patient)',
   sf_sucio:'Des modifications du dossier ouvert ne sont pas enregistrées. Changer de patient et les perdre ?',
@@ -2963,6 +3103,9 @@ Object.assign(TX.ca, {
   sup_archivado:' · arxivat a {arch}/{nombre}',
   sup_sin_exp:' · {mat} no tenia expedient per arxivar',
   sup_sin_carpeta:'{mat} no té carpeta a pacientes/: només es treu de la llista.',
+  modo_titulo:'Què fer amb {nombre}?', vac_opcion:'🧹 Buidar les dades — el pacient i els seus PDF es queden', sup_opcion:'🗑 Suprimir definitivament',
+  vac_cuerpo:'Es buiden totes les dades de <b>{mat}</b>: mesuraments, esdeveniments, medicaments… Es queden el pacient i els seus PDF de sources/. Abans, l’expedient, el diari i les extraccions es guarden a {hist}/. Així es poden tornar a llegir els mateixos documents des de zero.',
+  vac_confirmar:'Buidar', vac_hecho:'{mat} buidat · {n} entrades retirades · còpia a {carpeta}/', vac_sin_sf:'{mat} no té expedient per buidar.', vac_historial:'dades buidades ({n} entrades) — banc de proves',
   sf_archivadas:' · {n} còpia/còpies antiga(es) a {arch}/',
   sf_elegir:'Premeu aquí i indiqueu, una sola vegada, la carpeta «pacientes» (la que conté una carpeta per pacient)',
   sf_sucio:'Hi ha canvis sense guardar a l’expedient obert. Canviar de pacient i perdre’ls?',
@@ -2987,6 +3130,9 @@ Object.assign(TX.en, {
   sup_archivado:' · archived in {arch}/{nombre}',
   sup_sin_exp:' · {mat} had no record to archive',
   sup_sin_carpeta:'{mat} has no folder in pacientes/: it is only removed from the list.',
+  modo_titulo:'What to do with {nombre}?', vac_opcion:'🧹 Empty the data — the patient and their PDFs stay', sup_opcion:'🗑 Delete permanently',
+  vac_cuerpo:'All the data of <b>{mat}</b> are emptied: measurements, events, medications… The patient and their PDFs in sources/ stay. Beforehand, the record, the log and the extractions are kept in {hist}/. The same documents can then be read again from scratch.',
+  vac_confirmar:'Empty', vac_hecho:'{mat} emptied · {n} entries removed · copy in {carpeta}/', vac_sin_sf:'{mat} has no record to empty.', vac_historial:'data emptied ({n} entries) — test bench',
   sf_archivadas:' · {n} old copy(ies) moved to {arch}/',
   sf_elegir:'Click here and point, once only, to the “pacientes” folder (the one holding a folder per patient)',
   sf_sucio:'The open record has unsaved changes. Switch patient and lose them?',

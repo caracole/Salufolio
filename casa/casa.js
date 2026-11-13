@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.11.12-11:45:03",
+  "version": "2026.11.13-11:57:53",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -880,5 +880,17 @@ var SF_LANZADOR = {
     ]
   },
   "_senales": "Los colores de SEÑAL de cada paleta (P-H, 05/11/2026 : « vert sur fond sépia ou clair : illisible ») : --ok (en las normas), --danger (fuera), --warn (alerta), --accent2. Las paletas claras (fondo luminoso : papel, cielo, sepia, claro) los llevan oscuros ; las oscuras, los de siempre. Cada paleta los lleva TODOS : al pasar de una clara a una oscura, nada se queda de la anterior.",
+  "_suprimir": "SUPRIMIR O VACIAR (P-H, 12/11/2026 : « clic ⇒ supprimer ? effacer les données ou supprimer définitivement ? ») : para los pacientes de « banco » (banco de pruebas), el 🗑 propone primero VACIAR los datos — el paciente y sus PDF se quedan, el expediente, el diario y las extracciones se copian antes en historial/<vaciar_carpeta><fecha>/. A los demás pacientes no se les propone : solo suprimir. « vaciar_conservar » : las claves del .sf que no se tocan (lo demás : las listas se vacían).",
+  "suprimir": {
+    "banco": ["APA0000"],
+    "vaciar_conservar": ["paciente", "historial"],
+    "vaciar_carpeta": "vaciado_",
+    "diario": "diario.js",
+    "extracciones": "extracciones",
+    "memoria_navegador": [
+      { "clave": "sf_comentarios_ia", "fichero": "comentarios_ia.json", "_que": "los comentarios de la IA de las curvas, por paciente (comun/comentario-ia.js)" }
+    ],
+    "_memoria_navegador": "Lo que el navegador guarda POR PACIENTE (una entrada por matrícula) : al vaciar, la parte de ESTE paciente se copia en la carpeta de la copia, con ese nombre, y se borra del navegador. Una memoria nueva del mismo tipo : una línea más (P-H, 13/11/2026)."
+  },
   "_especialidades": "Las tarjetas de especialidad (P-H, 05/11/2026) : un solo programa, especialidad/ ; cada tarjeta, su fichero (especialidad/neumologia.js…) con « parametros » : esp=… Lo que muestra, en comun/especialidades.js (« ficha »)."
 };
