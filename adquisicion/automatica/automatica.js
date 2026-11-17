@@ -1,7 +1,7 @@
 /* ADQUISICIÓN AUTOMÁTICA — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "automatica",
-  "version": "2026.11.05-22:43:03",
+  "version": "2026.11.16-21:57:10",
   "programa": "automatica.html",
   "lanzador": "../../casa/casa.js",
   "icono": "⚙️",
@@ -35,7 +35,8 @@ var SF_CONFIG = window.SF_CONFIG = {
   "_extension_expediente": "La copia que descarga « Guardar lo leído » (P-H, 03/11/2026 : el .mf está muerto).",
   "extracciones": {
     "carpeta": "extracciones",
-    "_que": "Cada respuesta de la IA, tal cual, en pacientes/<matricula>/extracciones/<pdf>_<AAAA-MM-DD_HHhMMmSS>_<modo>.json — una por lectura, nunca se pisa, para comparar (P-H, 03/11/2026). La escribe el servidor « salufolio » ; sin él no se escribe nada y el diario lo dice. Vacío = no se guarda."
+    "historial": "extracciones",
+    "_que": "1 PDF = 1 JSON (P-H, 11/11 y 13/11/2026) : cada respuesta de la IA, tal cual, en pacientes/<matricula>/extracciones/<nombre del PDF>.json — el mismo nombre que el PDF, uno por PDF. Volver a leerlo lo sustituye ; el antiguo pasa antes a historial/<historial>/<nombre>_<fecha>.json. Se escribe con el permiso de la carpeta del paciente (el del .sf) : sin servidor. Vacío = no se guarda."
   },
   "_escribe": "Es por aqui que entran los datos. El 💾 se enciende con cada documento leido.",
   "_cuesta": "Llama a la API de Claude: unos centimos por documento. El modo « asistida » no cuesta nada.",

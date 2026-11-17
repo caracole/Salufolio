@@ -1,13 +1,16 @@
 /* ═══════════════════════════════════════════════
-   Versión 2026.10.06-18:44:03
+   Versión 2026.11.17-18:45:01
    PACIENTE — configuración del programa
    (« programa » = nombre del fichero que abre la Casa : se deja vacío,
    por defecto es paciente.html)
    ═══════════════════════════════════════════════ */
 var SF_CONFIG = {
   id: 'paciente',
-  version: '2026.10.06-18:44:03',
+  version: '2026.11.17-18:45:01',
   familia: 'trabajar',
+  /* los títulos que no cuentan al comparar dos nombres de médico (P-H, 17/11/2026) */
+  titulos_medico: ['dr','dra','doctor','doctora','adjunto','adjunta','fea','facultativo','facultativa','especialista',
+                   'jefe','jefa','servicio','seccion','de','del','la','y','medico','medica','mir','residente','responsable'],
   icono: '🧑‍⚕️',
   nombre: { es:'Paciente', fr:'Patient', ca:'Pacient', en:'Patient' },
   descripcion: {

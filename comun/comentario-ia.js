@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    EL COMENTARIO DE LA IA — /Salufolio/comun/comentario-ia.js
-   Versión 2026.11.05-16:24:58
+   Versión 2026.11.17-09:12:11
    (05/11/2026 : imprime() acepta o.cuerpo y o.css — una hoja ya compuesta.)
    (05/11/2026 : el pie de cada página impresa ; el modelo viene de comun/modelos-ia.js.)
    (05/11/2026 : pide(d, series, op) — otro prompt y sus huecos, para el constat de un año.)
@@ -57,7 +57,8 @@ var SF_COMENTARIO_IA = window.SF_COMENTARIO_IA = (function(){
     imp_sin:     { es:'Sin estas casillas la hoja no dice de quién es : se puede enseñar.', fr:'Sans ces cases, la feuille ne dit pas de qui il s’agit : on peut la montrer.',
                    ca:'Sense aquestes caselles la fulla no diu de qui és : es pot ensenyar.', en:'Without these boxes the sheet does not say who it is about: it can be shown.' },
     imp_no:      { es:'Cancelar', fr:'Annuler', ca:'Cancel·lar', en:'Cancel' },
-    imp_pagina:  { es:'Página {n} / {t}', fr:'Page {n} / {t}', ca:'Pàgina {n} / {t}', en:'Page {n} / {t}' }
+    imp_pagina:  { es:'Página {n} / {t}', fr:'Page {n} / {t}', ca:'Pàgina {n} / {t}', en:'Page {n} / {t}' },
+    imp_marca:   { es:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', fr:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', ca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', en:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com' }
   };
   var CLAVE_MEMO = 'sf_comentarios_ia', CLAVE_DX = 'sf_ia_con_dx';
 
@@ -297,9 +298,11 @@ var SF_COMENTARIO_IA = window.SF_COMENTARIO_IA = (function(){
     var pg = tx('imp_pagina').split('{n}'), pg2 = (pg[1] || '').split('{t}');
     var pagina = cssS(pg[0]) + ' counter(page) ' + cssS(pg2[0]) + ' counter(pages) ' + cssS(pg2[1] || '');
     var caja = 'font-family:system-ui,sans-serif;font-size:8pt;color:' + C.suave + ';border-top:.5pt solid ' + C.linea + ';padding-top:3pt;vertical-align:top;';
-    var doc = o.titulo + (o.paciente ? ' · ' + o.paciente : '');
-    var pie = '@page{size:A4;margin:16mm 16mm 18mm 16mm;@bottom-left{content:' + cssS(doc) + ';text-align:left;' + caja + '}'
-      + '@bottom-center{content:' + cssS(f) + ';text-align:center;' + caja + '}@bottom-right{content:' + pagina + ';text-align:right;' + caja + '}}'
+    /* 17/11/2026 (P-H) : à gauche Salufolio et son auteur, sans répéter le titre (« Cardiología »…) ;
+       au milieu le patient, s'il est choisi, et la date ; à droite la page */
+    var doc = [o.paciente, f].filter(Boolean).join(' · ');
+    var pie = '@page{size:A4;margin:16mm 16mm 18mm 16mm;@bottom-left{content:' + cssS(tx('imp_marca')) + ';text-align:left;' + caja + '}'
+      + '@bottom-center{content:' + cssS(doc) + ';text-align:center;' + caja + '}@bottom-right{content:' + pagina + ';text-align:right;' + caja + '}}'
       + 'img,p,li,.pie,h1{break-inside:avoid}h1{break-after:avoid}';
     var html = '<!DOCTYPE html><html lang="' + lg() + '"><head><meta charset="utf-8"><title>' + esc(o.titulo) + '</title><style>' +
       'body{margin:0;background:' + C.papel + ';color:' + C.tinta + ';font-family:var(--sans,system-ui,sans-serif);font-size:11pt;line-height:1.5}' +

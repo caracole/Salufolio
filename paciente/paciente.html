@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Versión 2026.10.06-18:44:03 -->
+<!-- Versión 2026.11.17-18:58:06 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Paciente · Salufolio</title>
@@ -45,6 +45,21 @@ details.lista .cuenta{color:var(--muted);font-size:12px;flex:1}
 .ib{background:transparent;border:1px solid transparent;border-radius:6px;cursor:pointer;font-size:14px;padding:2px 6px;color:var(--text)}
 .ib:hover{border-color:var(--accent)}
 #estado{font-size:12.5px;margin-top:12px;min-height:18px}
+/* las listas en tabla (P-H, 16/11/2026) */
+table.tl{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 2px}
+table.tl th{font-weight:600;font-size:11.5px;color:var(--muted);text-align:left;padding:4px 6px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
+table.tl th.pv,table.tl th.ac{cursor:default}
+table.tl td{padding:3px 6px;border-top:1px dotted var(--border);vertical-align:top;text-align:left;line-height:1.5}
+table.tl td.f{white-space:nowrap;color:var(--muted);font-family:var(--mono,monospace);font-size:12px}
+table.tl td.pv,table.tl th.pv{width:30px;text-align:center}
+table.tl td.ac{white-space:nowrap;text-align:right;width:1%}
+table.tl tbody tr:hover{background:color-mix(in srgb, var(--accent) 12%, transparent)}
+table.tl .nd{color:var(--muted);font-size:11.5px}
+table.tl tr.inact td{opacity:.55}
+table.tl td.f.esc{font-style:italic;opacity:.7}
+#pdf-capa{position:fixed;inset:3%;z-index:9000;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius,12px);display:flex;flex-direction:column;box-shadow:var(--sombra,0 10px 40px rgba(0,0,0,.5))}
+#pdf-capa .pdf-cab{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-bottom:1px solid var(--border);font-size:12.5px}
+#pdf-capa embed{flex:1;width:100%;border:0}
 
 /* ce que le formulaire dessine — il vient des communs */
 .sf-campo-caja{margin-bottom:14px}
@@ -64,6 +79,7 @@ details.lista .cuenta{color:var(--muted);font-size:12px;flex:1}
 .sf-campo-caja[data-tiptext] input,.sf-campo-caja[data-tiptext] select,.sf-campo-caja[data-tiptext] textarea{cursor:auto !important}
 .pregunta-cuerpo{font-size:15px;line-height:1.7;padding:6px 2px 10px}
 .module-version-corner{display:none}
+.fila-bot{display:flex;flex-wrap:wrap;align-items:center;gap:var(--gap-s,8px)}
 </style>
 <script src="paciente.js"></script>
 <script src="paciente.idiomas.js"></script>
@@ -76,7 +92,8 @@ details.lista .cuenta{color:var(--muted);font-size:12px;flex:1}
 </header>
 <main>
   <p class="sordo" data-idioma="sordo"></p>
-  <button class="btn pri" id="b-empezar" data-idioma="empezar"></button>
+  <!-- 🖨 à droite de « Completar la ficha » (P-H, 17/11/2026) -->
+  <div class="fila-bot"><button class="btn pri" id="b-empezar" data-idioma="empezar"></button><button class="btn" id="b-imprimir" style="display:none" onclick="imprimeFicha()"></button></div>
   <div class="pista" data-idioma="voz_pista"></div>
   <div id="estado"></div>
   <div id="resumen"></div>
@@ -90,6 +107,7 @@ function t(clave, vars){
   try{
     var T=(typeof SF_TEXTOS!=='undefined'&&SF_TEXTOS.textos)||{};
     var lg=(typeof MF!=='undefined'&&MF.idioma)?MF.idioma():'es';
+    if(typeof MF!=='undefined'&&MF.clavePlural) clave = MF.clavePlural(T, lg, clave, vars);   /* « 1 página », « 2 páginas » (P-H, 16/11/2026) */
     out = (T[lg]&&T[lg][clave])||(T.es&&T.es[clave])||clave;
   }catch(e){ out = clave; }
   var v = vars||{};
@@ -277,7 +295,7 @@ function _linea(v, o){
 function _campoHTML(c){
   var val = _valorId(c), lbl = txt(c.etiqueta);
   if(c.bloqueado){
-    return '<div class="fila"><span class="k">' + esc(lbl) + '</span><span class="v cerrado" title="' + esc(t('bloqueado')) + '">🔒 '
+    return '<div class="fila"><span class="k">' + esc(lbl) + '</span><span class="v cerrado" data-ptip="' + esc(t('bloqueado')) + '">🔒 '
          + (val ? esc(val) : '—') + '</span></div>';
   }
   var ctl;
@@ -294,23 +312,168 @@ function _campoHTML(c){
   return '<div class="fila"><span class="k">' + esc(lbl) + '</span><span class="v">' + ctl + '</span></div>';
 }
 
+/* ══ LAS LISTAS EN TABLA (P-H, 16/11/2026) ══
+   Dos columnas — la fecha y lo anotado — que se ordenan con un clic ; delante, de dónde viene la
+   línea : 📄 un PDF (se abre, para comprobar), 📱 el Protocolo, ✍️ a mano. Centros y médicos no
+   tienen fecha : la del ÚLTIMO documento donde aparecen, y cuántos documentos. Lo que enseña cada
+   lista lo dice su « columnas », en la tabla (comun/formularios/paciente.js). */
+var _ORDEN = {};                      /* { lista : { c:0|1, d:1|-1 } } */
+var _IDX = null;                      /* los documentos del expediente, para centros y médicos */
+var ICONO_PROV = { pdf:'📄', prot:'📱', mano:'✍️' };
+function _sinAcento(s){ return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+/* los MOTS d'un nom, sans ordre, accents, virgules ni titres (P-H, 17/11/2026 : « HECTOR L. SALES SAFONT »
+   et « SALES SAFONT, HECTOR L. » sont le même médecin) ; les titres viennent de paciente.js */
+function _palabras(s){
+  var T = (typeof SF_CONFIG !== 'undefined' && SF_CONFIG.titulos_medico) || [];
+  return _sinAcento(s).replace(/[^a-z0-9]+/g, ' ').split(' ').filter(function(w){ return w.length > 1 && T.indexOf(w) < 0; });
+}
+function _primero(o, campos){
+  for(var i = 0; i < (campos || []).length; i++){ var x = o[campos[i]]; if(x !== undefined && x !== null && String(x) !== '') return String(x); }
+  return '';
+}
+/* una fecha : un texto, el primer elemento de una lista, o la fecha de un objeto (P-H, 16/11/2026) */
+function _unaFecha(x){
+  if(x && typeof x === 'object' && !Array.isArray(x)) x = x.fecha || x.date || x.inicio || x.desde || '';
+  return (x === undefined || x === null) ? '' : String(x);
+}
+function _fechaDe(o, campos){
+  for(var i = 0; i < (campos || []).length; i++){
+    var x = o[campos[i]];
+    if(Array.isArray(x)){ var L = x.map(_unaFecha).filter(Boolean); if(L.length) return { f: L[0], todas: L }; continue; }
+    x = _unaFecha(x); if(x) return { f: x, todas: [x] };
+  }
+  return { f: '', todas: [] };
+}
+function _prov(o){
+  if(o.pdf_id || o.pdf) return 'pdf';
+  var s = String(o.src || o.fuente || o.origen || '');
+  return (s === 'P' || /protocolo/i.test(s)) ? 'prot' : 'mano';
+}
+function _indiceDocs(){
+  if(_IDX) return _IDX;
+  var d = D(), L = [];
+  ['mesures','events','medicaments','antecedentes','diagnosticos','citas','vacunaciones','prescripciones','escalas','bacteriologie'].forEach(function(k){
+    (Array.isArray(d[k]) ? d[k] : []).forEach(function(x){
+      if(!x || !(x.pdf_id || x.pdf)) return;
+      var proc = '', crudo = '';
+      try{ proc = MF.procedencia ? MF.procedencia(x) : ''; }catch(e){}
+      try{ crudo = JSON.stringify(x); }catch(e){}
+      var tx = _sinAcento(proc + ' ' + crudo);
+      /* le médecin du document, par la table des professionnels : « Dr ARNAU » (P-H, 17/11/2026) */
+      var R = d.referencias || {}, pr = ((R.procedencias || {})[x.prc_id] || {}).profesional || x.prescriptor_id, P = (R.profesionales || {})[pr];
+      var proW = P ? [typeof P === 'string' ? P : (P.nombre || '')].concat((P && P.alias) || []).map(_palabras).filter(function(W){ return W.length; }) : [];
+      L.push({ doc: x.pdf_id || x.pdf, fecha: String(x.date || x.fecha || x.desde || x.date_debut || '').slice(0, 10),
+               texto: tx, pal: ' ' + tx.replace(/[^a-z0-9]+/g, ' ') + ' ', crudo: crudo, proW: proW });
+    });
+  });
+  return (_IDX = L);
+}
+function _soloUno(v, w){   /* ce mot n'appartient qu'à un seul médecin de la liste */
+  return _items(v).filter(function(it){ return _palabras(it.obj.nombre || '').indexOf(w) >= 0; }).length === 1;
+}
+function _docsDe(v, it){
+  var nom = _sinAcento(it.obj.nombre || ''), clave = String(v.escribe).indexOf('dicc:') === 0 ? '"' + it.ref + '"' : null;
+  /* le nom et ses autres écritures (alias laissés par « Fusionner des médecins ») : chacun par ses MOTS */
+  var al = (clave && D().prescriptores_alias && D().prescriptores_alias[it.ref]) || [];
+  var formas = [it.obj.nombre || ''].concat(al).map(_palabras);
+  var docs = {}, ultimo = '', doc = null;
+  _indiceDocs().forEach(function(x){
+    var porMotos = formas.some(function(W){ return W.length >= 2 && W.every(function(w){ return x.pal.indexOf(' ' + w + ' ') >= 0; }); });
+    /* le document ne donne qu'une partie du nom (« Dr ARNAU ») : tous SES mots sont dans le nom de la liste ;
+       un seul mot ne suffit que s'il n'appartient à aucun autre médecin de la liste */
+    var porDoc = x.proW.some(function(W){ return formas.some(function(F){ return W.every(function(w){ return F.indexOf(w) >= 0; })
+      && (W.length >= 2 || _soloUno(v, W[0])); }); });
+    if(!(porMotos || porDoc || (nom.length > 2 && x.texto.indexOf(nom) >= 0) || (clave && x.crudo.indexOf(clave) >= 0))) return;
+    docs[x.doc] = 1; if(x.fecha >= ultimo){ ultimo = x.fecha; doc = x.doc; }
+  });
+  return { n: Object.keys(docs).length, ultimo: ultimo, doc: doc };
+}
+function _filas(v){
+  var C = v.columnas || {};
+  return _items(v).map(function(it){
+    var f, n = null, p = _prov(it.obj), extra = [], ina = '', anot = false, fe;
+    if(C.documentos){ var r = _docsDe(v, it); f = r.ultimo; n = r.n; if(r.doc) p = 'ult'; }   /* el último documento donde aparece */
+    else {
+      fe = _fechaDe(it.obj, C.fecha || ['fecha']); f = fe.f;
+      if(fe.todas.length > 1) extra.push(t('fechas_todas', { f: fe.todas.join(' · ') }));
+      if(!f && C.escrito && it.obj[C.escrito]){                     /* sin fecha clínica : la del día en que se anotó */
+        f = String(it.obj[C.escrito]).slice(0, 10).replace(/_/g, ' '); anot = true; extra.push(t('anotado_el', { f: f }));
+      }
+    }
+    if(C.inactivo && it.obj[C.inactivo]){ ina = _unaFecha(it.obj[C.inactivo]); extra.push(t('inact_desde', { f: ina })); }
+    var x = _primero(it.obj, C.texto || ['nombre','texto']);
+    if(!x && C.dicc){                                              /* el nombre, en un diccionario del expediente */
+      var cod = it.obj[C.dicc.campo], dd = D()[C.dicc.tabla] || {};
+      x = (cod !== undefined && cod !== null && dd[cod]) ? String(dd[cod]) : (cod !== undefined && cod !== null ? String(cod) : '');
+    }
+    var tip = (C.tip || []).map(function(c){ return _primero(it.obj, [c]); }).filter(Boolean).concat(extra).join(' · ');
+    return { it: it, f: f, x: x || _linea(v, it.obj), n: n, tip: tip, p: p, ina: !!ina, anot: anot };
+  });
+}
+function _tablaLista(v){
+  var C = v.columnas || {}, O = _ORDEN[v.id] || { c:0, d:-1 }, F = _filas(v), L = esc(v.id);
+  F.sort(function(a, b){
+    var x = O.c === 0 ? a.f : _sinAcento(a.x), y = O.c === 0 ? b.f : _sinAcento(b.x);
+    if(!x && y) return 1; if(x && !y) return -1;               /* lo que no tiene fecha, al final */
+    return (x < y ? -1 : x > y ? 1 : 0) * O.d;
+  });
+  var fl = function(c){ return O.c === c ? (O.d > 0 ? ' ▲' : ' ▼') : ''; }, ot = esc(t('orden_tip'));
+  var h = '<table class="tl"><thead><tr><th class="pv"></th>'
+    + '<th data-o="0" data-l="' + L + '" data-ptip="' + ot + '">' + esc(t(C.documentos ? 'col_ultimo' : 'col_fecha')) + fl(0) + '</th>'
+    + '<th data-o="1" data-l="' + L + '" data-ptip="' + ot + '">' + esc(txt(C.titulo || v.titulo)) + fl(1) + '</th><th class="ac"></th></tr></thead><tbody>';
+  F.forEach(function(r){
+    var R = esc(r.it.ref);
+    var pv = (r.p === 'pdf' || r.p === 'ult')
+      ? '<button class="ib" data-a="pdf" data-l="' + L + '" data-r="' + R + '" data-ptip="' + esc(t(r.p === 'ult' ? 'src_ult' : 'src_pdf')) + '">' + ICONO_PROV.pdf + '</button>'
+      : '<span data-ptip="' + esc(t(r.p === 'prot' ? 'src_prot' : 'src_mano')) + '">' + ICONO_PROV[r.p] + '</span>';
+    h += '<tr' + (r.ina ? ' class="inact"' : '') + (r.tip ? ' data-ptip="' + esc(r.tip) + '"' : '') + '><td class="pv">' + pv + '</td>'
+       + '<td class="f' + (r.anot ? ' esc' : '') + '">' + esc(r.f || '—') + '</td>'
+       + '<td>' + esc(r.x) + (r.n !== null ? ' <span class="nd">· ' + esc(t('docs', { n: r.n })) + '</span>' : '') + '</td>'
+       + '<td class="ac"><button class="ib" data-a="ed" data-l="' + L + '" data-r="' + R + '" data-ptip="' + esc(t('editar')) + '">✏️</button>'
+       + '<button class="ib" data-a="del" data-l="' + L + '" data-r="' + R + '" data-ptip="' + esc(t('suprimir')) + '">🗑</button></td></tr>';
+  });
+  return h + '</tbody></table>';
+}
+/* el PDF de una línea, en la página : la Casa lo da (MF.pdfRespuesta), nada sale de la carpeta del paciente */
+function abrePdf(o){
+  var id = o.pdf_id || o.pdf; if(!id) return;
+  var nom = (MF.nombrePdf ? MF.nombrePdf(id) : String(id)).replace(/\.pdf$/i, '') + '.pdf';
+  estado('📄 ' + nom + ' …');
+  MF.pdfRespuesta(id).then(function(r){
+    if(!r.ok){ estado('📄 ' + nom + ' — ' + (MF.motivoPdf ? MF.motivoPdf(r.headers.get('X-Sf-Motivo')) : '')); return; }
+    return r.blob().then(function(b){
+      estado('');
+      var u = URL.createObjectURL(new Blob([b], { type:'application/pdf' }));
+      var w = document.getElementById('pdf-capa'); if(w) w.remove();
+      w = document.createElement('div'); w.id = 'pdf-capa';
+      w.innerHTML = '<div class="pdf-cab"><span>📄 ' + esc(nom) + '</span><button class="ib" id="pdf-cierra">✕ '
+        + esc(MF.palabra ? MF.palabra('cerrar') : '') + '</button></div><embed src="' + u + '" type="application/pdf">';
+      document.body.appendChild(w);
+      document.getElementById('pdf-cierra').onclick = function(){ w.remove(); URL.revokeObjectURL(u); };
+    });
+  }).catch(function(e){ estado('📄 ' + nom + ' — ' + e.message); });
+}
+
+function imprimeFicha(){
+  var pa = {}; try{ pa = MF.paciente() || {}; }catch(e){}
+  MF.imprimeHoja(document.getElementById('resumen'), { titulo:'🧑 ' + t('ficha_tit') + (pa.etiqueta ? ' — ' + pa.etiqueta : '') });
+}
 function pintaResumen(){
   var z = document.getElementById('resumen');
-  var h = _DATOS ? '<p class="nota" style="color:var(--accent);border-color:var(--accent)">' + esc(t('pulsa_guardar')) + '</p>'
-                 : '<p class="nota">' + esc(t('sin_expediente')) + '</p>';
+  var h = _DATOS ? '<p class="nota no-imprimir" style="color:var(--accent);border-color:var(--accent)">' + esc(t('pulsa_guardar')) + '</p>'
+                 : '<p class="nota no-imprimir">' + esc(t('sin_expediente')) + '</p>';
+  /* imprimir la ficha (P-H, 17/11/2026) */
+  ponImprimir();
   h += '<div class="vignette"><h2>🧑 ' + esc(t('identidad_tit')) + '</h2>' + CAMPOS.map(_campoHTML).join('') + '</div>';
   h += '<div class="vignette"><h2>📋 ' + esc(t('listas_tit')) + '</h2>';
+  _IDX = null;
   VISTA.forEach(function(v){
     var its = _items(v);
     h += '<details class="lista" data-l="' + esc(v.id) + '"' + (_ABIERTAS[v.id] ? ' open' : '') + '><summary>'
        + '<span>' + v.icono + ' ' + esc(txt(v.titulo)) + '</span>'
        + '<span class="cuenta">' + (its.length ? esc(t('cuenta', { n:its.length })) : esc(t('lista_vacia'))) + '</span>'
-       + '<button class="ib" data-a="add" data-l="' + esc(v.id) + '" title="' + esc(t('anyadir')) + '">➕</button></summary>';
-    its.forEach(function(it){
-      h += '<div class="item"><span class="txt">' + esc(_linea(v, it.obj)) + '</span>'
-         + '<button class="ib" data-a="ed" data-l="' + esc(v.id) + '" data-r="' + esc(it.ref) + '" title="' + esc(t('editar')) + '">✏️</button>'
-         + '<button class="ib" data-a="del" data-l="' + esc(v.id) + '" data-r="' + esc(it.ref) + '" title="' + esc(t('suprimir')) + '">🗑</button></div>';
-    });
+       + '<button class="ib" data-a="add" data-l="' + esc(v.id) + '" data-ptip="' + esc(t('anyadir')) + '">➕</button></summary>';
+    if(its.length) h += _tablaLista(v);
     h += '</details>';
   });
   h += '</div>';
@@ -324,9 +487,9 @@ function cambiaCampo(el){
   var val = String(el.value || '').trim();
   var r = SF_FORM.comprueba(c, val);
   if(r && (r.grave || c.tipo === 'fecha' || c.patron)){            /* un formato roto no se guarda */
-    el.classList.add('malo'); el.title = r.texto || t('ficha_mala'); return;
+    el.classList.add('malo'); el.setAttribute('data-ptip', r.texto || t('ficha_mala')); return;
   }
-  el.classList.remove('malo'); el.title = '';
+  el.classList.remove('malo'); el.removeAttribute('data-ptip');
   if(val === _valorId(c)) return;
   var o = {}; o[c.id] = val;
   escribeReal('raiz', 'paciente', o);
@@ -354,6 +517,7 @@ function accion(a, lid, ref){
     return;
   }
   var its = _items(v), it = its.filter(function(x){ return String(x.ref) === String(ref); })[0]; if(!it) return;
+  if(a === 'pdf'){ abrePdf((v.columnas || {}).documentos ? { pdf_id: _docsDe(v, it).doc } : it.obj); return; }
   if(a === 'ed'){
     SF_FORM.modo('uno_a_uno');
     SF_FORM.pide(v.tabla, v.rubrica, function(x){
@@ -390,6 +554,12 @@ function accion(a, lid, ref){
 var _zona = document.getElementById('resumen');
 _zona.addEventListener('change', function(ev){ if(ev.target.getAttribute && ev.target.getAttribute('data-c')) cambiaCampo(ev.target); });
 _zona.addEventListener('click', function(ev){
+  var o = ev.target.closest && ev.target.closest('th[data-o]');
+  if(o){                                    /* ordenar : la misma columna invierte ; otra columna empieza en su sentido */
+    var l = o.getAttribute('data-l'), c = +o.getAttribute('data-o'), A = _ORDEN[l] || { c:0, d:-1 };
+    _ORDEN[l] = A.c === c ? { c:c, d:-A.d } : { c:c, d:(c === 0 ? -1 : 1) };
+    _ABIERTAS[l] = true; pintaResumen(); return;
+  }
   var b = ev.target.closest && ev.target.closest('[data-a]');
   if(b){ ev.preventDefault(); ev.stopPropagation(); accion(b.getAttribute('data-a'), b.getAttribute('data-l'), b.getAttribute('data-r')); }
 });
@@ -399,19 +569,25 @@ _zona.addEventListener('toggle', function(ev){
 
 document.getElementById('b-empezar').onclick = empezar;
 
+function ponImprimir(){
+  var b = document.getElementById('b-imprimir'); if(!b) return;
+  b.textContent = '🖨 ' + t('ficha_imp'); b.setAttribute('data-ptip', t('ficha_imp_tip'));
+  b.style.display = _DATOS ? '' : 'none';
+}
 function ponModo(){
+  ponImprimir();
   document.getElementById('b-empezar').textContent = t(_EMP ? 'reiniciar' : (_DATOS ? 'completar' : 'empezar'));
 }
 
 MF.arranca({
   alCargar: function(d){
     _DATOS = d;
-    MF.ponVersion(); if(MF.aplicaIdioma) MF.aplicaIdioma();
+    MF.ponVersion(); if(MF.ptips) MF.ptips(); if(MF.aplicaIdioma) MF.aplicaIdioma();
     ponModo(); pintaResumen();
     /* un expediente recién creado : la conversación arranca sola, una vez */
     if(!_AUTO && esReciente(d)){ _AUTO = true; setTimeout(empezar, 250); }
   },
-  alFallar: function(){ MF.ponVersion(); if(MF.aplicaIdioma) MF.aplicaIdioma(); ponModo(); pintaResumen(); },
+  alFallar: function(){ MF.ponVersion(); if(MF.ptips) MF.ptips(); if(MF.aplicaIdioma) MF.aplicaIdioma(); ponModo(); pintaResumen(); },
   alIdioma: function(){ if(MF.aplicaIdioma) MF.aplicaIdioma(); ponModo(); pintaResumen(); }
 });
 </script>

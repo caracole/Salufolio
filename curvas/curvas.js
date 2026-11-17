@@ -1,6 +1,8 @@
 /* CURVAS — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "grosor_linea": 2,
+  "burbuja_fondo": "rgba(0,0,0,0.55)",
+  "_burbuja_fondo": "El fondo de la burbuja de un punto : mas transparente que el de origen (0.8), para ver la curva debajo (P-H, 17/11/2026). 0 = invisible, 1 = opaco.",
   "comentario": {
     "alto_curva": 200,
     "impresion": {
@@ -15,7 +17,7 @@ var SF_CONFIG = window.SF_CONFIG = {
   "pdf_ausente": "PDF ABSENT.pdf",
   "_pdf_ausente": "El nombre que, en la tabla pdfs, marca un documento ausente (P-H, 05/11/2026). Un clic en un punto que lo cita abre la ficha de lo que se sabe de él.",
   "id": "curvas",
-  "version": "2026.11.11-11:39:07",
+  "version": "2026.11.17-17:59:05",
   "programa": "curvas.html",
   "lanzador": "../casa/casa.js",
   "icono": "📈",

@@ -1,5 +1,5 @@
 /* ═════════════════════════════════════════════════
-   Versión 2026.10.06-18:44:03
+   Versión 2026.11.16-22:29:18
    LA TABLA DEL PACIENTE
    /Salufolio/comun/formularios/paciente.js
 
@@ -90,7 +90,15 @@ var SF_FORM_PACIENTE = window.SF_FORM_PACIENTE = {
                      fr:"Connaissez-vous son numéro de dossier clinique ? (peut rester vide)" } },
         { id:"cip_sns", etiqueta:"CIP-SNS", tipo:"texto",
           pregunta:{ es:"¿Y el CIP del Sistema Nacional de Salud? (puede dejarlo vacío)",
-                     fr:"Et le CIP du Système National de Santé ? (peut rester vide)" } }
+                     fr:"Et le CIP du Système National de Santé ? (peut rester vide)" } },
+        /* P-H, 16/11/2026 : el médico de cabecera, que el Informe pone en su cabecera */
+        { id:"medico_cabecera", etiqueta:"Médico de cabecera", tipo:"texto",
+          ejemplo:"Dr. …",
+          ayuda:"El informe impreso lo nombra en la cabecera.",
+          pregunta:{ es:"¿Cómo se llama su médico de cabecera? (puede dejarlo vacío)",
+                     fr:"Comment s'appelle son médecin traitant ? (peut rester vide)",
+                     ca:"Com es diu el seu metge de capçalera? (pot deixar-ho buit)",
+                     en:"What is the GP's name? (can be left empty)" } }
       ]
     },
 
@@ -118,28 +126,42 @@ var SF_FORM_PACIENTE = window.SF_FORM_PACIENTE = {
     }
   },
 
-  /* ══ LA TARJETA : lo que se despliega y se puede corregir ══ */
+  /* ══ LA TARJETA : lo que se despliega y se puede corregir ══
+     « columnas » (P-H, 16/11/2026) : la tabla de cada lista — fecha, texto, lo que va en la burbuja (tip),
+     el título de la 2.ª columna ; « documentos:true » = sin fecha propia : la del último documento donde
+     aparece, y cuántos documentos (centros, médicos).
+     fecha : una lista (« fechas » de los antecedentes) da su PRIMERA fecha ; las otras van a la burbuja.
+     inactivo : el campo que dice desde cuándo la línea ya no vale — la fila sale en gris.
+     dicc : el nombre se lee en un diccionario del expediente (« vacunas » : código → nombre).
+     escrito : sin fecha clínica, la fecha en que se anotó — en gris y cursiva, para no confundirlas. */
   vista: [
     { id:"antecedentes", icono:"📜", escribe:"lista:antecedentes", tabla:"adquisicion", rubrica:"antecedente",
       titulo:{ es:"Antecedentes", fr:"Antécédents", ca:"Antecedents", en:"History" },
+      columnas:{ fecha:["fechas","fecha"], texto:["descripcion","texto"], tip:["categoria","estado","codificacion"], inactivo:"fecha_inactivacion", titulo:{ es:"Antecedente", fr:"Antécédent", ca:"Antecedent", en:"History item" } },
       resumen:[["fecha"],["descripcion","texto"],["categoria"]] },
     { id:"diagnosticos", icono:"🏷", escribe:"lista:diagnosticos", tabla:"adquisicion", rubrica:"diagnostico",
       titulo:{ es:"Diagnósticos", fr:"Diagnostics", ca:"Diagnòstics", en:"Diagnoses" },
+      columnas:{ fecha:["fecha"], texto:["texto","diagnostico","descripcion"], tip:["codigo","tipo"], titulo:{ es:"Diagnóstico", fr:"Diagnostic", ca:"Diagnòstic", en:"Diagnosis" } },
       resumen:[["fecha"],["texto","diagnostico","descripcion"],["codigo"]] },
     { id:"vacunaciones", icono:"💉", escribe:"lista:vacunaciones", tabla:"adquisicion", rubrica:"vacuna",
       titulo:{ es:"Vacunas", fr:"Vaccins", ca:"Vacunes", en:"Vaccines" },
+      columnas:{ fecha:["fecha"], texto:["vacuna","nombre"], dicc:{ campo:"codigo", tabla:"vacunas" }, tip:["motivo","dosis","codigo"], titulo:{ es:"Vacuna", fr:"Vaccin", ca:"Vacuna", en:"Vaccine" } },
       resumen:[["fecha"],["vacuna","nombre"],["dosis"]] },
     { id:"citas", icono:"🗓", escribe:"lista:citas", tabla:"adquisicion", rubrica:"cita",
       titulo:{ es:"Citas", fr:"Rendez-vous", ca:"Cites", en:"Appointments" },
+      columnas:{ fecha:["fecha"], texto:["servicio","nombre","lugar"], tip:["hora","lugar"], titulo:{ es:"Cita", fr:"Rendez-vous", ca:"Cita", en:"Appointment" } },
       resumen:[["fecha"],["hora"],["servicio","nombre"]] },
     { id:"prescripciones", icono:"🍽", escribe:"lista:prescripciones", tabla:"adquisicion", rubrica:"prescripcion_no_farm",
       titulo:{ es:"Dieta y material", fr:"Régime et matériel", ca:"Dieta i material", en:"Diet and supplies" },
+      columnas:{ fecha:["desde","fecha"], escrito:"escrito", texto:["texto"], tip:["tipo"], titulo:{ es:"Dieta o material", fr:"Régime ou matériel", ca:"Dieta o material", en:"Diet or supplies" } },
       resumen:[["tipo"],["texto"],["desde"]] },
     { id:"centros", icono:"🏥", escribe:"lista:centros", tabla:"paciente", rubrica:"centro",
       titulo:{ es:"Centros", fr:"Centres", ca:"Centres", en:"Centres" },
+      columnas:{ documentos:true, texto:["nombre"], titulo:{ es:"Centro", fr:"Centre", ca:"Centre", en:"Centre" } },
       resumen:[["nombre"]] },
     { id:"prescriptores", icono:"👨‍⚕️", escribe:"dicc:prescriptores", tabla:"paciente", rubrica:"prescriptor",
       titulo:{ es:"Médicos", fr:"Médecins", ca:"Metges", en:"Doctors" },
+      columnas:{ documentos:true, texto:["nombre"], titulo:{ es:"Médico", fr:"Médecin", ca:"Metge", en:"Doctor" } },
       resumen:[["nombre"]] }
   ],
 

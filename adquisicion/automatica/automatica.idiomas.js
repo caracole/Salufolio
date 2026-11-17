@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.11.04-11:13:37
+   Versión 2026.11.16-21:57:10
    LOS TEXTOS de la adquisición automática
 
    Nada en duro: cada texto lleva su clave. P-H la llama « la tabla de
@@ -10,6 +10,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
  "_doctrina": "Los textos del programa. Nada en duro en el HTML: cada uno lleva su\nclave, y la tabla dice cómo se escribe en cada lengua.\n\nP-H odia la palabra « i18n » —jerga de anglófono con prisa. Aquí se llama\nlo que es: la tabla de las lenguas.",
  "textos": {
   "es": {
+      "leer_sin_permiso": "Para guardar lo que lea la IA hace falta el permiso de escribir en la carpeta del paciente. Pulse 💾 en la casa para darlo y vuelva a soltar el PDF. No se ha leído nada: no ha costado nada.",
    "tit_config": "⚙️ Configuración de la extracción",
    "tit_leer": "📄 Leer documentos",
    "tit_diario": "📓 El diario",
@@ -59,7 +60,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "det_desplegar": "— tocar para desplegar",
    "dia_limpiar": "🧹 Limpiar el diario",
    "dia_limpiar_expl": "El diario guarda una línea por documento leído. Con los años se alarga.",
-   "dia_limpiar_hay": "Aquí hay {n} línea(s), desde el {desde}.",
+   "dia_limpiar_hay": "Aquí hay {n} líneas, desde el {desde}.",
+   "dia_limpiar_hay_1": "Aquí hay {n} línea, del {desde}.",
    "dia_quitar_antes": "Quitar lo anterior a:",
    "dia_quitar_todo": "Quitarlo todo",
    "dia_cancelar": "Cancelar",
@@ -85,6 +87,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "det_volver_elegir": "Elija el fichero {fichero} para volver a leerlo."
   },
   "fr": {
+      "leer_sin_permiso": "Pour garder ce que l'IA va lire, il faut la permission d'écrire dans le dossier du patient. Cliquez sur 💾 dans la casa pour la donner, puis redéposez le PDF. Rien n'a été lu : rien n'a été payé.",
    "tit_config": "⚙️ Configuration de l'extraction",
    "tit_leer": "📄 Lire des documents",
    "tit_diario": "📓 Le journal",
@@ -134,7 +137,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "det_desplegar": "— toucher pour déplier",
    "dia_limpiar": "🧹 Nettoyer le journal",
    "dia_limpiar_expl": "Le journal garde une ligne par document lu. Avec les années il s'allonge.",
-   "dia_limpiar_hay": "Il y a ici {n} ligne(s), depuis le {desde}.",
+   "dia_limpiar_hay": "Il y a ici {n} lignes, depuis le {desde}.",
+   "dia_limpiar_hay_1": "Il y a ici {n} ligne, du {desde}.",
    "dia_quitar_antes": "Retirer ce qui est avant :",
    "dia_quitar_todo": "Tout retirer",
    "dia_cancelar": "Annuler",
@@ -160,6 +164,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "det_volver_elegir": "Choisissez le fichier {fichero} pour le relire."
   },
   "ca": {
+      "leer_sin_permiso": "Per a guardar el que llija la IA cal el permís d'escriure a la carpeta del pacient. Premeu 💾 a la casa per a donar-lo i torneu a deixar el PDF. No s'ha llegit res: no ha costat res.",
    "tit_config": "⚙️ Configuració de l'extracció",
    "tit_leer": "📄 Llegir documents",
    "tit_diario": "📓 El diari",
@@ -209,7 +214,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "det_desplegar": "— tocar per desplegar",
    "dia_limpiar": "🧹 Netejar el diari",
    "dia_limpiar_expl": "El diari guarda una línia per document llegit.",
-   "dia_limpiar_hay": "Aquí hi ha {n} línia(es), des del {desde}.",
+   "dia_limpiar_hay": "Aquí hi ha {n} línies, des del {desde}.",
+   "dia_limpiar_hay_1": "Aquí hi ha {n} línia, del {desde}.",
    "dia_quitar_antes": "Treure el que és anterior a:",
    "dia_quitar_todo": "Treure-ho tot",
    "dia_cancelar": "Cancel·lar",
@@ -235,6 +241,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "det_volver_elegir": "Trie el fitxer {fichero} per a tornar a llegir-lo."
   },
   "en": {
+      "leer_sin_permiso": "To keep what the AI reads, permission to write in the patient's folder is needed. Click 💾 in the casa to grant it, then drop the PDF again. Nothing was read: nothing was charged.",
    "tit_config": "⚙️ Extraction settings",
    "tit_leer": "📄 Read documents",
    "tit_diario": "📓 The log",
@@ -284,7 +291,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "det_desplegar": "— tap to unfold",
    "dia_limpiar": "🧹 Clean up the log",
    "dia_limpiar_expl": "The log keeps a line per document read. Over the years it grows.",
-   "dia_limpiar_hay": "There are {n} line(s) here, since {desde}.",
+   "dia_limpiar_hay": "There are {n} lines here, since {desde}.",
+   "dia_limpiar_hay_1": "There is {n} line here, from {desde}.",
    "dia_quitar_antes": "Remove anything before:",
    "dia_quitar_todo": "Remove it all",
    "dia_cancelar": "Cancel",

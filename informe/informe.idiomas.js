@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════
    LOS TEXTOS DEL INFORME — /Salufolio/informe/informe.idiomas.js
-   Versión 2026.09.29-16:08:54
+   Versión 2026.11.17-18:58:05
 
    Nada escrito en el código.
 
@@ -29,6 +29,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
  "textos": {
   "es": {
    "titulo_express": "Informe express",
+   "medico_cab": "Médico de cabecera",
    "para": "para la consulta",
    "elegir": "¿Qué informe hace falta?",
    "elegir_sub": "Los tres salen del mismo expediente. Cambia a quién se le da.",
@@ -63,6 +64,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "fuera_rango": "FUERA DE RANGO",
    "en_dias": "en {n} días",
    "pie_express": "Salufolio — expediente longitudinal local del paciente. Cada dato procede de informes oficiales importados o del registro del cuidador. Salufolio no inventa nada.",
+   "pie_pagina": "Página {n} / {t}",
+   "pie_marca": "Salufolio © 2026 Pierre-Henri Giraud · salufolio.com",
    "paciente": "Paciente",
    "generado": "Generado",
    "periodo": "Período",
@@ -146,6 +149,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
   },
   "fr": {
    "titulo_express": "Rapport express",
+   "medico_cab": "Médecin traitant",
    "para": "pour la consultation",
    "elegir": "Quel rapport faut-il ?",
    "elegir_sub": "Les trois sortent du même dossier. Ce qui change, c'est à qui on le donne.",
@@ -180,6 +184,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "fuera_rango": "HORS DES BORNES",
    "en_dias": "en {n} jours",
    "pie_express": "Salufolio — dossier longitudinal local du patient. Chaque donnée vient d'un rapport officiel importé ou de ce qu'a noté l'aidant. Salufolio n'invente rien.",
+   "pie_pagina": "Page {n} / {t}",
+   "pie_marca": "Salufolio © 2026 Pierre-Henri Giraud · salufolio.com",
    "paciente": "Patient",
    "generado": "Fait le",
    "periodo": "Période",
@@ -263,6 +269,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
   },
   "ca": {
    "titulo_express": "Informe express",
+   "medico_cab": "Metge de capçalera",
    "para": "per a la consulta",
    "elegir": "Quin informe cal?",
    "elegir_sub": "Els tres ixen del mateix expedient.",
@@ -297,6 +304,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "fuera_rango": "FORA DE RANG",
    "en_dias": "en {n} dies",
    "pie_express": "Salufolio — expedient longitudinal local del pacient. Salufolio no s'inventa res.",
+   "pie_pagina": "Pàgina {n} / {t}",
+   "pie_marca": "Salufolio © 2026 Pierre-Henri Giraud · salufolio.com",
    "paciente": "Pacient",
    "generado": "Generat",
    "periodo": "Període",
@@ -380,6 +389,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
   },
   "en": {
    "titulo_express": "Express report",
+   "medico_cab": "GP",
    "para": "for the visit",
    "elegir": "Which report is needed?",
    "elegir_sub": "All three come from the same record. What changes is who gets it.",
@@ -414,6 +424,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "fuera_rango": "OUT OF RANGE",
    "en_dias": "in {n} days",
    "pie_express": "Salufolio — the patient's own longitudinal record. Every figure comes from an imported official report or from what the carer noted. Salufolio invents nothing.",
+   "pie_pagina": "Page {n} / {t}",
+   "pie_marca": "Salufolio © 2026 Pierre-Henri Giraud · salufolio.com",
    "paciente": "Patient",
    "generado": "Made on",
    "periodo": "Period",

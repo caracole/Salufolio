@@ -1,6 +1,6 @@
 {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.11.13-12:00:24",
+ "_ultima_pasada": "2026.11.17-22:26:16",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -42,16 +42,16 @@
    "version": "2026.11.04-12:42:25"
   },
   "adquisicion/asistida/asistida.html": {
-   "suma": "ca5e5f9d3e9d",
-   "version": "2026.11.05-22:43:03"
+   "suma": "f9483b63d2fb",
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/asistida/asistida.idiomas.js": {
-   "suma": "3a7dbada57cd",
-   "version": "2026.10.06-13:09:36"
+   "suma": "cf299c741425",
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/asistida/asistida.js": {
    "suma": "d16da7f91d94",
-   "version": "2026.11.05-22:43:03"
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/asistida/index.html": {
    "suma": "45386ecebea9",
@@ -62,16 +62,16 @@
    "version": "2026.11.04-12:42:25"
   },
   "adquisicion/automatica/automatica.html": {
-   "suma": "608dbded6284",
-   "version": "2026.11.05-22:43:03"
+   "suma": "7ab0290871c8",
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/automatica/automatica.idiomas.js": {
-   "suma": "54712dd7d6ac",
-   "version": "2026.11.04-11:13:37"
+   "suma": "6cf2091b8001",
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/automatica/automatica.js": {
-   "suma": "1603283e3254",
-   "version": "2026.11.05-22:43:03"
+   "suma": "508e9d8dba64",
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/automatica/index.html": {
    "suma": "70778b7e6643",
@@ -86,56 +86,56 @@
    "version": "2026.11.04-12:42:25"
   },
   "adquisicion/manual/manual.html": {
-   "suma": "8a58204cf609",
-   "version": "2026.10.06-19:16:32"
+   "suma": "5db64c034742",
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/manual/manual.idiomas.js": {
-   "suma": "dc5a4582aa4d",
-   "version": "2026.10.05-20:20:03"
+   "suma": "b043d0208088",
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/manual/manual.js": {
    "suma": "00c258c7b36a",
-   "version": "2026.11.04-12:42:25"
+   "version": "2026.11.16-21:57:10"
   },
   "adquisicion/prompts/LEEME.txt": {
    "suma": "071651d41a4a",
    "version": "2026.10.06-19:16:32"
   },
   "adquisicion/prompts/prompt-extraccion-ocr.js": {
-   "suma": "eb49e702ba4c",
-   "version": "2026.11.04-10:32:58"
+   "suma": "bccd4de1f3ec",
+   "version": "2026.11.17-22:17:14"
   },
   "adquisicion/prompts/prompt-extraccion-ocr.txt": {
    "suma": "54cead42a5e4",
    "version": "2026.09.19-18:15:47"
   },
   "adquisicion/prompts/prompt-extraccion.js": {
-   "suma": "c01df5e6fc44",
-   "version": "2026.11.04-10:32:58"
+   "suma": "6610998c814b",
+   "version": "2026.11.17-22:17:14"
   },
   "adquisicion/prompts/prompt-extraccion.txt": {
    "suma": "ce9c84a8268a",
    "version": "2026.09.19-18:15:47"
   },
   "adquisicion/prompts/prompts.js": {
-   "suma": "f97bec763540",
-   "version": "2026.11.04-10:32:58"
+   "suma": "2400fce0546c",
+   "version": "2026.11.13-19:32:13"
   },
   "antecedentes/antecedentes.help.html": {
    "suma": "8c8fa090cd26",
    "version": "2026.11.04-12:42:25"
   },
   "antecedentes/antecedentes.html": {
-   "suma": "b032f3524053",
-   "version": "2026.11.05-15:36:20"
+   "suma": "c10adb457ed7",
+   "version": "2026.11.17-16:21:23"
   },
   "antecedentes/antecedentes.idiomas.js": {
-   "suma": "2fa417511b6d",
-   "version": "2026.10.06-13:46:00"
+   "suma": "0246e4938bd5",
+   "version": "2026.11.17-16:21:23"
   },
   "antecedentes/antecedentes.js": {
    "suma": "46e739c7448e",
-   "version": "2026.11.05-15:36:20"
+   "version": "2026.11.17-16:21:23"
   },
   "antecedentes/index.html": {
    "suma": "8684fccc3dd6",
@@ -182,20 +182,20 @@
    "version": "2026.11.04-12:42:25"
   },
   "casa/casa.js": {
-   "suma": "d2609d656df7",
-   "version": "2026.11.13-11:57:53"
+   "suma": "a3b9d206e171",
+   "version": "2026.11.17-17:47:37"
   },
   "casa/index.html": {
-   "suma": "3dddeb36375b",
-   "version": "2026.11.13-11:57:53"
+   "suma": "220f19627e9d",
+   "version": "2026.11.17-16:21:23"
   },
   "casa/novedades.js": {
    "suma": "67214ce90a41",
    "version": "2026.11.04-17:22:52"
   },
   "casa/tour.js": {
-   "suma": "7e0915488d14",
-   "version": "2026.10.07-17:11:00"
+   "suma": "79d87162b3af",
+   "version": "2026.11.17-16:21:23"
   },
   "casa/voz/CA-abeja.mp3": {
    "muda": true,
@@ -2640,8 +2640,8 @@
    "version": "2026.09.19-18:15:47"
   },
   "comun/comentario-ia.js": {
-   "suma": "1b1c648d8595",
-   "version": "2026.11.05-16:24:58"
+   "suma": "fc11a07fd73b",
+   "version": "2026.11.17-09:12:11"
   },
   "comun/concha.svg": {
    "muda": true,
@@ -2662,12 +2662,12 @@
    "version": "2026.11.10-15:56:30"
   },
   "comun/espera.idiomas.js": {
-   "suma": "f8b8a78270fa",
-   "version": "2026.11.11-21:07:03"
+   "suma": "573a332200a9",
+   "version": "2026.11.13-16:53:42"
   },
   "comun/espera.js": {
-   "suma": "d035df508f25",
-   "version": "2026.11.11-21:07:03"
+   "suma": "49c7490f6d2a",
+   "version": "2026.11.13-16:53:42"
   },
   "comun/formulario.js": {
    "suma": "ade9410ddd3d",
@@ -2682,8 +2682,8 @@
    "version": "2026.09.19-18:15:47"
   },
   "comun/formularios/paciente.js": {
-   "suma": "4d043a0458f9",
-   "version": "2026.10.06-18:44:03"
+   "suma": "a9cfc527cec2",
+   "version": "2026.11.16-22:29:18"
   },
   "comun/glosario-datos.js": {
    "suma": "e0d4659cd86b",
@@ -2693,9 +2693,13 @@
    "suma": "dddff99da17e",
    "version": "2026.09.23-18:05:54"
   },
+  "comun/imprime-hoja.js": {
+   "suma": "eefa960f7cb6",
+   "version": "2026.11.17-16:21:23"
+  },
   "comun/mf.js": {
-   "suma": "2bc1431f03a4",
-   "version": "2026.11.12-10:43:30"
+   "suma": "fec73ef6a456",
+   "version": "2026.11.17-16:21:23"
   },
   "comun/mf_save.js": {
    "suma": "b4d6ecaa1510",
@@ -2739,8 +2743,8 @@
    "version": "2026.11.05-18:02:52"
   },
   "comun/salufolio.css": {
-   "suma": "5afe433cd286",
-   "version": "2026.11.06-09:20:17"
+   "suma": "6761a545aaa8",
+   "version": "2026.11.17-16:21:23"
   },
   "comun/sinonimos-parametros.js": {
    "suma": "2d602f8b5796",
@@ -2795,8 +2799,8 @@
    "version": "2026.11.05-15:44:58"
   },
   "cronologia/cronologia.html": {
-   "suma": "12ba97f96fea",
-   "version": "2026.11.06-09:20:17"
+   "suma": "00b309ec8f54",
+   "version": "2026.11.17-16:21:23"
   },
   "cronologia/cronologia.idiomas.js": {
    "suma": "9f1ea4dc0bba",
@@ -2804,7 +2808,7 @@
   },
   "cronologia/cronologia.js": {
    "suma": "1d598a833de6",
-   "version": "2026.11.06-09:20:17"
+   "version": "2026.11.17-16:21:23"
   },
   "cronologia/index.html": {
    "suma": "2cad4db93925",
@@ -2815,16 +2819,16 @@
    "version": "2026.11.06-00:25:52"
   },
   "curvas/curvas.html": {
-   "suma": "91ffaad8b4ec",
-   "version": "2026.11.11-11:39:07"
+   "suma": "0674e96c00ee",
+   "version": "2026.11.17-17:47:37"
   },
   "curvas/curvas.idiomas.js": {
-   "suma": "663cb965b490",
-   "version": "2026.11.06-00:25:52"
+   "suma": "964057f35eaf",
+   "version": "2026.11.17-17:59:05"
   },
   "curvas/curvas.js": {
-   "suma": "50a96d98a440",
-   "version": "2026.11.11-11:39:07"
+   "suma": "86410061000b",
+   "version": "2026.11.17-17:59:05"
   },
   "curvas/index.html": {
    "suma": "02d1b107ab70",
@@ -3255,23 +3259,23 @@
   },
   "especialidad/cardiologia.js": {
    "suma": "16392a2d8282",
-   "version": "2026.11.11-16:35:30"
+   "version": "2026.11.17-09:58:06"
   },
   "especialidad/especialidad.help.html": {
    "suma": "9060065072a1",
    "version": "2026.11.05-20:12:21"
   },
   "especialidad/especialidad.html": {
-   "suma": "faff0c6007b8",
-   "version": "2026.11.11-16:35:30"
+   "suma": "b5d046db055b",
+   "version": "2026.11.17-09:58:06"
   },
   "especialidad/especialidad.idiomas.js": {
-   "suma": "c5b329f28edc",
-   "version": "2026.11.11-16:35:30"
+   "suma": "04bcace85862",
+   "version": "2026.11.17-09:58:06"
   },
   "especialidad/especialidad.js": {
    "suma": "29f8ef103462",
-   "version": "2026.11.11-16:35:30"
+   "version": "2026.11.17-09:58:06"
   },
   "especialidad/index.html": {
    "suma": "105f870e0613",
@@ -3279,11 +3283,11 @@
   },
   "especialidad/neumologia.js": {
    "suma": "b716f2fc46e8",
-   "version": "2026.11.11-16:35:30"
+   "version": "2026.11.17-09:58:06"
   },
   "especialidad/neurologia.js": {
    "suma": "e2c93db6b04f",
-   "version": "2026.11.11-16:35:30"
+   "version": "2026.11.17-09:58:06"
   },
   "farmacovigilancia/farmacovigilancia.html": {
    "suma": "b9640c688345",
@@ -3453,6 +3457,10 @@
    "suma": "d9b9552c54f2",
    "version": "2026.09.19-18:15:47"
   },
+  "herramientas/fusionar_medicos/fusionar_medicos.py": {
+   "suma": "025bcaf5792a",
+   "version": "2026.11.17-18:35:23"
+  },
   "herramientas/fusionar_pdfid.py": {
    "suma": "040cbfde5ad4",
    "version": "2026.09.19-18:15:47"
@@ -3607,8 +3615,8 @@
    "version": "2026.11.02-00:37:43"
   },
   "herramientas/pdf_anonymizer/app.py": {
-   "suma": "4dcce303ec32",
-   "version": "2026.11.03-11:33:06"
+   "suma": "0aa73b41a22b",
+   "version": "2026.11.13-17:12:07"
   },
   "herramientas/pdf_anonymizer/moteur_designer.py": {
    "suma": "6fb33fa5caa1",
@@ -3623,12 +3631,40 @@
    "version": "2026.11.02-00:37:43"
   },
   "herramientas/pdf_anonymizer/static/js/app.js": {
-   "suma": "0cc99ed0c604",
-   "version": "2026.11.03-11:33:06"
+   "suma": "7f331a97cfeb",
+   "version": "2026.11.13-17:12:07"
   },
   "herramientas/pdf_anonymizer/templates/index.html": {
-   "suma": "a5cd259a8454",
-   "version": "2026.11.12-18:26:37"
+   "suma": "60351015d652",
+   "version": "2026.11.13-17:12:07"
+  },
+  "herramientas/pdf_anonymizer/travail/Analisis Calderon/ocr_result.txt": {
+   "suma": "be98494ec98f",
+   "version": "2026.11.13-17:34:12"
+  },
+  "herramientas/pdf_anonymizer/travail/Analisis Calderon/processed.pdf": {
+   "muda": true,
+   "suma": "b6029a0d789a",
+   "version": "2026.11.13-17:34:07"
+  },
+  "herramientas/pdf_anonymizer/travail/Analisis Calderon/source.pdf": {
+   "muda": true,
+   "suma": "d5c6dc98a6c5",
+   "version": "2026.11.13-17:33:33"
+  },
+  "herramientas/pdf_anonymizer/travail/IRS_2026109110938/ocr_result.txt": {
+   "suma": "fe627c80524b",
+   "version": "2026.11.13-17:13:19"
+  },
+  "herramientas/pdf_anonymizer/travail/IRS_2026109110938/processed.pdf": {
+   "muda": true,
+   "suma": "04299fd727b2",
+   "version": "2026.11.13-17:13:19"
+  },
+  "herramientas/pdf_anonymizer/travail/IRS_2026109110938/source.pdf": {
+   "muda": true,
+   "suma": "79cfca00ecdc",
+   "version": "2026.11.13-17:13:19"
   },
   "herramientas/pdfnnn_a_anonimizado/pdfnnn_a_anonimizado.py": {
    "suma": "1f504292834a",
@@ -3653,6 +3689,10 @@
   "herramientas/reconstructor_pdf.py": {
    "suma": "a6f94990f968",
    "version": "2026.09.19-18:15:47"
+  },
+  "herramientas/reconstruir/reconstruir_sf.py": {
+   "suma": "40298e04ccb7",
+   "version": "2026.11.17-22:17:14"
   },
   "herramientas/refde_nivel2.py": {
    "suma": "92c455e7ff24",
@@ -3727,16 +3767,16 @@
    "version": "2026.11.04-12:42:25"
   },
   "informe/informe.html": {
-   "suma": "4af327e216a3",
-   "version": "2026.11.04-15:12:48"
+   "suma": "f8a732110cf7",
+   "version": "2026.11.17-18:58:05"
   },
   "informe/informe.idiomas.js": {
-   "suma": "05e775d4ca1b",
-   "version": "2026.09.29-16:08:54"
+   "suma": "185d809124bf",
+   "version": "2026.11.17-18:58:05"
   },
   "informe/informe.js": {
-   "suma": "6027f8737ea1",
-   "version": "2026.11.05-11:13:28"
+   "suma": "601d954b6d5a",
+   "version": "2026.11.17-18:58:05"
   },
   "informe/prompt-informe-v0.js": {
    "suma": "edc43a99165a",
@@ -3799,16 +3839,16 @@
    "version": "2026.11.04-12:42:25"
   },
   "paciente/paciente.html": {
-   "suma": "5f34f721d04a",
-   "version": "2026.10.06-18:44:03"
+   "suma": "6137b3f6e638",
+   "version": "2026.11.17-18:58:06"
   },
   "paciente/paciente.idiomas.js": {
-   "suma": "b7009f983d61",
-   "version": "2026.10.06-18:44:03"
+   "suma": "7eb9e9d241fb",
+   "version": "2026.11.17-16:21:23"
   },
   "paciente/paciente.js": {
-   "suma": "b6b2af19f05b",
-   "version": "2026.10.06-18:44:03"
+   "suma": "546039e4692c",
+   "version": "2026.11.17-18:45:01"
   },
   "panal/iconos/LEEME.txt": {
    "suma": "a4ef1c57684a",
@@ -3900,16 +3940,16 @@
    "version": "2026.11.04-12:42:25"
   },
   "resumen/resumen.html": {
-   "suma": "5f53ed964c0f",
-   "version": "2026.11.05-13:21:32"
+   "suma": "18d343fa1eb2",
+   "version": "2026.11.17-16:21:23"
   },
   "resumen/resumen.idiomas.js": {
-   "suma": "d4acccb978d5",
-   "version": "2026.11.04-21:25:20"
+   "suma": "55e3b08e527f",
+   "version": "2026.11.17-16:21:23"
   },
   "resumen/resumen.js": {
    "suma": "098e00db5000",
-   "version": "2026.11.05-13:21:32"
+   "version": "2026.11.17-16:21:23"
   },
   "revisar/index.html": {
    "suma": "3c6649ebd88a",

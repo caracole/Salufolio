@@ -1,5 +1,5 @@
 /* Los textos de la adquisición manual
-   Versión 2026.10.05-20:20:03 */
+   Versión 2026.11.16-21:57:10 */
 var SF_TEXTOS = window.SF_TEXTOS = {
  "_doctrina": "Los textos. Las rúbricas tienen los suyos en la tabla.",
  "textos": {
@@ -11,7 +11,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "guardado": "Guardado",
    "guardado_linea": "✓ Añadido",
    "vacio": "Todavía no ha escrito nada. Empiece por donde quiera.",
-   "solo_otros": "Nada escrito a mano todavía. Hay {n} línea(s) que vienen de otro sitio — para verlas, use Revisar.",
+   "solo_otros": "Nada escrito a mano todavía. Hay {n} líneas que vienen de otro sitio — para verlas, use Revisar.",
+   "solo_otros_1": "Nada escrito a mano todavía. Hay {n} línea que viene de otro sitio — para verla, use Revisar.",
    "ya_en_exp": "ya en el expediente",
    "dia_vacio": "El diario está vacío.",
    "en_sesion": "En esta sesión",
@@ -46,7 +47,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "guardado": "Gardé",
    "guardado_linea": "✓ Ajouté",
    "vacio": "Vous n'avez encore rien écrit. Commencez où vous voulez.",
-   "solo_otros": "Rien d'écrit à la main pour l'instant. Il y a {n} ligne(s) venues d'ailleurs — pour les voir, employez Revisar.",
+   "solo_otros": "Rien d'écrit à la main pour l'instant. Il y a {n} lignes venues d'ailleurs — pour les voir, employez Revisar.",
+   "solo_otros_1": "Rien d'écrit à la main pour l'instant. Il y a {n} ligne venue d'ailleurs — pour la voir, employez Revisar.",
    "ya_en_exp": "déjà dans le dossier",
    "dia_vacio": "Le journal est vide.",
    "en_sesion": "Dans cette séance",
@@ -81,7 +83,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "guardado": "Guardat",
    "guardado_linea": "✓ Afegit",
    "vacio": "Encara no ha escrit res.",
-   "solo_otros": "Res escrit a mà encara. Hi ha {n} línia(es) d'altres llocs.",
+   "solo_otros": "Res escrit a mà encara. Hi ha {n} línies d'altres llocs.",
+   "solo_otros_1": "Res escrit a mà encara. Hi ha {n} línia d'un altre lloc.",
    "ya_en_exp": "ja a l'expedient",
    "dia_vacio": "El diari està buit.",
    "en_sesion": "En aquesta sessió",
@@ -116,7 +119,8 @@ var SF_TEXTOS = window.SF_TEXTOS = {
    "guardado": "Saved",
    "guardado_linea": "✓ Added",
    "vacio": "Nothing written yet. Start wherever you like.",
-   "solo_otros": "Nothing written by hand yet. There are {n} line(s) from elsewhere — use Revisar to see them.",
+   "solo_otros": "Nothing written by hand yet. There are {n} lines from elsewhere — use Revisar to see them.",
+   "solo_otros_1": "Nothing written by hand yet. There is {n} line from elsewhere — use Revisar to see it.",
    "ya_en_exp": "already in the record",
    "dia_vacio": "The log is empty.",
    "en_sesion": "This session",

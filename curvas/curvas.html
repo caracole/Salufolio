@@ -82,7 +82,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    CURVAS — programa autónomo de Salufolio V2
-   Versión 2026.11.11-11:39:07
+   Versión 2026.11.17-17:47:37
    (10/11/2026 : la burbuja de cada punto dice de dónde viene el valor — MF.procedenciaMedida.)
 
    Extraído de la V1: core-charts-js.js (el motor, con la superposición de
@@ -597,10 +597,81 @@ function aplicaColoresCurvas(){
   Chart.defaults.borderColor = colorDe('curva_rejilla', 'color', '--border');
   var tam = parseFloat(colorDe('curva_texto', 'font-size', '--tam-min'));
   if(tam) Chart.defaults.font.size = tam;
+  /* la burbuja de un punto : fondo y texto de la paleta (P-H, 17/11/2026) */
+  var Rb = getComputedStyle(document.documentElement), bf = Rb.getPropertyValue('--bulle-fond').trim(), bt = Rb.getPropertyValue('--bulle-texte').trim();
+  var Tb = Chart.defaults.plugins.tooltip;
+  if(bf) Tb.backgroundColor = bf; else if(typeof SF_CONFIG !== 'undefined' && SF_CONFIG.burbuja_fondo) Tb.backgroundColor = SF_CONFIG.burbuja_fondo;
+  if(bt){ Tb.titleColor = bt; Tb.bodyColor = bt; Tb.footerColor = bt; }
 }
 Chart.defaults.font.size = 10;
+/* la burbuja de un punto, más transparente : su fondo vive en curvas.js (P-H, 17/11/2026) */
+if (typeof SF_CONFIG !== 'undefined' && SF_CONFIG.burbuja_fondo) Chart.defaults.plugins.tooltip.backgroundColor = SF_CONFIG.burbuja_fondo;
 aplicaColoresCurvas();
 const chartInstances = {};
+
+/* ══ LA LÍNEA DE LA FECHA (P-H, 17/11/2026) ══
+   « l'échelle saute des dates : je préférerais une ligne verticale ». Al pasar el
+   ratón, un trazo fino baja hasta el eje en la fecha más cercana, con la fecha
+   escrita abajo. Solo al pasar : las curvas pequeñas no se cargan. Vale para las
+   curvas simples y las superpuestas. Colores : los de la paleta. */
+Chart.register({
+  id: 'sfLineaFecha',
+  afterEvent(chart, args) {
+    const e = args.event; if (!e) return;
+    if (e.type === 'mouseout') { if (chart._sfX != null) { chart._sfX = null; args.changed = true; } return; }
+    if (e.type !== 'mousemove') return;
+    const sx = chart.scales && chart.scales.x, n = (chart.data.labels || []).length;
+    if (!sx || !n) return;
+    let pos; try { pos = _chartPosEvento(chart, e.native || e); } catch (er) { pos = { x: e.x, y: e.y }; }
+    const a = chart.chartArea;
+    if (!a || pos.x < a.left - 6 || pos.x > a.right + 6) { if (chart._sfX != null) { chart._sfX = null; args.changed = true; } return; }
+    let best = -1, bd = Infinity;
+    for (let i = 0; i < n; i++) { const d = Math.abs(sx.getPixelForValue(i) - pos.x); if (d < bd) { bd = d; best = i; } }
+    if (best !== chart._sfX) { chart._sfX = best; args.changed = true; }
+  },
+  beforeTooltipDraw(chart, args) {   /* la burbuja sigue la paleta puesta AHORA (P-H, 17/11/2026) */
+    const Rb = getComputedStyle(document.documentElement), bf = Rb.getPropertyValue('--bulle-fond').trim(), bt = Rb.getPropertyValue('--bulle-texte').trim();
+    const o = args.tooltip && args.tooltip.options; if (!o) return;
+    if (bf) o.backgroundColor = bf; if (bt) { o.titleColor = bt; o.bodyColor = bt; o.footerColor = bt; }
+  },
+  afterDatasetsDraw(chart) {
+    const i = chart._sfX; if (i == null || i < 0) return;
+    const a = chart.chartArea, sx = chart.scales.x, x = sx.getPixelForValue(i), txt = String((chart.data.labels || [])[i] || '');
+    const R = getComputedStyle(document.documentElement);
+    const linea = colorDe('curva_texto', 'color', '--muted'), fondo = R.getPropertyValue('--surface').trim(), tinta = R.getPropertyValue('--text').trim();
+    const c = chart.ctx; c.save();
+    c.strokeStyle = linea; c.lineWidth = 1; c.setLineDash([3, 3]);
+    c.beginPath(); c.moveTo(x, a.top); c.lineTo(x, a.bottom); c.stroke(); c.setLineDash([]);
+    if (txt) {
+      c.font = (Chart.defaults.font.size || 10) + 'px ' + Chart.defaults.font.family;
+      const w = c.measureText(txt).width + 8, h = (Chart.defaults.font.size || 10) + 6;
+      const bx = Math.max(a.left, Math.min(x - w / 2, a.right - w)), by = a.bottom - h - 2;
+      c.fillStyle = fondo || 'transparent'; c.strokeStyle = linea; c.fillRect(bx, by, w, h); c.strokeRect(bx, by, w, h);
+      c.fillStyle = tinta || linea; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(txt, bx + w / 2, by + h / 2);
+    }
+    c.restore();
+  }
+});
+
+/* ══ EL DOBLE CLIC AGRANDA (P-H, 17/11/2026) ══
+   « un double-clic sur une zone hors de la courbe l'agrandit, comme quand on
+   superpose deux courbes ». La curva toma todo el ancho ; otro doble clic la
+   devuelve a su sitio. Sobre un punto, no : el clic de un punto abre su documento.
+   Se acuerda de una sesión a otra, como las superpuestas. */
+function _curvasGrandes() { try { return JSON.parse(localStorage.getItem('sf_curvas_grandes') || '[]'); } catch (e) { return []; } }
+function _curvaEsGrande(key) { return _curvasGrandes().indexOf(key) >= 0; }
+function _dobleEnPunto(e, canvasId) {
+  if (e.target.tagName !== 'CANVAS') return false;
+  const ch = chartInstances[canvasId]; if (!ch) return false;
+  try { return _chartPuntoCercano(ch, e).precis; } catch (er) { return false; }
+}
+function _curvaGrande(key) {
+  let L = _curvasGrandes(); const i = L.indexOf(key);
+  if (i >= 0) L.splice(i, 1); else L.push(key);
+  try { localStorage.setItem('sf_curvas_grandes', JSON.stringify(L)); } catch (e) {}
+  buildAllCharts(loadData());
+  setTimeout(() => { const c = document.getElementById('ac-' + key); if (c) c.scrollIntoView({ block: 'nearest' }); }, 150);
+}
 
 /* v2026.7.21.4 — échelle par courbe : Lin (par défaut) ⇄ Log (natif Chart.js).
    Le BNP à 11924 (TEP 2022, valeur RÉELLE et grave) écrasait les valeurs
@@ -1587,6 +1658,8 @@ function buildAllCharts(data) {
       '</span>') + '</div>' +
       '<canvas id="ac-combo-' + i + '" height="' + (grande ? 90 : 150) + '"></canvas>';
     div.addEventListener('contextmenu', e => { e.preventDefault(); _menuOuvrir(e, { combo: i }); });
+    if (!_busqueda) div.addEventListener('dblclick', e => {   /* doble clic fuera de un punto = ⛶ (P-H, 17/11/2026) */
+      if (e.target.closest('button,.combo-nom') || _dobleEnPunto(e, 'ac-combo-' + i)) return; _comboTaille(i); });
     el.appendChild(div);
     setTimeout(() => makeComboChart('ac-combo-' + i, combo.keys, data), 50);
   };
@@ -1617,6 +1690,9 @@ function buildAllCharts(data) {
     div.addEventListener('dragleave', () => { div.style.outline = ''; });
     div.addEventListener('drop',      e => { e.preventDefault(); div.style.outline = ''; if (_dragKey && _dragKey !== key) _comboProposer(div, _dragKey, key); });
     div.addEventListener('contextmenu', e => { e.preventDefault(); _menuOuvrir(e, { key }); });
+    div.addEventListener('dblclick', e => {   /* doble clic fuera de un punto : agrandar / devolver (P-H, 17/11/2026) */
+      if (e.target.closest('button,.paramtip,input,label') || _dobleEnPunto(e, 'ac-' + key)) return; _curvaGrande(key); });
+    const _gr = _curvaEsGrande(key); if (_gr) div.style.gridColumn = '1 / -1';
     /* v2026.7.21.4 — bouton Lin/Log, seulement utile quand une valeur écrase
        la série (amplitude > 20×, toutes > 0). Le BNP en est l'exemple type. */
     const _sv = getSeriesForParam(data, key).map(s => s.y).filter(v => v > 0);
@@ -1628,7 +1704,7 @@ function buildAllCharts(data) {
     const _nE = (window.SF_SINONIMOS_PARAMETROS && (SF_SINONIMOS_PARAMETROS.parametros || {})[key]) || null;
     const _num = (_nE && _nE.n) ? `<span class="cur-num" data-ptip="${trad('tip_num')}">${trad('lbl_num')} ${_nE.n}</span>` : '';
     div.style.position = 'relative';
-    div.innerHTML = `${_num}<div class="chart-title">${paramSpan(key)}${_btnEsc}</div><div class="chart-sub">${p.unit}${p.ref?'·'+trad('lbl_ref')+p.ref.filter(v=>v!==null).join('–'):''}</div><canvas id="ac-${key}" height="150"></canvas>`;
+    div.innerHTML = `${_num}<div class="chart-title">${paramSpan(key)}${_btnEsc}</div><div class="chart-sub">${p.unit}${p.ref?'·'+trad('lbl_ref')+p.ref.filter(v=>v!==null).join('–'):''}</div><canvas id="ac-${key}" height="${_gr ? 90 : 150}"></canvas>`;
     el.appendChild(div);
     setTimeout(() => makeChart('ac-'+key, key, data), 50);
   });

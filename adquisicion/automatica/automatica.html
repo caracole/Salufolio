@@ -133,10 +133,11 @@ input[type=text],input[type=password],select{background:var(--bg);color:var(--te
 <script src="automatica.js"></script>
 <script src="automatica.idiomas.js"></script>
 <script src="../../comun/mf.js"></script>
+<script src="../../comun/espera.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ADQUISICIÓN AUTOMÁTICA — Salufolio V2
-   Versión 2026.11.05-22:43:03
+   Versión 2026.11.16-21:57:10
 
    El tercero de los tres modos de adquisición (P-H, 09/09):
      manual     · a mano, sin documento
@@ -162,6 +163,7 @@ function t(clave, vars){
   try{
     var T=(typeof SF_TEXTOS!=='undefined'&&SF_TEXTOS.textos)||{};
     var lg=(typeof MF!=='undefined'&&MF.idioma)?MF.idioma():'es';
+    if(typeof MF!=='undefined'&&MF.clavePlural) clave = MF.clavePlural(T, lg, clave, vars);   /* « 1 página », « 2 páginas » (P-H, 16/11/2026) */
     out = (T[lg]&&T[lg][clave])||(T.es&&T.es[clave])||clave;
   }catch(e){ out = clave; }
   /* les morceaux qu'on glisse dedans : {asistida}, {consola}, {otro} */
@@ -3027,16 +3029,21 @@ var _PARAR = false;
 /* v2026.11.03 (P-H) : « il faudra penser à verrouiller tant que ce qui est
    en cours n'est pas terminé ». Sans verrou, déposer d'autres PDF pendant
    une lecture lançait une SECONDE fournée en parallèle. */
-var _LEYENDO = false, _ZONA_HTML = null;
+var _LEYENDO = false, _ZONA_HTML = null, _ZONA_RELOJ = null;
 function bloqueaZona(si){
   var z = document.getElementById('zona');
   if(!z) return;
   if(si){
     if(_ZONA_HTML === null) _ZONA_HTML = z.innerHTML;
     z.classList.add('bloqueada');
-    z.innerHTML = '<div style="font-size:30px;margin-bottom:6px">\u23f3</div>'
-      + '<div style="font-size:13.5px">' + t('leer_en_curso') + '</div>';
+    /* el sablier que dormía (P-H, 13/11/2026) : ahora gira, y los segundos suben — el reloj común */
+    if(window.SF_ESPERA && SF_ESPERA.reloj)
+      _ZONA_RELOJ = SF_ESPERA.reloj(z, t('leer_en_curso'), { segundos:'debajo', tamano_px:30 });
+    else
+      z.innerHTML = '<div style="font-size:30px;margin-bottom:6px">\u23f3</div>'
+        + '<div style="font-size:13.5px">' + t('leer_en_curso') + '</div>';
   } else {
+    if(_ZONA_RELOJ){ _ZONA_RELOJ.para(); _ZONA_RELOJ = null; }
     z.classList.remove('bloqueada');
     if(_ZONA_HTML !== null){ z.innerHTML = _ZONA_HTML; _ZONA_HTML = null; }
   }
@@ -3064,6 +3071,17 @@ async function leeDocumentos(files, opciones){
   /* v4 (P-H, 10/09) : lire sans dossier est permis. La bande dit déjà
      « ningún expediente abierto » — ça suffit à prévenir. Ce qui est lu
      va dans un dossier neuf, qu'on nommera en le gardant. */
+
+  /* 1 PDF = 1 JSON (13/11/2026) : el permiso de escribir en la carpeta del paciente se pide AHORA,
+     durante el gesto, antes de pagar nada. Sin él : no se lee — no cuesta nada. Sin paciente
+     abierto, se lee como antes (no hay carpeta donde guardar el JSON). */
+  var _mat = (MF.paciente()||{}).matricula, _cfgE = SF_CONFIG.extracciones || {};
+  if(_mat && _cfgE.carpeta && MF.permisoCarpeta && !(await MF.permisoCarpeta(true))){
+    pintaProgreso(t('leer_sin_permiso'));
+    if(_reloj){ clearInterval(_reloj); _reloj = null; }              /* un aviso no lleva reloj */
+    var _sg = document.querySelector('#progreso ._seg'); if(_sg) _sg.remove();
+    return;
+  }
 
   if(_LEYENDO) return;                       /* v2026.11.03 : une fournée à la fois */
   _LEYENDO = true; bloqueaZona(true);
@@ -3229,23 +3247,36 @@ function _selloSeg(d){
 function _versionPrompt(id){
   var T = (typeof SF_PROMPTS!=='undefined') ? SF_PROMPTS : {prompts:[]};
   var p = (T.prompts||[]).filter(function(x){ return x.id===id; })[0];
-  return p ? (p.version || null) : null;
+  if(!p) return null;
+  /* 13/11/2026 : la version vive en el fichero del prompt (SF_PROMPTS_VERSION),
+     puesta por versiones.py. La de prompts.js se quedaba atrasada. */
+  var V = window.SF_PROMPTS_VERSION || {};
+  if(p.variable && V[p.variable] && V[p.variable].version) return V[p.variable].version;
+  return p.version || null;
 }
-/* écrit par le serveur « salufolio » ; sans lui, on n'écrit RIEN (pas de
-   téléchargement par document dans Descargas) — le diario le dira */
-function guardaExtraccion(file, contenido){
+/* ══ 1 PDF = 1 JSON (P-H, 11/11 y 13/11/2026 — ladrillo 1) ══
+   Cada respuesta de la IA se guarda en pacientes/<matricula>/extracciones/<nombre del PDF>.json :
+   EL MISMO NOMBRE que el PDF, uno por PDF. Volver a leerlo lo sustituye ; el antiguo pasa antes,
+   comprobado, a historial/<extracciones.historial>/<nombre>_<su fecha>.json. Se escribe con el
+   permiso de la carpeta del paciente — el mismo que el .sf — : SIN SERVIDOR, en file://.
+   Devuelve el nombre escrito, o null (sin paciente, sin permiso : el diario lo dice). */
+async function guardaExtraccion(file, contenido){
   var mat = (MF.paciente()||{}).matricula;
   var cfg = SF_CONFIG.extracciones || {};
-  if(!mat || !cfg.carpeta) return Promise.resolve(null);
-  var nombre = file.name + '_' + contenido.fecha + '_' + (contenido.modo || 'A') + '.json';
-  var ruta = 'pacientes/' + mat + '/' + cfg.carpeta + '/' + nombre;
-  return MF.hayServidor().then(function(hay){
-    if(!hay) return null;
-    return fetch('/_guardar/' + ruta, { method:'POST', body: JSON.stringify(contenido, null, 1) })
-      .then(function(r){ return r.json(); })
-      .then(function(d){ return (d && d.ok) ? nombre : null; })
-      .catch(function(){ return null; });
-  });
+  if(!mat || !cfg.carpeta || !MF.guardaEnCarpeta) return null;
+  var nombre = file.name.replace(/\.pdf$/i, '') + '.json';
+  try{
+    var r = await MF.guardaEnCarpeta(cfg.carpeta, nombre, JSON.stringify(contenido, null, 1), {
+      historial: cfg.historial || cfg.carpeta,
+      selloCampo: 'fecha',
+      sello: function(txt){ return JSON.parse(txt).fecha || null; }
+    });
+    if(!r.ok) return null;
+    return nombre;
+  }catch(e){
+    console.warn('[Salufolio] extracción no guardada', e);
+    return null;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════

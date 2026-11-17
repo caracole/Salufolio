@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Versión 2026.11.13-11:57:53 -->
+<!-- Versión 2026.11.17-16:21:23 -->
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Salufolio</title>
@@ -385,6 +385,7 @@ h2.fam{font-family:var(--serif);font-size:14px;color:var(--accent);margin:18px 0
   document.write('<script src="../comun/visitas.js?'+V+'"><\/script>');
   /* La espera (P-H, 11/11/2026) : la concha que gira mientras se carga un módulo. */
   document.write('<script src="../comun/espera.js?'+V+'"><\/script>');
+  document.write('<script src="../comun/imprime-hoja.js?'+V+'"><\/script>');   /* la hoja impresa (P-H, 17/11/2026) */
 })();
 </script>
 <script>
@@ -583,7 +584,7 @@ function abreVersiones(){
           + '</tr>';
       }).join('')
     + '</tbody></table></div>';
-  ventanaCasa(esc(t(V.titulo)), cuerpo, '', null, { movil:true, cruz:t(V.cerrar), aire_pie:0, ancho:V.ancho||560 });
+  ventanaCasa(esc(t(V.titulo)), cuerpo, '', null, { movil:true, cruz:t(V.cerrar), aire_pie:0, ancho:V.ancho||560, imprimir:true });
 }
 
 /* ── un document dans l'écran ── */
@@ -1364,22 +1365,26 @@ function ventanaCasa(titulo, cuerpo, pie, alCerrar, opc){
   c.style.cssText = 'background:var(--surface);border:2px solid var(--accent);'
     + 'border-radius:13px;padding:16px 20px 14px;width:100%;max-width:' + (opc.ancho || 560) + 'px;'
     + 'max-height:92vh;overflow-y:auto;box-shadow:0 14px 44px rgba(0,0,0,.5);box-sizing:border-box';
-  c.innerHTML = '<div class="vc-tit" style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--accent);'
+  c.innerHTML = '<div class="vc-tit no-imprimir" style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--accent);'
     + 'margin-bottom:9px' + (opc.movil ? ';cursor:grab;user-select:none;touch-action:none' : '') + '">'
     + '<span style="flex:1">' + titulo + '</span>'
+    + (opc.imprimir ? '<span class="b-b vc-imp" style="font-size:15px;color:var(--muted)">🖨</span>' : '')   /* (P-H, 17/11/2026) */
     + (opc.cruz ? '<span class="b-b vc-cruz" style="font-size:15px;color:var(--muted)">✕</span>' : '')
     + '</div>' + cuerpo
-    + '<div class="vc-pie" style="display:flex;gap:8px;justify-content:flex-end;margin-top:' + (opc.aire_pie != null ? opc.aire_pie : 12) + 'px">'
+    + '<div class="vc-pie no-imprimir" style="display:flex;gap:8px;justify-content:flex-end;margin-top:' + (opc.aire_pie != null ? opc.aire_pie : 12) + 'px">'
     + pie + '</div>';
   f.appendChild(c); document.body.appendChild(f);
   function cierra(){ if(f.parentNode) document.body.removeChild(f); if(alCerrar) alCerrar(); }
   if(!opc.modal) f.onclick = function(e){ if(e.target === f) cierra(); };
   var x = c.querySelector('.vc-cruz');
+  var xi = c.querySelector('.vc-imp');
+  if(xi){ ponTip(xi, tx('imp_boton')); xi.onclick = function(){ var t = document.getElementById('mi-tip'); if(t) t.style.display = 'none';
+    imprimeCasa(c, (c.querySelector('.vc-tit span') || {}).textContent || ''); }; }
   if(x){ ponTip(x, opc.cruz); x.onclick = function(){ var t = document.getElementById('mi-tip'); if(t) t.style.display = 'none'; cierra(); }; }
   if(opc.movil){
     var tit = c.querySelector('.vc-tit');
     tit.addEventListener('pointerdown', function(e){
-      if(e.target.closest('.vc-cruz')) return;
+      if(e.target.closest('.vc-cruz') || e.target.closest('.vc-imp')) return;
       var r = c.getBoundingClientRect(), dx = e.clientX - r.left, dy = e.clientY - r.top;
       c.style.position = 'fixed'; c.style.margin = '0';
       c.style.left = r.left + 'px'; c.style.top = r.top + 'px'; c.style.width = r.width + 'px';
@@ -1887,6 +1892,8 @@ window.addEventListener('message', function(ev){
     return;
   }
   if(d.tipo==='pide-pdf'){ sirvePdf(ev, d); return; }
+  if(d.tipo==='permiso-carpeta'){ permisoParaModulo(ev, d); return; }
+  if(d.tipo==='escribe-fichero'){ escribeParaModulo(ev, d); return; }
   if(d.tipo==='cierra-modulo'){ vuelveAtras(); return; }
   /* el programa anuncia la paleta con la que arranca (la global) : no es una elección — la guardada gana */
   if(d.tipo==='paleta-elegida'){ PAL_MOD=(ACTUAL && _palDe(ACTUAL.id)) || d.paleta; return; }
@@ -1917,12 +1924,19 @@ var _TX_PDF = {
   ca:{ t:'Per obrir els PDF del pacient', c:'La Casa encara no té accés a la carpeta de pacients en aquest lloc. Trieu-la una vegada : es recordarà.', ok:'Triar la carpeta de pacients', no:'Ara no' },
   en:{ t:'To open the patient’s PDFs', c:'The Casa does not have access to the patients folder on this site yet. Choose it once: it will be remembered.', ok:'Choose the patients folder', no:'Not now' }
 };
+/* la misma ventanita, para ESCRIBIR lo que un módulo produce (P-H, 13/11/2026 — 1 PDF = 1 JSON) */
+var _TX_ESCRIBIR = {
+  es:{ t:'Para guardar lo que lee la IA', c:'La Casa aún no tiene permiso de escribir en la carpeta de pacientes. Elíjala una vez : se recordará.', ok:'Elegir la carpeta de pacientes', no:'Ahora no' },
+  fr:{ t:'Pour garder ce que lit l’IA', c:'La Casa n’a pas encore la permission d’écrire dans le dossier des patients. Choisis-le une fois : il sera retenu.', ok:'Choisir le dossier des patients', no:'Pas maintenant' },
+  ca:{ t:'Per a guardar el que llig la IA', c:'La Casa encara no té permís per a escriure a la carpeta de pacients. Trieu-la una vegada : es recordarà.', ok:'Triar la carpeta de pacients', no:'Ara no' },
+  en:{ t:'To keep what the AI reads', c:'The Casa does not have permission to write in the patients folder yet. Choose it once: it will be remembered.', ok:'Choose the patients folder', no:'Not now' }
+};
 var _pdfPidiendo = null;
-function _pidePermisoPdf(){
+function _pidePermisoPdf(tabla){
   if(_pdfPidiendo) return _pdfPidiendo;
   if(!window.showDirectoryPicker) return Promise.resolve(null);
   _pdfPidiendo = new Promise(function(resuelve){
-    var x = _TX_PDF[LANG] || _TX_PDF.es;
+    var T0 = tabla || _TX_PDF, x = T0[LANG] || T0.es;
     var o = document.createElement('div'); o.id = 'sf-pdf-pide';
     o.style.cssText = 'position:fixed;inset:0;z-index:9900;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center';
     var c = document.createElement('div');
@@ -1962,6 +1976,54 @@ async function _pdfDelDisco(dir, nombre, resp){
   if(!f) resp.motivo = 'no-esta';
   return f;
 }
+/* ══ UN MÓDULO ESCRIBE EN LA CARPETA DEL PACIENTE — POR LA CASA (P-H, 13/11/2026 — 1 PDF = 1 JSON) ══
+   Desde su marco, un módulo no puede pedir el permiso de la carpeta, y el de la Casa no le llega.
+   Como para los PDF (« pide-pdf »), se lo pide a la Casa : ella tiene el permiso y escribe.
+   Solo en las subcarpetas que casa.js autoriza (« escritura_modulos.subcarpetas »), nombres simples.
+   Antes de sustituir un fichero, el antiguo se copia —comprobado— en historial/<historial>/. */
+async function permisoParaModulo(ev, d){
+  var dir = null;
+  try{ dir = await carpetaPaciente(false); }catch(e){}
+  if(!dir && d.preguntar){ dir = await _pidePermisoPdf(_TX_ESCRIBIR); }
+  try{ ev.source.postMessage({ de:'lanzador', tipo:'permiso-carpeta', id:d.id, ok:!!dir }, '*'); }catch(e){}
+}
+async function escribeParaModulo(ev, d){
+  var resp = { de:'lanzador', tipo:'escrito', id:d.id, ok:false, motivo:'' };
+  try{
+    var E = (T && T.escritura_modulos) || {}, subs = E.subcarpetas || [];
+    var simple = /^[\w.\-() ]+$/;
+    if(subs.indexOf(d.sub) < 0 || !simple.test(d.nombre || '') || /^\.+$/.test(d.nombre)
+       || (d.historial && (subs.indexOf(d.historial) < 0))) throw new Error('no autorizado : ' + d.sub + '/' + d.nombre);
+    var dir = await carpetaPaciente(false);
+    if(!dir){ resp.motivo = 'sin_permiso'; throw null; }
+    var sd = await dir.getDirectoryHandle(d.sub, { create:true });
+    var fh0 = null;
+    try{ fh0 = await sd.getFileHandle(d.nombre); }catch(e){ if(e.name !== 'NotFoundError') throw e; }
+    if(fh0){
+      var f0 = await fh0.getFile(), t0 = await f0.text();
+      if(t0 === d.texto){ resp.ok = true; resp.igual = true; throw null; }
+      if(d.historial){
+        var hd = await (await dir.getDirectoryHandle(SF_GUARDA.carpeta, { create:true })).getDirectoryHandle(d.historial, { create:true });
+        var sello = null;
+        if(d.selloCampo){ try{ sello = JSON.parse(t0)[d.selloCampo] || null; }catch(e){} }
+        if(!sello || !simple.test(sello)) sello = selloEnNombre(fechaDelEstado('', f0.lastModified));
+        var p = d.nombre.lastIndexOf('.'), base = p > 0 ? d.nombre.slice(0, p) : d.nombre, ext = p > 0 ? d.nombre.slice(p) : '';
+        var ya = []; for await (var e of hd.values()) ya.push(e.name);
+        var destino = base + '_' + sello + ext, k = 1;
+        while(ya.indexOf(destino) >= 0) destino = base + '_' + sello + '_' + (++k) + ext;
+        await _copiaFichero(fh0, hd, destino);
+        resp.copia = SF_GUARDA.carpeta + '/' + d.historial + '/' + destino;
+      }
+    }
+    var w = await (await sd.getFileHandle(d.nombre, { create:true })).createWritable();
+    await w.write(d.texto); await w.close();
+    resp.ok = true; resp.nombre = d.nombre;
+  }catch(e){
+    if(e){ resp.ok = false; resp.motivo = resp.motivo || ((e.name ? e.name + ' — ' : '') + (e.message || e)); console.error('[Salufolio] escribe', e); }
+  }
+  try{ ev.source.postMessage(resp, '*'); }catch(e){}
+}
+
 async function sirvePdf(ev, d){
   var resp = { de:'lanzador', tipo:'pdf', id:d.id, ok:false, motivo:'' };
   try{
@@ -2508,6 +2570,13 @@ async function abreSuprime(){
   var p = sel && sel.value !== '' ? PACIENTES_TODOS[parseInt(sel.value, 10)] : null;
   if(!p) return;
   var mat = p.matricula, nombre = p.nombre || p.etiqueta || mat;
+  /* ══ UNA DEMOSTRACIÓN NO SE SUPRIME (P-H, 13/11/2026) ══
+     En el sitio, « suprimir » la demo la quitaba de la lista del visitante,
+     sin vuelta atrás para él. Un paciente marcado « demo » en pacientes.js
+     no se suprime : un aviso amable, y nada más. Los de banco de pruebas
+     (casa.js, suprimir.banco) siguen pudiendo vaciarse. */
+  var esBanco = ((T && T.suprimir && T.suprimir.banco) || []).indexOf(mat) >= 0;
+  if(p.demo && !esBanco){ avisoDemoNoSuprime(nombre); return; }
   if(!window.showDirectoryPicker){ avisaNavegador(true); return; }
   try{
     var raiz = await carpetaRaiz(true);
@@ -2525,6 +2594,25 @@ async function abreSuprime(){
     console.error('[Salufolio] suprimir', e);
     avisoSf(tx('sf_fallo', { msg:((e && e.name) ? e.name + ' — ' : '') + ((e && e.message) || e) }));
   }
+}
+
+function avisoDemoNoSuprime(nombre){
+  var v = document.getElementById('sf-sup'); if(v) v.remove();
+  v = document.createElement('div'); v.id = 'sf-sup';
+  v.style.cssText = 'position:fixed;inset:0;z-index:9900;display:flex;align-items:center;justify-content:center;'
+    + 'background:rgba(0,0,0,.55);padding:16px';
+  var c = document.createElement('div');
+  c.style.cssText = 'max-width:420px;width:100%;background:var(--surface,#161b27);color:var(--text,#e8eaf0);'
+    + 'border:1px solid var(--accent,#4a8fe8);border-radius:12px;padding:18px 20px;font-size:14px;'
+    + 'box-shadow:0 10px 40px rgba(0,0,0,.6)';
+  c.innerHTML = '<div style="font-weight:600;font-size:15px;margin-bottom:10px">🎬 ' + esc(nombre) + '</div>'
+    + '<div style="margin-bottom:14px;line-height:1.45">' + tx('sup_demo') + '</div>'
+    + '<div style="text-align:right"><button class="bmini" id="sf-sup-ok">' + tx('sup_cerrar') + '</button></div>';
+  v.appendChild(c); document.body.appendChild(v);
+  var cierra = function(){ v.remove(); };
+  c.querySelector('#sf-sup-ok').onclick = cierra;
+  v.addEventListener('click', function(e){ if(e.target === v) cierra(); });
+  c.querySelector('#sf-sup-ok').focus();
 }
 
 function dialogoSuprime(mat, nombre, cuenta, raiz, dir){
@@ -3052,6 +3140,7 @@ Object.assign(TX.es, {
   modo_titulo:'¿Qué hacer con {nombre}?', vac_opcion:'🧹 Vaciar los datos — el paciente y sus PDF se quedan', sup_opcion:'🗑 Suprimir definitivamente',
   vac_cuerpo:'Se vacían todos los datos de <b>{mat}</b> : mediciones, eventos, medicamentos… Se quedan el paciente y sus PDF de sources/. Antes, el expediente, el diario y las extracciones se guardan en {hist}/. Así se pueden volver a leer los mismos documentos desde cero.',
   vac_confirmar:'Vaciar', vac_hecho:'{mat} vaciado · {n} entradas retiradas · copia en {carpeta}/', vac_sin_sf:'{mat} no tiene expediente que vaciar.', vac_historial:'datos vaciados ({n} entradas) — banco de pruebas',
+  sup_demo:'La demostración no se puede suprimir.', sup_cerrar:'Cerrar',
   sf_archivadas:' · {n} copia(s) vieja(s) a {arch}/',
   sf_elegir:'Pulse aquí e indique, una sola vez, la carpeta «pacientes» (la que contiene una carpeta por paciente)',
   sf_sucio:'Hay cambios sin guardar en el expediente abierto. ¿Cambiar de paciente y perderlos?',
@@ -3079,6 +3168,7 @@ Object.assign(TX.fr, {
   modo_titulo:'Que faire de {nombre} ?', vac_opcion:'🧹 Vider les données — le patient et ses PDF restent', sup_opcion:'🗑 Supprimer définitivement',
   vac_cuerpo:'Toutes les données de <b>{mat}</b> sont vidées : mesures, événements, médicaments… Le patient et ses PDF de sources/ restent. Avant cela, l’expediente, le diario et les extractions sont gardés dans {hist}/. On peut ainsi relire les mêmes documents depuis zéro.',
   vac_confirmar:'Vider', vac_hecho:'{mat} vidé · {n} entrées retirées · copie dans {carpeta}/', vac_sin_sf:'{mat} n’a pas d’expediente à vider.', vac_historial:'données vidées ({n} entrées) — banc d’essai',
+  sup_demo:'La démonstration ne peut pas être supprimée.', sup_cerrar:'Fermer',
   sf_archivadas:' · {n} copie(s) ancienne(s) vers {arch}/',
   sf_elegir:'Cliquez ici et indiquez, une seule fois, le dossier « pacientes » (celui qui contient un dossier par patient)',
   sf_sucio:'Des modifications du dossier ouvert ne sont pas enregistrées. Changer de patient et les perdre ?',
@@ -3106,6 +3196,7 @@ Object.assign(TX.ca, {
   modo_titulo:'Què fer amb {nombre}?', vac_opcion:'🧹 Buidar les dades — el pacient i els seus PDF es queden', sup_opcion:'🗑 Suprimir definitivament',
   vac_cuerpo:'Es buiden totes les dades de <b>{mat}</b>: mesuraments, esdeveniments, medicaments… Es queden el pacient i els seus PDF de sources/. Abans, l’expedient, el diari i les extraccions es guarden a {hist}/. Així es poden tornar a llegir els mateixos documents des de zero.',
   vac_confirmar:'Buidar', vac_hecho:'{mat} buidat · {n} entrades retirades · còpia a {carpeta}/', vac_sin_sf:'{mat} no té expedient per buidar.', vac_historial:'dades buidades ({n} entrades) — banc de proves',
+  sup_demo:'La demostració no es pot suprimir.', sup_cerrar:'Tancar',
   sf_archivadas:' · {n} còpia/còpies antiga(es) a {arch}/',
   sf_elegir:'Premeu aquí i indiqueu, una sola vegada, la carpeta «pacientes» (la que conté una carpeta per pacient)',
   sf_sucio:'Hi ha canvis sense guardar a l’expedient obert. Canviar de pacient i perdre’ls?',
@@ -3133,6 +3224,7 @@ Object.assign(TX.en, {
   modo_titulo:'What to do with {nombre}?', vac_opcion:'🧹 Empty the data — the patient and their PDFs stay', sup_opcion:'🗑 Delete permanently',
   vac_cuerpo:'All the data of <b>{mat}</b> are emptied: measurements, events, medications… The patient and their PDFs in sources/ stay. Beforehand, the record, the log and the extractions are kept in {hist}/. The same documents can then be read again from scratch.',
   vac_confirmar:'Empty', vac_hecho:'{mat} emptied · {n} entries removed · copy in {carpeta}/', vac_sin_sf:'{mat} has no record to empty.', vac_historial:'data emptied ({n} entries) — test bench',
+  sup_demo:'The demonstration cannot be deleted.', sup_cerrar:'Close',
   sf_archivadas:' · {n} old copy(ies) moved to {arch}/',
   sf_elegir:'Click here and point, once only, to the “pacientes” folder (the one holding a folder per patient)',
   sf_sucio:'The open record has unsaved changes. Switch patient and lose them?',
@@ -3151,6 +3243,18 @@ Object.assign(TX.en, {
 
    Porque el correo los ponía a mano y tx() no: devolvía « etapa {n} de
    {total} » tal cual. Ahora rellena lo que se le da. */
+/* ══ LA HOJA IMPRESA (P-H, 17/11/2026) — los textos ══ */
+Object.assign(TX.es, { imp_boton:'Imprimir', imp_marca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', imp_pagina:'Página {n} / {t}' });
+Object.assign(TX.fr, { imp_boton:'Imprimer', imp_marca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', imp_pagina:'Page {n} / {t}' });
+Object.assign(TX.ca, { imp_boton:'Imprimir', imp_marca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', imp_pagina:'Pàgina {n} / {t}' });
+Object.assign(TX.en, { imp_boton:'Print', imp_marca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', imp_pagina:'Page {n} / {t}' });
+/* imprime el contenido de una ventana de la casa, sin su título ni sus botones */
+function imprimeCasa(caja, titulo){
+  if(!window.SF_IMPRIME){ window.print(); return; }
+  var id = (T && T.paleta_impresion) || 'papel';
+  var pal = ((T && T.paletas) || []).filter(function(x){ return x && x.id === id; })[0];
+  SF_IMPRIME(caja, { titulo:titulo, centro:'', marca:tx('imp_marca'), pagina:tx('imp_pagina'), vars:pal ? pal.v : {}, lang:LANG, raiz_simple:true });
+}
 function tx(k, v){
   var t = (TX[LANG]&&TX[LANG][k]) || TX.es[k] || k;
   if(!v) return t;

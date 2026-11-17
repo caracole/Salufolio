@@ -2,7 +2,9 @@
    LOS PROMPTS — /Salufolio/adquisicion/prompts/prompts.js
 
    « NE JAMAIS MÉLANGER LE CODE JAVASCRIPT AVEC LE PROMPT. » (P-H, 11/08)
-   El prompt vive en su .txt; esta tabla dice cuáles hay. Un solo código,
+   El prompt vive en su .js; esta tabla dice cuáles hay.
+   La VERSIÓN de cada prompt vive en su propio fichero (SF_PROMPTS_VERSION),
+   no aquí: aquí se quedaba atrasada (P-H, 13/11/2026). Un solo código,
    varios prompts — cambiar de prompt es cambiar una línea aquí.
    ══════════════════════════════════════════════════════════════════════ */
 var SF_PROMPTS = window.SF_PROMPTS = {
@@ -13,7 +15,6 @@ var SF_PROMPTS = window.SF_PROMPTS = {
   {
    "id": "extraccion",
    "fichero": "prompt-extraccion.js",
-   "version": "2026.11.04-10:30:56",
    "por_defecto": true,
    "para_modo": [
     "A"
@@ -38,13 +39,12 @@ var SF_PROMPTS = window.SF_PROMPTS = {
     "eventos",
     "dudas"
    ],
-   "_cambio": "04/11/2026 : medicamentos[].principio_activo, atc, categoria. — 03/11/2026 : documento.servicio sin planta, documento.unidad, documento.firmante {nombre, rol}, medicamentos[].prescriptor (tablas de referencia del .sf).",
+   "_cambio": "13/11/2026 : mediciones[].valor siempre, texto, nota, normas {para, min, max, texto, rango, vigencia} ; fecha de la toma ; resultado en palabras ; medida no hecha. — 04/11/2026 : medicamentos[].principio_activo, atc, categoria. — 03/11/2026 : documento.servicio sin planta, documento.unidad, documento.firmante {nombre, rol}, medicamentos[].prescriptor (tablas de referencia del .sf).",
    "variable": "SF_PROMPT_EXTRACCION"
   },
   {
    "id": "extraccion-ocr",
    "fichero": "prompt-extraccion-ocr.js",
-   "version": "2026.11.04-10:30:56",
    "para_modo": [
     "S"
    ],
@@ -73,6 +73,6 @@ var SF_PROMPTS = window.SF_PROMPTS = {
    "variable": "SF_PROMPT_EXTRACCION_OCR"
   }
  ],
- "_por_anadir": "Un prompt no se inventa: se prueba con documentos de verdad y se\ncorrige. Cuando uno nuevo funcione, se añade aquí con su .txt al lado\n— el código no cambia.",
+ "_por_anadir": "Un prompt no se inventa: se prueba con documentos de verdad y se\ncorrige. Cuando uno nuevo funcione, se añade aquí con su .js al lado\n— el código no cambia.",
  "_como": "Cada prompt vive en su .js, que declara una variable con su texto.\nEl programa lo carga con <script src> — asi pasa SIN SERVIDOR, que es\nlo que necesita la adquisicion asistida.\n\nPara cambiar un prompt: se reemplaza su fichero. El codigo no cambia."
 };

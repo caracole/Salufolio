@@ -366,7 +366,13 @@ table.med .marcas{color:var(--tinta-suave);font-weight:400;
   box-shadow:0 1px 5px rgba(0,0,0,.14) !important;
 }
 
+.situ-imp{display:none}
+.x-med{font-weight:400;font-size:calc(var(--menudo)*var(--zoom));color:var(--tinta-suave)}
 @media print{
+  /* la observación del cuidador : su texto entero ; vacía, nada (P-H, 16/11/2026) */
+  .x-situ textarea{display:none !important}
+  .situ-imp{display:block;white-space:pre-wrap}
+  .x-situ:has(#situ:placeholder-shown){display:none !important}
   /* los tres botones flotantes de MF — « apparaît artefact des 3
      boutons du bandeau supérieur » (P-H, 17/09) */
   #mf-barra,#mf-guardar,#mf-abrir,#mf-abeja,#mf-tip,#mf-aviso,
@@ -409,7 +415,7 @@ table.med .marcas{color:var(--tinta-suave);font-weight:400;
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    INFORMES PARA EL MÉDICO — Salufolio
-   Versión 2026.11.04-15:12:48
+   Versión 2026.11.17-18:58:05
 
    « Un bouton — PAS l'informe — un résumé à l'écran à montrer au toubib
      sans détours ni ménagements. »        — P-H, 19/07/2026, desde la UCE
@@ -742,11 +748,17 @@ function comentarioDeCurva(c){
    ══════════════════════════════════════════════════════════════════════ */
 function xSituacion(){
   var d = datos(), txt = (d && d.situacion) || '';
-  return '<div class="x-sec" style="color:var(--express)">📝 ' + t('sec_situacion')
+  return '<div class="x-situ"><div class="x-sec" style="color:var(--express)">📝 ' + t('sec_situacion')
     + ' <span class="sub">— ' + t('situacion_sub') + '</span></div>'
     + '<textarea id="situ" rows="2" placeholder="' + esc(t('situ_vacia')) + '" '
-    + 'onblur="guardaSituacion()">' + esc(txt) + '</textarea>'
-    + '<div class="guardado no-imprimir" id="situ-ok"></div>';
+    + 'onblur="guardaSituacion()" oninput="situEspejo()">' + esc(txt) + '</textarea>'
+    /* el papel no lee un textarea : se corta en dos líneas y enseña « Toque aquí… » (P-H, 16/11/2026) */
+    + '<div class="situ-imp" id="situ-imp">' + esc(txt) + '</div>'
+    + '<div class="guardado no-imprimir" id="situ-ok"></div></div>';
+}
+function situEspejo(){
+  var a = document.getElementById('situ'), b = document.getElementById('situ-imp');
+  if(a && b) b.textContent = a.value;
 }
 function guardaSituacion(){
   var d = datos(); if(!d) return;
@@ -1077,6 +1089,13 @@ function nombreVisible(){
   return e.replace(/,/g,' ').split(/\s+/).filter(function(w){ return w.length>1; })
     .map(function(w){ return w[0].toUpperCase(); }).join('') || 'X';
 }
+/* el médico de cabecera — paciente.medico_cabecera, escrito en la carta Paciente (P-H, 16/11/2026).
+   Anonimizado, no se pone. */
+function medicoCabecera(){
+  if(ANON.puesta) return '';
+  var d = datos() || {}, p = d.paciente || {}, q = MF.paciente() || {};
+  return String(p.medico_cabecera || q.medico_cabecera || d.medico_cabecera || '').trim();
+}
 function sipVisible(){
   var p = MF.paciente() || {};
   return p.sip || '';
@@ -1162,6 +1181,7 @@ function pCabecera(){
        Anonimizado, no se pone: es lo que se quería ocultar. */
     + (!ANON.puesta && sipVisible()
        ? '<div>SIP: <b>' + esc(sipVisible()) + '</b></div>' : '')
+    + (medicoCabecera() ? '<div>' + t('medico_cab') + ': <b>' + esc(medicoCabecera()) + '</b></div>' : '')
     + '<div>' + t('generado') + ': ' + new Date().toLocaleDateString() + '</div>'
     + '<div>' + t('periodo') + ': ' + esc(fpapel(d0)) + ' → ' + esc(fpapel(d1)) + '</div>'
     + '<div>' + t('datos') + ': ' + Object.keys(fechas).length + ' ' + t('fechas')
@@ -2217,6 +2237,7 @@ function pinta(){
        + '<span class="x-pac">🧑 ' + esc(nombreVisible())
        + (sipVisible() && !ANON.puesta
           ? '<span class="x-sip"> · SIP ' + esc(sipVisible()) + '</span>' : '')
+       + (medicoCabecera() ? '<span class="x-med"> · 🩺 ' + t('medico_cab') + ': ' + esc(medicoCabecera()) + '</span>' : '')
        + '</span></div>'
        + '<div class="x-ver">informe v' + VERSION_PROGRAMA
        + (esDemostracion() ? ' · <span class="x-demo">🎬 ' + t('demo_corto')
@@ -2225,10 +2246,11 @@ function pinta(){
   (F.secciones||[]).forEach(function(s){ if(HACER[s]) h += HACER[s](); });
   if(FORMA === 'express'){
     h += secComentario();
-    h += '<div class="x-pie">' + t('pie_express') + '</div>';
+    h += '<div class="x-pie">' + t('pie_express') + '<br>' + t('pie_marca') + '</div>';
   } else {
-    h += '<div class="p-pie"><span>Salufolio · informe v' + VERSION_PROGRAMA
-       + ' — ' + tt(F.titulo) + ' — ' + esc(nombreVisible()) + '</span>'
+    /* 17/11/2026 (P-H) : Salufolio et son auteur ; le titre n'est pas répété */
+    h += '<div class="p-pie"><span>' + t('pie_marca') + ' · informe v' + VERSION_PROGRAMA
+       + ' — ' + esc(nombreVisible()) + '</span>'
        + '<span>' + tt(SF_CONFIG.identidad.pie) + '</span></div>';
   }
   document.getElementById('hoja').innerHTML = h;
@@ -2266,11 +2288,64 @@ function ponTextos(){
   MF.barra((F.icono||'') + ' ' + tt(F.nombre), mandos, function(id){
     if(id === 'menos')    { zoom(-1); return; }
     if(id === 'mas')      { zoom(1);  return; }
-    if(id === 'imprimir') { window.print(); return; }
+    if(id === 'imprimir') { imprimeHoja(); return; }
     if(id === 'volver')   { volverAElegir(); return; }
     if(id.charAt(0) === 'd'){ cambiaDias(+id.slice(1)); ponTextos(); return; }
     if(id.charAt(0) === 'm'){ cambiaMed(+id.slice(1)); return; }
   });
+}
+/* ══ LA HOJA IMPRESA DEL INFORME (P-H, 17/11/2026) ══
+   « dans le cartouche du bas on a file:///home/pierre/Salufolio/casa/index.html 1/4 » :
+   el informe se imprimía con la página de la Casa, y el navegador ponía abajo su
+   dirección. Ahora se imprime SU hoja, sola, en un marco escondido, como las hojas de
+   especialidad : al pie de cada página Salufolio y su autor, el paciente y la fecha, la
+   página. La situación actual vacía no sale ; escrita, sale entera. */
+function imprimeHoja(){
+  var hoja = document.getElementById('hoja');
+  if(!hoja){ window.print(); return; }
+  var c = hoja.cloneNode(true);
+  var esp = c.querySelector('#situ-imp'); if(esp) esp.remove();
+  c.querySelectorAll('textarea').forEach(function(x){
+    var o = x.id ? document.getElementById(x.id) : null, v = o ? o.value : x.value;
+    if(!String(v || '').trim()){
+      var w = x.closest('.x-situ');
+      if(w){ w.remove(); return; }
+      var s = x.previousElementSibling;
+      if(s && s.classList.contains('x-sec')) s.remove();
+      x.remove(); return;
+    }
+    var d = document.createElement('div'); d.className = 'papel-texto'; d.textContent = v; x.replaceWith(d);
+  });
+  c.querySelectorAll('.no-imprimir').forEach(function(x){ x.remove(); });
+  var css = ''; document.querySelectorAll('style').forEach(function(s){ css += s.textContent + '\n'; });
+  var links = ''; document.querySelectorAll('link[rel="stylesheet"]').forEach(function(l){ links += '<link rel="stylesheet" href="' + esc(l.href) + '">'; });
+  var R = getComputedStyle(document.documentElement);
+  var suave = R.getPropertyValue('--tinta-suave').trim(), linea = R.getPropertyValue('--linea').trim();
+  var cs = function(s){ return '"' + String(s || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/[\r\n]+/g, ' ') + '"'; };
+  var lg = document.documentElement.lang || undefined, fecha = '';
+  try{ fecha = new Date().toLocaleString(lg, { timeZone:'Europe/Madrid', dateStyle:'short', timeStyle:'short' }); }catch(e){ fecha = new Date().toLocaleString(); }
+  var nom = ''; try{ nom = nombreVisible() || ''; }catch(e){}
+  var pg = t('pie_pagina').split('{n}'), pg2 = (pg[1] || '').split('{t}');
+  var pagina = cs(pg[0]) + ' counter(page) ' + cs(pg2[0]) + ' counter(pages) ' + cs(pg2[1] || '');
+  var caja = 'font-family:system-ui,sans-serif;font-size:8pt;color:' + suave + ';border-top:.5pt solid ' + linea + ';padding-top:3pt;vertical-align:top;';
+  var pie = '@page{size:A4;margin:14mm 14mm 18mm 14mm;'
+    + '@bottom-left{content:' + cs(t('pie_marca')) + ';text-align:left;' + caja + '}'
+    + '@bottom-center{content:' + cs([nom, fecha].filter(Boolean).join(' · ')) + ';text-align:center;' + caja + '}'
+    + '@bottom-right{content:' + pagina + ';text-align:right;' + caja + '}}'
+    + '.papel-texto{white-space:pre-wrap}';
+  var est = function(el){ var s = el.getAttribute('style'); return s ? ' style="' + esc(s) + '"' : ''; };
+  var html = '<!DOCTYPE html><html lang="' + esc(document.documentElement.lang || '') + '"' + est(document.documentElement) + '><head><meta charset="utf-8">'
+    + '<base href="' + esc(location.href) + '"><title>' + esc(document.title) + '</title>' + links
+    + '<style>' + css + pie + '</style></head><body class="' + esc(document.body.className) + '"' + est(document.body) + '>'
+    + c.outerHTML + '</body></html>';
+  var fr = document.createElement('iframe');
+  fr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(fr);
+  var w = fr.contentWindow;
+  w.document.open(); w.document.write(html); w.document.close();
+  var quita = function(){ setTimeout(function(){ if(fr.parentNode) fr.parentNode.removeChild(fr); }, 500); };
+  w.addEventListener('afterprint', quita);
+  setTimeout(function(){ try{ w.focus(); w.print(); }catch(e){ window.print(); } setTimeout(quita, 60000); }, 300);
 }
 function ponTextos2(){
   var b, hay = !!claveApi(), g = comentarioGuardado();

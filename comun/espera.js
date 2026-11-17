@@ -1,6 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════════
    LA ESPERA — comun/espera.js
-   Versión 2026.11.11-21:07:03
+   Versión 2026.11.13-16:53:42
+   (13/11/2026, P-H : « mets-le dans comun pour en profiter partout » — EL RELOJ de la
+    espera, tomado del Informe express : el ⏳ que gira y los segundos que suben.
+      var r = SF_ESPERA.reloj(contenedor, 'texto', { segundos:'lado'|'debajo'|'encima' });  …  r.para();
+    « les secondes peuvent être à côté, dessous ou dessus le sablier » : un ajuste, no el código.)
    (P-H, 11/11/2026 : « Il s'écoule un certain temps au chargement des modules, des pdf,
     au moins la première fois. Est-il possible de faire patienter ? » — « la coquille du
     blason qui tourne lentement ».)
@@ -31,6 +35,12 @@
       + '.sf-espera img{width:' + (t.tamano_px || 72) + 'px;height:' + (t.tamano_px || 72) + 'px;animation:sf-espera-gira ' + (t.vuelta_s || 4) + 's linear infinite}'
       + '.sf-espera span{font-size:15px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:4px 12px}'
       + '@keyframes sf-espera-gira{to{transform:rotate(360deg)}}'
+      /* EL RELOJ (13/11/2026) : el sablier del Informe, para todos */
+      + '.sf-reloj{display:inline-flex;align-items:center;gap:8px;color:var(--text)}'
+      + '.sf-reloj-debajo,.sf-reloj-encima{flex-direction:column;gap:4px;text-align:center}'
+      + '.sf-reloj-encima .sf-reloj-seg{order:-1}'
+      + '.sf-reloj-ico{display:inline-block;line-height:1;animation:sf-espera-gira ' + (((t.reloj || {}).vuelta_s) || 2) + 's linear infinite}'
+      + '.sf-reloj-seg{font-family:var(--mono,monospace);color:var(--muted);font-size:.85em;min-width:3ch}'
       + '@media (prefers-reduced-motion: reduce){.sf-espera img{animation-duration:' + ((t.vuelta_s || 4) * 3) + 's}}';
     document.head.appendChild(st);
   }
@@ -56,6 +66,28 @@
     iframe.addEventListener('load', fin);
     return h;
   }
+  /* ══ EL RELOJ (P-H, 13/11/2026) ══ un ⏳ que gira, un texto, los segundos que suben.
+     cont   : donde se pone (se vacía, salvo opc.anadir)
+     opc.segundos : 'lado' | 'debajo' | 'encima' — si no, el de la tabla (reloj.segundos)
+     opc.tamano_px : el tamaño del ⏳ — si no, el de la tabla
+     Devuelve { el, para(), segundos() }. */
+  function reloj(cont, texto, opc){
+    ponEstilo(); opc = opc || {};
+    var R = T().reloj || {}, pos = opc.segundos || R.segundos || 'lado';
+    var d = document.createElement('span'); d.className = 'sf-reloj sf-reloj-' + pos;
+    d.innerHTML = '<span class="sf-reloj-ico"></span><span class="sf-reloj-txt"></span><span class="sf-reloj-seg"></span>';
+    var ico = d.querySelector('.sf-reloj-ico'), seg = d.querySelector('.sf-reloj-seg');
+    ico.textContent = R.icono || '\u23f3';
+    ico.style.fontSize = (opc.tamano_px || R.tamano_px || 18) + 'px';
+    d.querySelector('.sf-reloj-txt').textContent = texto || '';
+    if (!opc.anadir) cont.innerHTML = '';
+    cont.appendChild(d);
+    var t0 = Date.now(), formato = R.formato || '{s} s';
+    function pinta(){ seg.textContent = formato.replace('{s}', Math.floor((Date.now() - t0) / 1000)); }
+    pinta();
+    var iv = setInterval(function(){ if (!d.isConnected){ clearInterval(iv); return; } pinta(); }, 1000);
+    return { el: d, para: function(){ clearInterval(iv); }, segundos: function(){ return Math.floor((Date.now() - t0) / 1000); } };
+  }
   function cierraTodo(){ vivas.slice().forEach(function(h){ h.cierra(); }); }
-  window.SF_ESPERA = { muestra: muestra, marco: marco, cierraTodo: cierraTodo };
+  window.SF_ESPERA = { muestra: muestra, marco: marco, cierraTodo: cierraTodo, reloj: reloj };
 })();

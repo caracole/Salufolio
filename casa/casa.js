@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_LANZADOR = {
   "id": "casa",
-  "version": "2026.11.13-11:57:53",
+  "version": "2026.11.17-17:47:37",
   "nombre": "Salufolio",
   "_arquitectura": "ARQUITECTURA V2 (dibujo de P-H, 04/09/2026):\n  · 1 lanzador, 1 configuracion — apunta hacia los programas por su ID\n  · N programas, N carpetas — V2/resumen/, V2/curvas/…\n  · cada programa tiene su <id>.js que declara SF_CONFIG\n  · lo comun esta en V2/comun/ (mf.js, salufolio.css, las tablas)\nSIN JSON (P-H, 05/09): un navegador no puede leer un fichero local con fetch, pero si cargar un script. Asi todo funciona sin servidor.",
   "idioma_defecto": "es",
@@ -40,6 +40,7 @@ var SF_LANZADOR = {
     "rubricas": "../comun/grupos-datos.js",
     "idiomas": "../comun/idiomas-datos.js"
   },
+  "_modulos_retirados": "OBSERVANCIA, retirada el 17/11/2026 (P-H : « sans intérêt ? supprimer la carte jusqu'à ce qu'on ait quelque chose à dire »). El programa sigue en observancia/ ; para volver a enseñarla, poner de nuevo en « modulos », detrás de « correlaciones » : { \"id\": \"observancia\", \"acceso\": [\"paciente\", \"profesional\", \"cuidador\"] }",
   "modulos": [
     {
       "id": "paciente",
@@ -128,14 +129,6 @@ var SF_LANZADOR = {
       "acceso": [
         "profesional",
         "investigador"
-      ]
-    },
-    {
-      "id": "observancia",
-      "acceso": [
-        "paciente",
-        "profesional",
-        "cuidador"
       ]
     },
     {
@@ -288,12 +281,15 @@ var SF_LANZADOR = {
       }
     }
   ],
+  "_bulles": "LAS BURBUJAS (P-H, 17/11/2026 : « associé à la table des palettes, prévoir pour les toasts, les bulles… la couleur fond et texte ») : cada paleta da --bulle-fond y --bulle-texte. En las oscuras, amarillo claro y letras negras ; en las claras, gris oscuro transparente y letras blancas.",
   "paletas": [
     {
       "id": "obsidiana",
       "nombre": "Obsidiana",
       "_de": "Viene del QWERTY Cipher, donde es el tema por defecto. Negro de vidrio volcanico, con un azul vivo por acento.",
       "v": {
+        "--bulle-fond": "rgba(255,244,190,0.85)",
+        "--bulle-texte": "#111111",
         "--bg": "#0f0f12",
         "--surface": "#16161b",
         "--surface2": "#1c1c22",
@@ -313,6 +309,8 @@ var SF_LANZADOR = {
       "nombre": "Océano",
       "_de": "Del QWERTY Cipher, el primer programa que P-H y Claude hicieron juntos.",
       "v": {
+        "--bulle-fond": "rgba(255,244,190,0.85)",
+        "--bulle-texte": "#111111",
         "--bg": "#050d1a",
         "--surface": "#0a1628",
         "--surface2": "#0f2040",
@@ -332,6 +330,8 @@ var SF_LANZADOR = {
       "nombre": "Bosque",
       "_de": "Del QWERTY Cipher, el primer programa que P-H y Claude hicieron juntos.",
       "v": {
+        "--bulle-fond": "rgba(255,244,190,0.85)",
+        "--bulle-texte": "#111111",
         "--bg": "#070f08",
         "--surface": "#0e1f10",
         "--surface2": "#162a18",
@@ -351,6 +351,8 @@ var SF_LANZADOR = {
       "nombre": "Carmesí",
       "_de": "Del QWERTY Cipher, el primer programa que P-H y Claude hicieron juntos.",
       "v": {
+        "--bulle-fond": "rgba(255,244,190,0.85)",
+        "--bulle-texte": "#111111",
         "--bg": "#120508",
         "--surface": "#1f0a10",
         "--surface2": "#2a1018",
@@ -370,6 +372,8 @@ var SF_LANZADOR = {
       "nombre": "Papel",
       "_de": "Del QWERTY Cipher, el primer programa que P-H y Claude hicieron juntos.",
       "v": {
+        "--bulle-fond": "rgba(30,30,30,0.6)",
+        "--bulle-texte": "#ffffff",
         "--bg": "#f5f2ec",
         "--surface": "#ffffff",
         "--surface2": "#eeeae2",
@@ -388,6 +392,8 @@ var SF_LANZADOR = {
       "id": "oscuro",
       "nombre": "Oscuro",
       "v": {
+        "--bulle-fond": "rgba(255,244,190,0.85)",
+        "--bulle-texte": "#111111",
         "--bg": "#0e1117",
         "--surface": "#161b27",
         "--surface2": "#1e2535",
@@ -406,6 +412,8 @@ var SF_LANZADOR = {
       "id": "noche",
       "nombre": "Noche",
       "v": {
+        "--bulle-fond": "rgba(255,244,190,0.85)",
+        "--bulle-texte": "#111111",
         "--bg": "#12141c",
         "--surface": "#1a1d28",
         "--surface2": "#222634",
@@ -425,6 +433,8 @@ var SF_LANZADOR = {
       "nombre": "Cielo",
       "_porque": "La pidió una usuaria: « ¿no hay un fondo azul como el cielo? » El cielo del DÍA, sin nubes. P-H dio el tono exacto: #74BBE4 — « no es bastante azul, no se pasa el invierno encima » dijo del primero, que era demasiado pálido.",
       "v": {
+        "--bulle-fond": "rgba(30,30,30,0.6)",
+        "--bulle-texte": "#ffffff",
         "--bg": "#74BBE4",
         "--surface": "#9BD0EC",
         "--surface2": "#5EAEDC",
@@ -445,6 +455,8 @@ var SF_LANZADOR = {
       "id": "sepia",
       "nombre": "Sepia",
       "v": {
+        "--bulle-fond": "rgba(30,30,30,0.6)",
+        "--bulle-texte": "#ffffff",
         "--bg": "#f5f0e8",
         "--surface": "#fffdf7",
         "--surface2": "#ede8dc",
@@ -463,6 +475,8 @@ var SF_LANZADOR = {
       "id": "claro",
       "nombre": "Claro",
       "v": {
+        "--bulle-fond": "rgba(30,30,30,0.6)",
+        "--bulle-texte": "#ffffff",
         "--bg": "#f7f8fa",
         "--surface": "#ffffff",
         "--surface2": "#eef1f5",
@@ -481,6 +495,8 @@ var SF_LANZADOR = {
       "id": "contraste",
       "nombre": "Contraste",
       "v": {
+        "--bulle-fond": "rgba(255,244,190,0.85)",
+        "--bulle-texte": "#111111",
         "--bg": "#000000",
         "--surface": "#0d0d0d",
         "--surface2": "#1a1a1a",
@@ -591,6 +607,16 @@ var SF_LANZADOR = {
     },
     "botones": [
       {
+        "id": "inicio",
+        "icono": "🏠",
+        "titulo": {
+          "es": "Volver al lanzador",
+          "fr": "Revenir au lanceur",
+          "ca": "Tornar al llançador",
+          "en": "Back to the launcher"
+        }
+      },
+      {
         "id": "pantalla",
         "icono": "🖥️",
         "titulo": {
@@ -640,16 +666,6 @@ var SF_LANZADOR = {
           "fr": "Aide",
           "ca": "Ajuda",
           "en": "Help"
-        }
-      },
-      {
-        "id": "inicio",
-        "icono": "🏠",
-        "titulo": {
-          "es": "Volver al lanzador",
-          "fr": "Revenir au lanceur",
-          "ca": "Tornar al llançador",
-          "en": "Back to the launcher"
         }
       },
       {
@@ -880,6 +896,10 @@ var SF_LANZADOR = {
     ]
   },
   "_senales": "Los colores de SEÑAL de cada paleta (P-H, 05/11/2026 : « vert sur fond sépia ou clair : illisible ») : --ok (en las normas), --danger (fuera), --warn (alerta), --accent2. Las paletas claras (fondo luminoso : papel, cielo, sepia, claro) los llevan oscuros ; las oscuras, los de siempre. Cada paleta los lleva TODOS : al pasar de una clara a una oscura, nada se queda de la anterior.",
+  "_escritura_modulos": "LO QUE UN MÓDULO PUEDE ESCRIBIR EN LA CARPETA DEL PACIENTE, por la Casa (P-H, 13/11/2026 — 1 PDF = 1 JSON) : desde su marco no tiene el permiso ; se lo pide a la Casa (« escribe-fichero »). Solo en estas subcarpetas, con nombres simples ; lo sustituido pasa a historial/<historial>/.",
+  "escritura_modulos": {
+    "subcarpetas": ["extracciones"]
+  },
   "_suprimir": "SUPRIMIR O VACIAR (P-H, 12/11/2026 : « clic ⇒ supprimer ? effacer les données ou supprimer définitivement ? ») : para los pacientes de « banco » (banco de pruebas), el 🗑 propone primero VACIAR los datos — el paciente y sus PDF se quedan, el expediente, el diario y las extracciones se copian antes en historial/<vaciar_carpeta><fecha>/. A los demás pacientes no se les propone : solo suprimir. « vaciar_conservar » : las claves del .sf que no se tocan (lo demás : las listas se vacían).",
   "suprimir": {
     "banco": ["APA0000"],

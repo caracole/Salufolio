@@ -1,7 +1,7 @@
 /* INFORMES PARA EL MÉDICO — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "informe",
-  "version": "2026.11.05-11:13:28",
+  "version": "2026.11.17-18:58:05",
   "programa": "informe.html",
   "lanzador": "../casa/casa.js",
   "carpeta": "informe/",
@@ -39,7 +39,7 @@ var SF_CONFIG = window.SF_CONFIG = {
   "_doctrina": "« Un bouton — PAS l'informe — un resume a l'ecran a montrer au toubib\n  sans detours ni menagements. »        — P-H, 19/07/2026, desde la UCE\n\n« Un seul pave: INFORMES MEDICO » (P-H, 17/09) — tres formas detras de\nuna sola puerta.",
   "identidad": {
     "_que": "Lo que va en la cabecera de los informes impresos. Se corrige aqui, no en el codigo.",
-    "autor": "Pierre-Henri Giraud × Claude (Anthropic)",
+    "autor": "Pierre-Henri Giraud",
     "doi": "10.5281/zenodo.20346760",
     "aviso": {
       "es": "Documento informativo — No diagnóstico",

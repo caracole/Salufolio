@@ -80,7 +80,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    CRONOLOGÍA — programa autónomo de Salufolio V2
-   Versión 2026.11.06-09:20:17
+   Versión 2026.11.17-16:21:23
    (05/11/2026 : el título en la lengua de la casa.)
    (05/11/2026 : el cuadro Cómo leer ; la burbuja de cada línea dice su nombre.)
    (05/11/2026 : título centrado, letra más grande.)
@@ -1367,7 +1367,7 @@ function _ganttVer(sp, anio){
        + (e.pdf_id ? '<button class="g-doc" data-ptip="' + _escCr(txcr('g_doc')) + '" onclick="_chartVerInforme({pdf_id:\'' + _escCr(e.pdf_id) + '\'}, null)">📄</button>' : '') + '</div>';
   });
   document.querySelectorAll('.g-ventana').forEach(v => { const f = v.closest('.sf-ventana-fondo'); if (f) f.remove(); });
-  const v = MF.ventana('📅 ' + _escCr(tit), h, { ancho: '720px' });
+  const v = MF.ventana('📅 ' + _escCr(tit), h, { ancho: '720px', imprimir: true });   /* 🖨 à côté de la ✕ (P-H, 17/11/2026) */
   if (v && v.caja) v.caja.classList.add('g-ventana');
 }
 

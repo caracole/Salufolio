@@ -1,5 +1,5 @@
 /* Los textos de Especialidad — en su propia carpeta, como todo lo suyo.
-   Versión 2026.11.11-16:35:30 */
+   Versión 2026.11.17-09:58:06 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de ESTE programa (es/fr/ca/en). Nada escrito en duro en la página.",
   "textos": {
@@ -42,6 +42,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "es_tip_imprimir": "Imprimir una hoja para llevar a la cita",
       "es_imprimir": "🖨 Imprimir",
       "es_hoja_tit": "{e} — hoja para la consulta",
+      "es_aviso": "Documento informativo — No diagnóstico",
       "es_sin_esp": "La tarjeta no dice qué especialidad abrir.",
       "es_doc_falta": "El documento {n} no está en la carpeta del paciente.",
       "es_k_est": "{n} consultas",
@@ -74,6 +75,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "es_abandonos": "Abandonados o suspendidos en {a}",
       "es_consultas_anio": "Consultas de {a}",
       "es_imp_anio": "año {a}",
+      "es_pie_sf": "Salufolio © Pierre-Henri Giraud · salufolio.com · salufolio@proton.me",
       "es_trat_sinec": "Si necesario",
       "es_trat_term": "Terminados o parados",
       "es_trat_aviso": "Parados por una razón a tener en cuenta",
@@ -129,6 +131,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "es_tip_imprimir": "Imprimer une fiche à apporter au rendez-vous",
       "es_imprimir": "🖨 Imprimer",
       "es_hoja_tit": "{e} — fiche pour la consultation",
+      "es_aviso": "Document d'information — Pas un diagnostic",
       "es_sin_esp": "La carte ne dit pas quelle spécialité ouvrir.",
       "es_doc_falta": "Le document {n} n'est pas dans le dossier du patient.",
       "es_k_est": "{n} consultations",
@@ -161,6 +164,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "es_abandonos": "Abandonnés ou suspendus en {a}",
       "es_consultas_anio": "Consultations de {a}",
       "es_imp_anio": "année {a}",
+      "es_pie_sf": "Salufolio © Pierre-Henri Giraud · salufolio.com · salufolio@proton.me",
       "es_trat_sinec": "Si besoin",
       "es_trat_term": "Terminés ou arrêtés",
       "es_trat_aviso": "Arrêtés pour une raison à connaître",
@@ -216,6 +220,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "es_tip_imprimir": "Imprimir un full per a portar a la cita",
       "es_imprimir": "🖨 Imprimir",
       "es_hoja_tit": "{e} — full per a la consulta",
+      "es_aviso": "Document informatiu — No diagnòstic",
       "es_sin_esp": "La targeta no diu quina especialitat obrir.",
       "es_doc_falta": "El document {n} no és a la carpeta del pacient.",
       "es_k_est": "{n} consultes",
@@ -248,6 +253,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "es_abandonos": "Abandonats o suspesos en {a}",
       "es_consultas_anio": "Consultes de {a}",
       "es_imp_anio": "any {a}",
+      "es_pie_sf": "Salufolio © Pierre-Henri Giraud · salufolio.com · salufolio@proton.me",
       "es_trat_sinec": "Si cal",
       "es_trat_term": "Acabats o aturats",
       "es_trat_aviso": "Aturats per una raó a tindre en compte",
@@ -303,6 +309,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "es_tip_imprimir": "Print a sheet to take to the appointment",
       "es_imprimir": "🖨 Print",
       "es_hoja_tit": "{e} — sheet for the appointment",
+      "es_aviso": "Informative document — Not a diagnosis",
       "es_sin_esp": "The card does not say which specialty to open.",
       "es_doc_falta": "Document {n} is not in the patient's folder.",
       "es_k_est": "{n} visits",
@@ -335,6 +342,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "es_abandonos": "Stopped or suspended in {a}",
       "es_consultas_anio": "Visits in {a}",
       "es_imp_anio": "year {a}",
+      "es_pie_sf": "Salufolio © Pierre-Henri Giraud · salufolio.com · salufolio@proton.me",
       "es_trat_sinec": "As needed",
       "es_trat_term": "Finished or stopped",
       "es_trat_aviso": "Stopped for a reason worth knowing",

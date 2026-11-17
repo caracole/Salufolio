@@ -1,7 +1,7 @@
 /* ANTECEDENTES — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "antecedentes",
-  "version": "2026.11.05-15:36:20",
+  "version": "2026.11.17-16:21:23",
   "programa": "antecedentes.html",
   "lanzador": "../casa/casa.js",
   "icono": "📜",

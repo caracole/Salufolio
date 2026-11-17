@@ -134,7 +134,7 @@ button[data-tiptext],.rubs button,.btn,summary{cursor:pointer !important}
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ADQUISICIÓN MANUAL — Salufolio
-   Versión 2026.10.06-19:16:32
+   Versión 2026.11.16-21:57:10
 
    « Ce système est universel, on peut saisir n'importe quoi. Il suffit
      d'une table bien renseignée. »                  — P-H, 14/09/2026
@@ -157,6 +157,7 @@ function t(clave, vars){
   try{
     var T=(typeof SF_TEXTOS!=='undefined'&&SF_TEXTOS.textos)||{};
     var lg=(typeof MF!=='undefined'&&MF.idioma)?MF.idioma():'es';
+    if(typeof MF!=='undefined'&&MF.clavePlural) clave = MF.clavePlural(T, lg, clave, vars);   /* « 1 página », « 2 páginas » (P-H, 16/11/2026) */
     out = (T[lg]&&T[lg][clave])||(T.es&&T.es[clave])||clave;
   }catch(e){ out = clave; }
   var v = vars||{};

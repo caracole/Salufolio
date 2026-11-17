@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Versión 2026.11.12-10:43:30
+   Versión 2026.11.17-16:21:23
    (12/11/2026 : OBSOLETO — un medicamento marcado « obsoleto » no lo ve ningún módulo de solo lectura ; MF.esObsoleto.)
    (10/11/2026 : MF.procedenciaMedida — de dónde viene un valor, en una línea corta : servicio — centro.)
    (05/11/2026 : MF.esCronico y MF.medNuevo, por fin en mf.js — la instalación « Crónica » no los había puesto.)
@@ -773,28 +773,28 @@ var MF = (function(){
     almacen : 'manijas'
   };
   var TXT_HIST = {
-    es : { archivadas : ' · {n} copia(s) vieja(s) a {arch}/',
+    es : { archivadas : ' · {n} copias viejas a {arch}/', archivadas_1 : ' · {n} copia vieja a {arch}/',
            sin_api : 'Este navegador no puede guardar en la carpeta del paciente. Use Chrome, Edge o Brave.',
            guardado : '💾 Guardado en {carpeta}', copia : ' · copia anterior en {hist}/{nombre}',
            sin_permiso : 'Pulse 💾 para confirmar el permiso de escritura en la carpeta del paciente.',
            cancelado : 'Guardado cancelado: no se eligió carpeta.',
            fallo : 'No se pudo guardar: {msg}. Sus cambios siguen en la memoria de trabajo.',
            varios : '⚠ Hay {n} ficheros de expediente en la carpeta del paciente: solo debería haber uno.' },
-    fr : { archivadas : ' · {n} copie(s) ancienne(s) vers {arch}/',
+    fr : { archivadas : ' · {n} copies anciennes vers {arch}/', archivadas_1 : ' · {n} copie ancienne vers {arch}/',
            sin_api : 'Ce navigateur ne sait pas enregistrer dans le dossier du patient. Utilisez Chrome, Edge ou Brave.',
            guardado : '💾 Enregistré dans {carpeta}', copia : ' · copie précédente dans {hist}/{nombre}',
            sin_permiso : 'Cliquez sur 💾 pour confirmer la permission d’écriture dans le dossier du patient.',
            cancelado : 'Enregistrement annulé : aucun dossier choisi.',
            fallo : 'Enregistrement impossible : {msg}. Vos modifications restent dans la mémoire de travail.',
            varios : '⚠ Il y a {n} fichiers d’expediente dans le dossier du patient : il ne devrait y en avoir qu’un.' },
-    en : { archivadas : ' · {n} old copy(ies) moved to {arch}/',
+    en : { archivadas : ' · {n} old copies moved to {arch}/', archivadas_1 : ' · {n} old copy moved to {arch}/',
            sin_api : 'This browser cannot save into the patient folder. Use Chrome, Edge or Brave.',
            guardado : '💾 Saved in {carpeta}', copia : ' · previous copy in {hist}/{nombre}',
            sin_permiso : 'Click 💾 to confirm write permission for the patient folder.',
            cancelado : 'Save cancelled: no folder chosen.',
            fallo : 'Could not save: {msg}. Your changes are still in the working memory.',
            varios : '⚠ There are {n} record files in the patient folder: there should be only one.' },
-    ca : { archivadas : ' · {n} còpia/còpies antiga(es) a {arch}/',
+    ca : { archivadas : ' · {n} còpies antigues a {arch}/', archivadas_1 : ' · {n} còpia antiga a {arch}/',
            sin_api : 'Aquest navegador no pot desar a la carpeta del pacient. Useu Chrome, Edge o Brave.',
            guardado : '💾 Desat a {carpeta}', copia : ' · còpia anterior a {hist}/{nombre}',
            sin_permiso : 'Premeu 💾 per confirmar el permís d’escriptura a la carpeta del pacient.',
@@ -804,6 +804,7 @@ var MF = (function(){
   };
   function txH(clave, v){
     var t = TXT_HIST[LANG_SF] || TXT_HIST.es;
+    clave = clavePlural(TXT_HIST, LANG_SF, clave, v);
     var s = t[clave] || TXT_HIST.es[clave] || clave;
     Object.keys(v||{}).forEach(function(k){ s = s.split('{'+k+'}').join(v[k]); });
     return s;
@@ -909,6 +910,80 @@ var MF = (function(){
     carpetaH = h; carpetaMat = matricula;
     if(nueva) _recuerdaCarpeta(matricula, h);
     return h;
+  }
+
+  /* ══ ESCRIBIR UN FICHERO EN LA CARPETA DEL PACIENTE (P-H, 13/11/2026 — 1 PDF = 1 JSON, ladrillo 1) ══
+     Con LA MISMA permiso que el .sf : sin servidor, en file://. Sirve a la adquisición
+     (extracciones/<pdf>.json) y servirá a la asistida y al diario.
+       sub      : la subcarpeta (« extracciones »), creada si falta ; '' = la carpeta misma
+       opc.preguntar : se puede pedir el permiso (SOLO durante un gesto del usuario)
+       opc.historial : si el fichero ya existe y cambia, el antiguo se copia antes —
+                       comprobado— en historial/<opc.historial>/<nombre>_<sello>.<ext>
+       opc.sello(txt): el sello del antiguo, sacado de su contenido ; si no, la fecha del disco
+       opc.selloCampo : lo mismo, por el nombre de un campo del JSON (lo que la Casa sabe hacer)
+     DENTRO DE LA CASA, el módulo no tiene el permiso : lo pide a la Casa, que escribe (« escribe-fichero »).
+     Devuelve { ok, nombre, copia } o { ok:false, motivo:'sin_api'|'sin_permiso' }. */
+  /* dentro de la Casa, un módulo no tiene el permiso de la carpeta : se lo pide a ella (como los PDF) */
+  function _dentroDeCasa(){
+    if(enMarco) return true;
+    try{ return !!(window.parent && window.parent !== window); }catch(e){ return true; }
+  }
+  var _nPide = 0;
+  function _pideACasa(msg, tipoResp, ms){
+    return new Promise(function(ok){
+      var id = 'p' + (++_nPide) + '_' + Date.now(), hecho = false;
+      function oye(ev){
+        var d = ev.data || {};
+        if(d.de !== 'lanzador' || d.tipo !== tipoResp || d.id !== id) return;
+        hecho = true; window.removeEventListener('message', oye); ok(d);
+      }
+      window.addEventListener('message', oye);
+      setTimeout(function(){ if(!hecho){ window.removeEventListener('message', oye); ok({ ok:false, motivo:'sin_respuesta' }); } }, ms);
+      msg.de = 'modulo'; msg.id = id;
+      try{ parent.postMessage(msg, '*'); }catch(e){ hecho = true; window.removeEventListener('message', oye); ok({ ok:false, motivo:'sin_casa' }); }
+    });
+  }
+
+  async function guardaEnCarpeta(sub, nombre, texto, opc){
+    opc = opc || {};
+    if(_dentroDeCasa()) return _pideACasa({ tipo:'escribe-fichero', sub:sub, nombre:nombre, texto:texto,
+                                    historial:opc.historial || '', selloCampo:opc.selloCampo || '' }, 'escrito', 60000);
+    if(!window.showDirectoryPicker) return { ok:false, motivo:'sin_api' };
+    var dir = await _carpetaPaciente(!!opc.preguntar);
+    if(!dir) return { ok:false, motivo:'sin_permiso' };
+    var d = sub ? await dir.getDirectoryHandle(sub, { create:true }) : dir;
+    var fh0 = null, copia = null;
+    try{ fh0 = await d.getFileHandle(nombre); }catch(e){ if(e.name !== 'NotFoundError') throw e; }
+    if(fh0){
+      var f0 = await fh0.getFile(), t0 = await f0.text();
+      if(t0 === texto) return { ok:true, nombre:nombre, igual:true, copia:null };
+      if(opc.historial){
+        var hd = await (await dir.getDirectoryHandle(HIST.carpeta, { create:true }))
+                       .getDirectoryHandle(opc.historial, { create:true });
+        var sello = null;
+        try{ sello = opc.sello ? opc.sello(t0) : null; }catch(e){ sello = null; }
+        if(!sello) sello = selloEnNombre(fechaDelEstado('', f0.lastModified));
+        var punto = nombre.lastIndexOf('.'), base = punto > 0 ? nombre.slice(0, punto) : nombre,
+            ext = punto > 0 ? nombre.slice(punto) : '';
+        var ya = []; for await (var e of hd.values()) ya.push(e.name);
+        var destino = base + '_' + sello + ext, k = 1;
+        while(ya.indexOf(destino) >= 0) destino = base + '_' + sello + '_' + (++k) + ext;
+        var wc = await (await hd.getFileHandle(destino, { create:true })).createWritable();
+        await wc.write(await f0.arrayBuffer()); await wc.close();
+        var chk = await (await hd.getFileHandle(destino)).getFile();
+        if(chk.size !== f0.size) throw new Error('la copia de ' + destino + ' no coincide (' + chk.size + ' ≠ ' + f0.size + ')');
+        copia = HIST.carpeta + '/' + opc.historial + '/' + destino;
+      }
+    }
+    var w = await (await d.getFileHandle(nombre, { create:true })).createWritable();
+    await w.write(texto); await w.close();
+    return { ok:true, nombre:nombre, copia:copia };
+  }
+  /* ¿se puede escribir en la carpeta del paciente ? Pedirlo SOLO durante un gesto del usuario. */
+  async function permisoCarpeta(preguntar){
+    if(_dentroDeCasa()){ var r = await _pideACasa({ tipo:'permiso-carpeta', preguntar:!!preguntar }, 'permiso-carpeta', 300000); return !!(r && r.ok); }
+    if(!window.showDirectoryPicker) return false;
+    try{ return !!(await _carpetaPaciente(!!preguntar)); }catch(e){ return false; }
   }
 
   var _ultimaCopia = null, _avisoVarios = false;
@@ -1764,6 +1839,23 @@ async function _archivaViejas(hist){
   }
   function idioma(){ return LANG_SF; }
 
+  /* ══ EL PLURAL (P-H, 16/11/2026) : « 1 documento », « 2 documentos », nunca « documento(s) » ══
+     La regla es de la LENGUA : en francés 0 y 1 van en singular, en español sólo el 1.
+     El navegador la sabe (Intl.PluralRules) : nada escrito en duro.
+     En la tabla de un módulo, un texto con {n} lleva sus dos formas : « clave » (plural) y
+     « clave_1 » (singular). Cada t() de los módulos llama a clavePlural y toma la buena. */
+  function formaPlural(n){
+    var x = Number(n); if(isNaN(x)) return 'other';
+    try{ return new Intl.PluralRules(LANG_SF || 'es').select(x) === 'one' ? 'one' : 'other'; }
+    catch(e){ return x === 1 ? 'one' : 'other'; }
+  }
+  function clavePlural(T, lg, clave, vars){
+    if(!T || !vars || vars.n === undefined || formaPlural(vars.n) !== 'one') return clave;
+    var c1 = clave + '_1';
+    if(T[lg] && T[lg][clave]) return T[lg][c1] ? c1 : clave;   /* la lengua tiene el texto : su singular, o nada */
+    return (T.es && T.es[c1]) ? c1 : clave;                     /* si no, el español entero */
+  }
+
 
   /* ══════════════════════════════════════════════════════════════════
      LE CLIC SUR UN PARAMÈTRE (P-H, 06/09)
@@ -2423,7 +2515,9 @@ async function _archivaViejas(hist){
 
     caja.innerHTML =
         '<div class="sf-ventana-cab"><span class="sf-ventana-tit">' + (titulo||'') + '</span>'
-      + '<span class="sf-ventana-x">✕</span></div>'
+      /* op.imprimir (P-H, 17/11/2026) : un 🖨 a la derecha, junto a la ✕ */
+      + (op.imprimir ? '<span class="sf-ventana-acc"><span class="sf-ventana-imp">🖨</span><span class="sf-ventana-x">✕</span></span></div>'
+                     : '<span class="sf-ventana-x">✕</span></div>')
       + '<div class="sf-ventana-cuerpo">' + (contenido||'') + '</div>'
       /* v2 (P-H, 11/09) : le ✕ ferme déjà — un bouton « Cerrar » en plus
          serait deux fois le même geste. Le pied ne paraît que s'il porte
@@ -2444,7 +2538,10 @@ async function _archivaViejas(hist){
 
     fondo.onclick = function(e){ if(e.target === fondo) cierra(); };
     caja.querySelector('.sf-ventana-x').onclick = cierra;
-    tip(caja.querySelector('.sf-ventana-x'), palabra('cerrar'));   /* la infobulle de la casa, no la del navegador (P-H, 05/11/2026) */
+    tip(caja.querySelector('.sf-ventana-x'), palabra('cerrar'));
+    var bi = caja.querySelector('.sf-ventana-imp');
+    if(bi){ tip(bi, palabra('imprimir')); bi.onclick = function(){ _ocultaBurbujas();
+      imprimeHoja(caja.querySelector('.sf-ventana-cuerpo'), { titulo:caja.querySelector('.sf-ventana-tit').textContent }); }; }   /* la infobulle de la casa, no la del navegador (P-H, 05/11/2026) */
     var b = caja.querySelector('.sf-ventana-btn');
     if(b) b.onclick = cierra;
 
@@ -2452,7 +2549,7 @@ async function _archivaViejas(hist){
     var cab = caja.querySelector('.sf-ventana-cab');
     var arrastrando = false, x0 = 0, y0 = 0, dx = 0, dy = 0;
     cab.addEventListener('mousedown', function(e){
-      if(e.target.classList.contains('sf-ventana-x')) return;
+      if(e.target.classList.contains('sf-ventana-x') || e.target.classList.contains('sf-ventana-imp')) return;
       arrastrando = true;
       x0 = e.clientX - dx; y0 = e.clientY - dy;
       cab.style.cursor = 'grabbing';
@@ -2752,7 +2849,40 @@ async function _archivaViejas(hist){
   /* LAS PALABRAS COMUNES (P-H, 05/11/2026) : las que todos los programas dicen igual — en las cuatro lenguas, una sola vez */
   var PALABRAS = { cerrar: { es:'Cerrar', fr:'Fermer', ca:'Tancar', en:'Close' },
                    plegar_cerrar: { es:'Clic para cerrar', fr:'Clic pour fermer', ca:'Clic per a tancar', en:'Click to close' },
-                   plegar_abrir:  { es:'Clic para abrir',  fr:'Clic pour ouvrir', ca:'Clic per a obrir',  en:'Click to open' } };
+                   plegar_abrir:  { es:'Clic para abrir',  fr:'Clic pour ouvrir', ca:'Clic per a obrir',  en:'Click to open' },
+                   imprimir:      { es:'Imprimir', fr:'Imprimer', ca:'Imprimir', en:'Print' } };
+  /* ══ LA HOJA IMPRESA (P-H, 17/11/2026) ══
+     MF.imprimeHoja(nodo, { titulo, centro }) : imprime SOLO ese nodo, en su hoja,
+     con el pie de Salufolio y la paleta de papel. El código vive en
+     comun/imprime-hoja.js (uno para todos, la Casa incluida) ; aquí, los textos. */
+  var TXT_IMP = {
+    es : { marca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', pagina:'Página {n} / {t}' },
+    fr : { marca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', pagina:'Page {n} / {t}' },
+    ca : { marca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', pagina:'Pàgina {n} / {t}' },
+    en : { marca:'Salufolio © 2026 Pierre-Henri Giraud · salufolio.com', pagina:'Page {n} / {t}' }
+  };
+  function _conScript(cond, src, fn){
+    if(cond()) return fn();
+    var sc = document.createElement('script'); sc.src = src;
+    sc.onload = function(){ fn(); }; sc.onerror = function(){ fn(); };
+    document.head.appendChild(sc);
+  }
+  function imprimeHoja(nodo, op){
+    op = op || {};
+    if(typeof nodo === 'string') nodo = document.querySelector(nodo);
+    if(!nodo){ window.print(); return; }
+    var T = TXT_IMP[LANG_SF] || TXT_IMP.es, centro = op.centro;
+    if(centro == null){ try{ var pa = paciente() || {}; centro = pa.etiqueta || pa.matricula || ''; }catch(e){ centro = ''; } }
+    _conScript(function(){ return typeof SF_LANZADOR !== 'undefined'; }, (config().lanzador || '../casa/casa.js'), function(){
+      var L = (typeof SF_LANZADOR !== 'undefined') ? SF_LANZADOR : {};
+      var id = L.paleta_impresion || 'papel';
+      var pal = (PALETAS || []).concat(L.paletas || []).filter(function(x){ return x && x.id === id; })[0];
+      _conScript(function(){ return !!window.SF_IMPRIME; }, '../comun/imprime-hoja.js', function(){
+        if(!window.SF_IMPRIME){ window.print(); return; }
+        window.SF_IMPRIME(nodo, { titulo:op.titulo, centro:centro, marca:T.marca, pagina:T.pagina, vars:pal ? pal.v : {}, lang:LANG_SF });
+      });
+    });
+  }
   function palabra(k){ var t = PALABRAS[k]; return t ? (t[LANG_SF] || t.es) : k; }
   /* la burbuja del título de un cuadro plegable sigue su estado (P-H, 05/11/2026) */
   /* el texto se elige AL PASAR el ratón : así vale la lengua de ese momento, no la del arranque */
@@ -2913,7 +3043,7 @@ async function _archivaViejas(hist){
   }
 
   return { arranca:arranca, carga:carga, pdfRespuesta:pdfRespuesta, palabra:palabra, plegableTip:plegableTip, eventosRegistros:eventosRegistros, tituloPdf:tituloPdf, nombrePdf:function(x){ return _nombrePdf(x); }, motivoPdf:motivoPdf, params:params, abeja:abeja, abrirFichero:abrirFichero,
-           guarda:guarda, tocado:tocado, limpio:limpio, hayCambios:hayCambios, aviso:aviso,
+           guarda:guarda, guardaEnCarpeta:guardaEnCarpeta, permisoCarpeta:permisoCarpeta, tocado:tocado, limpio:limpio, hayCambios:hayCambios, aviso:aviso,
            guardaTrabajo:guardaTrabajo, hayTrabajo:hayTrabajo, olvidaTrabajo:olvidaTrabajo,
            enMarco:function(){return enMarco;}, barra:barra, barraActivos:barraActivos, estado:estado,
            paletas:paletas, paletaActual:paletaActual, aplicaPaleta:aplicaPaleta, aplicaEstilos:aplicaEstilos, estilo:estilo,
@@ -2924,10 +3054,10 @@ async function _archivaViejas(hist){
            ponVersion:ponVersion, tip:tip, tips:tips, ptips:ptips,
            esDemo:esDemo, rutaPdf:rutaPdf, letreroDemo:letreroDemo, popupTexto:popupTexto, config:config, cargaConfig:cargaConfig,
            guarda:guarda, guardaRuta:guardaRuta, lista:lista, hayServidor:hayServidor, aviso:aviso,
-           ventana:ventana, claveIA:claveIA, guardaClaveIA:guardaClaveIA, pideClave:pideClave, textoClave:textoClave,
+           ventana:ventana, imprimeHoja:imprimeHoja, claveIA:claveIA, guardaClaveIA:guardaClaveIA, pideClave:pideClave, textoClave:textoClave,
            registro:registro, declara:declara, retira:retira, avisoDe:avisoDe,
            ponFuente:ponFuente,
-           aplicaIdioma:aplicaIdioma, idioma:idioma,
+           aplicaIdioma:aplicaIdioma, idioma:idioma, formaPlural:formaPlural, clavePlural:clavePlural,
            datos:function(){return vista(datos);}, esObsoleto:esObsoleto,
            pdfAlta:pdfAlta, pdfBaja:pdfBaja, pdfCitas:pdfCitas, pdfNumero:pdfNumero, pdfContador:function(p){ return pdfContador(p || _pdfTabla(datos)); }, matricula:function(){return matricula;},
            paciente:paciente, ponPaciente:ponPaciente, mesures:mesures, claves:claves,

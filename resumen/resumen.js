@@ -10,7 +10,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "resumen",
-  "version": "2026.11.05-13:21:32",
+  "version": "2026.11.17-16:21:23",
   "programa": "resumen.html",
   "lanzador": "../casa/casa.js",
   "icono": "📄",

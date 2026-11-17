@@ -134,7 +134,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans,syst
 <script>
 /* ═════════════════════════════════════════════════════════════════════
    ESPECIALIDAD — programa autónomo de Salufolio V2
-   Versión 2026.11.11-16:35:30
+   Versión 2026.11.17-09:58:06
    (10/11/2026 : P-H — « Seguimiento en … desde … » con los médicos ; cada especialidad de « Otras consultas » se abre con un clic ;
     la burbuja de las pastillas dice que el color es el de la especialidad ; « Preparar la consulta » se suelta en una ventana
     y vuelve a su sitio al cerrarla ; el médico en cada consulta ; « desde » ya no se repite ; la nota de la IA sin « preparado… preparar ».)
@@ -507,7 +507,8 @@ function esImprime(){
   const pa = MF.paciente() || {}, sip = pa.sip || (d && (d.sip || (d.paciente || {}).sip)) || '';
   const fins = (C.estados_fin || []).map(x => String(x).toLowerCase()), terminado = m => fins.indexOf(String(m.estado || m.statut || '').toLowerCase()) >= 0;
   const e = _esEsc, sub = t => '<h2>' + e(t) + '</h2>', fila = (a, b, c) => '<tr><td class="f">' + e(a) + '</td><td>' + b + '</td><td class="d">' + (c || '') + '</td></tr>';
-  let h = '<p class="banda">' + e(R.banda) + '</p>';
+  /* « Documento informativo — No diagnóstico », sous le titre (P-H, 17/11/2026) */
+  let h = '<p class="aviso">⚠ ' + e(txe('es_aviso')) + '</p><p class="banda">' + e(R.banda) + '</p>';
   /* los próximos rendez-vous */
   const citas = _esCitas(d);
   if (citas.length) h += sub(txe('es_citas_tit')) + '<table>' + citas.map(c => fila(_esF(c.fecha), '<b>' + e(c.texto) + '</b>', '')).join('') + '</table>';
@@ -547,14 +548,17 @@ function esImprime(){
   /* las consultas del año, sin las citas */
   const mias = R.mias.filter(enAnio);
   if (mias.length) h += sub(txe('es_consultas_anio', { a: anio }) + ' (' + mias.length + ')') + '<table>' + mias.map(x => fila(_esF(x.ev.date), e(x.ev.title || x.ev.titre || ''), e(MF.procedencia ? MF.procedencia(x.ev) : ''))).join('') + '</table>';
+  /* el pie : Salufolio, su autor, su sitio, su correo (P-H, 16/11/2026) */
+  h += '<p class="sf-pie">' + e(txe('es_pie_sf')) + '</p>';
   /* la página en blanco (P-H : « dépend de la longueur du texte ») : ningún salto forzado, nada que empuje un trozo a una hoja nueva */
   const css = 'h2{font-size:11pt;color:' + I.acento + ';margin:12pt 0 4pt;border-bottom:.5pt solid ' + I.linea + ';padding-bottom:2pt;break-after:auto;page-break-after:auto}'
     + 'table{width:100%;border-collapse:collapse;font-size:9.5pt}td,th{padding:2pt 4pt;vertical-align:top;text-align:left;border-bottom:.3pt solid ' + I.linea + '}'
     + 'th{color:' + I.suave + ';font-weight:600;font-size:8.5pt;text-transform:uppercase;letter-spacing:.5pt;border-bottom:0;padding-top:6pt}'
     + 'td.f{white-space:nowrap;color:' + I.suave + ';width:62pt}td.d{color:' + I.suave + ';font-size:8.5pt}.n{color:' + I.suave + ';font-size:8.5pt}'
-    + '.valores td.v{font-weight:700;white-space:nowrap}.fuera{color:' + I.fuera + '}.banda{color:' + I.suave + ';margin:0 0 6pt}.nada{color:' + I.suave + ';font-style:italic}'
+    + '.valores td.v{font-weight:700;white-space:nowrap}.fuera{color:' + I.fuera + '}.aviso{font-weight:700;color:' + I.fuera + ';margin:0 0 4pt}.banda{color:' + I.suave + ';margin:0 0 6pt}.nada{color:' + I.suave + ';font-style:italic}'
     + '.es-svg polyline{fill:none;stroke-width:1.2}.preg{border:.5pt solid ' + I.linea + ';border-radius:3pt;padding:5pt 7pt;font-size:10pt}'
     + 'p,li,h1,h2,div,tr,table{break-inside:auto!important;page-break-inside:auto!important}h1{break-after:auto!important}.sf-ia-dos{display:block!important}.sf-ia-dos>div{margin-bottom:6pt}'
+    + '.sf-pie{margin-top:14pt;padding-top:3pt;border-top:.3pt solid ' + I.linea + ';color:' + I.suave + ';font-size:7.5pt;text-align:center}'
     + '.pie:empty{display:none!important}body>*:last-child{margin-bottom:0!important;padding-bottom:0!important}';
   SF_COMENTARIO_IA.preguntaImpresion(f => SF_COMENTARIO_IA.imprime({ titulo: txe('es_hoja_tit', { e: R.nombre.trim() }), paciente: f.nombre ? (pa.etiqueta || '') : '', sip: f.sip ? sip : '',
     cuerpo: h, css: css, colores: I }), { haySip: !!sip });

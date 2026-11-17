@@ -2,7 +2,7 @@
    Lo que la página muestra vive en comun/especialidades.js (« ficha » de « neurologia »). */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "neurologia",
-  "version": "2026.11.11-16:35:30",
+  "version": "2026.11.17-09:58:06",
   "programa": "especialidad.html",
   "parametros": "esp=neurologia",
   "lanzador": "../casa/casa.js",

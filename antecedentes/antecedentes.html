@@ -18,6 +18,19 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 #panel-antecedentes{display:block;padding:14px 20px 40px}
 #aviso{padding:var(--pad-g,40px) var(--pad-m,20px);color:var(--muted);text-align:center;line-height:1.8}
 .module-version-corner{display:none}
+/* le tableau (P-H, 17/11/2026) */
+.ant-tab{width:100%;border-collapse:collapse;font-size:var(--tam-nor,13px)}
+.ant-tab thead tr{border-bottom:2px solid var(--border)}
+.ant-th{padding:8px 10px;cursor:pointer;white-space:nowrap;color:var(--text);font-size:var(--tam-med,15px);font-weight:600}
+.ant-th:hover,.ant-th.on{color:var(--accent)}
+.ant-fila{border-bottom:1px solid var(--border)}
+.ant-fila:hover td{background:var(--surface2)}
+.ant-tab td{padding:8px 10px}
+.ant-cod{font-family:var(--mono);font-size:var(--tam-min,11px)}
+.ant-sordo{color:var(--muted)}
+.ant-fecha{font-size:var(--tam-min,11px);white-space:nowrap;text-align:center}
+.ant-estado{font-weight:600;text-align:center}
+.ant-desc{text-align:left}
 </style>
 </head>
 <body>
@@ -43,7 +56,7 @@ header .chip{font-size:var(--tam-min,11px);border:1px solid var(--muted);border-
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    ANTECEDENTES — programa autónomo de Salufolio V2
-   Versión 2026.11.05-15:36:20
+   Versión 2026.11.17-16:21:23
    Extraido de la V1: core-antecedentes-js.js + core-panels-html.html (147-155).
    ═══════════════════════════════════════════════════════════════════════ */
 const VERSION_PROGRAMA = SF_CONFIG.version;
@@ -983,6 +996,16 @@ function registerCustomParam() {
    Descripción | Estado. Titres centrés, tri par clic sur colonne.
 ================================================================ */
 var _antSort = { col: 'estado', dir: 1 };
+/* los textos, de antecedentes.idiomas.js, en la lengua de la casa */
+function txa(k, v){
+  var T = (window.SF_TEXTOS && SF_TEXTOS.textos) || {}, lg = 'es';
+  try{ lg = MF.idioma() || 'es'; }catch(e){}
+  var L = T[lg] || {};
+  if(v && v.n === 1 && (L[k + '_1'] || (T.es && T.es[k + '_1']))) k = k + '_1';
+  var s = L[k] || (T.es && T.es[k]) || k;
+  Object.keys(v || {}).forEach(function(x){ s = s.split('{' + x + '}').join(v[x]); });
+  return s;
+}
 function antSort(col) {
   _antSort = (_antSort.col === col) ? { col: col, dir: -_antSort.dir } : { col: col, dir: 1 };
   buildAntecedentes();
@@ -992,7 +1015,7 @@ function buildAntecedentes() {
   if (!el) return;
   const rows = loadAntecedentes();
   if (!rows.length) {
-    el.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">Sin antecedentes — los datos se cargarán desde el expediente .sf</p>';
+    el.innerHTML = '<p style="padding:20px;color:var(--muted);text-align:center">' + txa('vacio') + '</p>';
     return;
   }
   const premFecha = a => (a.fechas && a.fechas.length ? a.fechas.slice().sort()[0] : (a.fecha || ''));
@@ -1006,24 +1029,27 @@ function buildAntecedentes() {
     const c = String(val(a, _antSort.col)).localeCompare(String(val(b, _antSort.col)));
     return _antSort.dir * (c || premFecha(a).localeCompare(premFecha(b)));
   });
-  const th = (col, label) => {
+  /* P-H, 17/11/2026 (point 8) : les titres plus grands, Descripción à gauche, la ligne
+     s'éclaire au survol, la bulle maison sur « ordenar », Estado juste après Fecha ;
+     tous les mots dans la table des langues. */
+  const th = (col, label, izq) => {
     const actif = _antSort.col === col;
-    return '<th onclick="antSort(\'' + col + '\')" style="padding:8px 10px;text-align:center;cursor:pointer;white-space:nowrap;color:' +
-      (actif ? 'var(--accent)' : 'var(--text)') + '" title="Ordenar">' + label + (actif ? (_antSort.dir > 0 ? ' ▲' : ' ▼') : '') + '</th>';
+    return '<th class="ant-th' + (actif ? ' on' : '') + '" onclick="antSort(\'' + col + '\')" style="text-align:' + (izq ? 'left' : 'center') + '" data-ptip="'
+      + txa('ordenar') + '">' + label + (actif ? (_antSort.dir > 0 ? ' ▲' : ' ▼') : '') + '</th>';
   };
-  var html = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">';
-  html += '<thead><tr style="border-bottom:2px solid var(--border)">' +
-    th('codigo', 'Código') + th('codificacion', 'Codificación') + th('fecha', 'Fecha') +
-    th('descripcion', 'Descripción') + th('estado', 'Estado') + '</tr></thead><tbody>';
+  var html = '<div style="overflow-x:auto"><table class="ant-tab">';
+  html += '<thead><tr>' +
+    th('codigo', txa('col_codigo')) + th('codificacion', txa('col_codif')) + th('fecha', txa('col_fecha')) +
+    th('estado', txa('col_estado')) + th('descripcion', txa('col_desc'), true) + '</tr></thead><tbody>';
   sorted.forEach(function(a) {
     var estadoColor = a.estado === 'inactivo' ? 'var(--muted)' : 'var(--accent2)';
     var fechas = (a.fechas && a.fechas.length ? a.fechas.slice().sort() : (a.fecha ? [a.fecha] : [])).map(fmtDate).join(', ');
-    html += '<tr style="border-bottom:1px solid var(--border)">' +
-      '<td style="padding:8px 10px;font-family:var(--mono);font-size:11px">' + (a.codigo||'') + '</td>' +
-      '<td style="padding:8px 10px;font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center">' + (a.codificacion||'') + '</td>' +
-      '<td style="padding:8px 10px;font-size:11px;white-space:nowrap;text-align:center">' + fechas + (a.fecha_inactivacion ? ' → ' + fmtDate(a.fecha_inactivacion) : '') + '</td>' +
-      '<td style="padding:8px 10px">' + (a.descripcion||'') + '</td>' +
-      '<td style="padding:8px 10px;color:' + estadoColor + ';font-weight:600;text-align:center">' + (a.estado === 'inactivo' ? 'Inactivo' : 'Activo') + '</td>' +
+    html += '<tr class="ant-fila">' +
+      '<td class="ant-cod">' + (a.codigo||'') + '</td>' +
+      '<td class="ant-cod ant-sordo" style="text-align:center">' + (a.codificacion||'') + '</td>' +
+      '<td class="ant-fecha">' + fechas + (a.fecha_inactivacion ? ' → ' + fmtDate(a.fecha_inactivacion) : '') + '</td>' +
+      '<td class="ant-estado" style="color:' + estadoColor + '">' + txa(a.estado === 'inactivo' ? 'inactivo' : 'activo') + '</td>' +
+      '<td class="ant-desc">' + (a.descripcion||'') + '</td>' +
       '</tr>';
   });
   html += '</tbody></table></div>';
@@ -1042,7 +1068,7 @@ MF.arranca({
     _DATOS=d;
     var pa=MF.paciente();
     document.getElementById('x-pac').textContent = pa.etiqueta || pa.matricula || '';
-    document.getElementById('x-est').textContent = ((d.antecedentes||d.antecedents||[]).length) + ' antecedentes';
+    document.getElementById('x-est').textContent = txa('cuenta', { n:(d.antecedentes||d.antecedents||[]).length });
     document.getElementById('aviso').style.display='none';
     try{
       buildAntecedentes();

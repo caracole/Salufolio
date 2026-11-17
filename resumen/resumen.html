@@ -28,6 +28,7 @@ main{padding:0}
 .pn-carta h3{margin:0 0 8px;font-size:var(--tam-min,11px);letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);font-weight:700}
 .pn-ajuste{background:transparent;border:1px solid var(--border);border-radius:var(--radio-s,6px);color:var(--muted);cursor:pointer;font-size:13px;padding:0 6px;margin-bottom:8px}
 .pn-ajuste:hover{border-color:var(--accent);color:var(--text)}
+.pn-imp{margin:0 0 0 auto}
 .pn-fila{display:flex;gap:10px;align-items:baseline;padding:4px 0;border-bottom:1px dashed var(--border);font-size:calc(var(--tam-nor,13px) - .5px)}
 .pn-fila:last-child,.pn-v:last-child{border-bottom:0}
 .pn-f{flex:0 0 76px;font-family:var(--mono);font-size:var(--tam-min,11px);color:var(--muted)}
@@ -112,7 +113,7 @@ main{padding:0}
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    RESUMEN — programa autónomo de Salufolio V2
-   Versión 2026.11.05-13:21:32
+   Versión 2026.11.17-16:21:23
    (05/11/2026 : Enfermería y Vacunas — P-H.)
    (04/11/2026 : colores elegidos por el usuario, un ascensor por carta, búsqueda en la ventana ⚙ — P-H.)
    (04/11/2026 : el resumen panorámico — una sola vista, P-H.)
@@ -1187,6 +1188,9 @@ function _pnCurvita(s){
 }
 
 /* ── LA VISTA ── */
+/* el 🖨 : el resumen en su hoja, con el pie de Salufolio (P-H, 17/11/2026) */
+function pnImprime(){ const z = document.getElementById('panel-resumen'), ti = document.getElementById('titulo');
+  MF.imprimeHoja(z, { titulo: ti ? ti.textContent : '' }); }
 function buildResumen(){
   const d = _DATOS; if (!d) return;
   const C = _pnCfg(), T = _pnEsp(), E = _pnEventos(d, T), S = _pnSeries(d);
@@ -1196,14 +1200,17 @@ function buildResumen(){
   const ti = document.getElementById('titulo'); if (ti) ti.textContent = '📄 ' + (((SF_CONFIG.nombre || {})[_pnLg()]) || (SF_CONFIG.nombre || {}).es || '');   /* el título, en la lengua de la casa */
   const aj = document.getElementById('pn-ajuste'); if (aj) aj.setAttribute('data-ptip', txr('pn_tip_ajuste'));
 
-  /* la banda : sexo, edad, período, cuántos acontecimientos, el último dato — nunca el nombre */
+  /* la banda : el NOMBRE del paciente (P-H, 17/11/2026 : « [Nom du patient] dossier résumé 2014–2026… » ;
+     antes : el sexo, « nunca el nombre »), edad, período, cuántos acontecimientos, el último dato, y el 🖨 */
   const b = [], nac = parseInt(d.nacimiento || '', 10), sx = String(d.sexo || '').toLowerCase();
   const sxk = /^(muj|fem|f$|wom|dona)/.test(sx) ? 'pn_mujer' : /^(hom|masc|m$|male|man|h$)/.test(sx) ? 'pn_hombre' : '';
-  if (sxk) b.push('<b>' + _pnEsc(txr(sxk)) + '</b>');
+  let pac = ''; try { const pa = MF.paciente() || {}; pac = pa.etiqueta || pa.matricula || ''; } catch (e) {}
+  if (pac) b.push('<b>' + _pnEsc(pac) + '</b>'); else if (sxk) b.push('<b>' + _pnEsc(txr(sxk)) + '</b>');
   if (nac > 1900) b.push('<b>' + _pnEsc(txr('pn_anos', { n: new Date().getFullYear() - nac })) + '</b>');
   if (pri) b.push('<span>' + _pnEsc(txr('pn_periodo', { a: pri.slice(0, 4), b: ult.slice(0, 4) })) + '</span>');
   b.push('<span>' + _pnEsc(txr('pn_eventos', { n: E.length })) + '</span>');
   if (ult) b.push('<span>' + _pnEsc(txr('pn_ultimo', { f: _pnF(ult) })) + '</span>');
+  b.push('<button class="pn-ajuste pn-imp" onclick="pnImprime()" data-ptip="' + _pnEsc(txr('pn_imprimir')) + '">🖨</button>');
   document.getElementById('pn-banda').innerHTML = b.join('');
   const nada = '<div class="pn-nada">' + _pnEsc(txr('pn_nada')) + '</div>';
 

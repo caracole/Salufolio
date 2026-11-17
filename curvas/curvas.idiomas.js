@@ -1,5 +1,5 @@
 /* Los textos de Curvas
-   Versión 2026.11.06-00:25:52 */
+   Versión 2026.11.17-17:59:05 */
 var SF_TEXTOS = window.SF_TEXTOS = {
   "_doctrina": "Los textos de Curvas, en su propia carpeta.",
   "textos": {
@@ -99,7 +99,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "rub_proteinograma": "PROTEINOGRAMA",
       "rub_escalas": "ESCALAS",
       "usar_tit": "💡 CÓMO UTILIZAR",
-      "usar_txt": "• **Pasa el ratón** por el nombre de un parámetro o de una curva: aparece su explicación.\n• **Haz clic en un punto** de una curva: se abre el documento de donde viene el valor.\n• **Clic derecho** sobre un parámetro: ver el comentario de la IA o **superponer** otros parámetros en la misma gráfica.\n• En ese menú, el **cuadrito de color** junto a cada parámetro permite elegir su color entre 8 pavés (⟲ = color por defecto).\n• En una gráfica superpuesta, las unidades distintas usan un segundo eje; **haz clic en el nombre** de una curva (en el título) para ocultarla o mostrarla.\n• Los botones de cada tarjeta permiten reducirla, ampliarla o quitarla.",
+      "usar_txt": "• **Pasa el ratón** por el nombre de un parámetro o de una curva: aparece su explicación.\n• **Haz clic en un punto** de una curva: se abre el documento de donde viene el valor.\n• **Clic derecho** sobre un parámetro: ver el comentario de la IA o **superponer** otros parámetros en la misma gráfica.\n• En ese menú, el **cuadrito de color** junto a cada parámetro permite elegir su color entre 8 pavés (⟲ = color por defecto).\n• En una gráfica superpuesta, las unidades distintas usan un segundo eje; **haz clic en el nombre** de una curva (en el título) para ocultarla o mostrarla.\n• Los botones de cada tarjeta permiten reducirla, ampliarla o quitarla.\n**Doble clic** fuera de un punto : la curva se agranda. Otro doble clic : vuelve a su tamaño.",
       "color_defecto": "Color por defecto",
       "tip_color": "Clic: elegir el color de la curva",
       "color_rojo": "rojo",
@@ -207,7 +207,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "rub_proteinograma": "PROTÉINOGRAMME",
       "rub_escalas": "ÉCHELLES",
       "usar_tit": "💡 COMMENT UTILISER",
-      "usar_txt": "• **Survole** le nom d'un paramètre ou d'une courbe : son explication s'affiche.\n• **Clique sur un point** d'une courbe : le document d'où vient la valeur s'ouvre.\n• **Clic droit** sur un paramètre : voir le commentaire de l'IA ou **superposer** d'autres paramètres sur le même graphique.\n• Dans ce menu, le **petit carré de couleur** à côté de chaque paramètre permet de choisir sa couleur parmi 8 pavés (⟲ = couleur par défaut).\n• Dans un graphique superposé, les unités différentes utilisent un second axe ; **clique sur le nom** d'une courbe (dans le titre) pour la cacher ou la montrer.\n• Les boutons de chaque carte permettent de la réduire, l'agrandir ou la supprimer.",
+      "usar_txt": "• **Survole** le nom d'un paramètre ou d'une courbe : son explication s'affiche.\n• **Clique sur un point** d'une courbe : le document d'où vient la valeur s'ouvre.\n• **Clic droit** sur un paramètre : voir le commentaire de l'IA ou **superposer** d'autres paramètres sur le même graphique.\n• Dans ce menu, le **petit carré de couleur** à côté de chaque paramètre permet de choisir sa couleur parmi 8 pavés (⟲ = couleur par défaut).\n• Dans un graphique superposé, les unités différentes utilisent un second axe ; **clique sur le nom** d'une courbe (dans le titre) pour la cacher ou la montrer.\n• Les boutons de chaque carte permettent de la réduire, l'agrandir ou la supprimer.\n**Doble clic** fuera de un punto : la curva se agranda. Otro doble clic : vuelve a su tamaño.",
       "color_defecto": "Couleur par défaut",
       "tip_color": "Clic : choisir la couleur de la courbe",
       "color_rojo": "rouge",
@@ -315,7 +315,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "rub_proteinograma": "PROTEÏNOGRAMA",
       "rub_escalas": "ESCALES",
       "usar_tit": "💡 COM UTILITZAR",
-      "usar_txt": "• **Passa el ratolí** pel nom d'un paràmetre o d'una corba: apareix la seva explicació.\n• **Fes clic en un punt** d'una corba: s'obre el document d'on ve el valor.\n• **Clic dret** sobre un paràmetre: veure el comentari de la IA o **superposar** altres paràmetres al mateix gràfic.\n• En aquest menú, el **quadradet de color** al costat de cada paràmetre permet triar-ne el color entre 8 pavès (⟲ = color per defecte).\n• En un gràfic superposat, les unitats diferents fan servir un segon eix; **fes clic en el nom** d'una corba (al títol) per amagar-la o mostrar-la.\n• Els botons de cada targeta permeten reduir-la, ampliar-la o treure-la.",
+      "usar_txt": "• **Passa el ratolí** pel nom d'un paràmetre o d'una corba: apareix la seva explicació.\n• **Fes clic en un punt** d'una corba: s'obre el document d'on ve el valor.\n• **Clic dret** sobre un paràmetre: veure el comentari de la IA o **superposar** altres paràmetres al mateix gràfic.\n• En aquest menú, el **quadradet de color** al costat de cada paràmetre permet triar-ne el color entre 8 pavès (⟲ = color per defecte).\n• En un gràfic superposat, les unitats diferents fan servir un segon eix; **fes clic en el nom** d'una corba (al títol) per amagar-la o mostrar-la.\n• Els botons de cada targeta permeten reduir-la, ampliar-la o treure-la.\n**Doble clic** fuera de un punto : la curva se agranda. Otro doble clic : vuelve a su tamaño.",
       "color_defecto": "Color per defecte",
       "tip_color": "Clic: triar el color de la corba",
       "color_rojo": "vermell",
@@ -423,7 +423,7 @@ var SF_TEXTOS = window.SF_TEXTOS = {
       "rub_proteinograma": "PROTEIN ELECTROPHORESIS",
       "rub_escalas": "SCALES",
       "usar_tit": "💡 HOW TO USE",
-      "usar_txt": "• **Hover** over the name of a parameter or a curve: its explanation appears.\n• **Click a point** on a curve: the document the value comes from opens.\n• **Right-click** a parameter: see the AI's comment or **overlay** other parameters on the same chart.\n• In that menu, the **small colour square** next to each parameter lets you pick its colour from 8 swatches (⟲ = default colour).\n• In an overlaid chart, different units use a second axis; **click a curve's name** (in the title) to hide or show it.\n• The buttons on each card let you shrink, enlarge or remove it.",
+      "usar_txt": "• **Hover** over the name of a parameter or a curve: its explanation appears.\n• **Click a point** on a curve: the document the value comes from opens.\n• **Right-click** a parameter: see the AI's comment or **overlay** other parameters on the same chart.\n• In that menu, the **small colour square** next to each parameter lets you pick its colour from 8 swatches (⟲ = default colour).\n• In an overlaid chart, different units use a second axis; **click a curve's name** (in the title) to hide or show it.\n• The buttons on each card let you shrink, enlarge or remove it.\n**Double-click** away from a point: the chart grows. Double-click again: it returns to its size.",
       "color_defecto": "Default colour",
       "tip_color": "Click: choose the curve colour",
       "color_rojo": "red",

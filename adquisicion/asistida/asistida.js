@@ -1,7 +1,7 @@
 /* ADQUISICIÓN ASISTIDA — su configuración */
 var SF_CONFIG = window.SF_CONFIG = {
   "id": "asistida",
-  "version": "2026.11.05-22:43:03",
+  "version": "2026.11.16-21:57:10",
   "programa": "asistida.html",
   "lanzador": "../../casa/casa.js",
   "carpeta": "adquisicion/asistida/",
