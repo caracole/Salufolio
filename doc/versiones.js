@@ -1,11 +1,11 @@
 /* LAS VERSIONES DE SALUFOLIO
-   escrito por herramientas/versiones.py el 2026.11.18-12:38:20
+   escrito por herramientas/versiones.py el 2026.11.18-12:49:07
 
    Un .js y no un .json: asi la pagina funciona sin servidor.
    No se toca a mano — se rehace en cada pasada. */
 var SF_VERSIONES = window.SF_VERSIONES = {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.11.18-12:38:20",
+ "_ultima_pasada": "2026.11.18-12:49:07",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -3897,12 +3897,12 @@ var SF_VERSIONES = window.SF_VERSIONES = {
    "version": "2026.10.14-21:21:39"
   },
   "protocolo/protocolo.html": {
-   "suma": "54d065f0891c",
-   "version": "2026.11.18-12:36:11"
+   "suma": "153fdb9f67d5",
+   "version": "2026.11.18-12:48:36"
   },
   "protocolo/sw.js": {
-   "suma": "59fb9780a98b",
-   "version": "2026.11.18-12:36:11"
+   "suma": "d8e797387a83",
+   "version": "2026.11.18-12:48:36"
   },
   "prueba-form/index.html": {
    "suma": "96f85c9a7866",
