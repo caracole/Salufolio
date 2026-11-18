@@ -1,547 +1,592 @@
 {
  "formato": 2,
- "version": "Salufolio-Protocolo-demo-APA0000",
+ "version": "Salufolio-Protocolo-demo-DSF2026",
  "exportado": "demo",
  "paciente": {
-  "nombre": "Ana Paciente Anonymo",
-  "sip": "00000000"
+  "nombre": "Demo Salu Folio",
+  "sip": "0002026",
+  "matricula": "DSF2026"
  },
  "medicamentos": [
   {
-   "id": "metformina_101",
-   "nombre": "Metformina",
-   "dosis": "850",
+   "id": "rivaroxaban_201",
+   "nombre": "Rivaroxabán",
+   "dosis": "20 mg",
    "momento": "desayuno",
    "momentos": [
     "desayuno"
    ]
   },
   {
-   "id": "enalapril_102",
-   "nombre": "Enalapril",
-   "dosis": "10",
+   "id": "neuralex_202",
+   "nombre": "Neuralex",
+   "dosis": "1 cápsula",
    "momento": "desayuno",
    "momentos": [
     "desayuno"
    ]
   },
   {
-   "id": "atorvastatina_103",
-   "nombre": "Atorvastatina",
-   "dosis": "20",
-   "momento": "cena",
+   "id": "donepezilo_203",
+   "nombre": "Donepezilo bucodispersable",
+   "dosis": "10 mg",
+   "momento": "noche",
    "momentos": [
-    "cena"
+    "noche"
    ]
   }
  ],
  "tomas": {
   "-13": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
      "desayuno": "08:00"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
      "desayuno": "08:00"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:15"
     }
    }
   ],
   "-12": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:20"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:20"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:30"
     }
    }
   ],
   "-11": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:20"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:20"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:00"
     }
    }
   ],
   "-10": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
      "desayuno": "08:00"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
      "desayuno": "08:00"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:30"
     }
    }
   ],
   "-9": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:10"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "cena": "20:30"
+     "desayuno": "08:10"
+    }
+   },
+   {
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
+    "hora": {
+     "noche": "22:15"
     }
    }
   ],
   "-8": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:30"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:30"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:15"
     }
    }
   ],
   "-7": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:15"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:15"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:10"
     }
    }
   ],
   "-6": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:30"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
-    }
-   },
-   {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
-    "hora": {
-     "cena": "20:30"
+     "desayuno": "08:30"
     }
    }
   ],
   "-5": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
      "desayuno": "08:00"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
      "desayuno": "08:00"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:30"
     }
    }
   ],
   "-4": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:20"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:20"
+    }
+   },
+   {
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
+    "hora": {
+     "noche": "22:30"
     }
    }
   ],
   "-3": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:15"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:15"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:30"
     }
    }
   ],
   "-2": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:05"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:05"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:00"
     }
    }
   ],
   "-1": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:15"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:15"
     }
    },
    {
-    "med_id": "atorvastatina_103",
-    "momento": "atorvastatina_103",
+    "med_id": "donepezilo_203",
+    "momento": "donepezilo_203",
     "hora": {
-     "cena": "20:30"
+     "noche": "22:10"
     }
    }
   ],
   "0": [
    {
-    "med_id": "metformina_101",
-    "momento": "metformina_101",
+    "med_id": "rivaroxaban_201",
+    "momento": "rivaroxaban_201",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:30"
     }
    },
    {
-    "med_id": "enalapril_102",
-    "momento": "enalapril_102",
+    "med_id": "neuralex_202",
+    "momento": "neuralex_202",
     "hora": {
-     "desayuno": "08:00"
+     "desayuno": "08:30"
     }
    }
   ]
  },
- "material": {},
- "material_config": [],
+ "material": {
+  "_litros": {
+   "oxigeno": 0.5
+  }
+ },
+ "material_config": [
+  {
+   "id": "oxigeno",
+   "nombre": "Oxígeno",
+   "tipo": "interruptor",
+   "icono": "💨"
+  }
+ ],
  "constantes": {
   "-13": [
    {
-    "hora": "09:00",
-    "ta_sis": 132,
+    "hora": "09:30",
+    "ta_sis": 134,
     "ta_dia": 72
    },
    {
-    "hora": "09:00",
-    "fc": 74,
-    "spo2": 95,
-    "o2": false
+    "hora": "09:30",
+    "fc": 65,
+    "spo2": 93,
+    "o2": true
    }
   ],
   "-12": [
    {
-    "hora": "09:00",
-    "ta_sis": 124,
-    "ta_dia": 83
+    "hora": "09:30",
+    "ta_sis": 136,
+    "ta_dia": 72
+   },
+   {
+    "hora": "09:30",
+    "fc": 77,
+    "spo2": 95,
+    "o2": true
    },
    {
     "hora": "09:00",
-    "fc": 65,
-    "spo2": 97,
-    "o2": false
-   },
-   {
-    "hora": "08:30",
-    "peso": 72.6
+    "peso": 57.8
    }
   ],
   "-11": [
    {
-    "hora": "09:00",
-    "ta_sis": 138,
-    "ta_dia": 73
+    "hora": "09:30",
+    "ta_sis": 121,
+    "ta_dia": 68
    },
    {
-    "hora": "09:00",
-    "fc": 63,
+    "hora": "09:30",
+    "fc": 65,
     "spo2": 95,
-    "o2": false
+    "o2": true
    }
   ],
   "-10": [
    {
-    "hora": "09:00",
-    "ta_sis": 135,
-    "ta_dia": 76
+    "hora": "09:30",
+    "ta_sis": 128,
+    "ta_dia": 67
    },
    {
-    "hora": "09:00",
-    "fc": 64,
-    "spo2": 96,
-    "o2": false
+    "hora": "09:30",
+    "fc": 74,
+    "spo2": 94,
+    "o2": true
    }
   ],
   "-9": [
    {
-    "hora": "09:00",
-    "ta_sis": 124,
-    "ta_dia": 78
+    "hora": "09:30",
+    "ta_sis": 130,
+    "ta_dia": 75
    },
    {
-    "hora": "09:00",
-    "fc": 75,
-    "spo2": 95,
-    "o2": false
+    "hora": "09:30",
+    "fc": 78,
+    "spo2": 92,
+    "o2": true
    }
   ],
   "-8": [
    {
-    "hora": "09:00",
-    "ta_sis": 125,
-    "ta_dia": 73
+    "hora": "09:30",
+    "ta_sis": 120,
+    "ta_dia": 72
    },
    {
-    "hora": "09:00",
-    "fc": 63,
-    "spo2": 98,
-    "o2": false
+    "hora": "09:30",
+    "fc": 71,
+    "spo2": 94,
+    "o2": true
    }
   ],
   "-7": [
    {
-    "hora": "09:00",
-    "ta_sis": 123,
-    "ta_dia": 73
+    "hora": "09:30",
+    "ta_sis": 138,
+    "ta_dia": 75
    },
    {
-    "hora": "09:00",
-    "fc": 63,
-    "spo2": 96,
-    "o2": false
+    "hora": "09:30",
+    "fc": 71,
+    "spo2": 92,
+    "o2": true
    }
   ],
   "-6": [
    {
-    "hora": "09:00",
-    "ta_sis": 131,
-    "ta_dia": 76
+    "hora": "09:30",
+    "ta_sis": 129,
+    "ta_dia": 69
    },
    {
-    "hora": "09:00",
-    "fc": 66,
+    "hora": "09:30",
+    "fc": 76,
     "spo2": 95,
-    "o2": false
-   },
-   {
-    "hora": "08:30",
-    "peso": 72.6
+    "o2": true
    }
   ],
   "-5": [
    {
-    "hora": "09:00",
-    "ta_sis": 127,
-    "ta_dia": 71
+    "hora": "09:30",
+    "ta_sis": 136,
+    "ta_dia": 72
+   },
+   {
+    "hora": "09:30",
+    "fc": 77,
+    "spo2": 92,
+    "o2": true
    },
    {
     "hora": "09:00",
-    "fc": 68,
-    "spo2": 97,
-    "o2": false
+    "peso": 58.0
    }
   ],
   "-4": [
    {
-    "hora": "09:00",
-    "ta_sis": 125,
+    "hora": "09:30",
+    "ta_sis": 130,
     "ta_dia": 78
    },
    {
-    "hora": "09:00",
-    "fc": 64,
-    "spo2": 95,
-    "o2": false
+    "hora": "09:30",
+    "fc": 78,
+    "spo2": 94,
+    "o2": true
+   },
+   {
+    "hora": "18:00",
+    "temp": 37.6
    }
   ],
   "-3": [
    {
-    "hora": "09:00",
-    "ta_sis": 128,
-    "ta_dia": 77
+    "hora": "09:30",
+    "ta_sis": 134,
+    "ta_dia": 72
    },
    {
-    "hora": "09:00",
-    "fc": 75,
-    "spo2": 97,
-    "o2": false
+    "hora": "09:30",
+    "fc": 62,
+    "spo2": 93,
+    "o2": true
    }
   ],
   "-2": [
    {
-    "hora": "09:00",
-    "ta_sis": 136,
-    "ta_dia": 79
+    "hora": "09:30",
+    "ta_sis": 134,
+    "ta_dia": 78
    },
    {
-    "hora": "09:00",
-    "fc": 76,
-    "spo2": 97,
-    "o2": false
+    "hora": "09:30",
+    "fc": 65,
+    "spo2": 95,
+    "o2": true
    }
   ],
   "-1": [
    {
-    "hora": "09:00",
-    "ta_sis": 131,
-    "ta_dia": 73
+    "hora": "09:30",
+    "ta_sis": 133,
+    "ta_dia": 78
    },
    {
-    "hora": "09:00",
-    "fc": 67,
-    "spo2": 96,
-    "o2": false
+    "hora": "09:30",
+    "fc": 69,
+    "spo2": 92,
+    "o2": true
    }
   ],
   "0": [
    {
-    "hora": "09:00",
-    "ta_sis": 124,
-    "ta_dia": 79
+    "hora": "09:30",
+    "ta_sis": 132,
+    "ta_dia": 74
    },
    {
-    "hora": "09:00",
-    "fc": 71,
-    "spo2": 98,
-    "o2": false
-   },
-   {
-    "hora": "08:30",
-    "peso": 73.0
+    "hora": "09:30",
+    "fc": 77,
+    "spo2": 94,
+    "o2": true
    }
   ]
  },
  "observaciones": {
-  "-3": [
+  "-11": [
    {
-    "hora": "11:00",
+    "hora": "08:15",
     "tipos": [],
-    "nota": "Mareo leve al levantarse. Pasó en unos minutos."
+    "nota": "Noche tranquila con la BiPAP. Se la quitó una vez y se la volvimos a poner."
+   }
+  ],
+  "-6": [
+   {
+    "hora": "23:00",
+    "tipos": [],
+    "nota": "No quiso tomar el Donepezilo. Se negó dos veces; no insistimos."
+   }
+  ],
+  "-4": [
+   {
+    "hora": "18:05",
+    "tipos": [],
+    "nota": "Febrícula por la tarde (37,6). Bebe bien con el espesante."
+   },
+   {
+    "hora": "20:30",
+    "tipos": [],
+    "nota": "Comió la mitad de la cena."
+   }
+  ],
+  "-2": [
+   {
+    "hora": "17:00",
+    "tipos": [],
+    "nota": "Algo desorientada por la tarde; se calmó con música."
    }
   ]
  }

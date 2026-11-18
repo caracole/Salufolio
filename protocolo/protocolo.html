@@ -2,7 +2,7 @@
 <!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-21 22:07:19 par assembleur.py 2026.10.10-17:22:34 -->
 <html lang="es">
 <head>
-<!-- Versión 2026.10.21-22:54:30 -->
+<!-- Versión 2026.11.18-12:36:11 -->
 <meta charset="UTF-8">
 
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
@@ -2371,7 +2371,7 @@ function verRubricas() {
    ADVERTENCIA : mfp_obs es el cajón de las notas desde siempre (Resumen, envío, copia) ; una nota del grafo
    conserva su forma antigua { fecha, hora, tipos, nota } y añade « ids » (su camino en el árbol). */
 window.NOTAS_GRAFO = {
-  "version": "2026.10.21-22:54:30",
+  "version": "2026.11.18-12:36:11",
   "raiz": "0_notas",
   "modo_defecto": "uno",
   "reglas": { "plafon": { "alcance": "dia" }, "exclusion": { "alcance": "hora" } },
@@ -2481,8 +2481,12 @@ window.NOTAS_GRAFO = {
       "tab_anotar": "Anotar", "tab_grafo": "Grafo", "tab_resultado": "Resultado",
       "obs_titulo": "Día y hora de la observación (corregible)",
       "obs_titulo_nota": "Día y hora de ESTA nota (corregible)",
-      "tip_padre": "Volver al nivel anterior",
-      "tip_raiz": "Volver a la raíz",
+      "com_titulo": "Comentario :",
+      "com_ayuda": "facultativo",
+      "nodo_noter_ayuda": "(la hora y el comentario se corrigen arriba 👆)",
+      "nodo_sel_ayuda": "Nota de las {hora} : su día, su hora y su comentario se corrigen arriba 👆. Toca otra vez {hora} para volver.",
+      "tip_padre": "Volver a {t}",
+      "tip_raiz": "Volver a {t}",
       "tip_anadir": "Añadir una pregunta o una respuesta aquí",
       "anadir": "añadir",
       "tip_editar": "Modo edición : cambiar o quitar elementos",
@@ -2527,7 +2531,7 @@ window.NOTAS_GRAFO = {
       "marca_tip": "Ver las notas de esto y quitar una",
       "notas_titulo": "Notas de «{t}»",
       "notas_volver": "Volver a la lista",
-      "notas_vacio": "Ya no queda ninguna nota.",
+      "notas_vacio": "No hay ninguna nota.",
       "anulada_resto": "Siguen otras notas de «{nodo}»: {horas}.",
       "anuladas": "{n} notas anuladas.",
       "quitar_tip": "Quitar esta nota (dos pulsaciones)",
@@ -2618,8 +2622,12 @@ window.NOTAS_GRAFO = {
       "tab_anotar": "Noter", "tab_grafo": "Graphe", "tab_resultado": "Résultat",
       "obs_titulo": "Jour et heure de l'observation (corrigible)",
       "obs_titulo_nota": "Jour et heure de CETTE note (corrigible)",
-      "tip_padre": "Revenir au niveau précédent",
-      "tip_raiz": "Revenir à la racine",
+      "com_titulo": "Commentaire :",
+      "com_ayuda": "facultatif",
+      "nodo_noter_ayuda": "(l'heure et le commentaire se corrigent en haut 👆)",
+      "nodo_sel_ayuda": "Note de {hora} : son jour, son heure et son commentaire se corrigent en haut 👆. Touche de nouveau {hora} pour revenir.",
+      "tip_padre": "Revenir à {t}",
+      "tip_raiz": "Revenir à {t}",
       "tip_anadir": "Ajouter une question ou une réponse ici",
       "anadir": "ajouter",
       "tip_editar": "Mode édition : modifier ou retirer des éléments",
@@ -2664,7 +2672,7 @@ window.NOTAS_GRAFO = {
       "marca_tip": "Voir les notes de ceci et en retirer une",
       "notas_titulo": "Notes de « {t} »",
       "notas_volver": "Retour à la liste",
-      "notas_vacio": "Il ne reste aucune note.",
+      "notas_vacio": "Il n'y a aucune note.",
       "anulada_resto": "D'autres notes de « {nodo} » restent : {horas}.",
       "anuladas": "{n} notes annulées.",
       "quitar_tip": "Retirer cette note (deux appuis)",
@@ -2880,7 +2888,15 @@ window.NOTAS_GRAFO = {
 #notas-app .nt-aviso.ok { background: var(--ok-fondo); color: var(--nt-ok); }
 #notas-app .nt-aviso.supresion { background: var(--supresion-fondo); color: var(--supresion); }
 #notas-app .nt-aviso .ir-diario { display: block; margin-top: var(--espacio-s); padding: var(--espacio-s) var(--espacio); border-radius: var(--radio); border: var(--borde-ancho) solid var(--error); background: var(--panel); color: var(--error); font-weight: var(--peso-fuerte); }
-#notas-app .obs { background: var(--panel); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); padding: var(--espacio-s) var(--espacio); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--espacio-s); }
+#notas-app .obs { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: var(--espacio-s); }
+#notas-app .obs .cajas { flex: none; flex-wrap: nowrap; }
+#notas-app .obs .cajas input { width: auto; flex: none; font-size: var(--texto-s); }
+#notas-app .obs .pregunta { margin: 0; flex: 1 1 6em; }
+#notas-app .comentario { display: flex; align-items: center; gap: var(--espacio-s); margin: var(--espacio-s) 0; }
+#notas-app .nodo .ayuda-btn { display: block; font-size: var(--texto-s); font-weight: normal; opacity: .9; }
+#notas-app .nodo .ayuda-sel { font-size: var(--texto-s); color: var(--tinta-suave); margin: 0 0 var(--espacio-s); }
+#notas-app .comentario .lbl { font-size: var(--texto-s); color: var(--tinta-suave); white-space: nowrap; }
+#notas-app .comentario input { flex: 1 1 auto; min-width: 0; padding: var(--espacio-xs) var(--espacio-s); font-size: var(--texto-tecla); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); background: var(--fondo); }
 #notas-app .obs .lbl { font-size: var(--texto-s); color: var(--tinta-suave); }
 #notas-app .obs .cajas { display: flex; flex-wrap: wrap; gap: var(--espacio-s); max-width: 100%; }
 #notas-app .obs input { min-width: 0; padding: var(--espacio-xs) var(--espacio-s); border: var(--borde-ancho) solid var(--borde); border-radius: var(--radio); background: var(--fondo); }
@@ -2969,7 +2985,7 @@ window.NOTAS_GRAFO = {
 #notas-app .registro button { border: 0; background: none; color: var(--error); padding: var(--espacio-s); }
 </style>
 <script>
-/* notas.js — versión 2026.10.21-22:07:19 (portado de la maqueta « grafo-notas »).
+/* notas.js — versión 2026.11.18-12:34:44 (portado de la maqueta « grafo-notas »).
    El mecanismo : pila, salidas, pantalla de un nodo (Noter / Éliminer), controles (único, tope, exclusividad,
    incompatibilidad), marcas, modo edición (desde Configuración). Las notas se guardan en mfp_obs (ver notas-tabla.js). */
 (function () {
@@ -3007,12 +3023,13 @@ window.NOTAS_GRAFO = {
   }
   function aRegistro(o) {
     if (!o || !Array.isArray(o.ids) || !o.ids.length || !o.fecha || !o.hora) return null;
-    return { n: o.n, t: o.fecha + 'T' + o.hora + ':00', ids: o.ids.slice(), txt: Array.isArray(o.txt) ? o.txt.slice() : o.ids.slice(), libre: o.texto || undefined, _o: o };
+    return { n: o.n, t: o.fecha + 'T' + o.hora + ':00', ids: o.ids.slice(), txt: Array.isArray(o.txt) ? o.txt.slice() : o.ids.slice(), libre: o.texto || undefined, com: o.comentario || undefined, _o: o };
   }
   function aObs(e) {
     var tipo = nodoLegado(e.ids) || e.txt.join(T.almacen.separador_tipo);
-    var o = Object.assign({}, e._o || {}, { fecha: e.t.slice(0, 10), hora: e.t.slice(11, 16), tipos: [tipo], nota: e.libre || null, ids: e.ids, txt: e.txt, n: e.n });
+    var o = Object.assign({}, e._o || {}, { fecha: e.t.slice(0, 10), hora: e.t.slice(11, 16), tipos: [tipo], nota: e.libre || e.com || null, ids: e.ids, txt: e.txt, n: e.n });
     if (e.libre) o.texto = e.libre; else delete o.texto;
+    if (e.com) o.comentario = e.com; else delete o.comentario;
     e._o = o;
     return o;
   }
@@ -3067,6 +3084,7 @@ window.NOTAS_GRAFO = {
     hecho: null,
     aniadir: null,
     obs: { dia: '', hora: '', manual: false },
+    com: '',                  /* el comentario que se está escribiendo, antes de anotar (P-H 18/11) */
     notasNodo: null,
     nodo: null,               /* { id, sel, foco } : la pantalla de UN nodo (horas anotadas, Anotar / Quitar) */
     aviso: null,
@@ -3286,14 +3304,19 @@ window.NOTAS_GRAFO = {
     if (cj) { avisarCerrojo(cj); return; }
     var n0 = sigN();                                                                /* antes de quitar : los números no se reutilizan */
     var rutas = hojas.map(function (hid) { return S.pila.concat(hid).join('/'); });
+    var antes = registro;
     registro = registro.filter(function (e) { return e.libre || e.t !== t || rutas.indexOf(e.ids.join('/')) < 0; });
     var nuevas = hojas.map(function (hid, i) {
       var ids = S.pila.concat(hid);
-      return { n: n0 + 1 + i, t: t, ids: ids, txt: ids.map(etiqueta) };            /* la pila ENTERA viaja con la nota */
+      var o = { n: n0 + 1 + i, t: t, ids: ids, txt: ids.map(etiqueta) };
+      if ((S.com || '').trim()) o.com = S.com.trim();                              /* el comentario va con la respuesta */
+      else { var ya = antes.filter(function (e) { return !e.libre && e.t === t && e.ids.join('/') === o.ids.join('/'); })[0]; if (ya && ya.com) o.com = ya.com; }   /* rehacer la misma nota no borra su comentario */
+      return o;            /* la pila ENTERA viaja con la nota */
     });
     registro = registro.concat(nuevas);
     Alm.set('registro', registro);
     if (enNodo && S.nodo) { S.nodo.sel = nuevas[0]; S.nodo.foco = 'nota'; } else S.hecho = { nuevas: nuevas };
+    S.com = '';
     S.obs.manual = false;                                                           /* la hora tecleada sirvió una vez : la siguiente nota vuelve a « ahora » */
     S.sel.clear(); render();
   }
@@ -3414,7 +3437,7 @@ window.NOTAS_GRAFO = {
     S.texto = null; S.hecho = { nuevas: [nueva] }; S.obs.manual = false; S.sel.clear(); render();
   }
   function salirPadre() { S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; if (S.nodo) { S.nodo = null; S.sel.clear(); render(); return; } S.pila.pop(); S.sel.clear(); render(); }
-  function salirRaiz()  { S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; S.nodo = null; S.pila = []; S.sel.clear(); render(); }
+  function salirRaiz()  { S.com = ''; S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; S.nodo = null; S.pila = []; S.sel.clear(); render(); }
   function irA(nivel)   { S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; S.nodo = null; S.pila = S.pila.slice(0, nivel); S.sel.clear(); render(); }
   function abrirAniadir(r) { S.texto = null; S.notasNodo = null; S.nodo = null; S.aniadir = { dueno: r.dueno }; render(); var i = document.getElementById('nuevo-texto'); if (i) i.focus(); }
 
@@ -3586,12 +3609,20 @@ window.NOTAS_GRAFO = {
         S.obs[campo] = e.target.value; S.obs.manual = true; render();
       };
     }
+    /* P-H 18/11 : el día y la hora van DELANTE de la pregunta, en la misma línea — « 18/11/2026 08:30 ¿Cómo comió? ».
+       Sin pregunta que mostrar, la línea conserva su rótulo. */
+    var topV = S.pila.length ? S.pila[S.pila.length - 1] : RAIZ, rV = resolver(topV);
+    var tituloFila = S.nodo ? etiqueta(S.nodo.id)
+                   : (!S.hecho && !S.aniadir && !S.editar && !S.texto && !S.notasNodo && rV.q ? rV.q : null);
     sec.append(h('div', { class: 'obs' },
-      h('span', { class: 'lbl' }, barRotulo),
       h('div', { class: 'cajas' },
         h('input', { type: 'date', 'aria-label': barRotulo, value: barDia, onchange: cambiaBarra('dia') }),
-        h('input', { type: 'time', 'aria-label': barRotulo, value: barHora, onchange: cambiaBarra('hora') }))));
+        h('input', { type: 'time', 'aria-label': barRotulo, value: barHora, onchange: cambiaBarra('hora') })),
+      tituloFila ? h('h2', { class: 'pregunta' }, tituloFila) : h('span', { class: 'lbl' }, barRotulo)));
 
+    /* P-H 18/11 (versión 2) : el comentario, justo bajo la línea « día hora pregunta » ; en toda pregunta de las Notas y en la pantalla de la respuesta */
+    if (S.nodo) sec.append(cuadroComentario(S.nodo.sel && registro.indexOf(S.nodo.sel) >= 0 ? S.nodo.sel : null));
+    else if (S.pila.length && !S.modoEd && !S.hecho && !S.aniadir && !S.editar && !S.texto && !S.notasNodo) sec.append(cuadroComentario(null));
     var sep = T.simbolos.separador;
     var migas = h('div', { class: 'migas', 'aria-label': tx.migas_aria });
     var niveles = [RAIZ].concat(S.pila);
@@ -3611,7 +3642,7 @@ window.NOTAS_GRAFO = {
         h('div', { class: 'ok' }, T.simbolos.ok + ' ' + tx.anotado),
         S.hecho.nuevas.map(function (e) {
           return h('div', { class: 'ruta' }, e.txt.join(' ' + sep + ' '), h('span', { class: 'hora' }, ' · ' + e.t.slice(11, 16)),
-                   e.libre ? h('div', { class: 'libre' }, e.libre) : null);
+                   e.libre ? h('div', { class: 'libre' }, e.libre) : (e.com ? h('div', { class: 'libre' }, e.com) : null));
         }),
         h('button', { type: 'button', class: 'anular', dataset: { accion: 'anular' }, onclick: anular },
           S.hecho.nuevas.length > 1 ? fmt(tx.anular_varias, { n: S.hecho.nuevas.length, hora: S.hecho.nuevas[0].t.slice(11, 16) })
@@ -3632,7 +3663,6 @@ window.NOTAS_GRAFO = {
         sec.append(h('button', { type: 'button', class: 'editar-esta', dataset: { accion: 'editar-esta' }, onclick: function () { abrirEditar(top, duenoTop); } },
                      fmt(tx.editar_esta, { lapiz: T.simbolos.lapiz, t: etiqueta(top) })));
       }
-      if (r.q) sec.append(h('h2', { class: 'pregunta' }, r.q));
       if (!r.hijos.length) sec.append(h('p', { class: 'nt-aviso' }, tx.pregunta_vacia));
       var mk = marcasDe(r.hijos), hayMarcas = false;
       var cols = S.modoEd ? 0 : Math.min(Math.floor(Number((nodo(r.dueno) || {}).rejilla)) || 0, T.limites.rejilla);   /* teselas : las columnas las dice la tabla */
@@ -3684,12 +3714,13 @@ window.NOTAS_GRAFO = {
     var bar = h('div', { class: 'salidas' });
     T.salidas.forEach(function (sa) {
       if ((sa.id === 'mas' || sa.id === 'editar') && !S.modoEd) return;    /* modificar el árbol : solo desde Configuración */
+      if (sa.id === 'padre' && (S.nodo ? top : destPadre) === RAIZ) return;  /* P-H 18/11 : si « un nivel arriba » ES la raíz, los dos botones llevarían al mismo sitio : queda uno */
       var dis, dest = null, fn, pulsado = null;
       if (sa.id === 'padre') { dis = S.pila.length === 0 && !S.nodo; dest = etiqueta(S.nodo ? top : destPadre); fn = salirPadre; }
       else if (sa.id === 'raiz') { dis = S.pila.length === 0 && !S.hecho && !S.editar && !S.texto && !S.notasNodo && !S.nodo; dest = etiqueta(RAIZ); fn = salirRaiz; }
       else if (sa.id === 'editar') { dis = !!(S.aniadir || S.texto || S.nodo); dest = tx[sa.texto]; pulsado = String(S.modoEd); fn = alternarEdicion; }
       else { dis = !!(S.hecho || S.aniadir || S.editar || S.texto || S.notasNodo || S.nodo); dest = sa.texto ? tx[sa.texto] : null; fn = function () { abrirAniadir(r); }; }
-      bar.append(h('button', { type: 'button', class: 'salida', 'aria-pressed': pulsado, dataset: { salida: sa.id, tip: tx[sa.tip] }, disabled: dis, onclick: fn },
+      bar.append(h('button', { type: 'button', class: 'salida', 'aria-pressed': pulsado, dataset: { salida: sa.id, tip: fmt(tx[sa.tip], { t: dest || '' }) }, disabled: dis, onclick: fn },
                    h('span', { class: 'sim' }, sa.simbolo), dest ? h('span', { class: 'dest' }, dest) : null));
     });
     var activa = S.modoEd || S.pila.length || S.hecho || S.nodo || S.texto || S.notasNodo || S.aniadir || S.editar;
@@ -3773,25 +3804,37 @@ window.NOTAS_GRAFO = {
     var chips = lista.map(function (e) {
       var on = e === sel;
       return h('button', { type: 'button', class: 'hora-nota' + (on ? ' sel' : ''), 'aria-pressed': String(on), dataset: on ? { n: String(e.n) } : { n: String(e.n), tip: tx.nodo_hora_tip },        /* la elegida no lleva infobulla : taparía el botón de debajo */
-                           onclick: function () { nd.sel = e; nd.foco = 'nota'; render(); } }, e.t.slice(11, 16));
+                           onclick: function () { nd.sel = on ? null : e; nd.foco = on ? 'hora' : 'nota'; render(); } }, e.t.slice(11, 16));   /* P-H 18/11 : retocarla = volver */
     });
-    var nueva = h('button', { type: 'button', class: 'hora-nueva' + (sel ? '' : ' sel'), 'aria-pressed': String(!sel), dataset: sel ? { nueva: 'si', tip: tx.nodo_nueva_tip } : { nueva: 'si' },
-                              onclick: function () { nd.sel = null; nd.foco = 'hora'; render(); } }, S.obs.hora);
+    /* P-H 18/11 (opción 2) : sin la casilla azul de la hora nueva ; UN botón a todo lo ancho, que dice dónde se corrige */
     var accion = sel
       ? h('button', { type: 'button', class: 'eliminar-hora', dataset: { accion: 'eliminar-nodo' }, onclick: eliminarNodo }, fmt(tx.nodo_eliminar, { hora: sel.t.slice(11, 16) }))
-      : h('button', { type: 'button', class: 'noter-hora', dataset: { accion: 'noter-nodo' }, onclick: noterNodo }, fmt(tx.nodo_noter, { hora: S.obs.hora }));
+      : h('button', { type: 'button', class: 'noter-hora', dataset: { accion: 'noter-nodo' }, onclick: noterNodo }, fmt(tx.nodo_noter, { hora: S.obs.hora }),
+          h('span', { class: 'ayuda-btn' }, tx.nodo_noter_ayuda));
     tras.push(function () {
       var el = foco === 'nota' ? document.querySelector('.hora-nota.sel') : (foco === 'hora' ? document.querySelector('.obs input[type=time]') : null);
       if (el) el.focus();
     });
     return h('div', { class: 'nodo', id: 'nodo' },
-      h('h2', { class: 'pregunta' }, etiqueta(nd.id)),
-      h('p', { class: 'leyenda' }, fmt(tx.nodo_horas, { dia: dia.slice(8, 10) + '/' + dia.slice(5, 7) })),
-      h('div', { class: 'horas', id: 'horas-nodo' }, chips, nueva),
-      lista.length || sel ? null : h('p', { class: 'nt-aviso', id: 'nodo-ninguna' }, tx.nodo_ninguna),
+      lista.length ? h('p', { class: 'leyenda' }, fmt(tx.nodo_horas, { dia: dia.slice(8, 10) + '/' + dia.slice(5, 7) })) : null,
+      lista.length ? h('div', { class: 'horas', id: 'horas-nodo' }, chips) : null,
+      sel ? h('p', { class: 'ayuda-sel' }, fmt(tx.nodo_sel_ayuda, { hora: sel.t.slice(11, 16) })) : null,
       accion);
   }
 
+  /* EL CUADRO DEL COMENTARIO (P-H 18/11) : en cada respuesta, siempre, se llene o no.
+     Nota nueva : es un borrador que parte con « Anotar ». Nota ya anotada : se corrige en su sitio. */
+  function cuadroComentario(nota) {
+    var tx = Tx();
+    var ta = h('input', { type: 'text', maxlength: T.limites.texto, placeholder: tx.com_ayuda, 'aria-label': tx.com_titulo, class: 'com-texto', autocomplete: 'off' });
+    ta.value = nota ? (nota.com || '') : (S.com || '');
+    ta.addEventListener('input', function () {
+      if (!nota) { S.com = ta.value; return; }
+      var v = ta.value.trim(); if (v) nota.com = v; else delete nota.com;
+      Alm.set('registro', registro);
+    });
+    return h('label', { class: 'comentario' }, h('span', { class: 'lbl' }, tx.com_titulo), ta);
+  }
   function formTexto() {
     var tx = Tx(), tt = S.texto;
     var ta = h('textarea', { id: 'texto-libre', rows: T.limites.filas_texto, maxlength: T.limites.texto, placeholder: tx.texto_ayuda, 'aria-label': etiqueta(tt.id) });
@@ -3833,7 +3876,7 @@ window.NOTAS_GRAFO = {
   }
   function reponer() {                 /* se entra en las Notas : se vuelve a la raíz, con el día y la hora de la casa */
     S.pila = []; S.sel.clear(); S.hecho = null; S.aniadir = null; S.editar = null; S.texto = null; S.notasNodo = null; S.nodo = null; S.aviso = null;
-    S.obs.manual = false;
+    S.obs.manual = false; S.com = '';
   }
   function montar() {
     if (APP) return true;
@@ -4021,7 +4064,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.10.21.101-SAT';
+const MFP_VERSION = '2026.11.18.105-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
