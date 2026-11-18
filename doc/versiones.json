@@ -1,6 +1,6 @@
 {
  "_que": "Las sumas de control de cada fichero. Si la suma cambia, el fichero ha cambiado de verdad — y solo entonces se le pone una version nueva (P-H, 19/09/2026).",
- "_ultima_pasada": "2026.11.18-12:49:07",
+ "_ultima_pasada": "2026.11.18-16:55:23",
  "ficheros": {
   "20230915-thesaurus-differentiel-septembre-2023.pdf": {
    "muda": true,
@@ -3892,12 +3892,12 @@
    "version": "2026.10.14-21:21:39"
   },
   "protocolo/protocolo.html": {
-   "suma": "153fdb9f67d5",
-   "version": "2026.11.18-12:48:36"
+   "suma": "903eb7fe84b2",
+   "version": "2026.11.18-16:52:55"
   },
   "protocolo/sw.js": {
-   "suma": "d8e797387a83",
-   "version": "2026.11.18-12:48:36"
+   "suma": "c997ff9d423f",
+   "version": "2026.11.18-16:52:55"
   },
   "prueba-form/index.html": {
    "suma": "96f85c9a7866",

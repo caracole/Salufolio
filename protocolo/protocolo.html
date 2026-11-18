@@ -2,7 +2,7 @@
 <!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-21 22:07:19 par assembleur.py 2026.10.10-17:22:34 -->
 <html lang="es">
 <head>
-<!-- Versión 2026.11.18-12:48:36 -->
+<!-- Versión 2026.11.18-16:52:55 -->
 <meta charset="UTF-8">
 
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
@@ -351,6 +351,11 @@ select option{background:var(--surface);color:var(--text)}
 .matrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin:8px 0}
 .matrow>b{min-width:0}
 .matrow.mat-on{border-color:#3dbf7f;background:rgba(61,191,127,.10)}
+.o2-aviso{margin:-2px 0 8px;padding:8px 12px;border-radius:var(--radius);font-size:14px;line-height:1.4;border:1px solid var(--border)}
+.o2-aviso.crit{border-color:var(--bad);color:var(--bad);font-weight:700}
+.o2-aviso.warn{border-color:var(--warn)}
+.o2-aviso.ok{border-color:var(--ok)}
+.o2-desde{display:block;font-weight:400;font-size:13px;color:var(--muted)}
 .matctrl{margin-left:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:10px;row-gap:8px}
 .matnum{font-size:22px;min-width:34px;text-align:center}
 .matud{font-size:12px;color:var(--muted)}
@@ -631,7 +636,7 @@ body.sin-paciente #nav-res { opacity: .35; }
         </tr>
         <!-- Sans ce bouton, 93 % à l'air et 93 % sous 2 litres se
              ressemblent — et ce sont deux patientes différentes. -->
-        <tr><td colspan="2"><button type="button" class="popt" id="c-o2" onclick="toggleO2()" style="width:100%">💨 <span id="i-co2"></span></button></td></tr>
+        <tr><td colspan="2"><div class="matrow" id="c-o2-fila">💨 <b id="i-co2"></b><span class="matctrl"><button type="button" class="rocker" id="c-o2" onclick="toggleO2()" aria-pressed="false"><span class="fa fa-o">O</span><span class="fa fa-i">I</span></button></span></div><div id="c-o2-aviso" class="o2-aviso" style="display:none"></div></td></tr>
       </tbody>
 
       <tbody class="cb">
@@ -1209,7 +1214,7 @@ window.LANGUES = {
     tim_silencio:"Sin sonido",
     tim_oir:"Escuchar",
     tim_tit:"Timbre",
-    mat_antes:"La hora de fin es anterior al inicio:", mat_desde:"desde el",
+    mat_antes:"La hora de fin es anterior al inicio:", mat_marcha_desde:"en marcha desde {f}", mat_parado_desde:"parado desde {f}", mat_desde:"desde el",
     reg_pie:"Toque una línea para corregir su hora o borrarla.",
     sal_motivo:"salida del domicilio",
     dia_otro:"Está anotando en otro día — se pedirá la hora.", mat_inicio:"¿A qué hora se encendió?", mat_fin:"¿A qué hora se apagó?",
@@ -1254,7 +1259,7 @@ window.LANGUES = {
     res_pordia:"por día",
     res_oxigeno:"Oxígeno",
     res_sesiones:"sesiones",
-    res_abiertas:"abierta(s)",
+    res_abiertas:"abiertas", res_abierta_1:"abierta", res_sesion_1:"sesión", res_min:"mín", res_ox_dias:"{n} días con registro de {t}", res_ox_dias_1:"1 día con registro de {t}",
     res_observado:"Observado",
     res_dias_con:"días con",
     res_imprimir:"Imprimir / PDF",
@@ -1282,7 +1287,7 @@ window.LANGUES = {
     c_arritmia:"Ritmo irregular",
     pac_anadir:"Añadir paciente",
     pac_pre:"Nombre", pac_apellidos:"Apellidos", pac_matricula:"Matrícula", pac_matricula_nota:"Se forma sola : iniciales y 4 últimas cifras del SIP.", pac_falta_nombre:"Falta el nombre.", pac_falta_sip:"Falta el SIP (4 cifras como mínimo) : sin él no hay matrícula.", pac_falta_matricula:"No se puede formar la matrícula : escriba nombre y apellidos.", pac_matricula_mal:"La matrícula son de 2 a 4 letras y luego cifras (ejemplo : PHG9876).", matr_label:"Matrícula (código interno)",
-    pac_borrar:"Borrar paciente",
+    pac_borrar:"Borrar paciente", pac_abrir:"Abrir otro paciente (copia .pr)", rs_tit:"📂 Restaurar", rs_fecha:" (guardados el {f})", rs_mismo:"Se cargarán los datos de « {nom} »{fecha}. Sustituirán los de este paciente en este dispositivo.", rs_otro:"Ya existe « {nom} » en este dispositivo. ¿Reemplazar sus datos por los de la copia{fecha}?", rs_nuevo:"✓ « {nom} » añadido — recargando…", rs_ok:"✓ restaurado — recargando…", rs_mal:"⚠ archivo no válido",
     pac_ninguno:"Ningún paciente",
     pac_nombre:"Nombre",
     pac_nuevo:"✚ Paciente nuevo",
@@ -1378,7 +1383,7 @@ window.LANGUES = {
     d_ok:'Aceptar', d_can:'Cancelar', omitida:'omitida', puntual:'puntual',
     exp_nota:'La copia guardada (⬇️) o enviada (📡) es la que Salufolio importará en el ordenador.',
     b_env:'📡 Enviar a Salufolio', pc_label:'Dirección de Salufolio en el PC (opcional, ej. http://192.168.1.20:7777)',
-    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono (app local, sin PC)', inst_nota:'Descarga la app ya configurada. Ábrala desde Descargas — funciona siempre, aunque el ordenador esté apagado. 📡 enviará cuando el PC esté encendido.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂ %', c_peso:'Peso', c_temp:'Temperatura', c_bta:'Tensión', c_bps:'Pulso y saturación', c_bpeso:'Peso', c_btemp:'Temperatura', c_sin_o2:'Sin aporte de O₂', c_con_o2:'Con aporte de O₂', c_nueva:'＋ nueva medición', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria)', env_ok:'✓ Recibido en Salufolio', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
+    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono (app local, sin PC)', inst_nota:'Descarga la app ya configurada. Ábrala desde Descargas — funciona siempre, aunque el ordenador esté apagado. 📡 enviará cuando el PC esté encendido.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂ %', c_peso:'Peso', c_temp:'Temperatura', c_bta:'Tensión', c_bps:'Pulso y saturación', c_bpeso:'Peso', c_btemp:'Temperatura', c_o2_on:'SpO₂ con aporte de O₂', o2_desde:'desde las {h} · {d}', o2_desat_off:'⚠ Desaturación : SpO₂ {v} % (mínima {m} %) — ¿poner el oxígeno?', o2_desat_on:'⚠ Desaturación con oxígeno : SpO₂ {v} % (mínima {m} %)', o2_hipox:'Hipoxemia : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : se puede parar el oxígeno', o2_parar_c:'se puede parar el oxígeno', cfg_spo2min:'SpO₂ mínima de {p} (%)', c_o2_off:'SpO₂ sin aporte de O₂', c_sin_o2:'Sin aporte de O₂', c_con_o2:'Con aporte de O₂', c_nueva:'＋ nueva medición', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria)', env_ok:'✓ Recibido en Salufolio', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
   va: {
     sw_ini:"Iniciar",
     sw_fin:"Parar",
@@ -1435,7 +1440,7 @@ window.LANGUES = {
     tim_silencio:"Sense so",
     tim_oir:"Escoltar",
     tim_tit:"Timbre",
-    mat_antes:"L'hora de fi és anterior a l'inici:", mat_desde:"des del",
+    mat_antes:"L'hora de fi és anterior a l'inici:", mat_marcha_desde:"en marxa des de {f}", mat_parado_desde:"parat des de {f}", mat_desde:"des del",
     reg_pie:"Toque una línia per a corregir-ne l'hora o esborrar-la.",
     sal_motivo:"eixida del domicili",
     dia_otro:"Està anotant en un altre dia — es demanarà l'hora.", mat_inicio:"A quina hora es va encendre?", mat_fin:"A quina hora es va apagar?",
@@ -1480,7 +1485,7 @@ window.LANGUES = {
     res_pordia:"per dia",
     res_oxigeno:"Oxigen",
     res_sesiones:"sessions",
-    res_abiertas:"oberta(es)",
+    res_abiertas:"obertes", res_abierta_1:"oberta", res_sesion_1:"sessió", res_min:"mín", res_ox_dias:"{n} dies amb registre de {t}", res_ox_dias_1:"1 dia amb registre de {t}",
     res_observado:"Observat",
     res_dias_con:"dies amb",
     res_imprimir:"Imprimir / PDF",
@@ -1508,7 +1513,7 @@ window.LANGUES = {
     c_arritmia:"Ritme irregular",
     pac_anadir:"Afegir pacient",
     pac_pre:"Nom", pac_apellidos:"Cognoms", pac_matricula:"Matrícula", pac_matricula_nota:"Es forma sola : inicials i 4 últimes xifres del SIP.", pac_falta_nombre:"Falta el nom.", pac_falta_sip:"Falta el SIP (4 xifres com a mínim) : sense ell no hi ha matrícula.", pac_falta_matricula:"No es pot formar la matrícula : escriga nom i cognoms.", pac_matricula_mal:"La matrícula són de 2 a 4 lletres i després xifres (exemple : PHG9876).", matr_label:"Matrícula (codi intern)",
-    pac_borrar:"Esborrar pacient",
+    pac_borrar:"Esborrar pacient", pac_abrir:"Obrir un altre pacient (còpia .pr)", rs_tit:"📂 Restaurar", rs_fecha:" (guardats el {f})", rs_mismo:"Es carregaran les dades de « {nom} »{fecha}. Substituiran les d'aquest pacient en aquest dispositiu.", rs_otro:"Ja existeix « {nom} » en aquest dispositiu. Reemplaçar les seues dades per les de la còpia{fecha}?", rs_nuevo:"✓ « {nom} » afegit — recarregant…", rs_ok:"✓ restaurat — recarregant…", rs_mal:"⚠ arxiu no vàlid",
     pac_ninguno:"Cap pacient",
     pac_nombre:"Nom",
     pac_nuevo:"✚ Pacient nou",
@@ -1604,7 +1609,7 @@ window.LANGUES = {
     d_ok:'Acceptar', d_can:'Cancel·lar', omitida:'omesa', puntual:'puntual',
     exp_nota:'Per a passar les dades a Salufolio : guarde una còpia o envie-la a l\'ordinador.',
     b_env:'📡 Enviar a Salufolio', pc_label:'Adreça de Salufolio a l\'ordinador (opcional)',
-    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon (app local, sense PC)', inst_nota:'Descarrega l\'app ja configurada. Obriu-la des de Baixades — funciona sempre, encara que l\'ordinador estiga apagat.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂ %', c_peso:'Pes', c_temp:'Temperatura', c_bta:'Tensió', c_bps:'Pols i saturació', c_bpeso:'Pes', c_btemp:'Temperatura', c_sin_o2:'Sense aportació d\'O₂', c_con_o2:'Amb aportació d\'O₂', c_nueva:'＋ nova mesura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària)', env_ok:'✓ Rebut a Salufolio', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
+    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon (app local, sense PC)', inst_nota:'Descarrega l\'app ja configurada. Obriu-la des de Baixades — funciona sempre, encara que l\'ordinador estiga apagat.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂ %', c_peso:'Pes', c_temp:'Temperatura', c_bta:'Tensió', c_bps:'Pols i saturació', c_bpeso:'Pes', c_btemp:'Temperatura', c_o2_on:'SpO₂ amb aportació d\'O₂', o2_desde:'des de les {h} · {d}', o2_desat_off:'⚠ Dessaturació : SpO₂ {v} % (mínima {m} %) — posar l\'oxigen?', o2_desat_on:'⚠ Dessaturació amb oxigen : SpO₂ {v} % (mínima {m} %)', o2_hipox:'Hipoxèmia : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : es pot parar l\'oxigen', o2_parar_c:'es pot parar l\'oxigen', cfg_spo2min:'SpO₂ mínima de {p} (%)', c_o2_off:'SpO₂ sense aportació d\'O₂', c_sin_o2:'Sense aportació d\'O₂', c_con_o2:'Amb aportació d\'O₂', c_nueva:'＋ nova mesura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària)', env_ok:'✓ Rebut a Salufolio', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
   fr: {
     sw_ini:"Démarrer",
     sw_fin:"Arrêter",
@@ -1661,7 +1666,7 @@ window.LANGUES = {
     tim_silencio:"Sans son",
     tim_oir:"Écouter",
     tim_tit:"Timbre",
-    mat_antes:"L'heure de fin précède le début :", mat_desde:"depuis le",
+    mat_antes:"L'heure de fin précède le début :", mat_marcha_desde:"en marche depuis {f}", mat_parado_desde:"arrêté depuis {f}", mat_desde:"depuis le",
     reg_pie:"Touchez une ligne pour corriger son heure ou l'effacer.",
     sal_motivo:"départ du domicile",
     dia_otro:"Vous notez sur un autre jour — l'heure sera demandée.", mat_inicio:"À quelle heure a-t-il été allumé ?", mat_fin:"À quelle heure a-t-il été éteint ?",
@@ -1706,7 +1711,7 @@ window.LANGUES = {
     res_pordia:"par jour",
     res_oxigeno:"Oxygène",
     res_sesiones:"séances",
-    res_abiertas:"ouverte(s)",
+    res_abiertas:"ouvertes", res_abierta_1:"ouverte", res_sesion_1:"séance", res_min:"min", res_ox_dias:"{n} jours notés sur {t}", res_ox_dias_1:"1 jour noté sur {t}",
     res_observado:"Observé",
     res_dias_con:"jours avec",
     res_imprimir:"Imprimer / PDF",
@@ -1734,7 +1739,7 @@ window.LANGUES = {
     c_arritmia:"Rythme irrégulier",
     pac_anadir:"Ajouter un patient",
     pac_pre:"Prénom", pac_apellidos:"Nom", pac_matricula:"Matricule", pac_matricula_nota:"Elle se forme seule : initiales et 4 derniers chiffres du SIP.", pac_falta_nombre:"Il manque le prénom.", pac_falta_sip:"Il manque le SIP (4 chiffres au moins) : sans lui, pas de matricule.", pac_falta_matricula:"Impossible de former la matricule : saisissez prénom et nom.", pac_matricula_mal:"La matricule, c\'est 2 à 4 lettres puis des chiffres (exemple : PHG9876).", matr_label:"Matricule (code interne)",
-    pac_borrar:"Supprimer le patient",
+    pac_borrar:"Supprimer le patient", pac_abrir:"Ouvrir un autre patient (copie .pr)", rs_tit:"📂 Restaurer", rs_fecha:" (enregistrées le {f})", rs_mismo:"Les données de « {nom} »{fecha} vont être chargées. Elles remplaceront celles de ce patient sur cet appareil.", rs_otro:"« {nom} » existe déjà sur cet appareil. Remplacer ses données par celles de la copie{fecha} ?", rs_nuevo:"✓ « {nom} » ajouté — rechargement…", rs_ok:"✓ restauré — rechargement…", rs_mal:"⚠ fichier non valide",
     pac_ninguno:"Aucun patient",
     pac_nombre:"Nom",
     pac_nuevo:"✚ Nouveau patient",
@@ -1830,7 +1835,7 @@ window.LANGUES = {
     d_ok:'Valider', d_can:'Annuler', omitida:'omise', puntual:'ponctuelle',
     exp_nota:'Pour passer les données à Salufolio : enregistrez une copie ou envoyez-la vers l\'ordinateur.',
     b_env:'📡 Envoyer à Salufolio', pc_label:'Adresse de Salufolio sur le PC (optionnel)',
-    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone (app locale, sans PC)', inst_nota:'Télécharge l\'app déjà configurée. Ouvrez-la depuis Téléchargements — elle marche toujours, même ordinateur éteint. 📡 enverra quand le PC sera allumé.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂ %', c_peso:'Poids', c_temp:'Température', c_bta:'Tension', c_bps:'Pouls et saturation', c_bpeso:'Poids', c_btemp:'Température', c_sin_o2:'Sans apport d\'O₂', c_con_o2:'Avec apport d\'O₂', c_nueva:'＋ nouvelle mesure', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire)', env_ok:'✓ Reçu dans Salufolio', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
+    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone (app locale, sans PC)', inst_nota:'Télécharge l\'app déjà configurée. Ouvrez-la depuis Téléchargements — elle marche toujours, même ordinateur éteint. 📡 enverra quand le PC sera allumé.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂ %', c_peso:'Poids', c_temp:'Température', c_bta:'Tension', c_bps:'Pouls et saturation', c_bpeso:'Poids', c_btemp:'Température', c_o2_on:'SpO₂ sous apport d\'O₂', o2_desde:'depuis {h} · {d}', o2_desat_off:'⚠ Désaturation : SpO₂ {v} % (minimum {m} %) — mettre l\'oxygène ?', o2_desat_on:'⚠ Désaturation sous oxygène : SpO₂ {v} % (minimum {m} %)', o2_hipox:'Hypoxémie : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : on peut arrêter l\'oxygène', o2_parar_c:'on peut arrêter l\'oxygène', cfg_spo2min:'SpO₂ minimum de {p} (%)', c_o2_off:'SpO₂ sans apport d\'O₂', c_sin_o2:'Sans apport d\'O₂', c_con_o2:'Avec apport d\'O₂', c_nueva:'＋ nouvelle mesure', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire)', env_ok:'✓ Reçu dans Salufolio', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
   en: {
     sw_ini:"Start",
     sw_fin:"Stop",
@@ -1887,7 +1892,7 @@ window.LANGUES = {
     tim_silencio:"No sound",
     tim_oir:"Listen",
     tim_tit:"Chime",
-    mat_antes:"The end time is before the start:", mat_desde:"since",
+    mat_antes:"The end time is before the start:", mat_marcha_desde:"running since {f}", mat_parado_desde:"stopped since {f}", mat_desde:"since",
     reg_pie:"Tap a line to correct its time or delete it.",
     sal_motivo:"left home",
     dia_otro:"You are recording on another day — the time will be asked.", mat_inicio:"At what time was it switched on?", mat_fin:"At what time was it switched off?",
@@ -1933,7 +1938,7 @@ window.LANGUES = {
     res_pordia:"per day",
     res_oxigeno:"Oxygen",
     res_sesiones:"sessions",
-    res_abiertas:"open",
+    res_abiertas:"open", res_abierta_1:"open", res_sesion_1:"session", res_min:"min", res_ox_dias:"{n} days recorded out of {t}", res_ox_dias_1:"1 day recorded out of {t}",
     res_observado:"Observed",
     res_dias_con:"days with",
     res_imprimir:"Print / PDF",
@@ -1961,7 +1966,7 @@ window.LANGUES = {
     c_arritmia:"Irregular rhythm",
     pac_anadir:"Add patient",
     pac_pre:"First name", pac_apellidos:"Surname", pac_matricula:"Internal code", pac_matricula_nota:"Formed automatically : initials and last 4 digits of the SIP.", pac_falta_nombre:"The first name is missing.", pac_falta_sip:"The SIP is missing (at least 4 digits) : no code without it.", pac_falta_matricula:"Cannot form the code : enter first name and surname.", pac_matricula_mal:"The code is 2 to 4 letters followed by digits (example : PHG9876).", matr_label:"Internal code (matricule)",
-    pac_borrar:"Delete patient",
+    pac_borrar:"Delete patient", pac_abrir:"Open another patient (.pr copy)", rs_tit:"📂 Restore", rs_fecha:" (saved on {f})", rs_mismo:"The data of « {nom} »{fecha} will be loaded. They will replace this patient's data on this device.", rs_otro:"« {nom} » already exists on this device. Replace its data with the copy{fecha}?", rs_nuevo:"✓ « {nom} » added — reloading…", rs_ok:"✓ restored — reloading…", rs_mal:"⚠ invalid file",
     pac_ninguno:"No patient",
     pac_nombre:"Name",
     pac_nuevo:"✚ New patient",
@@ -2057,7 +2062,7 @@ window.LANGUES = {
     d_ok:'OK', d_can:'Cancel', omitida:'missed', puntual:'one-off',
     exp_nota:'To move data into Salufolio: save a copy or send it to the computer.',
     b_env:'📡 Send to Salufolio', pc_label:'Salufolio address on the PC (optional)',
-    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation %', c_peso:'Weight', c_temp:'Temperature', c_bta:'Blood pressure', c_bps:'Pulse and saturation', c_bpeso:'Weight', c_btemp:'Temperature', c_sin_o2:'Room air', c_con_o2:'On O₂', c_nueva:'＋ new reading', env_wait:'⏳ Sending…', sip_label:'SIP (health card)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
+    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation %', c_peso:'Weight', c_temp:'Temperature', c_bta:'Blood pressure', c_bps:'Pulse and saturation', c_bpeso:'Weight', c_btemp:'Temperature', c_o2_on:'SpO₂ on O₂', o2_desde:'since {h} · {d}', o2_desat_off:'⚠ Desaturation: SpO₂ {v} % (minimum {m} %) — start oxygen?', o2_desat_on:'⚠ Desaturation on oxygen: SpO₂ {v} % (minimum {m} %)', o2_hipox:'Hypoxaemia: SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} %: oxygen can be stopped', o2_parar_c:'oxygen can be stopped', cfg_spo2min:'Minimum SpO₂ for {p} (%)', c_o2_off:'SpO₂ on room air', c_sin_o2:'Room air', c_con_o2:'On O₂', c_nueva:'＋ new reading', env_wait:'⏳ Sending…', sip_label:'SIP (health card)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
 };
 </script>
 <!-- MB:END modules/langues.js -->
@@ -2371,7 +2376,7 @@ function verRubricas() {
    ADVERTENCIA : mfp_obs es el cajón de las notas desde siempre (Resumen, envío, copia) ; una nota del grafo
    conserva su forma antigua { fecha, hora, tipos, nota } y añade « ids » (su camino en el árbol). */
 window.NOTAS_GRAFO = {
-  "version": "2026.11.18-12:48:36",
+  "version": "2026.11.18-16:52:55",
   "raiz": "0_notas",
   "modo_defecto": "uno",
   "reglas": { "plafon": { "alcance": "dia" }, "exclusion": { "alcance": "hora" } },
@@ -2985,7 +2990,7 @@ window.NOTAS_GRAFO = {
 #notas-app .registro button { border: 0; background: none; color: var(--error); padding: var(--espacio-s); }
 </style>
 <script>
-/* notas.js — versión 2026.11.18-12:48:08 (portado de la maqueta « grafo-notas »).
+/* notas.js — versión 2026.11.18-16:50:42 (portado de la maqueta « grafo-notas »).
    El mecanismo : pila, salidas, pantalla de un nodo (Noter / Éliminer), controles (único, tope, exclusividad,
    incompatibilidad), marcas, modo edición (desde Configuración). Las notas se guardan en mfp_obs (ver notas-tabla.js). */
 (function () {
@@ -4064,7 +4069,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.11.18.106-SAT';
+const MFP_VERSION = '2026.11.18.111-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
@@ -4228,6 +4233,9 @@ function abrirCfg() {
         '<button type="button" class="btn sec" id="cfg-abrir" onclick="document.getElementById(\'maison-file\').click()"></button>' +
         '<input id="maison-file" type="file" accept=".sf,.json,application/json" style="display:none" onchange="ouvrirMaison(this.files[0])">' +
       '</div>' +
+      (getActivo() ? '<div class="cfg-fila"><label style="display:flex;align-items:center;gap:8px;width:100%">💨 ' +
+        t('cfg_spo2min').replace('{p}', ((getPacientes().filter(x => x.id === getActivo())[0] || {}).nombre || '')) +
+        ' <input class="txt" id="cfg-spo2min" type="number" inputmode="numeric" min="50" max="100" value="' + spo2Min() + '" style="width:5em" onchange="setSpo2Min(this.value)"></label></div>' : '') +
       '<div class="cfg-fila"><button type="button" class="btn sec" id="cfg-notas" onclick="editarNotas()"></button></div>' +
       '<div class="cfg-fila"><button type="button" class="btn sec" id="cfg-reset" onclick="pedirResetUi()"></button></div>' +
       '<details class="cfg-atelier"><summary id="cfg-atelier-tit"></summary>' +
@@ -5643,7 +5651,24 @@ function _matInterruptor(d) {
   const ayer = (ab && ab.dia !== diaKey()) ? ab.dia : null;
   let mins = 0, cerradas = 0;
   ses.forEach(s => { const dd = durSesion(s, diaKey()); if (dd != null) { mins += dd; cerradas++; } });
-  const resumen = cerradas ? (cerradas + '× · ' + _fmtDur(mins) + (abierta ? ' + en curso' : '')) : (abierta ? 'en curso desde ' + ((((getMaterial()._uso||{})[d.id]||{})[ab.dia]||[])[ab.i]||{}).inicio + (ayer ? ' (' + fmtDiaCorto(ayer) + ')' : '') : '');
+  /* P-H 18/11 : « 4× · 44 min · en marcha desde 18/11 14:05 » o « … · parado desde 18/11 16:10 » — la línea dice DESDE CUÁNDO */
+  const _u = (getMaterial()._uso || {})[d.id] || {}, _dm = dia => dia.slice(8, 10) + '/' + dia.slice(5, 7);
+  let desde = '';
+  if (abierta) {
+    const s0 = ((_u[ab.dia] || [])[ab.i]) || {};
+    desde = t('mat_marcha_desde').replace('{f}', _dm(ab.dia) + ' ' + (s0.inicio || ''));
+  } else {
+    let ult = null;                                                   /* la última sesión cerrada, sea del día que sea */
+    Object.keys(_u).forEach(function (dia) {
+      (_u[dia] || []).forEach(function (s) {
+        if (!s.fin) return;
+        const k = (s.finDia || dia) + ' ' + s.fin;
+        if (!ult || k > ult) ult = k;
+      });
+    });
+    if (ult) desde = t('mat_parado_desde').replace('{f}', _dm(ult.slice(0, 10)) + ' ' + ult.slice(11));
+  }
+  const resumen = [cerradas ? (cerradas + '× · ' + _fmtDur(mins)) : '', desde].filter(Boolean).join(' · ');
   const lpm = matLitros(d.id);
   return '<div class="matrow ' + (abierta ? 'mat-on' : '') + '">' + (d.icono || '💨') + ' <b>' + matNombre(d) + '</b>' +
     '<span class="matctrl">' +
@@ -6395,6 +6420,7 @@ function renderPacientes() {
     '<button class="pac-btn" id="pac-imp" title="' + t('imp_boton') + '" style="display:none">📥</button>' +
     '<button class="pac-btn" id="pac-mas" title="' + t('pac_anadir') + '"' +
       '>＋</button>' +
+    '<button class="pac-btn" id="pac-abrir" data-tip="' + t('pac_abrir') + '" aria-label="' + t('pac_abrir') + '">📂</button>' +   /* P-H 18/11 : ＋ 📂 🗑 */
     (lista.length ? '<button class="pac-btn" id="pac-del" title="' + t('pac_borrar') + '">🗑</button>' : '') +
     '</div>';
   const sel = document.getElementById('pac-sel');
@@ -6405,6 +6431,9 @@ function renderPacientes() {
               bimp.onclick = () => importarDeSalufolio(); }
   pintarCasaVacia();
   const del = document.getElementById('pac-del'); if (del) del.onclick = pacienteBorrar;
+  const abr = document.getElementById('pac-abrir'); if (abr) abr.onclick = function () {
+    const f = document.getElementById('rest-file'); if (f) f.click();     /* el mismo camino que Datos → Restaurar → Desde un archivo */
+  };
 }
 /* ═══════════════════════════════════════════════════════════════════
    IMPORTER UN PATIENT DEPUIS SALUFOLIO (P-H, 01/08)
@@ -6936,12 +6965,83 @@ const BLOQUES_CONST = {
 let _cDraftB = { ta: null, ps: null, peso: null, temp: null };
 let _o2 = false;
 function toggleArritmia() { _arrit = !_arrit; pintaArritmia(); upsertBloque('ta'); }
-function toggleO2() { _o2 = !_o2; pintaO2(); upsertBloque('ps'); }
+/* ═══ EL OXÍGENO SE DECIDE AL MEDIR (P-H, 18/11/2026) ═══
+   « L'oxygène dans Material est une indication de disponibilité, pas d'action ;
+     la mise en marche c'est quand je prends le pouls et l'O₂. »
+   El interruptor de Constantes abre o cierra LA MISMA sesión que Material, a la hora de la medida.
+   Material sigue siendo el cuadro general : « en marcha desde … », y allí se para si se olvidó. */
+const O2_UMBRALES = { hipoxemia: 95, min_def: 90 };          /* P-H : < 95 hipoxemia ; < 90 desaturación, crítico */
+function spo2Min() {
+  const p = getPacientes().filter(x => x.id === getActivo())[0] || {};
+  const v = Number(p.spo2_min); return (v >= 50 && v <= 100) ? v : O2_UMBRALES.min_def;
+}
+function setSpo2Min(v) {
+  const n = Number(String(v).replace(',', '.')); if (!(n >= 50 && n <= 100)) return;
+  const a = getActivo(), l = getPacientes(); l.forEach(p => { if (p.id === a) p.spo2_min = n; }); setPacientes(l);
+  pintaO2();
+}
+function _hayO2() { return getMaterialCfg().some(x => x.id === 'oxigeno'); }
+function o2Encendido() { return _hayO2() && matEncendido('oxigeno'); }
+function _horaMedidaPS() { const e = document.getElementById('c-ps-hora'); return (e && horaValide(e.value)) || (esHoy() ? ahora() : '12:00'); }
+function toggleO2() {
+  const nuevo = !_o2;
+  if (_hayO2()) {
+    const h = _horaMedidaPS(), ab = matSesionAbierta('oxigeno'), m = _matSesiones('oxigeno');
+    if (nuevo && !ab) {
+      const arr = m._uso.oxigeno[diaKey()] = m._uso.oxigeno[diaKey()] || [];
+      const l = matLitros('oxigeno');
+      arr.push({ inicio: h, litros: [{ hora: h, lpm: l }] });
+      lsSet('mfp_material', m); toast('▶ 💨 ' + h + ' · ' + l + ' L/min');
+    } else if (!nuevo && ab) {
+      const ses = m._uso.oxigeno[ab.dia][ab.i], mismo = (ab.dia === diaKey());
+      if (mismo && _minEntre(ses.inicio, h) < 0) { toast('⚠ ' + t('mat_antes') + ' ' + ses.inicio); return; }
+      ses.fin = h; if (!mismo) ses.finDia = diaKey();
+      lsSet('mfp_material', m); toast('⏸ 💨 ' + h);
+    }
+    if (typeof renderMaterial === 'function') renderMaterial();
+  }
+  _o2 = nuevo; pintaO2(); upsertBloque('ps');
+}
+/* Desde cuándo está en marcha, a la hora de la medida */
+function _o2Desde() {
+  const ab = matSesionAbierta('oxigeno'); if (!ab) return '';
+  const ses = ((((getMaterial()._uso || {}).oxigeno || {})[ab.dia]) || [])[ab.i]; if (!ses) return '';
+  const min = _minEntre(ses.inicio, _horaMedidaPS()) + 1440 * _diasEntre(ab.dia, diaKey());
+  return t('o2_desde').replace('{h}', ses.inicio + (ab.dia !== diaKey() ? ' (' + fmtDiaCorto(ab.dia) + ')' : ''))
+                      .replace('{d}', _fmtDur(Math.max(0, min)));
+}
+/* Los controles : un aviso bajo la línea ; el beep, sólo para la desaturación, una vez por valor */
+let _o2Sonado = '';
+function controlO2(sonar) {
+  const box = document.getElementById('c-o2-aviso'); if (!box) return;
+  const v = constLeer(document.getElementById('c-spo2')), mn = spo2Min();
+  let cls = '', txt = '';
+  if (v !== null && v >= 50 && v <= 100) {
+    const rep = s => s.replace('{v}', v).replace('{m}', mn);
+    if (v < mn) { cls = 'crit'; txt = rep(t(_o2 ? 'o2_desat_on' : 'o2_desat_off')); }
+    else {
+      const partes = [];
+      if (v < O2_UMBRALES.hipoxemia) { cls = 'warn'; partes.push(rep(t('o2_hipox'))); }
+      if (_o2) { cls = cls || 'ok'; partes.push(partes.length ? t('o2_parar_c') : rep(t('o2_parar'))); }
+      txt = partes.join(' · ');
+    }
+    const clave = v + '|' + _o2 + '|' + diaKey() + '|' + _horaMedidaPS();
+    if (sonar && cls === 'crit' && _o2Sonado !== clave) { _o2Sonado = clave; try { beep(); } catch (e) {} }
+  }
+  box.className = 'o2-aviso' + (cls ? ' ' + cls : '');
+  box.textContent = txt; box.style.display = txt ? '' : 'none';
+}
 function pintaO2() {
   const b = document.getElementById('c-o2'); if (!b) return;
-  b.classList.toggle('on', !!_o2);
+  b.classList.toggle('on', !!_o2);                                  /* P-H 18/11 : el interruptor de Material — O apagado, I encendido */
+  b.setAttribute('aria-pressed', _o2 ? 'true' : 'false');
+  b.setAttribute('aria-label', t(_o2 ? 'c_con_o2' : 'c_sin_o2'));
+  b.dataset.tip = t(_o2 ? 'c_con_o2' : 'c_sin_o2');
+  const fila = document.getElementById('c-o2-fila'); if (fila) fila.classList.toggle('mat-on', !!_o2);
   const l = document.getElementById('i-co2');
-  if (l) l.textContent = t(_o2 ? 'c_con_o2' : 'c_sin_o2');
+  if (l) { l.textContent = t(_o2 ? 'c_o2_on' : 'c_o2_off');
+           const d = _o2 ? _o2Desde() : ''; if (d) l.insertAdjacentHTML('beforeend', '<span class="o2-desde">' + d + '</span>'); }
+  controlO2(false);
 }
 /* Quelle fiche appartient à quel bloc : celle qui porte au moins un de ses
    champs. Une ancienne fiche (six valeurs, une heure) répond donc à
@@ -7024,7 +7124,7 @@ function _cargarBloque(tipo, idx) {
   _cDraftB[tipo] = c ? idx : null;
   Object.keys(B.campos).forEach(k => constPoner(document.getElementById(B.campos[k]), c ? c[k] : null));
   if (tipo === 'ta') { _arrit = !!(c && c.arritmia); pintaArritmia(); }
-  if (tipo === 'ps') { _o2 = !!(c && c.o2 === true); pintaO2(); }
+  if (tipo === 'ps') { _o2 = c ? (c.o2 === true) : o2Encendido(); pintaO2(); }
   if (hEl) hEl.value = c ? (c.hora || '') : (esHoy() ? ahora() : '');
 }
 /* Le bouton : il ouvre une mesure neuve, rien d'autre. Éteint tant qu'il
@@ -7114,7 +7214,7 @@ function recargarConst() {
     if (hEl) hEl.value = (c && c.hora) || (esHoy() ? ahora() : '');
     _cDraftB[tipo] = idx;
     if (tipo === 'ta') { _arrit = !!(c && c.arritmia); pintaArritmia(); }
-    if (tipo === 'ps') { _o2 = !!(c && c.o2 === true); pintaO2(); }
+    if (tipo === 'ps') { _o2 = c ? (c.o2 === true) : o2Encendido(); pintaO2(); }
     if (c) ult = c;
   });
   pon('c-fecha', fmtDiaLargo(diaKey()));
@@ -7258,7 +7358,7 @@ const CAMPOS_GUARDA = {
   'c-tas': e => { avisarDudoso(e); upsertBloque('ta'); },
   'c-tad': e => { avisarDudoso(e); upsertBloque('ta'); },
   'c-fc': e => { avisarDudoso(e); upsertBloque('ps'); },
-  'c-spo2': e => { avisarDudoso(e); upsertBloque('ps'); },
+  'c-spo2': e => { avisarDudoso(e); upsertBloque('ps'); controlO2(true); },
   'c-peso': e => { avisarDudoso(e); upsertBloque('peso'); },
   'c-temp': e => { avisarDudoso(e); upsertBloque('temp'); },
   'c-ta-hora': () => upsertBloque('ta'),
@@ -7363,7 +7463,7 @@ function cerrarConstDraft() {
   if (_cDraft === null) return;
   ['c-tas','c-tad','c-fc','c-spo2','c-peso','c-temp'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
   Object.keys(_cDraftB).forEach(k => _cDraftB[k] = null);
-  _o2 = false; if (typeof pintaO2 === 'function') pintaO2();
+  _o2 = (typeof o2Encendido === 'function') ? o2Encendido() : false; if (typeof pintaO2 === 'function') pintaO2();
   _cDraft = null; estadoConst('');
   const ef = document.getElementById('c-fecha'); if (ef) ef.value = fmtDiaLargo(diaKey());
 }
@@ -8221,6 +8321,20 @@ function reunirResumen(dias) {
   });
   R.oxigeno = { horas: _r1(minutos / 60), sesiones: sesiones, abiertas: abiertas,
                 por_dia: _r1(minutos / 60 / dias) };
+  /* P-H 18/11 : « ¿cuántas horas de oxígeno al día ? » — por día COMPLETO (hoy no ha terminado),
+     sólo los días que tienen registro : un día sin anotar no es un día sin oxígeno, se dice aparte. */
+  const porDia = [];
+  fechas.filter(f => f !== _hoy).forEach(function (f) {
+    const ss = uso[f] || []; if (!ss.length) return;
+    let m = 0; ss.forEach(function (x) { const dd = durSesion(x, f); if (dd != null) m += dd; });
+    porDia.push(m);
+  });
+  R.oxigeno.dias_reg = porDia.length;
+  R.oxigeno.dias_tot = fechas.filter(f => f !== _hoy).length;
+  R.oxigeno.media_min = porDia.length ? Math.round(porDia.reduce((a, b) => a + b, 0) / porDia.length) : null;
+  R.oxigeno.min_min = porDia.length ? Math.min.apply(null, porDia) : null;
+  R.oxigeno.max_min = porDia.length ? Math.max.apply(null, porDia) : null;
+  R.oxigeno.lpm = matLitros('oxigeno');
   return R;
 }
 
@@ -8285,8 +8399,18 @@ function pintarResumen(R) {
   if (cu.mic) cuerpo.push(cu.mic + ' ' + t('l_mic').toLowerCase());
   if (cu.pan) cuerpo.push(cu.pan + ' ' + t('l_panal').toLowerCase());
   if (cuerpo.length) h += _fila(t('res_cuerpo'), cuerpo.join(' · ') + ' <span style="color:#777">' + t('res_pordia') + '</span>');
-  if (ox.sesiones) h += _fila(t('res_oxigeno'), ox.horas + ' h · ' + ox.por_dia + ' h/' + t('res_dia') +
-       ' · ' + ox.sesiones + ' ' + t('res_sesiones') + (ox.abiertas ? ' (' + ox.abiertas + ' ' + t('res_abiertas') + ')' : ''));
+  if (ox.sesiones) {
+    const partes = [];
+    if (ox.media_min != null) {
+      partes.push(t('res_media') + ' <b>' + _fmtDur(ox.media_min) + ' / ' + t('res_dia') + '</b>');
+      if (ox.dias_reg > 1) partes.push(t('res_min') + ' ' + _fmtDur(ox.min_min) + ' · ' + t('res_max') + ' ' + _fmtDur(ox.max_min));
+    }
+    partes.push(String(ox.lpm).replace('.', ',') + ' L/min');
+    partes.push(t(ox.dias_reg === 1 ? 'res_ox_dias_1' : 'res_ox_dias').replace('{n}', ox.dias_reg).replace('{t}', ox.dias_tot));
+    partes.push(ox.sesiones + ' ' + t(ox.sesiones === 1 ? 'res_sesion_1' : 'res_sesiones') +
+                (ox.abiertas ? ' (' + ox.abiertas + ' ' + t(ox.abiertas === 1 ? 'res_abierta_1' : 'res_abiertas') + ')' : ''));
+    h += _fila(t('res_oxigeno'), partes.join(' · ') + ' <span style="color:#777;font-size:11px">' + t('res_completos') + '</span>');
+  }
   if (R.obs.length) {
     h += _fila(t('res_observado') + '<br><span style="font-size:11px">(' + t('res_dias_con') + ')</span>',
       R.obs.slice(0, 14).map(function (x) {
@@ -8940,21 +9064,50 @@ function confirmar(titulo, msg, si) {
   ov.querySelector('#cf-no').onclick = () => ov.remove();
   ov.querySelector('#cf-si').onclick = () => { ov.remove(); si(); };
 }
+/* P-H 18/11 — LA COPIA VA AL CAJÓN DE SU MATRÍCULA.
+   Antes, restaurar vertía la copia en el paciente MOSTRADO : abrir la demo con Joaquina en pantalla
+   borraba a Joaquina. Ahora : misma matrícula que el paciente mostrado → se le restaura (como antes) ;
+   matrícula de otro paciente del aparato → se pregunta, nombrándolo, y se restaura ése ;
+   matrícula desconocida → paciente NUEVO, sin tocar a nadie. */
+function _matDeCopia(d) {
+  const F2 = d && d.formato === 2;
+  const nom = F2 ? (d.paciente && d.paciente.nombre) : d.patient_label;
+  const sip = F2 ? (d.paciente && d.paciente.sip) : d.patient_sip;
+  const m = F2 && d.paciente && d.paciente.matricula ? String(d.paciente.matricula).replace(/\s+/g, '').toUpperCase() : '';
+  return matriculaValida(m) ? m : matriculaDeUno(nom || '', sip || '');
+}
+function _matDePaciente(p) { return String(p.matricula || matriculaDeUno(p.nombre || '', p.sip || '')).toUpperCase(); }
 function restaurarArchivo(file) {
   const r = new FileReader();
   r.onload = () => {
     try {
       const d = JSON.parse(r.result);
       const nom = (d.formato === 2 ? (d.paciente && d.paciente.nombre) : d.patient_label) || '(sin nombre)';
-      confirmar('📂 Restaurar', 'Se cargarán los datos de « ' + nom + ' »' + (d.exportado ? '\n(guardados el ' + d.exportado + ')' : '') + '.\nSustituirán lo que haya en este dispositivo.', () => {
+      const sip = (d.formato === 2 ? (d.paciente && d.paciente.sip) : d.patient_sip) || '';
+      const fecha = d.exportado ? t('rs_fecha').replace('{f}', d.exportado) : '';
+      const mat = _matDeCopia(d), act = getActivo();
+      const suyo = getPacientes().filter(p => _matDePaciente(p) === mat)[0];
+      const terminar = (aviso) => {
         restaurarDesdeObj(d);
         _arm().setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
-        /* si le casier a échoué malgré tout, ne pas rouvrir l'assistant en boucle */
         if (!lsGet('mfp_asist', null)) _arm().setItem('mfp_asist', JSON.stringify('1'));
-        toast('✓ restaurado — recargando…'); nosVamos();
+        toast(aviso); nosVamos();
         setTimeout(() => location.reload(), 700);
+      };
+      if (!suyo && getPacientes().length) {                         /* paciente nuevo : se añade, nadie se toca */
+        guardarActual();
+        const id = _idPaciente(nom);
+        const l = getPacientes(); l.push({ id: id, nombre: nom, sip: String(sip).trim(), matricula: mat });
+        setPacientes(l); setActivo(id);
+        terminar(t('rs_nuevo').replace('{nom}', nom));
+        return;
+      }
+      const msg = (suyo && suyo.id !== act ? t('rs_otro') : t('rs_mismo')).replace('{nom}', suyo ? suyo.nombre : nom).replace('{fecha}', fecha);
+      confirmar(t('rs_tit'), msg, () => {
+        if (suyo && suyo.id !== act) { guardarActual(); setActivo(suyo.id); }
+        terminar(t('rs_ok'));
       });
-    } catch (e) { toast('⚠ archivo no válido'); }
+    } catch (e) { toast(t('rs_mal')); }
   };
   r.readAsText(file);
 }
