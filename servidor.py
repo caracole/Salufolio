@@ -19,9 +19,15 @@ from zoneinfo import ZoneInfo
 # être celle de Pierre-Henri (Europe/Madrid), pas celle de la machine de build.
 TZ_LIVRAISON = ZoneInfo('Europe/Madrid')
 def _now(): return datetime.now(TZ_LIVRAISON)
+RECIBIDOS_EXT = ('.pr', '.json')   # 19/11/2026 (P-H, punto 9) : la copia recibida se llama como el .pr del teléfono
+def recibidos_protocolo(d):
+    """Los archivos recibidos del teléfono, del más antiguo al más reciente (por fecha de escritura, no por nombre)."""
+    if not os.path.isdir(d): return []
+    fs = [x for x in os.listdir(d) if x.endswith(RECIBIDOS_EXT)]
+    return sorted(fs, key=lambda x: (os.path.getmtime(os.path.join(d, x)), x))
 
 PORT = 7777
-SERVER_VERSION = '1.8.5'   # version officielle — lue par maj.sh, affichée au démarrage
+SERVER_VERSION = '1.8.6'   # version officielle — lue par maj.sh, affichée au démarrage
 START_TIME = None          # posée au démarrage — l'uptime du panel la lit
 APAGADO = False            # v1.8.5 — pause LOGIQUE : Detener/Marcha à chaud, jamais os._exit
 HOST = '0.0.0.0'   # v1.5.1 : écoute sur TOUTES les interfaces (accès téléphone via Wi-Fi)
@@ -529,7 +535,7 @@ aplica(); pinta(); setInterval(function(){pinta(); if(document.querySelector('.d
             ent = os.path.join(base, 'protocolo-entrada')
             recibidos, ultimo = 0, ''
             if os.path.isdir(ent):
-                fs = sorted((f for f in os.listdir(ent) if f.endswith('.json')), reverse=True)
+                fs = recibidos_protocolo(ent)[::-1]
                 recibidos = len(fs); ultimo = fs[0] if fs else ''
             resp = os.path.join(base, 'respaldos')
             n_resp = len([f for f in os.listdir(resp) if f.endswith('.mf')]) if os.path.isdir(resp) else 0
@@ -763,8 +769,7 @@ aplica(); pinta(); setInterval(function(){pinta(); if(document.querySelector('.d
             return
         if path == '/api/protocolo/lista':
             d = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'protocolo-entrada')
-            fichiers = sorted(os.listdir(d), reverse=True) if os.path.isdir(d) else []
-            ok_json(self, {'archivos': [x for x in fichiers if x.endswith('.json')][:30]})
+            ok_json(self, {'archivos': recibidos_protocolo(d)[::-1][:30]})
             return
 
         if path.startswith('/api/protocolo/archivo'):
@@ -782,8 +787,7 @@ aplica(); pinta(); setInterval(function(){pinta(); if(document.querySelector('.d
             # le dernier fichier reçu du téléphone, servi à Salufolio pour import direct
             d = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'protocolo-entrada')
             try:
-                fichiers = sorted(os.listdir(d)) if os.path.isdir(d) else []
-                fichiers = [x for x in fichiers if x.endswith('.json')]
+                fichiers = recibidos_protocolo(d)
                 if not fichiers:
                     err_json(self, 'Nada recibido todavía en protocolo-entrada/', 404); return
                 nom = fichiers[-1]
@@ -909,9 +913,13 @@ aplica(); pinta(); setInterval(function(){pinta(); if(document.querySelector('.d
                     return
                 d = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'protocolo-entrada')
                 os.makedirs(d, exist_ok=True)
-                pac = re.sub(r'[^A-Za-z0-9]+', '', str(body.get('patient_label', 'paciente')).split(' ')[0]) or 'paciente'
-                stamp = datetime.now(TZ_LIVRAISON).strftime('%Y-%m-%d_%Hh%M%S')
-                nom = f'MFProtocolo_{pac}_v{stamp}.json'
+                # 19/11/2026 (P-H, punto 9) : el nombre lleva la MATRÍCULA de la copia, como el .pr del teléfono
+                _p = body.get('paciente') if isinstance(body.get('paciente'), dict) else {}
+                pac = (re.sub(r'[^A-Za-z0-9]+', '', str(_p.get('matricula') or '')).upper()
+                       or re.sub(r'[^A-Za-z0-9]+', '', str(_p.get('nombre') or body.get('patient_label') or '').split(' ')[0])
+                       or 'SIN-MATRICULA')
+                stamp = datetime.now(TZ_LIVRAISON).strftime('%Y-%m-%d-%Hh%Mm%S')
+                nom = f'{pac}_{stamp}.pr'
                 with open(os.path.join(d, nom), 'w', encoding='utf-8') as f:
                     json.dump(body, f, ensure_ascii=False, indent=2)
                 ok_json(self, {'ok': True, 'archivo': nom, 'carpeta': 'protocolo-entrada'})

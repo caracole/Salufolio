@@ -2,7 +2,7 @@
 <!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-21 22:07:19 par assembleur.py 2026.10.10-17:22:34 -->
 <html lang="es">
 <head>
-<!-- Versión 2026.11.19-16:30:08 -->
+<!-- Versión 2026.11.19-17:20:28 -->
 <meta charset="UTF-8">
 
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
@@ -536,7 +536,7 @@ body.sin-paciente #nav-res { opacity: .35; }
     <div class="hdr-qui">
       <div id="hdr-patient" style="font-size:17px;font-weight:800;color:var(--text);margin-top:1px"></div>
     </div>
-    <button type="button" id="hdr-abre" onclick="abrirCajon()" aria-expanded="false" aria-controls="cajon" data-tip="Menu" title="Menu">☰</button>
+    <button type="button" id="hdr-abre" onclick="abrirCajon()" aria-expanded="false" aria-controls="cajon" >☰</button>
   </div>
 </header>
 <div id="cajon" hidden>
@@ -545,12 +545,12 @@ body.sin-paciente #nav-res { opacity: .35; }
     <div class="ctrls">
       <button type="button" class="hbtn" id="cajon-concha" onclick="cerrarCajon()" title="Salufolio Protocolo"></button>
       <a id="lnk-casa" class="hbtn" target="_blank" rel="noopener" data-tip="Salufolio" title="Salufolio"></a>
-      <button class="hbtn" id="btn-theme" onclick="ouvrirPalettes()" data-tip="Palettes" title="Palettes">🎨</button><span id="pal-boite" style="display:none;align-items:center;gap:6px"><select id="pal-nom" class="txt" style="width:auto;min-height:40px" onchange="choisirPalette(this.value)"></select><select id="pal-nuance" class="txt" style="width:auto;min-height:40px" onchange="choisirNuance(this.value)"></select></span>
+      <button class="hbtn" id="btn-theme" onclick="ouvrirPalettes()">🎨</button><span id="pal-boite" style="display:none;align-items:center;gap:6px"><select id="pal-nom" class="txt" style="width:auto;min-height:40px" onchange="choisirPalette(this.value)"></select><select id="pal-nuance" class="txt" style="width:auto;min-height:40px" onchange="choisirNuance(this.value)"></select></span>
       <button class="hbtn" id="btn-lang" onclick="cycleLang()">ES</button>
-      <button class="hbtn" onclick="zoomMas(-1)" data-tip="Plus petit" title="Plus petit">A−</button>
-      <button class="hbtn" onclick="zoomMas(1)" data-tip="Plus grand" title="Plus grand">A＋</button>
-      <button type="button" class="hbtn" id="nav-datos" onclick="ir('datos');cerrarCajon()" data-tip="Données" title="Données">📦</button>
-      <button class="hbtn" onclick="verAyuda();cerrarCajon()" data-tip="Aide" title="Aide">❓</button>
+      <button class="hbtn" id="btn-zmenos" onclick="zoomMas(-1)">A−</button>
+      <button class="hbtn" id="btn-zmas" onclick="zoomMas(1)">A＋</button>
+      <button type="button" class="hbtn" id="nav-datos" onclick="ir('datos');cerrarCajon()">📦</button>
+      <button class="hbtn" id="btn-ayuda" onclick="verAyuda();cerrarCajon()">❓</button>
       <button type="button" class="hbtn" id="btn-cfg" onclick="cerrarCajon();abrirCfg()">⚙️</button>
     </div>
     <span id="hdr-sub" style="display:none">Salufolio Protocolo</span>
@@ -773,10 +773,10 @@ body.sin-paciente #nav-res { opacity: .35; }
     <button onclick="volverHoy()" id="dia-hoy" style="display:none;flex:0 0 auto;padding:0 10px;font-size:13px;font-weight:700"></button>
   </div>
 <nav>
-  <button id="nav-hoy" class="act" onclick="ir('hoy')" title="Prises"><span class="ico">💊</span><span id="i-nhoy"></span></button>
-  <button id="nav-const" onclick="ir('const')" title="Mesures"><span class="ico">🩺</span><span id="i-nconst"></span></button>
-  <button id="nav-notas" onclick="ir('notas')" title="Vu"><span class="ico">📝</span><span id="i-nnotas"></span></button>
-  <button id="nav-res" onclick="pedirResumen()" title="Feuille"><span class="ico">📄</span><span id="i-nres"></span></button>
+  <button id="nav-hoy" class="act" onclick="ir('hoy')"><span class="ico">💊</span><span id="i-nhoy"></span></button>
+  <button id="nav-const" onclick="ir('const')"><span class="ico">🩺</span><span id="i-nconst"></span></button>
+  <button id="nav-notas" onclick="ir('notas')"><span class="ico">📝</span><span id="i-nnotas"></span></button>
+  <button id="nav-res" onclick="pedirResumen()"><span class="ico">📄</span><span id="i-nres"></span></button>
 </nav>
 </div>
 <button id="subir" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;right:14px;bottom:96px;z-index:70;width:52px;height:52px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:22px;box-shadow:0 6px 18px rgba(0,0,0,.4);cursor:pointer">⬆</button>
@@ -1183,7 +1183,7 @@ window.LANGUES = {
     l_dep:"Deposición",
     imp_viejos:"Más de 3 meses — desmarcados; tóquelos si siguen vigentes",
     imp_boton:"Importar de Salufolio",
-    demo_boton:"Probar con un paciente de demostración", demo_nota:"Paciente ficticio. Los datos se guardan solo en este dispositivo.", demo_error:"No se pudo cargar la demostración", pie_autor:"con la ayuda de la IA",
+    demo_boton:"Probar con un paciente de demostración", demo_nota:"Datos reales, nombre ficticio. Los datos se guardan solo en este dispositivo.", demo_error:"No se pudo cargar la demostración", pie_autor:"con la ayuda de la IA",
     imp_tit:"¿Qué paciente?",
     imp_meds:"medicamentos",
     imp_copia:"copia del",
@@ -1239,7 +1239,7 @@ window.LANGUES = {
     come_pedido:"Ha pedido comer",
     come_bien:"Ha comido bien",
     mat_oxigeno:"Oxígeno",
-    bv_sub:"el cuaderno del cuidador", bv_cuerpo:"<b>Salufolio</b> es la casa del expediente médico personal: sus datos de salud, en su propia máquina, sin cuentas ni conexión a un servicio remoto.<br><br>Este <b>Protocolo</b> es el cuaderno del cuidador: tomas, constantes y observaciones del día a día. El informe para la consulta se prepara solo.", bv_lat:"Del latín <i>Salus</i>, la diosa de la salud, y <i>folium</i>: el folio de la salud.", bv_pasos:"1️⃣ <b>📦 Datos</b> — el paciente y su pauta (➕ / ✏️) · 2️⃣ <b>💊 Hoy</b> — toque cada toma (◀ días pasados) · 3️⃣ <b>🩺 Constantes</b> · <b>📝 Notas</b> — al momento.", bv_ok:"Entendido",
+    bv_sub:"el cuaderno del cuidador", bv_cuerpo:"<b>Salufolio</b> es la casa del expediente médico personal: sus datos de salud, en su propia máquina, sin cuentas ni conexión a un servicio remoto.<br><br>Este <b>Protocolo</b> es el cuaderno del cuidador: tomas, constantes y observaciones del día a día. El informe para la consulta se prepara solo.", bv_lat:"Del latín <i>Salus</i>, la diosa de la salud, y <i>folium</i>: el folio de la salud.", bv_pasos:"1️⃣ <b>📦 Datos</b> — el paciente y su pauta (➕ / ✏️) · 2️⃣ <b>💊 Medicación</b> — toque cada toma (◀ días pasados) · 3️⃣ <b>🩺 Constantes</b> · <b>📝 Notas</b> — al momento.", bv_ok:"Entendido",
     mj_desayuno:"Desayuno", mj_almuerzo:"Almuerzo", mj_comida:"Comida", mj_merienda:"Merienda", mj_cena:"Cena", mj_noche:"Noche", mj_demanda:"A demanda", mom_falta:"Elija al menos un momento.", sin_mem:"Sin memoria en este modo : nada se guardará.", sin_tomas:"Ninguna toma anotada hoy.",
     rev_borrar:"Borrar",
     rev_borrar_tit:"Borrar esta observación", rev_borrar_ok:"Sí, borrar", rev_borrada:"Observación borrada", rev_borrar_nota:"Se borra por completo y no se puede deshacer. Hágalo solo si se anotó por error.",
@@ -1356,11 +1356,13 @@ window.LANGUES = {
     lado_tit:"¿Qué lado?",
     lado_izq:"Izquierdo",
     lado_der:"Derecho",
+    copia_ok:"✓ Copia descargada", hoy_sin_meds:"Los medicamentos se añaden en el menú ☰ › 📦 Datos.", tip_paletas:"Paletas", tip_menor:"Más pequeño", tip_mayor:"Más grande", tip_ayuda:"Ayuda",
+    ay_res:"<b>📄 Resumen</b> — reúne lo anotado en una sola hoja para la consulta: la semana, 30 días, o desde el último resumen. «Imprimir / PDF» la imprime o la guarda.",
     ay_tit:"❓ Cómo se usa",
-    ay_hoy:"<b>💊 Hoy</b> — toque cada medicamento cuando se tome : queda registrado con la hora. ¿Se registró tarde? <b>Toque la hora</b> para corregirla. Un toque de más se anula tocando otra vez. «Toma puntual» registra una toma fuera de la lista ; si el medicamento está « a demanda », se elige de un toque.",
+    ay_hoy:"<b>💊 Medicación</b> — toque cada medicamento cuando se tome: queda registrado con la hora. ¿Se registró tarde? <b>Toque la hora</b> para corregirla. Un toque de más se anula tocando otra vez. «Toma puntual» registra una toma fuera de la lista; si el medicamento está «a demanda», se elige de un toque.",
     ay_const:"<b>🩺 Constantes</b> — rellene solo lo medido ; la hora se puede corregir. Se guarda automáticamente.",
-    ay_notas:"<b>📝 Notas</b> — toque lo observado (hidratación, deposición, micción) : queda anotado con la hora, y el resumen del día aparece a la derecha. Son las preguntas del <i>informe para la consulta</i>.",
-    ay_datos:"<b>📦 Datos</b> — paciente y pauta, historial, y la salida : <b>⬇️</b> guardar o <b>📡</b> enviar una copia al ordenador por wifi local (Salufolio la importará), y <b>📂 Restaurar</b> una copia en un teléfono nuevo.",
+    ay_notas:"<b>📝 Notas</b> — toque un bloque (alimentación, ocupación, salud, eliminación), luego la respuesta, y confirme con el botón verde «Anotar a las…»: queda anotado con la hora. Un candado 🔒 señala lo que no se repite el mismo día.",
+    ay_datos:"<b>📦 Datos</b> (menú ☰) — el paciente, sus medicamentos y el historial. «Guardar copia de los datos» descarga un archivo «.pr» con todo el paciente: sáquelo del teléfono. El botón <b>📂</b> de la cabecera abre una copia, por ejemplo en un teléfono nuevo. Si en casa hay un ordenador con Salufolio, lo anotado puede enviarse a él por el wifi.",
     ay_ayer:"<b>Si ayer quedó una toma sin registrar</b>, la app lo pregunta al abrir. Ante dudas sobre una dosis, consulte el prospecto o al médico — la app registra, no aconseja.",
     ay_disp:"Los datos viven en este dispositivo.", ay_panal:"Panal Salufolio — todas las aplicaciones", ay_dev:"Producto en desarrollo", ay_doc:"Ver o descargar la documentación detallada",
     ay_ok:"Entendido", hoy:'Hoy', consts:'Constantes', notas:'Notas', datos:'Datos',
@@ -1385,7 +1387,7 @@ window.LANGUES = {
     d_ok:'Aceptar', d_can:'Cancelar', omitida:'omitida', puntual:'puntual',
     exp_nota:'La copia guardada (⬇️) o enviada (📡) es la que Salufolio importará en el ordenador.',
     b_env:'📡 Enviar a Salufolio', pc_label:'Dirección de Salufolio en el PC (opcional, ej. http://192.168.1.20:7777)',
-    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono (app local, sin PC)', inst_nota:'Descarga la app ya configurada. Ábrala desde Descargas — funciona siempre, aunque el ordenador esté apagado. 📡 enviará cuando el PC esté encendido.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂ %', c_peso:'Peso', c_temp:'Temperatura', c_bta:'Tensión', c_bps:'Pulso y saturación', c_bpeso:'Peso', c_btemp:'Temperatura', c_o2_on:'SpO₂ con aporte de O₂', o2_desde:'desde las {h} · {d}', o2_desat_off:'⚠ Desaturación : SpO₂ {v} % (mínima {m} %) — ¿poner el oxígeno?', o2_desat_on:'⚠ Desaturación con oxígeno : SpO₂ {v} % (mínima {m} %)', o2_hipox:'Hipoxemia : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : se puede parar el oxígeno', o2_parar_c:'se puede parar el oxígeno', cfg_spo2min:'SpO₂ mínima de {p} (%)', c_o2_off:'SpO₂ sin aporte de O₂', c_sin_o2:'Sin aporte de O₂', c_con_o2:'Con aporte de O₂', c_nueva:'＋ nueva medición', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria)', env_ok:'✓ Recibido en Salufolio', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
+    av_title:'Avisos sonoros', av_on:'Avisos ACTIVADOS', av_off:'Avisos desactivados', av_nota:'Suena solo si quedan tomas pendientes — la app debe estar abierta.', inst_btn:'Instalar en este teléfono', inst_nota:'Descarga una copia del Protocolo: el fichero «Salufolio_Protocolo_movil.html». Ábrala desde las descargas: funciona siempre, sin conexión y sin ordenador. Lo que se anota en la copia se guarda en este teléfono.', t_mat:'Material y dispositivos', c_tas:'Tensión sistólica', c_tad:'Tensión diastólica', c_fc:'Pulso', c_spo2:'Saturación O₂ %', c_peso:'Peso', c_temp:'Temperatura', c_bta:'Tensión', c_bps:'Pulso y saturación', c_bpeso:'Peso', c_btemp:'Temperatura', c_o2_on:'SpO₂ con aporte de O₂', o2_desde:'desde las {h} · {d}', o2_desat_off:'⚠ Desaturación : SpO₂ {v} % (mínima {m} %) — ¿poner el oxígeno?', o2_desat_on:'⚠ Desaturación con oxígeno : SpO₂ {v} % (mínima {m} %)', o2_hipox:'Hipoxemia : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : se puede parar el oxígeno', o2_parar_c:'se puede parar el oxígeno', cfg_spo2min:'SpO₂ mínima de {p} (%)', c_o2_off:'SpO₂ sin aporte de O₂', c_sin_o2:'Sin aporte de O₂', c_con_o2:'Con aporte de O₂', c_nueva:'＋ nueva medición', env_wait:'⏳ Enviando…', sip_label:'SIP (tarjeta sanitaria)', env_ok:'✓ Recibido en Salufolio', env_err:'⚠ No se pudo enviar — ¿misma red Wi-Fi? ¿servidor encendido?' },
   va: {
     sw_ini:"Iniciar",
     sw_fin:"Parar",
@@ -1409,7 +1411,7 @@ window.LANGUES = {
     l_dep:"Deposició",
     imp_viejos:"Més de 3 mesos — desmarcats; toqueu-los si continuen vigents",
     imp_boton:"Importar de Salufolio",
-    demo_boton:"Provar amb un pacient de demostració", demo_nota:"Pacient fictici. Les dades es guarden només en este dispositiu.", demo_error:"No s'ha pogut carregar la demostració", pie_autor:"amb l'ajuda de la IA",
+    demo_boton:"Provar amb un pacient de demostració", demo_nota:"Dades reals, nom fictici. Les dades es guarden només en este dispositiu.", demo_error:"No s'ha pogut carregar la demostració", pie_autor:"amb l'ajuda de la IA",
     imp_tit:"Quin pacient?",
     imp_meds:"medicaments",
     imp_copia:"còpia del",
@@ -1465,7 +1467,7 @@ window.LANGUES = {
     come_pedido:"Ha demanat menjar",
     come_bien:"Ha menjat bé",
     mat_oxigeno:"Oxigen",
-    bv_sub:"el quadern del cuidador", bv_cuerpo:"<b>Salufolio</b> és la casa de l'expedient mèdic personal: les seues dades de salut, en la seua pròpia màquina, sense comptes ni connexió a un servei remot.<br><br>Este <b>Protocol</b> és el quadern del cuidador: preses, constants i observacions del dia a dia. L'informe per a la consulta es prepara sol.", bv_lat:"Del llatí <i>Salus</i>, la deessa de la salut, i <i>folium</i>: el foli de la salut.", bv_pasos:"1️⃣ <b>📦 Dades</b> — el pacient i la seua pauta (➕ / ✏️) · 2️⃣ <b>💊 Hui</b> — toque cada presa (◀ dies passats) · 3️⃣ <b>🩺 Constants</b> · <b>📝 Notes</b> — al moment.", bv_ok:"Entesos",
+    bv_sub:"el quadern del cuidador", bv_cuerpo:"<b>Salufolio</b> és la casa de l'expedient mèdic personal: les seues dades de salut, en la seua pròpia màquina, sense comptes ni connexió a un servei remot.<br><br>Este <b>Protocol</b> és el quadern del cuidador: preses, constants i observacions del dia a dia. L'informe per a la consulta es prepara sol.", bv_lat:"Del llatí <i>Salus</i>, la deessa de la salut, i <i>folium</i>: el foli de la salut.", bv_pasos:"1️⃣ <b>📦 Dades</b> — el pacient i la seua pauta (➕ / ✏️) · 2️⃣ <b>💊 Medicació</b> — toque cada presa (◀ dies passats) · 3️⃣ <b>🩺 Constants</b> · <b>📝 Notes</b> — al moment.", bv_ok:"Entesos",
     mj_desayuno:"Esmorzar", mj_almuerzo:"Esmorzaret", mj_comida:"Dinar", mj_merienda:"Berenar", mj_cena:"Sopar", mj_noche:"Nit", mom_falta:"Trie almenys un moment.", sin_mem:"Sense memòria en aquest mode : res no es guardarà.", sin_tomas:"Cap presa anotada hui.", mj_demanda:"A demanda",
     rev_borrar:"Esborrar",
     rev_borrar_tit:"Esborrar esta observació", rev_borrar_ok:"Sí, esborrar", rev_borrada:"Observació esborrada", rev_borrar_nota:"S'esborra del tot i no es pot desfer. Feu-ho només si es va anotar per error.",
@@ -1582,11 +1584,13 @@ window.LANGUES = {
     lado_tit:"Quin costat?",
     lado_izq:"Esquerre",
     lado_der:"Dret",
+    copia_ok:"✓ Còpia descarregada", hoy_sin_meds:"Els medicaments s’afigen en el menú ☰ › 📦 Dades.", tip_paletas:"Paletes", tip_menor:"Més xicotet", tip_mayor:"Més gran", tip_ayuda:"Ajuda",
+    ay_res:"<b>📄 Resum</b> — reuneix el que s’ha anotat en un sol full per a la consulta: la setmana, 30 dies, o des de l’últim resum. «Imprimir / PDF» l’imprimeix o el guarda.",
     ay_tit:"❓ Com es fa servir",
-    ay_hoy:"<b>💊 Hui</b> — toqueu cada medicament quan es prenga : queda registrat amb l’hora. Registrat tard? <b>Toqueu l’hora</b> per corregir-la. Un toc de més s’anul·la tocant una altra vegada. «Presa puntual» registra una presa fora de la llista ; si el medicament és « a demanda », es tria amb un toc.",
+    ay_hoy:"<b>💊 Medicació</b> — toque cada medicament quan es prenga: queda registrat amb l’hora. Registrat tard? <b>Toque l’hora</b> per a corregir-la. Un toc de més s’anul·la tocant una altra vegada. «Presa puntual» registra una presa fora de la llista; si el medicament és «a demanda», es tria amb un toc.",
     ay_const:"<b>🩺 Constants</b> — ompliu només el mesurat ; l’hora es pot corregir. Es guarda automàticament.",
-    ay_notas:"<b>📝 Notes</b> — toqueu l’observat (hidratació, deposició, micció) : queda anotat amb l’hora, i el resum del dia apareix a la dreta. Són les preguntes de l’<i>informe per a la consulta</i>.",
-    ay_datos:"<b>📦 Dades</b> — pacient i pauta, historial, i l’eixida : <b>⬇️</b> guardar o <b>📡</b> enviar una còpia a l’ordinador per wifi local (Salufolio la importarà), i <b>📂 Restaurar</b> una còpia en un telèfon nou.",
+    ay_notas:"<b>📝 Notes</b> — toque un bloc (alimentació, ocupació, salut, eliminació), després la resposta, i confirme amb el botó verd que porta l’hora: queda anotat amb l’hora. Un cadenat 🔒 assenyala el que no es repeteix el mateix dia.",
+    ay_datos:"<b>📦 Dades</b> (menú ☰) — el pacient, els seus medicaments i l’historial. «Guardar còpia de les dades» descarrega un arxiu «.pr» amb tot el pacient: traga’l del telèfon. El botó <b>📂</b> de la capçalera obri una còpia, per exemple en un telèfon nou. Si a casa hi ha un ordinador amb Salufolio, el que s’ha anotat pot enviar-se a ell pel wifi.",
     ay_ayer:"<b>Si ahir va quedar una presa sense registrar</b>, Protocolo ho pregunta en obrir. Davant dubtes sobre una dosi, consulteu el prospecte o el metge — Protocolo registra, no aconsella.",
     ay_disp:"Les dades viuen en este dispositiu.", ay_panal:"Panal Salufolio — totes les aplicacions", ay_dev:"Producte en desenvolupament", ay_doc:"Veure o descarregar la documentació detallada",
     ay_ok:"Entesos", hoy:'Hui', consts:'Constants', notas:'Notes', datos:'Dades',
@@ -1611,7 +1615,7 @@ window.LANGUES = {
     d_ok:'Acceptar', d_can:'Cancel·lar', omitida:'omesa', puntual:'puntual',
     exp_nota:'Per a passar les dades a Salufolio : guarde una còpia o envie-la a l\'ordinador.',
     b_env:'📡 Enviar a Salufolio', pc_label:'Adreça de Salufolio a l\'ordinador (opcional)',
-    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon (app local, sense PC)', inst_nota:'Descarrega l\'app ja configurada. Obriu-la des de Baixades — funciona sempre, encara que l\'ordinador estiga apagat.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂ %', c_peso:'Pes', c_temp:'Temperatura', c_bta:'Tensió', c_bps:'Pols i saturació', c_bpeso:'Pes', c_btemp:'Temperatura', c_o2_on:'SpO₂ amb aportació d\'O₂', o2_desde:'des de les {h} · {d}', o2_desat_off:'⚠ Dessaturació : SpO₂ {v} % (mínima {m} %) — posar l\'oxigen?', o2_desat_on:'⚠ Dessaturació amb oxigen : SpO₂ {v} % (mínima {m} %)', o2_hipox:'Hipoxèmia : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : es pot parar l\'oxigen', o2_parar_c:'es pot parar l\'oxigen', cfg_spo2min:'SpO₂ mínima de {p} (%)', c_o2_off:'SpO₂ sense aportació d\'O₂', c_sin_o2:'Sense aportació d\'O₂', c_con_o2:'Amb aportació d\'O₂', c_nueva:'＋ nova mesura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària)', env_ok:'✓ Rebut a Salufolio', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
+    av_title:'Avisos sonors', av_on:'Avisos ACTIVATS', av_off:'Avisos desactivats', av_nota:'Sona només si queden preses pendents — l\'app ha d\'estar oberta.', inst_btn:'Instal·lar en aquest telèfon', inst_nota:'Descarrega una còpia del Protocol: el fitxer «Salufolio_Protocolo_movil.html». Òbriga-la des de les descàrregues: funciona sempre, sense connexió i sense ordinador. El que s’anota en la còpia es guarda en aquest telèfon.', t_mat:'Material i dispositius', c_tas:'Tensió sistòlica', c_tad:'Tensió diastòlica', c_fc:'Pols', c_spo2:'Saturació O₂ %', c_peso:'Pes', c_temp:'Temperatura', c_bta:'Tensió', c_bps:'Pols i saturació', c_bpeso:'Pes', c_btemp:'Temperatura', c_o2_on:'SpO₂ amb aportació d\'O₂', o2_desde:'des de les {h} · {d}', o2_desat_off:'⚠ Dessaturació : SpO₂ {v} % (mínima {m} %) — posar l\'oxigen?', o2_desat_on:'⚠ Dessaturació amb oxigen : SpO₂ {v} % (mínima {m} %)', o2_hipox:'Hipoxèmia : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : es pot parar l\'oxigen', o2_parar_c:'es pot parar l\'oxigen', cfg_spo2min:'SpO₂ mínima de {p} (%)', c_o2_off:'SpO₂ sense aportació d\'O₂', c_sin_o2:'Sense aportació d\'O₂', c_con_o2:'Amb aportació d\'O₂', c_nueva:'＋ nova mesura', env_wait:'⏳ Enviant…', sip_label:'SIP (targeta sanitària)', env_ok:'✓ Rebut a Salufolio', env_err:'⚠ No s\'ha pogut enviar — mateixa xarxa? servidor encés?' },
   fr: {
     sw_ini:"Démarrer",
     sw_fin:"Arrêter",
@@ -1635,7 +1639,7 @@ window.LANGUES = {
     l_dep:"Selles",
     imp_viejos:"Plus de 3 mois — décochés ; touchez-les s'ils sont toujours pris",
     imp_boton:"Importer de Salufolio",
-    demo_boton:"Essayer avec un patient de démonstration", demo_nota:"Patient fictif. Les données restent uniquement sur cet appareil.", demo_error:"Impossible de charger la démonstration", pie_autor:"avec l'aide de l'IA",
+    demo_boton:"Essayer avec un patient de démonstration", demo_nota:"Données réelles, nom fictif. Les données restent uniquement sur cet appareil.", demo_error:"Impossible de charger la démonstration", pie_autor:"avec l'aide de l'IA",
     imp_tit:"Quel patient ?",
     imp_meds:"médicaments",
     imp_copia:"copie du",
@@ -1808,11 +1812,13 @@ window.LANGUES = {
     lado_tit:"Quel côté ?",
     lado_izq:"Gauche",
     lado_der:"Droite",
+    copia_ok:"✓ Copie enregistrée", hoy_sin_meds:"Les médicaments s’ajoutent dans le menu ☰ › 📦 Données.", tip_paletas:"Palettes", tip_menor:"Plus petit", tip_mayor:"Plus grand", tip_ayuda:"Aide",
+    ay_res:"<b>📄 Résumé</b> — il réunit ce qui a été noté sur une seule feuille pour la consultation : la semaine, 30 jours, ou depuis le dernier résumé. « Imprimer / PDF » l’imprime ou l’enregistre.",
     ay_tit:"❓ Comment ça marche",
-    ay_hoy:"<b>💊 Aujourd'hui</b> — touchez chaque médicament dès qu'il est pris : enregistré avec l'heure. Enregistré en retard ? <b>Touchez l'heure</b> pour la corriger. Un toque de trop s'annule en touchant à nouveau. « Prise ponctuelle » enregistre une prise hors liste ; si le médicament est « à la demande », il se choisit d'un toque.",
+    ay_hoy:"<b>💊 Médication</b> — touchez chaque médicament dès qu’il est pris : il est enregistré avec l’heure. Enregistré en retard ? <b>Touchez l’heure</b> pour la corriger. Un appui de trop s’annule en touchant à nouveau. « Prise ponctuelle » enregistre une prise hors liste ; si le médicament est « à la demande », il se choisit d’un appui.",
     ay_const:"<b>🩺 Constantes</b> — ne remplissez que le mesuré ; l'heure est corrigeable. Enregistrée automatiquement.",
-    ay_notas:"<b>📝 Notes</b> — touchez l'observé (hydratation, selles, urine) : noté avec l'heure, le résumé du jour s'affiche à droite. Ce sont les questions du <i>compte-rendu pour la consultation</i>.",
-    ay_datos:"<b>📦 Données</b> — patient et posologie, historique, et la sortie : <b>⬇️</b> enregistrer ou <b>📡</b> envoyer une copie vers l'ordinateur via wifi local (Salufolio l'importera), et <b>📂 Restaurer</b> une copie sur un nouveau téléphone.",
+    ay_notas:"<b>📝 Notes</b> — touchez un bloc (alimentation, occupation, santé, élimination), puis la réponse, et confirmez avec le bouton vert qui porte l’heure : c’est noté avec l’heure. Un cadenas 🔒 signale ce qui ne se répète pas le même jour.",
+    ay_datos:"<b>📦 Données</b> (menu ☰) — le patient, ses médicaments et l’historique. « Enregistrer une copie des données » télécharge un fichier « .pr » avec tout le patient : sortez-le du téléphone. Le bouton <b>📂</b> de l’en-tête ouvre une copie, par exemple sur un nouveau téléphone. S’il y a à la maison un ordinateur avec Salufolio, ce qui est noté peut lui être envoyé par le wifi.",
     ay_ayer:"<b>Si une prise d'hier est restée non enregistrée</b>, Protocolo le demande à l'ouverture. En cas de doute sur une dose, consultez la notice ou le médecin — Protocolo enregistre, il ne conseille pas.",
     ay_disp:"Les données vivent sur cet appareil.", ay_panal:"Panal Salufolio — toutes les applications", ay_dev:"Produit en développement", ay_doc:"Voir ou télécharger la documentation détaillée",
     ay_ok:"Compris", hoy:'Aujourd\'hui', consts:'Constantes', notas:'Notes', datos:'Données',
@@ -1837,7 +1843,7 @@ window.LANGUES = {
     d_ok:'Valider', d_can:'Annuler', omitida:'omise', puntual:'ponctuelle',
     exp_nota:'Pour passer les données à Salufolio : enregistrez une copie ou envoyez-la vers l\'ordinateur.',
     b_env:'📡 Envoyer à Salufolio', pc_label:'Adresse de Salufolio sur le PC (optionnel)',
-    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone (app locale, sans PC)', inst_nota:'Télécharge l\'app déjà configurée. Ouvrez-la depuis Téléchargements — elle marche toujours, même ordinateur éteint. 📡 enverra quand le PC sera allumé.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂ %', c_peso:'Poids', c_temp:'Température', c_bta:'Tension', c_bps:'Pouls et saturation', c_bpeso:'Poids', c_btemp:'Température', c_o2_on:'SpO₂ sous apport d\'O₂', o2_desde:'depuis {h} · {d}', o2_desat_off:'⚠ Désaturation : SpO₂ {v} % (minimum {m} %) — mettre l\'oxygène ?', o2_desat_on:'⚠ Désaturation sous oxygène : SpO₂ {v} % (minimum {m} %)', o2_hipox:'Hypoxémie : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : on peut arrêter l\'oxygène', o2_parar_c:'on peut arrêter l\'oxygène', cfg_spo2min:'SpO₂ minimum de {p} (%)', c_o2_off:'SpO₂ sans apport d\'O₂', c_sin_o2:'Sans apport d\'O₂', c_con_o2:'Avec apport d\'O₂', c_nueva:'＋ nouvelle mesure', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire)', env_ok:'✓ Reçu dans Salufolio', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
+    av_title:'Rappels sonores', av_on:'Rappels ACTIVÉS', av_off:'Rappels désactivés', av_nota:'Sonne seulement s\'il reste des prises — l\'app doit être ouverte.', inst_btn:'Installer sur ce téléphone', inst_nota:'Télécharge une copie du Protocolo : le fichier « Salufolio_Protocolo_movil.html ». Ouvrez-la depuis les téléchargements : elle fonctionne toujours, sans connexion et sans ordinateur. Ce qu’on note dans la copie reste dans ce téléphone.', t_mat:'Matériel et dispositifs', c_tas:'Tension systolique', c_tad:'Tension diastolique', c_fc:'Pouls', c_spo2:'Saturation O₂ %', c_peso:'Poids', c_temp:'Température', c_bta:'Tension', c_bps:'Pouls et saturation', c_bpeso:'Poids', c_btemp:'Température', c_o2_on:'SpO₂ sous apport d\'O₂', o2_desde:'depuis {h} · {d}', o2_desat_off:'⚠ Désaturation : SpO₂ {v} % (minimum {m} %) — mettre l\'oxygène ?', o2_desat_on:'⚠ Désaturation sous oxygène : SpO₂ {v} % (minimum {m} %)', o2_hipox:'Hypoxémie : SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} % : on peut arrêter l\'oxygène', o2_parar_c:'on peut arrêter l\'oxygène', cfg_spo2min:'SpO₂ minimum de {p} (%)', c_o2_off:'SpO₂ sans apport d\'O₂', c_sin_o2:'Sans apport d\'O₂', c_con_o2:'Avec apport d\'O₂', c_nueva:'＋ nouvelle mesure', env_wait:'⏳ Envoi…', sip_label:'SIP (carte sanitaire)', env_ok:'✓ Reçu dans Salufolio', env_err:'⚠ Envoi impossible — même Wi-Fi ? serveur allumé ?' },
   en: {
     sw_ini:"Start",
     sw_fin:"Stop",
@@ -1861,7 +1867,7 @@ window.LANGUES = {
     l_dep:"Stool",
     imp_viejos:"Over 3 months — unchecked; tap them if still taken",
     imp_boton:"Import from Salufolio",
-    demo_boton:"Try with a demo patient", demo_nota:"Fictitious patient. Data stays only on this device.", demo_error:"Could not load the demo", pie_autor:"with the help of AI",
+    demo_boton:"Try with a demo patient", demo_nota:"Real data, fictitious name. Data stays only on this device.", demo_error:"Could not load the demo", pie_autor:"with the help of AI",
     imp_tit:"Which patient?",
     imp_meds:"medications",
     imp_copia:"copy of",
@@ -2035,11 +2041,13 @@ window.LANGUES = {
     lado_tit:"Which side?",
     lado_izq:"Left",
     lado_der:"Right",
+    copia_ok:"✓ Copy saved", hoy_sin_meds:"Medicines are added in the ☰ menu › 📦 Data.", tip_paletas:"Palettes", tip_menor:"Smaller", tip_mayor:"Larger", tip_ayuda:"Help",
+    ay_res:"<b>📄 Summary</b> — gathers what has been noted on a single sheet for the consultation: the week, 30 days, or since the last summary. “Print / PDF” prints or saves it.",
     ay_tit:"❓ How to use it",
-    ay_hoy:"<b>💊 Today</b> — tap each medicine once taken: logged with the time. Logged late? <b>Tap the time</b> to fix it. An extra tap cancels by tapping again. “As-needed dose” logs an intake outside the list; if the medicine is “on demand”, pick it with one tap.",
+    ay_hoy:"<b>💊 Medication</b> — tap each medicine once taken: it is logged with the time. Logged late? <b>Tap the time</b> to correct it. An extra tap is cancelled by tapping again. “One-off dose” logs an intake outside the list; if the medicine is “on demand”, pick it with one tap.",
     ay_const:"<b>🩺 Vitals</b> — fill only what was measured; the time can be corrected. Saved automatically.",
-    ay_notas:"<b>📝 Notes</b> — tap what you observe (hydration, stool, urine): logged with the time, the day’s summary shows on the right. These are the questions of the <i>report for the consultation</i>.",
-    ay_datos:"<b>📦 Data</b> — patient and schedule, history, and output: <b>⬇️</b> save or <b>📡</b> send a copy to the computer over local Wi-Fi (Salufolio will import it), and <b>📂 Restore</b> a copy on a new phone.",
+    ay_notas:"<b>📝 Notes</b> — tap a block (food, occupation, health, elimination), then the answer, and confirm with the green button that shows the time: it is noted with the time. A padlock 🔒 marks what is not repeated on the same day.",
+    ay_datos:"<b>📦 Data</b> (☰ menu) — the patient, their medicines and the history. “Save a copy of the data” downloads a “.pr” file with the whole patient: take it out of the phone. The <b>📂</b> button in the header opens a copy, for example on a new phone. If there is a computer with Salufolio at home, what has been noted can be sent to it over Wi-Fi.",
     ay_ayer:"<b>If a dose from yesterday went unlogged</b>, Protocolo asks on opening. If unsure about a dose, check the leaflet or the doctor — Protocolo records, it does not advise.",
     ay_disp:"Data lives on this device.", ay_panal:"Panal Salufolio — all the applications", ay_dev:"Product in development", ay_doc:"View or download the detailed documentation",
     ay_ok:"Got it", hoy:'Today', consts:'Vitals', notas:'Notes', datos:'Data',
@@ -2064,7 +2072,7 @@ window.LANGUES = {
     d_ok:'OK', d_can:'Cancel', omitida:'missed', puntual:'one-off',
     exp_nota:'To move data into Salufolio: save a copy or send it to the computer.',
     b_env:'📡 Send to Salufolio', pc_label:'Salufolio address on the PC (optional)',
-    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone (local app, no PC)', inst_nota:'Downloads the pre-configured app. Open it from Downloads — always works, even with the computer off.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation %', c_peso:'Weight', c_temp:'Temperature', c_bta:'Blood pressure', c_bps:'Pulse and saturation', c_bpeso:'Weight', c_btemp:'Temperature', c_o2_on:'SpO₂ on O₂', o2_desde:'since {h} · {d}', o2_desat_off:'⚠ Desaturation: SpO₂ {v} % (minimum {m} %) — start oxygen?', o2_desat_on:'⚠ Desaturation on oxygen: SpO₂ {v} % (minimum {m} %)', o2_hipox:'Hypoxaemia: SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} %: oxygen can be stopped', o2_parar_c:'oxygen can be stopped', cfg_spo2min:'Minimum SpO₂ for {p} (%)', c_o2_off:'SpO₂ on room air', c_sin_o2:'Room air', c_con_o2:'On O₂', c_nueva:'＋ new reading', env_wait:'⏳ Sending…', sip_label:'SIP (health card)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
+    av_title:'Sound reminders', av_on:'Reminders ON', av_off:'Reminders off', av_nota:'Rings only if doses are pending — the app must be open.', inst_btn:'Install on this phone', inst_nota:'Downloads a copy of the Protocolo: the file “Salufolio_Protocolo_movil.html”. Open it from your downloads: it always works, offline and with no computer. What you note in the copy stays in this phone.', t_mat:'Material & devices', c_tas:'Systolic BP', c_tad:'Diastolic BP', c_fc:'Pulse', c_spo2:'O₂ saturation %', c_peso:'Weight', c_temp:'Temperature', c_bta:'Blood pressure', c_bps:'Pulse and saturation', c_bpeso:'Weight', c_btemp:'Temperature', c_o2_on:'SpO₂ on O₂', o2_desde:'since {h} · {d}', o2_desat_off:'⚠ Desaturation: SpO₂ {v} % (minimum {m} %) — start oxygen?', o2_desat_on:'⚠ Desaturation on oxygen: SpO₂ {v} % (minimum {m} %)', o2_hipox:'Hypoxaemia: SpO₂ {v} %', o2_parar:'SpO₂ {v} % ≥ {m} %: oxygen can be stopped', o2_parar_c:'oxygen can be stopped', cfg_spo2min:'Minimum SpO₂ for {p} (%)', c_o2_off:'SpO₂ on room air', c_sin_o2:'Room air', c_con_o2:'On O₂', c_nueva:'＋ new reading', env_wait:'⏳ Sending…', sip_label:'SIP (health card)', env_ok:'✓ Received in Salufolio', env_err:'⚠ Could not send — same Wi-Fi? server running?' }
 };
 </script>
 <!-- MB:END modules/langues.js -->
@@ -2093,19 +2101,19 @@ window.TABLA_RUBRICAS = {
   palabras: {
     es: { enlace:'Documentación por secciones', tit:'Documentación', volver:'Índice', ok:'Entendido',
           prep:'en preparación', solo:'solo en {L}',
-          pdf:'Folleto ilustrado (PDF)', pdf_prep:'Folleto ilustrado: en preparación', red:'necesita conexión',
+          pdf:'Folleto ilustrado (PDF)', pdf_prep:'Folleto ilustrado: en preparación', red:'necesita conexión', red_varios:'necesitan conexión',
           lenguas:{ es:'español', va:'valenciano', fr:'francés', en:'inglés' } },
     va: { enlace:'Documentació per seccions', tit:'Documentació', volver:'Índex', ok:'Entesos',
           prep:'en preparació', solo:'només en {L}',
-          pdf:'Fullet il·lustrat (PDF)', pdf_prep:'Fullet il·lustrat: en preparació', red:'necessita connexió',
+          pdf:'Fullet il·lustrat (PDF)', pdf_prep:'Fullet il·lustrat: en preparació', red:'necessita connexió', red_varios:'necessiten connexió',
           lenguas:{ es:'castellà', va:'valencià', fr:'francés', en:'anglés' } },
     fr: { enlace:'Documentation par rubriques', tit:'Documentation', volver:'Sommaire', ok:'Compris',
           prep:'en préparation', solo:'seulement en {L}',
-          pdf:'Livret illustré (PDF)', pdf_prep:'Livret illustré : en préparation', red:'nécessite une connexion',
+          pdf:'Livret illustré (PDF)', pdf_prep:'Livret illustré : en préparation', red:'nécessite une connexion', red_varios:'nécessitent une connexion',
           lenguas:{ es:'espagnol', va:'valencien', fr:'français', en:'anglais' } },
     en: { enlace:'Documentation by section', tit:'Documentation', volver:'Contents', ok:'Got it',
           prep:'in preparation', solo:'{L} only',
-          pdf:'Illustrated booklet (PDF)', pdf_prep:'Illustrated booklet: in preparation', red:'needs a connection',
+          pdf:'Illustrated booklet (PDF)', pdf_prep:'Illustrated booklet: in preparation', red:'needs a connection', red_varios:'need a connection',
           lenguas:{ es:'Spanish', va:'Valencian', fr:'French', en:'English' } }
   },
   /* 19/11 (P-H, punto 5) : el cuadernillo 0 — portada, índice y hoja de notas — al pie del índice */
@@ -2664,7 +2672,8 @@ window.TABLA_RUBRICAS = {
 .rub-texto p{margin:0 0 10px}
 .rub-pdf{display:flex;align-items:center;gap:8px;min-height:var(--ui-touch);color:var(--accent);text-decoration:none}
 .rub-pdf.apagado{color:var(--muted)}
-.rub-cubierta{margin-top:8px;padding-top:6px;border-top:1px solid var(--border, #cfe0ee)}
+.rub-cubierta{margin-top:0}
+.rub-cubierta-aviso{font-size:var(--rub-marca-letra);color:var(--muted);padding:6px 0;margin-bottom:4px;border-bottom:1px solid var(--border)}
 </style>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
@@ -2762,10 +2771,10 @@ function verRubricas() {
   function cubierta() {
     const base = (typeof TABLA_ENLACES !== 'undefined' && TABLA_ENLACES.doc && TABLA_ENLACES.doc.base) || '';
     if (!base || !T.cubierta) return '';
-    return '<div class="rub-texto rub-cubierta">' + T.cubierta.map(c => {
+    /* 19/11 (P-H) : « necesitan conexión » se dice UNA vez, entre dos filetes, encima de los tres folletos */
+    return '<div class="rub-texto rub-cubierta"><div class="rub-cubierta-aviso">' + _rubEsc(w('red_varios')) + '</div>' + T.cubierta.map(c => {
       const f = (c.pdf || {})[lengua] || (c.pdf || {})[T.base]; if (!f) return '';
-      return '<a class="rub-pdf" href="' + _rubEsc(base + f) + '" target="_blank" rel="noopener">📄 ' + _rubEsc(_rubDe(c.nombre, lengua)) +
-        ' <span class="rub-marca">' + _rubEsc(w('red')) + '</span></a>'; }).join('') + '</div>';
+      return '<a class="rub-pdf" href="' + _rubEsc(base + f) + '" target="_blank" rel="noopener">📄 ' + _rubEsc(_rubDe(c.nombre, lengua)) + '</a>'; }).join('') + '</div>';
   }
 
   function pintar() {
@@ -2973,7 +2982,7 @@ window.NOTAS_GRAFO = {
       "cerrojo_unico": "« {t} » solo se anota una vez al día, y ya está.",
       "cerrojo_incompat": "« {t} » es incompatible con « {otro} », anotado a las {hora}.",
       "cerrojo_excl": "A las {hora}, « {otro} » ya está anotado : los elementos de esta lista se excluyen.",
-      "cerrojo_diario": "Abrir el Diario",
+      "cerrojo_diario": "Abrir el Resumen",
       "anular_una": "Anular la nota de las {hora}",
       "anular_varias": "Anular estas {n} notas de las {hora}",
       "anulada": "Nota de las {hora} anulada.",
@@ -3114,7 +3123,7 @@ window.NOTAS_GRAFO = {
       "cerrojo_unico": "« {t} » ne se note qu'une fois par jour, et c'est déjà fait.",
       "cerrojo_incompat": "« {t} » est incompatible avec « {otro} », noté à {hora}.",
       "cerrojo_excl": "À {hora}, « {otro} » est déjà noté : les éléments de cette liste s'excluent.",
-      "cerrojo_diario": "Ouvrir le Journal",
+      "cerrojo_diario": "Ouvrir le Résumé",
       "anular_una": "Annuler la note de {hora}",
       "anular_varias": "Annuler ces {n} notes de {hora}",
       "anulada": "Note de {hora} annulée.",
@@ -4521,7 +4530,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.11.19.115-SAT';
+const MFP_VERSION = '2026.11.19.117-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
@@ -5821,7 +5830,7 @@ function verAyuda() {
   ov.innerHTML = '<div class="dlg lista ay-carta" style="max-width:520px;font-size:14px;line-height:1.55">' +
     '<div class="lista-tit" style="font-size:19px">' + t('ay_tit') + '</div>' +
     '<div class="lista-cuerpo" style="gap:0;text-align:left">' +
-      '<p>' + t('ay_hoy') + '</p><p>' + t('ay_const') + '</p><p>' + t('ay_notas') + '</p>' +
+      '<p>' + t('ay_hoy') + '</p><p>' + t('ay_const') + '</p><p>' + t('ay_notas') + '</p><p>' + t('ay_res') + '</p>' +
       '<p>' + t('ay_datos') + '</p><p>' + t('ay_ayer') + '</p>' +
       '<p style="color:var(--muted);font-size:12px">' + t('ay_disp') + '</p>' +
       /* 14/10 : el enlace abre la documentación por secciones (rubricas.js) */
@@ -7280,7 +7289,7 @@ function renderTomas() {
   renderDiaNav();
   const meds = getMeds(), tomas = getTomas()[diaKey()] || {}, hoy = diaKey();
   const el = document.getElementById('tomas-lista');
-  if (!meds.length) { el.innerHTML = '<div class="vacio">Añada los medicamentos en la pestaña Datos.</div>'; return; }
+  if (!meds.length) { el.innerHTML = '<div class="vacio">' + t('hoy_sin_meds') + '</div>'; return; }
   let html = '';
   meds.forEach(function (x) {
     if (!medActivo(x, hoy) || !tocaHoy(x, hoy)) return;
@@ -8823,7 +8832,7 @@ function pintarResumen(R) {
   if (P.sip) h += '<div style="text-align:center;font-size:15px;font-weight:700;letter-spacing:.5px;margin-top:1px">SIP ' + P.sip + '</div>';
   h += '<div style="text-align:center;color:#555;margin-bottom:2px' + (P.sip ? ';margin-top:3px' : '') + '">' + t('res_tit') + '</div>';
   h += '<div style="text-align:center;color:#555;font-size:12px;margin-bottom:14px">' +
-       R.desde + ' → ' + R.hasta + ' · ' + R.dias + ' ' + t('res_dias') + '</div>';
+       fmtFechaNum(R.desde) + ' → ' + fmtFechaNum(R.hasta) + ' · ' + R.dias + ' ' + t('res_dias') + '</div>';
 
   h += '<table style="width:100%;border-collapse:collapse">';
   h += _fila(t('res_medic'), R.tomas.debidas
@@ -9025,7 +9034,7 @@ function cerrarRevision(lista) {
      qu'on a fait dans les deux cas (P-H : « on ne sait pas si ça a été
      envoyé automatiquement ? »), et le volet des jours se repeint. */
   exportarJSON(function () {
-    if (_pcVivo === true) { toast('✓ JSON descargado'); enviarSalufolio(); }
+    if (_pcVivo === true) { toast(t('copia_ok')); enviarSalufolio(); }
     else { toast('💾 ' + t('rev_solo_local')); }
     pintarEnvio();
     if (typeof renderDatos === 'function') renderDatos();
@@ -9256,8 +9265,8 @@ function renderDatos() {
     '<div class="medrow"><span class="mi"><div class="mn">' + m.nombre + '</div>' +
     '<div class="md">' + m.dosis + ' · ' + momNombre(m.momento) +
       (frecTexto(m) ? ' · ' + frecTexto(m) : '') +
-      (m.desde ? ' · ' + t('desde') + ' ' + m.desde : '') +
-      (m.hasta ? ' · ' + t('hasta') + ' ' + m.hasta : '') + '</div></span>' +
+      (m.desde ? ' · ' + t('desde') + ' ' + fmtFechaNum(m.desde) : '') +
+      (m.hasta ? ' · ' + t('hasta') + ' ' + fmtFechaNum(m.hasta) : '') + '</div></span>' +
     '<button onclick="editarMed(' + i + ')" title="Editar" style="margin-right:6px">✏️</button>' +
     '<button onclick="quitarMed(' + i + ')" title="Quitar">🗑</button></div>').join('') ||
     '<div class="vacio">Sin medicamentos configurados.</div>';
@@ -9894,7 +9903,7 @@ function exportarJSON(alFinal) {
        l'age s'affiche chez le patient, et qui repousse le rappel. */
     respaldoMarcar();
     if (typeof alFinal === 'function') alFinal();
-    else toast('✓ JSON descargado');
+    else toast(t('copia_ok'));
   });
 }
 function copiarJSON() {
@@ -9930,6 +9939,11 @@ function pintaTitulosDia() {
     e.innerHTML = tete + '<br><span class="t2">' + t(b + '_fin') + '</span>';
   });
 }
+/* 19/11 (P-H, punto 19) : la fecha en cifras, siempre día/mes/año */
+function fmtFechaNum(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  return m ? m[3] + '/' + m[2] + '/' + m[1] : (iso || '');
+}
 function fmtFecha(iso) {
   const d = new Date(iso + 'T12:00:00');
   return d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -9943,10 +9957,12 @@ function aplicarIdiomas() {
 
     'i-lpanal':'l_panal' };
   Object.entries(M).forEach(([id, k]) => { const e = document.getElementById(id); if (e) e.textContent = t(k); });
-  const TIPS = { 'hdr-abre':'tip_menu', 'nav-hoy':'nav_med', 'nav-const':'consts', 'nav-notas':'notas', 'nav-res':'nav_res', 'nav-datos':'datos' };
+  /* 19/11 (P-H, punto 18) : todas las burbujas del menú y de la barra salen de la tabla de lenguas, por la burbuja de la casa */
+  const TIPS = { 'hdr-abre':'tip_menu', 'nav-hoy':'nav_med', 'nav-const':'consts', 'nav-notas':'notas', 'nav-res':'nav_res', 'nav-datos':'datos',
+                 'btn-theme':'tip_paletas', 'btn-zmenos':'tip_menor', 'btn-zmas':'tip_mayor', 'btn-ayuda':'tip_ayuda' };
   Object.entries(TIPS).forEach(function ([id, k]) {
     const e = document.getElementById(id); if (!e) return;
-    e.setAttribute('title', t(k));
+    e.removeAttribute('title'); e.setAttribute('data-tip', t(k));
   });
   { const bc = document.getElementById('btn-cfg'); if (bc) bc.setAttribute('title', cfgTxt('tit')); }
   if (typeof volerTitles === 'function') volerTitles(document);
