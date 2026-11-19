@@ -2,7 +2,7 @@
 <!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-21 22:07:19 par assembleur.py 2026.10.10-17:22:34 -->
 <html lang="es">
 <head>
-<!-- Versión 2026.11.19-17:42:34 -->
+<!-- Versión 2026.11.19-17:53:58 -->
 <meta charset="UTF-8">
 
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
@@ -710,7 +710,7 @@ body.sin-paciente #nav-res { opacity: .35; }
         <div class="nota-campo" id="i-lfin"></div>
         <input class="txt" id="nm-hasta" type="text" readonly onclick="pedirFecha(this)" placeholder="—" style="cursor:pointer">
         <div class="mchips" id="nm-moms"></div>
-        <input type="hidden" id="nm-momento" value="desayuno">
+        <input type="hidden" id="nm-momento" value="">
         <div id="nm-frec-caja">
           <div class="nota-campo" id="i-lfrec"></div>
           <select class="txt" id="nm-frec" onchange="pintaFrec('nm')"></select>
@@ -4532,7 +4532,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.11.19.119-SAT';
+const MFP_VERSION = '2026.11.19.120-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
@@ -4937,7 +4937,7 @@ function momsDe(m) {
   if (Array.isArray(m.momentos) && m.momentos.length) return m.momentos;
   return m.momento ? [m.momento] : [];
 }
-var _momsForm = { nm: ['desayuno'], em: [] };
+var _momsForm = { nm: [], em: [] };   /* 19/11 (P-H, punto 34) : ningún momento marcado de antemano */
 /* « À la demande » n'est pas un moment : c'est son contraire. Il est donc
    EXCLUSIF — le choisir efface les autres, en choisir un autre l'efface. */
 function momBascula(pref, id) {
@@ -6598,7 +6598,7 @@ function pintarConexionBienvenida() {
   } else if (_pcVivo === false) {
     e.innerHTML = '<span style="color:var(--muted)">' + t('conn_no') + '</span>';
   } else {
-    e.innerHTML = '<span style="color:var(--muted)">…</span>';
+    e.innerHTML = '';   /* 19/11 (P-H, punto 32) : sin ordenador que buscar, la línea queda vacía en vez de « … » */
   }
 }
 async function enviarSalufolio() {
@@ -6740,6 +6740,8 @@ function revoirAcogida() {
   bienvenida();
 }
 function preguntaInstalar() {
+  /* 19/11 (P-H, punto 33) : la copia instalada (fichero abierto en el teléfono) no vuelve a proponer instalarse */
+  if (location.protocol === 'file:') { arranqueInicial(); return; }
   if (_arm().getItem('mfp_inst_q')) { arranqueInicial(); return; }
   _arm().setItem('mfp_inst_q', '1');
   const ov = document.createElement('div');
@@ -8996,8 +8998,9 @@ function pantallaRevision(sinAtajo, soloDia) {
               (dia === diaKey() ? t('tri_hoy') : _fechaCorta(dia)) + '</div>';
       }
       return cab + '<button class="btn sec" data-rev="' + x.i + '" style="text-align:left;margin-top:0">' +
-        '<b style="font-variant-numeric:tabular-nums">' + (x.o.hora || '--:--') + '</b> · ' +
-        obsLabel(String((x.o.tipos && x.o.tipos[0]) || '')) +
+        '<b style="font-variant-numeric:tabular-nums">' + (x.o.hora || '--:--') + '</b>' +
+        /* 19/11 (P-H, punto 31) : sin nombre, no queda un separador suelto */
+        (function (et) { return et ? ' · ' + et : ''; })(obsLabel(String((x.o.tipos && x.o.tipos[0]) || ''))) +
         (x.o.nota ? ' <span style="color:var(--muted)">· ' + x.o.nota + '</span>' : '') +
         ' <span style="float:right;opacity:.55">🕐</span></button>';
     }).join('');
@@ -9320,8 +9323,8 @@ function agregarMed() {
   ['nm-hasta', 'nm-desde', 'nm-dias'].forEach(function (k) { const e = document.getElementById(k); if (e) e.value = ''; });
   lsSet('mfp_meds', meds);
   document.getElementById('nm-nombre').value = ''; document.getElementById('nm-dosis').value = '';
-  _momsForm.nm = ['desayuno']; pintaMomChips('nm');
-  const _cn = document.getElementById('nm-momento'); if (_cn) _cn.value = 'desayuno';
+  _momsForm.nm = []; pintaMomChips('nm');
+  const _cn = document.getElementById('nm-momento'); if (_cn) _cn.value = '';
   renderDatos(); renderTomas(); toast('✓ ' + n + ' añadido');
 }
 function editarMed(i) {
