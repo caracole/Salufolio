@@ -2,11 +2,13 @@
 <!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-21 22:07:19 par assembleur.py 2026.10.10-17:22:34 -->
 <html lang="es">
 <head>
-<!-- Versión 2026.11.18-16:52:55 -->
+<!-- Versión 2026.11.19-16:30:08 -->
 <meta charset="UTF-8">
 
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
 <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
+<!-- 19/11 (P-H, punto 36) : el manifiesto, para que el navegador del teléfono proponga « Instalar » -->
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1e7a46">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#0f1420">
@@ -2106,6 +2108,12 @@ window.TABLA_RUBRICAS = {
           pdf:'Illustrated booklet (PDF)', pdf_prep:'Illustrated booklet: in preparation', red:'needs a connection',
           lenguas:{ es:'Spanish', va:'Valencian', fr:'French', en:'English' } }
   },
+  /* 19/11 (P-H, punto 5) : el cuadernillo 0 — portada, índice y hoja de notas — al pie del índice */
+  cubierta: [
+    { pdf:{ es:'00a-ES_Portada.pdf' }, nombre:{ es:'Portada', va:'Portada', fr:'Couverture', en:'Cover' } },
+    { pdf:{ es:'00b-ES_Indice.pdf' }, nombre:{ es:'Las diez secciones del manual', va:'Les deu seccions del manual', fr:'Les dix rubriques du manuel', en:'The ten sections of the manual' } },
+    { pdf:{ es:'00c-ES_Hoja_de_notas.pdf' }, nombre:{ es:'Hoja de notas', va:'Full de notes', fr:'Feuille de notes', en:'Notes sheet' } }
+  ],
   lista: [
     { n:1,
       titulo:{ es:'Presentación', va:'Presentació', fr:'Présentation', en:'Introduction' },
@@ -2656,6 +2664,7 @@ window.TABLA_RUBRICAS = {
 .rub-texto p{margin:0 0 10px}
 .rub-pdf{display:flex;align-items:center;gap:8px;min-height:var(--ui-touch);color:var(--accent);text-decoration:none}
 .rub-pdf.apagado{color:var(--muted)}
+.rub-cubierta{margin-top:8px;padding-top:6px;border-top:1px solid var(--border, #cfe0ee)}
 </style>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
@@ -2750,6 +2759,15 @@ function verRubricas() {
     return '<div class="rub-texto">' + cuerpo + pdf + '</div>';
   }
 
+  function cubierta() {
+    const base = (typeof TABLA_ENLACES !== 'undefined' && TABLA_ENLACES.doc && TABLA_ENLACES.doc.base) || '';
+    if (!base || !T.cubierta) return '';
+    return '<div class="rub-texto rub-cubierta">' + T.cubierta.map(c => {
+      const f = (c.pdf || {})[lengua] || (c.pdf || {})[T.base]; if (!f) return '';
+      return '<a class="rub-pdf" href="' + _rubEsc(base + f) + '" target="_blank" rel="noopener">📄 ' + _rubEsc(_rubDe(c.nombre, lengua)) +
+        ' <span class="rub-marca">' + _rubEsc(w('red')) + '</span></a>'; }).join('') + '</div>';
+  }
+
   function pintar() {
     /* la burbuja de antes no sobrevive a un cambio de lengua o de página */
     const _tip = document.getElementById('tip-maison'); if (_tip) _tip.style.display = 'none';
@@ -2766,7 +2784,7 @@ function verRubricas() {
       abierta = null;
       ov.innerHTML = '<div class="dlg lista ay-carta" style="max-width:520px">' +
         '<div class="lista-tit">📄 ' + _rubEsc(w('tit')) + '</div>' + banderas() +
-        '<div class="lista-cuerpo" style="gap:0">' + lista() + '</div>' +
+        '<div class="lista-cuerpo" style="gap:0">' + lista() + cubierta() + '</div>' +
         '<button class="btn" data-fin="1">' + _rubEsc(w('ok')) + '</button></div>';
     }
     if (typeof ajustaLista === 'function') ajustaLista(ov);
@@ -3688,6 +3706,10 @@ window.NOTAS_GRAFO = {
     for (i = 0; i < hojas.length; i++) { cj = cerrojo(hojas[i], r, hojas, ctx); if (cj) return cj; }
     return null;
   }
+  function cerrojoCamino(r) {   /* 19/11 (P-H, punto 3) : el tope de una PREGUNTA del camino cierra también sus respuestas aún libres */
+    for (var i = 0; i < S.pila.length; i++) { var cj = cerrojo(S.pila[i], r, []); if (cj) return cj; }
+    return null;
+  }
   function avisarCerrojo(cj) {     /* el aviso lleva un botón hacia el Diario : es ahí donde se corrige */
     S.aviso = { k: 'error', t: fmt(Tx()[cj.k], cj.v), ir: 'resultado' };
     var t = S.aviso.t; render();
@@ -3700,6 +3722,7 @@ window.NOTAS_GRAFO = {
     var hojaUna = !esPregunta(id) && !esTexto(id) && r.modo !== 'varios';
     if (!S.modoEd && !S.sel.has(id) && !(hojaUna && notasDe(id).length)) {          /* una tecla cerrada no anota ni entra : dice por qué (salvo una hoja ya anotada : su pantalla sirve para quitar) */
       var cj = cerrojo(id, r, Array.from(S.sel));
+      if (!cj && !esPregunta(id) && !esTexto(id)) cj = cerrojoCamino(r);
       if (cj) { avisarCerrojo(cj); return; }
     }
     if (esPregunta(id)) { S.pila.push(id); S.sel.clear(); render(); return; }       /* pregunta : se apila */
@@ -4102,7 +4125,7 @@ window.NOTAS_GRAFO = {
       sec.append(h('div', Object.assign({ class: 'teclas' + (S.modoEd ? ' edicion' : '') + (cols > 1 ? ' rejilla' : '') },
                                         cols > 1 ? { style: '--rejilla-cols:' + cols } : {}), r.hijos.map(function (id) {
         var preg = esPregunta(id), lib = esTexto(id), sel = S.sel.has(id), varios = r.modo === 'varios' && !preg && !lib, m = mk[id];
-        var cj = S.modoEd || sel ? null : cerrojo(id, r, Array.from(S.sel)), pr = S.modoEd ? propsTexto(id) : '';
+        var cj = S.modoEd || sel ? null : (cerrojo(id, r, Array.from(S.sel)) || ((!preg && !lib && !m) ? cerrojoCamino(r) : null)), pr = S.modoEd ? propsTexto(id) : '';
         if (m) hayMarcas = true;
         var cuerpo = h('span', { class: 'cuerpo' }, h('span', { class: 'tx' }, etiqueta(id)),
                        m ? h('span', Object.assign({ class: 'marca', dataset: { marca: preg ? 'pregunta' : 'respuesta' } },
@@ -4498,7 +4521,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.11.19.113-SAT';
+const MFP_VERSION = '2026.11.19.115-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
@@ -9520,6 +9543,8 @@ function restaurarArchivo(file) {
         restaurarDesdeObj(d);
         _arm().setItem('mfp_bienv2', JSON.stringify('1')); lsSet('mfp_asist', '1');
         if (!lsGet('mfp_asist', null)) _arm().setItem('mfp_asist', JSON.stringify('1'));
+        /* 19/11 (P-H, punto 2) : la página se recarga y el aviso se perdía — se guarda y se dice al volver */
+        try { sessionStorage.setItem('mfp_aviso_pend', String(aviso).split(' — ')[0]); } catch (e) {}   /* sin el « — recargando… » */
         toast(aviso); nosVamos();
         setTimeout(() => location.reload(), 700);
       };
@@ -9623,6 +9648,9 @@ async function cargarDemo() {
       return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); };
     ['tomas', 'constantes', 'observaciones'].forEach(k => {
       const o = {}; Object.keys(d[k] || {}).forEach(n => { o[fec(n)] = d[k][n]; }); d[k] = o; });
+    /* 19/11 (P-H, punto 6) : las sesiones de oxígeno de la demo también se cuentan desde hoy */
+    if (d.material && d.material.uso) Object.keys(d.material.uso).forEach(id => {
+      const o = {}; Object.keys(d.material.uso[id] || {}).forEach(n => { o[fec(n)] = d.material.uso[id][n]; }); d.material.uso[id] = o; });
     restaurarDesdeObj(d);
     /* la restauración conserva un solo momento por medicamento : la demo guarda todos */
     lsSet('mfp_meds', (d.medicamentos || []).map(m => ({ id: m.id, nombre: m.nombre, dosis: m.dosis || '',
@@ -10856,6 +10884,10 @@ const PAVE_ECHELLE = [
 
 <!-- Le Protocolo doit marcher SANS INTERNET une fois installe (P-H, 08/09) -->
 <script>
+/* 19/11 (P-H, punto 2) : el aviso que dejó una copia abierta antes de recargar */
+try { const _ap = sessionStorage.getItem('mfp_aviso_pend');
+  if (_ap) { sessionStorage.removeItem('mfp_aviso_pend'); setTimeout(function () { toast(_ap); }, 900); } } catch (e) {}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function(){
     navigator.serviceWorker.register('./sw.js')

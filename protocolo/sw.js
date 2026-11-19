@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.11.19-15:47:06
+   Versión 2026.11.19-16:30:08
    SW.JS — le service-worker du Protocolo móvil
    (P-H + Claude, 08/09/2026)
 
@@ -22,12 +22,17 @@
 /* 14/10 (P-H) — la aplicación es protocolo.html ; index.html no es más que la
    puerta corta. El PDF ya no se guarda : la aplicación no lo llama, y pesa
    2,3 Mo. Un número NUEVO borra la memoria vieja de los teléfonos. */
-const VERSION = 'protocolo-2026.11.19.1547';
+const VERSION = 'protocolo-2026.11.19.1630';
 const GUARDAR = [
   './',
   './index.html',
   './protocolo.html',
-  './demo.json'
+  './demo.json',
+  /* 19/11 (P-H, punto 36) : el manifiesto y sus iconos, para instalar la aplicación */
+  './manifest.webmanifest',
+  './icono-192.png',
+  './icono-512.png',
+  './icono-512-mascara.png'
 ];
 
 /* ── à l'installation : on met le Protocolo en cache ── */

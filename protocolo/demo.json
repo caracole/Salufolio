@@ -349,6 +349,34 @@
  "material": {
   "_litros": {
    "oxigeno": 0.5
+  },
+  "uso": {
+   "oxigeno": {
+    "-2": [
+     {
+      "inicio": "10:00",
+      "litros": [
+       {
+        "hora": "10:00",
+        "lpm": 0.5
+       }
+      ],
+      "fin": "12:00"
+     }
+    ],
+    "-1": [
+     {
+      "inicio": "09:00",
+      "litros": [
+       {
+        "hora": "09:00",
+        "lpm": 0.5
+       }
+      ],
+      "fin": "13:30"
+     }
+    ]
+   }
   }
  },
  "material_config": [
@@ -587,6 +615,102 @@
     "hora": "17:00",
     "tipos": [],
     "nota": "Algo desorientada por la tarde; se calmó con música."
+   }
+  ],
+  "-1": [
+   {
+    "hora": "08:10",
+    "tipos": [
+     "💦 Micción"
+    ],
+    "ids": [
+     "4_eliminacion",
+     "41_miccion"
+    ],
+    "txt": [
+     "ELIMINACION",
+     "Micciones"
+    ],
+    "n": 1
+   },
+   {
+    "hora": "12:30",
+    "tipos": [
+     "💦 Micción"
+    ],
+    "ids": [
+     "4_eliminacion",
+     "41_miccion"
+    ],
+    "txt": [
+     "ELIMINACION",
+     "Micciones"
+    ],
+    "n": 2
+   },
+   {
+    "hora": "17:45",
+    "tipos": [
+     "💦 Micción"
+    ],
+    "ids": [
+     "4_eliminacion",
+     "41_miccion"
+    ],
+    "txt": [
+     "ELIMINACION",
+     "Micciones"
+    ],
+    "n": 3
+   },
+   {
+    "hora": "09:20",
+    "tipos": [
+     "🚽 Deposición"
+    ],
+    "ids": [
+     "4_eliminacion",
+     "42_deposicion"
+    ],
+    "txt": [
+     "ELIMINACION",
+     "Deposición"
+    ],
+    "n": 4
+   },
+   {
+    "hora": "11:00",
+    "tipos": [
+     "💧 Hidratación"
+    ],
+    "ids": [
+     "3_salud",
+     "31_hidratacion",
+     "921_agua"
+    ],
+    "txt": [
+     "SALUD",
+     "Hidratación",
+     "Agua"
+    ],
+    "n": 5
+   },
+   {
+    "hora": "16:00",
+    "tipos": [
+     "💧 Hidratación"
+    ],
+    "ids": [
+     "3_salud",
+     "31_hidratacion",
+     "921_agua"
+    ],
+    "txt": [
+     "SALUD",
+     "Hidratación",
+     "Agua"
+    ],
+    "n": 6
    }
   ]
  }

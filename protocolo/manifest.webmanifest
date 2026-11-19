@@ -1,0 +1,33 @@
+{
+ "name": "Salufolio Protocolo",
+ "short_name": "Protocolo",
+ "description": "El cuaderno de cuidados que vive en el teléfono, junto a quien cuida.",
+ "lang": "es",
+ "id": "./protocolo.html",
+ "start_url": "./protocolo.html",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#141b2b",
+ "theme_color": "#1e7a46",
+ "icons": [
+  {
+   "src": "icono-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icono-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icono-512-mascara.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
