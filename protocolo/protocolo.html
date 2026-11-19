@@ -2143,7 +2143,7 @@ window.TABLA_RUBRICAS = {
           ['p','Salus, la santé, et folium, la feuille : le feuillet de la santé. Toutes les stries de la coquille du pèlerin convergent vers un seul point ; ici ce point a été ôté, parce que le point, c’est le patient.']
         ]
       },
-      pdf:{} },
+      pdf:{ es:'01-ES_Presentacion.pdf' } },
     { n:2,
       titulo:{ es:'Instalación', va:'Instal·lació', fr:'Installation', en:'Installation' },
       resumen:{ es:'Poner el Protocolo en el teléfono y abrirlo por primera vez.',
@@ -2152,54 +2152,159 @@ window.TABLA_RUBRICAS = {
                 en:'Putting the Protocolo on the phone and opening it the first time.' },
       texto:{
         es:[
-          ['h','Dos maneras'],
-          ['p','Hay dos maneras de tener el Protocolo en el teléfono. Las dos permiten enviar los datos al ordenador de la casa.'],
-          ['h','Servido por el ordenador de la casa (recomendado)'],
-          ['p','Fotografíe el código QR que muestra Salufolio: la aplicación se abre ya preparada, sin escribir ninguna dirección. Añada después la página a la pantalla de inicio: tendrá siempre la última versión.'],
-          ['p','El teléfono y el ordenador deben estar en la misma red Wi-Fi.'],
-          ['h','Copia en el teléfono'],
-          ['p','El Protocolo es un único fichero: se copia al teléfono y se abre. Funciona sin conexión, en cualquier sitio.']
+          ['h','Una copia en el teléfono'],
+          ['p','El Protocolo es un único fichero. Se instala una vez y después funciona sin conexión, en cualquier sitio, sin cuenta y sin ordenador.'],
+          ['h','Cómo se instala'],
+          ['p','Abra salufolio.com/protocolo en el navegador del teléfono. Tras la bienvenida, acepte «Instalar en este teléfono»: se descarga el fichero «Salufolio_Protocolo_movil.html». Ábralo desde las descargas.'],
+          ['h','Dos sitios, dos cuadernos'],
+          ['p','Lo que se anota en la página de salufolio.com y lo que se anota en la copia instalada no se mezclan: el teléfono los guarda por separado. Elija uno y anote siempre en el mismo. Para el día a día, la copia instalada.'],
+          ['h','Probar sin miedo'],
+          ['p','En la página de salufolio.com se puede cargar un paciente de demostración. Sus datos son reales; el nombre del paciente es ficticio.']
         ]
       },
-      pdf:{} },
+      pdf:{ es:'02-ES_Instalacion.pdf' } },
     { n:3, titulo:{ es:'La primera vez', va:'La primera vegada', fr:'La première fois', en:'The first time' },
       resumen:{ es:'Idioma, datos del paciente, primer día.', va:'Idioma, dades del pacient, primer dia.',
                 fr:'Langue, données du patient, premier jour.', en:'Language, patient details, first day.' },
-      texto:{}, pdf:{} },
+      texto:{
+        es:[
+          ['h','El idioma'],
+          ['p','La primera vez, el Protocolo se abre en el idioma del teléfono. Las banderas de la bienvenida lo cambian: español, valenciano, francés, inglés.'],
+          ['h','El paciente'],
+          ['p','Toque ＋ en la cabecera y escriba el nombre, los apellidos y el SIP de la tarjeta sanitaria. El Protocolo forma solo la matrícula: las iniciales y las cuatro últimas cifras del SIP.'],
+          ['h','Los medicamentos'],
+          ['p','Se declaran en el menú, en Datos › Medicamentos configurados: nombre, dosis y momentos del día. Allí mismo se corrigen o se quitan.'],
+          ['h','El primer día'],
+          ['p','La barra de abajo lleva las cuatro pantallas de cada día: Medicación, Constantes, Notas y Resumen. Lo demás está en el menú ☰.']
+        ]
+      },
+      pdf:{ es:'03-ES_La_primera_vez.pdf' } },
     { n:4, titulo:{ es:'Medicación', va:'Medicació', fr:'Médication', en:'Medication' },
       resumen:{ es:'Declarar cada medicamento con sus momentos y marcar las tomas.',
                 va:'Declarar cada medicament amb els seus moments i marcar les preses.',
                 fr:'Déclarer chaque médicament avec ses moments et cocher les prises.',
                 en:'Declaring each medicine with its moments and ticking the doses.' },
-      texto:{}, pdf:{} },
+      texto:{
+        es:[
+          ['h','Declarar un medicamento'],
+          ['p','Cada medicamento se declara una vez: su nombre, su dosis y sus momentos (Desayuno, Almuerzo, Comida, Merienda, Cena, Noche, o A demanda). Se puede indicar la frecuencia, el día de inicio y la duración: el Protocolo calcula el final.'],
+          ['h','Marcar una toma'],
+          ['p','En Medicación, toque el medicamento, luego su momento (el círculo pasa a ✓) y acepte. Otro toque la desmarca.'],
+          ['h','A demanda y toma puntual'],
+          ['p','Un medicamento a demanda se anota con ✚ y su hora; la ✕ lo quita. «Toma puntual» sirve para lo que no está en la pauta.'],
+          ['h','Oxígeno y urgencias'],
+          ['p','El interruptor del oxígeno pregunta la hora al encender y al apagar. El 112 se anota paso a paso: llamada, llegada, salida, regreso.']
+        ]
+      },
+      pdf:{ es:'04-ES_Medicacion.pdf' } },
     { n:5, titulo:{ es:'Constantes', va:'Constants', fr:'Constantes', en:'Vital signs' },
       resumen:{ es:'Anotar tensión, pulso, temperatura… con el teclado propio.',
                 va:'Anotar tensió, pols, temperatura… amb el teclat propi.',
                 fr:'Noter tension, pouls, température… avec le clavier maison.',
                 en:'Recording blood pressure, pulse, temperature… with the built-in keypad.' },
-      texto:{}, pdf:{} },
+      texto:{
+        es:[
+          ['h','Anotar una medida'],
+          ['p','Toque la casilla de la constante y escriba la cifra con el teclado del Protocolo: tensión, pulso, saturación, temperatura, peso. La tecla de entrada valida y pasa a la siguiente.'],
+          ['h','Las cifras imposibles'],
+          ['p','El teclado rechaza lo que no puede ser: una tensión de 400, una temperatura de 50. No juzga las cifras posibles.'],
+          ['h','El oxígeno se decide al medir'],
+          ['p','Junto a la saturación hay un interruptor de oxígeno. Encenderlo o apagarlo aquí abre o cierra la misma sesión que en Medicación, a la hora de la medida.'],
+          ['h','La SpO₂ mínima'],
+          ['p','Cada paciente tiene su mínima, fijada en Configuración. Por debajo de ella, el Protocolo lo recuerda. No decide nada: recuerda la cifra y la mínima que usted ha fijado.']
+        ]
+      },
+      pdf:{ es:'05-ES_Constantes.pdf' } },
     { n:6, titulo:{ es:'Notas', va:'Notes', fr:'Notes', en:'Notes' },
       resumen:{ es:'Apuntar lo que ocurre durante el día.', va:'Apuntar el que passa durant el dia.',
                 fr:'Noter ce qui se passe dans la journée.', en:'Writing down what happens during the day.' },
-      texto:{}, pdf:{} },
+      texto:{
+        es:[
+          ['h','Lo que se ve, se anota'],
+          ['p','Las Notas cuelgan de cuatro bloques: ALIMENTACION, OCUPACION, SALUD y ELIMINACION. Se toca el bloque, luego la respuesta, y se confirma con el botón verde «Anotar a las…».'],
+          ['h','La hora y el comentario'],
+          ['p','Arriba están el día, la hora y un campo de comentario. Corríjalos antes de anotar. Después, tocando la hora de una nota, se corrigen igual, o se elimina la nota.'],
+          ['h','Lo que no se repite'],
+          ['p','Cada comida se anota una vez al día. En OCUPACION solo cabe una respuesta a la misma hora. Un candado 🔒 lo señala.'],
+          ['h','Con sus palabras'],
+          ['p','La línea «Observación ¶» de cada bloque abre un cuadro para escribir lo que no está en la lista.'],
+          ['h','Cambiar el árbol'],
+          ['p','En Configuración, «Modificar las notas» permite añadir, cambiar, ordenar o quitar respuestas. El cambio vale para el paciente abierto.']
+        ]
+      },
+      pdf:{ es:'06-ES_Notas.pdf' } },
     { n:7, titulo:{ es:'Datos', va:'Dades', fr:'Données', en:'Data' },
       resumen:{ es:'Dónde se guardan, las copias, y cuál es el fichero que vale.',
                 va:'On es guarden, les còpies, i quin és el fitxer que val.',
                 fr:'Où elles sont gardées, les copies, et quel fichier fait foi.',
                 en:'Where they are kept, the copies, and which file counts.' },
-      texto:{}, pdf:{} },
+      texto:{
+        es:[
+          ['h','Dónde viven los datos'],
+          ['p','En el teléfono, y en ningún otro sitio. No hay cuenta, ni contraseña, ni servidor.'],
+          ['h','La copia'],
+          ['p','En Datos › Guardar y compartir, «Guardar copia de los datos» descarga un archivo «.pr» con todo el paciente. Su nombre lleva la matrícula, el día y la hora. Sáquelo del teléfono: es la única protección si el teléfono se pierde.'],
+          ['h','Restaurar'],
+          ['p','«Restaurar paciente» recupera una copia guardada o el último instantáneo interno. Atención: restaurar reemplaza lo que hay.'],
+          ['h','La copia va a su matrícula'],
+          ['p','El botón 📂 de la cabecera abre una copia. Si su matrícula no está en el teléfono, se añade un paciente nuevo; si ya está, el Protocolo pregunta antes de reemplazar.'],
+          ['h','Borrar un paciente'],
+          ['p','El botón 🗑 pregunta primero y propone exportar antes de borrar.']
+        ]
+      },
+      pdf:{ es:'07-ES_Datos.pdf' } },
     { n:8, titulo:{ es:'Resumen', va:'Resum', fr:'Résumé', en:'Summary' },
       resumen:{ es:'La hoja que se lleva al médico.', va:'El full que es porta al metge.',
                 fr:'La feuille qu’on apporte au médecin.', en:'The sheet you take to the doctor.' },
-      texto:{}, pdf:{} },
+      texto:{
+        es:[
+          ['h','Una hoja para la consulta'],
+          ['p','El Resumen reúne lo anotado en una sola hoja. Se pide con el cuarto botón de la barra y se elige el periodo: la semana, 30 días, o desde el último resumen.'],
+          ['h','Lo que dice'],
+          ['p','Arriba, el nombre y el SIP. Después, las tomas dadas y las que faltan, las medias de las constantes, las horas de oxígeno al día y lo observado en las Notas.'],
+          ['h','Los días completos'],
+          ['p','Hoy no ha terminado: no cuenta en las medias de medicación ni de oxígeno. Una línea sin datos no aparece.'],
+          ['h','Imprimir o guardar'],
+          ['p','«Imprimir / PDF» abre la impresión del teléfono; desde ahí se imprime o se guarda en PDF. La hoja no se corrige aquí: se corrige el dato en su pantalla.']
+        ]
+      },
+      pdf:{ es:'08-ES_Resumen.pdf' } },
     { n:9, titulo:{ es:'Comunicación con Salufolio', va:'Comunicació amb Salufolio', fr:'Communication avec Salufolio', en:'Talking to Salufolio' },
       resumen:{ es:'Enviar los datos a la casa.', va:'Enviar les dades a casa.',
                 fr:'Envoyer les données à la maison.', en:'Sending the data home.' },
-      texto:{}, pdf:{} },
+      texto:{
+        es:[
+          ['h','El teléfono anota, Salufolio guarda'],
+          ['p','Enviar no es obligatorio: el Protocolo funciona entero sin ordenador. Cuando hay un ordenador con Salufolio, lo anotado puede pasar a él por el wifi de casa.'],
+          ['h','Lo que hace falta'],
+          ['p','El ordenador encendido con Salufolio abierto, el teléfono en el mismo wifi (con la zona wifi apagada), la copia instalada del Protocolo y la dirección del ordenador escrita en Datos › Guardar y compartir.'],
+          ['h','La concha'],
+          ['p','La concha de la cabecera es la antena: verde cuando Salufolio responde. Entonces aparece el botón «Enviar a Salufolio».'],
+          ['h','Revisar antes de enviar'],
+          ['p','«Revisar antes de enviar» muestra las notas pendientes. Se corrige una hora o se borra una línea, y «Revisado · guardar y enviar» guarda la copia y la envía.'],
+          ['h','Después'],
+          ['p','Compruebe en el ordenador que el envío ha llegado: el teléfono no ve lo que pasa al otro lado.']
+        ]
+      },
+      pdf:{ es:'09-ES_Comunicacion.pdf' } },
     { n:10, titulo:{ es:'Importación y exportación', va:'Importació i exportació', fr:'Importation et exportation', en:'Import and export' },
       resumen:{ es:'Pendrive y wifi, en los dos mundos.', va:'Pendrive i wifi, en els dos mons.',
                 fr:'Clé USB et wifi, dans les deux mondes.', en:'USB stick and wifi, in both worlds.' },
-      texto:{}, pdf:{} }
+      texto:{
+        es:[
+          ['h','Exportar'],
+          ['p','«Guardar copia de los datos» crea el archivo «.pr». Se saca del teléfono con un pendrive, por correo o por la nube. Por el wifi, «Enviar a Salufolio» lleva la misma copia al ordenador.'],
+          ['h','Importar'],
+          ['p','El botón 📂 abre una copia «.pr» en el teléfono. La matrícula decide: paciente nuevo, o reemplazo del que ya existe, previa pregunta.'],
+          ['h','Cambiar de teléfono'],
+          ['p','Guarde una copia de cada paciente en el teléfono viejo, instale el Protocolo en el nuevo y abra cada copia con 📂. Compruebe el último día anotado antes de borrar nada.'],
+          ['h','Dos teléfonos'],
+          ['p','No se mezclan dos teléfonos que anotan a la vez: la copia más reciente reemplaza a la otra.'],
+          ['h','En el ordenador'],
+          ['p','En Salufolio, la pestaña Protocolo tiene la bandeja «Recepción del móvil». Cada envío es una línea; «Insertar» lo hace entrar en el expediente.']
+        ]
+      },
+      pdf:{ es:'10-ES_Importacion_exportacion.pdf' } }
   ]
 };
 </script>
@@ -2314,7 +2419,8 @@ function verRubricas() {
     const cuerpo = tx.lineas.map(([tipo, s]) =>
       tipo === 'h' ? '<h4>' + _rubEsc(s) + '</h4>' : '<p>' + _rubEsc(s) + '</p>').join('');
     const fichero = (r.pdf || {})[lengua] || (r.pdf || {})[T.base];
-    const base = (window.TABLA_ENLACES && TABLA_ENLACES.doc && TABLA_ENLACES.doc.base) || '';
+    /* 19/11 : TABLA_ENLACES es un const, no cuelga de window — con «window.» el enlace no se encendía nunca */
+    const base = (typeof TABLA_ENLACES !== 'undefined' && TABLA_ENLACES.doc && TABLA_ENLACES.doc.base) || '';
     const pdf = (fichero && base)
       ? '<a class="rub-pdf" href="' + _rubEsc(base + fichero) + '" target="_blank" rel="noopener">📄 ' +
           _rubEsc(w('pdf')) + ' <span class="rub-marca">' + _rubEsc(w('red')) + '</span></a>'
@@ -3946,8 +4052,9 @@ const MFP_DEMO = './demo.json';
 const TABLA_ENLACES = {
   casa:  { visible: true, url: 'https://salufolio.com/', icono: '🏠', nombre: 'Salufolio' },
   panal: { url: 'https://caracole.github.io/Salufolio/index.html', ayuda: false },
-  /* 14/10 : la documentación vive en el sitio, no junto a la copia local ;
-     los folletos llevan su versión en el nombre (rubricas-tabla.js) */
+  /* 14/10 : la documentación vive en el sitio, no junto a la copia local.
+     19/11 (P-H) : en el sitio los folletos llevan un nombre FIJO, sin fecha
+     (06-ES_Notas.pdf) ; la versión y la fecha van impresas en cada página. */
   doc:   { base: 'https://salufolio.com/protocolo/doc/' },
   doi:   { id: '10.5281/zenodo.21997587', url: 'https://doi.org/10.5281/zenodo.21997587' }
 };
@@ -4069,7 +4176,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.11.18.111-SAT';
+const MFP_VERSION = '2026.11.19.112-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
