@@ -2,7 +2,7 @@
 <!-- PRODUIT ASSEMBLÉ — ne pas modifier à la main. Sources : protocolo_SKL.html + modules/ · assemblé le 2026-10-21 22:07:19 par assembleur.py 2026.10.10-17:22:34 -->
 <html lang="es">
 <head>
-<!-- Versión 2026.11.19-17:20:28 -->
+<!-- Versión 2026.11.19-17:42:34 -->
 <meta charset="UTF-8">
 
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAE6klEQVR42u3dTU4cMRRF4S6r10F2Q/ZExmFPYTdhI2REhGgiEdptP/t+dxRFRAr2Oe+ngOJ0EhERERGRpBzV/kN3D/cvrmXvPD8+HQQAvBQQ4gC9JMtwAF+SRTiAL8kiHMCXZBEO4EuyCA38slJ689XAL8kSHMCX5JGogV+Su0EDvyRL0MAvyRI08EuyBM2xSXLaCMtEqnaBBn5JlqCBX5IlsAOIHUD1l9QuoAOIDqD6S2oX0AFEB1D9JbUL6ACiA6j+ktoFdADRAUQIYPyRwDFIBxAdQObl989fDmFizo5gPvivf/7247uDmd0BzP/zqr5uMH4P0AGKjTu6gRHInE8EAlhwiTBlB5A68NsPdIB48HUDAsSDTwQjUGnwZ40nxiICLF/1r63iMwXcIRfvVveFsHngVxAqIW9/pwABClZ8IowTwAg0cMz4LJQ94DUWGYG2mPN1AyNQ7IJLBALEg08CAiwD/ijAiEAAQBGBAADq83mkSRAvwI6VUzcgwFZzPhEIAAyfLwGA4HMngMt3FgQw5xOhvwDNBV9e8K6zr2+yu8wWHUBlc2aRIxDwnWGkAOZ8IsTuAOZ8+0HkDmDccda36AAR7wUC/tfOK+HHKhv4Jfnszi5PkrvBGfiSLEIDvyU3+Yy9FygUfu8NIkB85ScBAeLHnnQJCCDREhAA4H8/JlEEAoA/uhsQAPzREhAA/NESEAD80RIQAPz/TMJX1gkA/lj4CSDR8BNA9Y+GnwDgjw8BwB9b/QkA/mj4CQD+aPgJAP74n6IjAPgJIHkBPwFiqz/4CRA9+ggBzP1CAPALAcBPAKk3d4OfACXgnyEB+AlQqvKv+gQG/AToVn1HSeBZPwHKzt23lsCzfgKUXzpvBam5nwDl4b+VBOAnwDLw94YW/ARYDv4q/x78BJgOX4X3b4KfAFOhmfn0BvwEWE4Cz/oJECuBZ/0EiJXA3E+AWAnAT4BYCcBPgFgJwE+AaAnATwASgJ8AJAA/AUggBCAB+QhAAvATgATgJwAJwE8AEoCfANESrAL/bt/NupUAoy+nF7QrwN/72zoIsMlFJYwtO/8MQ9v50kZd3DUSVBZo16oftQNUlqAq/AngRy3Boy70M0C/fkxl+K89g5XGwuP9X9w93L/sXtFHXNBH/8/q407KPvT8+HQsK0DPscZz9yzwtxEg+fKqjTsrZhsBiOC8COBinQ8B7AfGHQKods6BAABQ9QkQLgLwCRC5Hxh3CBALiqpPgEgRgE+ASBGMOwSI3Q9UfQJEVlbgEyBSBOMOAWJFUPUJELkfqPoEiOwGwCdArAjGHQJEiqDqEyB+PwD+HAHOjqMPgKu+ljE9Xo7bEUi/P2C96AALdQTg6wDLibBadyGAlAIX+EagyLEI+ASIFAH4k0egt89IZex+AP7b5z3fOkCBbgB8S7BuIAQQKSGAPUAS5n8dQHQARyAEMAZJ4PijA4gO8BVrRHao/jqA6ADX2COycvXXAUQH6GGRyIrVXwcQHaCnTSIrVf//7gAkkJ3g/9IIRALZBX47gNgBRlgmUrH6X9UBSCCrw3/1CEQCWRn+LjsACWRV+E+nD16Pfk28Wl1WAb9bB9ANZFX4uwtAAlkJ/u4jkJFIVgF/iABEkOoTxdBxhQhSbZSeMq8TQarskNMXVjLIzAcn5Z7YEALwIiIiInLT/AGKSLtWJY3AOAAAAABJRU5ErkJggg==">
@@ -300,6 +300,8 @@ textarea{width:100%;background:var(--surface);border:1px solid var(--border);bor
 .btn{display:block;width:100%;background:var(--accent);border:none;border-radius:var(--radius);
   color:#fff;font-size:19px;font-weight:700;padding:16px;margin-top:14px;cursor:pointer}
 .btn.sec{background:var(--surface);border:2px solid var(--border);color:var(--text);font-weight:600}
+/* 19/11 (P-H) : la puerta de la Documentación en la ayuda — verde, centrada, menos alta que « Entendido » */
+.dlg.lista .lista-cuerpo .btn.ay-doc{background:var(--ok);text-align:center;font-size:16px;padding:10px 12px;margin:10px 0 12px}
 .btn:active{transform:scale(.98)}
 .btn:disabled{opacity:.4}
 
@@ -1362,7 +1364,7 @@ window.LANGUES = {
     ay_hoy:"<b>💊 Medicación</b> — toque cada medicamento cuando se tome: queda registrado con la hora. ¿Se registró tarde? <b>Toque la hora</b> para corregirla. Un toque de más se anula tocando otra vez. «Toma puntual» registra una toma fuera de la lista; si el medicamento está «a demanda», se elige de un toque.",
     ay_const:"<b>🩺 Constantes</b> — rellene solo lo medido ; la hora se puede corregir. Se guarda automáticamente.",
     ay_notas:"<b>📝 Notas</b> — toque un bloque (alimentación, ocupación, salud, eliminación), luego la respuesta, y confirme con el botón verde «Anotar a las…»: queda anotado con la hora. Un candado 🔒 señala lo que no se repite el mismo día.",
-    ay_datos:"<b>📦 Datos</b> (menú ☰) — el paciente, sus medicamentos y el historial. «Guardar copia de los datos» descarga un archivo «.pr» con todo el paciente: sáquelo del teléfono. El botón <b>📂</b> de la cabecera abre una copia, por ejemplo en un teléfono nuevo. Si en casa hay un ordenador con Salufolio, lo anotado puede enviarse a él por el wifi.",
+    ay_datos:"<b>📦 Datos</b> (menú ☰) — Todos los datos del paciente viven en este dispositivo: sus medicamentos y el historial. «Guardar copia de los datos» descarga un archivo «.pr» con todo el paciente: sáquelo del teléfono. El botón <b>📂</b> de la cabecera abre una copia, por ejemplo en un teléfono nuevo. Si en casa hay un ordenador con Salufolio, lo anotado puede enviarse a él por el wifi.",
     ay_ayer:"<b>Si ayer quedó una toma sin registrar</b>, la app lo pregunta al abrir. Ante dudas sobre una dosis, consulte el prospecto o al médico — la app registra, no aconseja.",
     ay_disp:"Los datos viven en este dispositivo.", ay_panal:"Panal Salufolio — todas las aplicaciones", ay_dev:"Producto en desarrollo", ay_doc:"Ver o descargar la documentación detallada",
     ay_ok:"Entendido", hoy:'Hoy', consts:'Constantes', notas:'Notas', datos:'Datos',
@@ -1590,7 +1592,7 @@ window.LANGUES = {
     ay_hoy:"<b>💊 Medicació</b> — toque cada medicament quan es prenga: queda registrat amb l’hora. Registrat tard? <b>Toque l’hora</b> per a corregir-la. Un toc de més s’anul·la tocant una altra vegada. «Presa puntual» registra una presa fora de la llista; si el medicament és «a demanda», es tria amb un toc.",
     ay_const:"<b>🩺 Constants</b> — ompliu només el mesurat ; l’hora es pot corregir. Es guarda automàticament.",
     ay_notas:"<b>📝 Notes</b> — toque un bloc (alimentació, ocupació, salut, eliminació), després la resposta, i confirme amb el botó verd que porta l’hora: queda anotat amb l’hora. Un cadenat 🔒 assenyala el que no es repeteix el mateix dia.",
-    ay_datos:"<b>📦 Dades</b> (menú ☰) — el pacient, els seus medicaments i l’historial. «Guardar còpia de les dades» descarrega un arxiu «.pr» amb tot el pacient: traga’l del telèfon. El botó <b>📂</b> de la capçalera obri una còpia, per exemple en un telèfon nou. Si a casa hi ha un ordinador amb Salufolio, el que s’ha anotat pot enviar-se a ell pel wifi.",
+    ay_datos:"<b>📦 Dades</b> (menú ☰) — Totes les dades del pacient viuen en este dispositiu: els seus medicaments i l’historial. «Guardar còpia de les dades» descarrega un arxiu «.pr» amb tot el pacient: traga’l del telèfon. El botó <b>📂</b> de la capçalera obri una còpia, per exemple en un telèfon nou. Si a casa hi ha un ordinador amb Salufolio, el que s’ha anotat pot enviar-se a ell pel wifi.",
     ay_ayer:"<b>Si ahir va quedar una presa sense registrar</b>, Protocolo ho pregunta en obrir. Davant dubtes sobre una dosi, consulteu el prospecte o el metge — Protocolo registra, no aconsella.",
     ay_disp:"Les dades viuen en este dispositiu.", ay_panal:"Panal Salufolio — totes les aplicacions", ay_dev:"Producte en desenvolupament", ay_doc:"Veure o descarregar la documentació detallada",
     ay_ok:"Entesos", hoy:'Hui', consts:'Constants', notas:'Notes', datos:'Dades',
@@ -1818,7 +1820,7 @@ window.LANGUES = {
     ay_hoy:"<b>💊 Médication</b> — touchez chaque médicament dès qu’il est pris : il est enregistré avec l’heure. Enregistré en retard ? <b>Touchez l’heure</b> pour la corriger. Un appui de trop s’annule en touchant à nouveau. « Prise ponctuelle » enregistre une prise hors liste ; si le médicament est « à la demande », il se choisit d’un appui.",
     ay_const:"<b>🩺 Constantes</b> — ne remplissez que le mesuré ; l'heure est corrigeable. Enregistrée automatiquement.",
     ay_notas:"<b>📝 Notes</b> — touchez un bloc (alimentation, occupation, santé, élimination), puis la réponse, et confirmez avec le bouton vert qui porte l’heure : c’est noté avec l’heure. Un cadenas 🔒 signale ce qui ne se répète pas le même jour.",
-    ay_datos:"<b>📦 Données</b> (menu ☰) — le patient, ses médicaments et l’historique. « Enregistrer une copie des données » télécharge un fichier « .pr » avec tout le patient : sortez-le du téléphone. Le bouton <b>📂</b> de l’en-tête ouvre une copie, par exemple sur un nouveau téléphone. S’il y a à la maison un ordinateur avec Salufolio, ce qui est noté peut lui être envoyé par le wifi.",
+    ay_datos:"<b>📦 Données</b> (menu ☰) — Toutes les données du patient vivent sur cet appareil : ses médicaments et l’historique. « Enregistrer une copie des données » télécharge un fichier « .pr » avec tout le patient : sortez-le du téléphone. Le bouton <b>📂</b> de l’en-tête ouvre une copie, par exemple sur un nouveau téléphone. S’il y a à la maison un ordinateur avec Salufolio, ce qui est noté peut lui être envoyé par le wifi.",
     ay_ayer:"<b>Si une prise d'hier est restée non enregistrée</b>, Protocolo le demande à l'ouverture. En cas de doute sur une dose, consultez la notice ou le médecin — Protocolo enregistre, il ne conseille pas.",
     ay_disp:"Les données vivent sur cet appareil.", ay_panal:"Panal Salufolio — toutes les applications", ay_dev:"Produit en développement", ay_doc:"Voir ou télécharger la documentation détaillée",
     ay_ok:"Compris", hoy:'Aujourd\'hui', consts:'Constantes', notas:'Notes', datos:'Données',
@@ -2047,7 +2049,7 @@ window.LANGUES = {
     ay_hoy:"<b>💊 Medication</b> — tap each medicine once taken: it is logged with the time. Logged late? <b>Tap the time</b> to correct it. An extra tap is cancelled by tapping again. “One-off dose” logs an intake outside the list; if the medicine is “on demand”, pick it with one tap.",
     ay_const:"<b>🩺 Vitals</b> — fill only what was measured; the time can be corrected. Saved automatically.",
     ay_notas:"<b>📝 Notes</b> — tap a block (food, occupation, health, elimination), then the answer, and confirm with the green button that shows the time: it is noted with the time. A padlock 🔒 marks what is not repeated on the same day.",
-    ay_datos:"<b>📦 Data</b> (☰ menu) — the patient, their medicines and the history. “Save a copy of the data” downloads a “.pr” file with the whole patient: take it out of the phone. The <b>📂</b> button in the header opens a copy, for example on a new phone. If there is a computer with Salufolio at home, what has been noted can be sent to it over Wi-Fi.",
+    ay_datos:"<b>📦 Data</b> (☰ menu) — All the patient’s data lives on this device: their medicines and the history. “Save a copy of the data” downloads a “.pr” file with the whole patient: take it out of the phone. The <b>📂</b> button in the header opens a copy, for example on a new phone. If there is a computer with Salufolio at home, what has been noted can be sent to it over Wi-Fi.",
     ay_ayer:"<b>If a dose from yesterday went unlogged</b>, Protocolo asks on opening. If unsure about a dose, check the leaflet or the doctor — Protocolo records, it does not advise.",
     ay_disp:"Data lives on this device.", ay_panal:"Panal Salufolio — all the applications", ay_dev:"Product in development", ay_doc:"View or download the detailed documentation",
     ay_ok:"Got it", hoy:'Today', consts:'Vitals', notas:'Notes', datos:'Data',
@@ -4530,7 +4532,7 @@ function imprimirInforme() {
   window.print();
 }
 
-const MFP_VERSION = '2026.11.19.117-SAT';
+const MFP_VERSION = '2026.11.19.119-SAT';
 
 /* LA TABLE N'EST PLUS ÉCRITE DEUX FOIS (10/10/2026) : elle vit dans modules/ui.js,
    que l'assembleur fait entrer plus haut dans ce fichier. Ce nom reste pour le code
@@ -5832,11 +5834,9 @@ function verAyuda() {
     '<div class="lista-cuerpo" style="gap:0;text-align:left">' +
       '<p>' + t('ay_hoy') + '</p><p>' + t('ay_const') + '</p><p>' + t('ay_notas') + '</p><p>' + t('ay_res') + '</p>' +
       '<p>' + t('ay_datos') + '</p><p>' + t('ay_ayer') + '</p>' +
-      '<p style="color:var(--muted);font-size:12px">' + t('ay_disp') + '</p>' +
-      /* 14/10 : el enlace abre la documentación por secciones (rubricas.js) */
-      '<p style="margin-top:6px"><a href="#" data-rub="1" ' +
-        'style="color:var(--accent);font-size:13px">📄 ' +
-        ((typeof _rubPalabra === 'function') ? _rubPalabra('enlace') : t('ay_doc')) + '</a></p>' +
+      /* 14/10 : abre la documentación por secciones (rubricas.js) — 19/11 (P-H) : un botón verde, bien a la vista */
+      '<button type="button" class="btn ay-doc" data-rub="1">📄 ' +
+        ((typeof _rubPalabra === 'function') ? _rubPalabra('enlace') : t('ay_doc')) + '</button>' +
       (TABLA_ENLACES.panal.ayuda
         ? '<p style="margin-top:4px"><a href="' + TABLA_ENLACES.panal.url + '" target="_blank" rel="noopener" ' +
           'style="color:var(--accent);font-size:13px">🐝 ' + t('ay_panal') + '</a></p>'
@@ -5852,7 +5852,7 @@ function verAyuda() {
   ajustaLista(ov);
   const _fin = ov.querySelector('button[data-fin]');
   if (_fin) _fin.onclick = () => ov.remove();
-  const _rub = ov.querySelector('a[data-rub]');
+  const _rub = ov.querySelector('[data-rub]');
   if (_rub) _rub.onclick = e => { e.preventDefault(); if (typeof verRubricas === 'function') verRubricas(); };
 }
 
