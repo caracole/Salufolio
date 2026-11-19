@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════
-   Versión 2026.11.19-18:06:41
+   Versión 2026.11.19-18:21:43
    SW.JS — le service-worker du Protocolo móvil
    (P-H + Claude, 08/09/2026)
 
@@ -22,7 +22,7 @@
 /* 14/10 (P-H) — la aplicación es protocolo.html ; index.html no es más que la
    puerta corta. El PDF ya no se guarda : la aplicación no lo llama, y pesa
    2,3 Mo. Un número NUEVO borra la memoria vieja de los teléfonos. */
-const VERSION = 'protocolo-2026.11.19.1806';
+const VERSION = 'protocolo-2026.11.19.1821';
 const GUARDAR = [
   './',
   './index.html',
